@@ -11,11 +11,6 @@ generator client {
   provider = "prisma-client-js"
 }
 
-model Example {
-    id        String   @id @default(cuid())
-    createdAt DateTime @default(now())
-    updatedAt DateTime @updatedAt
-}
 model User {
   id      Int      @id @default(autoincrement())
   email   String   @unique
@@ -50,8 +45,4 @@ model Role {
   id      Int       @id @default(autoincrement())
   name    String    @unique
   Profile Profile[]
-}
-model Post {
-  id      Int       @id @default(autoincrement())
-  name String
 }

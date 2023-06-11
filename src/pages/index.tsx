@@ -7,8 +7,7 @@ import { api } from "~/utils/api";
 const Home: NextPage = () => {
   const user = useUser();
 
-  const { data } = api.users.getAllPosts.useQuery();
-  console.log(JSON.stringify(data));
+  const { data } = api.users.getAllUsers.useQuery();
 
   return (
     <>
@@ -37,7 +36,7 @@ const Home: NextPage = () => {
           {data?.map((user) => {
             return (
               <div className="text-black" key={user.id}>
-                {user.name}
+                {user.email}
               </div>
             );
           })}
