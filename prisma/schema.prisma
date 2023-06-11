@@ -2,8 +2,8 @@
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
 
 datasource db {
-  provider = "mysql"
-  url      = env("DATABASE_URL")
+  provider     = "mysql"
+  url          = env("DATABASE_URL")
   relationMode = "prisma"
 }
 
@@ -15,4 +15,43 @@ model Example {
     id        String   @id @default(cuid())
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
+}
+model User {
+  id      Int      @id @default(autoincrement())
+  email   String   @unique
+  profile Profile?
+}
+
+model Profile {
+  id              Int               @id @default(autoincrement())
+  profilePicture  String
+  name            String
+  role            Role?             @relation(fields: [roleId], references: [id])
+  categories  Category[]
+  about           String
+  country         String
+  city            String
+  user            User              @relation(fields: [userId], references: [id])
+
+  userId Int  @unique
+  roleId Int?
+
+  @@index([userId])
+  @@index([roleId])
+}
+
+model Category {
+  id              Int               @id @default(autoincrement())
+  name            String            @unique
+  profile Profile[]
+}
+
+model Role {
+  id      Int       @id @default(autoincrement())
+  name    String    @unique
+  Profile Profile[]
+}
+model Post {
+  id      Int       @id @default(autoincrement())
+  name String
 }

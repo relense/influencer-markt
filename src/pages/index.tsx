@@ -5,8 +5,10 @@ import { SignInButton, SignOutButton, useUser } from "@clerk/nextjs";
 import { api } from "~/utils/api";
 
 const Home: NextPage = () => {
-  const hello = api.example.hello.useQuery({ text: "from tRPC" });
   const user = useUser();
+
+  const { data } = api.users.getAllPosts.useQuery();
+  console.log(JSON.stringify(data));
 
   return (
     <>
@@ -19,16 +21,27 @@ const Home: NextPage = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main className="flex min-h-screen flex-col items-center justify-center">
-        {!user.isSignedIn && (
-          <SignInButton>
-            <span className="cursor-pointer text-black">Sign in</span>
-          </SignInButton>
-        )}
-        {!!user.isSignedIn && (
-          <SignOutButton>
-            <span className="cursor-pointer text-black">Sign out</span>
-          </SignOutButton>
-        )}
+        <div>
+          {!user.isSignedIn && (
+            <SignInButton>
+              <span className="cursor-pointer text-black">Sign in</span>
+            </SignInButton>
+          )}
+          {!!user.isSignedIn && (
+            <SignOutButton>
+              <span className="cursor-pointer text-black">Sign out</span>
+            </SignOutButton>
+          )}
+        </div>
+        <div className="">
+          {data?.map((user) => {
+            return (
+              <div className="text-black" key={user.id}>
+                {user.name}
+              </div>
+            );
+          })}
+        </div>
       </main>
     </>
   );
