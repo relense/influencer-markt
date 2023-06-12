@@ -81,7 +81,7 @@ export const Navbar = () => {
 
   const renderLogoTitle = () => {
     return (
-      <h1 className="m-8 cursor-pointer font-lobster text-4xl font-extrabold text-influencer">
+      <h1 className="m-8 cursor-pointer font-lobster text-4xl text-influencer">
         Influencer Markt
       </h1>
     );
