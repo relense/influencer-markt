@@ -35,12 +35,11 @@ const Home: NextPage = () => {
           return (
             <div key={elem} className="px-12">
               <Image
-                style={{ width: "auto" }}
                 src={`/images/${elem}.png`}
                 height={68}
                 width={68}
                 alt="Instagram"
-                className="object-contain"
+                className="h-auto object-contain"
               />
             </div>
           );
@@ -191,7 +190,7 @@ const Home: NextPage = () => {
                 "Offers page tailored to your needs",
                 "Rewards based on performance",
                 "Ability to review the job",
-                "Offers page tailored to your needs",
+                "Offers page tailored",
                 "Find the best brand for you and introduce yourself",
               ],
               "influencer-green"

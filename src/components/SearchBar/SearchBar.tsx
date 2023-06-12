@@ -3,7 +3,7 @@ import { faSearch } from "@fortawesome/free-solid-svg-icons";
 
 export const SearchBar = () => {
   return (
-    <div className="m-10 flex h-16 w-5/12 items-center rounded-2xl px-4 shadow-lg">
+    <div className="m-10 flex h-16 w-8/12 items-center rounded-2xl px-4 shadow-lg">
       <input
         placeholder="categories"
         className="flex h-4/5 flex-1 bg-transparent text-black"
