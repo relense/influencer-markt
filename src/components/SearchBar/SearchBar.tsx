@@ -5,4 +5,3 @@ export const SearchBar = () => {
     </div>
   );
 };
-g;
