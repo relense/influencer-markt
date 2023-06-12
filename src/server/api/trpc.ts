@@ -6,7 +6,8 @@
  * TL;DR - This is where all the tRPC server stuff is created and plugged in. The pieces you will
  * need to use are documented accordingly near the end.
  */
-import { initTRPC } from "@trpc/server";
+import { getAuth } from "@clerk/nextjs/server";
+import { TRPCError, initTRPC } from "@trpc/server";
 import { type CreateNextContextOptions } from "@trpc/server/adapters/next";
 import superjson from "superjson";
 import { ZodError } from "zod";
@@ -45,7 +46,14 @@ const createInnerTRPCContext = (_opts: CreateContextOptions) => {
  * @see https://trpc.io/docs/context
  */
 export const createTRPCContext = (_opts: CreateNextContextOptions) => {
-  return createInnerTRPCContext({});
+  const { req } = _opts;
+  const auth = getAuth(req);
+  const userId = auth.userId;
+
+  return {
+    prisma,
+    userId,
+  };
 };
 
 /**
@@ -70,6 +78,20 @@ const t = initTRPC.context<typeof createTRPCContext>().create({
   },
 });
 
+const enforceUserIsAuthed = t.middleware(async ({ ctx, next }) => {
+  if (!ctx.userId) {
+    throw new TRPCError({
+      code: "UNAUTHORIZED",
+    });
+  }
+
+  return next({
+    ctx: {
+      userId: ctx.userId,
+    },
+  });
+});
+
 /**
  * 3. ROUTER & PROCEDURE (THE IMPORTANT BIT)
  *
@@ -92,3 +114,12 @@ export const createTRPCRouter = t.router;
  * are logged in.
  */
 export const publicProcedure = t.procedure;
+
+/**
+ * Protected (unauthenticated) procedure
+ *
+ * This is the base piece you use to build new queries and mutations on your tRPC API. The point of
+ * this procedure is to guarantee that the routes access are authorized through user authentication
+ * and only for that user.
+ */
+export const privateProcedure = t.procedure.use(enforceUserIsAuthed);
