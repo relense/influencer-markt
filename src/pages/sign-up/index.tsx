@@ -1,6 +1,10 @@
 import { type NextPage } from "next";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faXmark } from "@fortawesome/free-solid-svg-icons";
+import {
+  faArrowUpFromBracket,
+  faCamera,
+  faXmark,
+} from "@fortawesome/free-solid-svg-icons";
 import Link from "next/link";
 import { useState } from "react";
 
@@ -47,19 +51,31 @@ const SignUp: NextPage = () => {
         <div className="absolute right-1 top-1 flex h-14 w-14 cursor-pointer items-center justify-center rounded-full bg-influencer-green lg:right-10 lg:top-10">
           <FontAwesomeIcon
             icon={faXmark}
-            className={`fa-2x cursor-pointer text-white`}
+            className="fa-2x cursor-pointer text-white"
           />
         </div>
       </Link>
     );
   };
 
+  const renderLogo = () => {
+    return (
+      <h1 className="cursor-pointer justify-center p-4 text-center font-lobster text-2xl text-influencer lg:m-8 lg:text-left lg:text-4xl">
+        Influencer Markt
+      </h1>
+    );
+  };
+
   const renderSteps = () => {
     return (
-      <>
-        <div className="text-lg">{steps[currentStep]?.step}</div>
-        <div className="text-2xl">{steps[currentStep]?.title}</div>
-        <div className="text-base text-gray2">
+      <div className="flex flex-col gap-4 rounded-b-2xl bg-light-red p-4 lg:p-8">
+        <div className="text-lg font-medium lg:text-xl">
+          {steps[currentStep]?.step}
+        </div>
+        <div className="text-2xl font-semibold lg:text-4xl">
+          {steps[currentStep]?.title}
+        </div>
+        <div className="text-base font-medium text-gray2 lg:text-lg">
           {steps[currentStep]?.subTitle}
         </div>
         <div className="mt-4 flex gap-3">
@@ -81,32 +97,41 @@ const SignUp: NextPage = () => {
             }
           })}
         </div>
-      </>
+      </div>
     );
   };
 
   const renderStepperMobile = () => {
     return (
       <div className="flex h-full w-full flex-1 flex-col justify-between lg:hidden">
-        <h1 className="flex cursor-pointer justify-center p-4 text-center font-lobster text-2xl text-influencer ">
-          Influencer Markt
-        </h1>
-        <div className="flex">doadoa</div>
-        <div className="flex flex-col gap-4 rounded-b-2xl bg-light-red p-4">
-          {renderSteps()}
-        </div>
+        {renderLogo()}
+        {currentStep === 0 && renderStep1()}
+        {renderSteps()}
       </div>
     );
   };
 
   const renderStepperDesktop = () => {
     return (
-      <div className="hidden h-full w-96 flex-col justify-between rounded-s-2xl bg-light-red lg:flex">
-        <h1 className="m-8 cursor-pointer text-left font-lobster text-4xl text-influencer">
-          Influencer Markt
-        </h1>
-        <div className="flex flex-col gap-4 rounded-b-2xl bg-light-red p-4">
-          {renderSteps()}
+      <div className="hidden h-full w-1/4 flex-col justify-between rounded-s-2xl bg-light-red lg:flex">
+        {renderLogo()}
+
+        {renderSteps()}
+      </div>
+    );
+  };
+
+  const renderStep1 = () => {
+    return (
+      <div className="flex justify-center">
+        <div className="flex flex-col items-center gap-4">
+          <div className="flex h-40 w-40 cursor-pointer flex-col items-center justify-center rounded-full border-[1px] border-gray3">
+            <FontAwesomeIcon icon={faCamera} className="fa-2x text-gray3" />
+          </div>
+          <div className="flex items-center gap-4 text-influencer">
+            <FontAwesomeIcon icon={faArrowUpFromBracket} />
+            <div>Add your Profile Image</div>
+          </div>
         </div>
       </div>
     );
