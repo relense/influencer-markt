@@ -3,6 +3,7 @@ import {
   faInstagram,
   faTwitter,
   faTiktok,
+  type IconDefinition,
 } from "@fortawesome/free-brands-svg-icons";
 
 type NavigationItems = {
@@ -22,7 +23,7 @@ export const Footer = () => {
 
   const renderNavigation = () => {
     return (
-      <div>
+      <div className="flex flex-col text-center lg:flex-row">
         {navigationItems.map((item) => {
           return (
             <span key={item.name} className="cursor-pointer p-2">
@@ -35,31 +36,30 @@ export const Footer = () => {
   };
 
   const renderSocialMedia = () => {
+    const socialMedia: IconDefinition[] = [faInstagram, faTwitter, faTiktok];
+
     return (
-      <div className="m-12">
-        <FontAwesomeIcon
-          icon={faInstagram}
-          className="fa-2xl cursor-pointer px-10"
-        />
-        <FontAwesomeIcon
-          icon={faTwitter}
-          className="fa-2xl cursor-pointer px-10"
-        />
-        <FontAwesomeIcon
-          icon={faTiktok}
-          className="fa-2xl cursor-pointer px-10"
-        />
+      <div className="flex w-full justify-center py-11">
+        {socialMedia.map((item, index) => {
+          return (
+            <FontAwesomeIcon
+              key={index}
+              icon={item}
+              className="fa-2xl cursor-pointer px-10"
+            />
+          );
+        })}
       </div>
     );
   };
 
   return (
-    <div className="border-slate-5 flexflex-col w-full border-t-[1px]">
-      <div className="flex flex-1 flex-col items-center justify-center py-5">
+    <div className="border-slate-5 border-t-[1px]">
+      <div className="flex flex-col items-center py-5">
         {renderSocialMedia()}
         {renderNavigation()}
       </div>
-      <div className="flex justify-center border-t-[1px] p-5">
+      <div className="flex flex-col items-center border-t-[1px] p-5">
         <span className="pointer-events-none">
           © Influencer Market inc. 2023
         </span>
