@@ -7,16 +7,18 @@ import {
 } from "@fortawesome/free-regular-svg-icons";
 
 import { Button } from "../Button/Button";
-import { faChevronDown } from "@fortawesome/free-solid-svg-icons";
+import { faBars, faChevronDown } from "@fortawesome/free-solid-svg-icons";
+import { useState } from "react";
 
 export const Navbar = () => {
+  const [toggleHamburguer, setToggleHamburguer] = useState<boolean>(false);
   const user = useUser();
 
   const leftNavBeforeLogin = () => {
     return (
       <div className="flex flex-1 justify-start">
-        <span className="cursor-pointer p-2 text-lg">Home</span>
-        <span className="cursor-pointer p-2 text-lg">Explore</span>
+        <span className="cursor-pointer text-lg lg:p-2">Home</span>
+        <span className="cursor-pointer text-lg lg:p-2">Explore</span>
       </div>
     );
   };
@@ -24,15 +26,15 @@ export const Navbar = () => {
   const leftNavAfterLogin = () => {
     return (
       <div className="flex flex-1 justify-start">
-        <span className="cursor-pointer p-2 text-lg">Home</span>
-        <span className="cursor-pointer p-2 text-lg">
+        <span className="cursor-pointer text-lg lg:p-2">Home</span>
+        <span className="cursor-pointer text-lg lg:p-2">
           Explore
           <FontAwesomeIcon
             icon={faChevronDown}
             className="fa-sm cursor-pointer px-5"
           />
         </span>
-        <span className="cursor-pointer p-2 text-lg">
+        <span className="cursor-pointer text-lg lg:p-2">
           Saved
           <FontAwesomeIcon
             icon={faChevronDown}
@@ -47,8 +49,8 @@ export const Navbar = () => {
     return (
       <div className="flex flex-row items-center justify-end">
         {!user.isSignedIn && (
-          <SignInButton>
-            <span className="cursor-pointer p-2 text-lg">Sign in</span>
+          <SignInButton mode="modal">
+            <span className="cursor-pointer text-lg lg:p-2">Sign in</span>
           </SignInButton>
         )}
         <Button title="Join Marketplace" />
@@ -81,19 +83,75 @@ export const Navbar = () => {
 
   const renderLogoTitle = () => {
     return (
-      <h1 className="m-8 cursor-pointer font-lobster text-4xl text-influencer">
+      <h1 className="m-0 cursor-pointer text-left font-lobster text-2xl text-influencer lg:m-8 lg:text-4xl">
         Influencer Markt
       </h1>
     );
   };
 
+  const renderHamburguerMenu = () => {
+    return (
+      <div className="flex">
+        <FontAwesomeIcon
+          icon={faBars}
+          className="fa-xl cursor-pointer"
+          onClick={() => setToggleHamburguer(!toggleHamburguer)}
+        />
+        {toggleHamburguer && dropDownMenu()}
+      </div>
+    );
+  };
+
+  const dropDownMenu = () => {
+    return (
+      <>
+        <div
+          className="absolute left-0 top-0 h-screen w-screen"
+          onClick={() => setToggleHamburguer(!toggleHamburguer)}
+        />
+        <div
+          className="absolute right-5 top-10 z-10 flex h-auto w-72 flex-col gap-4 rounded-2xl border-[1px] border-border-white bg-white p-8 shadow-lg"
+          onClick={() => setToggleHamburguer(!toggleHamburguer)}
+        >
+          <div className="flex cursor-pointer items-center gap-6">
+            <FontAwesomeIcon icon={faCircleUser} className="fa-2xl" />
+            <Button title="Get Started" />
+          </div>
+          <div className="border-[1px] border-border-white" />
+          <span className="cursor-pointer text-lg ">Home</span>
+          <span className="cursor-pointer text-lg ">Explore</span>
+          <div className="border-[1px] border-border-white" />
+          <SignInButton mode="modal">
+            <span className="cursor-pointer text-lg ">Sign in</span>
+          </SignInButton>
+        </div>
+      </>
+    );
+  };
+
+  const renderDesktopMenu = () => {
+    return (
+      <div className="hidden h-16 w-full items-center px-6 py-12 lg:flex">
+        {renderLogoTitle()}
+        {!user.isSignedIn && leftNavBeforeLogin()}
+        {!user.isSignedIn && rightNavBeforeLogin()}
+        {user.isSignedIn && leftNavAfterLogin()}
+        {user.isSignedIn && rightNavbarAfterLogin()}
+      </div>
+    );
+  };
+  const renderMobileMenu = () => {
+    return (
+      <div className="flex items-center justify-between px-4 py-2 lg:hidden">
+        {renderLogoTitle()} {renderHamburguerMenu()}
+      </div>
+    );
+  };
+
   return (
-    <div className="flex h-16 w-full items-center px-6 py-12">
-      {renderLogoTitle()}
-      {!user.isSignedIn && leftNavBeforeLogin()}
-      {!user.isSignedIn && rightNavBeforeLogin()}
-      {user.isSignedIn && leftNavAfterLogin()}
-      {user.isSignedIn && rightNavbarAfterLogin()}
-    </div>
+    <nav>
+      {renderDesktopMenu()}
+      {renderMobileMenu()}
+    </nav>
   );
 };
