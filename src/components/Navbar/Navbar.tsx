@@ -110,17 +110,17 @@ export const Navbar = () => {
           onClick={() => setToggleHamburguer(!toggleHamburguer)}
         />
         <div
-          className="absolute right-5 top-10 z-10 flex h-auto w-72 flex-col gap-4 rounded-2xl border-[1px] border-border-white bg-white p-8 shadow-lg"
+          className="absolute right-5 top-10 z-10 flex h-auto w-72 flex-col gap-4 rounded-2xl border-[1px] border-white1 bg-white p-8 shadow-lg"
           onClick={() => setToggleHamburguer(!toggleHamburguer)}
         >
           <div className="flex cursor-pointer items-center gap-6">
             <FontAwesomeIcon icon={faCircleUser} className="fa-2xl" />
             <Button title="Get Started" />
           </div>
-          <div className="border-[1px] border-border-white" />
+          <div className="border-[1px] border-white1" />
           <span className="cursor-pointer text-lg ">Home</span>
           <span className="cursor-pointer text-lg ">Explore</span>
-          <div className="border-[1px] border-border-white" />
+          <div className="border-[1px] border-white1" />
           <SignInButton mode="modal">
             <span className="cursor-pointer text-lg ">Sign in</span>
           </SignInButton>

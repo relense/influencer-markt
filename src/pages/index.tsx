@@ -98,7 +98,7 @@ const Home: NextPage = () => {
   ) => {
     const iconColor = influencer ? "text-influencer" : "text-influencer-green";
     return (
-      <div className="pointer-events-none mx-11 mt-5 rounded-2xl border-[1px] border-border-white p-11 text-left shadow-lg">
+      <div className="pointer-events-none mx-11 mt-5 rounded-2xl border-[1px] border-white1 p-11 text-left shadow-lg">
         <h1 className="font-playfair text-3xl">{title}</h1>
         <div className="mt-5">
           {positives.map((elem) => {
