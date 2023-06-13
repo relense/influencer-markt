@@ -53,7 +53,7 @@ export const Navbar = () => {
             <span className="cursor-pointer text-lg lg:p-2">Sign in</span>
           </SignInButton>
         )}
-        <Button title="Join Marketplace" />
+        <Button title="Join Marketplace" level="primary" />
       </div>
     );
   };
@@ -115,7 +115,7 @@ export const Navbar = () => {
         >
           <div className="flex cursor-pointer items-center gap-6">
             <FontAwesomeIcon icon={faCircleUser} className="fa-2xl" />
-            <Button title="Get Started" />
+            <Button title="Get Started" level="primary" />
           </div>
           <div className="border-[1px] border-white1" />
           <span className="cursor-pointer text-lg ">Home</span>

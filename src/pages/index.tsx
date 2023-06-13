@@ -169,7 +169,7 @@ const Home: NextPage = () => {
           <h2 className="pointer-events-none p-7 font-playfair text-xl text-white lg:text-3xl">
             Tell us what you need and let influencers come to you instead
           </h2>
-          <Button title="Create Offer" />
+          <Button title="Create Offer" level="primary" />
         </div>
       </div>
     );
@@ -214,7 +214,7 @@ const Home: NextPage = () => {
             false
           )}
         </div>
-        <Button title="Get Started" />
+        <Button title="Get Started" level="primary" />
       </div>
     );
   };
