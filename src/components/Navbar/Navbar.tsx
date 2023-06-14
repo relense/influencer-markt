@@ -1,4 +1,9 @@
-import { SignInButton, SignOutButton, useUser } from "@clerk/nextjs";
+import {
+  SignInButton,
+  SignOutButton,
+  SignUpButton,
+  useUser,
+} from "@clerk/nextjs";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faMessage,
@@ -48,12 +53,12 @@ export const Navbar = () => {
   const rightNavBeforeLogin = () => {
     return (
       <div className="flex flex-row items-center justify-end">
-        {!user.isSignedIn && (
-          <SignInButton mode="modal">
-            <span className="cursor-pointer text-lg lg:p-2">Sign in</span>
-          </SignInButton>
-        )}
-        <Button title="Join Marketplace" level="primary" />
+        <SignInButton mode="modal">
+          <span className="cursor-pointer text-lg lg:p-2">Sign in</span>
+        </SignInButton>
+        <SignUpButton mode="modal">
+          <Button title="Join Marketplace" level="primary" />
+        </SignUpButton>
       </div>
     );
   };
