@@ -6,12 +6,12 @@ import {
   faXmark,
 } from "@fortawesome/free-solid-svg-icons";
 import Link from "next/link";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 
 import { Button } from "../../components/Button/Button";
 
-type FormData = {
+type ProfileData = {
   displayName: string;
   role: "Brand" | "Individual" | "Content Creator";
   categories: string[];
@@ -68,19 +68,88 @@ const steps: Step[] = [
   },
 ];
 
+type SocialMediaInput = {
+  socialMedia: string;
+  placeholderTitle: string;
+  placeholderSubtitle: string;
+};
+
+const socialMediaPlaceHolders: SocialMediaInput[] = [
+  {
+    socialMedia: "instagram",
+    placeholderTitle: "Instagram Handle: Share Your @Username",
+    placeholderSubtitle: "Followers",
+  },
+  {
+    socialMedia: "twitter",
+    placeholderTitle: "Twitter Handle: Enter Your @Username",
+    placeholderSubtitle: "Followers",
+  },
+  {
+    socialMedia: "tiktok",
+    placeholderTitle: "TikTok Username: Share Your TikTok Handle",
+    placeholderSubtitle: "Followers",
+  },
+  {
+    socialMedia: "youtube",
+    placeholderTitle: "YouTube Channel: Enter Your YouTube Username",
+    placeholderSubtitle: "Subscribers",
+  },
+  {
+    socialMedia: "facebook",
+    placeholderTitle: "Facebook Page: Provide Your Facebook Page URL",
+    placeholderSubtitle: "Followers",
+  },
+  {
+    socialMedia: "linkedin",
+    placeholderTitle: "LinkedIn Profile: Share Your LinkedIn Profile URL",
+    placeholderSubtitle: "Connections",
+  },
+  {
+    socialMedia: "pinterest",
+    placeholderTitle: "Pinterest Account: Enter Your Pinterest Profile URL",
+    placeholderSubtitle: "Followers",
+  },
+  {
+    socialMedia: "twitch",
+    placeholderTitle: "Twitch Channel: Provide Your Twitch Channel Nam",
+    placeholderSubtitle: "Followers",
+  },
+];
+
 const FirstSteps: NextPage = () => {
+  const mainContentRef = useRef<HTMLDivElement>(null);
+
   const [currentStep, setCurrentStep] = useState<number>(0);
+
   const {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<FormData>();
+  } = useForm<ProfileData>();
 
-  const onSubmit = handleSubmit((data) => {
+  const {
+    register: registerSocialMedia,
+    handleSubmit: handleSubmitSocialMedia,
+    formState: { errors: errorsSocialMedia },
+  } = useForm();
+
+  const onSubmitStep1 = handleSubmit((data) => {
+    changeStep("next");
+  });
+
+  const onSubmitStep2 = handleSubmitSocialMedia((data) => {
+    alert(JSON.stringify(data));
     changeStep("next");
   });
 
   const changeStep = (type: "next" | "previous") => {
+    if (mainContentRef.current) {
+      mainContentRef.current.scroll({
+        top: 0,
+        behavior: "smooth",
+      });
+    }
     if (type === "next") {
       if (currentStep === steps.length - 1) return;
 
@@ -191,7 +260,7 @@ const FirstSteps: NextPage = () => {
         </div>
         <form
           id="form-hook"
-          onSubmit={onSubmit}
+          onSubmit={onSubmitStep1}
           className="mt-4 flex w-full flex-col gap-6 lg:w-2/4"
         >
           <input
@@ -237,7 +306,46 @@ const FirstSteps: NextPage = () => {
     );
   };
 
-  const renderStep2 = () => {};
+  const renderStep2 = () => {
+    return (
+      <div className="mt-2 flex flex-col items-center gap-4 lg:mt-11 lg:overflow-y-auto">
+        <form
+          id="form-hook"
+          onSubmit={onSubmitStep2}
+          className="mt-4 flex w-full flex-col gap-6 lg:w-3/4"
+        >
+          <input
+            {...registerSocialMedia("website")}
+            type="text"
+            className="h-14 rounded-lg border-[1px] border-gray3 p-4 placeholder-gray2"
+            placeholder="Website URL: Provide Your Website Address"
+          />
+          {socialMediaPlaceHolders.map((item) => {
+            return (
+              <div
+                key={item.placeholderTitle}
+                className="flex flex-col gap-6 lg:flex-row"
+              >
+                <input
+                  {...registerSocialMedia(`${item.socialMedia}Handle`)}
+                  type="text"
+                  className="h-14 w-full rounded-lg border-[1px] border-gray3 p-4 placeholder-gray2"
+                  placeholder={item.placeholderTitle}
+                />
+                <input
+                  {...registerSocialMedia(`${item.socialMedia}Followers`)}
+                  type="text"
+                  className="h-14 rounded-lg border-[1px] border-gray3 p-4 placeholder-gray2"
+                  placeholder={item.placeholderSubtitle}
+                />
+              </div>
+            );
+          })}
+        </form>
+        {renderReminder()}
+      </div>
+    );
+  };
 
   const renderReminder = () => {
     return (
@@ -255,9 +363,13 @@ const FirstSteps: NextPage = () => {
         <div className="flex h-full w-full flex-col rounded-2xl bg-white lg:flex-row lg:overscroll-none">
           {renderSteps()}
 
-          <div className="flex h-full w-full flex-col overflow-y-auto px-8 lg:overscroll-none">
+          <div
+            ref={mainContentRef}
+            className="flex h-full w-full flex-col overflow-y-auto px-8 lg:overscroll-none"
+          >
             {renderStepMainTitle()}
             {currentStep === 0 && renderStep1()}
+            {currentStep === 1 && renderStep2()}
             {renderStepperButtons()}
           </div>
         </div>
