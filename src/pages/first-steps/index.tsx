@@ -1,0 +1,269 @@
+import { type NextPage } from "next";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faArrowUpFromBracket,
+  faCamera,
+  faXmark,
+} from "@fortawesome/free-solid-svg-icons";
+import Link from "next/link";
+import { useState } from "react";
+import { useForm } from "react-hook-form";
+
+import { Button } from "../../components/Button/Button";
+
+type FormData = {
+  displayName: string;
+  role: "Brand" | "Individual" | "Content Creator";
+  categories: string[];
+  country: string;
+  city: string;
+  about: string;
+};
+
+type Step = {
+  step: string;
+  title: string;
+  subTitle: string;
+  mainTitle: string;
+  mainSubTitle: string;
+};
+
+const steps: Step[] = [
+  {
+    step: "Step 1",
+    title: "Online Presence",
+    subTitle: "Define Your Online Profile identity",
+    mainTitle: "Establish Your Online Presence",
+    mainSubTitle:
+      "Let's Establish who you are and what defines your online identity",
+  },
+  {
+    step: "Step 2",
+    title: "Social Media",
+    subTitle: "Share your social media accounts",
+    mainTitle: "Connect and Showcase Your Influence",
+    mainSubTitle: "Fill in Relevant Details, Leave the Rest Optional",
+  },
+  {
+    step: "Step 3",
+    title: "Visual Portfolio",
+    subTitle: "Create a portfolio related with your needs",
+    mainTitle: "Build Your Visual Portfolio",
+    mainSubTitle: "Showcase Your Best Photos on Your Profile",
+  },
+  {
+    step: "Step 4",
+    title: "Value Packs",
+    subTitle: "Design Your Profitable Value Packs",
+    mainTitle: "Customized Value Packs",
+    mainSubTitle: "Select Your Platform and Craft Your Irresistible Offer",
+  },
+  {
+    step: "",
+    title: "You're All Set",
+    subTitle: "Start Exploring the Exciting Opportunities Ahead!",
+    mainTitle: "Congratulations! You're All Set to Unleash Your Influence",
+    mainSubTitle:
+      "Welcome to the World of Endless Possibilities and Impactful Connections",
+  },
+];
+
+const FirstSteps: NextPage = () => {
+  const [currentStep, setCurrentStep] = useState<number>(0);
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<FormData>();
+
+  const onSubmit = handleSubmit((data) => {
+    changeStep("next");
+  });
+
+  const changeStep = (type: "next" | "previous") => {
+    if (type === "next") {
+      if (currentStep === steps.length - 1) return;
+
+      setCurrentStep(currentStep + 1);
+    } else {
+      setCurrentStep(currentStep - 1);
+    }
+  };
+
+  const renderCloseButton = () => {
+    return (
+      <Link href="/">
+        <div className="absolute right-1 top-1 flex h-14 w-14 cursor-pointer items-center justify-center rounded-full bg-influencer-green lg:right-2 lg:top-2">
+          <FontAwesomeIcon
+            icon={faXmark}
+            className="fa-2x cursor-pointer text-white"
+          />
+        </div>
+      </Link>
+    );
+  };
+
+  const renderSteps = () => {
+    return (
+      <div className="flex flex-col items-center justify-between gap-2 rounded-tl-2xl bg-light-red p-4 text-center lg:w-[30%] lg:items-start lg:gap-4 lg:overflow-y-hidden lg:rounded-l-2xl lg:rounded-br-none lg:p-8 lg:text-left">
+        <h1 className=" cursor-pointer font-lobster text-2xl text-influencer lg:p-8 lg:text-4xl">
+          Influencer Markt
+        </h1>
+        <div>
+          <div className="text-xl font-medium">{steps[currentStep]?.step}</div>
+          <div className="text-2xl font-semibold lg:text-4xl">
+            {steps[currentStep]?.title}
+          </div>
+          <div className="hidden text-base font-medium text-gray2 lg:flex lg:text-lg">
+            {steps[currentStep]?.subTitle}
+          </div>
+          <div className="flex gap-3 py-2 lg:pt-4">
+            {steps.map((step, index) => {
+              if (index <= currentStep) {
+                return (
+                  <div
+                    key={step.step}
+                    className="h-2 w-11 rounded-2xl bg-influencer-green"
+                  />
+                );
+              } else {
+                return (
+                  <div
+                    key={step.step}
+                    className="h-2 w-11 rounded-2xl bg-white"
+                  />
+                );
+              }
+            })}
+          </div>
+        </div>
+      </div>
+    );
+  };
+
+  const renderStepMainTitle = () => {
+    return (
+      <div className="hidden flex-col items-center justify-center gap-4 font-playfair lg:mt-12 lg:flex">
+        <div className="text-4xl">{steps[currentStep]?.mainTitle}</div>
+        <div className="text-xl">{steps[currentStep]?.mainSubTitle}</div>
+      </div>
+    );
+  };
+
+  const renderStepperButtons = () => {
+    return (
+      <div className="flex w-full flex-1 items-end justify-between py-4">
+        {currentStep > 0 && (
+          <div className="flex flex-1">
+            <Button
+              title="Previous Step"
+              level="secondary"
+              onClick={() => changeStep("previous")}
+            />
+          </div>
+        )}
+        <div className="flex flex-1 items-center justify-center lg:flex-row lg:justify-end ">
+          {currentStep < steps.length - 1 && (
+            <div
+              className="hidden cursor-pointer underline lg:flex"
+              onClick={() => changeStep("next")}
+            >
+              Skip Step
+            </div>
+          )}
+          <Button title="Next Step" level="primary" form="form-hook" />
+        </div>
+      </div>
+    );
+  };
+
+  const renderStep1 = () => {
+    return (
+      <div className="mt-2 flex flex-col items-center gap-4 lg:mt-11 lg:overflow-y-auto">
+        <div className="flex flex-col items-center">
+          <div className="flex h-24 w-24 cursor-pointer flex-col items-center justify-center rounded-full border-[1px] border-gray3">
+            <FontAwesomeIcon icon={faCamera} className="fa-2x text-gray3" />
+          </div>
+          <div className="flex items-center gap-4 text-influencer">
+            <FontAwesomeIcon icon={faArrowUpFromBracket} />
+            <div>Add your Profile Image</div>
+          </div>
+        </div>
+        <form
+          id="form-hook"
+          onSubmit={onSubmit}
+          className="mt-4 flex w-full flex-col gap-6 lg:w-2/4"
+        >
+          <input
+            {...register("displayName")}
+            type="text"
+            className="h-14 rounded-lg border-[1px] border-gray3 p-4 placeholder-gray2"
+            placeholder="Choose Your Display Name: How Would You Like to be Recognized?"
+          />
+          <input
+            {...register("role")}
+            type="text"
+            className="h-14 rounded-lg border-[1px] border-gray3 p-4 placeholder-gray2"
+            placeholder="Specify Your Role: Influencer, Brand, or Individual"
+          />
+          <input
+            {...register("categories")}
+            type="text"
+            className="h-14 rounded-lg border-[1px] border-gray3 p-4 placeholder-gray2"
+            placeholder="Choose Your Categories: e.g., Fashion, Travel, Fitness"
+          />
+          <div className="flex flex-col gap-6 lg:flex-row lg:gap-11">
+            <input
+              {...register("country")}
+              type="text"
+              className="h-14 w-full rounded-lg border-[1px] border-gray3 p-4 placeholder-gray2"
+              placeholder="Country"
+            />
+            <input
+              {...register("city")}
+              type="text"
+              className="h-14 w-full rounded-lg border-[1px] border-gray3 p-4 placeholder-gray2"
+              placeholder="City"
+            />
+          </div>
+          <textarea
+            {...register("about")}
+            className="h-48 rounded-lg border-[1px] border-gray3 p-4 placeholder-gray2"
+            placeholder="Introduce Yourself: Share a Brief Description or Bio"
+          />
+        </form>
+        {renderReminder()}
+      </div>
+    );
+  };
+
+  const renderStep2 = () => {};
+
+  const renderReminder = () => {
+    return (
+      <div className="text-center text-sm">
+        <span>Update and Modify this Information at Any Time in Your</span>{" "}
+        <span className="font-extrabold">Dashboard</span>
+      </div>
+    );
+  };
+
+  return (
+    <>
+      {renderCloseButton()}
+      <main className="h-screen w-full min-w-fit bg-shadow-gray p-6 lg:p-8">
+        <div className="flex h-full w-full flex-col rounded-2xl bg-white lg:flex-row lg:overscroll-none">
+          {renderSteps()}
+
+          <div className="flex h-full w-full flex-col overflow-y-auto px-8 lg:overscroll-none">
+            {renderStepMainTitle()}
+            {currentStep === 0 && renderStep1()}
+            {renderStepperButtons()}
+          </div>
+        </div>
+      </main>
+    </>
+  );
+};
+
+export default FirstSteps;
