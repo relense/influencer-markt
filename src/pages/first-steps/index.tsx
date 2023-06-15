@@ -1,3 +1,4 @@
+import { api } from "~/utils/api";
 import { type NextPage } from "next";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -10,11 +11,15 @@ import { useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import { CustomSelect } from "../../components/CustomSelect/CustomSelect";
 import { Button } from "../../components/Button/Button";
+import {
+  CustomMultiSelect,
+  type Option,
+} from "../../components/CustomMultiSelect/CustomMultiSelect";
 
 type ProfileData = {
   displayName: string;
   role: "brand" | "individual" | "creator";
-  categories: string[];
+  categories: Option[];
   country: string;
   city: string;
   about: string;
@@ -121,6 +126,8 @@ const FirstSteps: NextPage = () => {
   const mainContentRef = useRef<HTMLDivElement>(null);
   const [currentStep, setCurrentStep] = useState<number>(0);
 
+  const { data: categories } = api.categories.getAll.useQuery();
+
   const {
     register,
     handleSubmit,
@@ -139,7 +146,12 @@ const FirstSteps: NextPage = () => {
       setValue("role", value);
   };
 
+  const handleCategoryChange = (options: Option[]) => {
+    setValue("categories", options);
+  };
+
   const onSubmitStep1 = handleSubmit((data) => {
+    alert(JSON.stringify(data));
     changeStep("next");
   });
 
@@ -285,11 +297,12 @@ const FirstSteps: NextPage = () => {
             ]}
             handleOptionSelect={handleRoleChange}
           />
-          <input
-            {...register("categories")}
-            type="text"
-            className="h-14 rounded-lg border-[1px] border-gray3 p-4 placeholder-gray2"
+          <CustomMultiSelect
             placeholder="Choose Your Categories: e.g., Fashion, Travel, Fitness"
+            options={categories?.map((category) => {
+              return { id: category.id, option: category.name };
+            })}
+            handleOptionSelect={handleCategoryChange}
           />
           <div className="flex flex-col gap-6 lg:flex-row lg:gap-11">
             <input

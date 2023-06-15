@@ -62,8 +62,6 @@ const offers: Offer[] = [
 ];
 
 const Home: NextPage = () => {
-  // const { data: categories } = api.categories.getAll.useQuery();
-
   const renderOffers = () => {
     return (
       <div className="flex flex-col text-center sm:px-14 lg:flex-row lg:pt-11">
