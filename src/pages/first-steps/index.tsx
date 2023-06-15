@@ -8,12 +8,12 @@ import {
 import Link from "next/link";
 import { useRef, useState } from "react";
 import { useForm } from "react-hook-form";
-
+import { CustomSelect } from "../../components/CustomSelect/CustomSelect";
 import { Button } from "../../components/Button/Button";
 
 type ProfileData = {
   displayName: string;
-  role: "Brand" | "Individual" | "Content Creator";
+  role: "brand" | "individual" | "creator";
   categories: string[];
   country: string;
   city: string;
@@ -78,53 +78,53 @@ const socialMediaPlaceHolders: SocialMediaInput[] = [
   {
     socialMedia: "instagram",
     placeholderTitle: "Instagram Handle: Share Your @Username",
-    placeholderSubtitle: "Followers",
+    placeholderSubtitle: "Instagram Followers",
   },
   {
     socialMedia: "twitter",
     placeholderTitle: "Twitter Handle: Enter Your @Username",
-    placeholderSubtitle: "Followers",
+    placeholderSubtitle: "Twitter Followers",
   },
   {
     socialMedia: "tiktok",
     placeholderTitle: "TikTok Username: Share Your TikTok Handle",
-    placeholderSubtitle: "Followers",
+    placeholderSubtitle: "TikTok Followers",
   },
   {
     socialMedia: "youtube",
     placeholderTitle: "YouTube Channel: Enter Your YouTube Username",
-    placeholderSubtitle: "Subscribers",
+    placeholderSubtitle: "YouTube Subscribers",
   },
   {
     socialMedia: "facebook",
     placeholderTitle: "Facebook Page: Provide Your Facebook Page URL",
-    placeholderSubtitle: "Followers",
+    placeholderSubtitle: "Facebook Followers",
   },
   {
     socialMedia: "linkedin",
     placeholderTitle: "LinkedIn Profile: Share Your LinkedIn Profile URL",
-    placeholderSubtitle: "Connections",
+    placeholderSubtitle: "LinkedIn Connections",
   },
   {
     socialMedia: "pinterest",
     placeholderTitle: "Pinterest Account: Enter Your Pinterest Profile URL",
-    placeholderSubtitle: "Followers",
+    placeholderSubtitle: "Pinterest Followers",
   },
   {
     socialMedia: "twitch",
     placeholderTitle: "Twitch Channel: Provide Your Twitch Channel Nam",
-    placeholderSubtitle: "Followers",
+    placeholderSubtitle: "Twitch Followers",
   },
 ];
 
 const FirstSteps: NextPage = () => {
   const mainContentRef = useRef<HTMLDivElement>(null);
-
   const [currentStep, setCurrentStep] = useState<number>(0);
 
   const {
     register,
     handleSubmit,
+    setValue,
     formState: { errors },
   } = useForm<ProfileData>();
 
@@ -133,6 +133,11 @@ const FirstSteps: NextPage = () => {
     handleSubmit: handleSubmitSocialMedia,
     formState: { errors: errorsSocialMedia },
   } = useForm();
+
+  const handleRoleChange = (value: string) => {
+    if (value === "brand" || value === "individual" || value === "creator")
+      setValue("role", value);
+  };
 
   const onSubmitStep1 = handleSubmit((data) => {
     changeStep("next");
@@ -174,7 +179,7 @@ const FirstSteps: NextPage = () => {
 
   const renderSteps = () => {
     return (
-      <div className="flex flex-col items-center justify-between gap-2 rounded-tl-2xl bg-light-red p-4 text-center lg:w-[30%] lg:items-start lg:gap-4 lg:overflow-y-hidden lg:rounded-l-2xl lg:rounded-br-none lg:p-8 lg:text-left">
+      <div className="flex flex-col items-center justify-between gap-2 rounded-tl-2xl bg-light-red px-4 py-4 text-center sm:p-4 lg:w-[30%] lg:items-start lg:gap-4 lg:overflow-y-hidden lg:rounded-l-2xl lg:rounded-br-none lg:p-8 lg:text-left">
         <h1 className=" cursor-pointer font-lobster text-2xl text-influencer lg:p-8 lg:text-4xl">
           Influencer Markt
         </h1>
@@ -186,7 +191,7 @@ const FirstSteps: NextPage = () => {
           <div className="hidden text-base font-medium text-gray2 lg:flex lg:text-lg">
             {steps[currentStep]?.subTitle}
           </div>
-          <div className="flex gap-3 py-2 lg:pt-4">
+          <div className="flex flex-wrap justify-center gap-3 py-2 sm:flex-nowrap sm:justify-normal lg:pt-4">
             {steps.map((step, index) => {
               if (index <= currentStep) {
                 return (
@@ -221,17 +226,17 @@ const FirstSteps: NextPage = () => {
 
   const renderStepperButtons = () => {
     return (
-      <div className="flex w-full flex-1 items-end justify-between py-4">
-        {currentStep > 0 && (
-          <div className="flex flex-1">
+      <div className="flex w-full flex-1 flex-col justify-between gap-4 py-4 sm:flex-row sm:items-end sm:gap-0">
+        <div className="flex justify-center">
+          {currentStep > 0 && (
             <Button
               title="Previous Step"
               level="secondary"
               onClick={() => changeStep("previous")}
             />
-          </div>
-        )}
-        <div className="flex flex-1 items-center justify-center lg:flex-row lg:justify-end ">
+          )}
+        </div>
+        <div className="flex items-center justify-center lg:flex-row">
           {currentStep < steps.length - 1 && (
             <div
               className="hidden cursor-pointer underline lg:flex"
@@ -253,15 +258,17 @@ const FirstSteps: NextPage = () => {
           <div className="flex h-24 w-24 cursor-pointer flex-col items-center justify-center rounded-full border-[1px] border-gray3">
             <FontAwesomeIcon icon={faCamera} className="fa-2x text-gray3" />
           </div>
-          <div className="flex items-center gap-4 text-influencer">
-            <FontAwesomeIcon icon={faArrowUpFromBracket} />
+          <div className="flex flex-1 items-center justify-center gap-2 text-center text-influencer sm:gap-4">
+            <div className="hidden sm:flex">
+              <FontAwesomeIcon icon={faArrowUpFromBracket} />
+            </div>
             <div>Add your Profile Image</div>
           </div>
         </div>
         <form
           id="form-hook"
           onSubmit={onSubmitStep1}
-          className="mt-4 flex w-full flex-col gap-6 lg:w-2/4"
+          className="smm:w-full mt-4 flex w-3/4 flex-col gap-6 lg:w-2/4"
         >
           <input
             {...register("displayName")}
@@ -269,11 +276,14 @@ const FirstSteps: NextPage = () => {
             className="h-14 rounded-lg border-[1px] border-gray3 p-4 placeholder-gray2"
             placeholder="Choose Your Display Name: How Would You Like to be Recognized?"
           />
-          <input
-            {...register("role")}
-            type="text"
-            className="h-14 rounded-lg border-[1px] border-gray3 p-4 placeholder-gray2"
+          <CustomSelect
             placeholder="Specify Your Role: Influencer, Brand, or Individual"
+            options={[
+              { id: "brand", option: "Brand" },
+              { id: "creator", option: "Content Creator" },
+              { id: "individual", option: "Individual" },
+            ]}
+            handleOptionSelect={handleRoleChange}
           />
           <input
             {...register("categories")}
@@ -312,7 +322,7 @@ const FirstSteps: NextPage = () => {
         <form
           id="form-hook"
           onSubmit={onSubmitStep2}
-          className="mt-4 flex w-full flex-col gap-6 lg:w-3/4"
+          className="mt-4 flex w-3/4 flex-col gap-6 sm:w-full lg:w-3/4"
         >
           <input
             {...registerSocialMedia("website")}
@@ -349,7 +359,7 @@ const FirstSteps: NextPage = () => {
 
   const renderReminder = () => {
     return (
-      <div className="text-center text-sm">
+      <div className="px-4 text-center text-sm">
         <span>Update and Modify this Information at Any Time in Your</span>{" "}
         <span className="font-extrabold">Dashboard</span>
       </div>
@@ -359,13 +369,13 @@ const FirstSteps: NextPage = () => {
   return (
     <>
       {renderCloseButton()}
-      <main className="h-screen w-full min-w-fit bg-shadow-gray p-6 lg:p-8">
+      <main className="h-full w-full bg-shadow-gray p-6 lg:p-8">
         <div className="flex h-full w-full flex-col rounded-2xl bg-white lg:flex-row lg:overscroll-none">
           {renderSteps()}
 
           <div
             ref={mainContentRef}
-            className="flex h-full w-full flex-col overflow-y-auto px-8 lg:overscroll-none"
+            className="flex h-full w-full flex-col overflow-y-auto sm:px-8 lg:overscroll-none"
           >
             {renderStepMainTitle()}
             {currentStep === 0 && renderStep1()}
