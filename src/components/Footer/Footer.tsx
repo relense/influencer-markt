@@ -39,13 +39,13 @@ export const Footer = () => {
     const socialMedia: IconDefinition[] = [faInstagram, faTwitter, faTiktok];
 
     return (
-      <div className="flex w-full justify-center py-11">
+      <div className="flex w-full justify-around py-11 sm:justify-center">
         {socialMedia.map((item, index) => {
           return (
             <FontAwesomeIcon
               key={index}
               icon={item}
-              className="fa-2xl cursor-pointer px-10"
+              className="fa-2xl cursor-pointer sm:px-10"
             />
           );
         })}
@@ -60,7 +60,7 @@ export const Footer = () => {
         {renderNavigation()}
       </div>
       <div className="flex flex-col items-center border-t-[1px] p-5">
-        <span className="pointer-events-none">
+        <span className="pointer-events-none text-center">
           © Influencer Market inc. 2023
         </span>
       </div>

@@ -115,7 +115,7 @@ export const Navbar = () => {
           onClick={() => setToggleHamburguer(!toggleHamburguer)}
         />
         <div
-          className="absolute right-5 top-10 z-10 flex h-auto w-72 flex-col gap-4 rounded-2xl border-[1px] border-white1 bg-white p-8 shadow-lg"
+          className="absolute right-1 top-10 z-10 flex h-auto w-11/12 flex-col gap-4 rounded-2xl border-[1px] border-white1 bg-white p-8 shadow-lg sm:right-5 sm:w-72"
           onClick={() => setToggleHamburguer(!toggleHamburguer)}
         >
           <div className="flex cursor-pointer items-center gap-6">

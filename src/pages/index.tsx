@@ -66,10 +66,13 @@ const Home: NextPage = () => {
 
   const renderOffers = () => {
     return (
-      <div className="flex flex-col px-14 text-center lg:flex-row lg:pt-11">
+      <div className="flex flex-col text-center sm:px-14 lg:flex-row lg:pt-11">
         {offers.map((offer) => {
           return (
-            <div key={offer.subTitleOne} className="pointer-events-none my-5">
+            <div
+              key={offer.subTitleOne}
+              className="pointer-events-none my-5 px-4"
+            >
               <div className="hidden lg:block">
                 <FontAwesomeIcon icon={offer.icon} className="fa-3x" />
               </div>
@@ -98,17 +101,17 @@ const Home: NextPage = () => {
   ) => {
     const iconColor = influencer ? "text-influencer" : "text-influencer-green";
     return (
-      <div className="pointer-events-none mx-11 mt-5 rounded-2xl border-[1px] border-white1 p-11 text-left shadow-lg">
+      <div className="pointer-events-none mt-8 rounded-2xl border-[1px] border-white1 px-4 py-11 text-left shadow-lg sm:mx-11 sm:mt-5 sm:p-11">
         <h1 className="font-playfair text-3xl">{title}</h1>
         <div className="mt-5">
           {positives.map((elem) => {
             return (
-              <div key={elem} className="flex items-center py-5">
+              <div key={elem} className="flex items-center gap-4 py-5">
                 <FontAwesomeIcon
                   icon={faCheck}
                   className={`fa-1x cursor-pointer ${iconColor}`}
                 />
-                <span className="px-2">{elem}</span>
+                <span className="sm:px-2">{elem}</span>
               </div>
             );
           })}
@@ -119,8 +122,8 @@ const Home: NextPage = () => {
 
   const renderSectionOne = () => {
     return (
-      <div className="flex flex-col items-center px-5 py-10 lg:px-0">
-        <div className="pointer-events-none text-center font-playfair">
+      <div className="flex flex-col items-center py-10 sm:px-5 lg:px-0">
+        <div className="pointer-events-none px-4 text-center font-playfair">
           <h1 className="text-2xl lg:text-5xl">
             Find The Right Influencer For You
           </h1>
@@ -128,7 +131,7 @@ const Home: NextPage = () => {
             Everyone can choose how to influence
           </h2>
         </div>
-        <div className="mt-5 flex items-center">
+        <div className="hidden items-center sm:mt-5 sm:flex">
           {brands.map((elem) => {
             return (
               <div key={elem}>
@@ -141,7 +144,7 @@ const Home: NextPage = () => {
                     className="object-contain"
                   />
                 </div>
-                <div className="px-3 lg:hidden lg:h-auto lg:px-12">
+                <div className="sm:px-3 lg:hidden lg:h-auto lg:px-12">
                   <Image
                     src={`/images/${elem}.png`}
                     height={32}
@@ -161,7 +164,7 @@ const Home: NextPage = () => {
 
   const renderSectionTwo = () => {
     return (
-      <div className="bg-influencer-green px-5 lg:px-0">
+      <div className="bg-influencer-green sm:px-5 lg:px-0">
         <div className="flex flex-col items-center justify-center py-10 text-center">
           <h1 className="pointer-events-none font-playfair text-2xl lg:text-5xl">
             Don&apos;t know where to choose from?
@@ -177,14 +180,14 @@ const Home: NextPage = () => {
 
   const renderSectionThree = () => {
     return (
-      <div className="flex flex-col items-center px-5 py-10 lg:px-0">
+      <div className="flex flex-col items-center py-10 sm:px-5 lg:px-0">
         <div className="pointer-events-none text-center font-playfair">
           <h1 className="text-2xl lg:text-5xl">
             Everything You Need Made Simple
           </h1>
         </div>
         {renderOffers()}
-        <div className="mb-11 mt-11 flex flex-col justify-center lg:flex-row">
+        <div className="mb-11 flex flex-col justify-center p-4 lg:flex-row">
           {renderPositivesBoard(
             "For Brands and Individuals",
             [
