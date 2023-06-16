@@ -50,27 +50,27 @@ export const CustomMultiSelect = (params: {
     setSelectStatus(!selectStatus);
   }, wrapperRef);
 
-  return (
-    <div ref={wrapperRef} className="h-14rounded-lg border-[1px] border-gray3">
+  const renderInput = () => {
+    return (
       <div
-        className="flex justify-between p-4"
+        className="flex h-14 items-center justify-between p-4"
         onClick={() => {
           setSelectStatus(!selectStatus);
         }}
       >
         {selectedOptions.length ? (
-          <div className="flex gap-4 overflow-x-hidden sm:overflow-x-auto">
+          <div className="flex gap-2 overflow-x-hidden sm:overflow-x-auto">
             {selectedOptions.map((option) => {
               return (
                 <div
                   key={option.id}
-                  className="flex items-center justify-start rounded-full border-[1px] p-4 sm:h-7 sm:w-36"
+                  className="flex w-32 cursor-pointer items-center justify-center rounded-full border-[1px] p-4 sm:h-7 sm:w-36 sm:justify-between"
                 >
-                  <div className="flex flex-1 cursor-pointer items-center justify-between">
-                    {option.option}
+                  {option.option}
+                  <div className="hidden sm:flex">
                     <FontAwesomeIcon
                       icon={faXmark}
-                      className="fa-base"
+                      className="fa-sm"
                       onClick={() => onHandleClick(option)}
                     />
                   </div>
@@ -86,9 +86,14 @@ export const CustomMultiSelect = (params: {
 
         <FontAwesomeIcon icon={faChevronDown} className="fa-base" />
       </div>
-      {selectStatus && (
-        <div className="relative h-56 overflow-hidden rounded-lg border-[1px] border-gray3 bg-white sm:h-auto">
-          <div className="flex h-56 flex-col justify-center overflow-y-scroll sm:h-auto sm:flex-row sm:flex-wrap sm:justify-start sm:p-2">
+    );
+  };
+
+  const renderOptions = () => {
+    if (selectStatus) {
+      return (
+        <div className="relative h-56 overflow-hidden rounded-lg border-[1px] border-gray3 bg-white  sm:h-auto ">
+          <div className="flex h-56 flex-col overflow-y-scroll sm:h-auto sm:flex-row sm:flex-wrap sm:justify-start sm:p-2 ">
             {params.options &&
               params.options.map((option) => {
                 let optionClass = "";
@@ -113,7 +118,16 @@ export const CustomMultiSelect = (params: {
               })}
           </div>
         </div>
-      )}
+      );
+    }
+  };
+
+  return (
+    <div ref={wrapperRef}>
+      <div className="h-14rounded-lg rounded-lg border-[1px] border-gray3 ">
+        {renderInput()}
+      </div>
+      {renderOptions()}
     </div>
   );
 };
