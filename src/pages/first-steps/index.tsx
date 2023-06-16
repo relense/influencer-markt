@@ -1,29 +1,14 @@
 import { api } from "~/utils/api";
 import { type NextPage } from "next";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faArrowUpFromBracket,
-  faCamera,
-  faXmark,
-} from "@fortawesome/free-solid-svg-icons";
+import { faXmark } from "@fortawesome/free-solid-svg-icons";
 import Link from "next/link";
 import { useRef, useState } from "react";
-import { useForm } from "react-hook-form";
-import { CustomSelect } from "../../components/CustomSelect/CustomSelect";
 import { Button } from "../../components/Button/Button";
-import {
-  CustomMultiSelect,
-  type Option,
-} from "../../components/CustomMultiSelect/CustomMultiSelect";
 
-type ProfileData = {
-  displayName: string;
-  role: "brand" | "individual" | "creator";
-  categories: Option[];
-  country: string;
-  city: string;
-  about: string;
-};
+import { Step3 } from "../../pageComponents/Step3";
+import { Step2 } from "../../pageComponents/Step2";
+import { Step1 } from "../../pageComponents/Step1";
 
 type Step = {
   step: string;
@@ -73,92 +58,12 @@ const steps: Step[] = [
   },
 ];
 
-type SocialMediaInput = {
-  socialMedia: string;
-  placeholderTitle: string;
-  placeholderSubtitle: string;
-};
-
-const socialMediaPlaceHolders: SocialMediaInput[] = [
-  {
-    socialMedia: "instagram",
-    placeholderTitle: "Instagram Handle: Share Your @Username",
-    placeholderSubtitle: "Instagram Followers",
-  },
-  {
-    socialMedia: "twitter",
-    placeholderTitle: "Twitter Handle: Enter Your @Username",
-    placeholderSubtitle: "Twitter Followers",
-  },
-  {
-    socialMedia: "tiktok",
-    placeholderTitle: "TikTok Username: Share Your TikTok Handle",
-    placeholderSubtitle: "TikTok Followers",
-  },
-  {
-    socialMedia: "youtube",
-    placeholderTitle: "YouTube Channel: Enter Your YouTube Username",
-    placeholderSubtitle: "YouTube Subscribers",
-  },
-  {
-    socialMedia: "facebook",
-    placeholderTitle: "Facebook Page: Provide Your Facebook Page URL",
-    placeholderSubtitle: "Facebook Followers",
-  },
-  {
-    socialMedia: "linkedin",
-    placeholderTitle: "LinkedIn Profile: Share Your LinkedIn Profile URL",
-    placeholderSubtitle: "LinkedIn Connections",
-  },
-  {
-    socialMedia: "pinterest",
-    placeholderTitle: "Pinterest Account: Enter Your Pinterest Profile URL",
-    placeholderSubtitle: "Pinterest Followers",
-  },
-  {
-    socialMedia: "twitch",
-    placeholderTitle: "Twitch Channel: Provide Your Twitch Channel Nam",
-    placeholderSubtitle: "Twitch Followers",
-  },
-];
-
 const FirstSteps: NextPage = () => {
   const mainContentRef = useRef<HTMLDivElement>(null);
   const [currentStep, setCurrentStep] = useState<number>(0);
 
   const { data: categories } = api.categories.getAll.useQuery();
-
-  const {
-    register,
-    handleSubmit,
-    setValue,
-    formState: { errors },
-  } = useForm<ProfileData>();
-
-  const {
-    register: registerSocialMedia,
-    handleSubmit: handleSubmitSocialMedia,
-    formState: { errors: errorsSocialMedia },
-  } = useForm();
-
-  const handleRoleChange = (value: string) => {
-    if (value === "brand" || value === "individual" || value === "creator")
-      setValue("role", value);
-  };
-
-  const handleCategoryChange = (options: Option[]) => {
-    setValue("categories", options);
-  };
-
-  const onSubmitStep1 = handleSubmit((data) => {
-    alert(JSON.stringify(data));
-    changeStep("next");
-  });
-
-  const onSubmitStep2 = handleSubmitSocialMedia((data) => {
-    alert(JSON.stringify(data));
-    changeStep("next");
-  });
+  const { data: pictures } = { data: ["blob1", "blob2", "blob3"] };
 
   const changeStep = (type: "next" | "previous") => {
     if (mainContentRef.current) {
@@ -196,14 +101,17 @@ const FirstSteps: NextPage = () => {
           Influencer Markt
         </h1>
         <div>
-          <div className="text-xl font-medium">{steps[currentStep]?.step}</div>
+          <div className="flex justify-center text-xl font-medium lg:justify-start">
+            <div>{steps[currentStep]?.step}</div>
+            <div className="flex sm:hidden">/{steps.length}</div>
+          </div>
           <div className="text-2xl font-semibold lg:text-4xl">
-            {steps[currentStep]?.title}
+            {steps[currentStep]?.title}{" "}
           </div>
           <div className="hidden text-base font-medium text-gray2 lg:flex lg:text-lg">
             {steps[currentStep]?.subTitle}
           </div>
-          <div className="flex flex-wrap justify-center gap-3 py-2 sm:flex-nowrap sm:justify-normal lg:pt-4">
+          <div className="hidden flex-wrap justify-center gap-3 py-2 sm:flex sm:justify-normal lg:pt-4">
             {steps.map((step, index) => {
               if (index <= currentStep) {
                 return (
@@ -231,14 +139,16 @@ const FirstSteps: NextPage = () => {
     return (
       <div className="hidden flex-col items-center justify-center gap-4 font-playfair lg:mt-12 lg:flex">
         <div className="text-4xl">{steps[currentStep]?.mainTitle}</div>
-        <div className="text-xl">{steps[currentStep]?.mainSubTitle}</div>
+        <div className="text-xl text-gray2">
+          {steps[currentStep]?.mainSubTitle}
+        </div>
       </div>
     );
   };
 
   const renderStepperButtons = () => {
     return (
-      <div className="flex w-full flex-1 flex-col justify-between gap-4 py-4 sm:flex-row sm:items-end sm:gap-0">
+      <div className="flex-2 flex w-full flex-col justify-between gap-4 py-4 sm:flex-row sm:items-end sm:gap-0">
         <div className="flex justify-center">
           {currentStep > 0 && (
             <Button
@@ -263,122 +173,6 @@ const FirstSteps: NextPage = () => {
     );
   };
 
-  const renderStep1 = () => {
-    return (
-      <div className="mt-2 flex flex-col items-center gap-4 lg:mt-11 lg:overflow-y-auto">
-        <div className="flex flex-col items-center">
-          <div className="flex h-24 w-24 cursor-pointer flex-col items-center justify-center rounded-full border-[1px] border-gray3">
-            <FontAwesomeIcon icon={faCamera} className="fa-2x text-gray3" />
-          </div>
-          <div className="flex flex-1 items-center justify-center gap-2 text-center text-influencer sm:gap-4">
-            <div className="hidden sm:flex">
-              <FontAwesomeIcon icon={faArrowUpFromBracket} />
-            </div>
-            <div>Add your Profile Image</div>
-          </div>
-        </div>
-        <form
-          id="form-hook"
-          onSubmit={onSubmitStep1}
-          className="smm:w-full mt-4 flex w-3/4 flex-col gap-6 lg:w-2/4"
-        >
-          <input
-            {...register("displayName")}
-            type="text"
-            className="h-14 rounded-lg border-[1px] border-gray3 p-4 placeholder-gray2"
-            placeholder="Choose Your Display Name: How Would You Like to be Recognized?"
-          />
-          <CustomSelect
-            placeholder="Specify Your Role: Influencer, Brand, or Individual"
-            options={[
-              { id: "brand", option: "Brand" },
-              { id: "creator", option: "Content Creator" },
-              { id: "individual", option: "Individual" },
-            ]}
-            handleOptionSelect={handleRoleChange}
-          />
-          <CustomMultiSelect
-            placeholder="Choose Your Categories: e.g., Fashion, Travel, Fitness"
-            options={categories?.map((category) => {
-              return { id: category.id, option: category.name };
-            })}
-            handleOptionSelect={handleCategoryChange}
-          />
-          <div className="flex flex-col gap-6 lg:flex-row lg:gap-11">
-            <input
-              {...register("country")}
-              type="text"
-              className="h-14 w-full rounded-lg border-[1px] border-gray3 p-4 placeholder-gray2"
-              placeholder="Country"
-            />
-            <input
-              {...register("city")}
-              type="text"
-              className="h-14 w-full rounded-lg border-[1px] border-gray3 p-4 placeholder-gray2"
-              placeholder="City"
-            />
-          </div>
-          <textarea
-            {...register("about")}
-            className="h-48 rounded-lg border-[1px] border-gray3 p-4 placeholder-gray2"
-            placeholder="Introduce Yourself: Share a Brief Description or Bio"
-          />
-        </form>
-        {renderReminder()}
-      </div>
-    );
-  };
-
-  const renderStep2 = () => {
-    return (
-      <div className="mt-2 flex flex-col items-center gap-4 lg:mt-11 lg:overflow-y-auto">
-        <form
-          id="form-hook"
-          onSubmit={onSubmitStep2}
-          className="mt-4 flex w-3/4 flex-col gap-6 sm:w-full lg:w-3/4"
-        >
-          <input
-            {...registerSocialMedia("website")}
-            type="text"
-            className="h-14 rounded-lg border-[1px] border-gray3 p-4 placeholder-gray2"
-            placeholder="Website URL: Provide Your Website Address"
-          />
-          {socialMediaPlaceHolders.map((item) => {
-            return (
-              <div
-                key={item.placeholderTitle}
-                className="flex flex-col gap-6 lg:flex-row"
-              >
-                <input
-                  {...registerSocialMedia(`${item.socialMedia}Handle`)}
-                  type="text"
-                  className="h-14 w-full rounded-lg border-[1px] border-gray3 p-4 placeholder-gray2"
-                  placeholder={item.placeholderTitle}
-                />
-                <input
-                  {...registerSocialMedia(`${item.socialMedia}Followers`)}
-                  type="text"
-                  className="h-14 rounded-lg border-[1px] border-gray3 p-4 placeholder-gray2"
-                  placeholder={item.placeholderSubtitle}
-                />
-              </div>
-            );
-          })}
-        </form>
-        {renderReminder()}
-      </div>
-    );
-  };
-
-  const renderReminder = () => {
-    return (
-      <div className="px-4 text-center text-sm">
-        <span>Update and Modify this Information at Any Time in Your</span>{" "}
-        <span className="font-extrabold">Dashboard</span>
-      </div>
-    );
-  };
-
   return (
     <>
       {renderCloseButton()}
@@ -391,8 +185,11 @@ const FirstSteps: NextPage = () => {
             className="flex h-full w-full flex-col overflow-y-auto sm:px-8 lg:overscroll-none"
           >
             {renderStepMainTitle()}
-            {currentStep === 0 && renderStep1()}
-            {currentStep === 1 && renderStep2()}
+            {currentStep === 0 && (
+              <Step1 changeStep={changeStep} categories={categories} />
+            )}
+            {currentStep === 1 && <Step2 changeStep={changeStep} />}
+            {currentStep === 2 && <Step3 pictures={pictures} />}
             {renderStepperButtons()}
           </div>
         </div>
