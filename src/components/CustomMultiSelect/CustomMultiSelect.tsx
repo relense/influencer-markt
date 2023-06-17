@@ -19,16 +19,14 @@ export const CustomMultiSelect = (params: {
   const wrapperRef = useRef(null);
 
   const onHandleClick = (option: Option) => {
-    const newSelectedOptions: Option[] = [...selectedOptions];
+    let newArray: Option[] = [...selectedOptions];
     const index = selectedOptions.indexOf(option);
-    let newArray: Option[] = [];
 
     if (index > -1) {
-      newArray = removeItemOnce(newSelectedOptions, option);
+      newArray = removeItemOnce(newArray, option);
       setSelectedOptions(newArray);
     } else {
-      newSelectedOptions.push(option);
-      newArray = [...newSelectedOptions];
+      newArray.push(option);
       setSelectedOptions(newArray);
     }
 
