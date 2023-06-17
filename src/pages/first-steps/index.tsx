@@ -9,6 +9,8 @@ import { Button } from "../../components/Button/Button";
 import { Step3 } from "../../pageComponents/Step3";
 import { Step2 } from "../../pageComponents/Step2";
 import { Step1 } from "../../pageComponents/Step1";
+import { Step4 } from "../../pageComponents/Step4";
+import { Step5 } from "../../pageComponents/Step5";
 
 type Step = {
   step: string;
@@ -63,7 +65,6 @@ const FirstSteps: NextPage = () => {
   const [currentStep, setCurrentStep] = useState<number>(0);
 
   const { data: categories } = api.categories.getAll.useQuery();
-  const { data: pictures } = { data: ["blob1", "blob2", "blob3"] };
 
   const changeStep = (type: "next" | "previous") => {
     if (mainContentRef.current) {
@@ -160,14 +161,17 @@ const FirstSteps: NextPage = () => {
         </div>
         <div className="flex items-center justify-center lg:flex-row">
           {currentStep < steps.length - 1 && (
-            <div
-              className="hidden cursor-pointer underline lg:flex"
-              onClick={() => changeStep("next")}
-            >
-              Skip Step
-            </div>
+            <>
+              <div
+                className="hidden cursor-pointer underline lg:flex"
+                onClick={() => changeStep("next")}
+              >
+                Skip Step
+              </div>
+
+              <Button title="Next Step" level="primary" form="form-hook" />
+            </>
           )}
-          <Button title="Next Step" level="primary" form="form-hook" />
         </div>
       </div>
     );
@@ -189,7 +193,9 @@ const FirstSteps: NextPage = () => {
               <Step1 changeStep={changeStep} categories={categories} />
             )}
             {currentStep === 1 && <Step2 changeStep={changeStep} />}
-            {currentStep === 2 && <Step3 pictures={pictures} />}
+            {currentStep === 2 && <Step3 changeStep={changeStep} />}
+            {currentStep === 3 && <Step4 changeStep={changeStep} />}
+            {currentStep === 4 && <Step5 changeStep={changeStep} />}
             {renderStepperButtons()}
           </div>
         </div>
