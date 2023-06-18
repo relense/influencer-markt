@@ -7,16 +7,19 @@ type NewButtonProps = {
   level?: "primary" | "secondary";
   title: string;
   loading?: boolean;
+  size?: "regular" | "large";
 };
 
 export const Button = ({
   level,
   title,
+  size,
   ...params
 }: ReactButtonProps & NewButtonProps) => {
   let bgColor;
   let textColor;
   let borderColor;
+  let wSize = "lg:w-auto";
 
   if (level === "primary") {
     bgColor = "bg-influencer";
@@ -28,10 +31,14 @@ export const Button = ({
     borderColor = "border-gray3 border-[1px]";
   }
 
+  if (size === "large") {
+    wSize = "lg:w-full";
+  }
+
   return (
     <button
       {...params}
-      className={`w-11/12 cursor-pointer rounded-lg ${bgColor} px-8 py-4 text-center ${textColor} lg:mx-5 lg:w-auto lg:rounded-2xl ${borderColor}`}
+      className={`w-11/12 cursor-pointer rounded-lg ${bgColor} px-8 py-4 text-center ${textColor} lg:mx-5 ${wSize} lg:rounded-2xl ${borderColor}`}
     >
       {title}
     </button>
