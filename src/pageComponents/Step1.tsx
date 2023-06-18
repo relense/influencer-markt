@@ -75,8 +75,8 @@ export const Step1 = (params: {
     params.changeStep("next");
   });
 
-  return (
-    <div className="mt-2 flex flex-1 flex-col items-center gap-4 lg:mt-11 lg:overflow-y-auto">
+  const renderAddProfilePicture = () => {
+    return (
       <div className="relative flex flex-col items-center gap-3">
         {!profilePicture && (
           <input
@@ -117,6 +117,11 @@ export const Step1 = (params: {
           <div>Add your Profile Image</div>
         </div>
       </div>
+    );
+  };
+
+  const renderForm = () => {
+    return (
       <form
         id="form-hook"
         onSubmit={onSubmitStep1}
@@ -164,6 +169,13 @@ export const Step1 = (params: {
           placeholder="Introduce Yourself: Share a Brief Description or Bio"
         />
       </form>
+    );
+  };
+
+  return (
+    <div className="mt-2 flex flex-col items-center gap-4 lg:mt-11 lg:overflow-y-auto">
+      {renderAddProfilePicture()}
+      {renderForm()}
       <StepsReminder />
     </div>
   );

@@ -164,7 +164,7 @@ export const Step3 = (params: {
 
   const renderPictureCarrosel = () => {
     return (
-      <div className="relative flex justify-center gap-6">
+      <div className="relative mt-4 flex justify-center gap-6 sm:mt-0">
         <div className="hidden gap-6 overflow-x-auto sm:flex">
           {pictureList &&
             pictureList.map((picture) => {
@@ -214,7 +214,7 @@ export const Step3 = (params: {
   };
 
   return (
-    <div className="mt-2 flex flex-1 flex-col gap-4 lg:mt-11 ">
+    <div className="flex flex-col sm:gap-4 lg:mt-11 lg:overflow-y-auto">
       <form id="form-hook" onSubmit={() => params.changeStep("next")} />
       {renderUploadMainPicture()}
       {renderMainPicture()}
