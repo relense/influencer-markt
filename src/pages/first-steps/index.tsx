@@ -11,6 +11,7 @@ import { Step2 } from "../../pageComponents/Step2";
 import { Step1 } from "../../pageComponents/Step1";
 import { Step4 } from "../../pageComponents/Step4";
 import { Step5 } from "../../pageComponents/Step5";
+import { ProgressRing } from "../../components/ProgressRing/ProgressRing";
 
 type Step = {
   step: string;
@@ -51,7 +52,7 @@ const steps: Step[] = [
     mainSubTitle: "Select Your Platform and Craft Your Irresistible Offer",
   },
   {
-    step: "",
+    step: "Step 5",
     title: "You're All Set",
     subTitle: "Start Exploring the Exciting Opportunities Ahead!",
     mainTitle: "Congratulations! You're All Set to Unleash Your Influence",
@@ -101,16 +102,33 @@ const FirstSteps: NextPage = () => {
         <h1 className=" cursor-pointer font-lobster text-2xl text-influencer lg:p-8 lg:text-4xl">
           Influencer Markt
         </h1>
-        <div>
-          <div className="flex justify-center text-xl font-medium lg:justify-start">
+        <div className="flex items-center gap-2 sm:flex-col sm:items-start sm:gap-0">
+          <div className="flex sm:hidden">
+            <ProgressRing
+              radius={40}
+              stroke={7}
+              progress={((currentStep + 1) / steps.length) * 100}
+              progressText={`${currentStep + 1}/${steps.length}`}
+              underBarColor={"influencer"}
+              upperBarColor={"influencer-green"}
+            />
+          </div>
+          <div className="hidden justify-center text-xl font-medium lg:flex lg:justify-start">
             <div>{steps[currentStep]?.step}</div>
             <div className="flex sm:hidden">/{steps.length}</div>
           </div>
-          <div className="text-2xl font-semibold lg:text-4xl">
-            {steps[currentStep]?.title}{" "}
-          </div>
-          <div className="hidden text-base font-medium text-gray2 lg:flex lg:text-lg">
-            {steps[currentStep]?.subTitle}
+          <div className="flex flex-col">
+            <div className="text-xl font-semibold sm:text-2xl lg:text-4xl">
+              {steps[currentStep]?.title}{" "}
+            </div>
+            <div className="hidden text-sm font-medium text-gray2 sm:flex sm:text-base lg:text-lg">
+              {steps[currentStep]?.subTitle}
+            </div>
+            <div className="text-base font-medium text-gray2 sm:hidden lg:flex lg:text-lg">
+              {steps[currentStep + 1]?.title
+                ? `Next: ${steps[currentStep + 1]?.title || ""} `
+                : ""}
+            </div>
           </div>
           <div className="hidden flex-wrap justify-center gap-3 py-2 sm:flex sm:justify-normal lg:pt-4">
             {steps.map((step, index) => {
@@ -137,10 +155,16 @@ const FirstSteps: NextPage = () => {
   };
 
   const renderStepMainTitle = () => {
+    const hideMobile =
+      currentStep < steps.length - 1
+        ? "hidden flex-col items-center justify-center gap-4 font-playfair lg:mt-12 lg:flex"
+        : "flex-col items-center text-center justify-center gap-4 font-playfair lg:mt-12 flex";
     return (
-      <div className="hidden flex-col items-center justify-center gap-4 font-playfair lg:mt-12 lg:flex">
-        <div className="text-4xl">{steps[currentStep]?.mainTitle}</div>
-        <div className="text-xl text-gray2">
+      <div className={hideMobile}>
+        <div className="text-2xl sm:text-4xl">
+          {steps[currentStep]?.mainTitle}
+        </div>
+        <div className="text-base text-gray2 sm:text-xl">
           {steps[currentStep]?.mainSubTitle}
         </div>
       </div>
@@ -172,6 +196,12 @@ const FirstSteps: NextPage = () => {
               <Button title="Next Step" level="primary" form="form-hook" />
             </>
           )}
+
+          {currentStep + 1 === steps.length && (
+            <Link href="/" className="flex flex-1 justify-center sm:hidden">
+              <Button title="Get Started" level="primary" />
+            </Link>
+          )}
         </div>
       </div>
     );
@@ -188,14 +218,19 @@ const FirstSteps: NextPage = () => {
             ref={mainContentRef}
             className="flex h-full w-full flex-col overflow-y-auto sm:px-8 lg:overscroll-none"
           >
-            {renderStepMainTitle()}
+            {currentStep < steps.length - 1 && renderStepMainTitle()}
             {currentStep === 0 && (
               <Step1 changeStep={changeStep} categories={categories} />
             )}
             {currentStep === 1 && <Step2 changeStep={changeStep} />}
             {currentStep === 2 && <Step3 changeStep={changeStep} />}
             {currentStep === 3 && <Step4 changeStep={changeStep} />}
-            {currentStep === 4 && <Step5 changeStep={changeStep} />}
+            {currentStep === 4 && (
+              <div className="flex h-full w-full flex-1 flex-col justify-center gap-8">
+                {renderStepMainTitle()}
+                <Step5 changeStep={changeStep} />
+              </div>
+            )}
             {renderStepperButtons()}
           </div>
         </div>
