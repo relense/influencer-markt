@@ -18,21 +18,21 @@ export const usersRouter = createTRPCRouter({
     return await ctx.prisma.socialMedia.findMany();
   }),
 
-  getUser: protectedProcedure
-    .input(
-      z.object({
-        clerkId: z.string(),
-      })
-    )
-    .query(async ({ ctx, input }) => {
-      return await ctx.prisma.user.findUnique({
-        where: {
-          clerkId: input.clerkId,
-        },
-      });
-    }),
+  //   getUser: protectedProcedure
+  //     .input(
+  //       z.object({
+  //         clerkId: z.string(),
+  //       })
+  //     )
+  //     .query(async ({ ctx, input }) => {
+  //       return await ctx.prisma.user.findUnique({
+  //         where: {
+  //           clerkId: input.clerkId,
+  //         },
+  //       });
+  //     }),
 
-  // createUser: privateProcedure
-  //   .input(z.object({}))
-  //   .mutation(async ({ ctx }) => {}),
+  //   // createUser: privateProcedure
+  //   //   .input(z.object({}))
+  //   //   .mutation(async ({ ctx }) => {}),
 });
