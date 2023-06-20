@@ -1,6 +1,5 @@
 import { type NextPage } from "next";
 
-import { api } from "~/utils/api";
 import { Layout } from "../components/Layout/Layout";
 import { Button } from "../components/Button/Button";
 import { SearchBar } from "../components/SearchBar/SearchBar";
