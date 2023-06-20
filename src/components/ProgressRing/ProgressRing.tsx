@@ -12,17 +12,13 @@ export const ProgressRing = (params: {
     circumference - (params.progress / 100) * circumference;
   const strokeDashoffsetUnder = circumference - 1 * circumference;
 
-  const underCircleClass = `origin-[50%_50%] rotate-[-90deg] stroke-${params.underBarColor}`;
-  const upperCircleClass = `origin-[50%_50%] rotate-[-90deg] stroke-${params.upperBarColor}`;
-
   return (
     <div className="relative">
       {/* Under circle  */}
       <svg height={params.radius * 2} width={params.radius * 2}>
         <circle
-          className={underCircleClass}
+          className="origin-[50%_50%] rotate-[-90deg] stroke-influencer"
           fill="transparent"
-          stroke={params.underBarColor}
           strokeWidth={params.stroke}
           strokeDasharray={`${circumference} ${circumference}`}
           style={{ strokeDashoffset: strokeDashoffsetUnder }}
@@ -32,9 +28,8 @@ export const ProgressRing = (params: {
         />
         {/* Upper circle  */}
         <circle
-          className={upperCircleClass}
+          className="origin-[50%_50%] rotate-[-90deg] stroke-influencer-green"
           fill="transparent"
-          stroke={params.underBarColor}
           strokeWidth={params.stroke}
           strokeDasharray={`${circumference} ${circumference}`}
           style={{ strokeDashoffset }}
