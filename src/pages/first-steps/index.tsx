@@ -65,7 +65,9 @@ const FirstSteps: NextPage = () => {
   const mainContentRef = useRef<HTMLDivElement>(null);
   const [currentStep, setCurrentStep] = useState<number>(0);
 
-  const { data: categories } = api.categories.getAll.useQuery();
+  const { data: categories } = api.users.getAllCategories.useQuery();
+  const { data: roles } = api.users.getAllRoles.useQuery();
+  const { data: socialMedias } = api.users.getAllSocialMedia.useQuery();
 
   const changeStep = (type: "next" | "previous") => {
     if (mainContentRef.current) {
@@ -115,16 +117,15 @@ const FirstSteps: NextPage = () => {
           </div>
           <div className="hidden justify-center text-xl font-medium lg:flex lg:justify-start">
             <div>{steps[currentStep]?.step}</div>
-            <div className="flex sm:hidden">/{steps.length}</div>
           </div>
-          <div className="flex flex-col">
+          <div className="flex flex-col sm:gap-2">
             <div className="text-xl font-semibold sm:text-2xl lg:text-4xl">
               {steps[currentStep]?.title}{" "}
             </div>
             <div className="hidden text-sm font-medium text-gray2 sm:flex sm:text-base lg:text-lg">
               {steps[currentStep]?.subTitle}
             </div>
-            <div className="text-base font-medium text-gray2 sm:hidden lg:flex lg:text-lg">
+            <div className="text-base font-medium text-gray2 sm:hidden lg:text-lg">
               {steps[currentStep + 1]?.title
                 ? `Next: ${steps[currentStep + 1]?.title || ""} `
                 : ""}
@@ -197,7 +198,7 @@ const FirstSteps: NextPage = () => {
             </>
           )}
 
-          {currentStep + 1 === steps.length && (
+          {currentStep === steps.length - 1 && (
             <Link href="/" className="flex flex-1 justify-center sm:hidden">
               <Button title="Get Started" level="primary" />
             </Link>
@@ -220,13 +221,19 @@ const FirstSteps: NextPage = () => {
           >
             {currentStep < steps.length - 1 && renderStepMainTitle()}
             {currentStep === 0 && (
-              <Step1 changeStep={changeStep} categories={categories} />
+              <Step1
+                changeStep={changeStep}
+                categories={categories}
+                roles={roles}
+              />
             )}
             {currentStep === 1 && <Step2 changeStep={changeStep} />}
             {currentStep === 2 && <Step3 changeStep={changeStep} />}
-            {currentStep === 3 && <Step4 changeStep={changeStep} />}
+            {currentStep === 3 && (
+              <Step4 changeStep={changeStep} socialMedias={socialMedias} />
+            )}
             {currentStep === 4 && (
-              <div className="flex h-full w-full flex-1 flex-col justify-center gap-8">
+              <div className="mt-6 flex h-full w-full flex-1 flex-col justify-center gap-8 p-4 sm:mt-0">
                 {renderStepMainTitle()}
                 <Step5 changeStep={changeStep} />
               </div>
