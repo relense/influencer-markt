@@ -1,9 +1,5 @@
-import {
-  SignInButton,
-  SignOutButton,
-  SignUpButton,
-  useUser,
-} from "@clerk/nextjs";
+import { signIn, signOut, useSession } from "next-auth/react";
+
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faMessage,
@@ -17,7 +13,7 @@ import { useState } from "react";
 
 export const Navbar = () => {
   const [toggleHamburguer, setToggleHamburguer] = useState<boolean>(false);
-  const user = useUser();
+  const { data: sessionData } = useSession();
 
   const leftNavBeforeLogin = () => {
     return (
@@ -53,12 +49,13 @@ export const Navbar = () => {
   const rightNavBeforeLogin = () => {
     return (
       <div className="flex flex-row items-center justify-end">
-        <SignInButton mode="modal">
-          <span className="cursor-pointer text-lg lg:p-2">Sign in</span>
-        </SignInButton>
-        <SignUpButton mode="modal">
-          <Button title="Join Marketplace" level="primary" />
-        </SignUpButton>
+        <span
+          className="cursor-pointer text-lg lg:p-2"
+          onClick={() => void signIn()}
+        >
+          Sign in
+        </span>
+        <Button title="Join Marketplace" level="primary" />
       </div>
     );
   };
@@ -66,10 +63,13 @@ export const Navbar = () => {
   const rightNavbarAfterLogin = () => {
     return (
       <div className="flex flex-row items-center justify-end">
-        {!!user.isSignedIn && (
-          <SignOutButton>
-            <span className="cursor-pointer text-black">Sign out</span>
-          </SignOutButton>
+        {sessionData && (
+          <span
+            className="cursor-pointer text-black"
+            onClick={() => void signOut()}
+          >
+            Sign out
+          </span>
         )}
         <FontAwesomeIcon
           icon={faMessage}
@@ -126,9 +126,7 @@ export const Navbar = () => {
           <span className="cursor-pointer text-lg ">Home</span>
           <span className="cursor-pointer text-lg ">Explore</span>
           <div className="border-[1px] border-white1" />
-          <SignInButton mode="modal">
-            <span className="cursor-pointer text-lg ">Sign in</span>
-          </SignInButton>
+          <span className="cursor-pointer text-lg ">Sign in</span>
         </div>
       </>
     );
@@ -138,10 +136,10 @@ export const Navbar = () => {
     return (
       <div className="hidden h-16 w-full items-center px-6 py-12 lg:flex">
         {renderLogoTitle()}
-        {!user.isSignedIn && leftNavBeforeLogin()}
-        {!user.isSignedIn && rightNavBeforeLogin()}
-        {user.isSignedIn && leftNavAfterLogin()}
-        {user.isSignedIn && rightNavbarAfterLogin()}
+        {!sessionData && leftNavBeforeLogin()}
+        {!sessionData && rightNavBeforeLogin()}
+        {sessionData && leftNavAfterLogin()}
+        {sessionData && rightNavbarAfterLogin()}
       </div>
     );
   };
