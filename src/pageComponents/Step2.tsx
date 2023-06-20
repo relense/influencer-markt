@@ -64,7 +64,7 @@ export const Step2 = (params: {
   });
 
   return (
-    <div className="mt-2 flex flex-col items-center gap-4 lg:mt-11 lg:overflow-y-auto">
+    <div className="mt-2 flex flex-1 flex-col items-center gap-4 lg:mt-11 lg:overflow-y-auto">
       <form
         id="form-hook"
         onSubmit={onSubmitStep2}

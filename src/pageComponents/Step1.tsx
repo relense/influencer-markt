@@ -8,7 +8,7 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { useForm } from "react-hook-form";
 
-import { type Category } from "@prisma/client";
+import { type Role, type Category } from "@prisma/client";
 
 import {
   CustomMultiSelect,
@@ -20,7 +20,7 @@ import { StepsReminder } from "../components/StepsReminder/StepsReminder";
 type ProfileData = {
   profilePicture: string;
   displayName: string;
-  role: "brand" | "individual" | "creator";
+  role: Option;
   categories: Option[];
   country: string;
   city: string;
@@ -30,6 +30,7 @@ type ProfileData = {
 export const Step1 = (params: {
   changeStep: (value: "next" | "previous") => void;
   categories: Category[] | undefined;
+  roles: Role[] | undefined;
 }) => {
   const [profilePicture, setProfilePicture] = useState<string>();
   const {
@@ -62,9 +63,8 @@ export const Step1 = (params: {
     setProfilePicture("");
   };
 
-  const handleRoleChange = (value: string) => {
-    if (value === "brand" || value === "individual" || value === "creator")
-      setValue("role", value);
+  const handleRoleChange = (option: Option) => {
+    setValue("role", option);
   };
 
   const handleCategoryChange = (options: Option[]) => {
@@ -135,11 +135,9 @@ export const Step1 = (params: {
         />
         <CustomSelect
           placeholder="Specify Your Role: Influencer, Brand, or Individual"
-          options={[
-            { id: "brand", option: "Brand" },
-            { id: "creator", option: "Content Creator" },
-            { id: "individual", option: "Individual" },
-          ]}
+          options={params.roles?.map((role) => {
+            return { id: role.id, option: role.name };
+          })}
           handleOptionSelect={handleRoleChange}
         />
         <CustomMultiSelect
@@ -173,7 +171,7 @@ export const Step1 = (params: {
   };
 
   return (
-    <div className="mt-2 flex flex-col items-center gap-4 lg:mt-11 lg:overflow-y-auto">
+    <div className="mt-2 flex flex-1 flex-col items-center gap-4 lg:mt-11 lg:overflow-y-auto">
       {renderAddProfilePicture()}
       {renderForm()}
       <StepsReminder />

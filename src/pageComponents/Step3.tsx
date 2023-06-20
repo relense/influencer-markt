@@ -79,22 +79,24 @@ export const Step3 = (params: {
   const renderUploadMainPicture = () => {
     if (!currentPicture) {
       return (
-        <div className="relative flex h-[340px] cursor-pointer flex-col items-center justify-center gap-4 self-center rounded-lg border-[1px] border-gray3 p-4 sm:h-[540px] sm:w-[430px]">
-          <input
-            type="file"
-            onChange={handleFileUpload}
-            title=""
-            className="absolute h-full w-full cursor-pointer text-[0px] opacity-0"
-          />
-          <div className="flex h-24 w-24 cursor-pointer flex-col items-center justify-center rounded-full border-[1px] border-gray3">
-            <FontAwesomeIcon icon={faCamera} className="fa-2x text-gray3" />
-          </div>
-          <div className="flex items-center justify-center gap-2 text-center text-influencer sm:gap-4">
-            <div className="hidden sm:flex">
-              <FontAwesomeIcon icon={faArrowUpFromBracket} />
+        <div className="relative flex h-full cursor-pointer gap-4 self-center rounded-lg border-[1px] border-gray3 sm:h-[540px] sm:w-[430px]">
+          <div className="relative flex h-[540px] w-full flex-col items-center justify-center ">
+            <input
+              type="file"
+              onChange={handleFileUpload}
+              title=""
+              className="absolute h-full w-full cursor-pointer text-[0px] opacity-0"
+            />
+            <div className="flex h-24 w-24 cursor-pointer flex-col items-center justify-center rounded-full border-[1px] border-gray3">
+              <FontAwesomeIcon icon={faCamera} className="fa-2x text-gray3" />
             </div>
-            <div className="flex flex-wrap overflow-hidden p-4">
-              Add your Profile Image
+            <div className="flex items-center justify-center gap-2 text-center text-influencer sm:gap-4">
+              <div className="hidden sm:flex">
+                <FontAwesomeIcon icon={faArrowUpFromBracket} />
+              </div>
+              <div className="flex flex-wrap overflow-hidden p-4">
+                Add your Profile Image
+              </div>
             </div>
           </div>
         </div>
@@ -105,7 +107,7 @@ export const Step3 = (params: {
   const renderMainPicture = () => {
     if (currentPicture) {
       return (
-        <div className="relative flex h-[540px] flex-col items-center justify-center gap-4 self-center rounded-lg border-[1px] border-gray3 sm:h-[540px] sm:w-[430px]">
+        <div className="relative flex h-[340px] flex-col items-center justify-center gap-4 self-center rounded-lg border-[1px] border-gray3 sm:h-[540px] sm:w-[430px]">
           <div
             className="absolute top-[-10px] flex h-10 w-10 cursor-pointer items-center justify-center self-end rounded-full bg-influencer-green sm:right-[-10px]"
             onClick={() => handleRemovePicture()}
@@ -164,7 +166,7 @@ export const Step3 = (params: {
 
   const renderPictureCarrosel = () => {
     return (
-      <div className="relative mt-4 flex justify-center gap-6 sm:mt-0">
+      <div className="relative flex justify-center gap-6 sm:mt-0">
         <div className="hidden gap-6 overflow-x-auto sm:flex">
           {pictureList &&
             pictureList.map((picture) => {
@@ -214,7 +216,7 @@ export const Step3 = (params: {
   };
 
   return (
-    <div className="flex flex-col sm:gap-4 lg:mt-11 lg:overflow-y-auto">
+    <div className="mt-2 flex flex-1 flex-col gap-4 lg:mt-11 lg:overflow-y-auto">
       <form id="form-hook" onSubmit={() => params.changeStep("next")} />
       {renderUploadMainPicture()}
       {renderMainPicture()}
