@@ -1,3 +1,4 @@
+import defaultTheme from "tailwindcss/defaultTheme";
 import { type Config } from "tailwindcss";
 
 export default {
@@ -18,6 +19,10 @@ export default {
         "shadow-gray": "#D1D1D1",
         "influencer-green": "#64EA9E",
         "light-red": "#F8F4F4",
+      },
+      screens: {
+        xs: "300px",
+        ...defaultTheme.screens,
       },
     },
   },
