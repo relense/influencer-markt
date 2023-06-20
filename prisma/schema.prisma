@@ -11,24 +11,70 @@ generator client {
   provider = "prisma-client-js"
 }
 
-model User {
-  id      Int      @id @default(autoincrement())
-  email   String   @unique
-  profile Profile?
+// Necessary for Next auth
+model Account {
+  id                String  @id @default(cuid())
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String? // @db.Text
+  access_token      String? // @db.Text
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String? // @db.Text
+  session_state     String?
+  user              User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+  @@index([userId])
 }
 
-model Profile {
-  id              Int               @id @default(autoincrement())
-  profilePicture  String
-  name            String
-  role            Role?             @relation(fields: [roleId], references: [id])
-  categories  Category[]
-  about           String
-  country         String
-  city            String
-  user            User              @relation(fields: [userId], references: [id])
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 
-  userId Int  @unique
+  @@index([userId])
+}
+
+model VerificationToken {
+  identifier String
+  token      String   @unique
+  expires    DateTime
+
+  @@unique([identifier, token])
+}
+
+model User {
+  id            String    @id @default(cuid())
+  name          String?
+  email         String?   @unique
+  emailVerified DateTime?
+  image         String?
+  accounts      Account[]
+  sessions      Session[]
+  profile       Profile?
+}
+
+
+//App data
+model Profile {
+  id             Int         @id @default(autoincrement())
+  profilePicture String
+  name           String
+  role           Role?       @relation(fields: [roleId], references: [id])
+  categories     Category[]
+  about          String
+  country        String
+  city           String
+  user           User        @relation(fields: [userId], references: [id])
+  valuePacks     ValuePack[]
+
+  userId String @unique
   roleId Int?
 
   @@index([userId])
@@ -36,8 +82,8 @@ model Profile {
 }
 
 model Category {
-  id              Int               @id @default(autoincrement())
-  name            String            @unique
+  id      Int       @id @default(autoincrement())
+  name    String    @unique
   profile Profile[]
 }
 
@@ -45,4 +91,26 @@ model Role {
   id      Int       @id @default(autoincrement())
   name    String    @unique
   Profile Profile[]
+}
+
+model ValuePack {
+  id                Int          @id @default(autoincrement())
+  title             String
+  socialMedia       SocialMedia? @relation(fields: [socialMediaId], references: [id])
+  description       String
+  deliveryTime      Int
+  numberOfRevisions Int
+  valuePackPrice    Decimal
+  profile           Profile?     @relation(fields: [profileId], references: [id])
+
+  socialMediaId Int  @unique
+  profileId     Int?
+
+  @@index([profileId])
+}
+
+model SocialMedia {
+  id        Int         @id @default(autoincrement())
+  name      String
+  valuePack ValuePack[]
 }
