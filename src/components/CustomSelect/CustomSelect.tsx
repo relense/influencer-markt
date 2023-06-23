@@ -37,7 +37,8 @@ export const CustomSelect = (params: {
     >
       <div className="relative flex items-center justify-between">
         <input
-          {...(params.register(params.name), { required: true })}
+          {...params.register(params.name)}
+          required
           ref={wrapperRef}
           id={`${params.name}1`}
           onKeyDown={(e) => {

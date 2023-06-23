@@ -4,7 +4,11 @@ import { faChevronDown, faChevronUp } from "@fortawesome/free-solid-svg-icons";
 import { type UseFormRegister } from "react-hook-form";
 
 import { useOutsideClick } from "../../utils/helper";
-import { type Option } from "../../utils/globalTypes";
+
+export type Option = {
+  id: number;
+  option: string;
+};
 
 export const CustomMultiSelect = (params: {
   register: UseFormRegister<any>;
@@ -58,7 +62,8 @@ export const CustomMultiSelect = (params: {
       <div ref={multiSelectRef} className="h-14 w-full">
         <div className="relative flex items-center justify-between">
           <input
-            {...(params.register(params.name), { required: true })}
+            {...params.register(params.name)}
+            required
             id={`${params.name}1`}
             autoComplete="off"
             onKeyDown={(e) => {
@@ -70,7 +75,7 @@ export const CustomMultiSelect = (params: {
             onClick={() => {
               setSelectStatus(!selectStatus);
             }}
-            defaultValue={values}
+            value={values}
           />
           {selectStatus ? (
             <FontAwesomeIcon

@@ -1,3 +1,4 @@
+import { api } from "~/utils/api";
 import Image from "next/image";
 import { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -6,18 +7,17 @@ import {
   faCamera,
   faXmark,
 } from "@fortawesome/free-solid-svg-icons";
-import { useForm } from "react-hook-form";
-
+import { Controller, useForm } from "react-hook-form";
 import { type Role, type Category } from "@prisma/client";
 
+import { CustomSelect } from "../components/CustomSelect/CustomSelect";
+import { StepsReminder } from "../components/StepsReminder/StepsReminder";
 import {
   CustomMultiSelect,
   type Option,
 } from "../components/CustomMultiSelect/CustomMultiSelect";
-import { CustomSelect } from "../components/CustomSelect/CustomSelect";
-import { StepsReminder } from "../components/StepsReminder/StepsReminder";
 
-type ProfileData = {
+export type ProfileData = {
   profilePicture: string;
   displayName: string;
   role: Option;
@@ -32,13 +32,30 @@ export const Step1 = (params: {
   categories: Category[] | undefined;
   roles: Role[] | undefined;
 }) => {
+  // const { data: profile, isLoading } = api.users.getProfile.useQuery();
+  const { mutate } = api.users.createProfile.useMutation();
+
   const [profilePicture, setProfilePicture] = useState<string>();
-  const {
-    register,
-    handleSubmit,
-    setValue,
-    formState: { errors },
-  } = useForm<ProfileData>();
+  const { control, register, handleSubmit, setValue } = useForm<ProfileData>({
+    defaultValues: {
+      role: { id: -1, option: "" },
+    },
+  });
+
+  // if (!isLoading && profile) {
+  //   const categories = profile?.categories.map((category) => {
+  //     return { id: category.id, option: category.name };
+  //   });
+  //   setValue("categories", categories);
+  //   setValue("role", {
+  //     id: profile.role?.id || -1,
+  //     option: profile.role?.name || "",
+  //   });
+  //   setValue("displayName", profile?.name);
+  //   setValue("country", profile?.country);
+  //   setValue("city", profile?.city);
+  //   setValue("about", profile?.about);
+  // }
 
   const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -63,15 +80,24 @@ export const Step1 = (params: {
     setProfilePicture("");
   };
 
-  const handleRoleChange = (option: Option) => {
-    setValue("role", option);
-  };
-
   const handleCategoryChange = (options: Option[]) => {
     setValue("categories", options);
   };
 
   const onSubmitStep1 = handleSubmit((data) => {
+    alert(JSON.stringify(data));
+    mutate({
+      displayName: data.displayName,
+      profilePicture: data.profilePicture,
+      categories: data.categories.map((category) => ({
+        id: category.id,
+        name: category.option,
+      })),
+      role: { id: data.role.id, name: data.role.option },
+      about: data.about,
+      country: data.country,
+      city: data.city,
+    });
     params.changeStep("next");
   });
 
@@ -129,18 +155,34 @@ export const Step1 = (params: {
       >
         <input
           {...register("displayName")}
+          required
           type="text"
           className="h-14 rounded-lg border-[1px] border-gray3 p-4 placeholder-gray2"
           placeholder="Choose Your Display Name: How Would You Like to be Recognized?"
+          autoComplete="off"
         />
-        <CustomSelect
-          placeholder="Specify Your Role: Influencer, Brand, or Individual"
-          options={params.roles?.map((role) => {
-            return { id: role.id, option: role.name };
-          })}
-          handleOptionSelect={handleRoleChange}
+        <Controller
+          name="role"
+          control={control}
+          rules={{ required: true }}
+          render={({ field: { value, onChange } }) => {
+            return (
+              <CustomSelect
+                register={register}
+                name="role"
+                placeholder="Specify Your Role: Influencer, Brand, or Individual"
+                options={params.roles?.map((role) => {
+                  return { id: role.id, option: role.name };
+                })}
+                value={value}
+                handleOptionSelect={onChange}
+              />
+            );
+          }}
         />
         <CustomMultiSelect
+          register={register}
+          name="categories"
           placeholder="Choose Your Categories: e.g., Fashion, Travel, Fitness"
           options={params.categories?.map((category) => {
             return { id: category.id, option: category.name };
@@ -150,21 +192,27 @@ export const Step1 = (params: {
         <div className="flex flex-col gap-6 lg:flex-row lg:gap-11">
           <input
             {...register("country")}
+            required
             type="text"
             className="h-14 w-full rounded-lg border-[1px] border-gray3 p-4 placeholder-gray2"
             placeholder="Country"
+            autoComplete="off"
           />
           <input
             {...register("city")}
+            required
             type="text"
             className="h-14 w-full rounded-lg border-[1px] border-gray3 p-4 placeholder-gray2"
             placeholder="City"
+            autoComplete="off"
           />
         </div>
         <textarea
           {...register("about")}
+          required
           className="h-48 rounded-lg border-[1px] border-gray3 p-4 placeholder-gray2"
           placeholder="Introduce Yourself: Share a Brief Description or Bio"
+          autoComplete="off"
         />
       </form>
     );

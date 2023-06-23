@@ -68,6 +68,7 @@ const FirstSteps: NextPage = () => {
   const { data: categories } = api.users.getAllCategories.useQuery();
   const { data: roles } = api.users.getAllRoles.useQuery();
   const { data: socialMedias } = api.users.getAllSocialMedia.useQuery();
+  const { mutate } = api.users.updateUser.useMutation();
 
   const changeStep = (type: "next" | "previous") => {
     if (mainContentRef.current) {
@@ -85,9 +86,13 @@ const FirstSteps: NextPage = () => {
     }
   };
 
+  const handleCloseButton = () => {
+    mutate({ firstSteps: true });
+  };
+
   const renderCloseButton = () => {
     return (
-      <Link href="/">
+      <Link href="/" onClick={() => handleCloseButton()}>
         <div className="absolute right-1 top-1 flex h-14 w-14 cursor-pointer items-center justify-center rounded-full bg-influencer-green lg:right-2 lg:top-2">
           <FontAwesomeIcon
             icon={faXmark}
