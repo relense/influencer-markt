@@ -1,22 +1,21 @@
 import { useRef, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faChevronDown, faXmark } from "@fortawesome/free-solid-svg-icons";
+import { faChevronDown, faChevronUp } from "@fortawesome/free-solid-svg-icons";
+import { type UseFormRegister } from "react-hook-form";
 
 import { useOutsideClick } from "../../utils/helper";
-
-export type Option = {
-  id: number;
-  option: string;
-};
+import { type Option } from "../../utils/globalTypes";
 
 export const CustomMultiSelect = (params: {
+  register: UseFormRegister<any>;
+  name: string;
   placeholder: string;
   options: Option[] | undefined;
   handleOptionSelect: (option: Option[]) => void;
 }) => {
   const [selectStatus, setSelectStatus] = useState<boolean>(false);
   const [selectedOptions, setSelectedOptions] = useState<Option[]>([]);
-  const wrapperRef = useRef(null);
+  const multiSelectRef = useRef(null);
 
   const onHandleClick = (option: Option) => {
     let newArray: Option[] = [...selectedOptions];
@@ -46,43 +45,46 @@ export const CustomMultiSelect = (params: {
     if (selectStatus === false) return;
 
     setSelectStatus(!selectStatus);
-  }, wrapperRef);
+  }, multiSelectRef);
 
   const renderInput = () => {
-    return (
-      <div
-        className="flex h-14 items-center justify-between p-4"
-        onClick={() => {
-          setSelectStatus(!selectStatus);
-        }}
-      >
-        {selectedOptions.length ? (
-          <div className="flex gap-2 overflow-x-hidden sm:overflow-x-auto">
-            {selectedOptions.map((option) => {
-              return (
-                <div
-                  key={option.id}
-                  className="flex w-32 cursor-pointer items-center justify-center rounded-full border-[1px] p-4 sm:h-7 sm:w-36 sm:justify-between"
-                >
-                  {option.option}
-                  <div className="hidden sm:flex">
-                    <FontAwesomeIcon
-                      icon={faXmark}
-                      className="fa-sm"
-                      onClick={() => onHandleClick(option)}
-                    />
-                  </div>
-                </div>
-              );
-            })}
-          </div>
-        ) : (
-          <div className="overflow-hidden whitespace-nowrap text-gray2">
-            {params.placeholder}
-          </div>
-        )}
+    const values = selectedOptions
+      .map((option) => {
+        return option.option;
+      })
+      .join(",  ");
 
-        <FontAwesomeIcon icon={faChevronDown} className="fa-base" />
+    return (
+      <div ref={multiSelectRef} className="h-14 w-full">
+        <div className="relative flex items-center justify-between">
+          <input
+            {...(params.register(params.name), { required: true })}
+            id={`${params.name}1`}
+            autoComplete="off"
+            onKeyDown={(e) => {
+              e.preventDefault();
+              return false;
+            }}
+            className="flex h-14 w-full flex-1 cursor-pointer rounded-lg border-[1px] border-gray3 bg-transparent p-4 placeholder-gray2 caret-transparent placeholder:w-11/12"
+            placeholder={params.placeholder}
+            onClick={() => {
+              setSelectStatus(!selectStatus);
+            }}
+            defaultValue={values}
+          />
+          {selectStatus ? (
+            <FontAwesomeIcon
+              icon={faChevronUp}
+              className="pointer-events-none absolute right-3 top-1/2 h-8 w-8 -translate-y-1/2 transform"
+            />
+          ) : (
+            <FontAwesomeIcon
+              icon={faChevronDown}
+              className="pointer-events-none absolute right-3 top-1/2 h-8 w-8 -translate-y-1/2 transform"
+            />
+          )}
+        </div>
+        {renderOptions()}
       </div>
     );
   };
@@ -90,8 +92,8 @@ export const CustomMultiSelect = (params: {
   const renderOptions = () => {
     if (selectStatus) {
       return (
-        <div className="relative h-56 overflow-hidden rounded-lg border-[1px] border-gray3 bg-white  sm:h-auto ">
-          <div className="flex h-56 flex-col overflow-y-scroll sm:h-auto sm:flex-row sm:flex-wrap sm:justify-start sm:p-2 ">
+        <div className="relative z-10 h-56 overflow-hidden rounded-lg border-[1px] border-gray3  bg-white sm:h-auto">
+          <div className="flex h-56 flex-col overflow-y-auto sm:h-auto sm:flex-row sm:flex-wrap sm:justify-start sm:p-2 ">
             {params.options &&
               params.options.map((option) => {
                 let optionClass = "";
@@ -120,12 +122,5 @@ export const CustomMultiSelect = (params: {
     }
   };
 
-  return (
-    <div ref={wrapperRef}>
-      <div className="h-14rounded-lg rounded-lg border-[1px] border-gray3 ">
-        {renderInput()}
-      </div>
-      {renderOptions()}
-    </div>
-  );
+  return renderInput();
 };
