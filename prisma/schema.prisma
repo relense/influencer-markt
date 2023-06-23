@@ -55,11 +55,11 @@ model User {
   email         String?   @unique
   emailVerified DateTime?
   image         String?
+  firstSteps   Boolean?  @default(false)
   accounts      Account[]
   sessions      Session[]
   profile       Profile?
 }
-
 
 //App data
 model Profile {
