@@ -1,4 +1,5 @@
-import { signIn, signOut, useSession } from "next-auth/react";
+import { signIn, signOut } from "next-auth/react";
+import { type Session } from "next-auth";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -11,9 +12,8 @@ import { Button } from "../Button/Button";
 import { faBars, faChevronDown } from "@fortawesome/free-solid-svg-icons";
 import { useState } from "react";
 
-export const Navbar = () => {
+export const Navbar = (params: { sessionData: Session | null }) => {
   const [toggleHamburguer, setToggleHamburguer] = useState<boolean>(false);
-  const { data: sessionData } = useSession();
 
   const leftNavBeforeLogin = () => {
     return (
@@ -63,7 +63,7 @@ export const Navbar = () => {
   const rightNavbarAfterLogin = () => {
     return (
       <div className="flex flex-row items-center justify-end">
-        {sessionData && (
+        {params.sessionData && (
           <span
             className="cursor-pointer text-black"
             onClick={() => void signOut()}
@@ -136,10 +136,10 @@ export const Navbar = () => {
     return (
       <div className="hidden h-16 w-full items-center px-6 py-12 lg:flex">
         {renderLogoTitle()}
-        {!sessionData && leftNavBeforeLogin()}
-        {!sessionData && rightNavBeforeLogin()}
-        {sessionData && leftNavAfterLogin()}
-        {sessionData && rightNavbarAfterLogin()}
+        {!params.sessionData && leftNavBeforeLogin()}
+        {!params.sessionData && rightNavBeforeLogin()}
+        {params.sessionData && leftNavAfterLogin()}
+        {params.sessionData && rightNavbarAfterLogin()}
       </div>
     );
   };
