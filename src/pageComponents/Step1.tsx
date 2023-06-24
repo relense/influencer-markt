@@ -20,10 +20,9 @@ import { CustomMultiSelect } from "../components/CustomMultiSelect/CustomMultiSe
 import { type ProfileData } from "../pages/first-steps";
 
 export const Step1 = (params: {
-  changeStep: (value: "next" | "previous") => void;
   control: Control<ProfileData, any>;
   register: UseFormRegister<ProfileData>;
-  submitStep1: () => void;
+  submit: () => void;
   setValue: UseFormSetValue<ProfileData>;
   categories: Category[] | undefined;
   roles: Role[] | undefined;
@@ -102,7 +101,7 @@ export const Step1 = (params: {
     return (
       <form
         id="form-hook"
-        onSubmit={params.submitStep1}
+        onSubmit={params.submit}
         className="smm:w-full mt-4 flex w-3/4 flex-col gap-6 lg:w-2/4"
       >
         <input
@@ -122,7 +121,7 @@ export const Step1 = (params: {
               <CustomSelect
                 register={params.register}
                 name="role"
-                placeholder="Specify Your Role: Influencer, Brand, or Individual"
+                placeholder="Choose Your Role: Influencer, Brand, or Individual"
                 options={params.roles?.map((role) => {
                   return { id: role.id, option: role.name };
                 })}
