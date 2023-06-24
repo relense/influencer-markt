@@ -83,6 +83,7 @@ export const usersRouter = createTRPCRouter({
           country: input.country,
           city: input.city,
           userId: ctx.session.user.id,
+          website: "",
         },
         create: {
           name: input.displayName,
@@ -97,6 +98,7 @@ export const usersRouter = createTRPCRouter({
           country: input.country,
           city: input.city,
           userId: ctx.session.user.id,
+          website: "",
         },
         include: {
           categories: true,
