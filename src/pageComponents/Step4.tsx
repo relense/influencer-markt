@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useForm } from "react-hook-form";
+import { Controller, useForm } from "react-hook-form";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faArrowRightRotate,
@@ -33,12 +33,16 @@ export const Step4 = (params: {
   const [currentValuePack, setCurrentValuePack] = useState<ValuePack>();
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const {
+    control,
     register,
     handleSubmit,
-    setValue,
     reset,
     formState: { errors },
-  } = useForm<ValuePack>();
+  } = useForm<ValuePack>({
+    defaultValues: {
+      platform: { id: -1, option: "" },
+    },
+  });
 
   const onAddValuePack = handleSubmit((data) => {
     const valuePacksArray = [...valuePacks];
@@ -48,10 +52,6 @@ export const Step4 = (params: {
     reset();
     setIsModalOpen(false);
   });
-
-  const handlSocialMediaChange = (option: Option) => {
-    setValue("platform", option);
-  };
 
   const sendPacks = () => {
     params.changeStep("next");
@@ -128,15 +128,24 @@ export const Step4 = (params: {
             className="h-14 w-full rounded-lg border-[1px] border-gray3 p-4 placeholder-gray2"
             placeholder="Value Pack Title: Provide a catchy and descriptive title for your offering"
           />
-          <CustomSelect
-            placeholder="Select the social media platform for your value pack"
-            options={
-              params.socialMedias &&
-              params.socialMedias?.map((socialMedia) => {
-                return { id: socialMedia.id, option: socialMedia.name };
-              })
-            }
-            handleOptionSelect={handlSocialMediaChange}
+          <Controller
+            name="platform"
+            control={control}
+            rules={{ required: true }}
+            render={({ field: { value, onChange } }) => {
+              return (
+                <CustomSelect
+                  register={register}
+                  name="platform"
+                  placeholder="Select the social media platform for your value pack"
+                  options={params.socialMedias?.map((socialMedia) => {
+                    return { id: socialMedia.id, option: socialMedia.name };
+                  })}
+                  handleOptionSelect={onChange}
+                  value={value}
+                />
+              );
+            }}
           />
           <textarea
             {...register("description")}
