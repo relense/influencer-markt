@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faChevronDown, faChevronUp } from "@fortawesome/free-solid-svg-icons";
 import { type UseFormRegister } from "react-hook-form";
@@ -15,34 +15,46 @@ export const CustomMultiSelect = (params: {
   name: string;
   placeholder: string;
   options: Option[] | undefined;
-  handleOptionSelect: (option: Option[]) => void;
+  selectedOptions: Option[];
+  handleOptionSelect: (options: Option[]) => void;
 }) => {
   const [selectStatus, setSelectStatus] = useState<boolean>(false);
-  const [selectedOptions, setSelectedOptions] = useState<Option[]>([]);
+  const [localSelectedOptions, setLocalSelectedOptions] = useState<Option[]>(
+    []
+  );
   const multiSelectRef = useRef(null);
 
+  useEffect(() => {
+    if (
+      params.selectedOptions &&
+      params.selectedOptions.length > 0 &&
+      localSelectedOptions.length === 0
+    ) {
+      setLocalSelectedOptions(params.selectedOptions);
+    }
+  }, [localSelectedOptions.length, params.selectedOptions]);
+
   const onHandleClick = (option: Option) => {
-    let newArray: Option[] = [...selectedOptions];
-    const index = selectedOptions.indexOf(option);
+    const newArray: Option[] = [...params.selectedOptions];
+    const index = getIndexFromArrayOfObjects(newArray, option);
 
     if (index > -1) {
-      newArray = removeItemOnce(newArray, option);
-      setSelectedOptions(newArray);
+      newArray.splice(index, 1);
+      setLocalSelectedOptions(newArray);
     } else {
       newArray.push(option);
-      setSelectedOptions(newArray);
+      setLocalSelectedOptions(newArray);
     }
 
     params.handleOptionSelect(newArray);
   };
 
-  const removeItemOnce = (arr: Option[], value: Option) => {
-    const index = arr.indexOf(value);
-    if (index > -1) {
-      arr.splice(index, 1);
-    }
+  const getIndexFromArrayOfObjects = (arr: Option[], option: Option) => {
+    const stringArray = arr.map((item) => {
+      return item.option;
+    });
 
-    return arr;
+    return stringArray.indexOf(option.option);
   };
 
   useOutsideClick(() => {
@@ -52,7 +64,8 @@ export const CustomMultiSelect = (params: {
   }, multiSelectRef);
 
   const renderInput = () => {
-    const values = selectedOptions
+    const selectedOptionsCopy = [...localSelectedOptions];
+    const newValues = selectedOptionsCopy
       .map((option) => {
         return option.option;
       })
@@ -65,17 +78,17 @@ export const CustomMultiSelect = (params: {
             {...params.register(params.name)}
             required
             id={`${params.name}1`}
-            autoComplete="off"
             onKeyDown={(e) => {
               e.preventDefault();
               return false;
             }}
             className="flex h-14 w-full flex-1 cursor-pointer rounded-lg border-[1px] border-gray3 bg-transparent p-4 placeholder-gray2 caret-transparent placeholder:w-11/12"
             placeholder={params.placeholder}
+            value={newValues}
+            autoComplete="off"
             onClick={() => {
               setSelectStatus(!selectStatus);
             }}
-            value={values}
           />
           {selectStatus ? (
             <FontAwesomeIcon
@@ -103,7 +116,9 @@ export const CustomMultiSelect = (params: {
               params.options.map((option) => {
                 let optionClass = "";
 
-                if (selectedOptions.indexOf(option) > -1) {
+                if (
+                  getIndexFromArrayOfObjects(localSelectedOptions, option) > -1
+                ) {
                   optionClass =
                     "flex cursor-pointer items-center p-4 bg-influencer-green text-white hover:bg-influencer-green hover:text-white sm:m-2 sm:h-7 sm:w-28 sm:justify-center sm:rounded-full sm:border-[1px]";
                 } else {

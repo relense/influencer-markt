@@ -65,13 +65,33 @@ export const usersRouter = createTRPCRouter({
       })
     )
     .mutation(async ({ ctx, input }) => {
-      const profile = await ctx.prisma.profile.create({
-        data: {
+      const profile = await ctx.prisma.profile.upsert({
+        where: {
+          userId: ctx.session.user.id,
+        },
+        update: {
           name: input.displayName,
           roleId: input.role.id,
           profilePicture: input.profilePicture,
           categories: {
-            connect: input.categories.map((category) => ({ id: category.id })),
+            set: [],
+            connect: input.categories.map((category) => ({
+              id: category.id,
+            })),
+          },
+          about: input.about,
+          country: input.country,
+          city: input.city,
+          userId: ctx.session.user.id,
+        },
+        create: {
+          name: input.displayName,
+          roleId: input.role.id,
+          profilePicture: input.profilePicture,
+          categories: {
+            connect: input.categories.map((category) => ({
+              id: category.id,
+            })),
           },
           about: input.about,
           country: input.country,

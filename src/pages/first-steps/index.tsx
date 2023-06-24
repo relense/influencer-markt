@@ -12,6 +12,8 @@ import { Step1 } from "../../pageComponents/Step1";
 import { Step4 } from "../../pageComponents/Step4";
 import { Step5 } from "../../pageComponents/Step5";
 import { ProgressRing } from "../../components/ProgressRing/ProgressRing";
+import { useForm } from "react-hook-form";
+import { type Option } from "../../components/CustomMultiSelect/CustomMultiSelect";
 
 type Step = {
   step: string;
@@ -19,6 +21,16 @@ type Step = {
   subTitle: string;
   mainTitle: string;
   mainSubTitle: string;
+};
+
+export type ProfileData = {
+  profilePicture: string;
+  displayName: string;
+  role: Option;
+  categories: Option[];
+  country: string;
+  city: string;
+  about: string;
 };
 
 const steps: Step[] = [
@@ -64,11 +76,20 @@ const steps: Step[] = [
 const FirstSteps: NextPage = () => {
   const mainContentRef = useRef<HTMLDivElement>(null);
   const [currentStep, setCurrentStep] = useState<number>(0);
+  const { control, register, handleSubmit, setValue, watch } =
+    useForm<ProfileData>({
+      defaultValues: {
+        role: { id: -1, option: "" },
+        categories: [],
+        profilePicture: "",
+      },
+    });
 
   const { data: categories } = api.users.getAllCategories.useQuery();
   const { data: roles } = api.users.getAllRoles.useQuery();
   const { data: socialMedias } = api.users.getAllSocialMedia.useQuery();
   const { mutate } = api.users.updateUser.useMutation();
+  const { mutate: profileMutation } = api.users.createProfile.useMutation();
 
   const changeStep = (type: "next" | "previous") => {
     if (mainContentRef.current) {
@@ -86,13 +107,26 @@ const FirstSteps: NextPage = () => {
     }
   };
 
-  const handleCloseButton = () => {
-    mutate({ firstSteps: true });
-  };
+  const onSubmitStep1 = handleSubmit((data) => {
+    profileMutation({
+      displayName: data.displayName,
+      profilePicture: data.profilePicture,
+      categories: data.categories.map((category) => ({
+        id: category.id,
+        name: category.option,
+      })),
+      role: { id: data.role.id, name: data.role.option },
+      about: data.about,
+      country: data.country,
+      city: data.city,
+    });
+
+    changeStep("next");
+  });
 
   const renderCloseButton = () => {
     return (
-      <Link href="/" onClick={() => handleCloseButton()}>
+      <Link href="/" onClick={() => mutate({ firstSteps: true })}>
         <div className="absolute right-1 top-1 flex h-14 w-14 cursor-pointer items-center justify-center rounded-full bg-influencer-green lg:right-2 lg:top-2">
           <FontAwesomeIcon
             icon={faXmark}
@@ -230,6 +264,11 @@ const FirstSteps: NextPage = () => {
                 changeStep={changeStep}
                 categories={categories}
                 roles={roles}
+                control={control}
+                register={register}
+                setValue={setValue}
+                submitStep1={onSubmitStep1}
+                watch={watch}
               />
             )}
             {currentStep === 1 && <Step2 changeStep={changeStep} />}

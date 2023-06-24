@@ -1,4 +1,3 @@
-import { api } from "~/utils/api";
 import Image from "next/image";
 import { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -7,55 +6,29 @@ import {
   faCamera,
   faXmark,
 } from "@fortawesome/free-solid-svg-icons";
-import { Controller, useForm } from "react-hook-form";
+import {
+  type Control,
+  Controller,
+  type UseFormRegister,
+  type UseFormSetValue,
+} from "react-hook-form";
 import { type Role, type Category } from "@prisma/client";
 
 import { CustomSelect } from "../components/CustomSelect/CustomSelect";
 import { StepsReminder } from "../components/StepsReminder/StepsReminder";
-import {
-  CustomMultiSelect,
-  type Option,
-} from "../components/CustomMultiSelect/CustomMultiSelect";
-
-export type ProfileData = {
-  profilePicture: string;
-  displayName: string;
-  role: Option;
-  categories: Option[];
-  country: string;
-  city: string;
-  about: string;
-};
+import { CustomMultiSelect } from "../components/CustomMultiSelect/CustomMultiSelect";
+import { type ProfileData } from "../pages/first-steps";
 
 export const Step1 = (params: {
   changeStep: (value: "next" | "previous") => void;
+  control: Control<ProfileData, any>;
+  register: UseFormRegister<ProfileData>;
+  submitStep1: () => void;
+  setValue: UseFormSetValue<ProfileData>;
   categories: Category[] | undefined;
   roles: Role[] | undefined;
 }) => {
-  // const { data: profile, isLoading } = api.users.getProfile.useQuery();
-  const { mutate } = api.users.createProfile.useMutation();
-
   const [profilePicture, setProfilePicture] = useState<string>();
-  const { control, register, handleSubmit, setValue } = useForm<ProfileData>({
-    defaultValues: {
-      role: { id: -1, option: "" },
-    },
-  });
-
-  // if (!isLoading && profile) {
-  //   const categories = profile?.categories.map((category) => {
-  //     return { id: category.id, option: category.name };
-  //   });
-  //   setValue("categories", categories);
-  //   setValue("role", {
-  //     id: profile.role?.id || -1,
-  //     option: profile.role?.name || "",
-  //   });
-  //   setValue("displayName", profile?.name);
-  //   setValue("country", profile?.country);
-  //   setValue("city", profile?.city);
-  //   setValue("about", profile?.about);
-  // }
 
   const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -67,7 +40,7 @@ export const Step1 = (params: {
         const dataURL = reader.result as string;
         if (profilePicture !== dataURL) {
           setProfilePicture(dataURL);
-          setValue("profilePicture", dataURL);
+          params.setValue("profilePicture", dataURL);
         }
       };
 
@@ -76,30 +49,9 @@ export const Step1 = (params: {
   };
 
   const handleRemovePicture = () => {
-    setValue("profilePicture", "");
+    params.setValue("profilePicture", "");
     setProfilePicture("");
   };
-
-  const handleCategoryChange = (options: Option[]) => {
-    setValue("categories", options);
-  };
-
-  const onSubmitStep1 = handleSubmit((data) => {
-    alert(JSON.stringify(data));
-    mutate({
-      displayName: data.displayName,
-      profilePicture: data.profilePicture,
-      categories: data.categories.map((category) => ({
-        id: category.id,
-        name: category.option,
-      })),
-      role: { id: data.role.id, name: data.role.option },
-      about: data.about,
-      country: data.country,
-      city: data.city,
-    });
-    params.changeStep("next");
-  });
 
   const renderAddProfilePicture = () => {
     return (
@@ -150,11 +102,11 @@ export const Step1 = (params: {
     return (
       <form
         id="form-hook"
-        onSubmit={onSubmitStep1}
+        onSubmit={params.submitStep1}
         className="smm:w-full mt-4 flex w-3/4 flex-col gap-6 lg:w-2/4"
       >
         <input
-          {...register("displayName")}
+          {...params.register("displayName")}
           required
           type="text"
           className="h-14 rounded-lg border-[1px] border-gray3 p-4 placeholder-gray2"
@@ -163,12 +115,12 @@ export const Step1 = (params: {
         />
         <Controller
           name="role"
-          control={control}
+          control={params.control}
           rules={{ required: true }}
           render={({ field: { value, onChange } }) => {
             return (
               <CustomSelect
-                register={register}
+                register={params.register}
                 name="role"
                 placeholder="Specify Your Role: Influencer, Brand, or Individual"
                 options={params.roles?.map((role) => {
@@ -180,18 +132,28 @@ export const Step1 = (params: {
             );
           }}
         />
-        <CustomMultiSelect
-          register={register}
+        <Controller
           name="categories"
-          placeholder="Choose Your Categories: e.g., Fashion, Travel, Fitness"
-          options={params.categories?.map((category) => {
-            return { id: category.id, option: category.name };
-          })}
-          handleOptionSelect={handleCategoryChange}
+          control={params.control}
+          rules={{ required: true }}
+          render={({ field: { value, onChange } }) => {
+            return (
+              <CustomMultiSelect
+                register={params.register}
+                name="categories"
+                placeholder="Choose Your Categories: e.g., Fashion, Travel, Fitness"
+                options={params.categories?.map((category) => {
+                  return { id: category.id, option: category.name };
+                })}
+                handleOptionSelect={onChange}
+                selectedOptions={value}
+              />
+            );
+          }}
         />
         <div className="flex flex-col gap-6 lg:flex-row lg:gap-11">
           <input
-            {...register("country")}
+            {...params.register("country")}
             required
             type="text"
             className="h-14 w-full rounded-lg border-[1px] border-gray3 p-4 placeholder-gray2"
@@ -199,7 +161,7 @@ export const Step1 = (params: {
             autoComplete="off"
           />
           <input
-            {...register("city")}
+            {...params.register("city")}
             required
             type="text"
             className="h-14 w-full rounded-lg border-[1px] border-gray3 p-4 placeholder-gray2"
@@ -208,7 +170,7 @@ export const Step1 = (params: {
           />
         </div>
         <textarea
-          {...register("about")}
+          {...params.register("about")}
           required
           className="h-48 rounded-lg border-[1px] border-gray3 p-4 placeholder-gray2"
           placeholder="Introduce Yourself: Share a Brief Description or Bio"
