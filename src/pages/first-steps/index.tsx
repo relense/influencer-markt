@@ -7,9 +7,9 @@ import { useRef, useState } from "react";
 import { Button } from "../../components/Button/Button";
 
 import { Step3 } from "../../pageComponents/Step3";
-import { Step2 } from "../../pageComponents/Step2";
+import { type SocialMediaDetails, Step2 } from "../../pageComponents/Step2";
 import { Step1 } from "../../pageComponents/Step1";
-import { Step4 } from "../../pageComponents/Step4";
+import { Step4, type ValuePack } from "../../pageComponents/Step4";
 import { Step5 } from "../../pageComponents/Step5";
 import { ProgressRing } from "../../components/ProgressRing/ProgressRing";
 import { useForm } from "react-hook-form";
@@ -31,6 +31,15 @@ export type ProfileData = {
   country: string;
   city: string;
   about: string;
+};
+
+export type SocialMediaData = {
+  website: string;
+  socialMedia: SocialMediaDetails[];
+};
+
+export type ValuePacksData = {
+  valuePacks: ValuePack[];
 };
 
 const steps: Step[] = [
@@ -76,18 +85,31 @@ const steps: Step[] = [
 const FirstSteps: NextPage = () => {
   const mainContentRef = useRef<HTMLDivElement>(null);
   const [currentStep, setCurrentStep] = useState<number>(0);
-  const { control, register, handleSubmit, setValue, watch } =
-    useForm<ProfileData>({
-      defaultValues: {
-        role: { id: -1, option: "" },
-        categories: [],
-        profilePicture: "",
-      },
-    });
+  const { control, register, handleSubmit, setValue } = useForm<ProfileData>({
+    defaultValues: {
+      role: { id: -1, option: "" },
+      categories: [],
+      profilePicture: "",
+    },
+  });
+
+  const {
+    getValues: getValuesSocialMedia,
+    setValue: setValueSocialMedia,
+    register: registerSocialMedia,
+    handleSubmit: handleSubmitSocialMedia,
+    formState: { errors },
+  } = useForm<SocialMediaData>();
+
+  const {
+    getValues: getValuesValuePacks,
+    setValue: setValueValuePacks,
+    handleSubmit: handleSubmitValuePacks,
+  } = useForm<ValuePacksData>();
 
   const { data: categories } = api.users.getAllCategories.useQuery();
   const { data: roles } = api.users.getAllRoles.useQuery();
-  const { data: socialMedias } = api.users.getAllSocialMedia.useQuery();
+  const { data: platforms } = api.users.getAllSocialMedia.useQuery();
   const { mutate } = api.users.updateUser.useMutation();
   const { mutate: profileMutation } = api.users.createProfile.useMutation();
 
@@ -121,6 +143,14 @@ const FirstSteps: NextPage = () => {
       city: data.city,
     });
 
+    changeStep("next");
+  });
+
+  const onSubmitStep2 = handleSubmitSocialMedia((data) => {
+    changeStep("next");
+  });
+
+  const onSubmitStep4 = handleSubmitValuePacks((data) => {
     changeStep("next");
   });
 
@@ -226,14 +256,12 @@ const FirstSteps: NextPage = () => {
         <div className="flex items-center justify-center lg:flex-row">
           {currentStep < steps.length - 1 && (
             <>
-              {currentStep > 0 && (
-                <div
-                  className="hidden cursor-pointer underline lg:flex"
-                  onClick={() => changeStep("next")}
-                >
-                  Skip Step
-                </div>
-              )}
+              <div
+                className="hidden cursor-pointer underline lg:flex"
+                onClick={() => changeStep("next")}
+              >
+                Skip Step
+              </div>
 
               <Button title="Next Step" level="primary" form="form-hook" />
             </>
@@ -263,19 +291,33 @@ const FirstSteps: NextPage = () => {
             {currentStep < steps.length - 1 && renderStepMainTitle()}
             {currentStep === 0 && (
               <Step1
-                changeStep={changeStep}
                 categories={categories}
                 roles={roles}
                 control={control}
                 register={register}
                 setValue={setValue}
-                submitStep1={onSubmitStep1}
+                submit={onSubmitStep1}
               />
             )}
-            {currentStep === 1 && <Step2 changeStep={changeStep} />}
+            {currentStep === 1 && (
+              <Step2
+                submit={onSubmitStep2}
+                registerSocialMedia={registerSocialMedia}
+                platforms={platforms}
+                setValue={setValueSocialMedia}
+                getValues={getValuesSocialMedia}
+                errors={errors}
+              />
+            )}
             {currentStep === 2 && <Step3 changeStep={changeStep} />}
             {currentStep === 3 && (
-              <Step4 changeStep={changeStep} socialMedias={socialMedias} />
+              <Step4
+                changeStep={changeStep}
+                socialMedias={platforms}
+                getValues={getValuesValuePacks}
+                setValue={setValueValuePacks}
+                submit={onSubmitStep4}
+              />
             )}
             {currentStep === 4 && (
               <div className="mt-6 flex h-full w-full flex-1 flex-col justify-center gap-8 p-4 sm:mt-0">
