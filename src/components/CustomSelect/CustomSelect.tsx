@@ -64,7 +64,7 @@ export const CustomSelect = (params: {
       </div>
 
       {selectStatus && (
-        <div className="relative z-10 h-auto overflow-hidden rounded-lg border-[1px] border-gray3 bg-white">
+        <div className="relative z-10 h-auto overflow-y-auto rounded-lg border-[1px] border-gray3 bg-white">
           {params.options &&
             params.options.map((option) => {
               let classes = "";
@@ -78,7 +78,9 @@ export const CustomSelect = (params: {
               return (
                 <div
                   key={option.id}
-                  onClick={() => params.handleOptionSelect(option)}
+                  onClick={() => {
+                    params.handleOptionSelect(option);
+                  }}
                   className={classes}
                 >
                   <div className="flex items-center justify-between">
