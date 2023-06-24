@@ -1,11 +1,17 @@
-import { useState } from "react";
-import { Controller, useForm } from "react-hook-form";
+import { useEffect, useState } from "react";
+import {
+  Controller,
+  type UseFormGetValues,
+  type UseFormRegister,
+  type UseFormSetValue,
+  useForm,
+} from "react-hook-form";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faArrowRightRotate,
   faCalendar,
-  faPencil,
   faPlus,
+  faXmark,
 } from "@fortawesome/free-solid-svg-icons";
 
 import { type SocialMedia } from "@prisma/client";
@@ -15,8 +21,9 @@ import { StepsReminder } from "../components/StepsReminder/StepsReminder";
 import { CustomSelect } from "../components/CustomSelect/CustomSelect";
 import { Modal } from "../components/Modal/Modal";
 import { Button } from "../components/Button/Button";
+import { type ValuePacksData } from "../pages/first-steps";
 
-type ValuePack = {
+export type ValuePack = {
   title: string;
   platform: Option;
   description: string;
@@ -26,39 +33,63 @@ type ValuePack = {
 };
 
 export const Step4 = (params: {
+  setValue: UseFormSetValue<ValuePacksData>;
+  getValues: UseFormGetValues<ValuePacksData>;
+  submit: () => void;
   changeStep: (value: "next" | "previous") => void;
   socialMedias: SocialMedia[] | undefined;
 }) => {
   const [valuePacks, setValuePacks] = useState<ValuePack[]>([]);
-  const [currentValuePack, setCurrentValuePack] = useState<ValuePack>();
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
-  const {
-    control,
-    register,
-    handleSubmit,
-    reset,
-    formState: { errors },
-  } = useForm<ValuePack>({
-    defaultValues: {
-      platform: { id: -1, option: "" },
-    },
-  });
+  const { control, register, handleSubmit, reset, setValue } =
+    useForm<ValuePack>({
+      defaultValues: {
+        platform: { id: -1, option: "" },
+      },
+    });
+
+  useEffect(() => {
+    const valuePacks = params.getValues("valuePacks");
+
+    if (valuePacks) {
+      setValuePacks(valuePacks);
+    }
+  }, [params]);
 
   const onAddValuePack = handleSubmit((data) => {
     const valuePacksArray = [...valuePacks];
     valuePacksArray.push(data);
 
     setValuePacks(valuePacksArray);
+    params.setValue("valuePacks", valuePacksArray);
     reset();
     setIsModalOpen(false);
   });
 
-  const sendPacks = () => {
-    params.changeStep("next");
+  const onRemoveValuePack = (valuePack: ValuePack) => {
+    const valuePacksArray = [...valuePacks];
+    const index = getIndexFromArrayOfObjects(valuePacksArray, valuePack);
+
+    valuePacksArray.splice(index, 1);
+    setValuePacks(valuePacksArray);
+    params.setValue("valuePacks", valuePacksArray);
   };
 
-  const editValuePack = (valeuPack: ValuePack, index: number) => {
-    setCurrentValuePack(valeuPack);
+  const getIndexFromArrayOfObjects = (arr: ValuePack[], option: ValuePack) => {
+    const stringArray = arr.map((item) => {
+      return item.description;
+    });
+
+    return stringArray.indexOf(option.description);
+  };
+
+  const editValuePack = (valuePack: ValuePack) => {
+    setValue("deliveryTime", valuePack.deliveryTime);
+    setValue("description", valuePack.description);
+    setValue("numberOfRevisions", valuePack.numberOfRevisions);
+    setValue("platform", valuePack.platform);
+    setValue("title", valuePack.title);
+    setValue("valuePackPrice", valuePack.valuePackPrice);
     setIsModalOpen(true);
   };
 
@@ -67,9 +98,12 @@ export const Step4 = (params: {
       return (
         <div
           key={index}
-          className="relative w-full px-4 sm:h-full sm:w-5/12 sm:px-0"
+          className="relative w-full cursor-pointer px-4 sm:h-full sm:w-5/12 sm:px-0"
         >
-          <div className="flex w-full flex-col gap-4 rounded-lg border-[1px] border-gray3 p-4 sm:h-full">
+          <div
+            className="flex w-full flex-col gap-4 rounded-lg border-[1px] border-gray3 p-4 sm:h-full"
+            onClick={() => editValuePack(pack)}
+          >
             <div className="flex justify-between gap-4">
               <div className="text-xs font-semibold">{pack.title}</div>
               <div className="text-xs font-semibold text-influencer">
@@ -103,19 +137,24 @@ export const Step4 = (params: {
             </div>
           </div>
           <div
-            className="absolute right-2 top-[-8px] flex cursor-pointer items-center justify-center rounded-full bg-white text-influencer  sm:right-[-5px] sm:top-[-5px]"
-            onClick={() => editValuePack(pack, index)}
+            className="absolute right-2 top-[-10px] z-10 flex h-8 w-8 cursor-pointer items-center justify-center  rounded-full bg-influencer-green sm:right-[-10px] sm:top-[-12px]"
+            onClick={() => onRemoveValuePack(pack)}
           >
-            <FontAwesomeIcon icon={faPencil} className="fa-lg" />
+            <FontAwesomeIcon icon={faXmark} className="fa-lg text-white" />
           </div>
         </div>
       );
     });
   };
 
+  const onCloseModal = () => {
+    reset();
+    setIsModalOpen(false);
+  };
+
   const valuePackBuildModal = () => {
     return (
-      <Modal onClose={() => setIsModalOpen(false)}>
+      <Modal onClose={() => onCloseModal()}>
         <form
           id="pack-form"
           onSubmit={onAddValuePack}
@@ -124,9 +163,11 @@ export const Step4 = (params: {
           <div>Value Pack Builder</div>
           <input
             {...register("title")}
+            required
             type="text"
             className="h-14 w-full rounded-lg border-[1px] border-gray3 p-4 placeholder-gray2"
             placeholder="Value Pack Title: Provide a catchy and descriptive title for your offering"
+            autoComplete="off"
           />
           <Controller
             name="platform"
@@ -149,26 +190,34 @@ export const Step4 = (params: {
           />
           <textarea
             {...register("description")}
+            required
             className="box-border min-h-[10rem] w-full overflow-visible rounded-lg border-[1px] border-gray3 p-4 placeholder-gray2 sm:h-48 sm:min-h-[unset]"
             placeholder="Value Pack Description: Tell us about the unique offering in your package"
+            autoComplete="off"
           />
           <input
             {...register("deliveryTime")}
-            type="text"
+            required
+            type="number"
             className="h-14 w-full rounded-lg border-[1px] border-gray3 p-4 placeholder-gray2"
             placeholder="Delivery Time E.g 4 days"
+            autoComplete="off"
           />
           <input
             {...register("numberOfRevisions")}
-            type="text"
+            required
+            type="number"
             className="h-14 w-full rounded-lg border-[1px] border-gray3 p-4 placeholder-gray2"
             placeholder="Number of Revisions E.g 1"
+            autoComplete="off"
           />
           <input
             {...register("valuePackPrice")}
-            type="text"
+            required
+            type="number"
             className="h-14 w-full rounded-lg border-[1px] border-gray3 p-4 placeholder-gray2"
             placeholder="Value Pack Price"
+            autoComplete="off"
           />
           <Button type="submit" title="Add Value Pack" level="primary" />
         </form>
@@ -178,7 +227,7 @@ export const Step4 = (params: {
 
   return (
     <>
-      <form id="form-hook" onSubmit={() => sendPacks()} />
+      <form id="form-hook" onSubmit={() => params.submit()} />
       <div className="mt-2 flex flex-1 flex-col items-center gap-4 lg:mt-11 lg:overflow-y-auto">
         <div
           className="flex cursor-pointer items-center gap-2"
