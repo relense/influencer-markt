@@ -268,7 +268,6 @@ const FirstSteps: NextPage = () => {
                 register={register}
                 setValue={setValue}
                 submitStep1={onSubmitStep1}
-                watch={watch}
               />
             )}
             {currentStep === 1 && <Step2 changeStep={changeStep} />}
