@@ -226,12 +226,14 @@ const FirstSteps: NextPage = () => {
         <div className="flex items-center justify-center lg:flex-row">
           {currentStep < steps.length - 1 && (
             <>
-              <div
-                className="hidden cursor-pointer underline lg:flex"
-                onClick={() => changeStep("next")}
-              >
-                Skip Step
-              </div>
+              {currentStep > 0 && (
+                <div
+                  className="hidden cursor-pointer underline lg:flex"
+                  onClick={() => changeStep("next")}
+                >
+                  Skip Step
+                </div>
+              )}
 
               <Button title="Next Step" level="primary" form="form-hook" />
             </>
