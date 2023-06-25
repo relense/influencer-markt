@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import {
   Controller,
   type UseFormGetValues,
-  type UseFormRegister,
   type UseFormSetValue,
   useForm,
 } from "react-hook-form";
@@ -27,7 +26,7 @@ export type ValuePack = {
   title: string;
   platform: Option;
   description: string;
-  deliveryTime: string;
+  deliveryTime: number;
   numberOfRevisions: number;
   valuePackPrice: number;
 };
@@ -35,7 +34,6 @@ export type ValuePack = {
 export const Step4 = (params: {
   setValue: UseFormSetValue<ValuePacksData>;
   getValues: UseFormGetValues<ValuePacksData>;
-  submit: () => void;
   changeStep: (value: "next" | "previous") => void;
   socialMedias: SocialMedia[] | undefined;
 }) => {
@@ -196,7 +194,7 @@ export const Step4 = (params: {
             autoComplete="off"
           />
           <input
-            {...register("deliveryTime")}
+            {...register("deliveryTime", { valueAsNumber: true })}
             required
             type="number"
             className="h-14 w-full rounded-lg border-[1px] border-gray3 p-4 placeholder-gray2"
@@ -204,7 +202,7 @@ export const Step4 = (params: {
             autoComplete="off"
           />
           <input
-            {...register("numberOfRevisions")}
+            {...register("numberOfRevisions", { valueAsNumber: true })}
             required
             type="number"
             className="h-14 w-full rounded-lg border-[1px] border-gray3 p-4 placeholder-gray2"
@@ -212,7 +210,7 @@ export const Step4 = (params: {
             autoComplete="off"
           />
           <input
-            {...register("valuePackPrice")}
+            {...register("valuePackPrice", { valueAsNumber: true })}
             required
             type="number"
             className="h-14 w-full rounded-lg border-[1px] border-gray3 p-4 placeholder-gray2"
@@ -227,7 +225,7 @@ export const Step4 = (params: {
 
   return (
     <>
-      <form id="form-hook" onSubmit={() => params.submit()} />
+      <form id="form-hook" />
       <div className="mt-2 flex flex-1 flex-col items-center gap-4 lg:mt-11 lg:overflow-y-auto">
         <div
           className="flex cursor-pointer items-center gap-2"

@@ -28,7 +28,6 @@ export const Step2 = (params: {
   registerSocialMedia: UseFormRegister<SocialMediaData>;
   setValue: UseFormSetValue<SocialMediaData>;
   getValues: UseFormGetValues<SocialMediaData>;
-  submit: () => void;
   errors: FieldErrors<SocialMediaData>;
   platforms: SocialMedia[] | undefined;
 }) => {
@@ -168,7 +167,6 @@ export const Step2 = (params: {
     <div className="mt-2 flex flex-1 flex-col items-center gap-4 lg:mt-11 lg:overflow-y-auto">
       <form
         id="form-hook"
-        onSubmit={params.submit}
         className="mt-4 flex w-3/4 flex-col gap-1 sm:w-full lg:w-3/4"
       >
         <input

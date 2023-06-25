@@ -22,7 +22,6 @@ import { type ProfileData } from "../pages/first-steps";
 export const Step1 = (params: {
   control: Control<ProfileData, any>;
   register: UseFormRegister<ProfileData>;
-  submit: () => void;
   setValue: UseFormSetValue<ProfileData>;
   categories: Category[] | undefined;
   roles: Role[] | undefined;
@@ -101,7 +100,6 @@ export const Step1 = (params: {
     return (
       <form
         id="form-hook"
-        onSubmit={params.submit}
         className="smm:w-full mt-4 flex w-3/4 flex-col gap-6 lg:w-2/4"
       >
         <input
