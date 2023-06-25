@@ -63,17 +63,18 @@ model User {
 
 //App data
 model Profile {
-  id             Int         @id @default(autoincrement())
-  profilePicture String
-  name           String
-  role           Role?       @relation(fields: [roleId], references: [id])
-  categories     Category[]
-  about          String
-  country        String
-  city           String
-  user           User        @relation(fields: [userId], references: [id])
-  valuePacks     ValuePack[]
-  website        String
+  id              Int               @id @default(autoincrement())
+  profilePicture  String
+  name            String
+  role            Role?             @relation(fields: [roleId], references: [id])
+  categories      Category[]
+  about           String
+  country         String
+  city            String
+  user            User              @relation(fields: [userId], references: [id])
+  valuePacks      ValuePack[]
+  website         String
+  userSocialMedia UserSocialMedia[]
 
   userId String @unique
   roleId Int?
@@ -104,7 +105,7 @@ model ValuePack {
   valuePackPrice    Decimal
   profile           Profile?     @relation(fields: [profileId], references: [id])
 
-  socialMediaId Int  
+  socialMediaId Int
   profileId     Int?
 
   @@index([profileId])
@@ -112,7 +113,22 @@ model ValuePack {
 }
 
 model SocialMedia {
-  id        Int         @id @default(autoincrement())
-  name      String
-  valuePack ValuePack[]
+  id              Int               @id @default(autoincrement())
+  name            String
+  valuePack       ValuePack[]
+  UserSocialMedia UserSocialMedia[]
+}
+
+model UserSocialMedia {
+  id          Int          @id @default(autoincrement())
+  socialMedia SocialMedia? @relation(fields: [socialMediaId], references: [id])
+  handler     String
+  followers   Int
+  profile     Profile?     @relation(fields: [profileId], references: [id])
+
+  socialMediaId Int
+  profileId     Int?
+
+  @@index([socialMediaId])
+  @@index([profileId])
 }
