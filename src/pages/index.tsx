@@ -14,7 +14,6 @@ import {
   faHandHoldingDollar,
   faLock,
 } from "@fortawesome/free-solid-svg-icons";
-import { getSession, useSession } from "next-auth/react";
 
 type Offer = {
   icon: IconDefinition;
