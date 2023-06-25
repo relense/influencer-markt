@@ -110,7 +110,8 @@ const FirstSteps: NextPage = () => {
   const { data: roles } = api.allRoutes.getAllRoles.useQuery();
   const { data: platforms } = api.allRoutes.getAllSocialMedia.useQuery();
   const { mutate } = api.users.updateUser.useMutation();
-  const { mutate: profileMutation } = api.profiles.createProfile.useMutation();
+  const { mutateAsync: profileMutation } =
+    api.profiles.createProfile.useMutation();
   const { mutate: valuePacksMutation } =
     api.valuesPacks.createValuePacks.useMutation();
   const { mutate: userSocialMediaMutation } =
@@ -132,13 +133,13 @@ const FirstSteps: NextPage = () => {
     }
   };
 
-  const saveAllData = () => {
+  const saveAllData = async () => {
     const profileData = getValuesProfile();
     const socialMediaData = getValuesSocialMedia();
     const valuePackData = getValuesValuePacks();
 
     if (profileData) {
-      profileMutation({
+      await profileMutation({
         displayName: profileData.displayName,
         profilePicture: profileData.profilePicture,
         categories: profileData.categories.map((category) => ({
@@ -355,7 +356,7 @@ const FirstSteps: NextPage = () => {
           {currentStep === 4 && (
             <div className="mt-6 flex h-full w-full flex-1 flex-col justify-center gap-8 p-4 sm:mt-0">
               {renderStepMainTitle()}
-              <Step5 changeStep={changeStep} />
+              <Step5 changeStep={changeStep} saveAllData={saveAllData} />
             </div>
           )}
           {renderStepperButtons()}
