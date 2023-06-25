@@ -1,19 +1,17 @@
-import { api } from "~/utils/api";
-import { type NextPage } from "next";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faXmark } from "@fortawesome/free-solid-svg-icons";
-import Link from "next/link";
 import { useRef, useState } from "react";
-import { Button } from "../../components/Button/Button";
+import { useForm } from "react-hook-form";
+import { type NextPage } from "next";
+import { api } from "~/utils/api";
+import Link from "next/link";
 
-import { Step3 } from "../../pageComponents/Step3";
-import { type SocialMediaDetails, Step2 } from "../../pageComponents/Step2";
+import { type Option } from "../../components/CustomMultiSelect/CustomMultiSelect";
 import { Step1 } from "../../pageComponents/Step1";
+import { type SocialMediaDetails, Step2 } from "../../pageComponents/Step2";
+import { Step3 } from "../../pageComponents/Step3";
 import { Step4, type ValuePack } from "../../pageComponents/Step4";
 import { Step5 } from "../../pageComponents/Step5";
+import { Button } from "../../components/Button/Button";
 import { ProgressRing } from "../../components/ProgressRing/ProgressRing";
-import { useForm } from "react-hook-form";
-import { type Option } from "../../components/CustomMultiSelect/CustomMultiSelect";
 
 type Step = {
   step: string;
@@ -85,7 +83,12 @@ const steps: Step[] = [
 const FirstSteps: NextPage = () => {
   const mainContentRef = useRef<HTMLDivElement>(null);
   const [currentStep, setCurrentStep] = useState<number>(0);
-  const { control, register, handleSubmit, setValue } = useForm<ProfileData>({
+  const {
+    control,
+    register,
+    setValue,
+    getValues: getValuesProfile,
+  } = useForm<ProfileData>({
     defaultValues: {
       role: { id: -1, option: "" },
       categories: [],
@@ -97,21 +100,21 @@ const FirstSteps: NextPage = () => {
     getValues: getValuesSocialMedia,
     setValue: setValueSocialMedia,
     register: registerSocialMedia,
-    handleSubmit: handleSubmitSocialMedia,
     formState: { errors },
   } = useForm<SocialMediaData>();
 
-  const {
-    getValues: getValuesValuePacks,
-    setValue: setValueValuePacks,
-    handleSubmit: handleSubmitValuePacks,
-  } = useForm<ValuePacksData>();
+  const { getValues: getValuesValuePacks, setValue: setValueValuePacks } =
+    useForm<ValuePacksData>();
 
-  const { data: categories } = api.users.getAllCategories.useQuery();
-  const { data: roles } = api.users.getAllRoles.useQuery();
-  const { data: platforms } = api.users.getAllSocialMedia.useQuery();
+  const { data: categories } = api.allRoutes.getAllCategories.useQuery();
+  const { data: roles } = api.allRoutes.getAllRoles.useQuery();
+  const { data: platforms } = api.allRoutes.getAllSocialMedia.useQuery();
   const { mutate } = api.users.updateUser.useMutation();
-  const { mutate: profileMutation } = api.users.createProfile.useMutation();
+  const { mutate: profileMutation } = api.profiles.createProfile.useMutation();
+  const { mutate: valuePacksMutation } =
+    api.valuesPacks.createValuePacks.useMutation();
+  const { mutate: userSocialMediaMutation } =
+    api.userSocialMedias.createUserSocialMedias.useMutation();
 
   const changeStep = (type: "next" | "previous") => {
     if (mainContentRef.current) {
@@ -129,42 +132,63 @@ const FirstSteps: NextPage = () => {
     }
   };
 
-  const onSubmitStep1 = handleSubmit((data) => {
-    profileMutation({
-      displayName: data.displayName,
-      profilePicture: data.profilePicture,
-      categories: data.categories.map((category) => ({
-        id: category.id,
-        name: category.option,
-      })),
-      role: { id: data.role.id, name: data.role.option },
-      about: data.about,
-      country: data.country,
-      city: data.city,
-    });
+  const saveAllData = () => {
+    const profileData = getValuesProfile();
+    const socialMediaData = getValuesSocialMedia();
+    const valuePackData = getValuesValuePacks();
 
-    changeStep("next");
-  });
+    if (profileData) {
+      profileMutation({
+        displayName: profileData.displayName,
+        profilePicture: profileData.profilePicture,
+        categories: profileData.categories.map((category) => ({
+          id: category.id,
+          name: category.option,
+        })),
+        role: { id: profileData.role.id, name: profileData.role.option },
+        about: profileData.about,
+        country: profileData.country,
+        city: profileData.city,
+        website: socialMediaData.website || "",
+      });
+    }
 
-  const onSubmitStep2 = handleSubmitSocialMedia((data) => {
-    changeStep("next");
-  });
+    if (socialMediaData) {
+      const newSocialMediaData = socialMediaData.socialMedia.map(
+        (socialMedia) => {
+          return {
+            handler: socialMedia.socialMediaHandler,
+            followers: socialMedia.socialMediaFollowers,
+            socialMedia: {
+              id: socialMedia.platform.id,
+              name: socialMedia.platform.option,
+            },
+          };
+        }
+      );
 
-  const onSubmitStep4 = handleSubmitValuePacks((data) => {
-    changeStep("next");
-  });
+      userSocialMediaMutation(newSocialMediaData);
+    }
 
-  const renderCloseButton = () => {
-    return (
-      <Link href="/" onClick={() => mutate({ firstSteps: true })}>
-        <div className="absolute right-1 top-1 flex h-14 w-14 cursor-pointer items-center justify-center rounded-full bg-influencer-green lg:right-2 lg:top-2">
-          <FontAwesomeIcon
-            icon={faXmark}
-            className="fa-2x cursor-pointer text-white"
-          />
-        </div>
-      </Link>
-    );
+    if (valuePackData) {
+      const newData = valuePackData.valuePacks.map((valuePack) => {
+        return {
+          title: valuePack.title,
+          socialMedia: {
+            id: valuePack.platform.id,
+            name: valuePack.platform.option,
+          },
+          description: valuePack.description,
+          deliveryTime: valuePack.deliveryTime,
+          numberOfRevisions: valuePack.numberOfRevisions,
+          valuePackPrice: valuePack.valuePackPrice,
+        };
+      });
+
+      valuePacksMutation(newData);
+    }
+
+    mutate({ firstSteps: true });
   };
 
   const renderSteps = () => {
@@ -256,20 +280,34 @@ const FirstSteps: NextPage = () => {
         <div className="flex items-center justify-center lg:flex-row">
           {currentStep < steps.length - 1 && (
             <>
-              <div
-                className="hidden cursor-pointer underline lg:flex"
-                onClick={() => changeStep("next")}
-              >
-                Skip Step
-              </div>
+              {currentStep > 0 && (
+                <div
+                  className="hidden cursor-pointer underline lg:flex"
+                  onClick={() => changeStep("next")}
+                >
+                  Skip Step
+                </div>
+              )}
 
-              <Button title="Next Step" level="primary" form="form-hook" />
+              <Button
+                title="Next Step"
+                level="primary"
+                form="form-hook"
+                onClick={(e) => {
+                  e.preventDefault();
+                  changeStep("next");
+                }}
+              />
             </>
           )}
 
           {currentStep === steps.length - 1 && (
             <Link href="/" className="flex flex-1 justify-center sm:hidden">
-              <Button title="Get Started" level="primary" />
+              <Button
+                title="Get Started"
+                level="primary"
+                onClick={() => saveAllData()}
+              />
             </Link>
           )}
         </div>
@@ -278,58 +316,52 @@ const FirstSteps: NextPage = () => {
   };
 
   return (
-    <>
-      {renderCloseButton()}
-      <main className="h-full w-full bg-shadow-gray p-6 lg:p-8">
-        <div className="flex h-full w-full flex-col rounded-2xl bg-white lg:flex-row lg:overscroll-none">
-          {renderSteps()}
+    <main className="h-full w-full bg-shadow-gray p-6 lg:p-8">
+      <div className="flex h-full w-full flex-col rounded-2xl bg-white lg:flex-row lg:overscroll-none">
+        {renderSteps()}
 
-          <div
-            ref={mainContentRef}
-            className="flex h-full w-full flex-col overflow-y-auto sm:px-8 lg:overscroll-none"
-          >
-            {currentStep < steps.length - 1 && renderStepMainTitle()}
-            {currentStep === 0 && (
-              <Step1
-                categories={categories}
-                roles={roles}
-                control={control}
-                register={register}
-                setValue={setValue}
-                submit={onSubmitStep1}
-              />
-            )}
-            {currentStep === 1 && (
-              <Step2
-                submit={onSubmitStep2}
-                registerSocialMedia={registerSocialMedia}
-                platforms={platforms}
-                setValue={setValueSocialMedia}
-                getValues={getValuesSocialMedia}
-                errors={errors}
-              />
-            )}
-            {currentStep === 2 && <Step3 changeStep={changeStep} />}
-            {currentStep === 3 && (
-              <Step4
-                changeStep={changeStep}
-                socialMedias={platforms}
-                getValues={getValuesValuePacks}
-                setValue={setValueValuePacks}
-                submit={onSubmitStep4}
-              />
-            )}
-            {currentStep === 4 && (
-              <div className="mt-6 flex h-full w-full flex-1 flex-col justify-center gap-8 p-4 sm:mt-0">
-                {renderStepMainTitle()}
-                <Step5 changeStep={changeStep} />
-              </div>
-            )}
-            {renderStepperButtons()}
-          </div>
+        <div
+          ref={mainContentRef}
+          className="flex h-full w-full flex-col overflow-y-auto sm:px-8 lg:overscroll-none"
+        >
+          {currentStep < steps.length - 1 && renderStepMainTitle()}
+          {currentStep === 0 && (
+            <Step1
+              categories={categories}
+              roles={roles}
+              control={control}
+              register={register}
+              setValue={setValue}
+            />
+          )}
+          {currentStep === 1 && (
+            <Step2
+              registerSocialMedia={registerSocialMedia}
+              platforms={platforms}
+              setValue={setValueSocialMedia}
+              getValues={getValuesSocialMedia}
+              errors={errors}
+            />
+          )}
+          {currentStep === 2 && <Step3 changeStep={changeStep} />}
+          {currentStep === 3 && (
+            <Step4
+              changeStep={changeStep}
+              socialMedias={platforms}
+              getValues={getValuesValuePacks}
+              setValue={setValueValuePacks}
+            />
+          )}
+          {currentStep === 4 && (
+            <div className="mt-6 flex h-full w-full flex-1 flex-col justify-center gap-8 p-4 sm:mt-0">
+              {renderStepMainTitle()}
+              <Step5 changeStep={changeStep} />
+            </div>
+          )}
+          {renderStepperButtons()}
         </div>
-      </main>
-    </>
+      </div>
+    </main>
   );
 };
 
