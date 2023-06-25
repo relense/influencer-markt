@@ -104,10 +104,11 @@ model ValuePack {
   valuePackPrice    Decimal
   profile           Profile?     @relation(fields: [profileId], references: [id])
 
-  socialMediaId Int  @unique
+  socialMediaId Int  
   profileId     Int?
 
   @@index([profileId])
+  @@index([socialMediaId])
 }
 
 model SocialMedia {
