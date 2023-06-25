@@ -145,7 +145,7 @@ export const Step2 = (params: {
             autoComplete="off"
           />
           <input
-            {...register("socialMediaFollowers")}
+            {...register("socialMediaFollowers", { valueAsNumber: true })}
             required
             type="number"
             className="h-14 w-full rounded-lg border-[1px] border-gray3 p-4 placeholder-gray2"
