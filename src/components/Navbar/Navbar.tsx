@@ -11,37 +11,38 @@ import {
 import { Button } from "../Button/Button";
 import { faBars, faChevronDown } from "@fortawesome/free-solid-svg-icons";
 import { useState } from "react";
+import Link from "next/link";
 
-export const Navbar = (params: { sessionData: Session | null }) => {
+export const Navbar = (params: {
+  sessionData: Session | null;
+  openLoginModal: () => void;
+}) => {
   const [toggleHamburguer, setToggleHamburguer] = useState<boolean>(false);
 
-  const leftNavBeforeLogin = () => {
+  const leftNavBar = () => {
     return (
       <div className="flex flex-1 justify-start">
-        <span className="cursor-pointer text-lg lg:p-2">Home</span>
-        <span className="cursor-pointer text-lg lg:p-2">Explore</span>
-      </div>
-    );
-  };
-
-  const leftNavAfterLogin = () => {
-    return (
-      <div className="flex flex-1 justify-start">
-        <span className="cursor-pointer text-lg lg:p-2">Home</span>
-        <span className="cursor-pointer text-lg lg:p-2">
+        <Link href="/" className="cursor-pointer text-lg lg:p-2">
+          Home
+        </Link>
+        <Link href="/explore" className="cursor-pointer text-lg lg:p-2">
           Explore
-          <FontAwesomeIcon
-            icon={faChevronDown}
-            className="fa-sm cursor-pointer px-5"
-          />
-        </span>
-        <span className="cursor-pointer text-lg lg:p-2">
-          Saved
-          <FontAwesomeIcon
-            icon={faChevronDown}
-            className="fa-sm cursor-pointer px-5"
-          />
-        </span>
+          {params.sessionData && (
+            <FontAwesomeIcon
+              icon={faChevronDown}
+              className="fa-sm cursor-pointer px-5"
+            />
+          )}
+        </Link>
+        {params.sessionData && (
+          <span className="cursor-pointer text-lg lg:p-2">
+            Saved
+            <FontAwesomeIcon
+              icon={faChevronDown}
+              className="fa-sm cursor-pointer px-5"
+            />
+          </span>
+        )}
       </div>
     );
   };
@@ -51,7 +52,7 @@ export const Navbar = (params: { sessionData: Session | null }) => {
       <div className="flex flex-row items-center justify-end">
         <span
           className="cursor-pointer text-lg lg:p-2"
-          onClick={() => void signIn()}
+          onClick={() => params.openLoginModal()}
         >
           Sign in
         </span>
@@ -88,9 +89,11 @@ export const Navbar = (params: { sessionData: Session | null }) => {
 
   const renderLogoTitle = () => {
     return (
-      <h1 className="m-0 cursor-pointer text-left font-lobster text-2xl text-influencer lg:m-8 lg:text-4xl">
-        Influencer Markt
-      </h1>
+      <Link href="/">
+        <h1 className="m-0 cursor-pointer text-left font-lobster text-2xl text-influencer lg:m-8 lg:text-4xl">
+          Influencer Markt
+        </h1>
+      </Link>
     );
   };
 
@@ -136,9 +139,8 @@ export const Navbar = (params: { sessionData: Session | null }) => {
     return (
       <div className="hidden h-16 w-full items-center px-6 py-12 lg:flex">
         {renderLogoTitle()}
-        {!params.sessionData && leftNavBeforeLogin()}
+        {leftNavBar()}
         {!params.sessionData && rightNavBeforeLogin()}
-        {params.sessionData && leftNavAfterLogin()}
         {params.sessionData && rightNavbarAfterLogin()}
       </div>
     );
