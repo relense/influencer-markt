@@ -8,14 +8,17 @@ type NewButtonProps = {
   title: string;
   loading?: boolean;
   size?: "regular" | "large";
+  shadow?: boolean;
 };
 
 export const Button = ({
   level,
   title,
   size,
+  shadow,
   ...params
 }: ReactButtonProps & NewButtonProps) => {
+  let shadowBox = "";
   let bgColor;
   let textColor;
   let borderColor;
@@ -35,10 +38,14 @@ export const Button = ({
     wSize = "lg:w-full";
   }
 
+  if (shadow) {
+    shadowBox = "m-2 rounded-xl shadow-md shadow-boxShadow";
+  }
+
   return (
     <button
       {...params}
-      className={`w-11/12 cursor-pointer rounded-lg ${bgColor} px-8 py-4 text-center ${textColor} ${wSize} lg:rounded-2xl ${borderColor}`}
+      className={`w-11/12 cursor-pointer rounded-lg ${bgColor} px-8 py-4 text-center font-semibold ${textColor} ${wSize} lg:rounded-2xl ${borderColor} ${shadowBox}`}
     >
       {title}
     </button>
