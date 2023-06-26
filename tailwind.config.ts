@@ -9,6 +9,7 @@ export default {
         lobster: ["Lobster", "cursive"],
         poppins: ["Poppins", "sans-serif"],
         playfair: ["Playfair Display", "serif"],
+        roboto: ["Roboto", "sans-serif"],
       },
       colors: {
         influencer: "#FD3A84",
@@ -19,6 +20,7 @@ export default {
         "shadow-gray": "#D1D1D1",
         "influencer-green": "#64EA9E",
         "light-red": "#F8F4F4",
+        boxShadow: "#64646f80",
       },
       screens: {
         xs: "300px",
