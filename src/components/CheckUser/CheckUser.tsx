@@ -12,9 +12,9 @@ export const CheckUser = (params: { children: ReactElement }) => {
   const router = useRouter();
 
   useEffect(() => {
-    if (!isLoading && !userData?.firstSteps) {
+    if (!isLoading && userData?.firstSteps === false) {
       void router.push("/first-steps");
-    } else if (!userData?.firstSteps) {
+    } else if (!userData?.firstSteps === true) {
       setState({
         status: "Loaded",
       });
