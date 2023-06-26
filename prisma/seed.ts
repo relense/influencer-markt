@@ -2,11 +2,11 @@ import { PrismaClient } from "@prisma/client";
 const prisma = new PrismaClient();
 
 async function main() {
-  const roles = await prisma.role.createMany({
+  await prisma.role.createMany({
     data: [{ name: "Brand" }, { name: "Influencer" }, { name: "Individual" }],
   });
 
-  const categories = await prisma.category.createMany({
+  await prisma.category.createMany({
     data: [
       { name: "Lifestyle" },
       { name: "Comedy" },
@@ -16,7 +16,7 @@ async function main() {
     ],
   });
 
-  const socialMedias = await prisma.socialMedia.createMany({
+  await prisma.socialMedia.createMany({
     data: [
       { name: "Instagram" },
       { name: "Twitter" },
@@ -28,8 +28,6 @@ async function main() {
       { name: "Twitch" },
     ],
   });
-
-  console.log({ roles, categories, socialMedias });
 }
 
 main()
