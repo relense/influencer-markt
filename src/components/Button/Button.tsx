@@ -38,7 +38,7 @@ export const Button = ({
   return (
     <button
       {...params}
-      className={`w-11/12 cursor-pointer rounded-lg ${bgColor} px-8 py-4 text-center ${textColor} lg:mx-5 ${wSize} lg:rounded-2xl ${borderColor}`}
+      className={`w-11/12 cursor-pointer rounded-lg ${bgColor} px-8 py-4 text-center ${textColor} ${wSize} lg:rounded-2xl ${borderColor}`}
     >
       {title}
     </button>
