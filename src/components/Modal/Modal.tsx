@@ -23,7 +23,7 @@ const Modal = ({
         >
           <FontAwesomeIcon icon={faXmark} className="fa-lg text-white" />
         </div>
-        <div className="z-50 h-[400px] overflow-y-auto xs:h-full">
+        <div className="z-50 flex h-[400px] justify-center overflow-y-auto xs:h-full">
           {children}
         </div>
       </div>
