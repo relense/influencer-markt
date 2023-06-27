@@ -16,8 +16,13 @@ export const userSocialMediasRouter = createTRPCRouter({
       )
     )
     .mutation(async ({ ctx, input }) => {
-      const profile = await ctx.prisma.profile.findUnique({
+      const profile = await ctx.prisma.profile.update({
         where: { userId: ctx.session.user.id },
+        data: {
+          userSocialMedia: {
+            set: [],
+          },
+        },
       });
 
       if (profile) {

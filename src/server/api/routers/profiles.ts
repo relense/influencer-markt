@@ -11,11 +11,22 @@ export const profilesRouter = createTRPCRouter({
         userSocialMedia: {
           select: {
             followers: true,
+            handler: true,
             id: true,
             socialMedia: true,
           },
         },
-        valuePacks: true,
+        valuePacks: {
+          select: {
+            deliveryTime: true,
+            description: true,
+            id: true,
+            numberOfRevisions: true,
+            title: true,
+            valuePackPrice: true,
+            socialMedia: true,
+          },
+        },
       },
     });
   }),

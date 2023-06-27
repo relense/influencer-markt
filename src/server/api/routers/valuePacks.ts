@@ -3,13 +3,13 @@ import { createTRPCRouter, protectedProcedure } from "../trpc";
 
 export const valuePacksRouter = createTRPCRouter({
   getValuePacks: protectedProcedure.query(async ({ ctx }) => {
-    const currentProfile = await ctx.prisma.profile.findUnique({
+    const profile = await ctx.prisma.profile.findUnique({
       where: { userId: ctx.session.user.id },
     });
 
-    if (currentProfile) {
+    if (profile) {
       return await ctx.prisma.valuePack.findMany({
-        where: { profileId: currentProfile.id },
+        where: { profileId: profile.id },
       });
     }
   }),
@@ -60,11 +60,16 @@ export const valuePacksRouter = createTRPCRouter({
       )
     )
     .mutation(async ({ ctx, input }) => {
-      const currentProfile = await ctx.prisma.profile.findUnique({
+      const profile = await ctx.prisma.profile.update({
         where: { userId: ctx.session.user.id },
+        data: {
+          valuePacks: {
+            set: [],
+          },
+        },
       });
 
-      if (currentProfile) {
+      if (profile) {
         const valuePacksData = input.map((valuePack) => ({
           deliveryTime: valuePack.deliveryTime,
           description: valuePack.description,
@@ -72,7 +77,7 @@ export const valuePacksRouter = createTRPCRouter({
           title: valuePack.title,
           valuePackPrice: valuePack.valuePackPrice,
           socialMediaId: valuePack.socialMedia.id,
-          profileId: currentProfile.id,
+          profileId: profile.id,
         }));
 
         return await ctx.prisma.valuePack.createMany({
