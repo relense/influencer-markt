@@ -23,7 +23,7 @@ export const Layout = (props: PropsWithChildren) => {
           openLoginModal={() => setIsModalOpen(true)}
           setIsSignUp={setIsSignUp}
         />
-        <div className="mb-12 flex w-full flex-1 flex-col overflow-y-auto">
+        <div className="mb-12 flex w-full flex-1 flex-col overflow-y-auto sm:mb-0">
           {props.children}
           <Footer />
         </div>
