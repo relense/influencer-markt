@@ -1,7 +1,6 @@
 import {
   useForm,
   type UseFormRegister,
-  Controller,
   type UseFormSetValue,
   type UseFormGetValues,
   type FieldErrors,
@@ -12,17 +11,12 @@ import { faPlus, faXmark } from "@fortawesome/free-solid-svg-icons";
 import { useEffect, useState } from "react";
 import { type Option } from "../../../components/CustomMultiSelect/CustomMultiSelect";
 import { type SocialMedia } from "@prisma/client";
-import { CustomSelect } from "../../../components/CustomSelect/CustomSelect";
-import { Modal } from "../../../components/Modal/Modal";
-import { Button } from "../../../components/Button/Button";
 import { StepsReminder } from "../../../components/StepsReminder/StepsReminder";
 import { type SocialMediaData } from "../FirstStepsPage";
-
-export type SocialMediaDetails = {
-  platform: Option;
-  socialMediaHandler: string;
-  socialMediaFollowers: number;
-};
+import {
+  AddSocialMediaModal,
+  type SocialMediaDetails,
+} from "../../../components/AddSocialMediaModal/AddSocialMediaModal";
 
 export const Step2 = (params: {
   registerSocialMedia: UseFormRegister<SocialMediaData>;
@@ -111,59 +105,6 @@ export const Step2 = (params: {
     setIsModalOpen(false);
   };
 
-  const modalContent = () => {
-    return (
-      <Modal onClose={() => onCloseModal()}>
-        <form
-          id="form-socialMedia"
-          className="flex h-full w-full flex-col items-center gap-4 sm:w-full"
-          onSubmit={addSocialMedia}
-        >
-          <div>Add Social Media Details</div>
-          <Controller
-            name="platform"
-            control={control}
-            rules={{ required: true }}
-            render={({ field: { value, onChange } }) => {
-              return (
-                <CustomSelect
-                  register={register}
-                  name="platform"
-                  placeholder="Choose your Social Media: e.g., Instagram, TikTok"
-                  options={availablePlatforms}
-                  value={value}
-                  handleOptionSelect={onChange}
-                />
-              );
-            }}
-          />
-          <input
-            {...register("socialMediaHandler")}
-            required
-            type="text"
-            className="h-14 w-full rounded-lg border-[1px] border-gray3 p-4 placeholder-gray2"
-            placeholder="Social media handler"
-            autoComplete="off"
-          />
-          <input
-            {...register("socialMediaFollowers", { valueAsNumber: true })}
-            required
-            type="number"
-            className="h-14 w-full rounded-lg border-[1px] border-gray3 p-4 placeholder-gray2"
-            placeholder="Social Media Followers"
-            autoComplete="off"
-          />
-
-          <Button
-            title="Add Social Media"
-            level="primary"
-            form="form-socialMedia"
-          />
-        </form>
-      </Modal>
-    );
-  };
-
   return (
     <div className="mt-2 flex flex-1 flex-col items-center gap-4 lg:mt-11 lg:overflow-y-auto">
       <form
@@ -238,7 +179,16 @@ export const Step2 = (params: {
           })}
       </div>
       <StepsReminder />
-      {isModalOpen && modalContent()}
+      {isModalOpen && (
+        <AddSocialMediaModal
+          addSocialMedia={addSocialMedia}
+          platforms={params.platforms}
+          socialMediaList={socialMediaList}
+          control={control}
+          onCloseModal={onCloseModal}
+          register={register}
+        />
+      )}
     </div>
   );
 };

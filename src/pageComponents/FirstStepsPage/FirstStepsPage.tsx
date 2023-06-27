@@ -5,7 +5,7 @@ import Link from "next/link";
 
 import { type Option } from "../../components/CustomMultiSelect/CustomMultiSelect";
 import { Step1 } from "./Views/Step1";
-import { type SocialMediaDetails, Step2 } from "./Views/Step2";
+import { Step2 } from "./Views/Step2";
 
 import { ProgressRing } from "../../components/ProgressRing/ProgressRing";
 import { Step3 } from "./Views/Step3";
@@ -14,6 +14,7 @@ import { Step5 } from "./Views/Step5";
 import { Button } from "../../components/Button/Button";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faXmark } from "@fortawesome/free-solid-svg-icons";
+import { type SocialMediaDetails } from "../../components/AddSocialMediaModal/AddSocialMediaModal";
 
 type Step = {
   step: string;
@@ -185,7 +186,6 @@ const FirstStepsPage = () => {
         website: socialMediaData.website || "",
       });
     }
-
     if (socialMediaData) {
       const newSocialMediaData = socialMediaData.socialMedia.map(
         (socialMedia) => {

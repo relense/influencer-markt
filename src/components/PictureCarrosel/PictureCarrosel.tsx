@@ -106,7 +106,7 @@ export const PictureCarrosel = () => {
       return (
         <div className="relative flex h-[340px] flex-col items-center justify-center gap-4 self-center rounded-lg border-[1px] border-gray3 sm:h-[540px] sm:w-[430px]">
           <div
-            className="absolute top-[-10px] flex h-10 w-10 cursor-pointer items-center justify-center self-end rounded-full bg-influencer-green sm:right-[-10px]"
+            className="absolute right-[-10px] top-[-10px] flex h-10 w-10 cursor-pointer items-center justify-center self-end rounded-full bg-influencer-green"
             onClick={() => handleRemovePicture()}
           >
             <FontAwesomeIcon
@@ -163,14 +163,14 @@ export const PictureCarrosel = () => {
 
   const renderPictureCarrosel = () => {
     return (
-      <div className="relative flex justify-center gap-6 sm:mt-0">
-        <div className="hidden gap-6 overflow-x-auto sm:flex">
+      <div className="relative flex justify-center gap-2 sm:mt-0">
+        <div className="hidden gap-2 overflow-x-auto sm:flex">
           {pictureList &&
             pictureList.map((picture) => {
               return (
                 <div
                   key={picture}
-                  className="h-14 w-28 cursor-pointer"
+                  className="h-14 cursor-pointer"
                   onClick={() => setCurrentPicture(picture)}
                 >
                   <Image
@@ -178,7 +178,7 @@ export const PictureCarrosel = () => {
                     alt="Uploaded Image"
                     width={112}
                     height={56}
-                    className="h-14 w-28 rounded-lg object-cover "
+                    className="h-14 rounded-lg object-cover "
                   />
                 </div>
               );
@@ -192,7 +192,7 @@ export const PictureCarrosel = () => {
               onChange={handleFileUpload}
               className="absolute h-full w-full cursor-pointer text-[0px] opacity-0"
             />
-            <div className="flex h-14 w-28 cursor-pointer items-center justify-center rounded-lg border-[1px] border-gray3">
+            <div className="flex h-14 cursor-pointer items-center justify-center rounded-lg border-[1px] border-gray3">
               <div className="flex h-24 w-24 cursor-pointer flex-col items-center justify-center">
                 <FontAwesomeIcon
                   icon={faCamera}
