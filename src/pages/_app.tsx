@@ -6,7 +6,6 @@ import { SessionProvider, useSession } from "next-auth/react";
 import Head from "next/head";
 import "@fortawesome/fontawesome-svg-core/styles.css";
 import { config } from "@fortawesome/fontawesome-svg-core";
-import { CheckUser } from "../components/CheckUser/CheckUser";
 import { type ReactElement } from "react";
 
 config.autoAddCss = false;
@@ -28,9 +27,7 @@ const MyApp: AppType<{ session: Session | null }> = ({
 
       <SessionProvider session={session}>
         <Auth>
-          <CheckUser>
-            <Component {...pageProps} />
-          </CheckUser>
+          <Component {...pageProps} />
         </Auth>
       </SessionProvider>
     </>
