@@ -172,13 +172,7 @@ export const Step2 = (params: {
         className="mt-4 flex w-3/4 flex-col gap-1 sm:w-full lg:w-3/4"
       >
         <input
-          {...params.registerSocialMedia("website", {
-            pattern: {
-              value:
-                /^(https?:\/\/)?([\w.-]+)\.([a-z]{2,})(:\d{1,5})?([\/\w.-]*)*\/?$/i,
-              message: "Invalid url address",
-            },
-          })}
+          {...params.registerSocialMedia("website")}
           type="text"
           className="h-14 rounded-lg border-[1px] border-gray3 p-4 placeholder-gray2"
           placeholder="Website URL: Provide Your Website Address"
