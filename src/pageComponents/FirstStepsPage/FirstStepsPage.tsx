@@ -12,6 +12,8 @@ import { Step3 } from "./Views/Step3";
 import { Step4, type ValuePack } from "./Views/Step4";
 import { Step5 } from "./Views/Step5";
 import { Button } from "../../components/Button/Button";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faXmark } from "@fortawesome/free-solid-svg-icons";
 
 type Step = {
   step: string;
@@ -133,6 +135,19 @@ const FirstStepsPage = () => {
   const submitStep4 = handleSubmitValuePackData((data) => {
     changeStep("next");
   });
+
+  const renderCloseButton = () => {
+    return (
+      <Link href="/">
+        <div className="absolute right-1 top-1 flex h-14 w-14 cursor-pointer items-center justify-center rounded-full bg-influencer-green lg:right-2 lg:top-2">
+          <FontAwesomeIcon
+            icon={faXmark}
+            className="fa-2x cursor-pointer text-white"
+          />
+        </div>
+      </Link>
+    );
+  };
 
   const changeStep = (type: "next" | "previous") => {
     if (mainContentRef.current) {
@@ -295,7 +310,7 @@ const FirstStepsPage = () => {
             />
           )}
         </div>
-        <div className="flex items-center justify-center lg:flex-row">
+        <div className="flex items-center justify-center gap-4 lg:flex-row">
           {currentStep < steps.length - 1 && (
             <>
               {currentStep > 0 && (
@@ -326,55 +341,59 @@ const FirstStepsPage = () => {
   };
 
   return (
-    <main className="h-full w-full bg-shadow-gray p-6 lg:p-8">
-      <div className="flex h-full w-full flex-col rounded-2xl bg-white lg:flex-row lg:overscroll-none">
-        {renderSteps()}
+    <>
+      {renderCloseButton()}
 
-        <div
-          ref={mainContentRef}
-          className="flex h-full w-full flex-col overflow-y-auto sm:px-8 lg:overscroll-none"
-        >
-          {currentStep < steps.length - 1 && renderStepMainTitle()}
-          {currentStep === 0 && (
-            <Step1
-              categories={categories}
-              roles={roles}
-              control={control}
-              register={register}
-              setValue={setValue}
-              submit={submitStep1}
-            />
-          )}
-          {currentStep === 1 && (
-            <Step2
-              registerSocialMedia={registerSocialMedia}
-              platforms={platforms}
-              setValue={setValueSocialMedia}
-              getValues={getValuesSocialMedia}
-              errors={errors}
-              submit={submitStep2}
-            />
-          )}
-          {currentStep === 2 && <Step3 changeStep={changeStep} />}
-          {currentStep === 3 && (
-            <Step4
-              changeStep={changeStep}
-              socialMedias={platforms}
-              getValues={getValuesValuePacks}
-              setValue={setValueValuePacks}
-              submit={submitStep4}
-            />
-          )}
-          {currentStep === 4 && (
-            <div className="mt-6 flex h-full w-full flex-1 flex-col justify-center gap-8 p-4 sm:mt-0">
-              {renderStepMainTitle()}
-              <Step5 changeStep={changeStep} saveAllData={saveAllData} />
-            </div>
-          )}
-          {renderStepperButtons()}
+      <main className="h-full w-full bg-shadow-gray p-6 lg:p-8">
+        <div className="flex h-full w-full flex-col rounded-2xl bg-white lg:flex-row lg:overscroll-none">
+          {renderSteps()}
+
+          <div
+            ref={mainContentRef}
+            className="flex h-full w-full flex-col overflow-y-auto sm:px-8 lg:overscroll-none"
+          >
+            {currentStep < steps.length - 1 && renderStepMainTitle()}
+            {currentStep === 0 && (
+              <Step1
+                categories={categories}
+                roles={roles}
+                control={control}
+                register={register}
+                setValue={setValue}
+                submit={submitStep1}
+              />
+            )}
+            {currentStep === 1 && (
+              <Step2
+                registerSocialMedia={registerSocialMedia}
+                platforms={platforms}
+                setValue={setValueSocialMedia}
+                getValues={getValuesSocialMedia}
+                errors={errors}
+                submit={submitStep2}
+              />
+            )}
+            {currentStep === 2 && <Step3 changeStep={changeStep} />}
+            {currentStep === 3 && (
+              <Step4
+                changeStep={changeStep}
+                socialMedias={platforms}
+                getValues={getValuesValuePacks}
+                setValue={setValueValuePacks}
+                submit={submitStep4}
+              />
+            )}
+            {currentStep === 4 && (
+              <div className="mt-6 flex h-full w-full flex-1 flex-col justify-center gap-8 p-4 sm:mt-0">
+                {renderStepMainTitle()}
+                <Step5 changeStep={changeStep} saveAllData={saveAllData} />
+              </div>
+            )}
+            {renderStepperButtons()}
+          </div>
         </div>
-      </div>
-    </main>
+      </main>
+    </>
   );
 };
 
