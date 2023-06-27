@@ -3,10 +3,17 @@ import { Navbar } from "../Navbar/Navbar";
 import { Footer } from "../Footer/Footer";
 import { useSession } from "next-auth/react";
 import { LoginModal } from "../LoginModal/LoginModal";
+import { BottomBar } from "../BottomBar/BottomBar";
 
 export const Layout = (props: PropsWithChildren) => {
   const { data: sessionData } = useSession();
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+  const [isSignUp, setIsSignUp] = useState<boolean>(false);
+
+  const onCloseModal = () => {
+    setIsModalOpen(false);
+    setIsSignUp(false);
+  };
 
   return (
     <>
@@ -14,11 +21,19 @@ export const Layout = (props: PropsWithChildren) => {
         <Navbar
           sessionData={sessionData}
           openLoginModal={() => setIsModalOpen(true)}
+          setIsSignUp={setIsSignUp}
         />
-        <div className="flex w-full flex-col">{props.children}</div>
-        <Footer />
+        <div className="flex w-full flex-1 flex-col overflow-y-auto">
+          {props.children}
+          <Footer />
+        </div>
+        <BottomBar />
+        <div className="flex justify-center">
+          {isModalOpen && (
+            <LoginModal onClose={() => onCloseModal()} isSignUp={isSignUp} />
+          )}
+        </div>
       </main>
-      {isModalOpen && <LoginModal onClose={() => setIsModalOpen(false)} />}
     </>
   );
 };
