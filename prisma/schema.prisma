@@ -69,7 +69,7 @@ model Profile {
   name            String
   role            Role?             @relation(fields: [roleId], references: [id])
   categories      Category[]
-  about           String
+  about           String            @db.Text
   country         String
   city            String
   user            User              @relation(fields: [userId], references: [id])
@@ -103,7 +103,7 @@ model ValuePack {
   description       String
   deliveryTime      Int
   numberOfRevisions Int
-  valuePackPrice    Decimal
+  valuePackPrice    Int
   profile           Profile?     @relation(fields: [profileId], references: [id])
 
   socialMediaId Int
