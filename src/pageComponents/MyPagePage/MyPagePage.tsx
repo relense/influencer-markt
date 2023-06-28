@@ -17,12 +17,18 @@ import {
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { Layout } from "../../components/Layout/Layout";
+import { AddValuePackModal } from "../../components/AddValuePackModal/AddValuePackModal";
+import { type ValuePack } from "../FirstStepsPage/Views/Step4";
 
 const MyPagePage = () => {
+  const [isSocialMediaModalOpen, setIsSocialMediaModalOpen] =
+    useState<boolean>(false);
+  const [isValuePackModalOpen, setIsValuePackModalOpen] =
+    useState<boolean>(false);
   const ctx = api.useContext();
 
   const { data: platforms } = api.allRoutes.getAllSocialMedia.useQuery();
-  const { data, isLoading } = api.profiles.getProfile.useQuery();
+  const { data: profile, isLoading } = api.profiles.getProfile.useQuery();
 
   const { mutate: createUserSocialMedia } =
     api.userSocialMedias.createUserSocialMedia.useMutation({
@@ -37,15 +43,22 @@ const MyPagePage = () => {
       },
     });
 
-  const [isSocialMediaModalOpen, setIsSocialMediaModalOpen] =
-    useState<boolean>(false);
-
   const {
     control,
     register,
-    reset,
+    reset: socialMediaReset,
     handleSubmit: handleSubmitSocialMedia,
   } = useForm<SocialMediaDetails>({
+    defaultValues: {
+      platform: { id: -1, name: "" },
+    },
+  });
+
+  const {
+    control: valuePackControl,
+    register: valuePackRegister,
+    reset: valuePackReset,
+  } = useForm<ValuePack>({
     defaultValues: {
       platform: { id: -1, name: "" },
     },
@@ -64,6 +77,16 @@ const MyPagePage = () => {
     reset();
   });
 
+  const onCloseSocialMediaModal = () => {
+    setIsSocialMediaModalOpen(false);
+    socialMediaReset();
+  };
+
+  const onCloseValuePackModal = () => {
+    setIsValuePackModalOpen(false);
+    valuePackReset();
+  };
+
   const renderProfileDescription = () => {
     return (
       <>
@@ -78,19 +101,19 @@ const MyPagePage = () => {
           <div className="flex h-24 w-24 cursor-pointer flex-col items-center justify-center rounded-full border-[1px] border-gray3">
             <FontAwesomeIcon icon={faCamera} className="fa-2x text-gray3" />
           </div>
-          <div className="text-4xl font-bold">{data?.name}</div>
+          <div className="text-4xl font-bold">{profile?.name}</div>
           <div className="text-lg text-gray2">
-            {data?.country}, {data?.city}
+            {profile?.country}, {profile?.city}
           </div>
         </div>
         <div className="flex flex-col gap-2">
           <div className="text-2xl font-semibold">About</div>
-          <div className="text-gray2">{data?.about}</div>
+          <div className="text-gray2">{profile?.about}</div>
         </div>
         <div className="flex flex-1 flex-col gap-2">
           <div className="text-2xl font-semibold">Categories</div>
           <div className="flex flex-wrap gap-4">
-            {data?.categories.map((category) => {
+            {profile?.categories.map((category) => {
               return (
                 <div
                   key={category.id}
@@ -119,8 +142,8 @@ const MyPagePage = () => {
           </div>
         </div>
         <div className="flex flex-wrap gap-4">
-          {data?.userSocialMedia && data?.userSocialMedia.length > 0 ? (
-            data?.userSocialMedia.map((socialMedia) => {
+          {profile?.userSocialMedia && profile?.userSocialMedia.length > 0 ? (
+            profile?.userSocialMedia.map((socialMedia) => {
               return (
                 <div
                   key={socialMedia.id}
@@ -169,12 +192,15 @@ const MyPagePage = () => {
       <div className="flex flex-1 flex-col gap-4">
         <div className="flex items-center gap-2">
           <div className="text-2xl font-semibold">Value Packs</div>
-          <div className="flex h-5 w-5 items-center justify-center rounded-full bg-influencer text-white">
+          <div
+            className="flex h-5 w-5 items-center justify-center rounded-full bg-influencer text-white"
+            onClick={() => setIsValuePackModalOpen(true)}
+          >
             <FontAwesomeIcon icon={faPlus} className="fa-sm cursor-pointer " />
           </div>
         </div>
         <div className="flex flex-wrap gap-4 ">
-          {data?.valuePacks.map((valuePack) => {
+          {profile?.valuePacks.map((valuePack) => {
             return (
               <div
                 key={valuePack.id}
@@ -229,11 +255,11 @@ const MyPagePage = () => {
           {renderSocialMedia()}
           {renderValuePacks()}
         </div>
-        {isSocialMediaModalOpen && data?.userSocialMedia && (
+        {isSocialMediaModalOpen && profile?.userSocialMedia && (
           <AddSocialMediaModal
             addSocialMedia={onAddSocialMedia}
             platforms={platforms}
-            socialMediaList={data.userSocialMedia.map((item) => {
+            socialMediaList={profile.userSocialMedia.map((item) => {
               return {
                 platform: item.socialMedia || { id: -1, name: "" },
                 socialMediaHandler: item.handler,
@@ -242,7 +268,16 @@ const MyPagePage = () => {
             })}
             control={control}
             register={register}
-            onCloseModal={() => setIsSocialMediaModalOpen(false)}
+            onCloseModal={() => onCloseSocialMediaModal()}
+          />
+        )}
+        {isValuePackModalOpen && (
+          <AddValuePackModal
+            control={valuePackControl}
+            onAddValuePack={() => console.log("0io")}
+            onCloseModal={() => onCloseValuePackModal()}
+            register={valuePackRegister}
+            socialMedias={platforms}
           />
         )}
       </div>
