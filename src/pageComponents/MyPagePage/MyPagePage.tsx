@@ -74,7 +74,7 @@ const MyPagePage = () => {
     });
 
     setIsSocialMediaModalOpen(false);
-    reset();
+    socialMediaReset();
   });
 
   const onCloseSocialMediaModal = () => {
