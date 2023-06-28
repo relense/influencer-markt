@@ -13,7 +13,6 @@ import {
 import { SearchBar } from "../../components/SearchBar/SearchBar";
 import { Button } from "../../components/Button/Button";
 import { Layout } from "../../components/Layout/Layout";
-import { LoginModal } from "../../components/LoginModal/LoginModal";
 
 type Offer = {
   icon: IconDefinition;
