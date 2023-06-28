@@ -42,7 +42,7 @@ export const Step4 = (params: {
   const { control, register, handleSubmit, reset, setValue } =
     useForm<ValuePack>({
       defaultValues: {
-        platform: { id: -1, option: "" },
+        platform: { id: -1, name: "" },
       },
     });
 
@@ -105,7 +105,7 @@ export const Step4 = (params: {
             <div className="flex justify-between gap-4">
               <div className="text-xs font-semibold">{pack.title}</div>
               <div className="text-xs font-semibold text-influencer">
-                {pack.platform.option}
+                {pack.platform.name}
               </div>
             </div>
             <div className="flex break-words font-extralight sm:flex-1">
@@ -177,9 +177,7 @@ export const Step4 = (params: {
                   register={register}
                   name="platform"
                   placeholder="Select the social media platform for your value pack"
-                  options={params.socialMedias?.map((socialMedia) => {
-                    return { id: socialMedia.id, option: socialMedia.name };
-                  })}
+                  options={params.socialMedias}
                   handleOptionSelect={onChange}
                   value={value}
                 />

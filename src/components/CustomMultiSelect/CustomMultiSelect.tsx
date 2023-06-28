@@ -7,7 +7,7 @@ import { useOutsideClick } from "../../utils/helper";
 
 export type Option = {
   id: number;
-  option: string;
+  name: string;
 };
 
 export const CustomMultiSelect = (params: {
@@ -51,10 +51,10 @@ export const CustomMultiSelect = (params: {
 
   const getIndexFromArrayOfObjects = (arr: Option[], option: Option) => {
     const stringArray = arr.map((item) => {
-      return item.option;
+      return item.name;
     });
 
-    return stringArray.indexOf(option.option);
+    return stringArray.indexOf(option.name);
   };
 
   useOutsideClick(() => {
@@ -67,7 +67,7 @@ export const CustomMultiSelect = (params: {
     const selectedOptionsCopy = [...localSelectedOptions];
     const newValues = selectedOptionsCopy
       .map((option) => {
-        return option.option;
+        return option.name;
       })
       .join(",  ");
 
@@ -132,7 +132,7 @@ export const CustomMultiSelect = (params: {
                     key={option.id}
                     onClick={() => onHandleClick(option)}
                   >
-                    {option.option}
+                    {option.name}
                   </div>
                 );
               })}

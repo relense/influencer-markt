@@ -122,9 +122,7 @@ export const Step1 = (params: {
                 register={params.register}
                 name="role"
                 placeholder="Choose Your Role: Influencer, Brand, or Individual"
-                options={params.roles?.map((role) => {
-                  return { id: role.id, option: role.name };
-                })}
+                options={params.roles}
                 value={value}
                 handleOptionSelect={onChange}
               />
@@ -141,9 +139,7 @@ export const Step1 = (params: {
                 register={params.register}
                 name="categories"
                 placeholder="Choose Your Categories: e.g., Fashion, Travel, Fitness"
-                options={params.categories?.map((category) => {
-                  return { id: category.id, option: category.name };
-                })}
+                options={params.categories}
                 handleOptionSelect={onChange}
                 selectedOptions={value}
               />

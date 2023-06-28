@@ -4,12 +4,8 @@ import { faCircle, faCircleCheck } from "@fortawesome/free-regular-svg-icons";
 import { faChevronDown, faChevronUp } from "@fortawesome/free-solid-svg-icons";
 import { type UseFormRegister } from "react-hook-form";
 
+import { type Option } from "../CustomMultiSelect/CustomMultiSelect";
 import { useOutsideClick } from "../../utils/helper";
-
-type Option = {
-  id: number;
-  option: string;
-};
 
 export const CustomSelect = (params: {
   register: UseFormRegister<any>;
@@ -47,7 +43,7 @@ export const CustomSelect = (params: {
           }}
           className="flex h-14 w-full flex-1 cursor-pointer rounded-lg border-[1px] border-gray3 bg-transparent p-4 placeholder-gray2 caret-transparent placeholder:w-11/12"
           placeholder={params.placeholder}
-          defaultValue={params.value.option}
+          defaultValue={params.value.name}
           autoComplete="off"
         />
         {selectStatus ? (
@@ -84,7 +80,7 @@ export const CustomSelect = (params: {
                   className={classes}
                 >
                   <div className="flex items-center justify-between">
-                    <div className={`w-3/4`}>{option.option}</div>
+                    <div className={`w-3/4`}>{option.name}</div>
                     <div>
                       {params.value.id === option.id ? (
                         <FontAwesomeIcon

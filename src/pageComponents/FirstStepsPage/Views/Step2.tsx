@@ -34,7 +34,7 @@ export const Step2 = (params: {
   const { control, register, handleSubmit, reset } =
     useForm<SocialMediaDetails>({
       defaultValues: {
-        platform: { id: -1, option: "" },
+        platform: { id: -1, name: "" },
       },
     });
 
@@ -51,7 +51,7 @@ export const Step2 = (params: {
             )
         )
         .map((platform) => {
-          return { id: platform.id, option: platform.name };
+          return { id: platform.id, name: platform.name };
         });
     }
 
@@ -69,7 +69,7 @@ export const Step2 = (params: {
   const addSocialMedia = handleSubmit((data) => {
     const newArrayList = [...socialMediaList];
     newArrayList.push({
-      platform: { id: data.platform.id, option: data.platform.option },
+      platform: { id: data.platform.id, name: data.platform.name },
       socialMediaFollowers: data.socialMediaFollowers,
       socialMediaHandler: data.socialMediaHandler,
     });
@@ -94,10 +94,10 @@ export const Step2 = (params: {
     option: SocialMediaDetails
   ) => {
     const stringArray = arr.map((item) => {
-      return item.platform.option;
+      return item.platform.name;
     });
 
-    return stringArray.indexOf(option.platform.option);
+    return stringArray.indexOf(option.platform.name);
   };
 
   const onCloseModal = () => {
@@ -152,7 +152,7 @@ export const Step2 = (params: {
               >
                 <div className="flex w-auto cursor-default flex-col gap-4 rounded-lg border-[1px] border-gray3 p-4 sm:h-auto">
                   <div className="font-semibold text-influencer">
-                    {socialMedia.platform.option}
+                    {socialMedia.platform.name}
                   </div>
                   <div className="flex flex-col gap-2 xs:flex-row xs:gap-4">
                     <div className="break-words">

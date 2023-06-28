@@ -94,7 +94,7 @@ const FirstStepsPage = () => {
     handleSubmit: handleSubmitProfileData,
   } = useForm<ProfileData>({
     defaultValues: {
-      role: { id: -1, option: "" },
+      role: { id: -1, name: "" },
       categories: [],
       profilePicture: "",
     },
@@ -117,6 +117,7 @@ const FirstStepsPage = () => {
   const { data: categories } = api.allRoutes.getAllCategories.useQuery();
   const { data: roles } = api.allRoutes.getAllRoles.useQuery();
   const { data: platforms } = api.allRoutes.getAllSocialMedia.useQuery();
+
   const { mutate } = api.users.updateUser.useMutation();
   const { mutateAsync: profileMutation } =
     api.profiles.createProfile.useMutation();
@@ -125,15 +126,15 @@ const FirstStepsPage = () => {
   const { mutate: userSocialMediaMutation } =
     api.userSocialMedias.createUserSocialMedias.useMutation();
 
-  const submitStep1 = handleSubmitProfileData((data) => {
+  const submitStep1 = handleSubmitProfileData(() => {
     changeStep("next");
   });
 
-  const submitStep2 = handleSubmitSocialMediaData((data) => {
+  const submitStep2 = handleSubmitSocialMediaData(() => {
     changeStep("next");
   });
 
-  const submitStep4 = handleSubmitValuePackData((data) => {
+  const submitStep4 = handleSubmitValuePackData(() => {
     changeStep("next");
   });
 
@@ -175,11 +176,8 @@ const FirstStepsPage = () => {
       await profileMutation({
         displayName: profileData.displayName,
         profilePicture: profileData.profilePicture,
-        categories: profileData.categories.map((category) => ({
-          id: category.id,
-          name: category.option,
-        })),
-        role: { id: profileData.role.id, name: profileData.role.option },
+        categories: profileData.categories,
+        role: { id: profileData.role.id, name: profileData.role.name },
         about: profileData.about,
         country: profileData.country,
         city: profileData.city,
@@ -192,10 +190,7 @@ const FirstStepsPage = () => {
           return {
             handler: socialMedia.socialMediaHandler,
             followers: socialMedia.socialMediaFollowers,
-            socialMedia: {
-              id: socialMedia.platform.id,
-              name: socialMedia.platform.option,
-            },
+            socialMedia: socialMedia.platform,
           };
         }
       );
@@ -207,10 +202,7 @@ const FirstStepsPage = () => {
       const newData = valuePackData.valuePacks.map((valuePack) => {
         return {
           title: valuePack.title,
-          socialMedia: {
-            id: valuePack.platform.id,
-            name: valuePack.platform.option,
-          },
+          socialMedia: valuePack.platform,
           description: valuePack.description,
           deliveryTime: valuePack.deliveryTime,
           numberOfRevisions: valuePack.numberOfRevisions,
