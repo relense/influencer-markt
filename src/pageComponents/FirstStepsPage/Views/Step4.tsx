@@ -20,6 +20,7 @@ import { CustomSelect } from "../../../components/CustomSelect/CustomSelect";
 import { Button } from "../../../components/Button/Button";
 import { StepsReminder } from "../../../components/StepsReminder/StepsReminder";
 import { type ValuePacksData } from "../FirstStepsPage";
+import { AddValuePackModal } from "../../../components/AddValuePackModal/AddValuePackModal";
 
 export type ValuePack = {
   title: string;
@@ -238,7 +239,15 @@ export const Step4 = (params: {
           {valuePackList()}
         </div>
         <StepsReminder />
-        {isModalOpen && valuePackBuildModal()}
+        {isModalOpen && (
+          <AddValuePackModal
+            control={control}
+            onAddValuePack={onAddValuePack}
+            onCloseModal={onCloseModal}
+            register={register}
+            socialMedias={params.socialMedias}
+          />
+        )}
       </div>
     </>
   );
