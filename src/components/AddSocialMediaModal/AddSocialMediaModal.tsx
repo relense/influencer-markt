@@ -16,14 +16,7 @@ export type SocialMediaDetails = {
   socialMediaFollowers: number;
 };
 
-const AddSocialMediaModal = ({
-  onCloseModal,
-  addSocialMedia,
-  register,
-  control,
-  platforms,
-  socialMediaList,
-}: {
+const AddSocialMediaModal = (params: {
   onCloseModal: () => void;
   addSocialMedia: () => void;
   register: UseFormRegister<SocialMediaDetails>;
@@ -36,10 +29,10 @@ const AddSocialMediaModal = ({
   useEffect(() => {
     let availablePlatformsArray: Option[] = [];
 
-    if (platforms && socialMediaList) {
-      availablePlatformsArray = platforms.filter(
+    if (params.platforms && params.socialMediaList) {
+      availablePlatformsArray = params.platforms.filter(
         (platformsArrayValue) =>
-          !socialMediaList.some(
+          !params.socialMediaList.some(
             (socialMediaListValue) =>
               socialMediaListValue.platform.id === platformsArrayValue.id
           )
@@ -47,24 +40,24 @@ const AddSocialMediaModal = ({
     }
 
     setAvailablePlatforms(availablePlatformsArray);
-  }, [platforms, socialMediaList]);
+  }, [params.platforms, params.socialMediaList]);
 
   return (
-    <Modal onClose={() => onCloseModal()}>
+    <Modal onClose={() => params.onCloseModal()}>
       <form
         id="form-socialMedia"
         className="flex h-full w-full flex-col items-center gap-4 sm:w-full sm:p-4"
-        onSubmit={addSocialMedia}
+        onSubmit={params.addSocialMedia}
       >
         <div>Add Social Media Details</div>
         <Controller
           name="platform"
-          control={control}
+          control={params.control}
           rules={{ required: true }}
           render={({ field: { value, onChange } }) => {
             return (
               <CustomSelect
-                register={register}
+                register={params.register}
                 name="platform"
                 placeholder="Choose your Social Media: e.g., Instagram, TikTok"
                 options={availablePlatforms}
@@ -75,7 +68,7 @@ const AddSocialMediaModal = ({
           }}
         />
         <input
-          {...register("socialMediaHandler")}
+          {...params.register("socialMediaHandler")}
           required
           type="text"
           className="h-14 w-full rounded-lg border-[1px] border-gray3 p-4 placeholder-gray2"
@@ -83,7 +76,7 @@ const AddSocialMediaModal = ({
           autoComplete="off"
         />
         <input
-          {...register("socialMediaFollowers", { valueAsNumber: true })}
+          {...params.register("socialMediaFollowers", { valueAsNumber: true })}
           required
           type="number"
           className="h-14 w-full rounded-lg border-[1px] border-gray3 p-4 placeholder-gray2"
