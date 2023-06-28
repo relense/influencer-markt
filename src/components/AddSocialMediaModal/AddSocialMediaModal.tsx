@@ -11,7 +11,7 @@ import { useEffect, useState } from "react";
 import { type SocialMedia } from "@prisma/client";
 
 export type SocialMediaDetails = {
-  platform: Option;
+  platform: SocialMedia;
   socialMediaHandler: string;
   socialMediaFollowers: number;
 };
@@ -37,17 +37,13 @@ const AddSocialMediaModal = ({
     let availablePlatformsArray: Option[] = [];
 
     if (platforms && socialMediaList) {
-      availablePlatformsArray = platforms
-        .filter(
-          (platformsArrayValue) =>
-            !socialMediaList.some(
-              (socialMediaListValue) =>
-                socialMediaListValue.platform.id === platformsArrayValue.id
-            )
-        )
-        .map((platform) => {
-          return { id: platform.id, option: platform.name };
-        });
+      availablePlatformsArray = platforms.filter(
+        (platformsArrayValue) =>
+          !socialMediaList.some(
+            (socialMediaListValue) =>
+              socialMediaListValue.platform.id === platformsArrayValue.id
+          )
+      );
     }
 
     setAvailablePlatforms(availablePlatformsArray);
@@ -57,7 +53,7 @@ const AddSocialMediaModal = ({
     <Modal onClose={() => onCloseModal()}>
       <form
         id="form-socialMedia"
-        className="flex h-full w-full flex-col items-center gap-4 sm:w-full"
+        className="flex h-full w-full flex-col items-center gap-4 sm:w-full sm:p-4"
         onSubmit={addSocialMedia}
       >
         <div>Add Social Media Details</div>
