@@ -199,7 +199,10 @@ export const Navbar = (params: {
           className="absolute right-1 top-20 z-10 flex h-auto w-11/12 flex-col gap-4 rounded-2xl border-[1px] border-white1 bg-white p-8 shadow-lg sm:right-5 sm:w-72"
           onClick={() => setToggleOptions(!toggleOptions)}
         >
-          <Link href="/my-page" className="flex cursor-pointer gap-4">
+          <Link
+            href={`/${params.sessionData?.user.id || "/"}`}
+            className="flex cursor-pointer gap-4"
+          >
             <FontAwesomeIcon
               icon={faFileLines}
               className="fa-xl cursor-pointer"

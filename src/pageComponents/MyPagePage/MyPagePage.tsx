@@ -244,9 +244,11 @@ const MyPagePage = () => {
             <div className="text-gray2">{profile?.website}</div>
           </div>
         )}
-        <div className="flex flex-col gap-2">
+        <div className="flex w-full flex-col gap-2">
           <div className="text-2xl font-semibold">About</div>
-          <div className="text-gray2">{profile?.about}</div>
+          <div className="text-gray2 [overflow-wrap:anywhere]">
+            {profile?.about}
+          </div>
         </div>
         <div className="flex flex-1 flex-col gap-2">
           <div className="text-2xl font-semibold">Categories</div>
@@ -317,7 +319,7 @@ const MyPagePage = () => {
       <div className="flex flex-1 flex-col gap-4">
         <div className="text-2xl font-semibold">Visual Portfolio</div>
         <div className="flex w-full self-start sm:w-auto">
-          <div className="flex w-full flex-col items-start gap-4">
+          <div className="flex w-full flex-col gap-4 lg:items-start">
             <PictureCarrosel />
           </div>
         </div>
