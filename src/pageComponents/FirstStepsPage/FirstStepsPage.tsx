@@ -166,6 +166,7 @@ const FirstStepsPage = () => {
         profilePicture: profileData.profilePicture,
         categories: profileData.categories,
         role: { id: profileData.role.id, name: profileData.role.name },
+        gender: { id: profileData.gender.id, name: profileData.gender.name },
         about: profileData.about,
         country: profileData.country,
         city: profileData.city,

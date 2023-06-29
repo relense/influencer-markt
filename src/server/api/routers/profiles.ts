@@ -11,6 +11,10 @@ export const profilesRouter = createTRPCRouter({
           id: z.number(),
           name: z.string(),
         }),
+        gender: z.object({
+          id: z.number(),
+          name: z.string(),
+        }),
         categories: z.array(
           z.object({
             id: z.number(),
@@ -31,6 +35,7 @@ export const profilesRouter = createTRPCRouter({
         update: {
           name: input.displayName,
           roleId: input.role.id,
+          genderId: input.gender.id,
           profilePicture: input.profilePicture,
           categories: {
             set: [],
@@ -47,6 +52,7 @@ export const profilesRouter = createTRPCRouter({
         create: {
           name: input.displayName,
           roleId: input.role.id,
+          genderId: input.gender.id,
           profilePicture: input.profilePicture,
           categories: {
             connect: input.categories.map((category) => ({
