@@ -3,7 +3,6 @@ import {
   type UseFormRegister,
   type UseFormSetValue,
   type UseFormGetValues,
-  type FieldErrors,
 } from "react-hook-form";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus, faXmark } from "@fortawesome/free-solid-svg-icons";
@@ -23,7 +22,6 @@ export const Step2 = (params: {
   setValue: UseFormSetValue<SocialMediaData>;
   getValues: UseFormGetValues<SocialMediaData>;
   submit: () => void;
-  errors: FieldErrors<SocialMediaData>;
   platforms: SocialMedia[] | undefined;
 }) => {
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
@@ -42,17 +40,13 @@ export const Step2 = (params: {
     let availablePlatformsArray: Option[] = [];
 
     if (params.platforms && socialMediaList) {
-      availablePlatformsArray = params.platforms
-        .filter(
-          (platformsArrayValue) =>
-            !socialMediaList.some(
-              (socialMediaListValue) =>
-                socialMediaListValue.platform.id === platformsArrayValue.id
-            )
-        )
-        .map((platform) => {
-          return { id: platform.id, name: platform.name };
-        });
+      availablePlatformsArray = params.platforms.filter(
+        (platformsArrayValue) =>
+          !socialMediaList.some(
+            (socialMediaListValue) =>
+              socialMediaListValue.platform.id === platformsArrayValue.id
+          )
+      );
     }
 
     setAvailablePlatforms(availablePlatformsArray);
@@ -112,19 +106,6 @@ export const Step2 = (params: {
         id="form-hook"
         className="mt-4 flex w-3/4 flex-col gap-1 sm:w-full lg:w-3/4"
       >
-        <input
-          {...params.registerSocialMedia("website")}
-          type="text"
-          className="h-14 rounded-lg border-[1px] border-gray3 p-4 placeholder-gray2"
-          placeholder="Website URL: Provide Your Website Address"
-          autoComplete="off"
-        />
-        {params.errors.website && (
-          <div className="pl-2 text-red-600">
-            {params.errors.website.message}
-          </div>
-        )}
-
         {availablePlatforms.length > 0 && (
           <div
             className="flex cursor-pointer items-center justify-center gap-2"
