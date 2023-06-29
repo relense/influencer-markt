@@ -76,7 +76,7 @@ export const PictureCarrosel = () => {
   const renderUploadMainPicture = () => {
     if (!currentPicture) {
       return (
-        <div className="relative flex h-full cursor-pointer gap-4 self-center rounded-lg border-[1px] border-gray3 sm:h-[540px] sm:w-[430px]">
+        <div className="relative flex h-full w-full cursor-pointer gap-4 self-center rounded-lg border-[1px] border-gray3 sm:h-[540px] sm:w-[430px]">
           <div className="relative flex h-[540px] w-full flex-col items-center justify-center ">
             <input
               type="file"
