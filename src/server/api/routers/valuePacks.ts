@@ -14,6 +14,21 @@ export const valuePacksRouter = createTRPCRouter({
     }
   }),
 
+  getValuePacksByProfileId: protectedProcedure
+    .input(
+      z.object({
+        profileId: z.number(),
+      })
+    )
+    .query(async ({ ctx, input }) => {
+      return await ctx.prisma.valuePack.findMany({
+        where: { profileId: input.profileId },
+        include: {
+          socialMedia: true,
+        },
+      });
+    }),
+
   createValuePack: protectedProcedure
     .input(
       z.object({
@@ -29,18 +44,23 @@ export const valuePacksRouter = createTRPCRouter({
       })
     )
     .mutation(async ({ ctx, input }) => {
-      return await ctx.prisma.valuePack.create({
-        data: {
-          deliveryTime: input.deliveryTime,
-          description: input.description,
-          numberOfRevisions: input.numberOfRevisions,
-          title: input.title,
-          valuePackPrice: input.valuePackPrice,
-          socialMedia: {
-            connect: { id: input.socialMedia.id },
-          },
-        },
+      const profile = await ctx.prisma.profile.findFirst({
+        where: { userId: ctx.session.user.id },
       });
+
+      if (profile) {
+        return await ctx.prisma.valuePack.create({
+          data: {
+            deliveryTime: input.deliveryTime,
+            description: input.description,
+            numberOfRevisions: input.numberOfRevisions,
+            title: input.title,
+            valuePackPrice: input.valuePackPrice,
+            socialMediaId: input.socialMedia.id,
+            profileId: profile.id,
+          },
+        });
+      }
     }),
 
   createValuePacks: protectedProcedure
@@ -129,7 +149,7 @@ export const valuePacksRouter = createTRPCRouter({
         include: { profile: true },
       });
 
-      await ctx.prisma.profile.update({
+      return await ctx.prisma.profile.update({
         where: { id: deletedValuePack.profile?.id },
         data: {
           valuePacks: {
