@@ -24,7 +24,7 @@ export const Layout = (props: PropsWithChildren) => {
           setIsSignUp={setIsSignUp}
         />
         <div className="mb-12 flex w-full flex-1 flex-col overflow-y-auto sm:mb-0">
-          {props.children}
+          <div className="flex flex-1 flex-col">{props.children}</div>
           <Footer />
         </div>
         <BottomBar />
