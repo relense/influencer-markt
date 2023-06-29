@@ -164,7 +164,7 @@ export const PictureCarrosel = () => {
   const renderPictureCarrosel = () => {
     return (
       <div className="relative flex justify-center gap-2 sm:mt-0">
-        <div className="hidden gap-2 overflow-x-auto sm:flex">
+        <div className="hidden gap-2 overflow-x-auto xs:flex">
           {pictureList &&
             pictureList.map((picture) => {
               return (
