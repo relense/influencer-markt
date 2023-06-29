@@ -12,4 +12,8 @@ export const allRouter = createTRPCRouter({
   getAllSocialMedia: publicProcedure.query(async ({ ctx }) => {
     return await ctx.prisma.socialMedia.findMany();
   }),
+
+  getAllGenders: publicProcedure.query(async ({ ctx }) => {
+    return await ctx.prisma.gender.findMany();
+  }),
 });

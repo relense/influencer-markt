@@ -25,6 +25,7 @@ export type ProfileData = {
   profilePicture: string;
   displayName: string;
   role: Option;
+  gender: Option;
   categories: Option[];
   country: string;
   city: string;
@@ -43,6 +44,7 @@ const ProfileForm = (params: {
   const [profilePicture, setProfilePicture] = useState<string>();
   const { data: categories } = api.allRoutes.getAllCategories.useQuery();
   const { data: roles } = api.allRoutes.getAllRoles.useQuery();
+  const { data: genders } = api.allRoutes.getAllGenders.useQuery();
 
   const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -127,6 +129,26 @@ const ProfileForm = (params: {
           placeholder="Choose Your Display Name: How Would You Like to be Recognized?"
           autoComplete="off"
         />
+        {!params.isProfileUpdate && (
+          <Controller
+            name="gender"
+            control={params.control}
+            rules={{ required: true }}
+            render={({ field: { value, onChange } }) => {
+              return (
+                <CustomSelect
+                  register={params.register}
+                  name="gender"
+                  placeholder="Select your gender: Male, Female, Other"
+                  options={genders}
+                  value={value}
+                  handleOptionSelect={onChange}
+                />
+              );
+            }}
+          />
+        )}
+
         {!params.isProfileUpdate && (
           <Controller
             name="role"

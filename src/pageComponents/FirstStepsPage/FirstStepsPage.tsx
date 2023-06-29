@@ -85,6 +85,7 @@ const FirstStepsPage = () => {
   } = useForm<ProfileData>({
     defaultValues: {
       role: { id: -1, name: "" },
+      gender: { id: -1, name: "" },
       categories: [],
       profilePicture: "",
     },

@@ -68,6 +68,7 @@ model Profile {
   profilePicture  String
   name            String
   role            Role?             @relation(fields: [roleId], references: [id])
+  gender          Gender?           @relation(fields: [genderId], references: [id])
   categories      Category[]
   about           String            @db.Text
   country         String
@@ -77,11 +78,13 @@ model Profile {
   website         String
   userSocialMedia UserSocialMedia[]
 
-  userId String @unique
-  roleId Int?
+  userId   String @unique
+  roleId   Int?
+  genderId Int?
 
   @@index([userId])
   @@index([roleId])
+  @@index([genderId])
 }
 
 model Category {
@@ -91,6 +94,12 @@ model Category {
 }
 
 model Role {
+  id      Int       @id @default(autoincrement())
+  name    String    @unique
+  Profile Profile[]
+}
+
+model Gender {
   id      Int       @id @default(autoincrement())
   name    String    @unique
   Profile Profile[]

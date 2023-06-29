@@ -6,6 +6,10 @@ async function main() {
     data: [{ name: "Brand" }, { name: "Influencer" }, { name: "Individual" }],
   });
 
+  await prisma.gender.createMany({
+    data: [{ name: "Male" }, { name: "Female" }, { name: "Other" }],
+  });
+
   await prisma.category.createMany({
     data: [
       { name: "Lifestyle" },
