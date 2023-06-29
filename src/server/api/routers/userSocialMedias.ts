@@ -67,6 +67,21 @@ export const userSocialMediasRouter = createTRPCRouter({
       }
     }),
 
+  getUserSocialMediaByProfileId: protectedProcedure
+    .input(
+      z.object({
+        profileId: z.number(),
+      })
+    )
+    .query(async ({ ctx, input }) => {
+      return await ctx.prisma.userSocialMedia.findMany({
+        where: { profileId: input.profileId },
+        include: {
+          socialMedia: true,
+        },
+      });
+    }),
+
   deleteUserSocialMedia: protectedProcedure
     .input(
       z.object({
@@ -87,6 +102,7 @@ export const userSocialMediasRouter = createTRPCRouter({
 
       return await ctx.prisma.userSocialMedia.delete({
         where: { id: input.id },
+        include: { profile: true },
       });
     }),
 });
