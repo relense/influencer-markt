@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import {
-  Controller,
   type UseFormGetValues,
   type UseFormSetValue,
   useForm,
@@ -15,9 +14,6 @@ import {
 
 import { type SocialMedia } from "@prisma/client";
 import { type Option } from "../../../components/CustomMultiSelect/CustomMultiSelect";
-import { Modal } from "../../../components/Modal/Modal";
-import { CustomSelect } from "../../../components/CustomSelect/CustomSelect";
-import { Button } from "../../../components/Button/Button";
 import { StepsReminder } from "../../../components/StepsReminder/StepsReminder";
 import { type ValuePacksData } from "../FirstStepsPage";
 import { AddValuePackModal } from "../../../components/AddValuePackModal/AddValuePackModal";
@@ -149,77 +145,6 @@ export const Step4 = (params: {
   const onCloseModal = () => {
     reset();
     setIsModalOpen(false);
-  };
-
-  const valuePackBuildModal = () => {
-    return (
-      <Modal onClose={() => onCloseModal()}>
-        <form
-          id="pack-form"
-          onSubmit={onAddValuePack}
-          className="flex h-full w-full flex-col items-center gap-4 sm:w-full sm:px-8"
-        >
-          <div>Value Pack Builder</div>
-          <input
-            {...register("title")}
-            required
-            type="text"
-            className="h-14 w-full rounded-lg border-[1px] border-gray3 p-4 placeholder-gray2"
-            placeholder="Value Pack Title: Provide a catchy and descriptive title for your offering"
-            autoComplete="off"
-          />
-          <Controller
-            name="platform"
-            control={control}
-            rules={{ required: true }}
-            render={({ field: { value, onChange } }) => {
-              return (
-                <CustomSelect
-                  register={register}
-                  name="platform"
-                  placeholder="Select the social media platform for your value pack"
-                  options={params.socialMedias}
-                  handleOptionSelect={onChange}
-                  value={value}
-                />
-              );
-            }}
-          />
-          <textarea
-            {...register("description")}
-            required
-            className="box-border min-h-[10rem] w-full overflow-visible rounded-lg border-[1px] border-gray3 p-4 placeholder-gray2 sm:h-48 sm:min-h-[unset]"
-            placeholder="Value Pack Description: Tell us about the unique offering in your package"
-            autoComplete="off"
-          />
-          <input
-            {...register("deliveryTime", { valueAsNumber: true })}
-            required
-            type="number"
-            className="h-14 w-full rounded-lg border-[1px] border-gray3 p-4 placeholder-gray2"
-            placeholder="Delivery Time E.g 4 days"
-            autoComplete="off"
-          />
-          <input
-            {...register("numberOfRevisions", { valueAsNumber: true })}
-            required
-            type="number"
-            className="h-14 w-full rounded-lg border-[1px] border-gray3 p-4 placeholder-gray2"
-            placeholder="Number of Revisions E.g 1"
-            autoComplete="off"
-          />
-          <input
-            {...register("valuePackPrice", { valueAsNumber: true })}
-            required
-            type="number"
-            className="h-14 w-full rounded-lg border-[1px] border-gray3 p-4 placeholder-gray2"
-            placeholder="Value Pack Price"
-            autoComplete="off"
-          />
-          <Button type="submit" title="Add Value Pack" level="primary" />
-        </form>
-      </Modal>
-    );
   };
 
   return (
