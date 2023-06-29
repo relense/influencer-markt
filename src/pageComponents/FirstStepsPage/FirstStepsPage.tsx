@@ -3,7 +3,6 @@ import { useForm } from "react-hook-form";
 import { api } from "~/utils/api";
 import Link from "next/link";
 
-import { type Option } from "../../components/CustomMultiSelect/CustomMultiSelect";
 import { Step1 } from "./Views/Step1";
 import { Step2 } from "./Views/Step2";
 
@@ -15,6 +14,7 @@ import { Button } from "../../components/Button/Button";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faXmark } from "@fortawesome/free-solid-svg-icons";
 import { type SocialMediaDetails } from "../../components/AddSocialMediaModal/AddSocialMediaModal";
+import { type ProfileData } from "../../components/ProfileForm/ProfileForm";
 
 type Step = {
   step: string;
@@ -24,18 +24,7 @@ type Step = {
   mainSubTitle: string;
 };
 
-export type ProfileData = {
-  profilePicture: string;
-  displayName: string;
-  role: Option;
-  categories: Option[];
-  country: string;
-  city: string;
-  about: string;
-};
-
 export type SocialMediaData = {
-  website: string;
   socialMedia: SocialMediaDetails[];
 };
 
@@ -92,6 +81,7 @@ const FirstStepsPage = () => {
     setValue,
     getValues: getValuesProfile,
     handleSubmit: handleSubmitProfileData,
+    formState: { errors },
   } = useForm<ProfileData>({
     defaultValues: {
       role: { id: -1, name: "" },
@@ -105,7 +95,6 @@ const FirstStepsPage = () => {
     setValue: setValueSocialMedia,
     register: registerSocialMedia,
     handleSubmit: handleSubmitSocialMediaData,
-    formState: { errors },
   } = useForm<SocialMediaData>();
 
   const {
@@ -114,8 +103,6 @@ const FirstStepsPage = () => {
     handleSubmit: handleSubmitValuePackData,
   } = useForm<ValuePacksData>();
 
-  const { data: categories } = api.allRoutes.getAllCategories.useQuery();
-  const { data: roles } = api.allRoutes.getAllRoles.useQuery();
   const { data: platforms } = api.allRoutes.getAllSocialMedia.useQuery();
 
   const { mutate } = api.users.updateUser.useMutation();
@@ -181,7 +168,7 @@ const FirstStepsPage = () => {
         about: profileData.about,
         country: profileData.country,
         city: profileData.city,
-        website: socialMediaData.website || "",
+        website: profileData.website,
       });
     }
     if (socialMediaData) {
@@ -347,12 +334,11 @@ const FirstStepsPage = () => {
             {currentStep < steps.length - 1 && renderStepMainTitle()}
             {currentStep === 0 && (
               <Step1
-                categories={categories}
-                roles={roles}
                 control={control}
                 register={register}
                 setValue={setValue}
                 submit={submitStep1}
+                errors={errors}
               />
             )}
             {currentStep === 1 && (
@@ -361,7 +347,6 @@ const FirstStepsPage = () => {
                 platforms={platforms}
                 setValue={setValueSocialMedia}
                 getValues={getValuesSocialMedia}
-                errors={errors}
                 submit={submitStep2}
               />
             )}
