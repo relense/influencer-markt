@@ -209,7 +209,7 @@ export const Navbar = (params: {
 
           <div className="cursor-pointer border-[1px] border-white1" />
           <div
-            className="flex items-center gap-4"
+            className="flex cursor-pointer items-center gap-4"
             onClick={() => void signOut()}
           >
             <FontAwesomeIcon icon={faArrowRightFromBracket} className="fa-xl" />
