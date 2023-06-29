@@ -43,13 +43,12 @@ const AddSocialMediaModal = (params: {
   }, [params.platforms, params.socialMediaList]);
 
   return (
-    <Modal onClose={() => params.onCloseModal()}>
+    <Modal onClose={params.onCloseModal} title="Add Social Media Details">
       <form
         id="form-socialMedia"
-        className="flex h-full w-full flex-col items-center gap-4 sm:w-full sm:p-4"
+        className="flex h-full w-full flex-col items-center gap-4 p-4 sm:w-full sm:px-8"
         onSubmit={params.addSocialMedia}
       >
-        <div>Add Social Media Details</div>
         <Controller
           name="platform"
           control={params.control}

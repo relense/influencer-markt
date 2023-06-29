@@ -17,13 +17,12 @@ const AddValuePackModal = (params: {
   socialMedias: SocialMedia[] | undefined;
 }) => {
   return (
-    <Modal onClose={() => params.onCloseModal()}>
+    <Modal onClose={params.onCloseModal} title="Value Pack Builder">
       <form
         id="pack-form"
         onSubmit={params.onAddValuePack}
-        className="flex h-full w-full flex-col items-center gap-4 sm:w-full sm:px-8"
+        className="flex h-full w-full flex-col items-center gap-4 p-4 sm:w-full sm:px-8"
       >
-        <div>Value Pack Builder</div>
         <input
           {...params.register("title")}
           required
