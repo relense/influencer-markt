@@ -3,7 +3,6 @@ import { useEffect } from "react";
 import { useRouter } from "next/router";
 import { api } from "../../utils/api";
 
-import { ProtectedLayout } from "../../components/ProtectedWrapper/ProtectedWrapper";
 import { PublicPagePage } from "../../pageComponents/PublicPagePage/PublicPagePage";
 
 const PublicPage: NextPage = () => {
@@ -18,11 +17,7 @@ const PublicPage: NextPage = () => {
   }, [isLoading, router, uniqueUserid, userData?.id]);
 
   if (isLoading === false && userData?.id === uniqueUserid) {
-    return (
-      <ProtectedLayout>
-        <PublicPagePage userId={userData?.id} />
-      </ProtectedLayout>
-    );
+    return <PublicPagePage userId={userData?.id} />;
   } else {
     return <div>Loading</div>;
   }
