@@ -8,7 +8,8 @@ import { type Option } from "../CustomMultiSelect/CustomMultiSelect";
 import { useOutsideClick } from "../../utils/helper";
 
 export const CustomSelect = (params: {
-  register: UseFormRegister<any>;
+  register?: UseFormRegister<any>;
+  noBorder?: boolean;
   name: string;
   placeholder: string;
   value: Option;
@@ -17,12 +18,19 @@ export const CustomSelect = (params: {
 }) => {
   const [selectStatus, setSelectStatus] = useState<boolean>(false);
   const wrapperRef = useRef(null);
+  let customBorder =
+    "flex h-14 w-full flex-1 cursor-pointer rounded-lg border-[1px] border-gray3 bg-transparent p-4 placeholder-gray2 caret-transparent placeholder:w-11/12";
 
   useOutsideClick(() => {
     if (selectStatus === false) return;
 
     setSelectStatus(!selectStatus);
   }, wrapperRef);
+
+  if (params.noBorder) {
+    customBorder =
+      "flex h-14 w-full flex-1 cursor-pointer bg-transparent p-4 placeholder-gray2 caret-transparent placeholder:w-11/12";
+  }
 
   return (
     <div
@@ -32,20 +40,36 @@ export const CustomSelect = (params: {
       }}
     >
       <div className="relative flex items-center justify-between">
-        <input
-          {...params.register(params.name)}
-          required
-          ref={wrapperRef}
-          id={`${params.name}1`}
-          onKeyDown={(e) => {
-            e.preventDefault();
-            return false;
-          }}
-          className="flex h-14 w-full flex-1 cursor-pointer rounded-lg border-[1px] border-gray3 bg-transparent p-4 placeholder-gray2 caret-transparent placeholder:w-11/12"
-          placeholder={params.placeholder}
-          defaultValue={params.value.name}
-          autoComplete="off"
-        />
+        {params.register ? (
+          <input
+            {...params.register(params.name)}
+            required
+            ref={wrapperRef}
+            id={`${params.name}1`}
+            onKeyDown={(e) => {
+              e.preventDefault();
+              return false;
+            }}
+            className={customBorder}
+            placeholder={params.placeholder}
+            defaultValue={params.value.name}
+            autoComplete="off"
+          />
+        ) : (
+          <input
+            required
+            ref={wrapperRef}
+            id={`${params.name}1`}
+            onKeyDown={(e) => {
+              e.preventDefault();
+              return false;
+            }}
+            className={customBorder}
+            placeholder={params.placeholder}
+            defaultValue={params.value.name}
+            autoComplete="off"
+          />
+        )}
         {selectStatus ? (
           <FontAwesomeIcon
             icon={faChevronUp}
