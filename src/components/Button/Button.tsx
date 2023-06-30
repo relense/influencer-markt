@@ -45,7 +45,7 @@ export const Button = ({
   return (
     <button
       {...params}
-      className={`w-11/12 cursor-pointer rounded-lg ${bgColor} px-8 py-4 text-center font-semibold ${textColor} ${wSize} lg:rounded-2xl ${borderColor} ${shadowBox}`}
+      className={`cursor-pointer rounded-lg ${bgColor} px-8 py-4 text-center font-semibold ${textColor} ${wSize} lg:rounded-2xl ${borderColor} ${shadowBox}`}
     >
       {title}
     </button>
