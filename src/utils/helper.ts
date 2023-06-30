@@ -18,3 +18,11 @@ export const useOutsideClick = (
     };
   });
 };
+
+const formatNumber = (value: number) => {
+  return value.toLocaleString();
+};
+
+export const helper = {
+  formatNumber,
+};
