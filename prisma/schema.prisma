@@ -109,7 +109,7 @@ model ValuePack {
   id                Int          @id @default(autoincrement())
   title             String
   socialMedia       SocialMedia? @relation(fields: [socialMediaId], references: [id])
-  description       String
+  description       String       @db.Text
   deliveryTime      Int
   numberOfRevisions Int
   valuePackPrice    Int
