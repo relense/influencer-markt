@@ -76,7 +76,7 @@ export const PictureCarrosel = () => {
   const renderUploadMainPicture = () => {
     if (!currentPicture) {
       return (
-        <div className="relative flex h-full w-full cursor-pointer gap-4 self-center rounded-lg border-[1px] border-gray3 sm:h-[540px] sm:w-[430px]">
+        <div className="relative flex h-full w-full cursor-pointer gap-4 rounded-lg border-[1px] border-gray3 sm:h-[540px] sm:w-[430px]">
           <div className="relative flex h-[540px] w-full flex-col items-center justify-center ">
             <input
               type="file"
@@ -104,7 +104,7 @@ export const PictureCarrosel = () => {
   const renderMainPicture = () => {
     if (currentPicture) {
       return (
-        <div className="relative flex h-[340px] flex-col items-center justify-center gap-4 self-center rounded-lg border-[1px] border-gray3 sm:h-[540px] sm:w-[430px]">
+        <div className="relative flex h-[340px] flex-col items-center justify-center gap-4 rounded-lg border-[1px] border-gray3 sm:h-[540px] sm:w-[430px]">
           <div
             className="absolute right-[-10px] top-[-10px] flex h-10 w-10 cursor-pointer items-center justify-center self-end rounded-full bg-influencer-green"
             onClick={() => handleRemovePicture()}
@@ -163,7 +163,7 @@ export const PictureCarrosel = () => {
 
   const renderPictureCarrosel = () => {
     return (
-      <div className="relative flex justify-center gap-2 sm:mt-0">
+      <div className="relative flex justify-center gap-2 self-center sm:mt-0 sm:self-start">
         <div className="hidden gap-2 overflow-x-auto xs:flex">
           {pictureList &&
             pictureList.map((picture) => {
@@ -176,9 +176,9 @@ export const PictureCarrosel = () => {
                   <Image
                     src={picture}
                     alt="Uploaded Image"
-                    width={112}
+                    width={100}
                     height={56}
-                    className="h-14 rounded-lg object-cover "
+                    className="h-14 rounded-lg object-cover"
                   />
                 </div>
               );
@@ -213,10 +213,10 @@ export const PictureCarrosel = () => {
   };
 
   return (
-    <>
+    <div className="flex flex-col gap-4">
       {renderUploadMainPicture()}
       {renderMainPicture()}
       {renderPictureCarrosel()}
-    </>
+    </div>
   );
 };
