@@ -157,7 +157,10 @@ export const Navbar = (params: {
           )}
           {params.sessionData && (
             <>
-              <Link href="/my-page" className="flex cursor-pointer gap-4">
+              <Link
+                href={`/${params.sessionData?.user.id || "/"}`}
+                className="flex cursor-pointer gap-4"
+              >
                 <FontAwesomeIcon
                   icon={faFileLines}
                   className="fa-xl cursor-pointer"
