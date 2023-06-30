@@ -1,6 +1,5 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
-  faArrowRightRotate,
   faCamera,
   faPencil,
   faPlus,
@@ -9,7 +8,6 @@ import {
 import { api } from "~/utils/api";
 
 import { PictureCarrosel } from "../../components/PictureCarrosel/PictureCarrosel";
-import { faCalendar } from "@fortawesome/free-regular-svg-icons";
 import {
   AddSocialMediaModal,
   type SocialMediaDetails,
@@ -18,13 +16,14 @@ import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { Layout } from "../../components/Layout/Layout";
 import { AddValuePackModal } from "../../components/AddValuePackModal/AddValuePackModal";
-import { type ValuePack } from "../FirstStepsPage/Views/Step4";
 import {
   type ProfileData,
   ProfileForm,
 } from "../../components/ProfileForm/ProfileForm";
 import { Modal } from "../../components/Modal/Modal";
 import { Button } from "../../components/Button/Button";
+import { ValuePack } from "../../components/ValuePack/ValuePack";
+import { ValuePackType } from "../FirstStepsPage/Views/Step4";
 
 const MyPagePage = () => {
   const ctx = api.useContext();
@@ -128,7 +127,7 @@ const MyPagePage = () => {
     register: valuePackRegister,
     reset: valuePackReset,
     handleSubmit: handleSubmitValuePack,
-  } = useForm<ValuePack>({
+  } = useForm<ValuePackType>({
     defaultValues: {
       platform: { id: -1, name: "" },
     },
@@ -316,12 +315,10 @@ const MyPagePage = () => {
 
   const renderVisualPortfolio = () => {
     return (
-      <div className="flex flex-1 flex-col gap-4">
-        <div className="text-2xl font-semibold">Visual Portfolio</div>
-        <div className="flex w-full self-start sm:w-auto">
-          <div className="flex w-full flex-col gap-4 lg:items-start">
-            <PictureCarrosel />
-          </div>
+      <div className="flex flex-1 flex-col gap-4 xl:items-end">
+        <div className="flex flex-col">
+          <div className="text-2xl font-semibold ">Visual Portfolio</div>
+          <PictureCarrosel />
         </div>
       </div>
     );
@@ -343,51 +340,18 @@ const MyPagePage = () => {
           {profileValuePack && profileValuePack.length > 0 ? (
             profileValuePack.map((valuePack) => {
               return (
-                <div
-                  key={valuePack.id}
-                  className="relative flex w-full flex-col gap-4 rounded-2xl border-[1px] border-gray3 p-4 xl:w-5/12"
-                >
-                  <div className="flex justify-between gap-4">
-                    <div className="text-xs font-semibold">
-                      {valuePack.title}
-                    </div>
-                    <div className="text-xs font-semibold text-influencer">
-                      {valuePack.socialMedia?.name}
-                    </div>
-                  </div>
-                  <div>{valuePack.description}</div>
-                  <div className="flex flex-1 justify-between">
-                    <div className="flex flex-col items-start gap-2 text-sm font-medium text-gray2 xl:flex-row">
-                      <div className="flex gap-2">
-                        <FontAwesomeIcon
-                          icon={faCalendar}
-                          className="fa-lg cursor-pointer"
-                        />
-                        <div>{valuePack.deliveryTime} Days Delivery</div>
-                      </div>
-                      <div className="flex items-center gap-2">
-                        <FontAwesomeIcon
-                          icon={faArrowRightRotate}
-                          className="fa-lg cursor-pointer"
-                        />
-                        <div>{valuePack.numberOfRevisions} Of Revisions</div>
-                      </div>
-                    </div>
-                    <div className="self-end font-semibold">
-                      {valuePack.valuePackPrice}€
-                    </div>
-                  </div>
-                  <div
-                    className="absolute right-[-8px] top-[-10px] z-10 flex h-6 w-6 cursor-pointer items-center justify-center rounded-full  bg-influencer-green sm:top-[-8px]"
-                    onClick={() => onDeleteValuePack(valuePack.id)}
-                  >
-                    <div className="flex items-center justify-center">
-                      <FontAwesomeIcon
-                        icon={faXmark}
-                        className="fa-sm text-white"
-                      />
-                    </div>
-                  </div>
+                <div key={valuePack.id} className="w-full xl:w-5/12">
+                  <ValuePack
+                    key={valuePack.id}
+                    deliveryTime={valuePack.deliveryTime}
+                    description={valuePack.description}
+                    numberOfRevisions={valuePack.numberOfRevisions}
+                    onDeleteValuePack={() => onDeleteValuePack(valuePack.id)}
+                    socialMedia={valuePack.socialMedia || { id: -1, name: "" }}
+                    title={valuePack.title}
+                    valuePackPrice={valuePack.valuePackPrice}
+                    closeButton
+                  />
                 </div>
               );
             })
@@ -426,8 +390,8 @@ const MyPagePage = () => {
             </div>
           </div>
         )}
-        <div className="flex flex-1 justify-center pb-10">
-          <div className="flex w-full cursor-default flex-col gap-6 px-4 sm:w-8/12 sm:px-12">
+        <div className="flex w-full flex-1 justify-center pb-10 xl:w-3/4 xl:self-center 2xl:w-2/4">
+          <div className="flex w-full flex-1 cursor-default flex-col gap-6 px-4 sm:w-8/12 sm:px-12">
             <div className="flex w-full flex-1 flex-col gap-6 xl:flex-row xl:gap-12">
               <div className="flex flex-1 flex-col gap-6">
                 {renderProfileDescription()}
