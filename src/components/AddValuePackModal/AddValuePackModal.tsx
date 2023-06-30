@@ -7,13 +7,13 @@ import { Modal } from "../Modal/Modal";
 import { Button } from "../Button/Button";
 import { CustomSelect } from "../CustomSelect/CustomSelect";
 import { type SocialMedia } from "@prisma/client";
-import { type ValuePack } from "../../pageComponents/FirstStepsPage/Views/Step4";
+import { type ValuePackType } from "../../pageComponents/FirstStepsPage/Views/Step4";
 
 const AddValuePackModal = (params: {
   onCloseModal: () => void;
   onAddValuePack: () => void;
-  register: UseFormRegister<ValuePack>;
-  control: Control<ValuePack, any>;
+  register: UseFormRegister<ValuePackType>;
+  control: Control<ValuePackType, any>;
   socialMedias: SocialMedia[] | undefined;
 }) => {
   return (

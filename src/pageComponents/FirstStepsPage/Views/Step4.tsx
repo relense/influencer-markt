@@ -18,7 +18,8 @@ import { StepsReminder } from "../../../components/StepsReminder/StepsReminder";
 import { type ValuePacksData } from "../FirstStepsPage";
 import { AddValuePackModal } from "../../../components/AddValuePackModal/AddValuePackModal";
 
-export type ValuePack = {
+export type ValuePackType = {
+  id?: number;
   title: string;
   platform: Option;
   description: string;
@@ -34,10 +35,10 @@ export const Step4 = (params: {
   changeStep: (value: "next" | "previous") => void;
   socialMedias: SocialMedia[] | undefined;
 }) => {
-  const [valuePacks, setValuePacks] = useState<ValuePack[]>([]);
+  const [valuePacks, setValuePacks] = useState<ValuePackType[]>([]);
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const { control, register, handleSubmit, reset, setValue } =
-    useForm<ValuePack>({
+    useForm<ValuePackType>({
       defaultValues: {
         platform: { id: -1, name: "" },
       },
@@ -61,7 +62,7 @@ export const Step4 = (params: {
     setIsModalOpen(false);
   });
 
-  const onRemoveValuePack = (valuePack: ValuePack) => {
+  const onRemoveValuePack = (valuePack: ValuePackType) => {
     const valuePacksArray = [...valuePacks];
     const index = getIndexFromArrayOfObjects(valuePacksArray, valuePack);
 
@@ -70,7 +71,10 @@ export const Step4 = (params: {
     params.setValue("valuePacks", valuePacksArray);
   };
 
-  const getIndexFromArrayOfObjects = (arr: ValuePack[], option: ValuePack) => {
+  const getIndexFromArrayOfObjects = (
+    arr: ValuePackType[],
+    option: ValuePackType
+  ) => {
     const stringArray = arr.map((item) => {
       return item.description;
     });
@@ -78,7 +82,7 @@ export const Step4 = (params: {
     return stringArray.indexOf(option.description);
   };
 
-  const editValuePack = (valuePack: ValuePack) => {
+  const editValuePack = (valuePack: ValuePackType) => {
     setValue("deliveryTime", valuePack.deliveryTime);
     setValue("description", valuePack.description);
     setValue("numberOfRevisions", valuePack.numberOfRevisions);

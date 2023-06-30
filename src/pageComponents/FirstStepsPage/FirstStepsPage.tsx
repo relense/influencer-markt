@@ -8,7 +8,7 @@ import { Step2 } from "./Views/Step2";
 
 import { ProgressRing } from "../../components/ProgressRing/ProgressRing";
 import { Step3 } from "./Views/Step3";
-import { Step4, type ValuePack } from "./Views/Step4";
+import { Step4, type ValuePackType } from "./Views/Step4";
 import { Step5 } from "./Views/Step5";
 import { Button } from "../../components/Button/Button";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -29,7 +29,7 @@ export type SocialMediaData = {
 };
 
 export type ValuePacksData = {
-  valuePacks: ValuePack[];
+  valuePacks: ValuePackType[];
 };
 
 const steps: Step[] = [
