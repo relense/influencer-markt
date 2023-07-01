@@ -17,7 +17,7 @@ export const CustomSelect = (params: {
   handleOptionSelect: (option: Option) => void;
 }) => {
   const [selectStatus, setSelectStatus] = useState<boolean>(false);
-  const wrapperRef = useRef(null);
+  const customSelectWrapperRef = useRef(null);
   let customBorder =
     "flex h-14 w-full flex-1 cursor-pointer rounded-lg border-[1px] border-gray3 bg-transparent p-4 placeholder-gray2 caret-transparent placeholder:w-11/12";
 
@@ -25,7 +25,7 @@ export const CustomSelect = (params: {
     if (selectStatus === false) return;
 
     setSelectStatus(!selectStatus);
-  }, wrapperRef);
+  }, customSelectWrapperRef);
 
   if (params.noBorder) {
     customBorder =
@@ -44,7 +44,7 @@ export const CustomSelect = (params: {
           <input
             {...params.register(params.name)}
             required
-            ref={wrapperRef}
+            ref={customSelectWrapperRef}
             id={`${params.name}1`}
             onKeyDown={(e) => {
               e.preventDefault();
@@ -59,8 +59,8 @@ export const CustomSelect = (params: {
         ) : (
           <input
             required
-            ref={wrapperRef}
-            id={`${params.name}1`}
+            ref={customSelectWrapperRef}
+            id={`${params.name}2`}
             onKeyDown={(e) => {
               e.preventDefault();
               return false;
