@@ -89,6 +89,7 @@ export const CustomMultiSelect = (params: {
             onClick={() => {
               setSelectStatus(!selectStatus);
             }}
+            readOnly
           />
           {selectStatus ? (
             <FontAwesomeIcon

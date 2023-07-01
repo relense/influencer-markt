@@ -54,6 +54,7 @@ export const CustomSelect = (params: {
             placeholder={params.placeholder}
             defaultValue={params.value.name}
             autoComplete="off"
+            readOnly
           />
         ) : (
           <input
@@ -68,6 +69,7 @@ export const CustomSelect = (params: {
             placeholder={params.placeholder}
             defaultValue={params.value.name}
             autoComplete="off"
+            readOnly
           />
         )}
         {selectStatus ? (
