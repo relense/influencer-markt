@@ -286,7 +286,7 @@ const MyPagePage = () => {
               return (
                 <div
                   key={socialMedia.id}
-                  className="relative flex flex-1 gap-2 rounded-2xl border-[1px] border-gray3 p-4 sm:flex-none"
+                  className="relative flex flex-1 flex-wrap gap-2 rounded-2xl border-[1px] border-gray3 p-4 sm:flex-none"
                 >
                   <div className="font-semibold text-influencer">
                     {socialMedia.socialMedia?.name}
@@ -437,12 +437,14 @@ const MyPagePage = () => {
                   errors={errors}
                   setValue={profileSetValue}
                 />
-                <Button
-                  type="submit"
-                  title="Update Profile"
-                  level="primary"
-                  form="form-hook"
-                />
+                <div className="p-4">
+                  <Button
+                    type="submit"
+                    title="Update Profile"
+                    level="primary"
+                    form="form-hook"
+                  />
+                </div>
               </div>
             </Modal>
           )}
