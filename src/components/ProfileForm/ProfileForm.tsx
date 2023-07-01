@@ -206,7 +206,7 @@ const ProfileForm = (params: {
         <textarea
           {...params.register("about")}
           required
-          className="h-48 rounded-lg border-[1px] border-gray3 p-4 placeholder-gray2"
+          className="rounded-lg border-[1px] border-gray3 p-4 placeholder-gray2"
           placeholder="Introduce Yourself: Share a Brief Description or Bio"
           autoComplete="off"
         />

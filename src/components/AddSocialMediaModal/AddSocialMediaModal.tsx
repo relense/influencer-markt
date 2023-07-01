@@ -82,12 +82,13 @@ const AddSocialMediaModal = (params: {
           placeholder="Social Media Followers"
           autoComplete="off"
         />
-
-        <Button
-          title="Add Social Media"
-          level="primary"
-          form="form-socialMedia"
-        />
+        <div className="p-4">
+          <Button
+            title="Add Social Media"
+            level="primary"
+            form="form-socialMedia"
+          />
+        </div>
       </form>
     </Modal>
   );

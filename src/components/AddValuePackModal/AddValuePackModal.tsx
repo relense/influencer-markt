@@ -79,7 +79,9 @@ const AddValuePackModal = (params: {
           placeholder="Value Pack Price"
           autoComplete="off"
         />
-        <Button type="submit" title="Add Value Pack" level="primary" />
+        <div className="p-4">
+          <Button type="submit" title="Add Value Pack" level="primary" />
+        </div>
       </form>
     </Modal>
   );
