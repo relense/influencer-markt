@@ -27,6 +27,7 @@ export const Button = ({
   let borderColor = "";
   let wSize = "lg:w-auto";
   let cursor = "cursor-pointer";
+  let hover = "hover:bg-influencer-dark";
 
   if (level === "primary") {
     bgColor = "bg-influencer";
@@ -49,9 +50,10 @@ export const Button = ({
   if (disabled) {
     bgColor = "bg-influencer-light";
     cursor = "cursor-not-allowed";
+    hover = "";
   }
 
-  classes = `${cursor} rounded-lg ${bgColor} px-8 py-4 text-center font-semibold ${textColor} ${wSize} lg:rounded-2xl ${borderColor} ${shadowBox}`;
+  classes = `${cursor} rounded-lg ${bgColor} px-8 py-4 text-center font-semibold ${textColor} ${wSize} lg:rounded-2xl ${borderColor} ${shadowBox} ${hover}`;
 
   return (
     <button {...params} className={classes}>
