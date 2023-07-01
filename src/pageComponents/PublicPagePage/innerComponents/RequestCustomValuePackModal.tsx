@@ -29,7 +29,7 @@ const RequestCustomValuePackModal = (params: {
     },
   });
   return (
-    <Modal title="Request a custom value pack request" onClose={params.onClose}>
+    <Modal title="Request a custom value pack" onClose={params.onClose}>
       <form className="flex h-full w-full flex-col gap-4 p-4 sm:w-full sm:px-8">
         <div className="flex flex-col gap-4">
           <div className="text-xl font-medium">Platforms</div>
