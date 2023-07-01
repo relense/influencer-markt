@@ -57,8 +57,11 @@ const ValuePackInput = (params: {
         setIsValuePackModal(!isValuePackModalOpen);
       }}
     >
-      <div className="relative flex flex-1 cursor-pointer flex-col gap-4 py-4">
-        {params.valuePack ? (
+      <div
+        className="relative flex flex-1 cursor-pointer flex-col gap-4 py-4"
+        ref={valuePackRef}
+      >
+        {params.valuePack && params.valuePack.id !== -1 ? (
           <div className="px-4 text-sm font-semibold">
             {params.valuePack.title}
           </div>
@@ -66,7 +69,7 @@ const ValuePackInput = (params: {
           <div className="px-4 text-sm font-semibold">Value pack</div>
         )}
         <div className="relative flex flex-1 justify-between gap-6 px-4">
-          {params.valuePack ? (
+          {params.valuePack && params.valuePack.id !== -1 ? (
             <div className="w-96 overflow-hidden text-ellipsis whitespace-nowrap">
               {params.valuePack.description}
             </div>
@@ -96,19 +99,29 @@ const ValuePackInput = (params: {
                 icon={faCalendar}
                 className="fa-lg cursor-pointer"
               />
-              <div>{params.valuePack.deliveryTime} Days Delivery</div>
+              <div>
+                {params.valuePack.deliveryTime !== -1
+                  ? params.valuePack.deliveryTime
+                  : ""}{" "}
+                Days Delivery
+              </div>
             </div>
             <div className="flex items-center gap-2">
               <FontAwesomeIcon
                 icon={faArrowRightRotate}
                 className="fa-lg cursor-pointer"
               />
-              <div>{params.valuePack.numberOfRevisions} Of Revisions</div>
+              <div>
+                {params.valuePack.numberOfRevisions !== -1
+                  ? params.valuePack.numberOfRevisions
+                  : ""}{" "}
+                Of Revisions
+              </div>
             </div>
           </div>
         )}
       </div>
-      {isValuePackModalOpen && params.platform?.id > -1 && (
+      {isValuePackModalOpen && params.platform?.id > 0 && (
         <div className="relative flex h-96 flex-1  flex-col gap-4 overflow-y-auto rounded-2xl border-[1px] border-gray3 bg-white p-4">
           {availableValuePacks.map((valuePack) => {
             return (
