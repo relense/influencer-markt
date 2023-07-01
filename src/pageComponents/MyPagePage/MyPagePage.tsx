@@ -23,7 +23,7 @@ import {
 import { Modal } from "../../components/Modal/Modal";
 import { Button } from "../../components/Button/Button";
 import { ValuePack } from "../../components/ValuePack/ValuePack";
-import { ValuePackType } from "../FirstStepsPage/Views/Step4";
+import { type ValuePackType } from "../FirstStepsPage/Views/Step4";
 
 const MyPagePage = () => {
   const ctx = api.useContext();
