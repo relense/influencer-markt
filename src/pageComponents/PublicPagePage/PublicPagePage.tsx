@@ -93,7 +93,7 @@ const PublicPagePage = (params: { userId: string | undefined }) => {
   const renderHeader = () => {
     return (
       <div className="flex flex-1 cursor-default flex-col-reverse gap-4 lg:flex-row">
-        <div className="flex flex-1 flex-col items-center gap-4 lg:flex-row lg:items-start">
+        <div className="flex-2 flex flex-col items-center gap-4 lg:flex-row lg:items-start">
           <div className="flex h-24 w-24 cursor-pointer flex-col items-center justify-center rounded-full border-[1px] border-gray3">
             <FontAwesomeIcon icon={faCamera} className="fa-2x text-gray3" />
           </div>
@@ -102,15 +102,22 @@ const PublicPagePage = (params: { userId: string | undefined }) => {
               {profileSocialMedia?.map((socialMedia) => {
                 return (
                   <div key={socialMedia.id} className="flex gap-2">
-                    <div className="cursor-pointer font-semibold text-influencer">
+                    <Link
+                      href={socialMedia.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="cursor-pointer font-semibold text-influencer"
+                    >
                       {socialMedia.socialMedia?.name}
-                    </div>
+                    </Link>
                     <div>{helper.formatNumber(socialMedia.followers)}</div>
                   </div>
                 );
               })}
             </div>
-            <div className="text-4xl font-bold">{profile?.name}</div>
+            <div className="text-3xl font-bold lg:text-4xl">
+              {profile?.name}
+            </div>
             <div className="text-lg text-gray2">
               {profile?.country}, {profile?.city}
             </div>
@@ -151,7 +158,7 @@ const PublicPagePage = (params: { userId: string | undefined }) => {
       <div className="flex flex-1 flex-col-reverse gap-6 lg:flex-row">
         <div className="flex flex-col gap-6">
           <PictureCarrosel />
-          <div className="flex flex-col gap-2">
+          <div className="flex flex-col gap-4">
             <div className="text-2xl font-semibold">Categories</div>
             <div className="flex flex-wrap gap-4">
               {profile?.categories.map((category) => {
