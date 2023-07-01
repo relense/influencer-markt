@@ -9,6 +9,7 @@ type NewButtonProps = {
   loading?: boolean;
   size?: "regular" | "large";
   shadow?: boolean;
+  disabled?: boolean;
 };
 
 export const Button = ({
@@ -16,13 +17,16 @@ export const Button = ({
   title,
   size,
   shadow,
+  disabled,
   ...params
 }: ReactButtonProps & NewButtonProps) => {
+  let classes = "";
   let shadowBox = "";
-  let bgColor;
-  let textColor;
-  let borderColor;
+  let bgColor = "";
+  let textColor = "";
+  let borderColor = "";
   let wSize = "lg:w-auto";
+  let cursor = "cursor-pointer";
 
   if (level === "primary") {
     bgColor = "bg-influencer";
@@ -42,11 +46,15 @@ export const Button = ({
     shadowBox = "m-2 rounded-xl shadow-md shadow-boxShadow";
   }
 
+  if (disabled) {
+    bgColor = "bg-influencer-light";
+    cursor = "cursor-not-allowed";
+  }
+
+  classes = `${cursor} rounded-lg ${bgColor} px-8 py-4 text-center font-semibold ${textColor} ${wSize} lg:rounded-2xl ${borderColor} ${shadowBox}`;
+
   return (
-    <button
-      {...params}
-      className={`cursor-pointer rounded-lg ${bgColor} px-8 py-4 text-center font-semibold ${textColor} ${wSize} lg:rounded-2xl ${borderColor} ${shadowBox}`}
-    >
+    <button {...params} className={classes}>
       {title}
     </button>
   );
