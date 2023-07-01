@@ -134,6 +134,7 @@ model UserSocialMedia {
   socialMedia SocialMedia? @relation(fields: [socialMediaId], references: [id])
   handler     String
   followers   Int
+  url         String
   profile     Profile?     @relation(fields: [profileId], references: [id])
 
   socialMediaId Int
