@@ -50,7 +50,6 @@ const ValuePackInput = (params: {
     setAvailableValuePacks(currentlyAvailableValuePacks);
   }, [params.platform, params.allValuePacks]);
 
-  debugger;
   return (
     <div
       className="h-40 w-full xl:h-32"
