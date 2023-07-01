@@ -52,7 +52,7 @@ const ValuePackInput = (params: {
 
   return (
     <div
-      className="h-40 w-full xl:h-32"
+      className="w-full xl:h-32"
       onClick={() => {
         setIsValuePackModal(!isValuePackModalOpen);
       }}
