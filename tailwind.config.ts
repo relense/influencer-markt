@@ -18,6 +18,7 @@ export default {
         gray3: "#D9D9D9",
         white1: "#F2F2F2",
         "shadow-gray": "#D1D1D1",
+        "influencer-light": "#ffabcb",
         "influencer-green": "#64EA9E",
         "influencer-green-light": "#fafdfb",
         "light-red": "#F8F4F4",
