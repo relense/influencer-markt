@@ -60,6 +60,7 @@ model User {
   accounts      Account[]
   sessions      Session[]
   profile       Profile?
+  review        Review[]
 }
 
 //App data
@@ -77,6 +78,7 @@ model Profile {
   valuePacks      ValuePack[]
   website         String
   userSocialMedia UserSocialMedia[]
+  reviews         Review[]
 
   userId   String @unique
   roleId   Int?
@@ -142,4 +144,18 @@ model UserSocialMedia {
 
   @@index([socialMediaId])
   @@index([profileId])
+}
+
+model Review {
+  id         Int      @id @default(autoincrement())
+  userReview String
+  date       DateTime
+  profile    Profile? @relation(fields: [profileId], references: [id])
+  author     User?    @relation(fields: [userId], references: [id])
+
+  profileId Int?
+  userId    String
+
+  @@index([profileId])
+  @@index([userId])
 }
