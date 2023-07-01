@@ -20,7 +20,11 @@ export const useOutsideClick = (
 };
 
 const formatNumber = (value: number) => {
-  return value.toLocaleString();
+  if (value) {
+    return value.toLocaleString();
+  } else {
+    return "";
+  }
 };
 
 export const helper = {
