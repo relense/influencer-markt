@@ -1,11 +1,7 @@
 import { api } from "~/utils/api";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
-  faArrowRightRotate,
-  faCalendar,
   faCamera,
-  faChevronDown,
-  faChevronUp,
   faPencil,
   faShareFromSquare,
   faStar,
@@ -22,27 +18,16 @@ import { Button } from "../../components/Button/Button";
 import { CustomSelect } from "../../components/CustomSelect/CustomSelect";
 import { type Option } from "../../components/CustomMultiSelect/CustomMultiSelect";
 import { type ValuePackType } from "../FirstStepsPage/Views/Step4";
-import { ValuePack } from "../../components/ValuePack/ValuePack";
-import { useEffect, useRef, useState } from "react";
-import { helper, useOutsideClick } from "../../utils/helper";
+
+import { useEffect, useState } from "react";
+import { helper } from "../../utils/helper";
+import { ValuePackInput } from "../../components/ValuePackInput/ValuePackInput";
 
 const PublicPagePage = (params: { userId: string | undefined }) => {
-  const [selectedValuePack, setSelectedValuePack] = useState<ValuePackType>({
-    id: -1,
-    title: "",
-    platform: { id: -1, name: "" },
-    description: "",
-    deliveryTime: -1,
-    numberOfRevisions: -1,
-    valuePackPrice: -1,
-  });
+  const [selectedValuePack, setSelectedValuePack] = useState<ValuePackType>();
   const [platform, setPlatform] = useState<Option>({ id: -1, name: "" });
   const [availablePLatforms, setAvailablePlatforms] = useState<Option[]>([]);
-  const [isValuePackModalOpen, setIsValuePackModal] = useState<boolean>(false);
-  const [availableValuePacks, setAvailableValuePacks] = useState<
-    ValuePackType[]
-  >([]);
-  const wrapperRef = useRef(null);
+
   const { data: profile } = api.profiles.getProfileWithoutIncludes.useQuery();
   const { data: profileSocialMedia } =
     api.userSocialMedias.getUserSocialMediaByProfileId.useQuery({
@@ -74,34 +59,6 @@ const PublicPagePage = (params: { userId: string | undefined }) => {
 
     setAvailablePlatforms(uniqueOptions);
   }, [profileValuePack]);
-
-  useEffect(() => {
-    const currentlyAvailableValuePacks =
-      profileValuePack
-        ?.filter((valuePack) => valuePack.socialMedia?.id === platform.id)
-        .map((valuePack) => {
-          return {
-            id: valuePack.id,
-            deliveryTime: valuePack.deliveryTime,
-            description: valuePack.description,
-            numberOfRevisions: valuePack.numberOfRevisions,
-            platform: {
-              id: valuePack.socialMedia?.id || -1,
-              name: valuePack.socialMedia?.name || "",
-            },
-            title: valuePack.title,
-            valuePackPrice: valuePack.valuePackPrice,
-          };
-        }) || [];
-
-    setAvailableValuePacks(currentlyAvailableValuePacks);
-  }, [platform, profileValuePack]);
-
-  useOutsideClick(() => {
-    if (isValuePackModalOpen === false) return;
-
-    setIsValuePackModal(!isValuePackModalOpen);
-  }, wrapperRef);
 
   const renderHeader = () => {
     return (
@@ -200,9 +157,11 @@ const PublicPagePage = (params: { userId: string | undefined }) => {
       <form className="flex flex-col gap-4 rounded-2xl border-[1px] border-white1 p-4 shadow-xl">
         <div className="flex flex-1 justify-between">
           <div className="flex flex-1 items-center gap-1">
-            <div className="text-xl font-medium">
-              {selectedValuePack.valuePackPrice}€
-            </div>
+            {selectedValuePack && (
+              <div className="text-xl font-medium">
+                {selectedValuePack.valuePackPrice}€
+              </div>
+            )}
           </div>
           <div className="flex flex-1 items-center justify-end gap-2">
             <div className="flex items-center gap-1">
@@ -231,44 +190,27 @@ const PublicPagePage = (params: { userId: string | undefined }) => {
             />
           </div>
           <div className="w-full border-[1px] border-white1" />
-          <div
-            className="h-40 w-full xl:h-32"
-            onClick={() => setIsValuePackModal(!isValuePackModalOpen)}
-          >
-            {renderValuePack()}
-            {isValuePackModalOpen && (
-              <div className="relative flex h-96 flex-1  flex-col gap-4 overflow-y-auto rounded-2xl border-[1px] border-gray3 bg-white p-4">
-                {availableValuePacks.map((valuePack) => {
-                  return (
-                    <div
-                      key={valuePack.id}
-                      onClick={() =>
-                        setSelectedValuePack({
-                          id: valuePack.id,
-                          deliveryTime: valuePack.deliveryTime,
-                          description: valuePack.description,
-                          numberOfRevisions: valuePack.numberOfRevisions,
-                          platform: valuePack.platform,
-                          title: valuePack.title,
-                          valuePackPrice: valuePack.valuePackPrice,
-                        })
-                      }
-                    >
-                      <ValuePack
-                        deliveryTime={valuePack.deliveryTime}
-                        description={valuePack.description}
-                        numberOfRevisions={valuePack.numberOfRevisions}
-                        title={valuePack.title}
-                        valuePackPrice={valuePack.valuePackPrice}
-                        closeButton={false}
-                        selected={valuePack.id === selectedValuePack.id}
-                      />
-                    </div>
-                  );
-                })}
-              </div>
-            )}
-          </div>
+          {profileValuePack && (
+            <ValuePackInput
+              allValuePacks={profileValuePack?.map((valuePack) => {
+                return {
+                  deliveryTime: valuePack.deliveryTime,
+                  description: valuePack.description,
+                  numberOfRevisions: valuePack.numberOfRevisions,
+                  platform: {
+                    id: valuePack.socialMedia?.id || -1,
+                    name: valuePack.socialMedia?.name || "",
+                  },
+                  title: valuePack.title,
+                  valuePackPrice: valuePack.valuePackPrice,
+                  id: valuePack.id || -1,
+                };
+              })}
+              onChangeValuePack={setSelectedValuePack}
+              valuePack={selectedValuePack}
+              platform={platform}
+            />
+          )}
         </div>
         <Button title="Start Order" level="primary" size="large" />
         <div className="flex items-center justify-center gap-2 text-gray2">
@@ -282,74 +224,42 @@ const PublicPagePage = (params: { userId: string | undefined }) => {
           <div className="flex flex-col gap-2">
             <div className="flex flex-1 justify-between">
               <div>Subtotal</div>
-              <div>
-                {helper.formatNumber(selectedValuePack.valuePackPrice)}€
-              </div>
+              {selectedValuePack ? (
+                <div>
+                  {helper.formatNumber(selectedValuePack.valuePackPrice)}€
+                </div>
+              ) : (
+                "-"
+              )}
             </div>
             <div className="flex flex-1 justify-between">
               <div>Fee</div>
-              <div>
-                {helper.formatNumber(selectedValuePack.valuePackPrice * 0.1)}€
-              </div>
+              {selectedValuePack ? (
+                <div>
+                  {helper.formatNumber(selectedValuePack.valuePackPrice * 0.1)}€
+                </div>
+              ) : (
+                "-"
+              )}
             </div>
           </div>
           <div className="w-full border-[1px] border-white1" />
           <div className="flex flex-1 justify-between font-semibold">
             <div>Total</div>
-            <div>
-              {helper.formatNumber(
-                selectedValuePack.valuePackPrice +
-                  selectedValuePack.valuePackPrice * 0.1
-              )}
-              €
-            </div>
-          </div>
-        </div>
-      </form>
-    );
-  };
-
-  const renderValuePack = () => {
-    return (
-      <div className="flex cursor-pointer flex-col gap-4 py-4" ref={wrapperRef}>
-        <div className="px-4 text-sm font-semibold">
-          {selectedValuePack.title}
-        </div>
-        <div className="relative flex flex-1 justify-between gap-6 px-4">
-          <div className="w-96 overflow-hidden text-ellipsis whitespace-nowrap">
-            {selectedValuePack.description}
-          </div>
-          <div>
-            {isValuePackModalOpen ? (
-              <FontAwesomeIcon
-                icon={faChevronUp}
-                className="pointer-events-none absolute right-3 top-1/2 h-8 w-8 -translate-y-1/2 transform"
-              />
+            {selectedValuePack ? (
+              <div>
+                {helper.formatNumber(
+                  selectedValuePack.valuePackPrice +
+                    selectedValuePack.valuePackPrice * 0.1
+                )}
+                €
+              </div>
             ) : (
-              <FontAwesomeIcon
-                icon={faChevronDown}
-                className="pointer-events-none absolute right-3 top-1/2 h-8 w-8 -translate-y-1/2 transform"
-              />
+              "-"
             )}
           </div>
         </div>
-        <div className="flex flex-col items-start gap-2 px-4 text-sm font-medium text-gray2 xl:flex-row">
-          <div className="flex gap-2">
-            <FontAwesomeIcon
-              icon={faCalendar}
-              className="fa-lg cursor-pointer"
-            />
-            <div>{selectedValuePack.deliveryTime} Days Delivery</div>
-          </div>
-          <div className="flex items-center gap-2">
-            <FontAwesomeIcon
-              icon={faArrowRightRotate}
-              className="fa-lg cursor-pointer"
-            />
-            <div>{selectedValuePack.numberOfRevisions} Of Revisions</div>
-          </div>
-        </div>
-      </div>
+      </form>
     );
   };
 
