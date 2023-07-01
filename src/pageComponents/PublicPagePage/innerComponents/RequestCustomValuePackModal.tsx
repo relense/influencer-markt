@@ -2,6 +2,7 @@ import { Controller, useForm } from "react-hook-form";
 import { type Option } from "../../../components/CustomMultiSelect/CustomMultiSelect";
 import { Modal } from "../../../components/Modal/Modal";
 import { CustomSelect } from "../../../components/CustomSelect/CustomSelect";
+import { Button } from "../../../components/Button/Button";
 
 type CustomValuePackData = {
   platform: Option;
@@ -28,8 +29,8 @@ const RequestCustomValuePackModal = (params: {
     },
   });
   return (
-    <Modal title="Create a custom value pack request" onClose={params.onClose}>
-      <form className="flex flex-col gap-4 overflow-y-auto p-8">
+    <Modal title="Request a custom value pack request" onClose={params.onClose}>
+      <form className="flex h-full w-full flex-col gap-4 p-4 sm:w-full sm:px-8">
         <div className="flex flex-col gap-4">
           <div className="text-xl font-medium">Platforms</div>
           <Controller
@@ -68,7 +69,7 @@ const RequestCustomValuePackModal = (params: {
           <textarea
             {...register("requestDetails")}
             required
-            className="flex h-48 flex-1 cursor-pointer rounded-lg border-[1px] border-gray3 bg-transparent p-4 placeholder-gray2 caret-transparent placeholder:w-11/12"
+            className="flex flex-1 cursor-pointer rounded-lg border-[1px] border-gray3 bg-transparent p-4 placeholder-gray2 caret-transparent placeholder:w-11/12"
             placeholder="Specify your requirements for the chosen influencer. Share the desired number of posts or photos and the specific deliverables you expect. For example, if you need a TikTok video promoting our product, provide the necessary guidelines. Clear instructions help the influencer understand your expectations and engage your target audience effectively."
             autoComplete="off"
           />
@@ -76,18 +77,55 @@ const RequestCustomValuePackModal = (params: {
         <div className="w-full border-[1px] border-white1" />
         <div className="flex flex-col gap-4">
           <div className="text-xl font-medium">Price</div>
-          <input />
+          <input
+            {...register("price")}
+            required
+            type="number"
+            className="flex h-14 flex-1 cursor-pointer rounded-lg border-[1px] border-gray3 bg-transparent p-4 placeholder-gray2 caret-transparent placeholder:w-11/12"
+            placeholder="Value pack price"
+            autoComplete="off"
+          />
         </div>
         <div className="w-full border-[1px] border-white1" />
         <div className="flex flex-col gap-4">
           <div className="text-xl font-medium">Delivery Date</div>
-          <input />
+          <input
+            {...register("deliveryDate")}
+            required
+            type="date"
+            className="flex h-14 flex-1 cursor-pointer rounded-lg border-[1px] border-gray3 bg-transparent p-4 placeholder-gray2 caret-transparent placeholder:w-11/12"
+            placeholder="Choose a delivery date"
+            autoComplete="off"
+            min={new Date().toISOString().split("T")[0]}
+          />
         </div>
         <div className="w-full border-[1px] border-white1" />
         <div className="flex flex-col gap-4">
-          <div className="text-xl font-medium">Your Social Media</div>
-          <div>Let the influencer know you better</div>
-          <input />
+          <div className="flex flex-col gap-2">
+            <div className="text-xl font-medium">Your Social Media</div>
+            <div className="text-sm font-medium text-gray2">
+              Let the influencer know you better
+            </div>
+            <input
+              {...register("requestSummary")}
+              required
+              type="text"
+              className="flex h-14 flex-1 cursor-pointer rounded-lg border-[1px] border-gray3 bg-transparent p-4 placeholder-gray2 caret-transparent placeholder:w-11/12"
+              placeholder="Your website"
+              autoComplete="off"
+            />
+            <input
+              {...register("requestSummary")}
+              required
+              type="text"
+              className="flex h-14 flex-1 cursor-pointer rounded-lg border-[1px] border-gray3 bg-transparent p-4 placeholder-gray2 caret-transparent placeholder:w-11/12"
+              placeholder="Main social media account E.g. https://www.instagram.com/account"
+              autoComplete="off"
+            />
+          </div>
+        </div>
+        <div className="flex justify-center p-4">
+          <Button type="submit" title="Add Value Pack" level="primary" />
         </div>
       </form>
     </Modal>
