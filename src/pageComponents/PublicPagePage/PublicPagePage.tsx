@@ -219,7 +219,7 @@ const PublicPagePage = (params: { userId: string | undefined }) => {
               </div>
             )}
           </div>
-          <div className="flex flex-1 items-center justify-end gap-2">
+          <div className="flex flex-1 flex-col items-end justify-end gap-2 xs:flex-row xs:items-center">
             <div className="flex items-center gap-1">
               <FontAwesomeIcon
                 icon={faStar}
@@ -227,7 +227,7 @@ const PublicPagePage = (params: { userId: string | undefined }) => {
               />
               <div>4.96</div>
             </div>
-            <div className="h-2 w-2 rounded-full bg-black" />
+            <div className="hidden h-2 w-2 rounded-full bg-black xs:block" />
             <div className="text-gray2">22 reviews</div>
           </div>
         </div>
