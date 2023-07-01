@@ -21,9 +21,12 @@ import { type ValuePackType } from "../FirstStepsPage/Views/Step4";
 
 import { useEffect, useState } from "react";
 import { helper } from "../../utils/helper";
-import { ValuePackInput } from "../../components/ValuePackInput/ValuePackInput";
+import { ValuePackInput } from "./innerComponents/ValuePackInput";
+import { RequestCustomValuePackModal } from "./innerComponents/RequestCustomValuePackModal";
 
 const PublicPagePage = (params: { userId: string | undefined }) => {
+  const [isCustomValuePackModalOpen, setIsCustomValuePackModalOpen] =
+    useState<boolean>(false);
   const [selectedValuePack, setSelectedValuePack] = useState<ValuePackType>({
     id: -1,
     title: "",
@@ -124,7 +127,7 @@ const PublicPagePage = (params: { userId: string | undefined }) => {
           </div>
         </div>
 
-        <div className="flex flex-1 flex-row items-start justify-center gap-4 lg:flex-row lg:justify-end">
+        <div className="flex flex-1 flex-row items-start  justify-end gap-4 lg:flex-row">
           {params.userId && (
             <Link
               href={`/${params.userId}/edit`}
@@ -173,7 +176,15 @@ const PublicPagePage = (params: { userId: string | undefined }) => {
               })}
             </div>
           </div>
-          <div className="block sm:hidden">{renderValuePackChooser()}</div>
+          <div className="flex flex-col gap-4 sm:hidden">
+            {renderValuePackChooser()}{" "}
+            <div
+              className="cursor-pointer text-center underline"
+              onClick={() => setIsCustomValuePackModalOpen(true)}
+            >
+              Request a custom value pack
+            </div>
+          </div>
         </div>
 
         <div className="flex flex-col gap-6">
@@ -183,7 +194,15 @@ const PublicPagePage = (params: { userId: string | undefined }) => {
               {profile?.about}
             </div>
           </div>
-          <div className="hidden sm:block">{renderValuePackChooser()}</div>
+          <div className="hidden flex-col gap-4 sm:flex">
+            {renderValuePackChooser()}
+            <div
+              className="cursor-pointer text-center underline"
+              onClick={() => setIsCustomValuePackModalOpen(true)}
+            >
+              Request a custom value pack
+            </div>
+          </div>
         </div>
       </div>
     );
@@ -326,11 +345,19 @@ const PublicPagePage = (params: { userId: string | undefined }) => {
 
   return (
     <Layout>
-      <div className="flex w-full cursor-default flex-col gap-6 self-center px-4 pb-10 sm:px-12 xl:w-3/4 2xl:w-2/4">
-        {renderHeader()}
-        {renderMiddleContent()}
-        <div className="w-full border-[1px] border-gray3" />
-        {renderReviews()}
+      <div className="flex justify-center">
+        <div className="flex w-full cursor-default flex-col gap-6 self-center px-4 pb-10 sm:px-12 xl:w-3/4 2xl:w-2/4">
+          {renderHeader()}
+          {renderMiddleContent()}
+          <div className="w-full border-[1px] border-gray3" />
+          {renderReviews()}
+        </div>
+        {isCustomValuePackModalOpen && (
+          <RequestCustomValuePackModal
+            availablePlatforms={availablePlatforms}
+            onClose={() => setIsCustomValuePackModalOpen(false)}
+          />
+        )}
       </div>
     </Layout>
   );
