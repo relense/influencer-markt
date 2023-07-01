@@ -24,9 +24,17 @@ import { helper } from "../../utils/helper";
 import { ValuePackInput } from "../../components/ValuePackInput/ValuePackInput";
 
 const PublicPagePage = (params: { userId: string | undefined }) => {
-  const [selectedValuePack, setSelectedValuePack] = useState<ValuePackType>();
+  const [selectedValuePack, setSelectedValuePack] = useState<ValuePackType>({
+    id: -1,
+    title: "",
+    platform: { id: -1, name: "" },
+    description: "",
+    deliveryTime: -1,
+    numberOfRevisions: -1,
+    valuePackPrice: -1,
+  });
   const [platform, setPlatform] = useState<Option>({ id: -1, name: "" });
-  const [availablePLatforms, setAvailablePlatforms] = useState<Option[]>([]);
+  const [availablePlatforms, setAvailablePlatforms] = useState<Option[]>([]);
 
   const { data: profile } = api.profiles.getProfileWithoutIncludes.useQuery();
   const { data: profileSocialMedia } =
@@ -37,6 +45,28 @@ const PublicPagePage = (params: { userId: string | undefined }) => {
     api.valuesPacks.getValuePacksByProfileId.useQuery({
       profileId: profile?.id || -1,
     });
+
+  useEffect(() => {
+    if (profileValuePack && profileValuePack[0]) {
+      setPlatform({
+        id: profileValuePack[0]?.socialMedia?.id || -1,
+        name: profileValuePack[0]?.socialMedia?.name || "",
+      });
+
+      setSelectedValuePack({
+        id: profileValuePack[0].id,
+        title: profileValuePack[0].title,
+        platform: {
+          id: profileValuePack[0].socialMedia?.id || -1,
+          name: profileValuePack[0].socialMedia?.name || "",
+        },
+        description: profileValuePack[0].description,
+        deliveryTime: profileValuePack[0].deliveryTime,
+        numberOfRevisions: profileValuePack[0].numberOfRevisions,
+        valuePackPrice: profileValuePack[0].valuePackPrice,
+      });
+    }
+  }, [availablePlatforms, profileValuePack]);
 
   useEffect(() => {
     const uniqueOptionsSet = new Set<number>();
@@ -154,10 +184,10 @@ const PublicPagePage = (params: { userId: string | undefined }) => {
 
   const renderValuePackChooser = () => {
     return (
-      <form className="flex flex-col gap-4 rounded-2xl border-[1px] border-white1 p-4 shadow-xl">
+      <div className="flex flex-col gap-4 rounded-2xl border-[1px] border-white1 p-4 shadow-xl">
         <div className="flex flex-1 justify-between">
-          <div className="flex flex-1 items-center gap-1">
-            {selectedValuePack && (
+          <div className="flex items-center gap-1">
+            {selectedValuePack.id !== -1 && (
               <div className="text-xl font-medium">
                 {selectedValuePack.valuePackPrice}€
               </div>
@@ -184,7 +214,7 @@ const PublicPagePage = (params: { userId: string | undefined }) => {
               name="platform"
               noBorder
               placeholder="Select the social media platform"
-              options={availablePLatforms}
+              options={availablePlatforms}
               handleOptionSelect={setPlatform}
               value={platform}
             />
@@ -212,7 +242,12 @@ const PublicPagePage = (params: { userId: string | undefined }) => {
             />
           )}
         </div>
-        <Button title="Start Order" level="primary" size="large" />
+        <Button
+          title="Start Order"
+          level="primary"
+          size="large"
+          disabled={platform.id === -1 || selectedValuePack.id === -1}
+        />
         <div className="flex items-center justify-center gap-2 text-gray2">
           <FontAwesomeIcon
             icon={faCircleQuestion}
@@ -224,7 +259,7 @@ const PublicPagePage = (params: { userId: string | undefined }) => {
           <div className="flex flex-col gap-2">
             <div className="flex flex-1 justify-between">
               <div>Subtotal</div>
-              {selectedValuePack ? (
+              {selectedValuePack.id !== -1 ? (
                 <div>
                   {helper.formatNumber(selectedValuePack.valuePackPrice)}€
                 </div>
@@ -234,7 +269,7 @@ const PublicPagePage = (params: { userId: string | undefined }) => {
             </div>
             <div className="flex flex-1 justify-between">
               <div>Fee</div>
-              {selectedValuePack ? (
+              {selectedValuePack.id !== -1 ? (
                 <div>
                   {helper.formatNumber(selectedValuePack.valuePackPrice * 0.1)}€
                 </div>
@@ -246,7 +281,7 @@ const PublicPagePage = (params: { userId: string | undefined }) => {
           <div className="w-full border-[1px] border-white1" />
           <div className="flex flex-1 justify-between font-semibold">
             <div>Total</div>
-            {selectedValuePack ? (
+            {selectedValuePack.id !== -1 ? (
               <div>
                 {helper.formatNumber(
                   selectedValuePack.valuePackPrice +
@@ -259,7 +294,7 @@ const PublicPagePage = (params: { userId: string | undefined }) => {
             )}
           </div>
         </div>
-      </form>
+      </div>
     );
   };
 
