@@ -1,11 +1,13 @@
 import { signOut } from "next-auth/react";
 import { type Session } from "next-auth";
+import { api } from "~/utils/api";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faMessage,
   faBell,
   faFileLines,
+  faUserCircle,
 } from "@fortawesome/free-regular-svg-icons";
 
 import { Button } from "../Button/Button";
@@ -199,9 +201,15 @@ export const Navbar = (params: {
           onClick={() => setToggleOptions(!toggleOptions)}
         />
         <div
-          className="absolute right-1 top-20 z-10 flex h-auto w-11/12 flex-col gap-4 rounded-2xl border-[1px] border-white1 bg-white p-8 shadow-lg sm:right-5 sm:w-72"
+          className="absolute right-1 top-20 z-10 flex h-auto w-11/12 flex-col gap-4 rounded-2xl border-[1px] border-white1 bg-white p-8 shadow-lg sm:right-5 sm:w-auto"
           onClick={() => setToggleOptions(!toggleOptions)}
         >
+          <div className="flex items-center gap-4">
+            <FontAwesomeIcon icon={faUserCircle} className="fa-xl" />
+            <div>{params.sessionData?.user.email}</div>
+          </div>
+          <div className="cursor-pointer border-[1px] border-white1" />
+
           <Link
             href={`/${params.sessionData?.user.id || "/"}`}
             className="flex cursor-pointer gap-4"
