@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
-import { useOutsideClick } from "../../utils/helper";
-import { type ValuePackType } from "../../pageComponents/FirstStepsPage/Views/Step4";
+import { useOutsideClick } from "../../../utils/helper";
+import { type ValuePackType } from "../../FirstStepsPage/Views/Step4";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faArrowRightRotate,
@@ -8,8 +8,8 @@ import {
   faChevronDown,
   faChevronUp,
 } from "@fortawesome/free-solid-svg-icons";
-import { type Option } from "../CustomMultiSelect/CustomMultiSelect";
-import { ValuePack } from "../ValuePack/ValuePack";
+import { type Option } from "../../../components/CustomMultiSelect/CustomMultiSelect";
+import { ValuePack } from "../../../components/ValuePack/ValuePack";
 
 const ValuePackInput = (params: {
   valuePack: ValuePackType | undefined;
