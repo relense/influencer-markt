@@ -50,11 +50,13 @@ export const CustomSelect = (params: {
               e.preventDefault();
               return false;
             }}
+            onKeyUp={() => {
+              return false;
+            }}
             className={customBorder}
             placeholder={params.placeholder}
             defaultValue={params.value.name}
             autoComplete="off"
-            readOnly
           />
         ) : (
           <input
@@ -69,7 +71,6 @@ export const CustomSelect = (params: {
             placeholder={params.placeholder}
             defaultValue={params.value.name}
             autoComplete="off"
-            readOnly
           />
         )}
         {selectStatus ? (
