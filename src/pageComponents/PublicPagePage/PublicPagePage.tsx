@@ -6,10 +6,7 @@ import {
   faShareFromSquare,
   faStar,
 } from "@fortawesome/free-solid-svg-icons";
-import {
-  faBookmark,
-  faCircleQuestion,
-} from "@fortawesome/free-regular-svg-icons";
+import { faBookmark } from "@fortawesome/free-regular-svg-icons";
 
 import { Layout } from "../../components/Layout";
 import Link from "next/link";
@@ -25,7 +22,7 @@ import { ValuePackInput } from "./innerComponents/ValuePackInput";
 import { RequestCustomValuePackModal } from "./innerComponents/RequestCustomValuePackModal";
 import { ToolTip } from "../../components/ToolTip";
 
-const PublicPagePage = (params: { userId: string | undefined }) => {
+const PublicPagePage = (params: { username: string | undefined }) => {
   const [isCustomValuePackModalOpen, setIsCustomValuePackModalOpen] =
     useState<boolean>(false);
   const [selectedValuePack, setSelectedValuePack] = useState<ValuePackType>({
@@ -129,9 +126,9 @@ const PublicPagePage = (params: { userId: string | undefined }) => {
         </div>
 
         <div className="flex flex-1 flex-row items-start  justify-end gap-4 lg:flex-row">
-          {params.userId && (
+          {params.username && (
             <Link
-              href={`/${params.userId}/edit`}
+              href={`/${params.username}/edit`}
               className="flex cursor-pointer items-center gap-2"
             >
               <FontAwesomeIcon
