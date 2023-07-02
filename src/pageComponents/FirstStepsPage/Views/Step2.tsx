@@ -15,7 +15,7 @@ import { type SocialMediaData } from "../FirstStepsPage";
 import {
   AddSocialMediaModal,
   type SocialMediaDetails,
-} from "../../../components/AddSocialMediaModal/AddSocialMediaModal";
+} from "../../../components/AddSocialMediaModal";
 
 export const Step2 = (params: {
   registerSocialMedia: UseFormRegister<SocialMediaData>;
