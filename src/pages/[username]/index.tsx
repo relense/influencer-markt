@@ -8,16 +8,16 @@ import { PublicPagePage } from "../../pageComponents/PublicPagePage/PublicPagePa
 const PublicPage: NextPage = () => {
   const { data: userData, isLoading } = api.users.getUser.useQuery();
   const router = useRouter();
-  const uniqueUserid = router.query.userId;
+  const username = router.query.username;
 
   useEffect(() => {
-    if (isLoading === false && uniqueUserid !== userData?.id) {
+    if (isLoading === false && username !== userData?.username) {
       void router.push("/");
     }
-  }, [isLoading, router, uniqueUserid, userData?.id]);
+  }, [isLoading, router, username, userData?.username]);
 
-  if (isLoading === false && userData?.id === uniqueUserid) {
-    return <PublicPagePage userId={userData?.id} />;
+  if (isLoading === false && userData?.username === username) {
+    return <PublicPagePage username={userData?.username} />;
   } else {
     return <div>Loading</div>;
   }
