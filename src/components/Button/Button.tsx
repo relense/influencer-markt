@@ -27,7 +27,7 @@ export const Button = ({
   let borderColor = "";
   let wSize = "lg:w-auto";
   let cursor = "cursor-pointer";
-  let hover = "hover:bg-influencer-dark";
+  let hover = "hover:bg-influencer-dark hover:text-white";
 
   if (level === "primary") {
     bgColor = "bg-influencer";
