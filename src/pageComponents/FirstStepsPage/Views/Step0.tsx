@@ -2,14 +2,14 @@ import {
   Controller,
   type Control,
   type UseFormRegister,
-  UseFormWatch,
+  type UseFormWatch,
 } from "react-hook-form";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCircleQuestion } from "@fortawesome/free-regular-svg-icons";
+
 import { api } from "~/utils/api";
 
 import { type UserIdentifyData } from "../FirstStepsPage";
 import { CustomSelect } from "../../../components/CustomSelect";
+import { ToolTip } from "../../../components/ToolTip";
 
 export const Step0 = (params: {
   control: Control<UserIdentifyData, any>;
@@ -46,6 +46,7 @@ export const Step0 = (params: {
         {params.watch("role").id !== -1 &&
           params.watch("role").name !== "Individual" && (
             <div className="flex items-center gap-2">
+              <ToolTip content="This input will define your unique username or handle for your profile URL. It's like your personal identity on the platform, allowing others to easily find and access your page using this custom name. Choose something catchy and easy to remember, as this username will be a permanent representation of you on the platform. Have fun picking the perfect one!" />
               <input
                 {...params.register("username")}
                 required
@@ -53,10 +54,6 @@ export const Step0 = (params: {
                 className="h-14 w-full rounded-lg border-[1px] border-gray3 p-4 placeholder-gray2"
                 placeholder="Claim your page name"
                 autoComplete="off"
-              />
-              <FontAwesomeIcon
-                icon={faCircleQuestion}
-                className="fa-lg cursor-pointer text-gray2"
               />
             </div>
           )}
