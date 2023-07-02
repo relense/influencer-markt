@@ -1,6 +1,5 @@
 import { signOut } from "next-auth/react";
 import { type Session } from "next-auth";
-import { api } from "~/utils/api";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -22,6 +21,7 @@ import { useState } from "react";
 import Link from "next/link";
 
 export const Navbar = (params: {
+  username: string;
   sessionData: Session | null;
   openLoginModal: () => void;
   setIsSignUp: (isSignUp: boolean) => void;
@@ -125,6 +125,7 @@ export const Navbar = (params: {
   };
 
   const hamburguerDropDownMenu = () => {
+    debugger;
     return (
       <>
         <div
@@ -160,7 +161,7 @@ export const Navbar = (params: {
           {params.sessionData && (
             <>
               <Link
-                href={`/${params.sessionData?.user.id || "/"}`}
+                href={`/${params.username || "/"}`}
                 className="flex cursor-pointer gap-4"
               >
                 <FontAwesomeIcon
@@ -211,7 +212,7 @@ export const Navbar = (params: {
           <div className="cursor-pointer border-[1px] border-white1" />
 
           <Link
-            href={`/${params.sessionData?.user.id || "/"}`}
+            href={`/${params.username || "/"}`}
             className="flex cursor-pointer gap-4"
           >
             <FontAwesomeIcon
