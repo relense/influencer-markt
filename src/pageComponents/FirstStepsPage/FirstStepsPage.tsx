@@ -524,7 +524,6 @@ const FirstStepsPage = () => {
   };
 
   const renderUserTypeForm = () => {
-    debugger;
     return (
       <main className="h-full w-full bg-shadow-gray p-6 lg:p-8">
         <div className="flex h-full w-full flex-col rounded-2xl bg-white lg:flex-row lg:overscroll-none">

@@ -125,7 +125,6 @@ export const Navbar = (params: {
   };
 
   const hamburguerDropDownMenu = () => {
-    debugger;
     return (
       <>
         <div
