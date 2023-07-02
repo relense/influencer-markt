@@ -161,7 +161,7 @@ export const Navbar = (params: {
           {params.sessionData && (
             <>
               <Link
-                href={`/${params.username || "/"}`}
+                href={params.username ? `/${params.username}` : "/"}
                 className="flex cursor-pointer gap-4"
               >
                 <FontAwesomeIcon
@@ -212,7 +212,7 @@ export const Navbar = (params: {
           <div className="cursor-pointer border-[1px] border-white1" />
 
           <Link
-            href={`/${params.username || "/"}`}
+            href={params.username ? `/${params.username}` : "/"}
             className="flex cursor-pointer gap-4"
           >
             <FontAwesomeIcon
