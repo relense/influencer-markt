@@ -24,7 +24,6 @@ import {
 export type ProfileData = {
   profilePicture: string;
   displayName: string;
-  role: Option;
   gender: Option;
   categories: Option[];
   country: string;
@@ -43,7 +42,6 @@ const ProfileForm = (params: {
 }) => {
   const [profilePicture, setProfilePicture] = useState<string>();
   const { data: categories } = api.allRoutes.getAllCategories.useQuery();
-  const { data: roles } = api.allRoutes.getAllRoles.useQuery();
   const { data: genders } = api.allRoutes.getAllGenders.useQuery();
 
   const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -119,7 +117,7 @@ const ProfileForm = (params: {
       <form
         onSubmit={params.submit}
         id="form-hook"
-        className="mt-4 flex w-full flex-col gap-6 "
+        className="mt-4 flex w-full flex-col gap-6"
       >
         <input
           {...params.register("displayName")}
@@ -141,26 +139,6 @@ const ProfileForm = (params: {
                   name="gender"
                   placeholder="Select your gender: Male, Female, Other"
                   options={genders}
-                  value={value}
-                  handleOptionSelect={onChange}
-                />
-              );
-            }}
-          />
-        )}
-
-        {!params.isProfileUpdate && (
-          <Controller
-            name="role"
-            control={params.control}
-            rules={{ required: true }}
-            render={({ field: { value, onChange } }) => {
-              return (
-                <CustomSelect
-                  register={params.register}
-                  name="role"
-                  placeholder="Choose Your Role: Influencer, Brand, or Individual"
-                  options={roles}
                   value={value}
                   handleOptionSelect={onChange}
                 />
