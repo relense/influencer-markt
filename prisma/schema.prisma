@@ -57,10 +57,16 @@ model User {
   emailVerified DateTime?
   image         String?
   firstSteps    Boolean?  @default(false)
+  username      String?   @unique
+  role          Role?     @relation(fields: [roleId], references: [id])
   accounts      Account[]
   sessions      Session[]
   profile       Profile?
   review        Review[]
+
+  roleId Int?
+
+  @@index([roleId])
 }
 
 //App data
@@ -68,7 +74,6 @@ model Profile {
   id              Int               @id @default(autoincrement())
   profilePicture  String
   name            String
-  role            Role?             @relation(fields: [roleId], references: [id])
   gender          Gender?           @relation(fields: [genderId], references: [id])
   categories      Category[]
   about           String            @db.Text
@@ -81,11 +86,9 @@ model Profile {
   reviews         Review[]
 
   userId   String @unique
-  roleId   Int?
   genderId Int?
 
   @@index([userId])
-  @@index([roleId])
   @@index([genderId])
 }
 
@@ -96,15 +99,15 @@ model Category {
 }
 
 model Role {
-  id      Int       @id @default(autoincrement())
-  name    String    @unique
-  Profile Profile[]
+  id   Int    @id @default(autoincrement())
+  name String @unique
+  user User[]
 }
 
 model Gender {
   id      Int       @id @default(autoincrement())
   name    String    @unique
-  Profile Profile[]
+  profile Profile[]
 }
 
 model ValuePack {
