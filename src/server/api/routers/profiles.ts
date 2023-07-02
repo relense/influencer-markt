@@ -7,10 +7,6 @@ export const profilesRouter = createTRPCRouter({
       z.object({
         displayName: z.string(),
         profilePicture: z.string(),
-        role: z.object({
-          id: z.number(),
-          name: z.string(),
-        }),
         gender: z.object({
           id: z.number(),
           name: z.string(),
@@ -34,7 +30,6 @@ export const profilesRouter = createTRPCRouter({
         },
         update: {
           name: input.displayName,
-          roleId: input.role.id,
           genderId: input.gender.id,
           profilePicture: input.profilePicture,
           categories: {
@@ -51,7 +46,6 @@ export const profilesRouter = createTRPCRouter({
         },
         create: {
           name: input.displayName,
-          roleId: input.role.id,
           genderId: input.gender.id,
           profilePicture: input.profilePicture,
           categories: {
@@ -85,7 +79,6 @@ export const profilesRouter = createTRPCRouter({
       where: { userId: ctx.session.user.id },
       include: {
         categories: true,
-        role: true,
         userSocialMedia: {
           select: {
             followers: true,
@@ -114,7 +107,6 @@ export const profilesRouter = createTRPCRouter({
       where: { userId: ctx.session.user.id },
       include: {
         categories: true,
-        role: true,
       },
     });
   }),
