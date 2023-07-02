@@ -35,7 +35,7 @@ type Step = {
   mainSubTitle: string;
 };
 
-export type UserIdentifyData = {
+export type UserIdentityData = {
   username: string;
   role: Option;
 };
@@ -167,11 +167,12 @@ const FirstStepsPage = () => {
   const [currentStep, setCurrentStep] = useState<Step>();
   const [stepsCount, setStepsCount] = useState<number>(0);
   const {
-    control: userIdentifyControl,
-    register: userIdentifyRegister,
-    watch: userIdentifyWatch,
-    handleSubmit: handleSubmitUserIdentifyData,
-  } = useForm<UserIdentifyData>({
+    control: userIdentityControl,
+    register: userIdentityRegister,
+    watch: userIdentityWatch,
+    handleSubmit: handleSubmitUserIdentityData,
+    formState: { errors: userIdentityErrors },
+  } = useForm<UserIdentityData>({
     defaultValues: {
       role: { id: -1, name: "" },
     },
@@ -206,8 +207,15 @@ const FirstStepsPage = () => {
   } = useForm<ValuePacksData>();
 
   const { data: platforms } = api.allRoutes.getAllSocialMedia.useQuery();
+  const {
+    data: usernameVerification,
+    isLoading: usernameVeritifcationLoading,
+    refetch: usernameVerificationRefetch,
+  } = api.users.usernameExists.useQuery({
+    username: userIdentityWatch("username") || "",
+  });
 
-  const { mutate } = api.users.updateUser.useMutation();
+  const { mutate } = api.users.updateUserFirstSteps.useMutation();
   const { mutateAsync: profileMutation } =
     api.profiles.createProfile.useMutation();
   const { mutate: valuePacksMutation } =
@@ -215,18 +223,31 @@ const FirstStepsPage = () => {
   const { mutate: userSocialMediaMutation } =
     api.userSocialMedias.createUserSocialMedias.useMutation();
 
-  const submitStep0 = handleSubmitUserIdentifyData((data) => {
-    setIsUserTypeFormComplete(true);
+  const { mutate: userIdentityMutation } =
+    api.users.updateUserIdentity.useMutation({
+      onSuccess: () => {
+        updateStepper();
+      },
+    });
 
-    if (data.role.name === "Brand") {
-      setCurrentStep(brandSteps[0]);
-      setSteps(brandSteps);
-    } else if (data.role.name === "Individual") {
-      setCurrentStep(individualSteps[0]);
-      setSteps(individualSteps);
-    } else {
-      setCurrentStep(influencerSteps[0]);
-      setSteps(influencerSteps);
+  const submitStep0 = handleSubmitUserIdentityData((data) => {
+    if (
+      (userIdentityWatch("role")?.name === "Brand" && usernameVerification) ||
+      (userIdentityWatch("role")?.name === "Influencer" &&
+        usernameVerification) ||
+      userIdentityWatch("role")?.name !== ""
+    ) {
+      if (userIdentityWatch("role")?.name === "Individual") {
+        userIdentityMutation({
+          role: data.role,
+          username: "",
+        });
+      } else {
+        userIdentityMutation({
+          role: data.role,
+          username: data.username,
+        });
+      }
     }
   });
 
@@ -241,6 +262,22 @@ const FirstStepsPage = () => {
   const submitStep4 = handleSubmitValuePackData(() => {
     changeStep("next");
   });
+
+  const updateStepper = () => {
+    setIsUserTypeFormComplete(true);
+    const role = userIdentityWatch("role");
+
+    if (role.name === "Brand") {
+      setCurrentStep(brandSteps[0]);
+      setSteps(brandSteps);
+    } else if (role.name === "Individual") {
+      setCurrentStep(individualSteps[0]);
+      setSteps(individualSteps);
+    } else {
+      setCurrentStep(influencerSteps[0]);
+      setSteps(influencerSteps);
+    }
+  };
 
   const renderCloseButton = () => {
     return (
@@ -487,6 +524,7 @@ const FirstStepsPage = () => {
   };
 
   const renderUserTypeForm = () => {
+    debugger;
     return (
       <main className="h-full w-full bg-shadow-gray p-6 lg:p-8">
         <div className="flex h-full w-full flex-col rounded-2xl bg-white lg:flex-row lg:overscroll-none">
@@ -494,7 +532,7 @@ const FirstStepsPage = () => {
             ref={mainContentRef}
             className="flex h-full w-full flex-col overflow-y-auto sm:px-8 lg:overscroll-none"
           >
-            <div className="flex flex-col items-center justify-center gap-4 py-4 text-center font-playfair lg:mt-12 lg:py-0">
+            <div className="flex flex-col items-center justify-center gap-4 p-4 text-center font-playfair lg:mt-12 lg:py-0">
               <div className="text-2xl sm:text-4xl">Create Your Identity</div>
               <div className="text-base text-gray2 sm:text-xl">
                 {
@@ -503,17 +541,27 @@ const FirstStepsPage = () => {
               </div>
             </div>
             <Step0
-              control={userIdentifyControl}
-              register={userIdentifyRegister}
-              watch={userIdentifyWatch}
+              control={userIdentityControl}
+              register={userIdentityRegister}
+              watch={userIdentityWatch}
               submit={submitStep0}
+              refetch={usernameVerificationRefetch}
+              usernameVerification={usernameVerification}
             />
             <div className="flex-2 flex w-full flex-col justify-center gap-4 p-4 py-4 sm:flex-row sm:items-end sm:gap-0">
               <Button
-                title="Start Your Journey"
+                title="Verify Page Name And Start Your Journey"
                 level="primary"
                 form="form-user"
                 size="regular"
+                disabled={
+                  (userIdentityWatch("role")?.name === "Brand" &&
+                    !usernameVerification) ||
+                  (userIdentityWatch("role")?.name === "Influencer" &&
+                    !usernameVerification) ||
+                  userIdentityWatch("role")?.name === ""
+                }
+                isLoading={usernameVeritifcationLoading}
               />
             </div>
           </div>

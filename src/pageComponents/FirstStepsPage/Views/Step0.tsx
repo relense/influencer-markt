@@ -7,14 +7,16 @@ import {
 
 import { api } from "~/utils/api";
 
-import { type UserIdentifyData } from "../FirstStepsPage";
+import { type UserIdentityData } from "../FirstStepsPage";
 import { CustomSelect } from "../../../components/CustomSelect";
 import { ToolTip } from "../../../components/ToolTip";
 
 export const Step0 = (params: {
-  control: Control<UserIdentifyData, any>;
-  register: UseFormRegister<UserIdentifyData>;
-  watch: UseFormWatch<UserIdentifyData>;
+  control: Control<UserIdentityData, any>;
+  register: UseFormRegister<UserIdentityData>;
+  watch: UseFormWatch<UserIdentityData>;
+  refetch: () => void;
+  usernameVerification: boolean | undefined;
   submit: () => void;
 }) => {
   const { data: roles } = api.allRoutes.getAllRoles.useQuery();
@@ -43,18 +45,26 @@ export const Step0 = (params: {
             );
           }}
         />
-        {params.watch("role").id !== -1 &&
-          params.watch("role").name !== "Individual" && (
-            <div className="flex items-center gap-2">
+        {params.watch("role")?.id !== -1 &&
+          params.watch("role")?.name !== "Individual" && (
+            <div className="flex flex-col-reverse items-center gap-2 lg:flex-row">
               <ToolTip content="This input will define your unique username or handle for your profile URL. It's like your personal identity on the platform, allowing others to easily find and access your page using this custom name. Choose something catchy and easy to remember, as this username will be a permanent representation of you on the platform. Have fun picking the perfect one!" />
-              <input
-                {...params.register("username")}
-                required
-                type="text"
-                className="h-14 w-full rounded-lg border-[1px] border-gray3 p-4 placeholder-gray2"
-                placeholder="Claim your page name"
-                autoComplete="off"
-              />
+              <div className="flex h-16 w-full items-center rounded-lg border-[1px] border-gray3 p-4 placeholder-gray2 ">
+                <div className="hidden h-16 items-center xs:flex">
+                  localhost:3000/
+                </div>
+                <input
+                  {...params.register("username")}
+                  required
+                  type="text"
+                  className="flex w-full flex-1 rounded-lg placeholder-gray2 focus:outline-none"
+                  placeholder="your-page-name"
+                  autoComplete="off"
+                  onKeyDown={(e) => {
+                    params.refetch();
+                  }}
+                />
+              </div>
             </div>
           )}
       </form>
