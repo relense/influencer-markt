@@ -23,6 +23,7 @@ import { useEffect, useState } from "react";
 import { helper } from "../../utils/helper";
 import { ValuePackInput } from "./innerComponents/ValuePackInput";
 import { RequestCustomValuePackModal } from "./innerComponents/RequestCustomValuePackModal";
+import { ToolTip } from "../../components/ToolTip";
 
 const PublicPagePage = (params: { userId: string | undefined }) => {
   const [isCustomValuePackModalOpen, setIsCustomValuePackModalOpen] =
@@ -275,10 +276,7 @@ const PublicPagePage = (params: { userId: string | undefined }) => {
           disabled={platform.id === -1 || selectedValuePack.id === -1}
         />
         <div className="flex items-center justify-center gap-2 text-gray2">
-          <FontAwesomeIcon
-            icon={faCircleQuestion}
-            className="fa-lg cursor-pointer"
-          />
+          <ToolTip content="We hold the payment for 72 hours. If the influencer doesn’t accept the order it will automatically be cancelled and your payments refunded" />
           <div>We only charge when the order is complete</div>
         </div>
         <div className="flex flex-col gap-4 text-lg">
