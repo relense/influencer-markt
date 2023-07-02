@@ -93,7 +93,7 @@ const RequestCustomValuePackModal = (params: {
             {...register("deliveryDate")}
             required
             type="date"
-            className="flex h-14 flex-1 cursor-pointer rounded-lg border-[1px] border-gray3 bg-transparent p-4 placeholder-gray2 caret-transparent placeholder:w-11/12"
+            className="flex h-14 w-full flex-1 cursor-pointer rounded-lg border-[1px] border-gray3 bg-transparent p-4 placeholder-gray2 caret-transparent placeholder:w-11/12"
             placeholder="Choose a delivery date"
             autoComplete="off"
             min={new Date().toISOString().split("T")[0]}
