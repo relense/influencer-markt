@@ -1,8 +1,8 @@
 import { Controller, useForm } from "react-hook-form";
-import { type Option } from "../../../components/CustomMultiSelect/CustomMultiSelect";
-import { Modal } from "../../../components/Modal/Modal";
-import { CustomSelect } from "../../../components/CustomSelect/CustomSelect";
-import { Button } from "../../../components/Button/Button";
+import { type Option } from "../../../components/CustomMultiSelect";
+import { Modal } from "../../../components/Modal";
+import { CustomSelect } from "../../../components/CustomSelect";
+import { Button } from "../../../components/Button";
 
 type CustomValuePackData = {
   platform: Option;

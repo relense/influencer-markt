@@ -3,10 +3,10 @@ import {
   Controller,
   type UseFormRegister,
 } from "react-hook-form";
-import { Modal } from "./Modal/Modal";
-import { CustomSelect } from "./CustomSelect/CustomSelect";
-import { Button } from "./Button/Button";
-import { type Option } from "./CustomMultiSelect/CustomMultiSelect";
+import { Modal } from "./Modal";
+import { CustomSelect } from "./CustomSelect";
+import { Button } from "./Button";
+import { type Option } from "./CustomMultiSelect";
 import { useEffect, useState } from "react";
 import { type SocialMedia } from "@prisma/client";
 

@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Button } from "../../../components/Button/Button";
+import { Button } from "../../../components/Button";
 
 export const Step5 = (params: {
   changeStep: (value: "next" | "previous") => void;

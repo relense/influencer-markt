@@ -1,5 +1,5 @@
-import { StepsReminder } from "../../../components/StepsReminder/StepsReminder";
-import { PictureCarrosel } from "../../../components/PictureCarrosel/PictureCarrosel";
+import { StepsReminder } from "../../../components/StepsReminder";
+import { PictureCarrosel } from "../../../components/PictureCarrosel";
 
 export const Step3 = (params: {
   changeStep: (value: "next" | "previous") => void;

@@ -3,7 +3,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faChevronDown, faChevronUp } from "@fortawesome/free-solid-svg-icons";
 import { type UseFormRegister } from "react-hook-form";
 
-import { useOutsideClick } from "../../utils/helper";
+import { useOutsideClick } from "../utils/helper";
 
 export type Option = {
   id: number;

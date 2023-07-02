@@ -10,7 +10,7 @@ import {
   faUserCircle,
 } from "@fortawesome/free-regular-svg-icons";
 
-import { Button } from "../Button/Button";
+import { Button } from "./Button";
 import {
   faArrowRightFromBracket,
   faArrowRightToBracket,

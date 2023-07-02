@@ -13,10 +13,10 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 
 import { type SocialMedia } from "@prisma/client";
-import { type Option } from "../../../components/CustomMultiSelect/CustomMultiSelect";
-import { StepsReminder } from "../../../components/StepsReminder/StepsReminder";
+import { type Option } from "../../../components/CustomMultiSelect";
+import { StepsReminder } from "../../../components/StepsReminder";
 import { type ValuePacksData } from "../FirstStepsPage";
-import { AddValuePackModal } from "../../../components/AddValuePackModal/AddValuePackModal";
+import { AddValuePackModal } from "../../../components/AddValuePackModal";
 
 export type ValuePackType = {
   id?: number;

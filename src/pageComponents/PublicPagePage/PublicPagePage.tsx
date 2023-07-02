@@ -11,12 +11,12 @@ import {
   faCircleQuestion,
 } from "@fortawesome/free-regular-svg-icons";
 
-import { Layout } from "../../components/Layout/Layout";
+import { Layout } from "../../components/Layout";
 import Link from "next/link";
-import { PictureCarrosel } from "../../components/PictureCarrosel/PictureCarrosel";
-import { Button } from "../../components/Button/Button";
-import { CustomSelect } from "../../components/CustomSelect/CustomSelect";
-import { type Option } from "../../components/CustomMultiSelect/CustomMultiSelect";
+import { PictureCarrosel } from "../../components/PictureCarrosel";
+import { Button } from "../../components/Button";
+import { CustomSelect } from "../../components/CustomSelect";
+import { type Option } from "../../components/CustomMultiSelect";
 import { type ValuePackType } from "../FirstStepsPage/Views/Step4";
 
 import { useEffect, useState } from "react";

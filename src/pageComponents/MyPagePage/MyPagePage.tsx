@@ -7,22 +7,19 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { api } from "~/utils/api";
 
-import { PictureCarrosel } from "../../components/PictureCarrosel/PictureCarrosel";
+import { PictureCarrosel } from "../../components/PictureCarrosel";
 import {
   AddSocialMediaModal,
   type SocialMediaDetails,
 } from "../../components/AddSocialMediaModal";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
-import { Layout } from "../../components/Layout/Layout";
-import { AddValuePackModal } from "../../components/AddValuePackModal/AddValuePackModal";
-import {
-  type ProfileData,
-  ProfileForm,
-} from "../../components/ProfileForm/ProfileForm";
-import { Modal } from "../../components/Modal/Modal";
-import { Button } from "../../components/Button/Button";
-import { ValuePack } from "../../components/ValuePack/ValuePack";
+import { Layout } from "../../components/Layout";
+import { AddValuePackModal } from "../../components/AddValuePackModal";
+import { type ProfileData, ProfileForm } from "../../components/ProfileForm";
+import { Modal } from "../../components/Modal";
+import { Button } from "../../components/Button";
+import { ValuePack } from "../../components/ValuePack";
 import { type ValuePackType } from "../FirstStepsPage/Views/Step4";
 
 const MyPagePage = () => {

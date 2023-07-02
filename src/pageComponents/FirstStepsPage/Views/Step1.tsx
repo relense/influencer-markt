@@ -5,11 +5,8 @@ import {
   type UseFormSetValue,
 } from "react-hook-form";
 
-import { StepsReminder } from "../../../components/StepsReminder/StepsReminder";
-import {
-  ProfileForm,
-  type ProfileData,
-} from "../../../components/ProfileForm/ProfileForm";
+import { StepsReminder } from "../../../components/StepsReminder";
+import { ProfileForm, type ProfileData } from "../../../components/ProfileForm";
 
 export const Step1 = (params: {
   control: Control<ProfileData, any>;

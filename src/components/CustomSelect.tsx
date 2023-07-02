@@ -4,8 +4,8 @@ import { faCircle, faCircleCheck } from "@fortawesome/free-regular-svg-icons";
 import { faChevronDown, faChevronUp } from "@fortawesome/free-solid-svg-icons";
 import { type UseFormRegister } from "react-hook-form";
 
-import { type Option } from "../CustomMultiSelect/CustomMultiSelect";
-import { useOutsideClick } from "../../utils/helper";
+import { type Option } from "./CustomMultiSelect";
+import { useOutsideClick } from "../utils/helper";
 
 export const CustomSelect = (params: {
   register?: UseFormRegister<any>;

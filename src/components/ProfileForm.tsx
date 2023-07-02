@@ -15,11 +15,8 @@ import {
 } from "react-hook-form";
 import { api } from "~/utils/api";
 
-import { CustomSelect } from "../CustomSelect/CustomSelect";
-import {
-  CustomMultiSelect,
-  type Option,
-} from "../CustomMultiSelect/CustomMultiSelect";
+import { CustomSelect } from "./CustomSelect";
+import { CustomMultiSelect, type Option } from "./CustomMultiSelect";
 
 export type ProfileData = {
   profilePicture: string;

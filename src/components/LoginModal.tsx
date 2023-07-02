@@ -1,6 +1,6 @@
 import { signIn } from "next-auth/react";
-import { Modal } from "../Modal/Modal";
-import { Button } from "../Button/Button";
+import { Modal } from "./Modal";
+import { Button } from "./Button";
 import { useForm } from "react-hook-form";
 import Image from "next/image";
 

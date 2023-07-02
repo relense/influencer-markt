@@ -8,8 +8,8 @@ import {
   faChevronDown,
   faChevronUp,
 } from "@fortawesome/free-solid-svg-icons";
-import { type Option } from "../../../components/CustomMultiSelect/CustomMultiSelect";
-import { ValuePack } from "../../../components/ValuePack/ValuePack";
+import { type Option } from "../../../components/CustomMultiSelect";
+import { ValuePack } from "../../../components/ValuePack";
 
 const ValuePackInput = (params: {
   valuePack: ValuePackType | undefined;

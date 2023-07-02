@@ -1,9 +1,9 @@
 import { useState, type PropsWithChildren } from "react";
-import { Navbar } from "../Navbar/Navbar";
-import { Footer } from "../Footer/Footer";
+import { Navbar } from "./Navbar";
+import { Footer } from "./Footer";
 import { useSession } from "next-auth/react";
-import { LoginModal } from "../LoginModal/LoginModal";
-import { BottomBar } from "../BottomBar/BottomBar";
+import { LoginModal } from "./LoginModal";
+import { BottomBar } from "./BottomBar";
 
 export const Layout = (props: PropsWithChildren) => {
   const { data: sessionData } = useSession();

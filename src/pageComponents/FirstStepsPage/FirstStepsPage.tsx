@@ -6,17 +6,17 @@ import Link from "next/link";
 import { Step1 } from "./Views/Step1";
 import { Step2 } from "./Views/Step2";
 
-import { ProgressRing } from "../../components/ProgressRing/ProgressRing";
+import { ProgressRing } from "../../components/ProgressRing";
 import { Step3 } from "./Views/Step3";
 import { Step4, type ValuePackType } from "./Views/Step4";
 import { Step5 } from "./Views/Step5";
-import { Button } from "../../components/Button/Button";
+import { Button } from "../../components/Button";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faXmark } from "@fortawesome/free-solid-svg-icons";
 import { type SocialMediaDetails } from "../../components/AddSocialMediaModal";
-import { type ProfileData } from "../../components/ProfileForm/ProfileForm";
+import { type ProfileData } from "../../components/ProfileForm";
 import { Step0 } from "./Views/Step0";
-import { type Option } from "../../components/CustomMultiSelect/CustomMultiSelect";
+import { type Option } from "../../components/CustomMultiSelect";
 
 enum StepsEnum {
   OnlinePresence,

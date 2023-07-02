@@ -10,9 +10,9 @@ import {
   faLock,
 } from "@fortawesome/free-solid-svg-icons";
 
-import { SearchBar } from "../../components/SearchBar/SearchBar";
-import { Button } from "../../components/Button/Button";
-import { Layout } from "../../components/Layout/Layout";
+import { SearchBar } from "../../components/SearchBar";
+import { Button } from "../../components/Button";
+import { Layout } from "../../components/Layout";
 
 type Offer = {
   icon: IconDefinition;

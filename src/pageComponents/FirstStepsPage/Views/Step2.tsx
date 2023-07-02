@@ -8,9 +8,9 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus, faXmark } from "@fortawesome/free-solid-svg-icons";
 
 import { useEffect, useState } from "react";
-import { type Option } from "../../../components/CustomMultiSelect/CustomMultiSelect";
+import { type Option } from "../../../components/CustomMultiSelect";
 import { type SocialMedia } from "@prisma/client";
-import { StepsReminder } from "../../../components/StepsReminder/StepsReminder";
+import { StepsReminder } from "../../../components/StepsReminder";
 import { type SocialMediaData } from "../FirstStepsPage";
 import {
   AddSocialMediaModal,

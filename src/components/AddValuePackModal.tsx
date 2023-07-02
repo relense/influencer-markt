@@ -3,11 +3,11 @@ import {
   type Control,
   type UseFormRegister,
 } from "react-hook-form";
-import { Modal } from "../Modal/Modal";
-import { Button } from "../Button/Button";
-import { CustomSelect } from "../CustomSelect/CustomSelect";
+import { Modal } from "./Modal";
+import { Button } from "./Button";
+import { CustomSelect } from "./CustomSelect";
 import { type SocialMedia } from "@prisma/client";
-import { type ValuePackType } from "../../pageComponents/FirstStepsPage/Views/Step4";
+import { type ValuePackType } from "../pageComponents/FirstStepsPage/Views/Step4";
 
 const AddValuePackModal = (params: {
   onCloseModal: () => void;

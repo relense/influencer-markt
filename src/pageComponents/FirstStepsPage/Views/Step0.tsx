@@ -9,7 +9,7 @@ import { faCircleQuestion } from "@fortawesome/free-regular-svg-icons";
 import { api } from "~/utils/api";
 
 import { type UserIdentifyData } from "../FirstStepsPage";
-import { CustomSelect } from "../../../components/CustomSelect/CustomSelect";
+import { CustomSelect } from "../../../components/CustomSelect";
 
 export const Step0 = (params: {
   control: Control<UserIdentifyData, any>;
