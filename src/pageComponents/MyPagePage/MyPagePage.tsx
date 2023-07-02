@@ -11,7 +11,7 @@ import { PictureCarrosel } from "../../components/PictureCarrosel/PictureCarrose
 import {
   AddSocialMediaModal,
   type SocialMediaDetails,
-} from "../../components/AddSocialMediaModal/AddSocialMediaModal";
+} from "../../components/AddSocialMediaModal";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { Layout } from "../../components/Layout/Layout";
@@ -102,10 +102,6 @@ const MyPagePage = () => {
   } = useForm<ProfileData>({
     defaultValues: {
       categories: [],
-      role: {
-        id: -1,
-        name: "",
-      },
       profilePicture: "",
       website: "",
     },
@@ -139,7 +135,6 @@ const MyPagePage = () => {
     profileSetValue("city", profile?.city || "");
     profileSetValue("country", profile?.country || "");
     profileSetValue("displayName", profile?.name || "");
-    profileSetValue("role", profile?.role || { id: -1, name: "" });
     profileSetValue("website", profile?.website || "");
   }, [
     profile?.about,
@@ -147,7 +142,6 @@ const MyPagePage = () => {
     profile?.city,
     profile?.country,
     profile?.name,
-    profile?.role,
     profile?.website,
     profileSetValue,
   ]);
