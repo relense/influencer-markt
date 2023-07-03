@@ -3,6 +3,7 @@ import { Modal } from "./Modal";
 import { Button } from "./Button";
 import { useForm } from "react-hook-form";
 import Image from "next/image";
+import Link from "next/link";
 
 type EmailForm = {
   email: string;
@@ -88,6 +89,16 @@ const LoginModal = ({
               {isSignUp ? "Sign up with Github" : "Sign in with Github"}{" "}
             </div>
           </button>
+        </div>
+        <div className="text-sm font-medium text-gray2">
+          By signing up, you agree to our{" "}
+          <Link href="/terms-conditions" className="cursor-pointer text-black">
+            Terms of Service
+          </Link>{" "}
+          and{" "}
+          <Link href="/privacy-policy" className="cursor-pointer text-black">
+            Privacy Policy
+          </Link>
         </div>
       </div>
     </Modal>
