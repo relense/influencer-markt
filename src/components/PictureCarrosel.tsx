@@ -13,14 +13,14 @@ import {
 
 import Image from "next/image";
 
-export const PictureCarrosel = () => {
+export const PictureCarrosel = (params: { visual: boolean }) => {
   const [currentPicture, setCurrentPicture] = useState<string>("");
   const [pictureList, setPictureList] = useState<string[]>([]);
 
   const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
 
-    if (file) {
+    if (file && (file.name.includes("jpeg") || file.name.includes("png"))) {
       const reader = new FileReader();
 
       reader.onload = () => {
@@ -34,6 +34,8 @@ export const PictureCarrosel = () => {
       };
 
       reader.readAsDataURL(file);
+    } else {
+      alert("Pictures must be jpeg or png");
     }
   };
 
@@ -105,15 +107,17 @@ export const PictureCarrosel = () => {
     if (currentPicture) {
       return (
         <div className="relative flex h-[340px] flex-col items-center justify-center gap-4 rounded-lg border-[1px] border-gray3 sm:h-[540px] sm:w-[430px]">
-          <div
-            className="absolute right-[-10px] top-[-10px] flex h-10 w-10 cursor-pointer items-center justify-center self-end rounded-full bg-influencer-green"
-            onClick={() => handleRemovePicture()}
-          >
-            <FontAwesomeIcon
-              icon={faXmark}
-              className=" fa-lg cursor-pointer text-white"
-            />
-          </div>
+          {!params.visual && (
+            <div
+              className="absolute right-[-10px] top-[-10px] flex h-10 w-10 cursor-pointer items-center justify-center self-end rounded-full bg-influencer-green"
+              onClick={() => handleRemovePicture()}
+            >
+              <FontAwesomeIcon
+                icon={faXmark}
+                className=" fa-lg cursor-pointer text-white"
+              />
+            </div>
+          )}
           <div className="flex h-full flex-col items-center justify-center self-center sm:h-[540px] sm:w-[430px]">
             {pictureList.length > 1 && (
               <div className="absolute top-2 rounded-full bg-black px-4 py-1 text-sm text-white opacity-30">
@@ -184,7 +188,7 @@ export const PictureCarrosel = () => {
               );
             })}
         </div>
-        {pictureList.length < 4 && (
+        {pictureList.length < 4 && !params.visual && (
           <div className="relative flex items-center">
             <input
               type="file"
