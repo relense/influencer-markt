@@ -9,7 +9,7 @@ import { BottomBar } from "./BottomBar";
 
 export const Layout = (props: PropsWithChildren) => {
   const { data: user, isLoading } = api.users.getUser.useQuery();
-  const { data: sessionData } = useSession();
+  const { data: sessionData, status } = useSession();
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [isSignUp, setIsSignUp] = useState<boolean>(false);
 
@@ -18,7 +18,7 @@ export const Layout = (props: PropsWithChildren) => {
     setIsSignUp(false);
   };
 
-  if (isLoading) {
+  if (isLoading && status === "authenticated") {
     return <div>Loading</div>;
   } else {
     return (
@@ -26,6 +26,11 @@ export const Layout = (props: PropsWithChildren) => {
         <main className="flex h-screen w-full flex-1 flex-col">
           <Navbar
             username={user?.username || ""}
+            role={
+              user?.role
+                ? { id: user?.role?.id, name: user?.role?.name }
+                : undefined
+            }
             sessionData={sessionData}
             openLoginModal={() => setIsModalOpen(true)}
             setIsSignUp={setIsSignUp}
