@@ -3,6 +3,7 @@ import {
   type UseFormRegister,
   type UseFormSetValue,
   type UseFormGetValues,
+  type FieldErrors,
 } from "react-hook-form";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus, faXmark } from "@fortawesome/free-solid-svg-icons";
@@ -29,12 +30,17 @@ export const Step2 = (params: {
   const [socialMediaList, setSocialMediaList] = useState<SocialMediaDetails[]>(
     []
   );
-  const { control, register, handleSubmit, reset } =
-    useForm<SocialMediaDetails>({
-      defaultValues: {
-        platform: { id: -1, name: "" },
-      },
-    });
+  const {
+    control,
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors },
+  } = useForm<SocialMediaDetails>({
+    defaultValues: {
+      platform: { id: -1, name: "" },
+    },
+  });
 
   useEffect(() => {
     let availablePlatformsArray: Option[] = [];
@@ -168,6 +174,7 @@ export const Step2 = (params: {
           control={control}
           onCloseModal={onCloseModal}
           register={register}
+          errors={errors}
         />
       )}
     </div>

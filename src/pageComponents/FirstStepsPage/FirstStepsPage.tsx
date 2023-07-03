@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import { api } from "~/utils/api";
 import Link from "next/link";
@@ -95,25 +95,8 @@ const influencerSteps: Step[] = [
 
 const individualSteps: Step[] = [
   {
-    id: StepsEnum.OnlinePresence,
-    step: "Step 1",
-    title: "Online Presence",
-    subTitle: "Define Your Online Profile identity",
-    mainTitle: "Establish Your Online Presence",
-    mainSubTitle:
-      "Let's Establish who you are and what defines your online identity",
-  },
-  {
-    id: StepsEnum.SocialMedia,
-    step: "Step 2",
-    title: "Social Media",
-    subTitle: "Share your social media accounts",
-    mainTitle: "Connect and Showcase Your Influence",
-    mainSubTitle: "Fill in Relevant Details, Leave the Rest Optional",
-  },
-  {
     id: StepsEnum.Final,
-    step: "Step 3",
+    step: "Step 2",
     title: "You're All Set",
     subTitle: "Start Exploring the Exciting Opportunities Ahead!",
     mainTitle: "Congratulations! You're All Set to Unleash Your Influence",
@@ -166,12 +149,12 @@ const FirstStepsPage = () => {
   const [steps, setSteps] = useState<Step[]>(influencerSteps);
   const [currentStep, setCurrentStep] = useState<Step>();
   const [stepsCount, setStepsCount] = useState<number>(0);
+
   const {
     control: userIdentityControl,
     register: userIdentityRegister,
     watch: userIdentityWatch,
     handleSubmit: handleSubmitUserIdentityData,
-    formState: { errors: userIdentityErrors },
   } = useForm<UserIdentityData>({
     defaultValues: {
       role: { id: -1, name: "" },
@@ -206,6 +189,7 @@ const FirstStepsPage = () => {
     handleSubmit: handleSubmitValuePackData,
   } = useForm<ValuePacksData>();
 
+  const { data: user } = api.users.getUser.useQuery();
   const { data: platforms } = api.allRoutes.getAllSocialMedia.useQuery();
   const {
     data: usernameVerification,
@@ -226,7 +210,7 @@ const FirstStepsPage = () => {
   const { mutate: userIdentityMutation } =
     api.users.updateUserIdentity.useMutation({
       onSuccess: () => {
-        updateStepper();
+        updateStepper(userIdentityWatch("role").name);
       },
     });
 
@@ -263,14 +247,19 @@ const FirstStepsPage = () => {
     changeStep("next");
   });
 
-  const updateStepper = () => {
-    setIsUserTypeFormComplete(true);
-    const role = userIdentityWatch("role");
+  useEffect(() => {
+    if (user?.role) {
+      updateStepper(user.role?.name);
+    }
+  }, [user]);
 
-    if (role.name === "Brand") {
+  const updateStepper = (roleName: string) => {
+    setIsUserTypeFormComplete(true);
+
+    if (roleName === "Brand") {
       setCurrentStep(brandSteps[0]);
       setSteps(brandSteps);
-    } else if (role.name === "Individual") {
+    } else if (roleName === "Individual") {
       setCurrentStep(individualSteps[0]);
       setSteps(individualSteps);
     } else {
@@ -315,7 +304,11 @@ const FirstStepsPage = () => {
     const socialMediaData = getValuesSocialMedia();
     const valuePackData = getValuesValuePacks();
 
-    if (profileData) {
+    if (
+      profileData &&
+      profileData.displayName &&
+      profileData.categories.length > 0
+    ) {
       await profileMutation({
         displayName: profileData.displayName,
         profilePicture: profileData.profilePicture,
@@ -327,7 +320,8 @@ const FirstStepsPage = () => {
         website: profileData.website,
       });
     }
-    if (socialMediaData) {
+
+    if (socialMediaData && socialMediaData?.socialMedia) {
       const newSocialMediaData = socialMediaData.socialMedia.map(
         (socialMedia) => {
           return {
@@ -341,7 +335,7 @@ const FirstStepsPage = () => {
       userSocialMediaMutation(newSocialMediaData);
     }
 
-    if (valuePackData) {
+    if (valuePackData && valuePackData?.valuePacks) {
       const newData = valuePackData.valuePacks.map((valuePack) => {
         return {
           title: valuePack.title,
@@ -418,7 +412,7 @@ const FirstStepsPage = () => {
 
   const renderStepMainTitle = () => {
     return (
-      <div className="flex flex-col items-center justify-center gap-4 py-4 text-center font-playfair lg:mt-12 lg:py-0">
+      <div className="flex flex-col items-center justify-center gap-4 px-2 py-4 text-center font-playfair lg:mt-12 lg:py-0">
         <div className="text-2xl sm:text-4xl">{currentStep?.mainTitle}</div>
         <div className="text-base text-gray2 sm:text-xl">
           {currentStep?.mainSubTitle}
@@ -429,7 +423,7 @@ const FirstStepsPage = () => {
 
   const renderStepperButtons = () => {
     return (
-      <div className="flex-2 flex w-full flex-col justify-between gap-4 py-4 sm:flex-row sm:items-end sm:gap-0">
+      <div className="flex-2 flex w-full flex-col justify-between gap-4 p-4 sm:flex-row sm:items-end sm:gap-0">
         <div className="flex justify-center">
           {stepsCount > 0 && (
             <Button
@@ -457,11 +451,7 @@ const FirstStepsPage = () => {
 
           {stepsCount === steps.length - 1 && (
             <Link href="/" className="flex flex-1 justify-center sm:hidden">
-              <Button
-                title="Get Started"
-                level="primary"
-                onClick={() => saveAllData()}
-              />
+              <Button title="Get Started" level="primary" />
             </Link>
           )}
         </div>
@@ -549,7 +539,7 @@ const FirstStepsPage = () => {
             />
             <div className="flex-2 flex w-full flex-col justify-center gap-4 p-4 py-4 sm:flex-row sm:items-end sm:gap-0">
               <Button
-                title="Verify Page Name And Start Your Journey"
+                title={"Start Your Journey"}
                 level="primary"
                 form="form-user"
                 size="regular"

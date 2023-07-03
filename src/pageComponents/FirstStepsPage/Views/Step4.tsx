@@ -37,12 +37,18 @@ export const Step4 = (params: {
 }) => {
   const [valuePacks, setValuePacks] = useState<ValuePackType[]>([]);
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
-  const { control, register, handleSubmit, reset, setValue } =
-    useForm<ValuePackType>({
-      defaultValues: {
-        platform: { id: -1, name: "" },
-      },
-    });
+  const {
+    control,
+    register,
+    handleSubmit,
+    reset,
+    setValue,
+    formState: { errors: valuePackErrors },
+  } = useForm<ValuePackType>({
+    defaultValues: {
+      platform: { id: -1, name: "" },
+    },
+  });
 
   useEffect(() => {
     const valuePacks = params.getValues("valuePacks");
@@ -170,6 +176,7 @@ export const Step4 = (params: {
         <StepsReminder />
         {isModalOpen && (
           <AddValuePackModal
+            errors={valuePackErrors}
             control={control}
             onAddValuePack={onAddValuePack}
             onCloseModal={onCloseModal}
