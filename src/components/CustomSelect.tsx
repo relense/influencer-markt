@@ -50,9 +50,7 @@ export const CustomSelect = (params: {
               e.preventDefault();
               return false;
             }}
-            onKeyUp={() => {
-              return false;
-            }}
+            inputMode="none"
             className={customBorder}
             placeholder={params.placeholder}
             defaultValue={params.value.name}
@@ -67,6 +65,7 @@ export const CustomSelect = (params: {
               e.preventDefault();
               return false;
             }}
+            inputMode="none"
             className={customBorder}
             placeholder={params.placeholder}
             defaultValue={params.value.name}
