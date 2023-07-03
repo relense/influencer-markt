@@ -22,6 +22,7 @@ import { Button } from "../../components/Button";
 import { ValuePack } from "../../components/ValuePack";
 import { type ValuePackType } from "../FirstStepsPage/Views/Step4";
 import { type Option } from "../../components/CustomMultiSelect";
+import { toast } from "react-hot-toast";
 
 const EditPage = (params: { role: Option | undefined }) => {
   const ctx = api.useContext();
@@ -49,7 +50,13 @@ const EditPage = (params: { role: Option | undefined }) => {
     onSuccess: () => {
       void ctx.profiles.getProfileWithoutIncludes.invalidate().then(() => {
         setIsLoading(false);
+        toast.success(`Profile updated successfully`, {
+          position: "top-right",
+        });
       });
+    },
+    onError: () => {
+      setIsLoading(false);
     },
   });
 
@@ -60,7 +67,13 @@ const EditPage = (params: { role: Option | undefined }) => {
           .invalidate()
           .then(() => {
             setIsLoading(false);
+            toast.success(`Created social media successfully`, {
+              position: "top-right",
+            });
           });
+      },
+      onError: () => {
+        setIsLoading(false);
       },
     });
   const { mutate: deleteUserSocialMedia } =
@@ -70,7 +83,13 @@ const EditPage = (params: { role: Option | undefined }) => {
           .invalidate()
           .then(() => {
             setIsLoading(false);
+            toast.success(`Deleted social media successfully`, {
+              position: "top-right",
+            });
           });
+      },
+      onError: () => {
+        setIsLoading(false);
       },
     });
 
@@ -79,7 +98,13 @@ const EditPage = (params: { role: Option | undefined }) => {
       onSuccess: () => {
         void ctx.valuesPacks.getValuePacksByProfileId.invalidate().then(() => {
           setIsLoading(false);
+          toast.success(`Created value pack successfully`, {
+            position: "top-right",
+          });
         });
+      },
+      onError: () => {
+        setIsLoading(false);
       },
     });
   const { mutate: deleteValuePack } =
@@ -87,7 +112,13 @@ const EditPage = (params: { role: Option | undefined }) => {
       onSuccess: () => {
         void ctx.valuesPacks.getValuePacksByProfileId.invalidate().then(() => {
           setIsLoading(false);
+          toast.success(`Deleted value pack successfully`, {
+            position: "top-right",
+          });
         });
+      },
+      onError: () => {
+        setIsLoading(false);
       },
     });
 
