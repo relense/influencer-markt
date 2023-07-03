@@ -30,7 +30,7 @@ export const profilesRouter = createTRPCRouter({
         },
         update: {
           name: input.displayName,
-          genderId: input.gender.id,
+          genderId: input.gender.id === -1 ? undefined : input.gender.id,
           profilePicture: input.profilePicture,
           categories: {
             set: [],
@@ -46,7 +46,7 @@ export const profilesRouter = createTRPCRouter({
         },
         create: {
           name: input.displayName,
-          genderId: input.gender.id,
+          genderId: input.gender.id === -1 ? undefined : input.gender.id,
           profilePicture: input.profilePicture,
           categories: {
             connect: input.categories.map((category) => ({

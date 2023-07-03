@@ -5,6 +5,7 @@ export const usersRouter = createTRPCRouter({
   getUser: protectedProcedure.query(async ({ ctx }) => {
     return await ctx.prisma.user.findUnique({
       where: { id: ctx.session.user.id },
+      include: { role: true },
     });
   }),
 
