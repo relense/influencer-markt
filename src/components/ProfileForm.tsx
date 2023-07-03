@@ -38,13 +38,14 @@ const ProfileForm = (params: {
   errors: FieldErrors<ProfileData>;
 }) => {
   const [profilePicture, setProfilePicture] = useState<string>();
+  const { data: user } = api.users.getUser.useQuery();
   const { data: categories } = api.allRoutes.getAllCategories.useQuery();
   const { data: genders } = api.allRoutes.getAllGenders.useQuery();
 
   const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
 
-    if (file) {
+    if (file && (file.name.includes("jpeg") || file.name.includes("png"))) {
       const reader = new FileReader();
 
       reader.onload = () => {
@@ -56,6 +57,8 @@ const ProfileForm = (params: {
       };
 
       reader.readAsDataURL(file);
+    } else {
+      alert("Pictures must be jpeg or png");
     }
   };
 
@@ -116,15 +119,21 @@ const ProfileForm = (params: {
         id="form-hook"
         className="mt-4 flex w-full flex-col gap-6"
       >
-        <input
-          {...params.register("displayName")}
-          required
-          type="text"
-          className="h-14 rounded-lg border-[1px] border-gray3 p-4 placeholder-gray2"
-          placeholder="Choose Your Display Name: How Would You Like to be Recognized?"
-          autoComplete="off"
-        />
-        {!params.isProfileUpdate && (
+        <div className="flex flex-col">
+          <input
+            {...params.register("displayName", { maxLength: 40 })}
+            required
+            type="text"
+            className="h-14 rounded-lg border-[1px] border-gray3 p-4 placeholder-gray2"
+            placeholder="Choose Your Display Name: How Would You Like to be Recognized?"
+            autoComplete="off"
+          />
+          {params.errors.displayName &&
+            params.errors.displayName.type === "maxLength" && (
+              <div className="px-4 py-1 text-red-600">Max is 40 characters</div>
+            )}
+        </div>
+        {!params.isProfileUpdate && user?.role?.name !== "Brand" && (
           <Controller
             name="gender"
             control={params.control}
@@ -150,7 +159,6 @@ const ProfileForm = (params: {
           render={({ field: { value, onChange } }) => {
             return (
               <CustomMultiSelect
-                register={params.register}
                 name="categories"
                 placeholder="Choose Your Categories: e.g., Fashion, Travel, Fitness"
                 options={categories}
@@ -178,25 +186,36 @@ const ProfileForm = (params: {
             autoComplete="off"
           />
         </div>
-        <textarea
-          {...params.register("about")}
-          required
-          className="rounded-lg border-[1px] border-gray3 p-4 placeholder-gray2"
-          placeholder="Introduce Yourself: Share a Brief Description or Bio"
-          autoComplete="off"
-        />
-        <input
-          {...params.register("website")}
-          type="text"
-          className="h-14 w-full rounded-lg border-[1px] border-gray3 p-4 placeholder-gray2"
-          placeholder="Website URL: Provide Your Website Address"
-          autoComplete="off"
-        />
-        {params.errors.website && (
-          <div className="pl-2 text-red-600">
-            {params.errors.website.message}
-          </div>
-        )}
+        <div className="flex flex-col">
+          <textarea
+            {...params.register("about", { maxLength: 446 })}
+            required
+            className="rounded-lg border-[1px] border-gray3 p-4 placeholder-gray2"
+            placeholder="Introduce Yourself: Share a Brief Description or Bio"
+            autoComplete="off"
+          />
+          {params.errors.about && params.errors.about.type === "maxLength" && (
+            <div className="px-4 py-1 text-red-600">Max is 446 characters</div>
+          )}
+        </div>
+        <div className="flex flex-col">
+          <input
+            {...params.register("website", { maxLength: 64 })}
+            type="text"
+            className="h-14 w-full rounded-lg border-[1px] border-gray3 p-4 placeholder-gray2"
+            placeholder="Website URL: Provide Your Website Address"
+            autoComplete="off"
+          />
+          {params.errors.website && (
+            <div className="pl-2 text-red-600">
+              {params.errors.website.message}
+            </div>
+          )}
+          {params.errors.website &&
+            params.errors.website.type === "maxLength" && (
+              <div className="px-4 py-1 text-red-600">Max is 64 characters</div>
+            )}
+        </div>
       </form>
     );
   };
