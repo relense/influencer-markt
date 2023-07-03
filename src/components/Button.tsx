@@ -26,7 +26,7 @@ export const Button = ({
   let bgColor = "";
   let textColor = "";
   let borderColor = "";
-  let wSize = "lg:w-auto";
+  let wSize = "w-full lg:w-auto";
   let cursor = "cursor-pointer";
   let hover = "hover:bg-influencer-dark hover:text-white";
 
@@ -79,7 +79,7 @@ export const Button = ({
             </svg>
           </div>
         )}
-        <div>{title}</div>
+        <div className="flex flex-1 justify-center">{title}</div>
       </div>
     </button>
   );
