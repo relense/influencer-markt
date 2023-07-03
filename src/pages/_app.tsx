@@ -7,8 +7,18 @@ import Head from "next/head";
 import "@fortawesome/fontawesome-svg-core/styles.css";
 import { config } from "@fortawesome/fontawesome-svg-core";
 import { type ReactElement } from "react";
+import dynamic from "next/dynamic";
 
 config.autoAddCss = false;
+
+//This solves Toaster server error
+// Check this https://github.com/timolins/react-hot-toast/issues/46
+const Toaster = dynamic(
+  () => import("react-hot-toast").then((c) => c.Toaster),
+  {
+    ssr: false,
+  }
+);
 
 const MyApp: AppType<{ session: Session | null }> = ({
   Component,
@@ -26,6 +36,7 @@ const MyApp: AppType<{ session: Session | null }> = ({
       </Head>
 
       <SessionProvider session={session}>
+        <Toaster />
         <Auth>
           <Component {...pageProps} />
         </Auth>
