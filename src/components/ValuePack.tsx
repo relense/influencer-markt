@@ -33,7 +33,7 @@ const ValuePack = (params: {
           {params.socialMedia && params.socialMedia?.name}
         </div>
       </div>
-      <div>{params.description}</div>
+      <div className="break-words">{params.description}</div>
       <div className="flex flex-1 justify-between">
         <div className="flex flex-col items-start gap-2 text-sm font-medium text-gray2 xl:flex-row">
           <div className="flex gap-2">
