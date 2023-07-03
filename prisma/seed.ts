@@ -15,7 +15,7 @@ async function main() {
       { name: "Lifestyle" },
       { name: "Comedy" },
       { name: "Fashion" },
-      { name: "Gamming" },
+      { name: "Gaming" },
       { name: "Cannabis" },
     ],
   });
