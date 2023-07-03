@@ -2,6 +2,7 @@ import {
   type Control,
   Controller,
   type UseFormRegister,
+  type FieldErrors,
 } from "react-hook-form";
 import { Modal } from "./Modal";
 import { CustomSelect } from "./CustomSelect";
@@ -21,6 +22,7 @@ const AddSocialMediaModal = (params: {
   addSocialMedia: () => void;
   register: UseFormRegister<SocialMediaDetails>;
   control: Control<SocialMediaDetails, any>;
+  errors: FieldErrors<SocialMediaDetails>;
   platforms: SocialMedia[] | undefined;
   socialMediaList: SocialMediaDetails[];
 }) => {
@@ -66,23 +68,32 @@ const AddSocialMediaModal = (params: {
             );
           }}
         />
+        <div className="flex w-full flex-col">
+          <input
+            {...params.register("socialMediaHandler", { maxLength: 44 })}
+            required
+            type="text"
+            className="h-14 w-full rounded-lg border-[1px] border-gray3 p-4 placeholder-gray2"
+            placeholder="Social media handler"
+            autoComplete="off"
+          />
+          {params.errors.socialMediaHandler &&
+            params.errors.socialMediaHandler.type === "maxLength" && (
+              <div className="px-4 py-1 text-red-600">Max is 44 characters</div>
+            )}
+        </div>
         <input
-          {...params.register("socialMediaHandler")}
-          required
-          type="text"
-          className="h-14 w-full rounded-lg border-[1px] border-gray3 p-4 placeholder-gray2"
-          placeholder="Social media handler"
-          autoComplete="off"
-        />
-        <input
-          {...params.register("socialMediaFollowers", { valueAsNumber: true })}
+          {...params.register("socialMediaFollowers", {
+            valueAsNumber: true,
+          })}
           required
           type="number"
           className="h-14 w-full rounded-lg border-[1px] border-gray3 p-4 placeholder-gray2"
           placeholder="Social Media Followers"
           autoComplete="off"
+          max="1000000000"
         />
-        <div className="p-4">
+        <div className="flex w-full justify-center">
           <Button
             title="Add Social Media"
             level="primary"
