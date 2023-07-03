@@ -2,7 +2,6 @@ import { api } from "~/utils/api";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faCamera,
-  faPencil,
   faShareFromSquare,
   faStar,
 } from "@fortawesome/free-solid-svg-icons";
@@ -22,7 +21,10 @@ import { ValuePackInput } from "./innerComponents/ValuePackInput";
 import { RequestCustomValuePackModal } from "./innerComponents/RequestCustomValuePackModal";
 import { ToolTip } from "../../components/ToolTip";
 
-const PublicPagePage = (params: { username: string | undefined }) => {
+const PublicProfilePage = (params: {
+  username: string | undefined;
+  role: Option | undefined;
+}) => {
   const [isCustomValuePackModalOpen, setIsCustomValuePackModalOpen] =
     useState<boolean>(false);
   const [selectedValuePack, setSelectedValuePack] = useState<ValuePackType>({
@@ -126,19 +128,6 @@ const PublicPagePage = (params: { username: string | undefined }) => {
         </div>
 
         <div className="flex flex-1 flex-row items-start  justify-end gap-4 lg:flex-row">
-          {params.username && (
-            <Link
-              href={`/${params.username}/edit`}
-              className="flex cursor-pointer items-center gap-2"
-            >
-              <FontAwesomeIcon
-                icon={faPencil}
-                className="fa-lg text-influencer"
-              />
-
-              <div className="underline">Edit</div>
-            </Link>
-          )}
           <div className="flex cursor-pointer items-center gap-2">
             <FontAwesomeIcon icon={faShareFromSquare} className="fa-lg" />
 
@@ -158,8 +147,8 @@ const PublicPagePage = (params: { username: string | undefined }) => {
     return (
       <div className="flex flex-1 flex-col-reverse gap-6 lg:flex-row">
         <div className="flex flex-col gap-6">
-          <PictureCarrosel />
-          <div className="flex flex-col gap-4">
+          <PictureCarrosel visual={true} />
+          <div className="flex flex-1 flex-col gap-4">
             <div className="text-2xl font-semibold">Categories</div>
             <div className="flex flex-wrap gap-4">
               {profile?.categories.map((category) => {
@@ -175,17 +164,12 @@ const PublicPagePage = (params: { username: string | undefined }) => {
             </div>
           </div>
           <div className="flex flex-col gap-4 sm:hidden">
-            {renderValuePackChooser()}{" "}
-            <div
-              className="cursor-pointer text-center underline"
-              onClick={() => setIsCustomValuePackModalOpen(true)}
-            >
-              Request a custom value pack
-            </div>
+            {params?.role?.name === "Influencer" && renderValuePackChooser()}
+            {params?.role?.name === "Brand" && renderCampaigns()}
           </div>
         </div>
 
-        <div className="flex flex-col gap-6">
+        <div className="flex flex-1 flex-col gap-6">
           <div className="flex flex-col gap-2">
             <div className="text-2xl font-semibold">About</div>
             <div className="text-gray2 [overflow-wrap:anywhere]">
@@ -193,13 +177,8 @@ const PublicPagePage = (params: { username: string | undefined }) => {
             </div>
           </div>
           <div className="hidden flex-col gap-4 sm:flex">
-            {renderValuePackChooser()}
-            <div
-              className="cursor-pointer text-center underline"
-              onClick={() => setIsCustomValuePackModalOpen(true)}
-            >
-              Request a custom value pack
-            </div>
+            {params?.role?.name === "Influencer" && renderValuePackChooser()}
+            {params?.role?.name === "Brand" && renderCampaigns()}
           </div>
         </div>
       </div>
@@ -208,113 +187,133 @@ const PublicPagePage = (params: { username: string | undefined }) => {
 
   const renderValuePackChooser = () => {
     return (
-      <div className="flex flex-col gap-4 rounded-2xl border-[1px] border-white1 p-4 shadow-xl">
-        <div className="flex flex-1 justify-between">
-          <div className="flex items-center gap-1">
-            {selectedValuePack.id !== -1 && (
-              <div className="text-xl font-medium">
-                {selectedValuePack.valuePackPrice}€
-              </div>
-            )}
-          </div>
-          <div className="flex flex-1 flex-col items-end justify-end gap-2 xs:flex-row xs:items-center">
+      <>
+        <div className="flex flex-col gap-4 rounded-2xl border-[1px] border-white1 p-4 shadow-xl">
+          <div className="flex flex-1 justify-between">
             <div className="flex items-center gap-1">
-              <FontAwesomeIcon
-                icon={faStar}
-                className="fa-lg cursor-pointer pb-1"
-              />
-              <div>4.96</div>
-            </div>
-            <div className="hidden h-2 w-2 rounded-full bg-black xs:block" />
-            <div className="text-gray2">22 reviews</div>
-          </div>
-        </div>
-
-        <div className="rounded-2xl border-[1px] border-white1">
-          <div className="flex flex-col pt-4">
-            <div className="px-4 text-sm font-semibold">Platform</div>
-
-            <CustomSelect
-              name="platform"
-              noBorder
-              placeholder="Select the social media platform"
-              options={availablePlatforms}
-              handleOptionSelect={setPlatform}
-              value={platform}
-            />
-          </div>
-          <div className="w-full border-[1px] border-white1" />
-          {profileValuePack && (
-            <ValuePackInput
-              allValuePacks={profileValuePack?.map((valuePack) => {
-                return {
-                  deliveryTime: valuePack.deliveryTime,
-                  description: valuePack.description,
-                  numberOfRevisions: valuePack.numberOfRevisions,
-                  platform: {
-                    id: valuePack.socialMedia?.id || -1,
-                    name: valuePack.socialMedia?.name || "",
-                  },
-                  title: valuePack.title,
-                  valuePackPrice: valuePack.valuePackPrice,
-                  id: valuePack.id || -1,
-                };
-              })}
-              onChangeValuePack={setSelectedValuePack}
-              valuePack={selectedValuePack}
-              platform={platform}
-            />
-          )}
-        </div>
-        <Button
-          title="Start Order"
-          level="primary"
-          size="large"
-          disabled={platform.id === -1 || selectedValuePack.id === -1}
-        />
-        <div className="flex items-center justify-center gap-2 text-gray2">
-          <ToolTip content="We hold the payment for 72 hours. If the influencer doesn’t accept the order it will automatically be cancelled and your payments refunded" />
-          <div>We only charge when the order is complete</div>
-        </div>
-        <div className="flex flex-col gap-4 text-lg">
-          <div className="flex flex-col gap-2">
-            <div className="flex flex-1 justify-between">
-              <div>Subtotal</div>
-              {selectedValuePack.id !== -1 ? (
-                <div>
-                  {helper.formatNumber(selectedValuePack.valuePackPrice)}€
+              {selectedValuePack.id !== -1 && (
+                <div className="text-xl font-medium">
+                  {selectedValuePack.valuePackPrice}€
                 </div>
-              ) : (
-                "-"
               )}
             </div>
-            <div className="flex flex-1 justify-between">
-              <div>Fee</div>
-              {selectedValuePack.id !== -1 ? (
-                <div>
-                  {helper.formatNumber(selectedValuePack.valuePackPrice * 0.1)}€
-                </div>
-              ) : (
-                "-"
-              )}
-            </div>
-          </div>
-          <div className="w-full border-[1px] border-white1" />
-          <div className="flex flex-1 justify-between font-semibold">
-            <div>Total</div>
-            {selectedValuePack.id !== -1 ? (
-              <div>
-                {helper.formatNumber(
-                  selectedValuePack.valuePackPrice +
-                    selectedValuePack.valuePackPrice * 0.1
-                )}
-                €
+            <div className="flex flex-1 flex-col items-end justify-end gap-2 xs:flex-row xs:items-center">
+              <div className="flex items-center gap-1">
+                <FontAwesomeIcon
+                  icon={faStar}
+                  className="fa-lg cursor-pointer pb-1"
+                />
+                <div>4.96</div>
               </div>
-            ) : (
-              "-"
+              <div className="hidden h-2 w-2 rounded-full bg-black xs:block" />
+              <div className="text-gray2">22 reviews</div>
+            </div>
+          </div>
+
+          <div className="rounded-2xl border-[1px] border-white1">
+            <div className="flex flex-col pt-4">
+              <div className="px-4 text-sm font-semibold">Platform</div>
+
+              <CustomSelect
+                name="platform"
+                noBorder
+                placeholder="Select the social media platform"
+                options={availablePlatforms}
+                handleOptionSelect={setPlatform}
+                value={platform}
+              />
+            </div>
+            <div className="w-full border-[1px] border-white1" />
+            {profileValuePack && (
+              <ValuePackInput
+                allValuePacks={profileValuePack?.map((valuePack) => {
+                  return {
+                    deliveryTime: valuePack.deliveryTime,
+                    description: valuePack.description,
+                    numberOfRevisions: valuePack.numberOfRevisions,
+                    platform: {
+                      id: valuePack.socialMedia?.id || -1,
+                      name: valuePack.socialMedia?.name || "",
+                    },
+                    title: valuePack.title,
+                    valuePackPrice: valuePack.valuePackPrice,
+                    id: valuePack.id || -1,
+                  };
+                })}
+                onChangeValuePack={setSelectedValuePack}
+                valuePack={selectedValuePack}
+                platform={platform}
+              />
             )}
           </div>
+          <Button
+            title="Start Order"
+            level="primary"
+            size="large"
+            disabled={platform.id === -1 || selectedValuePack.id === -1}
+          />
+          <div className="flex items-center justify-center gap-2 text-gray2">
+            <ToolTip content="We hold the payment for 72 hours. If the influencer doesn’t accept the order it will automatically be cancelled and your payments refunded" />
+            <div>We only charge when the order is complete</div>
+          </div>
+          <div className="flex flex-col gap-4 text-lg">
+            <div className="flex flex-col gap-2">
+              <div className="flex flex-1 justify-between">
+                <div>Subtotal</div>
+                {selectedValuePack.id !== -1 ? (
+                  <div>
+                    {helper.formatNumber(selectedValuePack.valuePackPrice)}€
+                  </div>
+                ) : (
+                  "-"
+                )}
+              </div>
+              <div className="flex flex-1 justify-between">
+                <div>Fee</div>
+                {selectedValuePack.id !== -1 ? (
+                  <div>
+                    {helper.formatNumber(
+                      selectedValuePack.valuePackPrice * 0.1
+                    )}
+                    €
+                  </div>
+                ) : (
+                  "-"
+                )}
+              </div>
+            </div>
+            <div className="w-full border-[1px] border-white1" />
+            <div className="flex flex-1 justify-between font-semibold">
+              <div>Total</div>
+              {selectedValuePack.id !== -1 ? (
+                <div>
+                  {helper.formatNumber(
+                    selectedValuePack.valuePackPrice +
+                      selectedValuePack.valuePackPrice * 0.1
+                  )}
+                  €
+                </div>
+              ) : (
+                "-"
+              )}
+            </div>
+          </div>
         </div>
+        <div
+          className="cursor-pointer text-center underline"
+          onClick={() => setIsCustomValuePackModalOpen(true)}
+        >
+          Request a custom value pack
+        </div>
+      </>
+    );
+  };
+
+  const renderCampaigns = () => {
+    return (
+      <div className="flex flex-col gap-6">
+        <div className="text-2xl font-semibold">Campaigns</div>
+        <div className="flex justify-center">There is no campaign history</div>
       </div>
     );
   };
@@ -358,4 +357,4 @@ const PublicPagePage = (params: { username: string | undefined }) => {
   );
 };
 
-export { PublicPagePage };
+export { PublicProfilePage };
