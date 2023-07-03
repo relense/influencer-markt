@@ -80,6 +80,7 @@ const AddValuePackModal = (params: {
           placeholder="Delivery Time E.g 4 days"
           autoComplete="off"
           max="30"
+          min="0"
         />
         <input
           {...params.register("numberOfRevisions", { valueAsNumber: true })}
@@ -89,6 +90,7 @@ const AddValuePackModal = (params: {
           placeholder="Number of Revisions E.g 1"
           autoComplete="off"
           max="3"
+          min="0"
         />
         <input
           {...params.register("valuePackPrice", {
@@ -101,6 +103,7 @@ const AddValuePackModal = (params: {
           placeholder="Value Pack Price"
           autoComplete="off"
           max="1000000000"
+          min="0"
         />
         <div className="flex w-full justify-center">
           <Button type="submit" title="Add Value Pack" level="primary" />

@@ -91,6 +91,7 @@ const AddSocialMediaModal = (params: {
           className="h-14 w-full rounded-lg border-[1px] border-gray3 p-4 placeholder-gray2"
           placeholder="Social Media Followers"
           autoComplete="off"
+          min="0"
           max="1000000000"
         />
         <div className="flex w-full justify-center">
