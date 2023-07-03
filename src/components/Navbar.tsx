@@ -16,12 +16,15 @@ import {
   faBars,
   faChevronDown,
   faChevronUp,
+  faPencil,
 } from "@fortawesome/free-solid-svg-icons";
 import { useState } from "react";
 import Link from "next/link";
+import { type Option } from "./CustomMultiSelect";
 
 export const Navbar = (params: {
   username: string;
+  role: Option | undefined;
   sessionData: Session | null;
   openLoginModal: () => void;
   setIsSignUp: (isSignUp: boolean) => void;
@@ -159,17 +162,29 @@ export const Navbar = (params: {
           )}
           {params.sessionData && (
             <>
-              <Link
-                href={params.username ? `/${params.username}` : "/"}
-                className="flex cursor-pointer gap-4"
-              >
-                <FontAwesomeIcon
-                  icon={faFileLines}
-                  className="fa-xl cursor-pointer"
-                />
-                My Page
-              </Link>
-              <div className="border-[1px] border-white1" />
+              {params.role && params.role.name !== "Individual" && (
+                <>
+                  <Link
+                    href={params.username ? `/${params.username}` : "/"}
+                    className="flex cursor-pointer gap-4"
+                  >
+                    <FontAwesomeIcon
+                      icon={faFileLines}
+                      className="fa-xl cursor-pointer"
+                    />
+                    My Page
+                  </Link>
+                  <Link
+                    href={`/${params.username}/edit`}
+                    className="flex cursor-pointer items-center gap-2"
+                  >
+                    <FontAwesomeIcon icon={faPencil} className="fa-lg" />
+
+                    <div>Edit My Page</div>
+                  </Link>
+                  <div className="border-[1px] border-white1" />
+                </>
+              )}
 
               <div
                 className="flex items-center gap-4"
@@ -210,24 +225,40 @@ export const Navbar = (params: {
           </div>
           <div className="cursor-pointer border-[1px] border-white1" />
 
-          <Link
-            href={params.username ? `/${params.username}` : "/"}
-            className="flex cursor-pointer gap-4"
-          >
-            <FontAwesomeIcon
-              icon={faFileLines}
-              className="fa-xl cursor-pointer"
-            />
-            My Page
-          </Link>
+          {params.role && params.role.name !== "Individual" && (
+            <>
+              <Link
+                href={params.username ? `/${params.username}` : "/"}
+                className="flex cursor-pointer gap-4"
+              >
+                <FontAwesomeIcon
+                  icon={faFileLines}
+                  className="fa-xl cursor-pointer"
+                />
+                <div className="hover:underline">My Page</div>
+              </Link>
 
-          <div className="cursor-pointer border-[1px] border-white1" />
+              <Link
+                href={`/${params.username}/edit`}
+                className="flex cursor-pointer items-center gap-2"
+              >
+                <FontAwesomeIcon icon={faPencil} className="fa-lg" />
+
+                <div className="hover:underline">Edit My Page</div>
+              </Link>
+
+              <div className="cursor-pointer border-[1px] border-white1" />
+            </>
+          )}
           <div
             className="flex cursor-pointer items-center gap-4"
             onClick={() => void signOut()}
           >
             <FontAwesomeIcon icon={faArrowRightFromBracket} className="fa-xl" />
-            <span className="text-lg" onClick={() => void signOut()}>
+            <span
+              className="text-lg hover:underline"
+              onClick={() => void signOut()}
+            >
               Sign out
             </span>
           </div>
