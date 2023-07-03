@@ -160,7 +160,7 @@ const HomePage = () => {
 
   const renderSectionTwo = () => {
     return (
-      <div className="bg-influencer-green sm:px-5 lg:px-0">
+      <div className="bg-influencer-green px-4 sm:px-5 lg:px-0">
         <div className="flex flex-col items-center justify-center py-10 text-center">
           <h1 className="pointer-events-none font-playfair text-2xl lg:text-5xl">
             Don&apos;t know where to choose from?
@@ -213,7 +213,9 @@ const HomePage = () => {
             false
           )}
         </div>
-        <Button title="Get Started" level="primary" />
+        <div className="flex w-full flex-1 justify-center px-4">
+          <Button title="Get Started" level="primary" />
+        </div>
       </div>
     );
   };
