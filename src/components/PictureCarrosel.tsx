@@ -12,6 +12,7 @@ import {
 } from "@fortawesome/free-regular-svg-icons";
 
 import Image from "next/image";
+import { toast } from "react-hot-toast";
 
 export const PictureCarrosel = (params: { visual: boolean }) => {
   const [currentPicture, setCurrentPicture] = useState<string>("");
@@ -35,7 +36,10 @@ export const PictureCarrosel = (params: { visual: boolean }) => {
 
       reader.readAsDataURL(file);
     } else {
-      alert("Pictures must be jpeg or png");
+      toast.error("Picture must be jpeg or png", {
+        duration: 5000,
+        position: "top-right",
+      });
     }
   };
 
