@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faArrowUpFromBracket,
@@ -12,6 +12,7 @@ import {
   type UseFormRegister,
   type FieldErrors,
   type UseFormSetValue,
+  type UseFormWatch,
 } from "react-hook-form";
 import { api } from "~/utils/api";
 
@@ -34,6 +35,7 @@ const ProfileForm = (params: {
   control: Control<ProfileData, any>;
   register: UseFormRegister<ProfileData>;
   setValue: UseFormSetValue<ProfileData>;
+  watch: UseFormWatch<ProfileData>;
   isProfileUpdate: boolean;
   errors: FieldErrors<ProfileData>;
 }) => {
@@ -41,6 +43,12 @@ const ProfileForm = (params: {
   const { data: user } = api.users.getUser.useQuery();
   const { data: categories } = api.allRoutes.getAllCategories.useQuery();
   const { data: genders } = api.allRoutes.getAllGenders.useQuery();
+
+  useEffect(() => {
+    if (params.watch("profilePicture")) {
+      setProfilePicture(params.watch("profilePicture"));
+    }
+  }, [params]);
 
   const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -52,7 +60,7 @@ const ProfileForm = (params: {
         const dataURL = reader.result as string;
         if (profilePicture !== dataURL) {
           setProfilePicture(dataURL);
-          params.setValue("profilePicture", dataURL);
+          params.setValue("profilePicture", "");
         }
       };
 
