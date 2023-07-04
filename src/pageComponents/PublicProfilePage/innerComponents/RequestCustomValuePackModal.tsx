@@ -28,9 +28,17 @@ const RequestCustomValuePackModal = (params: {
       platform: { id: -1, name: "" },
     },
   });
+
+  const submitRequest = handleSubmit((data) => {
+    console.log(JSON.stringify(data));
+  });
   return (
     <Modal title="Request a custom value pack" onClose={params.onClose}>
-      <form className="flex h-full w-full flex-col gap-4 p-4 sm:w-full sm:px-8">
+      <form
+        id="form-requestValuePack"
+        className="flex h-full w-full flex-col gap-4 p-4 sm:w-full sm:px-8"
+        onSubmit={submitRequest}
+      >
         <div className="flex flex-col gap-4">
           <div className="text-xl font-medium">Platforms</div>
           <Controller
@@ -54,25 +62,41 @@ const RequestCustomValuePackModal = (params: {
         <div className="w-full border-[1px] border-white1" />
         <div className="flex flex-col gap-4">
           <div className="text-xl font-medium">Request Summary</div>
-          <input
-            {...register("requestSummary")}
-            required
-            type="text"
-            className="flex h-14 flex-1 cursor-pointer rounded-lg border-[1px] border-gray3 bg-transparent p-4 placeholder-gray2 caret-transparent placeholder:w-11/12"
-            placeholder="E.g 1 Instagram Reel"
-            autoComplete="off"
-          />
+          <div className="flex w-full flex-col">
+            <input
+              {...register("requestSummary", { maxLength: 50 })}
+              required
+              type="text"
+              className="flex h-14 flex-1 cursor-pointer rounded-lg border-[1px] border-gray3 bg-transparent p-4 placeholder-gray2 placeholder:w-11/12"
+              placeholder="E.g 1 Instagram Reel"
+              autoComplete="off"
+            />
+            {errors.requestSummary &&
+              errors.requestSummary.type === "maxLength" && (
+                <div className="px-4 py-1 text-red-600">
+                  Max is 50 characters
+                </div>
+              )}
+          </div>
         </div>
         <div className="w-full border-[1px] border-white1" />
         <div className="flex flex-col gap-4">
           <div className="text-xl font-medium">Request Details</div>
-          <textarea
-            {...register("requestDetails")}
-            required
-            className="flex flex-1 cursor-pointer rounded-lg border-[1px] border-gray3 bg-transparent p-4 placeholder-gray2 caret-transparent placeholder:w-11/12"
-            placeholder="Specify your requirements for the chosen influencer. Share the desired number of posts or photos and the specific deliverables you expect. For example, if you need a TikTok video promoting our product, provide the necessary guidelines. Clear instructions help the influencer understand your expectations and engage your target audience effectively."
-            autoComplete="off"
-          />
+          <div className="flex w-full flex-col">
+            <textarea
+              {...register("requestDetails", { maxLength: 200 })}
+              required
+              className="flex flex-1 cursor-pointer rounded-lg border-[1px] border-gray3 bg-transparent p-4 placeholder-gray2 placeholder:w-11/12"
+              placeholder="Specify your requirements for the chosen influencer. Share the desired number of posts or photos and the specific deliverables you expect. For example, if you need a TikTok video promoting our product, provide the necessary guidelines. Clear instructions help the influencer understand your expectations and engage your target audience effectively."
+              autoComplete="off"
+            />
+            {errors.requestDetails &&
+              errors.requestDetails.type === "maxLength" && (
+                <div className="px-4 py-1 text-red-600">
+                  Max is 200 characters
+                </div>
+              )}
+          </div>
         </div>
         <div className="w-full border-[1px] border-white1" />
         <div className="flex flex-col gap-4">
@@ -81,9 +105,11 @@ const RequestCustomValuePackModal = (params: {
             {...register("price")}
             required
             type="number"
-            className="flex h-14 flex-1 cursor-pointer rounded-lg border-[1px] border-gray3 bg-transparent p-4 placeholder-gray2 caret-transparent placeholder:w-11/12"
+            className="flex h-14 flex-1 cursor-pointer rounded-lg border-[1px] border-gray3 bg-transparent p-4 placeholder-gray2 placeholder:w-11/12"
             placeholder="Value pack price"
             autoComplete="off"
+            min="0"
+            max="1000000000"
           />
         </div>
         <div className="w-full border-[1px] border-white1" />
@@ -106,26 +132,46 @@ const RequestCustomValuePackModal = (params: {
             <div className="text-sm font-medium text-gray2">
               Let the influencer know you better
             </div>
-            <input
-              {...register("requestSummary")}
-              required
-              type="text"
-              className="flex h-14 flex-1 cursor-pointer rounded-lg border-[1px] border-gray3 bg-transparent p-4 placeholder-gray2 caret-transparent placeholder:w-11/12"
-              placeholder="Your website"
-              autoComplete="off"
-            />
-            <input
-              {...register("requestSummary")}
-              required
-              type="text"
-              className="flex h-14 flex-1 cursor-pointer rounded-lg border-[1px] border-gray3 bg-transparent p-4 placeholder-gray2 caret-transparent placeholder:w-11/12"
-              placeholder="Main social media account E.g. https://www.instagram.com/account"
-              autoComplete="off"
-            />
+            <div className="flex w-full flex-col">
+              <input
+                {...register("website", { maxLength: 64 })}
+                required
+                type="text"
+                className="flex h-14 flex-1 cursor-pointer rounded-lg border-[1px] border-gray3 bg-transparent p-4 placeholder-gray2 placeholder:w-11/12"
+                placeholder="Your website"
+                autoComplete="off"
+              />
+              {errors.website && errors.website.type === "maxLength" && (
+                <div className="px-4 py-1 text-red-600">
+                  Max is 64 characters
+                </div>
+              )}
+            </div>
+            <div className="flex w-full flex-col">
+              <input
+                {...register("socialMediaLink", { maxLength: 64 })}
+                required
+                type="text"
+                className="flex h-14 flex-1 cursor-pointer rounded-lg border-[1px] border-gray3 bg-transparent p-4 placeholder-gray2 placeholder:w-11/12"
+                placeholder="Main social media account E.g. https://www.instagram.com/account"
+                autoComplete="off"
+              />
+              {errors.socialMediaLink &&
+                errors.socialMediaLink.type === "maxLength" && (
+                  <div className="px-4 py-1 text-red-600">
+                    Max is 64 characters
+                  </div>
+                )}
+            </div>
           </div>
         </div>
         <div className="flex justify-center p-4">
-          <Button type="submit" title="Add Value Pack" level="primary" />
+          <Button
+            type="submit"
+            title="Add Value Pack"
+            level="primary"
+            form="form-requestValuePack"
+          />
         </div>
       </form>
     </Modal>
