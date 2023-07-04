@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { createTRPCRouter, protectedProcedure } from "../trpc";
+import { createTRPCRouter, protectedProcedure, publicProcedure } from "../trpc";
 
 export const userSocialMediasRouter = createTRPCRouter({
   createUserSocialMedia: protectedProcedure
@@ -72,7 +72,7 @@ export const userSocialMediasRouter = createTRPCRouter({
       }
     }),
 
-  getUserSocialMediaByProfileId: protectedProcedure
+  getUserSocialMediaByProfileId: publicProcedure
     .input(
       z.object({
         profileId: z.number(),
@@ -81,8 +81,15 @@ export const userSocialMediasRouter = createTRPCRouter({
     .query(async ({ ctx, input }) => {
       return await ctx.prisma.userSocialMedia.findMany({
         where: { profileId: input.profileId },
-        include: {
+        select: {
           socialMedia: true,
+          profile: false,
+          followers: true,
+          handler: true,
+          socialMediaId: true,
+          url: true,
+          profileId: false,
+          id: true,
         },
       });
     }),

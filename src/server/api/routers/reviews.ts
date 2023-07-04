@@ -1,8 +1,8 @@
 import { z } from "zod";
-import { createTRPCRouter, protectedProcedure } from "../trpc";
+import { createTRPCRouter, publicProcedure } from "../trpc";
 
 export const reviewsRouter = createTRPCRouter({
-  getProfileReviews: protectedProcedure
+  getProfileReviews: publicProcedure
     .input(
       z.object({
         profileId: z.number(),
@@ -11,19 +11,27 @@ export const reviewsRouter = createTRPCRouter({
     .query(async ({ ctx, input }) => {
       return await ctx.prisma.review.findMany({
         where: { profileId: input.profileId },
-        include: {
+        select: {
           author: {
             select: {
               username: true,
               profile: true,
+              id: false,
             },
           },
           profile: {
             select: {
               name: true,
               profilePicture: true,
+              id: false,
             },
           },
+          date: true,
+          id: true,
+          profileId: false,
+          rating: true,
+          userId: false,
+          userReview: true,
         },
       });
     }),

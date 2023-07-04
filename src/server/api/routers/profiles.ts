@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { createTRPCRouter, protectedProcedure } from "../trpc";
+import { createTRPCRouter, protectedProcedure, publicProcedure } from "../trpc";
 
 export const profilesRouter = createTRPCRouter({
   createProfile: protectedProcedure
@@ -111,7 +111,7 @@ export const profilesRouter = createTRPCRouter({
     });
   }),
 
-  getProfileByUniqueUsername: protectedProcedure
+  getProfileByUniqueUsername: publicProcedure
     .input(
       z.object({
         username: z.string(),
@@ -124,13 +124,26 @@ export const profilesRouter = createTRPCRouter({
 
       return await ctx.prisma.profile.findUnique({
         where: { userId: user?.id },
-        include: {
+        select: {
+          userSocialMedia: false,
+          valuePacks: false,
+          reviews: false,
+          gender: false,
           categories: true,
           user: {
-            include: {
+            select: {
               role: true,
+              id: false,
             },
           },
+          website: true,
+          about: true,
+          city: true,
+          country: true,
+          name: true,
+          id: true,
+          profilePicture: true,
+          rating: true,
         },
       });
     }),

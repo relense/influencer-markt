@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { createTRPCRouter, protectedProcedure } from "../trpc";
+import { createTRPCRouter, protectedProcedure, publicProcedure } from "../trpc";
 
 export const valuePacksRouter = createTRPCRouter({
   getValuePacks: protectedProcedure.query(async ({ ctx }) => {
@@ -14,7 +14,7 @@ export const valuePacksRouter = createTRPCRouter({
     }
   }),
 
-  getValuePacksByProfileId: protectedProcedure
+  getValuePacksByProfileId: publicProcedure
     .input(
       z.object({
         profileId: z.number(),
@@ -25,6 +25,7 @@ export const valuePacksRouter = createTRPCRouter({
         where: { profileId: input.profileId },
         include: {
           socialMedia: true,
+          profile: false,
         },
       });
     }),
