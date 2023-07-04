@@ -149,6 +149,7 @@ export const profilesRouter = createTRPCRouter({
         city: z.string(),
         about: z.string(),
         website: z.string(),
+        profilePicture: z.string(),
       })
     )
     .mutation(async ({ ctx, input }) => {
@@ -168,6 +169,7 @@ export const profilesRouter = createTRPCRouter({
           country: input.country,
           name: input.name,
           website: input.website,
+          profilePicture: input.profilePicture,
         },
       });
     }),
