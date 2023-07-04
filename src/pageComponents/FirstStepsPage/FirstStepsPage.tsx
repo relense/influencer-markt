@@ -165,6 +165,7 @@ const FirstStepsPage = () => {
     control,
     register,
     setValue,
+    watch,
     getValues: getValuesProfile,
     handleSubmit: handleSubmitProfileData,
     formState: { errors },
@@ -477,6 +478,7 @@ const FirstStepsPage = () => {
                 setValue={setValue}
                 submit={submitStep1}
                 errors={errors}
+                watch={watch}
               />
             )}
             {currentStep?.id === StepsEnum.SocialMedia && (

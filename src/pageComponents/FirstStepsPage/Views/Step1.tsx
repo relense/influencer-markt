@@ -3,6 +3,7 @@ import {
   type Control,
   type UseFormRegister,
   type UseFormSetValue,
+  type UseFormWatch,
 } from "react-hook-form";
 
 import { StepsReminder } from "../../../components/StepsReminder";
@@ -12,6 +13,7 @@ export const Step1 = (params: {
   control: Control<ProfileData, any>;
   register: UseFormRegister<ProfileData>;
   setValue: UseFormSetValue<ProfileData>;
+  watch: UseFormWatch<ProfileData>;
   submit: () => void;
   errors: FieldErrors<ProfileData>;
 }) => {
@@ -25,6 +27,7 @@ export const Step1 = (params: {
           isProfileUpdate={false}
           errors={params.errors}
           setValue={params.setValue}
+          watch={params.watch}
         />
       </div>
       <StepsReminder />
