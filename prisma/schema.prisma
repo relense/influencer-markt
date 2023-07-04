@@ -82,6 +82,7 @@ model Profile {
   user            User              @relation(fields: [userId], references: [id])
   valuePacks      ValuePack[]
   website         String            @db.Text
+  rating          String?
   userSocialMedia UserSocialMedia[]
   reviews         Review[]
 
@@ -112,10 +113,10 @@ model Gender {
 
 model ValuePack {
   id                Int          @id @default(autoincrement())
-  title             String  @db.Text
+  title             String       @db.Text
   socialMedia       SocialMedia? @relation(fields: [socialMediaId], references: [id])
   description       String       @db.Text
-  deliveryTime      Int  
+  deliveryTime      Int
   numberOfRevisions Int
   valuePackPrice    Int
   profile           Profile?     @relation(fields: [profileId], references: [id])
@@ -151,8 +152,9 @@ model UserSocialMedia {
 
 model Review {
   id         Int      @id @default(autoincrement())
-  userReview String
+  userReview String  @db.Text
   date       DateTime
+  rating     Decimal
   profile    Profile? @relation(fields: [profileId], references: [id])
   author     User?    @relation(fields: [userId], references: [id])
 
