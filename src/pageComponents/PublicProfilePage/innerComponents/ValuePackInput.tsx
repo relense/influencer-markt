@@ -122,7 +122,7 @@ const ValuePackInput = (params: {
         )}
       </div>
       {isValuePackModalOpen && params.platform?.id > 0 && (
-        <div className="relative flex max-h-96 flex-1  flex-col gap-4 overflow-y-auto rounded-2xl border-[1px] border-gray3 bg-white p-4">
+        <div className="relative z-50 flex max-h-96 flex-1 flex-col gap-4 overflow-y-auto rounded-2xl border-[1px] border-gray3 bg-white p-4">
           {availableValuePacks.map((valuePack) => {
             return (
               <div
