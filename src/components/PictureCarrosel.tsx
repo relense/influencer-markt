@@ -67,7 +67,9 @@ export const PictureCarrosel = (params: {
 
   const handleRemovePicture = () => {
     let newPictureList: Picture[] = [...pictureList];
-    const index = newPictureList.indexOf(currentPicture);
+    const index = newPictureList
+      .map((picture) => picture.url)
+      .indexOf(currentPicture.url);
 
     if (index > -1) {
       newPictureList = removeItemOnce(pictureList, currentPicture);
@@ -79,7 +81,7 @@ export const PictureCarrosel = (params: {
   };
 
   const removeItemOnce = (arr: Picture[], value: Picture) => {
-    const index = arr.indexOf(value);
+    const index = arr.map((picture) => picture.url).indexOf(value.url);
     if (index > -1) {
       arr.splice(index, 1);
     }
