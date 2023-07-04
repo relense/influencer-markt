@@ -111,6 +111,30 @@ export const profilesRouter = createTRPCRouter({
     });
   }),
 
+  getProfileByUniqueUsername: protectedProcedure
+    .input(
+      z.object({
+        username: z.string(),
+      })
+    )
+    .query(async ({ ctx, input }) => {
+      const user = await ctx.prisma.user.findUnique({
+        where: { username: input.username },
+      });
+
+      return await ctx.prisma.profile.findUnique({
+        where: { userId: user?.id },
+        include: {
+          categories: true,
+          user: {
+            include: {
+              role: true,
+            },
+          },
+        },
+      });
+    }),
+
   updateProfile: protectedProcedure
     .input(
       z.object({
