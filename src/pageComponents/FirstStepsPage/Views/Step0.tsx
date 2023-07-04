@@ -68,19 +68,22 @@ export const Step0 = (params: {
                 </div>
               </div>
 
-              {params.watch("username").length > 0 && (
-                <div className="flex">
-                  <div className="w-8"></div>
+              {params.watch("username") &&
+                params.watch("username").length > 0 && (
+                  <div className="flex">
+                    <div className="w-8"></div>
 
-                  {params.usernameVerification ? (
-                    <div className="text-influencer-green">
-                      Page name is available
-                    </div>
-                  ) : (
-                    <div className="text-red-600">Page name is unavailable</div>
-                  )}
-                </div>
-              )}
+                    {params.usernameVerification ? (
+                      <div className="text-influencer-green">
+                        Page name is available
+                      </div>
+                    ) : (
+                      <div className="text-red-600">
+                        Page name is unavailable
+                      </div>
+                    )}
+                  </div>
+                )}
             </div>
           )}
       </form>
