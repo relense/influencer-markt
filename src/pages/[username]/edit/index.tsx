@@ -3,11 +3,21 @@ import { api } from "~/utils/api";
 
 import { ProtectedLayout } from "../../../components/ProtectedWrapper";
 import { EditPage } from "../../../pageComponents/EditPage/EditPage";
+import { useRouter } from "next/router";
+import { useEffect } from "react";
 
 const Edit: NextPage = () => {
   const { data: userData, isLoading } = api.users.getUser.useQuery();
+  const router = useRouter();
+  const username = router.query.username?.toString();
 
-  if (isLoading === false) {
+  useEffect(() => {
+    if (isLoading === false && username !== userData?.username) {
+      void router.push("/");
+    }
+  }, [isLoading, router, userData?.username, username]);
+
+  if (isLoading === false && username === userData?.username) {
     return (
       <ProtectedLayout>
         <EditPage
