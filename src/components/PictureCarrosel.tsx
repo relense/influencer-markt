@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faArrowUpFromBracket,
@@ -14,9 +14,27 @@ import {
 import Image from "next/image";
 import { toast } from "react-hot-toast";
 
-export const PictureCarrosel = (params: { visual: boolean }) => {
-  const [currentPicture, setCurrentPicture] = useState<string>("");
-  const [pictureList, setPictureList] = useState<string[]>([]);
+type Picture = {
+  id: number;
+  url: string;
+};
+
+export const PictureCarrosel = (params: {
+  visual: boolean;
+  portfolio: Picture[] | [];
+}) => {
+  const [currentPicture, setCurrentPicture] = useState<Picture>({
+    id: -1,
+    url: "",
+  });
+  const [pictureList, setPictureList] = useState<Picture[]>([]);
+
+  useEffect(() => {
+    if (params.portfolio && params.portfolio.length > 0) {
+      setPictureList(params.portfolio);
+      setCurrentPicture(params.portfolio[0] || { id: -1, url: "" });
+    }
+  }, [params.portfolio]);
 
   const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -26,10 +44,14 @@ export const PictureCarrosel = (params: { visual: boolean }) => {
 
       reader.onload = () => {
         const dataURL = reader.result as string;
-        if (currentPicture !== dataURL && pictureList.indexOf(dataURL) === -1) {
-          setCurrentPicture(dataURL);
+
+        if (
+          currentPicture.url !== dataURL &&
+          pictureList.map((picture) => picture.url).indexOf(dataURL) === -1
+        ) {
+          setCurrentPicture({ id: 0, url: dataURL });
           const newPictureList = [...pictureList];
-          newPictureList.push(dataURL);
+          newPictureList.push({ id: 0, url: dataURL });
           setPictureList(newPictureList);
         }
       };
@@ -44,19 +66,19 @@ export const PictureCarrosel = (params: { visual: boolean }) => {
   };
 
   const handleRemovePicture = () => {
-    let newPictureList: string[] = [...pictureList];
+    let newPictureList: Picture[] = [...pictureList];
     const index = newPictureList.indexOf(currentPicture);
 
     if (index > -1) {
       newPictureList = removeItemOnce(pictureList, currentPicture);
-      setCurrentPicture("");
+      setCurrentPicture({ id: -1, url: "" });
       const newIndex = index < newPictureList.length ? index : index - 1;
-      const newCurrentPicture = newPictureList[newIndex] || "";
+      const newCurrentPicture = newPictureList[newIndex] || { id: -1, url: "" };
       setCurrentPicture(newCurrentPicture);
     }
   };
 
-  const removeItemOnce = (arr: string[], value: string) => {
+  const removeItemOnce = (arr: Picture[], value: Picture) => {
     const index = arr.indexOf(value);
     if (index > -1) {
       arr.splice(index, 1);
@@ -66,7 +88,9 @@ export const PictureCarrosel = (params: { visual: boolean }) => {
   };
 
   const handleNextPicture = (next: boolean) => {
-    const index = pictureList.indexOf(currentPicture);
+    const index = pictureList
+      .map((picture) => picture.url)
+      .indexOf(currentPicture.url);
     let newIndex = index;
 
     if (next && index < pictureList.length) {
@@ -75,7 +99,7 @@ export const PictureCarrosel = (params: { visual: boolean }) => {
       newIndex = index - 1;
     }
 
-    const newCurrentPicture = pictureList[newIndex] || "";
+    const newCurrentPicture = pictureList[newIndex] || { id: -1, url: "" };
     setCurrentPicture(newCurrentPicture);
   };
 
@@ -108,6 +132,10 @@ export const PictureCarrosel = (params: { visual: boolean }) => {
   };
 
   const renderMainPicture = () => {
+    const currentPictureIndex = pictureList
+      .map((picture) => picture.url)
+      .indexOf(currentPicture.url);
+
     if (currentPicture) {
       return (
         <div className="relative flex h-[340px] flex-col items-center justify-center gap-4 rounded-lg border-[1px] border-gray3 sm:h-[540px] sm:w-[430px]">
@@ -125,44 +153,46 @@ export const PictureCarrosel = (params: { visual: boolean }) => {
           <div className="flex h-full flex-col items-center justify-center self-center sm:h-[540px] sm:w-[430px]">
             {pictureList.length > 1 && (
               <div className="absolute top-2 rounded-full bg-black px-4 py-1 text-sm text-white opacity-30">
-                {pictureList.indexOf(currentPicture) + 1} / {pictureList.length}
+                {currentPictureIndex + 1} / {pictureList.length}
               </div>
             )}
             {pictureList.length > 1 &&
-              pictureList.indexOf(currentPicture) < pictureList.length - 1 && (
+              currentPictureIndex < pictureList.length - 1 && (
                 <FontAwesomeIcon
                   icon={faCircleRight}
                   className="fa-xl absolute right-2 cursor-pointer text-white"
                   onClick={() => handleNextPicture(true)}
                 />
               )}
-            {pictureList.length > 1 &&
-              pictureList.indexOf(currentPicture) > 0 && (
-                <FontAwesomeIcon
-                  icon={faCircleLeft}
-                  className="fa-xl absolute left-2 cursor-pointer text-white"
-                  onClick={() => handleNextPicture(false)}
-                />
-              )}
+            {pictureList.length > 1 && currentPictureIndex > 0 && (
+              <FontAwesomeIcon
+                icon={faCircleLeft}
+                className="fa-xl absolute left-2 cursor-pointer text-white"
+                onClick={() => handleNextPicture(false)}
+              />
+            )}
 
             <div className="absolute bottom-2 flex items-center justify-center gap-4">
               {pictureList.map(({}, index) => {
                 let colorClass = "h-2 w-2 rounded-full bg-gray2";
 
-                if (pictureList.indexOf(currentPicture) === index) {
+                if (currentPictureIndex === index) {
                   colorClass = "h-2 w-2 rounded-full bg-white";
                 }
 
                 return <div key={index} className={colorClass} />;
               })}
             </div>
-            <Image
-              src={currentPicture}
-              alt="Uploaded Image"
-              width={540}
-              height={430}
-              className="h-full rounded-lg object-cover"
-            />
+            {currentPicture.url && (
+              <Image
+                src={currentPicture?.url || ""}
+                alt="Uploaded Image"
+                width={540}
+                height={430}
+                className="h-full rounded-lg object-cover"
+                priority
+              />
+            )}
           </div>
         </div>
       );
@@ -177,17 +207,20 @@ export const PictureCarrosel = (params: { visual: boolean }) => {
             pictureList.map((picture) => {
               return (
                 <div
-                  key={picture}
+                  key={picture.url}
                   className="h-14 cursor-pointer"
                   onClick={() => setCurrentPicture(picture)}
                 >
-                  <Image
-                    src={picture}
-                    alt="Uploaded Image"
-                    width={100}
-                    height={56}
-                    className="h-14 rounded-lg object-cover"
-                  />
+                  {picture.url && (
+                    <Image
+                      src={picture?.url || ""}
+                      alt="Uploaded Image"
+                      width={100}
+                      height={56}
+                      className="h-14 rounded-lg object-cover"
+                      priority
+                    />
+                  )}
                 </div>
               );
             })}

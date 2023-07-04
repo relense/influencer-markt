@@ -107,6 +107,7 @@ export const profilesRouter = createTRPCRouter({
       where: { userId: ctx.session.user.id },
       include: {
         categories: true,
+        portfolio: true,
       },
     });
   }),
@@ -144,6 +145,9 @@ export const profilesRouter = createTRPCRouter({
           id: true,
           profilePicture: true,
           rating: true,
+          portfolio: true,
+          userId: false,
+          genderId: false,
         },
       });
     }),

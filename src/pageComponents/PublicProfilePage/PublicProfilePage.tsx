@@ -174,7 +174,16 @@ const PublicProfilePage = (params: { username: string }) => {
     return (
       <div className="flex flex-1 flex-col-reverse gap-6 lg:flex-row">
         <div className="flex flex-col gap-6">
-          <PictureCarrosel visual={true} />
+          <PictureCarrosel
+            visual={true}
+            portfolio={
+              (profile?.portfolio &&
+                profile?.portfolio.map((picture) => {
+                  return { id: picture.id, url: picture.url };
+                })) ||
+              []
+            }
+          />
           <div className="flex flex-1 flex-col gap-4">
             <div className="text-2xl font-semibold">Categories</div>
             <div className="flex flex-wrap gap-4">

@@ -1,3 +1,5 @@
+import { useEffect, useState } from "react";
+import { useForm } from "react-hook-form";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faCamera,
@@ -6,14 +8,14 @@ import {
   faXmark,
 } from "@fortawesome/free-solid-svg-icons";
 import { api } from "~/utils/api";
+import { toast } from "react-hot-toast";
+import Image from "next/image";
 
 import { PictureCarrosel } from "../../components/PictureCarrosel";
 import {
   AddSocialMediaModal,
   type SocialMediaDetails,
 } from "../../components/AddSocialMediaModal";
-import { useEffect, useState } from "react";
-import { useForm } from "react-hook-form";
 import { Layout } from "../../components/Layout";
 import { AddValuePackModal } from "../../components/AddValuePackModal";
 import { type ProfileData, ProfileForm } from "../../components/ProfileForm";
@@ -22,8 +24,6 @@ import { Button } from "../../components/Button";
 import { ValuePack } from "../../components/ValuePack";
 import { type ValuePackType } from "../FirstStepsPage/Views/Step4";
 import { type Option } from "../../components/CustomMultiSelect";
-import { toast } from "react-hot-toast";
-import Image from "next/image";
 
 const EditPage = (params: { role: Option | undefined }) => {
   const ctx = api.useContext();
@@ -358,7 +358,16 @@ const EditPage = (params: { role: Option | undefined }) => {
     return (
       <div className="flex flex-col gap-4">
         <div className="text-2xl font-semibold ">Visual Portfolio</div>
-        <PictureCarrosel visual={false} />
+        <PictureCarrosel
+          visual={false}
+          portfolio={
+            (profile?.portfolio &&
+              profile?.portfolio.map((picture) => {
+                return { id: picture.id, url: picture.url };
+              })) ||
+            []
+          }
+        />
       </div>
     );
   };

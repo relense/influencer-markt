@@ -85,6 +85,7 @@ model Profile {
   rating          String?
   userSocialMedia UserSocialMedia[]
   reviews         Review[]
+  portfolio       Portfolio[]
 
   userId   String @unique
   genderId Int?
@@ -135,6 +136,16 @@ model SocialMedia {
   UserSocialMedia UserSocialMedia[]
 }
 
+model Portfolio {
+  id      Int      @id @default(autoincrement())
+  url     String   @db.Text
+  profile Profile? @relation(fields: [profileId], references: [id])
+
+  profileId Int?
+
+  @@index([profileId])
+}
+
 model UserSocialMedia {
   id          Int          @id @default(autoincrement())
   socialMedia SocialMedia? @relation(fields: [socialMediaId], references: [id])
@@ -152,7 +163,7 @@ model UserSocialMedia {
 
 model Review {
   id         Int      @id @default(autoincrement())
-  userReview String  @db.Text
+  userReview String   @db.Text
   date       DateTime
   rating     Decimal
   profile    Profile? @relation(fields: [profileId], references: [id])
