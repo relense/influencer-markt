@@ -23,6 +23,7 @@ import { ValuePack } from "../../components/ValuePack";
 import { type ValuePackType } from "../FirstStepsPage/Views/Step4";
 import { type Option } from "../../components/CustomMultiSelect";
 import { toast } from "react-hot-toast";
+import Image from "next/image";
 
 const EditPage = (params: { role: Option | undefined }) => {
   const ctx = api.useContext();
@@ -255,9 +256,13 @@ const EditPage = (params: { role: Option | undefined }) => {
           />
         </div>
         <div className="flex flex-col items-center gap-2 text-center">
-          <div className="flex h-24 w-24 cursor-pointer flex-col items-center justify-center rounded-full border-[1px] border-gray3">
-            <FontAwesomeIcon icon={faCamera} className="fa-2x text-gray3" />
-          </div>
+          <Image
+            src={profile?.profilePicture || ""}
+            alt="profile picture"
+            width={96}
+            height={96}
+            className="h-24 w-24 rounded-full object-cover "
+          />
           <div className="text-4xl font-bold">{profile?.name}</div>
           <div className="text-lg text-gray2">
             {profile?.country}, {profile?.city}
@@ -341,11 +346,9 @@ const EditPage = (params: { role: Option | undefined }) => {
 
   const renderVisualPortfolio = () => {
     return (
-      <div className="flex flex-1 flex-col gap-4 xl:items-end">
-        <div className="flex flex-col">
-          <div className="text-2xl font-semibold ">Visual Portfolio</div>
-          <PictureCarrosel visual={false} />
-        </div>
+      <div className="flex flex-col gap-4">
+        <div className="text-2xl font-semibold ">Visual Portfolio</div>
+        <PictureCarrosel visual={false} />
       </div>
     );
   };
