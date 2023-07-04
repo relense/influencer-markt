@@ -1,10 +1,6 @@
 import { api } from "~/utils/api";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faCamera,
-  faShareFromSquare,
-  faStar,
-} from "@fortawesome/free-solid-svg-icons";
+import { faShareFromSquare, faStar } from "@fortawesome/free-solid-svg-icons";
 import { faBookmark } from "@fortawesome/free-regular-svg-icons";
 
 import { Layout } from "../../components/Layout";
@@ -22,6 +18,7 @@ import { RequestCustomValuePackModal } from "./innerComponents/RequestCustomValu
 import { ToolTip } from "../../components/ToolTip";
 import { Modal } from "../../components/Modal";
 import { Review } from "../../components/Review";
+import Image from "next/image";
 
 const PublicProfilePage = (params: { username: string }) => {
   const [isCustomValuePackModalOpen, setIsCustomValuePackModalOpen] =
@@ -113,9 +110,13 @@ const PublicProfilePage = (params: { username: string }) => {
     return (
       <div className="flex flex-1 cursor-default flex-col-reverse gap-4 lg:flex-row">
         <div className="flex-2 flex flex-col items-center gap-4 lg:flex-row lg:items-start">
-          <div className="flex h-24 w-24 cursor-pointer flex-col items-center justify-center rounded-full border-[1px] border-gray3">
-            <FontAwesomeIcon icon={faCamera} className="fa-2x text-gray3" />
-          </div>
+          <Image
+            src={profile?.profilePicture || ""}
+            alt="profile picture"
+            width={96}
+            height={96}
+            className="h-24 w-24 rounded-full object-cover "
+          />
           <div className="flex flex-1 flex-col gap-2 text-center lg:text-left">
             <div className="flex flex-wrap justify-center gap-4 lg:justify-start">
               {profileSocialMedia?.map((socialMedia) => {
@@ -364,38 +365,6 @@ const PublicProfilePage = (params: { username: string }) => {
               </div>
             </div>
             <div className="flex flex-wrap gap-12">
-              {profileReviews.map((review) => {
-                return (
-                  <Review
-                    key={review.id}
-                    review={{
-                      profilePicture:
-                        review.author?.profile?.profilePicture || "",
-                      authorName: review.author?.profile?.name || "",
-                      review: review.userReview,
-                      reviewDate: review.date.toLocaleDateString(),
-                    }}
-                    isModal={false}
-                    onClick={openReviewModal}
-                  />
-                );
-              })}
-              {profileReviews.map((review) => {
-                return (
-                  <Review
-                    key={review.id}
-                    review={{
-                      profilePicture:
-                        review.author?.profile?.profilePicture || "",
-                      authorName: review.author?.profile?.name || "",
-                      review: review.userReview,
-                      reviewDate: review.date.toLocaleDateString(),
-                    }}
-                    isModal={false}
-                    onClick={openReviewModal}
-                  />
-                );
-              })}
               {profileReviews.map((review) => {
                 return (
                   <Review
