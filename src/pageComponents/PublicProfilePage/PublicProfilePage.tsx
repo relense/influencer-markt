@@ -1,6 +1,10 @@
 import { api } from "~/utils/api";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faShareFromSquare, faStar } from "@fortawesome/free-solid-svg-icons";
+import {
+  faCamera,
+  faShareFromSquare,
+  faStar,
+} from "@fortawesome/free-solid-svg-icons";
 import { faBookmark } from "@fortawesome/free-regular-svg-icons";
 
 import { Layout } from "../../components/Layout";
@@ -110,13 +114,19 @@ const PublicProfilePage = (params: { username: string }) => {
     return (
       <div className="flex flex-1 cursor-default flex-col-reverse gap-4 lg:flex-row">
         <div className="flex-2 flex flex-col items-center gap-4 lg:flex-row lg:items-start">
-          <Image
-            src={profile?.profilePicture || ""}
-            alt="profile picture"
-            width={96}
-            height={96}
-            className="h-24 w-24 rounded-full object-cover "
-          />
+          {profile?.profilePicture ? (
+            <Image
+              src={profile?.profilePicture || ""}
+              alt="profile picture"
+              width={96}
+              height={96}
+              className="h-24 w-24 rounded-full object-cover "
+            />
+          ) : (
+            <div className="flex h-24 w-24 cursor-pointer flex-col items-center justify-center rounded-full border-[1px] border-gray3">
+              <FontAwesomeIcon icon={faCamera} className="fa-2x text-gray3" />
+            </div>
+          )}
           <div className="flex flex-1 flex-col gap-2 text-center lg:text-left">
             <div className="flex flex-wrap justify-center gap-4 lg:justify-start">
               {profileSocialMedia?.map((socialMedia) => {
@@ -187,7 +197,7 @@ const PublicProfilePage = (params: { username: string }) => {
           </div>
         </div>
 
-        <div className="flex flex-1 flex-col gap-6">
+        <div className="flex-2 flex flex-col gap-6">
           <div className="flex flex-col gap-2">
             <div className="text-2xl font-semibold">About</div>
             <div className="text-gray2 [overflow-wrap:anywhere]">
