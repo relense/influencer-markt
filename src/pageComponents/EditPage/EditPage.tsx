@@ -362,11 +362,14 @@ const EditPage = (params: { role: Option | undefined }) => {
             <FontAwesomeIcon icon={faPlus} className="fa-sm cursor-pointer " />
           </div>
         </div>
-        <div className="flex flex-1 flex-wrap gap-4">
+        <div className="flex flex-wrap gap-4">
           {profileValuePack && profileValuePack.length > 0 ? (
             profileValuePack.map((valuePack) => {
               return (
-                <div key={valuePack.id} className="w-full xl:w-5/12">
+                <div
+                  key={valuePack.id}
+                  className="flex flex-[1_0_100%] lg:flex-[0_0_40%]"
+                >
                   <ValuePack
                     key={valuePack.id}
                     deliveryTime={valuePack.deliveryTime}
