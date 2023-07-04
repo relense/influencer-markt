@@ -127,6 +127,7 @@ const EditPage = (params: { role: Option | undefined }) => {
     control: profileControl,
     register: profileRegister,
     setValue: profileSetValue,
+    watch: profileWatch,
     handleSubmit: handleSubmitProfile,
     formState: { errors: profileErrors },
   } = useForm<ProfileData>({
@@ -168,6 +169,7 @@ const EditPage = (params: { role: Option | undefined }) => {
     profileSetValue("country", profile?.country || "");
     profileSetValue("displayName", profile?.name || "");
     profileSetValue("website", profile?.website || "");
+    profileSetValue("profilePicture", profile?.profilePicture || "");
   }, [
     profile?.about,
     profile?.categories,
@@ -175,6 +177,7 @@ const EditPage = (params: { role: Option | undefined }) => {
     profile?.country,
     profile?.name,
     profile?.website,
+    profile?.profilePicture,
     profileSetValue,
     isProfileModalOpen,
   ]);
@@ -187,6 +190,7 @@ const EditPage = (params: { role: Option | undefined }) => {
       country: data.country,
       name: data.displayName,
       website: data.website,
+      profilePicture: data.profilePicture,
     });
 
     setIsProfileModalOpen(false);
@@ -256,13 +260,19 @@ const EditPage = (params: { role: Option | undefined }) => {
           />
         </div>
         <div className="flex flex-col items-center gap-2 text-center">
-          <Image
-            src={profile?.profilePicture || ""}
-            alt="profile picture"
-            width={96}
-            height={96}
-            className="h-24 w-24 rounded-full object-cover "
-          />
+          {profile?.profilePicture ? (
+            <Image
+              src={profile?.profilePicture || ""}
+              alt="profile picture"
+              width={96}
+              height={96}
+              className="h-24 w-24 rounded-full object-cover "
+            />
+          ) : (
+            <div className="flex h-24 w-24 cursor-pointer flex-col items-center justify-center rounded-full border-[1px] border-gray3">
+              <FontAwesomeIcon icon={faCamera} className="fa-2x text-gray3" />
+            </div>
+          )}
           <div className="text-4xl font-bold">{profile?.name}</div>
           <div className="text-lg text-gray2">
             {profile?.country}, {profile?.city}
@@ -369,22 +379,17 @@ const EditPage = (params: { role: Option | undefined }) => {
           {profileValuePack && profileValuePack.length > 0 ? (
             profileValuePack.map((valuePack) => {
               return (
-                <div
+                <ValuePack
                   key={valuePack.id}
-                  className="flex flex-[1_0_100%] lg:flex-[0_0_40%]"
-                >
-                  <ValuePack
-                    key={valuePack.id}
-                    deliveryTime={valuePack.deliveryTime}
-                    description={valuePack.description}
-                    numberOfRevisions={valuePack.numberOfRevisions}
-                    onDeleteValuePack={() => onDeleteValuePack(valuePack.id)}
-                    socialMedia={valuePack.socialMedia || { id: -1, name: "" }}
-                    title={valuePack.title}
-                    valuePackPrice={valuePack.valuePackPrice}
-                    closeButton
-                  />
-                </div>
+                  deliveryTime={valuePack.deliveryTime}
+                  description={valuePack.description}
+                  numberOfRevisions={valuePack.numberOfRevisions}
+                  onDeleteValuePack={() => onDeleteValuePack(valuePack.id)}
+                  socialMedia={valuePack.socialMedia || { id: -1, name: "" }}
+                  title={valuePack.title}
+                  valuePackPrice={valuePack.valuePackPrice}
+                  closeButton
+                />
               );
             })
           ) : (
@@ -470,6 +475,7 @@ const EditPage = (params: { role: Option | undefined }) => {
                   isProfileUpdate={true}
                   errors={profileErrors}
                   setValue={profileSetValue}
+                  watch={profileWatch}
                 />
                 <div className="flex w-full justify-center">
                   <Button
