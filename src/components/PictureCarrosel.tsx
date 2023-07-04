@@ -106,7 +106,7 @@ export const PictureCarrosel = (params: {
   };
 
   const renderUploadMainPicture = () => {
-    if (!currentPicture) {
+    if (currentPicture.id === -1) {
       return (
         <div className="relative flex h-full w-full cursor-pointer gap-4 rounded-lg border-[1px] border-gray3 sm:h-[540px] sm:w-[430px]">
           <div className="relative flex h-[540px] w-full flex-col items-center justify-center ">
@@ -138,7 +138,7 @@ export const PictureCarrosel = (params: {
       .map((picture) => picture.url)
       .indexOf(currentPicture.url);
 
-    if (currentPicture) {
+    if (currentPicture.id !== -1) {
       return (
         <div className="relative flex h-[340px] flex-col items-center justify-center gap-4 rounded-lg border-[1px] border-gray3 sm:h-[540px] sm:w-[430px]">
           {!params.visual && (
