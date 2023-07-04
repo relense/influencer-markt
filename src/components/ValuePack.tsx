@@ -19,10 +19,10 @@ const ValuePack = (params: {
 
   if (params.selected) {
     selected =
-      "relative flex flex-col gap-4 rounded-2xl border-[1px] border-influencer-green p-4 bg-influencer-green text-white w-full";
+      "relative flex flex-col gap-4 rounded-2xl border-[1px] border-influencer-green p-4 bg-influencer-green text-white flex-[1_0_100%] lg:flex-[0_0_49%]";
   } else {
     selected =
-      "relative flex flex-col gap-4 rounded-2xl border-[1px] border-gray3 p-4 w-full";
+      "relative flex flex-col gap-4 rounded-2xl border-[1px] border-gray3 p-4 flex-1 flex-[1_0_100%] lg:flex-[0_0_49%]";
   }
 
   return (
