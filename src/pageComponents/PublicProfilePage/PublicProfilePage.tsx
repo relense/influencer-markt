@@ -20,13 +20,14 @@ import { helper } from "../../utils/helper";
 import { ValuePackInput } from "./innerComponents/ValuePackInput";
 import { RequestCustomValuePackModal } from "./innerComponents/RequestCustomValuePackModal";
 import { ToolTip } from "../../components/ToolTip";
+import { Modal } from "../../components/Modal";
+import { Review } from "../../components/Review";
 
-const PublicProfilePage = (params: {
-  username: string | undefined;
-  role: Option | undefined;
-}) => {
+const PublicProfilePage = (params: { username: string }) => {
   const [isCustomValuePackModalOpen, setIsCustomValuePackModalOpen] =
     useState<boolean>(false);
+  const [isReviewModalOpen, setIsReviewModalOpen] = useState<boolean>(false);
+  const [selectedReview, setSelectedReview] = useState<Review>();
   const [selectedValuePack, setSelectedValuePack] = useState<ValuePackType>({
     id: -1,
     title: "",
@@ -39,7 +40,9 @@ const PublicProfilePage = (params: {
   const [platform, setPlatform] = useState<Option>({ id: -1, name: "" });
   const [availablePlatforms, setAvailablePlatforms] = useState<Option[]>([]);
 
-  const { data: profile } = api.profiles.getProfileWithoutIncludes.useQuery();
+  const { data: profile } = api.profiles.getProfileByUniqueUsername.useQuery({
+    username: params.username,
+  });
   const { data: profileSocialMedia } =
     api.userSocialMedias.getUserSocialMediaByProfileId.useQuery({
       profileId: profile?.id || -1,
@@ -48,6 +51,9 @@ const PublicProfilePage = (params: {
     api.valuesPacks.getValuePacksByProfileId.useQuery({
       profileId: profile?.id || -1,
     });
+  const { data: profileReviews } = api.reviews.getProfileReviews.useQuery({
+    profileId: profile?.id || -1,
+  });
 
   useEffect(() => {
     if (profileValuePack && profileValuePack[0]) {
@@ -92,6 +98,16 @@ const PublicProfilePage = (params: {
 
     setAvailablePlatforms(uniqueOptions);
   }, [profileValuePack]);
+
+  const openReviewModal = (review: Review) => {
+    setSelectedReview(review);
+    setIsReviewModalOpen(true);
+  };
+
+  const closeReviewModal = () => {
+    setSelectedReview(undefined);
+    setIsReviewModalOpen(false);
+  };
 
   const renderHeader = () => {
     return (
@@ -164,8 +180,9 @@ const PublicProfilePage = (params: {
             </div>
           </div>
           <div className="flex flex-col gap-4 sm:hidden">
-            {params?.role?.name === "Influencer" && renderValuePackChooser()}
-            {params?.role?.name === "Brand" && renderCampaigns()}
+            {profile?.user?.role?.name === "Influencer" &&
+              renderValuePackChooser()}
+            {profile?.user?.role?.name === "Brand" && renderCampaigns()}
           </div>
         </div>
 
@@ -177,8 +194,9 @@ const PublicProfilePage = (params: {
             </div>
           </div>
           <div className="hidden flex-col gap-4 sm:flex">
-            {params?.role?.name === "Influencer" && renderValuePackChooser()}
-            {params?.role?.name === "Brand" && renderCampaigns()}
+            {profile?.user?.role?.name === "Influencer" &&
+              renderValuePackChooser()}
+            {profile?.user?.role?.name === "Brand" && renderCampaigns()}
           </div>
         </div>
       </div>
@@ -197,17 +215,21 @@ const PublicProfilePage = (params: {
                 </div>
               )}
             </div>
-            <div className="flex flex-1 flex-col items-end justify-end gap-2 xs:flex-row xs:items-center">
-              <div className="flex items-center gap-1">
-                <FontAwesomeIcon
-                  icon={faStar}
-                  className="fa-lg cursor-pointer pb-1"
-                />
-                <div>4.96</div>
+            {profileReviews && profileReviews?.length > 0 && (
+              <div className="flex flex-1 flex-col items-end justify-end gap-2 xs:flex-row xs:items-center">
+                <div className="flex items-center gap-1">
+                  <FontAwesomeIcon
+                    icon={faStar}
+                    className="fa-lg cursor-pointer pb-1"
+                  />
+                  <div>{profile?.rating}</div>
+                </div>
+                <div className="hidden h-2 w-2 rounded-full bg-black xs:block" />
+                <div className="text-gray2">
+                  {profileReviews?.length} Reviews
+                </div>
               </div>
-              <div className="hidden h-2 w-2 rounded-full bg-black xs:block" />
-              <div className="text-gray2">22 reviews</div>
-            </div>
+            )}
           </div>
 
           <div className="rounded-2xl border-[1px] border-white1">
@@ -319,22 +341,82 @@ const PublicProfilePage = (params: {
   };
 
   const renderReviews = () => {
-    return (
-      <div className="flex flex-1 flex-col">
-        <div className="flex flex-1 items-center gap-2">
-          <div className="flex items-center gap-1">
-            <FontAwesomeIcon
-              icon={faStar}
-              className="fa-lg cursor-pointer pb-1"
-            />
-            <div>4.96</div>
+    if (profileReviews && profileReviews?.length > 0) {
+      return (
+        <>
+          <div className="w-full border-[1px] border-gray3" />
+          <div className="flex flex-1 flex-col gap-6">
+            <div className="flex flex-1 items-center gap-2">
+              <div className="flex items-center gap-1">
+                <FontAwesomeIcon
+                  icon={faStar}
+                  className="fa-lg cursor-pointer pb-1"
+                />
+                <div>{profile?.rating ? profile?.rating : ""}</div>
+              </div>
+              <div className="h-2 w-2 rounded-full bg-black" />
+              <div className="text-gray2">
+                {profileReviews && profileReviews?.length > 0 ? (
+                  <div>{profileReviews?.length} reviews</div>
+                ) : (
+                  ""
+                )}
+              </div>
+            </div>
+            <div className="flex flex-wrap gap-12">
+              {profileReviews.map((review) => {
+                return (
+                  <Review
+                    key={review.id}
+                    review={{
+                      profilePicture:
+                        review.author?.profile?.profilePicture || "",
+                      authorName: review.author?.profile?.name || "",
+                      review: review.userReview,
+                      reviewDate: review.date.toLocaleDateString(),
+                    }}
+                    isModal={false}
+                    onClick={openReviewModal}
+                  />
+                );
+              })}
+              {profileReviews.map((review) => {
+                return (
+                  <Review
+                    key={review.id}
+                    review={{
+                      profilePicture:
+                        review.author?.profile?.profilePicture || "",
+                      authorName: review.author?.profile?.name || "",
+                      review: review.userReview,
+                      reviewDate: review.date.toLocaleDateString(),
+                    }}
+                    isModal={false}
+                    onClick={openReviewModal}
+                  />
+                );
+              })}
+              {profileReviews.map((review) => {
+                return (
+                  <Review
+                    key={review.id}
+                    review={{
+                      profilePicture:
+                        review.author?.profile?.profilePicture || "",
+                      authorName: review.author?.profile?.name || "",
+                      review: review.userReview,
+                      reviewDate: review.date.toLocaleDateString(),
+                    }}
+                    isModal={false}
+                    onClick={openReviewModal}
+                  />
+                );
+              })}
+            </div>
           </div>
-          <div className="h-2 w-2 rounded-full bg-black" />
-          <div className="text-gray2">22 reviews</div>
-        </div>
-        <div>REVIEWS</div>
-      </div>
-    );
+        </>
+      );
+    }
   };
 
   return (
@@ -343,7 +425,6 @@ const PublicProfilePage = (params: {
         <div className="flex w-full cursor-default flex-col gap-6 self-center px-4 pb-10 sm:px-12 xl:w-3/4 2xl:w-2/4">
           {renderHeader()}
           {renderMiddleContent()}
-          <div className="w-full border-[1px] border-gray3" />
           {renderReviews()}
         </div>
         {isCustomValuePackModalOpen && (
@@ -351,6 +432,22 @@ const PublicProfilePage = (params: {
             availablePlatforms={availablePlatforms}
             onClose={() => setIsCustomValuePackModalOpen(false)}
           />
+        )}
+        {isReviewModalOpen && (
+          <Modal onClose={closeReviewModal}>
+            <div className="p-4 sm:w-full sm:px-8">
+              <Review
+                review={{
+                  profilePicture: selectedReview?.profilePicture || "",
+                  authorName: selectedReview?.authorName || "",
+                  review: selectedReview?.review || "",
+                  reviewDate: selectedReview?.reviewDate || "",
+                }}
+                isModal={true}
+                onClick={openReviewModal}
+              />
+            </div>
+          </Modal>
         )}
       </div>
     </Layout>
