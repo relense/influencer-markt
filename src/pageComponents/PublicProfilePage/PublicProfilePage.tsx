@@ -2,6 +2,7 @@ import { api } from "~/utils/api";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faCamera,
+  faGlobe,
   faShareFromSquare,
   faStar,
 } from "@fortawesome/free-solid-svg-icons";
@@ -23,6 +24,7 @@ import { ToolTip } from "../../components/ToolTip";
 import { Modal } from "../../components/Modal";
 import { Review } from "../../components/Review";
 import Image from "next/image";
+import { LoadingSpinner } from "../../components/LoadingSpinner";
 
 const PublicProfilePage = (params: { username: string }) => {
   const [isCustomValuePackModalOpen, setIsCustomValuePackModalOpen] =
@@ -41,49 +43,42 @@ const PublicProfilePage = (params: { username: string }) => {
   const [platform, setPlatform] = useState<Option>({ id: -1, name: "" });
   const [availablePlatforms, setAvailablePlatforms] = useState<Option[]>([]);
 
-  const { data: profile } = api.profiles.getProfileByUniqueUsername.useQuery({
-    username: params.username,
-  });
-  const { data: profileSocialMedia } =
-    api.userSocialMedias.getUserSocialMediaByProfileId.useQuery({
-      profileId: profile?.id || -1,
-    });
-  const { data: profileValuePack } =
-    api.valuesPacks.getValuePacksByProfileId.useQuery({
-      profileId: profile?.id || -1,
+  const { data: profile, isLoading } =
+    api.profiles.getProfileByUniqueUsername.useQuery({
+      username: params.username,
     });
   const { data: profileReviews } = api.reviews.getProfileReviews.useQuery({
     profileId: profile?.id || -1,
   });
 
   useEffect(() => {
-    if (profileValuePack && profileValuePack[0]) {
+    if (profile?.valuePacks && profile?.valuePacks[0]) {
       setPlatform({
-        id: profileValuePack[0]?.socialMedia?.id || -1,
-        name: profileValuePack[0]?.socialMedia?.name || "",
+        id: profile?.valuePacks[0]?.socialMedia?.id || -1,
+        name: profile?.valuePacks[0]?.socialMedia?.name || "",
       });
 
       setSelectedValuePack({
-        id: profileValuePack[0].id,
-        title: profileValuePack[0].title,
+        id: profile?.valuePacks[0].id,
+        title: profile?.valuePacks[0].title,
         platform: {
-          id: profileValuePack[0].socialMedia?.id || -1,
-          name: profileValuePack[0].socialMedia?.name || "",
+          id: profile?.valuePacks[0].socialMedia?.id || -1,
+          name: profile?.valuePacks[0].socialMedia?.name || "",
         },
-        description: profileValuePack[0].description,
-        deliveryTime: profileValuePack[0].deliveryTime,
-        numberOfRevisions: profileValuePack[0].numberOfRevisions,
-        valuePackPrice: profileValuePack[0].valuePackPrice,
+        description: profile?.valuePacks[0].description,
+        deliveryTime: profile?.valuePacks[0].deliveryTime,
+        numberOfRevisions: profile?.valuePacks[0].numberOfRevisions,
+        valuePackPrice: profile?.valuePacks[0].valuePackPrice,
       });
     }
-  }, [availablePlatforms, profileValuePack]);
+  }, [availablePlatforms, profile?.valuePacks]);
 
   useEffect(() => {
     const uniqueOptionsSet = new Set<number>();
     const uniqueOptions: Option[] = [];
 
-    if (profileValuePack) {
-      profileValuePack.forEach((valuePack) => {
+    if (profile?.valuePacks) {
+      profile?.valuePacks.forEach((valuePack) => {
         if (
           valuePack.socialMedia &&
           !uniqueOptionsSet.has(valuePack.socialMedia.id)
@@ -98,7 +93,20 @@ const PublicProfilePage = (params: { username: string }) => {
     }
 
     setAvailablePlatforms(uniqueOptions);
-  }, [profileValuePack]);
+  }, [profile?.valuePacks]);
+
+  const onChangePlatform = (platform: Option) => {
+    setPlatform(platform);
+    setSelectedValuePack({
+      id: -1,
+      title: "",
+      platform: { id: -1, name: "" },
+      description: "",
+      deliveryTime: -1,
+      numberOfRevisions: -1,
+      valuePackPrice: -1,
+    });
+  };
 
   const openReviewModal = (review: Review) => {
     setSelectedReview(review);
@@ -128,8 +136,8 @@ const PublicProfilePage = (params: { username: string }) => {
             </div>
           )}
           <div className="flex flex-1 flex-col gap-2 text-center lg:text-left">
-            <div className="flex flex-wrap justify-center gap-4 lg:justify-start">
-              {profileSocialMedia?.map((socialMedia) => {
+            <div className="flex flex-col items-center justify-center gap-4 xs:flex-row xs:flex-wrap lg:justify-start">
+              {profile?.userSocialMedia?.map((socialMedia) => {
                 return (
                   <div key={socialMedia.id} className="flex gap-2">
                     <Link
@@ -145,8 +153,20 @@ const PublicProfilePage = (params: { username: string }) => {
                 );
               })}
             </div>
-            <div className="text-3xl font-bold lg:text-4xl">
-              {profile?.name}
+            <div className="flex flex-col-reverse items-center justify-center gap-2 sm:flex-row lg:justify-start">
+              <div className="text-3xl font-bold lg:text-4xl">
+                {profile?.name}
+              </div>
+              {profile?.website && (
+                <Link
+                  href={profile?.website}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="cursor-pointer pt-1"
+                >
+                  <FontAwesomeIcon icon={faGlobe} className="fa-lg" />
+                </Link>
+              )}
             </div>
             <div className="text-lg text-gray2">
               {profile?.country}, {profile?.city}
@@ -201,7 +221,7 @@ const PublicProfilePage = (params: { username: string }) => {
           </div>
           <div className="flex flex-col gap-4 sm:hidden">
             {profile?.user?.role?.name === "Influencer" &&
-              renderValuePackChooser()}
+              renderValuePackChooser("requestMobile")}
             {profile?.user?.role?.name === "Brand" && renderCampaigns()}
           </div>
         </div>
@@ -215,7 +235,7 @@ const PublicProfilePage = (params: { username: string }) => {
           </div>
           <div className="hidden flex-col gap-4 sm:flex">
             {profile?.user?.role?.name === "Influencer" &&
-              renderValuePackChooser()}
+              renderValuePackChooser("requestDesktop")}
             {profile?.user?.role?.name === "Brand" && renderCampaigns()}
           </div>
         </div>
@@ -223,7 +243,7 @@ const PublicProfilePage = (params: { username: string }) => {
     );
   };
 
-  const renderValuePackChooser = () => {
+  const renderValuePackChooser = (name: string) => {
     return (
       <>
         <div className="flex flex-col gap-4 rounded-2xl border-[1px] border-white1 p-4 shadow-xl">
@@ -235,7 +255,7 @@ const PublicProfilePage = (params: { username: string }) => {
                 </div>
               )}
             </div>
-            {profileReviews && profileReviews?.length > 0 && (
+            {profileReviews && profileReviews[0] > 0 && (
               <div className="flex flex-1 flex-col items-end justify-end gap-2 xs:flex-row xs:items-center">
                 <div className="flex items-center gap-1">
                   <FontAwesomeIcon
@@ -245,9 +265,7 @@ const PublicProfilePage = (params: { username: string }) => {
                   <div>{profile?.rating}</div>
                 </div>
                 <div className="hidden h-2 w-2 rounded-full bg-black xs:block" />
-                <div className="text-gray2">
-                  {profileReviews?.length} Reviews
-                </div>
+                <div className="text-gray2">{profileReviews[0]} Reviews</div>
               </div>
             )}
           </div>
@@ -257,18 +275,18 @@ const PublicProfilePage = (params: { username: string }) => {
               <div className="px-4 text-sm font-semibold">Platform</div>
 
               <CustomSelect
-                name="platform"
+                name={`platform ${name}`}
                 noBorder
                 placeholder="Select the social media platform"
                 options={availablePlatforms}
-                handleOptionSelect={setPlatform}
+                handleOptionSelect={onChangePlatform}
                 value={platform}
               />
             </div>
             <div className="w-full border-[1px] border-white1" />
-            {profileValuePack && (
+            {profile?.valuePacks && (
               <ValuePackInput
-                allValuePacks={profileValuePack?.map((valuePack) => {
+                allValuePacks={profile?.valuePacks?.map((valuePack) => {
                   return {
                     deliveryTime: valuePack.deliveryTime,
                     description: valuePack.description,
@@ -361,7 +379,7 @@ const PublicProfilePage = (params: { username: string }) => {
   };
 
   const renderReviews = () => {
-    if (profileReviews && profileReviews?.length > 0) {
+    if (profileReviews && profileReviews[0] > 0) {
       return (
         <>
           <div className="w-full border-[1px] border-gray3" />
@@ -376,15 +394,15 @@ const PublicProfilePage = (params: { username: string }) => {
               </div>
               <div className="h-2 w-2 rounded-full bg-black" />
               <div className="text-gray2">
-                {profileReviews && profileReviews?.length > 0 ? (
-                  <div>{profileReviews?.length} reviews</div>
+                {profileReviews && profileReviews[0] > 0 ? (
+                  <div>{profileReviews[0]} reviews</div>
                 ) : (
                   ""
                 )}
               </div>
             </div>
             <div className="flex flex-wrap gap-12">
-              {profileReviews.map((review) => {
+              {profileReviews[1].map((review) => {
                 return (
                   <Review
                     key={review.id}
@@ -407,39 +425,49 @@ const PublicProfilePage = (params: { username: string }) => {
     }
   };
 
-  return (
-    <Layout>
-      <div className="flex justify-center">
-        <div className="flex w-full cursor-default flex-col gap-6 self-center px-4 pb-10 sm:px-12 xl:w-3/4 2xl:w-2/4">
-          {renderHeader()}
-          {renderMiddleContent()}
-          {renderReviews()}
+  if (isLoading) {
+    return (
+      <Layout>
+        <div className="relative flex flex-1">
+          <LoadingSpinner />
         </div>
-        {isCustomValuePackModalOpen && (
-          <RequestCustomValuePackModal
-            availablePlatforms={availablePlatforms}
-            onClose={() => setIsCustomValuePackModalOpen(false)}
-          />
-        )}
-        {isReviewModalOpen && (
-          <Modal onClose={closeReviewModal}>
-            <div className="p-4 sm:w-full sm:px-8">
-              <Review
-                review={{
-                  profilePicture: selectedReview?.profilePicture || "",
-                  authorName: selectedReview?.authorName || "",
-                  review: selectedReview?.review || "",
-                  reviewDate: selectedReview?.reviewDate || "",
-                }}
-                isModal={true}
-                onClick={openReviewModal}
-              />
-            </div>
-          </Modal>
-        )}
-      </div>
-    </Layout>
-  );
+      </Layout>
+    );
+  } else {
+    return (
+      <Layout>
+        <div className="flex justify-center">
+          <div className="flex w-full cursor-default flex-col gap-6 self-center px-4 pb-10 sm:px-12 xl:w-3/4 2xl:w-2/4">
+            {renderHeader()}
+            {renderMiddleContent()}
+            {renderReviews()}
+          </div>
+          {isCustomValuePackModalOpen && (
+            <RequestCustomValuePackModal
+              availablePlatforms={availablePlatforms}
+              onClose={() => setIsCustomValuePackModalOpen(false)}
+            />
+          )}
+          {isReviewModalOpen && (
+            <Modal onClose={closeReviewModal}>
+              <div className="p-4 sm:w-full sm:px-8">
+                <Review
+                  review={{
+                    profilePicture: selectedReview?.profilePicture || "",
+                    authorName: selectedReview?.authorName || "",
+                    review: selectedReview?.review || "",
+                    reviewDate: selectedReview?.reviewDate || "",
+                  }}
+                  isModal={true}
+                  onClick={openReviewModal}
+                />
+              </div>
+            </Modal>
+          )}
+        </div>
+      </Layout>
+    );
+  }
 };
 
 export { PublicProfilePage };
