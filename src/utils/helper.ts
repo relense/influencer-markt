@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 
 export const useOutsideClick = (
   callback: (T?: unknown) => void,
@@ -17,6 +17,16 @@ export const useOutsideClick = (
       document.removeEventListener("click", handleClick);
     };
   });
+};
+
+export const usePrevious = <T>(value: T): T | undefined => {
+  const ref = useRef<T>();
+
+  useEffect(() => {
+    ref.current = value;
+  });
+
+  return ref.current;
 };
 
 const formatNumber = (value: number) => {
