@@ -126,9 +126,17 @@ export const profilesRouter = createTRPCRouter({
       return await ctx.prisma.profile.findUnique({
         where: { userId: user?.id },
         select: {
-          userSocialMedia: false,
-          valuePacks: false,
-          reviews: false,
+          userSocialMedia: {
+            include: {
+              socialMedia: true,
+            },
+          },
+          valuePacks: {
+            include: {
+              socialMedia: true,
+            },
+          },
+          reviews: true,
           gender: false,
           categories: true,
           user: {
