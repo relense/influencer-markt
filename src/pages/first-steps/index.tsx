@@ -4,6 +4,7 @@ import { ProtectedLayout } from "../../components/ProtectedWrapper";
 import { useEffect } from "react";
 import { api } from "../../utils/api";
 import { useRouter } from "next/router";
+import { LoadingSpinner } from "../../components/LoadingSpinner";
 
 const FirstSteps: NextPage = () => {
   const { data: userData, isLoading } = api.users.getUser.useQuery();
@@ -22,7 +23,7 @@ const FirstSteps: NextPage = () => {
       </ProtectedLayout>
     );
   } else {
-    return <div>Loading</div>;
+    return <LoadingSpinner />;
   }
 };
 

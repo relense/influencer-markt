@@ -8,6 +8,7 @@ import "@fortawesome/fontawesome-svg-core/styles.css";
 import { config } from "@fortawesome/fontawesome-svg-core";
 import { type ReactElement } from "react";
 import dynamic from "next/dynamic";
+import { LoadingSpinner } from "../components/LoadingSpinner";
 
 config.autoAddCss = false;
 
@@ -51,7 +52,7 @@ const Auth = (params: { children: ReactElement }) => {
   const { status } = useSession();
 
   if (status === "loading") {
-    return <div>Loading ...</div>;
+    return <LoadingSpinner />;
   }
 
   return params.children;

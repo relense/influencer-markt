@@ -5,6 +5,7 @@ import { ProtectedLayout } from "../../../components/ProtectedWrapper";
 import { EditPage } from "../../../pageComponents/EditPage/EditPage";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
+import { LoadingSpinner } from "../../../components/LoadingSpinner";
 
 const Edit: NextPage = () => {
   const { data: userData, isLoading } = api.users.getUser.useQuery();
@@ -30,7 +31,7 @@ const Edit: NextPage = () => {
       </ProtectedLayout>
     );
   } else {
-    return <div>Loading</div>;
+    return <LoadingSpinner />;
   }
 };
 

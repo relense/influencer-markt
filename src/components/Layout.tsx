@@ -7,6 +7,7 @@ import { useSession } from "next-auth/react";
 import { LoginModal } from "./LoginModal";
 import { BottomBar } from "./BottomBar";
 import { type Option } from "./CustomMultiSelect";
+import { LoadingSpinner } from "./LoadingSpinner";
 
 export const Layout = (props: PropsWithChildren) => {
   const { data: sessionData, status } = useSession();
@@ -47,7 +48,7 @@ export const Layout = (props: PropsWithChildren) => {
   if (status === "authenticated") {
     const { data: user, isLoading } = api.users.getUser.useQuery();
     if (isLoading) {
-      return <div>Loading</div>;
+      return <LoadingSpinner />;
     } else {
       return renderAppLayout(user?.username || "", {
         id: user?.role?.id || -1,

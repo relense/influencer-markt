@@ -3,6 +3,7 @@ import { useEffect } from "react";
 import { useRouter } from "next/router";
 import { api } from "../../utils/api";
 import { useSession } from "next-auth/react";
+import { LoadingSpinner } from "../../components/LoadingSpinner";
 
 const LoginCallback: NextPage = () => {
   const { status } = useSession();
@@ -18,7 +19,7 @@ const LoginCallback: NextPage = () => {
   }, [isLoading]);
 
   if (isLoading) {
-    return <div>Loading</div>;
+    return <LoadingSpinner />;
   } else {
     return <></>;
   }
