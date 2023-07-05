@@ -412,6 +412,7 @@ const PublicProfilePage = (params: { username: string }) => {
                       authorName: review.author?.profile?.name || "",
                       review: review.userReview,
                       reviewDate: review.date.toLocaleDateString(),
+                      username: review.author?.username || "",
                     }}
                     isModal={false}
                     onClick={openReviewModal}
@@ -457,6 +458,7 @@ const PublicProfilePage = (params: { username: string }) => {
                     authorName: selectedReview?.authorName || "",
                     review: selectedReview?.review || "",
                     reviewDate: selectedReview?.reviewDate || "",
+                    username: selectedReview?.username || "",
                   }}
                   isModal={true}
                   onClick={openReviewModal}

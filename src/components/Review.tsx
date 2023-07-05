@@ -6,6 +6,7 @@ export type Review = {
   authorName: string;
   reviewDate: string;
   review: string;
+  username: string;
 };
 
 const Review = (params: {
@@ -29,7 +30,7 @@ const Review = (params: {
         />
         <div className="flex flex-col">
           <Link
-            href={`/${params.review.authorName}`}
+            href={`/${params.review.username}`}
             className="cursor-pointer font-medium"
           >
             {params.review.authorName}
