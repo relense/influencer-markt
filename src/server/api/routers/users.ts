@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { createTRPCRouter, protectedProcedure } from "../trpc";
+import { createTRPCRouter, protectedProcedure, publicProcedure } from "../trpc";
 
 export const usersRouter = createTRPCRouter({
   getUser: protectedProcedure.query(async ({ ctx }) => {
@@ -37,7 +37,7 @@ export const usersRouter = createTRPCRouter({
       });
     }),
 
-  usernameExists: protectedProcedure
+  usernameExists: publicProcedure
     .input(z.object({ username: z.string() }))
     .query(async ({ ctx, input }) => {
       if (input.username === "" || input.username === "explore") {
