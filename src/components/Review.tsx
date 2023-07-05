@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Link from "next/link";
 
 export type Review = {
   profilePicture: string;
@@ -27,7 +28,12 @@ const Review = (params: {
           className="h-14 rounded-full object-cover"
         />
         <div className="flex flex-col">
-          <div className="font-medium">{params.review.authorName}</div>
+          <Link
+            href={`/${params.review.authorName}`}
+            className="cursor-pointer font-medium"
+          >
+            {params.review.authorName}
+          </Link>
           <div className="font-normal text-gray2">
             {params.review.reviewDate}
           </div>
