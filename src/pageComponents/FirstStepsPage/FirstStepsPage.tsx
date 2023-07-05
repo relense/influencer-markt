@@ -17,6 +17,7 @@ import { type SocialMediaDetails } from "../../components/AddSocialMediaModal";
 import { type ProfileData } from "../../components/ProfileForm";
 import { Step0 } from "./Views/Step0";
 import { type Option } from "../../components/CustomMultiSelect";
+import { type Picture } from "../../components/PictureCarrosel";
 
 enum StepsEnum {
   OnlinePresence,
@@ -149,6 +150,7 @@ const FirstStepsPage = () => {
   const [steps, setSteps] = useState<Step[]>(influencerSteps);
   const [currentStep, setCurrentStep] = useState<Step>();
   const [stepsCount, setStepsCount] = useState<number>(0);
+  const [portfolio, setPortfolio] = useState<Picture[]>([]);
 
   const {
     control: userIdentityControl,
@@ -298,6 +300,24 @@ const FirstStepsPage = () => {
       setStepsCount(stepsCount - 1);
       setCurrentStep(steps[stepsCount - 1]);
     }
+  };
+
+  const onAddPicture = (pictureUrl: string) => {
+    const newPortfolio = [...portfolio];
+    newPortfolio.push({ id: newPortfolio.length, url: pictureUrl });
+    setPortfolio(newPortfolio);
+  };
+
+  const onDeletePicture = (pictureId: number) => {
+    const newPortfolio = [...portfolio];
+
+    const index = newPortfolio.map((picture) => picture.id).indexOf(pictureId);
+
+    if (index > -1) {
+      newPortfolio.splice(index, 1);
+    }
+
+    setPortfolio(newPortfolio);
   };
 
   const saveAllData = async () => {
@@ -491,7 +511,12 @@ const FirstStepsPage = () => {
               />
             )}
             {currentStep?.id === StepsEnum.VisualPortfolio && (
-              <Step3 changeStep={changeStep} />
+              <Step3
+                changeStep={changeStep}
+                porttoflio={portfolio}
+                addPicture={onAddPicture}
+                deletePicture={onDeletePicture}
+              />
             )}
             {currentStep?.id === StepsEnum.ValuePacks && (
               <Step4

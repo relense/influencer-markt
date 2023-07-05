@@ -11,7 +11,10 @@ import { api } from "~/utils/api";
 import { toast } from "react-hot-toast";
 import Image from "next/image";
 
-import { PictureCarrosel } from "../../components/PictureCarrosel";
+import {
+  type Picture,
+  PictureCarrosel,
+} from "../../components/PictureCarrosel";
 import {
   AddSocialMediaModal,
   type SocialMediaDetails,
@@ -24,6 +27,7 @@ import { Button } from "../../components/Button";
 import { ValuePack } from "../../components/ValuePack";
 import { type ValuePackType } from "../FirstStepsPage/Views/Step4";
 import { type Option } from "../../components/CustomMultiSelect";
+import { LoadingSpinner } from "../../components/LoadingSpinner";
 
 const EditPage = (params: { role: Option | undefined }) => {
   const ctx = api.useContext();
@@ -34,6 +38,7 @@ const EditPage = (params: { role: Option | undefined }) => {
     useState<boolean>(false);
   const [isValuePackModalOpen, setIsValuePackModalOpen] =
     useState<boolean>(false);
+  const [portfolio, setPortfolio] = useState<Picture[]>([]);
 
   const { data: platforms } = api.allRoutes.getAllSocialMedia.useQuery();
   const { data: profile, isLoading: isLoadingProfile } =
@@ -122,6 +127,33 @@ const EditPage = (params: { role: Option | undefined }) => {
         setIsLoading(false);
       },
     });
+  const { mutate: addPicture } = api.portfolios.createPicture.useMutation({
+    onSuccess: () => {
+      void ctx.profiles.getProfileWithoutIncludes.invalidate().then(() => {
+        setIsLoading(false);
+        toast.success(`Updated portfolio successfully`, {
+          position: "top-right",
+        });
+      });
+    },
+    onError: () => {
+      setIsLoading(false);
+    },
+  });
+
+  const { mutate: deletePicture } = api.portfolios.deletePicture.useMutation({
+    onSuccess: () => {
+      void ctx.profiles.getProfileWithoutIncludes.invalidate().then(() => {
+        setIsLoading(false);
+        toast.success(`Updated portfolio successfully`, {
+          position: "top-right",
+        });
+      });
+    },
+    onError: () => {
+      setIsLoading(false);
+    },
+  });
 
   const {
     control: profileControl,
@@ -141,6 +173,7 @@ const EditPage = (params: { role: Option | undefined }) => {
   const {
     control,
     register,
+    watch: socialMediaWatch,
     reset: socialMediaReset,
     handleSubmit: handleSubmitSocialMedia,
     formState: { errors: socialMediaErrors },
@@ -181,6 +214,10 @@ const EditPage = (params: { role: Option | undefined }) => {
     profileSetValue,
     isProfileModalOpen,
   ]);
+
+  useEffect(() => {
+    setPortfolio(profile?.portfolio || []);
+  }, [profile?.portfolio]);
 
   const onUpdateProfile = handleSubmitProfile((data) => {
     updateProfile({
@@ -246,6 +283,16 @@ const EditPage = (params: { role: Option | undefined }) => {
   const onCloseValuePackModal = () => {
     setIsValuePackModalOpen(false);
     valuePackReset();
+  };
+
+  const onAddPicture = (pictureUrl: string) => {
+    setIsLoading(true);
+    addPicture({ url: pictureUrl });
+  };
+
+  const onDeletePicture = (pictureId: number) => {
+    setIsLoading(true);
+    deletePicture({ pictureId });
   };
 
   const renderProfileDescription = () => {
@@ -360,13 +407,9 @@ const EditPage = (params: { role: Option | undefined }) => {
         <div className="text-2xl font-semibold ">Visual Portfolio</div>
         <PictureCarrosel
           visual={false}
-          portfolio={
-            (profile?.portfolio &&
-              profile?.portfolio.map((picture) => {
-                return { id: picture.id, url: picture.url };
-              })) ||
-            []
-          }
+          portfolio={portfolio}
+          addPicture={onAddPicture}
+          deletePicture={onDeletePicture}
         />
       </div>
     );
@@ -409,21 +452,12 @@ const EditPage = (params: { role: Option | undefined }) => {
     );
   };
 
-  const renderLoadingSpinner = () => {
-    return (
-      <>
-        <div className="absolute left-0 top-0 h-full w-full bg-gray1 opacity-10" />
-        <div className="absolute top-0 flex h-full w-full items-center justify-center">
-          <div className="">LOADING ICON SPINNER WHATEVER</div>
-        </div>
-      </>
-    );
-  };
-
   if (isLoadingProfile) {
     return (
       <Layout>
-        <div className="relative flex flex-1">{renderLoadingSpinner()}</div>
+        <div className="relative flex flex-1">
+          <LoadingSpinner />
+        </div>
       </Layout>
     );
   } else {
@@ -432,7 +466,7 @@ const EditPage = (params: { role: Option | undefined }) => {
         {isLoading && (
           <div className="absolute flex h-full w-full">
             <div className="relative top-0 flex flex-1 justify-center">
-              {renderLoadingSpinner()}
+              <LoadingSpinner />
             </div>
           </div>
         )}
@@ -461,6 +495,7 @@ const EditPage = (params: { role: Option | undefined }) => {
               })}
               control={control}
               register={register}
+              watch={socialMediaWatch}
               onCloseModal={onCloseSocialMediaModal}
             />
           )}
