@@ -3,6 +3,7 @@ import {
   Controller,
   type UseFormRegister,
   type FieldErrors,
+  type UseFormWatch,
 } from "react-hook-form";
 import { Modal } from "./Modal";
 import { CustomSelect } from "./CustomSelect";
@@ -21,6 +22,7 @@ const AddSocialMediaModal = (params: {
   onCloseModal: () => void;
   addSocialMedia: () => void;
   register: UseFormRegister<SocialMediaDetails>;
+  watch: UseFormWatch<SocialMediaDetails>;
   control: Control<SocialMediaDetails, any>;
   errors: FieldErrors<SocialMediaDetails>;
   platforms: SocialMedia[] | undefined;
@@ -43,6 +45,26 @@ const AddSocialMediaModal = (params: {
 
     setAvailablePlatforms(availablePlatformsArray);
   }, [params.platforms, params.socialMediaList]);
+
+  const addSocialMediaLink = (socialMedia: string) => {
+    if (socialMedia === "Instagram") {
+      return "instagram.com/";
+    } else if (socialMedia === "Twitter") {
+      return "twitter.com/";
+    } else if (socialMedia === "TikTok") {
+      return "tiktok.com/@";
+    } else if (socialMedia === "YouTube") {
+      return "youtube.com/@";
+    } else if (socialMedia === "Facebook") {
+      return "facebook.com/";
+    } else if (socialMedia === "Linkedin") {
+      return "linkedin.com/in/";
+    } else if (socialMedia === "Pinterest") {
+      return "pinterest.com/";
+    } else if (socialMedia === "Twitch") {
+      return "twitch.tv/";
+    }
+  };
 
   return (
     <Modal onClose={params.onCloseModal} title="Add Social Media Details">
@@ -68,19 +90,29 @@ const AddSocialMediaModal = (params: {
             );
           }}
         />
+
         <div className="flex w-full flex-col">
-          <input
-            {...params.register("socialMediaHandler", { maxLength: 44 })}
-            required
-            type="text"
-            className="h-14 w-full rounded-lg border-[1px] border-gray3 p-4 placeholder-gray2"
-            placeholder="Social media handler"
-            autoComplete="off"
-          />
-          {params.errors.socialMediaHandler &&
-            params.errors.socialMediaHandler.type === "maxLength" && (
-              <div className="px-4 py-1 text-red-600">Max is 44 characters</div>
+          <div className="flex h-16 w-full items-center rounded-lg border-[1px] border-gray3 p-4 placeholder-gray2 ">
+            {params.watch("platform").id !== -1 && (
+              <div className="hidden h-16 items-center xs:flex">
+                {addSocialMediaLink(params.watch("platform").name)}
+              </div>
             )}
+            <input
+              {...params.register("socialMediaHandler", { maxLength: 44 })}
+              required
+              type="text"
+              className="flex w-full flex-1 rounded-lg placeholder-gray2 focus:outline-none"
+              placeholder="Social media handler"
+              autoComplete="off"
+            />
+            {params.errors.socialMediaHandler &&
+              params.errors.socialMediaHandler.type === "maxLength" && (
+                <div className="px-4 py-1 text-red-600">
+                  Max is 44 characters
+                </div>
+              )}
+          </div>
         </div>
         <input
           {...params.register("socialMediaFollowers", {
