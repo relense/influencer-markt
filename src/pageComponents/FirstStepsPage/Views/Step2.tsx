@@ -3,7 +3,6 @@ import {
   type UseFormRegister,
   type UseFormSetValue,
   type UseFormGetValues,
-  type FieldErrors,
 } from "react-hook-form";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus, faXmark } from "@fortawesome/free-solid-svg-icons";
@@ -35,6 +34,7 @@ export const Step2 = (params: {
     register,
     handleSubmit,
     reset,
+    watch,
     formState: { errors },
   } = useForm<SocialMediaDetails>({
     defaultValues: {
@@ -175,6 +175,7 @@ export const Step2 = (params: {
           onCloseModal={onCloseModal}
           register={register}
           errors={errors}
+          watch={watch}
         />
       )}
     </div>
