@@ -13,8 +13,9 @@ import {
 
 import Image from "next/image";
 import { toast } from "react-hot-toast";
+import { usePrevious } from "../utils/helper";
 
-type Picture = {
+export type Picture = {
   id: number;
   url: string;
 };
@@ -22,19 +23,43 @@ type Picture = {
 export const PictureCarrosel = (params: {
   visual: boolean;
   portfolio: Picture[] | [];
+  addPicture?: (pictureUrl: string) => void;
+  deletePicture?: (pictureId: number) => void;
 }) => {
   const [currentPicture, setCurrentPicture] = useState<Picture>({
     id: -1,
     url: "",
   });
-  const [pictureList, setPictureList] = useState<Picture[]>([]);
+
+  const prevPortfolio = usePrevious(params.portfolio);
 
   useEffect(() => {
-    if (params.portfolio && params.portfolio.length > 0) {
-      setPictureList(params.portfolio);
+    if (prevPortfolio && prevPortfolio !== params.portfolio) {
+      if (
+        params.portfolio &&
+        params.portfolio.length > 0 &&
+        currentPicture.id === -1
+      ) {
+        setCurrentPicture(params.portfolio[0] || { id: -1, url: "" });
+      } else if (prevPortfolio.length > params.portfolio.length) {
+        //means a picture was removed
+        const newPictureList: Picture[] = [...prevPortfolio];
+        const index = newPictureList
+          .map((picture) => picture.url)
+          .indexOf(currentPicture.url);
+        const newIndex = index < newPictureList.length - 1 ? index : index - 1;
+
+        setCurrentPicture(params.portfolio[newIndex] || { id: -1, url: "" });
+      } else if (prevPortfolio.length < params.portfolio.length) {
+        // means a picture was added
+        setCurrentPicture(
+          params.portfolio[params.portfolio.length - 1] || { id: -1, url: "" }
+        );
+      }
+    } else if (!prevPortfolio) {
       setCurrentPicture(params.portfolio[0] || { id: -1, url: "" });
     }
-  }, [params.portfolio]);
+  }, [currentPicture.id, currentPicture.url, params.portfolio, prevPortfolio]);
 
   const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -47,12 +72,16 @@ export const PictureCarrosel = (params: {
 
         if (
           currentPicture.url !== dataURL &&
-          pictureList.map((picture) => picture.url).indexOf(dataURL) === -1
+          params.portfolio.map((picture) => picture.url).indexOf(dataURL) === -1
         ) {
-          setCurrentPicture({ id: 0, url: dataURL });
-          const newPictureList = [...pictureList];
-          newPictureList.push({ id: 0, url: dataURL });
-          setPictureList(newPictureList);
+          //this is only until we have azure connected. When azure is connected we will upload to azure.
+          //After uploading to azure we will use that link to update here
+          //dataURL is the one that will have the picture uploaded in base64. Upload this to azure
+          const picture =
+            "https://images.unsplash.com/photo-1687987592152-337d696bec1b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=790&q=80";
+          if (params.addPicture) {
+            params.addPicture(picture);
+          }
         }
       };
 
@@ -66,42 +95,24 @@ export const PictureCarrosel = (params: {
   };
 
   const handleRemovePicture = () => {
-    let newPictureList: Picture[] = [...pictureList];
-    const index = newPictureList
-      .map((picture) => picture.url)
-      .indexOf(currentPicture.url);
-
-    if (index > -1) {
-      newPictureList = removeItemOnce(pictureList, currentPicture);
-      setCurrentPicture({ id: -1, url: "" });
-      const newIndex = index < newPictureList.length ? index : index - 1;
-      const newCurrentPicture = newPictureList[newIndex] || { id: -1, url: "" };
-      setCurrentPicture(newCurrentPicture);
+    if (params.deletePicture) {
+      params.deletePicture(currentPicture.id);
     }
-  };
-
-  const removeItemOnce = (arr: Picture[], value: Picture) => {
-    const index = arr.map((picture) => picture.url).indexOf(value.url);
-    if (index > -1) {
-      arr.splice(index, 1);
-    }
-
-    return arr;
   };
 
   const handleNextPicture = (next: boolean) => {
-    const index = pictureList
+    const index = params.portfolio
       .map((picture) => picture.url)
       .indexOf(currentPicture.url);
     let newIndex = index;
 
-    if (next && index < pictureList.length) {
+    if (next && index < params.portfolio.length) {
       newIndex = index + 1;
     } else if (!next && index > 0) {
       newIndex = index - 1;
     }
 
-    const newCurrentPicture = pictureList[newIndex] || { id: -1, url: "" };
+    const newCurrentPicture = params.portfolio[newIndex] || { id: -1, url: "" };
     setCurrentPicture(newCurrentPicture);
   };
 
@@ -134,7 +145,7 @@ export const PictureCarrosel = (params: {
   };
 
   const renderMainPicture = () => {
-    const currentPictureIndex = pictureList
+    const currentPictureIndex = params.portfolio
       .map((picture) => picture.url)
       .indexOf(currentPicture.url);
 
@@ -153,20 +164,20 @@ export const PictureCarrosel = (params: {
             </div>
           )}
           <div className="flex h-full flex-col items-center justify-center self-center sm:h-[540px] sm:w-[430px]">
-            {pictureList.length > 1 && (
+            {params.portfolio.length > 1 && (
               <div className="absolute top-2 rounded-full bg-black px-4 py-1 text-sm text-white opacity-30">
-                {currentPictureIndex + 1} / {pictureList.length}
+                {currentPictureIndex + 1} / {params.portfolio.length}
               </div>
             )}
-            {pictureList.length > 1 &&
-              currentPictureIndex < pictureList.length - 1 && (
+            {params.portfolio.length > 1 &&
+              currentPictureIndex < params.portfolio.length - 1 && (
                 <FontAwesomeIcon
                   icon={faCircleRight}
                   className="fa-xl absolute right-2 cursor-pointer text-white"
                   onClick={() => handleNextPicture(true)}
                 />
               )}
-            {pictureList.length > 1 && currentPictureIndex > 0 && (
+            {params.portfolio.length > 1 && currentPictureIndex > 0 && (
               <FontAwesomeIcon
                 icon={faCircleLeft}
                 className="fa-xl absolute left-2 cursor-pointer text-white"
@@ -175,7 +186,7 @@ export const PictureCarrosel = (params: {
             )}
 
             <div className="absolute bottom-2 flex items-center justify-center gap-4">
-              {pictureList.map(({}, index) => {
+              {params.portfolio.map(({}, index) => {
                 let colorClass = "h-2 w-2 rounded-full bg-gray2";
 
                 if (currentPictureIndex === index) {
@@ -205,8 +216,8 @@ export const PictureCarrosel = (params: {
     return (
       <div className="relative flex justify-center gap-2 self-center sm:mt-0 sm:self-start">
         <div className="hidden gap-2 overflow-x-auto xs:flex">
-          {pictureList &&
-            pictureList.map((picture) => {
+          {params.portfolio &&
+            params.portfolio.map((picture) => {
               return (
                 <div
                   key={picture.url}
@@ -227,7 +238,7 @@ export const PictureCarrosel = (params: {
               );
             })}
         </div>
-        {pictureList.length < 4 && !params.visual && (
+        {params.portfolio.length < 4 && !params.visual && (
           <div className="relative flex items-center">
             <input
               type="file"
