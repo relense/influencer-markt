@@ -9,30 +9,37 @@ export const reviewsRouter = createTRPCRouter({
       })
     )
     .query(async ({ ctx, input }) => {
-      return await ctx.prisma.review.findMany({
-        where: { profileId: input.profileId },
-        select: {
-          author: {
-            select: {
-              username: true,
-              profile: true,
-              id: false,
-            },
+      return await ctx.prisma.$transaction([
+        ctx.prisma.review.count({
+          where: {
+            profileId: input.profileId,
           },
-          profile: {
-            select: {
-              name: true,
-              profilePicture: true,
-              id: false,
+        }),
+        ctx.prisma.review.findMany({
+          where: { profileId: input.profileId },
+          select: {
+            author: {
+              select: {
+                username: true,
+                profile: true,
+                id: false,
+              },
             },
+            profile: {
+              select: {
+                name: true,
+                profilePicture: true,
+                id: false,
+              },
+            },
+            date: true,
+            id: true,
+            profileId: false,
+            rating: true,
+            userId: false,
+            userReview: true,
           },
-          date: true,
-          id: true,
-          profileId: false,
-          rating: true,
-          userId: false,
-          userReview: true,
-        },
-      });
+        }),
+      ]);
     }),
 });
