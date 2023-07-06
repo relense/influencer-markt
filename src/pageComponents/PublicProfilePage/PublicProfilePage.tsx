@@ -2,6 +2,7 @@ import { api } from "~/utils/api";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faCamera,
+  faCopy,
   faGlobe,
   faShareFromSquare,
   faStar,
@@ -25,11 +26,13 @@ import { Modal } from "../../components/Modal";
 import { Review } from "../../components/Review";
 import Image from "next/image";
 import { LoadingSpinner } from "../../components/LoadingSpinner";
+import { toast } from "react-hot-toast";
 
 const PublicProfilePage = (params: { username: string }) => {
   const [isCustomValuePackModalOpen, setIsCustomValuePackModalOpen] =
     useState<boolean>(false);
   const [isReviewModalOpen, setIsReviewModalOpen] = useState<boolean>(false);
+  const [isShareModalOpen, setIsShareModalOpen] = useState<boolean>(false);
   const [selectedReview, setSelectedReview] = useState<Review>();
   const [selectedValuePack, setSelectedValuePack] = useState<ValuePackType>({
     id: -1,
@@ -40,8 +43,11 @@ const PublicProfilePage = (params: { username: string }) => {
     numberOfRevisions: -1,
     valuePackPrice: -1,
   });
+
   const [platform, setPlatform] = useState<Option>({ id: -1, name: "" });
   const [availablePlatforms, setAvailablePlatforms] = useState<Option[]>([]);
+  const [reviews, setReviews] = useState<Review[]>([]);
+  const [reviewsCursor, setCursor] = useState<number>();
 
   const { data: profile, isLoading } =
     api.profiles.getProfileByUniqueUsername.useQuery({
@@ -50,6 +56,69 @@ const PublicProfilePage = (params: { username: string }) => {
   const { data: profileReviews } = api.reviews.getProfileReviews.useQuery({
     profileId: profile?.id || -1,
   });
+
+  const {
+    data: profileReviewsCursor,
+    isFetching: isFetchingReviewsCursor,
+    refetch,
+  } = api.reviews.getProfileReviewsWithCursor.useQuery(
+    {
+      profileId: profile?.id || -1,
+      cursor: reviewsCursor || -1,
+    },
+    {
+      enabled: false,
+    }
+  );
+
+  useEffect(() => {
+    if (profileReviews) {
+      setReviews(
+        profileReviews[1].map((review) => {
+          return {
+            id: review.id,
+            authorName: review.author?.profile?.name || "",
+            profilePicture: review.author?.profile?.profilePicture || "",
+            review: review.userReview || "",
+            reviewDate: review.date.toLocaleString(),
+            username: review.author?.username || "",
+          };
+        })
+      );
+
+      const lastReviewInArray = profileReviews[1][profileReviews[1].length - 1];
+
+      if (lastReviewInArray) {
+        setCursor(lastReviewInArray.id);
+      }
+    }
+  }, [profileReviews]);
+
+  useEffect(() => {
+    if (profileReviewsCursor) {
+      const newReviews: Review[] = [...reviews];
+
+      profileReviewsCursor.forEach((review) => {
+        newReviews.push({
+          id: review.id,
+          authorName: review.author?.profile?.name || "",
+          profilePicture: review.author?.profile?.profilePicture || "",
+          review: review.userReview || "",
+          reviewDate: review.date.toLocaleString(),
+          username: review.author?.username || "",
+        });
+      });
+
+      setReviews(newReviews);
+
+      const lastReviewInArray =
+        profileReviewsCursor[profileReviewsCursor.length - 1];
+
+      if (lastReviewInArray) {
+        setCursor(lastReviewInArray.id);
+      }
+    }
+  }, [profileReviewsCursor]);
 
   useEffect(() => {
     if (profile?.valuePacks && profile?.valuePacks[0]) {
@@ -95,6 +164,15 @@ const PublicProfilePage = (params: { username: string }) => {
     setAvailablePlatforms(uniqueOptions);
   }, [profile?.valuePacks]);
 
+  const onCopyLinkToShare = async () => {
+    await navigator.clipboard.writeText(window.location.href);
+
+    toast.success("Link was copied to clipboard", {
+      duration: 5000,
+      position: "bottom-center",
+    });
+  };
+
   const onChangePlatform = (platform: Option) => {
     setPlatform(platform);
     setSelectedValuePack({
@@ -136,10 +214,10 @@ const PublicProfilePage = (params: { username: string }) => {
             </div>
           )}
           <div className="flex flex-1 flex-col gap-2 text-center lg:text-left">
-            <div className="flex flex-col items-center justify-center gap-4 xs:flex-row xs:flex-wrap lg:justify-start">
+            <div className="flex flex-col items-center justify-center gap-2 xs:flex-row xs:flex-wrap lg:justify-start">
               {profile?.userSocialMedia?.map((socialMedia) => {
                 return (
-                  <div key={socialMedia.id} className="flex gap-2">
+                  <div className="flex items-center gap-2" key={socialMedia.id}>
                     <Link
                       href={socialMedia.url}
                       target="_blank"
@@ -149,6 +227,10 @@ const PublicProfilePage = (params: { username: string }) => {
                       {socialMedia.socialMedia?.name}
                     </Link>
                     <div>{helper.formatNumber(socialMedia.followers)}</div>
+                    <div
+                      key={`${socialMedia.id} + dot`}
+                      className="hidden h-1 w-1 rounded-full bg-black sm:block"
+                    />
                   </div>
                 );
               })}
@@ -175,7 +257,10 @@ const PublicProfilePage = (params: { username: string }) => {
         </div>
 
         <div className="flex flex-1 flex-row items-start  justify-end gap-4 lg:flex-row">
-          <div className="flex cursor-pointer items-center gap-2">
+          <div
+            className="flex cursor-pointer items-center gap-2"
+            onClick={() => setIsShareModalOpen(true)}
+          >
             <FontAwesomeIcon icon={faShareFromSquare} className="fa-lg" />
 
             <div className="underline">Share</div>
@@ -401,18 +486,17 @@ const PublicProfilePage = (params: { username: string }) => {
                 )}
               </div>
             </div>
-            <div className="flex flex-wrap gap-12">
-              {profileReviews[1].map((review) => {
+            <div className="flex flex-wrap items-start gap-12">
+              {reviews.map((review) => {
                 return (
                   <Review
                     key={review.id}
                     review={{
-                      profilePicture:
-                        review.author?.profile?.profilePicture || "",
-                      authorName: review.author?.profile?.name || "",
-                      review: review.userReview,
-                      reviewDate: review.date.toLocaleDateString(),
-                      username: review.author?.username || "",
+                      profilePicture: review.profilePicture,
+                      authorName: review.authorName,
+                      review: review.review,
+                      reviewDate: review.reviewDate,
+                      username: review.username,
                     }}
                     isModal={false}
                     onClick={openReviewModal}
@@ -420,6 +504,13 @@ const PublicProfilePage = (params: { username: string }) => {
                 );
               })}
             </div>
+            {profileReviews[0] > reviews.length && (
+              <Button
+                title="Load More Reviews"
+                onClick={() => refetch()}
+                isLoading={isFetchingReviewsCursor}
+              />
+            )}
           </div>
         </>
       );
@@ -463,6 +554,42 @@ const PublicProfilePage = (params: { username: string }) => {
                   isModal={true}
                   onClick={openReviewModal}
                 />
+              </div>
+            </Modal>
+          )}
+          {isShareModalOpen && (
+            <Modal
+              onClose={() => setIsShareModalOpen(false)}
+              title="Share Influencer Page"
+            >
+              <div className="flex flex-col gap-4 p-4 sm:w-full sm:px-8">
+                <div className="flex justify-center">
+                  <Link
+                    href={`https://api.whatsapp.com/send/?text=${window.location.href}`}
+                    data-action="share/whatsapp/share"
+                  >
+                    <Image
+                      src={`/images/whatsapp.svg`}
+                      height={44}
+                      width={44}
+                      alt="whatsapp logo"
+                      className="object-contain"
+                    />
+                  </Link>
+                </div>
+
+                <div className="flex h-14 w-full flex-1 gap-2 rounded-lg border-[1px] border-gray3 p-4">
+                  <input
+                    readOnly
+                    value={window.location.href}
+                    className="flex flex-1"
+                  />
+                  <FontAwesomeIcon
+                    icon={faCopy}
+                    className="fa-lg text-influencer"
+                    onClick={() => onCopyLinkToShare()}
+                  />
+                </div>
               </div>
             </Modal>
           )}
