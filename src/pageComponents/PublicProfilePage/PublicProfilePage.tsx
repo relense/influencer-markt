@@ -598,9 +598,9 @@ const PublicProfilePage = (params: { username: string }) => {
                     value={window.location.href}
                     className="flex flex-1"
                   />
-                  <div className="hidden xs:flex">{renderLinkToCopy()}</div>
+                  <div className="hidden sm:flex">{renderLinkToCopy()}</div>
                 </div>
-                <div className="flex xs:hidden">{renderLinkToCopy()}</div>
+                <div className="flex sm:hidden">{renderLinkToCopy()}</div>
               </div>
             </Modal>
           )}
