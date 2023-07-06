@@ -361,12 +361,17 @@ const EditPage = (params: { role: Option | undefined }) => {
       <div className="flex flex-1 flex-col gap-4">
         <div className="flex items-center gap-2">
           <div className="text-2xl font-semibold">Social Media</div>
-          <div
-            className="flex h-5 w-5 items-center justify-center rounded-full bg-influencer text-white"
-            onClick={() => setIsSocialMediaModalOpen(true)}
-          >
-            <FontAwesomeIcon icon={faPlus} className="fa-sm cursor-pointer " />
-          </div>
+          {platforms?.length !== profileSocialMedia?.length && (
+            <div
+              className="flex h-5 w-5 items-center justify-center rounded-full bg-influencer text-white"
+              onClick={() => setIsSocialMediaModalOpen(true)}
+            >
+              <FontAwesomeIcon
+                icon={faPlus}
+                className="fa-sm cursor-pointer "
+              />
+            </div>
+          )}
         </div>
         <div className="flex flex-wrap gap-4">
           {profileSocialMedia && profileSocialMedia.length > 0 ? (
