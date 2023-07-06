@@ -2,6 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 
 export type Review = {
+  id?: number;
   profilePicture: string;
   authorName: string;
   reviewDate: string;
@@ -14,7 +15,7 @@ const Review = (params: {
   onClick: (review: Review) => void;
   isModal: boolean;
 }) => {
-  let mainClassName = "flex flex-col gap-4 flex-[1_0_100%] lg:flex-[0_0_40%]";
+  let mainClassName = "flex flex-col gap-4 flex-[1_0_100%] lg:flex-[0_0_47%]";
   if (params.isModal) {
     mainClassName = "flex flex-col gap-4";
   }
