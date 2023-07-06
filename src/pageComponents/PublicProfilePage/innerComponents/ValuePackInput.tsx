@@ -50,6 +50,13 @@ const ValuePackInput = (params: {
     setAvailableValuePacks(currentlyAvailableValuePacks);
   }, [params.platform, params.allValuePacks]);
 
+  let containerClasses =
+    "relative flex flex-1 cursor-pointer flex-col gap-4 py-4";
+  if (isValuePackModalOpen) {
+    containerClasses =
+      "relative flex flex-1 cursor-pointer flex-col gap-4 py-4 border-blue-700 border-[1px] rounded-b-2xl";
+  }
+
   return (
     <div
       className="w-full xl:h-32"
@@ -57,10 +64,7 @@ const ValuePackInput = (params: {
         setIsValuePackModal(!isValuePackModalOpen);
       }}
     >
-      <div
-        className="relative flex flex-1 cursor-pointer flex-col gap-4 py-4"
-        ref={valuePackRef}
-      >
+      <div className={containerClasses} ref={valuePackRef}>
         {params.valuePack && params.valuePack.id !== -1 ? (
           <div className="px-4 text-sm font-semibold">
             {params.valuePack.title}
