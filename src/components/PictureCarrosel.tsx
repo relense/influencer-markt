@@ -15,7 +15,6 @@ import {
 import Image from "next/image";
 import { toast } from "react-hot-toast";
 import { usePrevious } from "../utils/helper";
-import path from "path";
 
 export type Picture = {
   id: number;
