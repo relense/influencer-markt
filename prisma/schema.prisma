@@ -62,7 +62,6 @@ model User {
   accounts      Account[]
   sessions      Session[]
   profile       Profile?
-  review        Review[]
 
   roleId Int?
 
@@ -84,7 +83,8 @@ model Profile {
   website         String            @db.Text
   rating          String?
   userSocialMedia UserSocialMedia[]
-  reviews         Review[]
+  profileReviews  Review[]          @relation("profileReviewd")
+  submitedReviews Review[]          @relation("author")
   portfolio       Portfolio[]
 
   userId   String @unique
@@ -162,16 +162,16 @@ model UserSocialMedia {
 }
 
 model Review {
-  id         Int      @id @default(autoincrement())
-  userReview String   @db.Text
-  date       DateTime
-  rating     Decimal
-  profile    Profile? @relation(fields: [profileId], references: [id])
-  author     User?    @relation(fields: [userId], references: [id])
+  id             Int      @id @default(autoincrement())
+  userReview     String   @db.Text
+  date           DateTime
+  rating         Decimal
+  profileReviewd Profile? @relation("profileReviewd", fields: [profileReviewdId], references: [id])
+  author         Profile? @relation("author", fields: [authorId], references: [id])
 
-  profileId Int?
-  userId    String
+  profileReviewdId Int?
+  authorId         Int?
 
-  @@index([profileId])
-  @@index([userId])
+  @@index([profileReviewdId])
+  @@index([authorId])
 }

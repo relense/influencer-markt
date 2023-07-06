@@ -12,21 +12,22 @@ export const reviewsRouter = createTRPCRouter({
       return await ctx.prisma.$transaction([
         ctx.prisma.review.count({
           where: {
-            profileId: input.profileId,
+            profileReviewdId: input.profileId,
           },
         }),
         ctx.prisma.review.findMany({
           take: 4,
-          where: { profileId: input.profileId },
+          where: { profileReviewdId: input.profileId },
           select: {
             author: {
               select: {
-                username: true,
-                profile: true,
+                user: true,
+                name: true,
+                profilePicture: true,
                 id: false,
               },
             },
-            profile: {
+            profileReviewd: {
               select: {
                 name: true,
                 profilePicture: true,
@@ -35,9 +36,7 @@ export const reviewsRouter = createTRPCRouter({
             },
             date: true,
             id: true,
-            profileId: false,
             rating: true,
-            userId: false,
             userReview: true,
           },
           orderBy: {
@@ -61,16 +60,17 @@ export const reviewsRouter = createTRPCRouter({
         cursor: {
           id: input.cursor,
         },
-        where: { profileId: input.profileId },
+        where: { profileReviewdId: input.profileId },
         select: {
           author: {
             select: {
-              username: true,
-              profile: true,
+              user: true,
+              name: true,
+              profilePicture: true,
               id: false,
             },
           },
-          profile: {
+          profileReviewd: {
             select: {
               name: true,
               profilePicture: true,
@@ -79,9 +79,7 @@ export const reviewsRouter = createTRPCRouter({
           },
           date: true,
           id: true,
-          profileId: false,
           rating: true,
-          userId: false,
           userReview: true,
         },
         orderBy: {

@@ -136,7 +136,6 @@ export const profilesRouter = createTRPCRouter({
               socialMedia: true,
             },
           },
-          reviews: true,
           gender: false,
           categories: true,
           user: {

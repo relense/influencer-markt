@@ -77,11 +77,11 @@ const PublicProfilePage = (params: { username: string }) => {
         profileReviews[1].map((review) => {
           return {
             id: review.id,
-            authorName: review.author?.profile?.name || "",
-            profilePicture: review.author?.profile?.profilePicture || "",
+            authorName: review.author?.name || "",
+            profilePicture: review.author?.profilePicture || "",
             review: review.userReview || "",
             reviewDate: review.date.toLocaleString(),
-            username: review.author?.username || "",
+            username: review.author?.user.username || "",
           };
         })
       );
@@ -101,11 +101,11 @@ const PublicProfilePage = (params: { username: string }) => {
       profileReviewsCursor.forEach((review) => {
         newReviews.push({
           id: review.id,
-          authorName: review.author?.profile?.name || "",
-          profilePicture: review.author?.profile?.profilePicture || "",
+          authorName: review.author?.name || "",
+          profilePicture: review.author?.profilePicture || "",
           review: review.userReview || "",
           reviewDate: review.date.toLocaleString(),
-          username: review.author?.username || "",
+          username: review.author?.user.username || "",
         });
       });
 
@@ -468,7 +468,7 @@ const PublicProfilePage = (params: { username: string }) => {
       return (
         <>
           <div className="w-full border-[1px] border-gray3" />
-          <div className="flex flex-1 flex-col gap-6">
+          <div className="flex flex-1 flex-col gap-10">
             <div className="flex flex-1 items-center gap-2">
               <div className="flex items-center gap-1">
                 <FontAwesomeIcon
@@ -505,11 +505,13 @@ const PublicProfilePage = (params: { username: string }) => {
               })}
             </div>
             {profileReviews[0] > reviews.length && (
-              <Button
-                title="Load More Reviews"
-                onClick={() => refetch()}
-                isLoading={isFetchingReviewsCursor}
-              />
+              <div className="flex items-center justify-center">
+                <Button
+                  title="Load More Reviews"
+                  onClick={() => refetch()}
+                  isLoading={isFetchingReviewsCursor}
+                />
+              </div>
             )}
           </div>
         </>
