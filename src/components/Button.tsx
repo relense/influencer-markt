@@ -58,7 +58,7 @@ export const Button = ({
 
   return (
     <button {...params} className={classes} disabled={disabled}>
-      <div className="flex items-center">
+      <div className="flex items-center justify-center gap-4">
         {isLoading && (
           <div className="">
             <svg
@@ -79,7 +79,7 @@ export const Button = ({
             </svg>
           </div>
         )}
-        <div className="flex flex-1 justify-center">{title}</div>
+        <div className="flex justify-center">{title}</div>
       </div>
     </button>
   );
