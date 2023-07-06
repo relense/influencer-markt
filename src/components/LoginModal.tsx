@@ -90,7 +90,7 @@ const LoginModal = ({
             </div>
           </button>
         </div>
-        <div className="text-sm font-medium text-gray2">
+        <div className="text-center text-sm font-medium text-gray2">
           By signing up, you agree to our{" "}
           <Link href="/terms-conditions" className="cursor-pointer text-black">
             Terms of Service
