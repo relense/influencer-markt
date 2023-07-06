@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { usePathname } from "next/navigation";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faArrowUpFromBracket,
@@ -14,6 +15,7 @@ import {
 import Image from "next/image";
 import { toast } from "react-hot-toast";
 import { usePrevious } from "../utils/helper";
+import path from "path";
 
 export type Picture = {
   id: number;
@@ -26,15 +28,21 @@ export const PictureCarrosel = (params: {
   addPicture?: (pictureUrl: string) => void;
   deletePicture?: (pictureId: number) => void;
 }) => {
+  const pathname = usePathname();
   const [currentPicture, setCurrentPicture] = useState<Picture>({
     id: -1,
     url: "",
   });
 
   const prevPortfolio = usePrevious(params.portfolio);
+  const prevPathname = usePrevious(pathname);
 
   useEffect(() => {
-    if (prevPortfolio && prevPortfolio !== params.portfolio) {
+    if (
+      prevPortfolio &&
+      prevPortfolio !== params.portfolio &&
+      prevPathname === pathname
+    ) {
       if (
         params.portfolio &&
         params.portfolio.length > 0 &&
@@ -56,10 +64,17 @@ export const PictureCarrosel = (params: {
           params.portfolio[params.portfolio.length - 1] || { id: -1, url: "" }
         );
       }
-    } else if (!prevPortfolio) {
+    } else if (!prevPortfolio || prevPathname !== pathname) {
       setCurrentPicture(params.portfolio[0] || { id: -1, url: "" });
     }
-  }, [currentPicture.id, currentPicture.url, params.portfolio, prevPortfolio]);
+  }, [
+    currentPicture.id,
+    currentPicture.url,
+    params.portfolio,
+    pathname,
+    prevPathname,
+    prevPortfolio,
+  ]);
 
   const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
