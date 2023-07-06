@@ -169,7 +169,7 @@ const PublicProfilePage = (params: { username: string }) => {
 
     toast.success("Link was copied to clipboard", {
       duration: 5000,
-      position: "bottom-center",
+      position: "top-right",
     });
   };
 
