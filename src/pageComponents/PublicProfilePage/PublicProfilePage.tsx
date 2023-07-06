@@ -169,7 +169,7 @@ const PublicProfilePage = (params: { username: string }) => {
 
     toast.success("Link was copied to clipboard", {
       duration: 5000,
-      position: "top-right",
+      position: "bottom-left",
     });
   };
 
@@ -517,6 +517,18 @@ const PublicProfilePage = (params: { username: string }) => {
     }
   };
 
+  const renderLinkToCopy = () => {
+    return (
+      <div
+        className="flex flex-1 cursor-pointer justify-center gap-2 rounded-lg bg-influencer px-4 py-2 hover:bg-influencer-dark"
+        onClick={() => onCopyLinkToShare()}
+      >
+        <FontAwesomeIcon icon={faCopy} className="fa-lg text-white" />
+        <div className="flex text-white">Copy</div>
+      </div>
+    );
+  };
+
   if (isLoading) {
     return (
       <Layout>
@@ -578,18 +590,15 @@ const PublicProfilePage = (params: { username: string }) => {
                   </Link>
                 </div>
 
-                <div className="flex h-14 w-full flex-1 gap-2 rounded-lg border-[1px] border-gray3 p-4">
+                <div className="flex h-14 w-full flex-1 gap-2 rounded-lg border-[1px] border-gray3 p-2">
                   <input
                     readOnly
                     value={window.location.href}
                     className="flex flex-1"
                   />
-                  <FontAwesomeIcon
-                    icon={faCopy}
-                    className="fa-lg text-influencer"
-                    onClick={() => onCopyLinkToShare()}
-                  />
+                  <div className="hidden xs:flex">{renderLinkToCopy()}</div>
                 </div>
+                <div className="flex xs:hidden">{renderLinkToCopy()}</div>
               </div>
             </Modal>
           )}
