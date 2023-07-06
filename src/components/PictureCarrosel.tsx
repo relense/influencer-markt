@@ -103,7 +103,7 @@ export const PictureCarrosel = (params: {
     } else {
       toast.error("Picture must be jpeg or png", {
         duration: 5000,
-        position: "top-right",
+        position: "bottom-left",
       });
     }
   };

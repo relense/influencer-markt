@@ -57,7 +57,7 @@ const EditPage = (params: { role: Option | undefined }) => {
       void ctx.profiles.getProfileWithoutIncludes.invalidate().then(() => {
         setIsLoading(false);
         toast.success(`Profile updated successfully`, {
-          position: "top-right",
+          position: "bottom-left",
         });
       });
     },
@@ -74,7 +74,7 @@ const EditPage = (params: { role: Option | undefined }) => {
           .then(() => {
             setIsLoading(false);
             toast.success(`Created social media successfully`, {
-              position: "top-right",
+              position: "bottom-left",
             });
           });
       },
@@ -90,7 +90,7 @@ const EditPage = (params: { role: Option | undefined }) => {
           .then(() => {
             setIsLoading(false);
             toast.success(`Deleted social media successfully`, {
-              position: "top-right",
+              position: "bottom-left",
             });
           });
       },
@@ -105,7 +105,7 @@ const EditPage = (params: { role: Option | undefined }) => {
         void ctx.valuesPacks.getValuePacksByProfileId.invalidate().then(() => {
           setIsLoading(false);
           toast.success(`Created value pack successfully`, {
-            position: "top-right",
+            position: "bottom-left",
           });
         });
       },
@@ -119,7 +119,7 @@ const EditPage = (params: { role: Option | undefined }) => {
         void ctx.valuesPacks.getValuePacksByProfileId.invalidate().then(() => {
           setIsLoading(false);
           toast.success(`Deleted value pack successfully`, {
-            position: "top-right",
+            position: "bottom-left",
           });
         });
       },
@@ -132,7 +132,7 @@ const EditPage = (params: { role: Option | undefined }) => {
       void ctx.profiles.getProfileWithoutIncludes.invalidate().then(() => {
         setIsLoading(false);
         toast.success(`Updated portfolio successfully`, {
-          position: "top-right",
+          position: "bottom-left",
         });
       });
     },
@@ -146,7 +146,7 @@ const EditPage = (params: { role: Option | undefined }) => {
       void ctx.profiles.getProfileWithoutIncludes.invalidate().then(() => {
         setIsLoading(false);
         toast.success(`Updated portfolio successfully`, {
-          position: "top-right",
+          position: "bottom-left",
         });
       });
     },
