@@ -80,7 +80,7 @@ const PublicProfilePage = (params: { username: string }) => {
             authorName: review.author?.name || "",
             profilePicture: review.author?.profilePicture || "",
             review: review.userReview || "",
-            reviewDate: review.date.toLocaleString(),
+            reviewDate: helper.formatDate(review.date),
             username: review.author?.user.username || "",
           };
         })
@@ -104,7 +104,7 @@ const PublicProfilePage = (params: { username: string }) => {
           authorName: review.author?.name || "",
           profilePicture: review.author?.profilePicture || "",
           review: review.userReview || "",
-          reviewDate: review.date.toLocaleString(),
+          reviewDate: helper.formatDate(review.date),
           username: review.author?.user.username || "",
         });
       });
