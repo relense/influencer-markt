@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import { api } from "~/utils/api";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -8,25 +9,24 @@ import {
   faStar,
 } from "@fortawesome/free-solid-svg-icons";
 import { faBookmark } from "@fortawesome/free-regular-svg-icons";
+import Image from "next/image";
+import { toast } from "react-hot-toast";
+import Link from "next/link";
 
 import { Layout } from "../../components/Layout";
-import Link from "next/link";
 import { PictureCarrosel } from "../../components/PictureCarrosel";
 import { Button } from "../../components/Button";
 import { CustomSelect } from "../../components/CustomSelect";
 import { type Option } from "../../components/CustomMultiSelect";
 import { type ValuePackType } from "../FirstStepsPage/Views/Step4";
 
-import { useEffect, useState } from "react";
 import { helper } from "../../utils/helper";
 import { ValuePackInput } from "./innerComponents/ValuePackInput";
 import { RequestCustomValuePackModal } from "./innerComponents/RequestCustomValuePackModal";
 import { ToolTip } from "../../components/ToolTip";
 import { Modal } from "../../components/Modal";
 import { Review } from "../../components/Review";
-import Image from "next/image";
 import { LoadingSpinner } from "../../components/LoadingSpinner";
-import { toast } from "react-hot-toast";
 
 const PublicProfilePage = (params: { username: string }) => {
   const [isCustomValuePackModalOpen, setIsCustomValuePackModalOpen] =
@@ -118,7 +118,7 @@ const PublicProfilePage = (params: { username: string }) => {
         setCursor(lastReviewInArray.id);
       }
     }
-  }, [profileReviewsCursor]);
+  }, [profileReviewsCursor, reviews]);
 
   useEffect(() => {
     if (profile?.valuePacks && profile?.valuePacks[0]) {
