@@ -1,3 +1,6 @@
+import { format, type Locale } from "date-fns";
+import { enGB, pt } from "date-fns/locale";
+
 import { useEffect, useRef } from "react";
 
 export const useOutsideClick = (
@@ -37,6 +40,13 @@ const formatNumber = (value: number) => {
   }
 };
 
+const formatDate = (date: Date | number): string => {
+  const locales: Record<string, Locale> = { enGB, pt };
+
+  return format(date, "dd MMMM yyyy");
+};
+
 export const helper = {
   formatNumber,
+  formatDate,
 };
