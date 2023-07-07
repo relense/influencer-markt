@@ -32,9 +32,11 @@ export const PictureCarrosel = (params: {
     id: -1,
     url: "",
   });
+  const [currentPictureIndex, setCurrentPictureIndex] = useState<number>(0);
 
   const prevPortfolio = usePrevious(params.portfolio);
   const prevPathname = usePrevious(pathname);
+  const prevCurrentPictureIndex = usePrevious(currentPictureIndex);
 
   useEffect(() => {
     if (
@@ -48,29 +50,39 @@ export const PictureCarrosel = (params: {
         currentPicture.id === -1
       ) {
         setCurrentPicture(params.portfolio[0] || { id: -1, url: "" });
+        setCurrentPictureIndex(0);
       } else if (prevPortfolio.length > params.portfolio.length) {
         //means a picture was removed
         const newPictureList: Picture[] = [...prevPortfolio];
-        const index = newPictureList
-          .map((picture) => picture.url)
-          .indexOf(currentPicture.url);
-        const newIndex = index < newPictureList.length - 1 ? index : index - 1;
+        let newIndex = 0;
 
+        if (prevCurrentPictureIndex) {
+          newIndex =
+            prevCurrentPictureIndex < newPictureList.length - 1
+              ? prevCurrentPictureIndex
+              : prevCurrentPictureIndex - 1;
+        }
+        setCurrentPictureIndex(newIndex);
         setCurrentPicture(params.portfolio[newIndex] || { id: -1, url: "" });
       } else if (prevPortfolio.length < params.portfolio.length) {
         // means a picture was added
         setCurrentPicture(
           params.portfolio[params.portfolio.length - 1] || { id: -1, url: "" }
         );
+        setCurrentPictureIndex(params.portfolio.length - 1);
       }
     } else if (!prevPortfolio || prevPathname !== pathname) {
       setCurrentPicture(params.portfolio[0] || { id: -1, url: "" });
+      setCurrentPictureIndex(0);
     }
+
+    console.log(prevCurrentPictureIndex);
   }, [
     currentPicture.id,
     currentPicture.url,
     params.portfolio,
     pathname,
+    prevCurrentPictureIndex,
     prevPathname,
     prevPortfolio,
   ]);
@@ -92,7 +104,7 @@ export const PictureCarrosel = (params: {
           //After uploading to azure we will use that link to update here
           //dataURL is the one that will have the picture uploaded in base64. Upload this to azure
           const picture =
-            "https://images.unsplash.com/photo-1687987592152-337d696bec1b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=790&q=80";
+            "https://images.unsplash.com/photo-1629318986794-e7e9c9890016?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=654&q=80";
           if (params.addPicture) {
             params.addPicture(picture);
           }
@@ -115,19 +127,28 @@ export const PictureCarrosel = (params: {
   };
 
   const handleNextPicture = (next: boolean) => {
-    const index = params.portfolio
-      .map((picture) => picture.url)
-      .indexOf(currentPicture.url);
-    let newIndex = index;
+    let newIndex = 0;
 
-    if (next && index < params.portfolio.length) {
-      newIndex = index + 1;
-    } else if (!next && index > 0) {
-      newIndex = index - 1;
+    if (next && currentPictureIndex < params.portfolio.length) {
+      newIndex = currentPictureIndex + 1;
+    } else if (!next && currentPictureIndex > 0) {
+      newIndex = currentPictureIndex - 1;
     }
+
+    setCurrentPictureIndex(newIndex);
 
     const newCurrentPicture = params.portfolio[newIndex] || { id: -1, url: "" };
     setCurrentPicture(newCurrentPicture);
+  };
+
+  const onHandleCarroselClick = (picture: Picture) => {
+    const index = params.portfolio
+      .map((picture) => picture.url)
+      .indexOf(picture.url);
+    const newIndex = index;
+
+    setCurrentPicture(picture);
+    setCurrentPictureIndex(newIndex);
   };
 
   const renderUploadMainPicture = () => {
@@ -159,10 +180,6 @@ export const PictureCarrosel = (params: {
   };
 
   const renderMainPicture = () => {
-    const currentPictureIndex = params.portfolio
-      .map((picture) => picture.url)
-      .indexOf(currentPicture.url);
-
     if (currentPicture.id !== -1) {
       return (
         <div className="relative flex h-[340px] flex-col items-center justify-center gap-4 rounded-lg border-[1px] border-gray3 sm:h-[540px] sm:w-[430px]">
@@ -236,7 +253,7 @@ export const PictureCarrosel = (params: {
                 <div
                   key={picture.url}
                   className="h-14 cursor-pointer"
-                  onClick={() => setCurrentPicture(picture)}
+                  onClick={() => onHandleCarroselClick(picture)}
                 >
                   {picture.url && (
                     <Image
