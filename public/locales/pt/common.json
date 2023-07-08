@@ -14,27 +14,37 @@
     "footer": {
       "aboutUs": "About Us",
       "contactUs": "Contact Us",
-      "faq": "Frequently asked Questions",
+      "faq": "Frequently Asked Questions",
       "sitemap": "Sitemap",
       "terms": "Terms and Conditions",
       "privacy": "Privacy Policy"
     },
 
     "searchBar": {
-      "categories": "categorias"
+      "categories": "categories"
     },
 
     "loginModal": {
-      "signUpAgreement": "Ao aderir, concorda com os nossos",
-      "and": "e com a nossa",
-      "termsLink": "Termos de Serviço",
-      "privacyLink": "Política de Privacidade"
+      "signUpAgreement": "By signing up, you agree to our",
+      "and": "and",
+      "termsLink": "Terms of Service",
+      "privacyLink": "Privacy Policy",
+      "or": "or",
+      "signinButton": "Send Secure Link",
+      "signupButton": "Sign up With Email",
+      "signInWith": "Sign in with",
+      "signUpWith": "Sign up with"
+    },
+
+    "stepsReminder": {
+      "reminder": "Update and Modify this Information at Any Time in Your",
+      "dashboard": "Dashboard"
     },
 
     "profileForm": {
-      "Male": "Macho",
-      "Female": "Fêmea",
-      "Other": "Outro",
+      "Male": "Male",
+      "Female": "Female",
+      "Other": "Other",
       "characterWarning": "Max is {{count}} characters",
       "invalidPictureAlert": "Pictures must be jpeg or png",
       "addProfilePicture": "Add your Profile Image",
@@ -45,6 +55,52 @@
       "cityPlaceholder": "City",
       "aboutPlaceholder": "Introduce Yourself: Share a Brief Description or Bio",
       "websitePlaceholder": "Website URL: Provide Your Website Address"
+    },
+
+    "addSocialMediaModal": {
+      "characterWarning": "Max is {{count}} characters",
+      "modalTitle": "Add Social Media Details",
+      "platformPlaceholder": "Choose your Social Media: e.g., Instagram, TikTok",
+      "handlerPlaceholder": "Social media handler",
+      "followersPlaceholder": "Social Media Followers",
+      "button": "Add Social Media"
+    },
+
+    "addValuePackModal": {
+      "characterWarning": "Max is {{count}} characters",
+      "modalTitle": "Value Pack Builder",
+      "titlePlaceholder": "Value Pack Title: Provide a catchy and descriptive title for your offering",
+      "platformPlaceholder": "Select the social media platform for your value pack",
+      "descriptionPlaceholder": "Value Pack Description: Tell us about the unique offering in your package",
+      "deliveryPlaceholder": "Delivery Time E.g 4 days",
+      "revisionsPlaceholder": "Number of Revisions E.g 1",
+      "valuePricePlaceholder": "Value Pack Price",
+      "button": "Add Value Pack"
+    },
+
+    "pictureCarrosel": {
+      "invalidPictureWarning": "Picture must be jpeg or png",
+      "addPicture": "Add your Profile Image"
+    },
+
+    "valuePackInput": {
+      "valuePack": "Value Pack",
+      "inputPlaceholder": "Please choose a value pack",
+      "daysDelivery_one": "{{count}} Day Delivery",
+      "daysDelivery_other": "{{count}} Days Deliverys",
+      "revision_one": "{{count}} Revision",
+      "revision_other": "{{count}} Revisions"
+    },
+
+    "valuePack": {
+      "daysDelivery_one": "{{count}} Day Delivery",
+      "daysDelivery_other": "{{count}} Days Deliverys",
+      "revision_one": "{{count}} Revision",
+      "revision_other": "{{count}} Revisions"
+    },
+
+    "review": {
+      "readMore": "Read More"
     }
   },
 
@@ -52,11 +108,11 @@
     "home": {
       "section1.title": "Encontra o influencer certo para ti",
       "section1.subtitle": "Todos podem escolher como influenciar",
-      "section2.title": "Don't know where to choose from?",
-      "section2.subTitle": "Tell us what you need and let influencers come to you instead",
-      "section2.buttonTitle": "Create Offer",
-      "section3.title": "Everything You Need Made Simple",
-      "section3.buttonTitle": "Get Started",
+      "section2.title": "Não sabes por onde escolher?",
+      "section2.subTitle": "Diz-nos o que precisas e deixa os influencers irem ter contigo",
+      "section2.buttonTitle": "Cria Oferta",
+      "section3.title": "Tudo o que precisas de maneira simples",
+      "section3.buttonTitle": "Começa Aqui",
 
       "offers": {
         "offer1.title1": "Pay on Delivery",
@@ -96,6 +152,121 @@
         "influencers.positive7": "Offers page tailored",
         "influencers.positive8": "Find the best brand for you and introduce yourself"
       }
+    },
+
+    "firstSteps": {
+      "next": "Next",
+      "previousStep": "Previous Step",
+      "skipStep": "Skip Step",
+      "nextStep": "Next Step",
+      "getStarted": "Get Started",
+      "Brand": "Brand",
+      "Influencer": "Influencer",
+      "Individual": "Individual",
+
+      "stepIdentifier1": "Step 1",
+      "stepIdentifier2": "Step 2",
+      "stepIdentifier3": "Step 3",
+      "stepIdentifier4": "Step 4",
+      "stepIdentifier5": "Step 5",
+
+      "step0": {
+        "title": "Create Your Identity",
+        "subTitle": "Welcome! Let's Get Started: Establish Your User And Claim Your Page",
+        "button": "Start Your Journey",
+        "roleInputPLaceholder": "Choose Your Role: Influencer, Brand, or Individual",
+        "claimInputPlaceholder": "your-page-name",
+        "tootlip": "This input will define your unique username or handle for your profile URL. It's like your personal identity on the platform, allowing others to easily find and access your page using this custom name. Choose something catchy and easy to remember, as this username will be a permanent representation of you on the platform. Have fun picking the perfect one!",
+        "disclaimer": "Please choose the options that best represent you or align with your preferences. Once selected, this information will be considered",
+        "permanent": "permanent",
+        "pageNameAvailable": "Page name is available",
+        "pageNameUnavailable": "Page name is unavailable"
+      },
+
+      "step1": {
+        "title": "Online Presence",
+        "subTitle": "Define Your Online Profile identity",
+        "mainTitle": "Establish Your Online Presence",
+        "mainSubTitle": "Let's Establish who you are and what defines your online identity"
+      },
+
+      "step2": {
+        "title": "Social Media",
+        "subTitle": "Share your social media accounts",
+        "mainTitle": "Connect and Showcase Your Influence",
+        "mainSubTitle": "Fill in Relevant Details, Leave the Rest Optional",
+        "addSocial": "Add Social Media Details",
+        "handler": "Handler",
+        "followers": "Followers"
+      },
+
+      "step3": {
+        "title": "Visual Portfolio",
+        "subTitle": "Create a portfolio related with your needs",
+        "mainTitle": "Build Your Visual Portfolio",
+        "mainSubTitle": "Showcase Your Best Photos on Your Profile"
+      },
+
+      "step4": {
+        "title": "Value Packs",
+        "subTitle": "Design Your Profitable Value Packs",
+        "mainTitle": "Customized Value Packs",
+        "mainSubTitle": "Select Your Platform and Craft Your Irresistible Offer",
+        "daysDelivery_one": "{{count}} Day Delivery",
+        "daysDelivery_other": "{{count}} Days Delivery",
+        "revisions_one": "Revision",
+        "revisions_other": "Revisions",
+        "addValue": "Add Value Pack"
+      },
+
+      "step5": {
+        "title": "You're All Set",
+        "subTitle": "Start Exploring the Exciting Opportunities Ahead!",
+        "mainTitle": "Congratulations! You're All Set to Unleash Your Influence",
+        "mainSubTitle": "Welcome to the World of Endless Possibilities and Impactful Connections"
+      }
+    },
+
+    "publicProfilePage": {
+      "copySuccessfull": "Link was copied to clipboard",
+      "share": "Share",
+      "save": "Save",
+      "categories": "Categories",
+      "about": "About",
+      "campaigns": "Campaigns",
+      "noCampaignHistory": "There is no campaign history",
+      "reviews_one": "{{count}} Review",
+      "reviews_other": "{{count}} Reviews",
+      "platform": "Platform",
+      "platformPlaceholder": "Select the social media platform",
+      "tootlip": "We hold the payment for 72 hours. If the influencer doesn’t accept the order it will automatically be cancelled and your payments refunded",
+      "disclaimer": "We only charge when the order is complete",
+      "subtotal": "Subtotal",
+      "fee": "Fee",
+      "total": "Total",
+      "requestValuePack": "Request a custom value pack",
+      "copy": "Copy",
+      "loadMore": "Load More Reviews",
+      "shareModalTitle": "Share Influencer Page"
+    },
+
+    "editPage": {
+      "toasterCreatedSocialMediaSuccess": "Created social media successfully",
+      "toasterDeletedSocialMediaSuccess": "Deleted social media successfully",
+      "toasterCreatedValuePackSuccess": "Created value pack successfully",
+      "toasterDeletedValuePack": "Deleted value pack successfully",
+      "toasterUpdatePortfolioSuccess": "Updated portfolio successfully",
+      "profileDescription": "Profile Description",
+      "website": "Website",
+      "about": "About",
+      "categories": "Categories",
+      "socialMedia": "Social Media",
+      "noSocialMedia": "No social media information has been added",
+      "visualPortfolio": "Visual Portfolio",
+      "valuePacks": "Value Packs",
+      "noValuePacks": "No value packs have been added",
+      "profileModalTitle": "Profile Update",
+      "profileModalButton": "Update Profile"
     }
   }
 }
