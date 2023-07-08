@@ -75,12 +75,12 @@ export const CustomSelect = (params: {
         {selectStatus ? (
           <FontAwesomeIcon
             icon={faChevronUp}
-            className="pointer-events-none absolute right-3 top-1/2 h-8 w-8 -translate-y-1/2 transform"
+            className="pointer-events-none absolute right-3 top-1/2 h-4 w-4 -translate-y-1/2 transform"
           />
         ) : (
           <FontAwesomeIcon
             icon={faChevronDown}
-            className="pointer-events-none absolute right-3 top-1/2 h-8 w-8 -translate-y-1/2 transform"
+            className="pointer-events-none absolute right-3 top-1/2 h-4 w-4 -translate-y-1/2 transform"
           />
         )}
       </div>
