@@ -1,106 +1,106 @@
 {
   "components": {
     "navbar": {
-      "home": "Home",
-      "explore": "Explore",
-      "saved": "Saved",
-      "signIn": "Sign in",
-      "joinMarketPlace": "Join Marketplace",
-      "myPage": "My Page",
-      "editMyPage": "Edit My Page",
-      "signOut": "Sign out"
+      "home": "Início",
+      "explore": "Explora",
+      "saved": "Gravados",
+      "signIn": "Entrar",
+      "joinMarketPlace": "Junta-te ao Marketplace",
+      "myPage": "A Minha Página",
+      "editMyPage": "Edita A Minha Página",
+      "signOut": "Sair"
     },
 
     "footer": {
-      "aboutUs": "About Us",
-      "contactUs": "Contact Us",
-      "faq": "Frequently Asked Questions",
-      "sitemap": "Sitemap",
-      "terms": "Terms and Conditions",
-      "privacy": "Privacy Policy"
+      "aboutUs": "Sobre Nós",
+      "contactUs": "Contacta-nos",
+      "faq": "Perguntas Frequentes",
+      "sitemap": "Mapa do Site",
+      "terms": "Termos e Condições",
+      "privacy": "Política de Privacidade"
     },
 
     "searchBar": {
-      "categories": "categories"
+      "categories": "categorias"
     },
 
     "loginModal": {
-      "signUpAgreement": "By signing up, you agree to our",
-      "and": "and",
-      "termsLink": "Terms of Service",
-      "privacyLink": "Privacy Policy",
-      "or": "or",
-      "signinButton": "Send Secure Link",
-      "signupButton": "Sign up With Email",
-      "signInWith": "Sign in with",
-      "signUpWith": "Sign up with"
+      "signUpAgreement": "Ao inscreveres-te, concordas com os nossos",
+      "and": "e",
+      "termsLink": "Termos do Serviço",
+      "privacyLink": "Política de Privacidade",
+      "or": "ou",
+      "signinButton": "Envia Link Seguro",
+      "signupButton": "Inscreve-te com Email",
+      "signInWith": "Entra com",
+      "signUpWith": "Inscreve-te com"
     },
 
     "stepsReminder": {
-      "reminder": "Update and Modify this Information at Any Time in Your",
-      "dashboard": "Dashboard"
+      "reminder": "Actualize e Modifique esta Informação a qualquer momento no teu",
+      "dashboard": "Painel"
     },
 
     "profileForm": {
-      "Male": "Male",
-      "Female": "Female",
-      "Other": "Other",
-      "characterWarning": "Max is {{count}} characters",
-      "invalidPictureAlert": "Pictures must be jpeg or png",
-      "addProfilePicture": "Add your Profile Image",
+      "Male": "Masculino",
+      "Female": "Feminino",
+      "Other": "Outro",
+      "characterWarning": "Máximo de {{count}} caracteres",
+      "invalidPictureAlert": "Images têm de ser jpeg ou png",
+      "addProfilePicture": "Adiciona a tua Imagem de Perfil",
       "displayNamePlaceholder": "Choose Your Display Name: How Would You Like to be Recognized?",
-      "genderPlaceholder": "Select your gender: Male, Female, Other",
-      "categoriesPlaceholder": "Choose Your Categories: e.g., Fashion, Travel, Fitness",
-      "countryPlaceholder": "Country",
-      "cityPlaceholder": "City",
-      "aboutPlaceholder": "Introduce Yourself: Share a Brief Description or Bio",
-      "websitePlaceholder": "Website URL: Provide Your Website Address"
+      "genderPlaceholder": "Escolhe o teu géneo: Masculino, Feminino, Outro",
+      "categoriesPlaceholder": "Escolher as Tuas Categorias: e.g., Fashion, Travel, Fitness",
+      "countryPlaceholder": "País",
+      "cityPlaceholder": "Cidade",
+      "aboutPlaceholder": "Apresenta-te: Partilha uma Breve Descrição ou Bio",
+      "websitePlaceholder": "Website URL: Fornece o Endereço do teu Website"
     },
 
     "addSocialMediaModal": {
-      "characterWarning": "Max is {{count}} characters",
-      "modalTitle": "Add Social Media Details",
-      "platformPlaceholder": "Choose your Social Media: e.g., Instagram, TikTok",
-      "handlerPlaceholder": "Social media handler",
-      "followersPlaceholder": "Social Media Followers",
-      "button": "Add Social Media"
+      "characterWarning": "Máximo de {{count}} caracteres",
+      "modalTitle": "Adiciona Detalhes da Rede Social",
+      "platformPlaceholder": "Escolher a tua Rede Social: e.g., Instagram, TikTok",
+      "handlerPlaceholder": "Nome de Utilizador da Rede Social",
+      "followersPlaceholder": "Seguidores da Rede Social",
+      "button": "Add Rede Social"
     },
 
     "addValuePackModal": {
-      "characterWarning": "Max is {{count}} characters",
-      "modalTitle": "Value Pack Builder",
-      "titlePlaceholder": "Value Pack Title: Provide a catchy and descriptive title for your offering",
-      "platformPlaceholder": "Select the social media platform for your value pack",
-      "descriptionPlaceholder": "Value Pack Description: Tell us about the unique offering in your package",
-      "deliveryPlaceholder": "Delivery Time E.g 4 days",
-      "revisionsPlaceholder": "Number of Revisions E.g 1",
-      "valuePricePlaceholder": "Value Pack Price",
-      "button": "Add Value Pack"
+      "characterWarning": "Máximo de {{count}} caracteres",
+      "modalTitle": "Construtor de Pack de Valor",
+      "titlePlaceholder": "Título do Pack de Valor: Fornece um título cativante e descritivo para a tua oferta",
+      "platformPlaceholder": "Seleciona a rede social para o teu pack de valor",
+      "descriptionPlaceholder": "Descrição do Pack de Valor: Conta-nos sobre a tua oferta unica",
+      "deliveryPlaceholder": "Tempo de Entrega E.g 4 dias",
+      "revisionsPlaceholder": "Número de Revisões E.g 1",
+      "valuePricePlaceholder": "Preço do Pack de Valor",
+      "button": "Add Pack de Valor"
     },
 
     "pictureCarrosel": {
-      "invalidPictureWarning": "Picture must be jpeg or png",
-      "addPicture": "Add your Profile Image"
+      "invalidPictureWarning": "Images têm de ser jpeg ou png",
+      "addPicture": "Adiciona a tua Imagem de Perfil"
     },
 
     "valuePackInput": {
-      "valuePack": "Value Pack",
-      "inputPlaceholder": "Please choose a value pack",
-      "daysDelivery_one": "{{count}} Day Delivery",
-      "daysDelivery_other": "{{count}} Days Deliverys",
-      "revision_one": "{{count}} Revision",
-      "revision_other": "{{count}} Revisions"
+      "valuePack": "Pack de Valor",
+      "inputPlaceholder": "Escolhe um pack de valor por favor",
+      "daysDelivery_one": "{{count}} Dia de Entrega",
+      "daysDelivery_other": "{{count}} Dias de Entrega",
+      "revision_one": "{{count}} Revisão",
+      "revision_other": "{{count}} Revisões"
     },
 
     "valuePack": {
-      "daysDelivery_one": "{{count}} Day Delivery",
-      "daysDelivery_other": "{{count}} Days Deliverys",
-      "revision_one": "{{count}} Revision",
-      "revision_other": "{{count}} Revisions"
+      "daysDelivery_one": "{{count}} Dia de Entrega",
+      "daysDelivery_other": "{{count}} Dias de Entrega",
+      "revision_one": "{{count}} Revisão",
+      "revision_other": "{{count}} Revisõess"
     },
 
     "review": {
-      "readMore": "Read More"
+      "readMore": "Lê Mais"
     }
   },
 
@@ -115,60 +115,60 @@
       "section3.buttonTitle": "Começa Aqui",
 
       "offers": {
-        "offer1.title1": "Pay on Delivery",
-        "offer1.subTitle1": "Find influencers. Plan campaigns, only pay when the work is done",
-        "offer1.title2": "10% Marketplace Fee",
-        "offer1.subTitle2": "No plans, no subscriptions, only 10% transaction fee",
+        "offer1.title1": "Paga na Entrega",
+        "offer1.subTitle1": "Encontra influencers. Planea campanhas, paga só quando o trabalho está feito",
+        "offer1.title2": "10% Taxa de Mercado",
+        "offer1.subTitle2": "Não há planos, não há subscrições, só 10% Taxa de Mercado",
 
-        "offer2.title1": "Instant Messaging",
-        "offer2.subTitle1": "Communication is key for success,  instant messaging is always available",
-        "offer2.title2": "List of Contacts",
-        "offer2.subTitle2": "Create a list of your most important contacts and reach out when you need",
+        "offer2.title1": "Messagens Instantâneas",
+        "offer2.subTitle1": "Comunicação é a chave para o sucesso, messagens instantâneas está sempre disponível",
+        "offer2.title2": "Lista de Contactos",
+        "offer2.subTitle2": "Cria uma lista com os teus contactos mais importantes e entre em contacto sempre que precisar",
 
-        "offer3.title1": "Safe Transactions",
-        "offer3.subTitle1": "Complete payment protection until you give final approval",
-        "offer3.title2": "Verified Influencers",
-        "offer3.subTitle2": "Vetting process ensures professional content from all influencers"
+        "offer3.title1": "Transações Seguras",
+        "offer3.subTitle1": "Proteção completa de pagamento até dares aprovação final",
+        "offer3.title2": "Influencers Verificados",
+        "offer3.subTitle2": "Processo de verificação garante conteúdo profissional de todos os influencers"
       },
 
       "positivesBoards": {
-        "brands.title": "For Brands and Individuals",
-        "brands.positive1": "Unlimited searches of the best influencers for you",
-        "brands.positive2": "Ability to create offers for the influencer you want",
-        "brands.positive3": "Save influencers for future campaigns",
-        "brands.positive4": "Unlimited campaigns",
-        "brands.positive5": "Unlimited influencers can apply to your campaign",
-        "brands.positive6": "Rate Influencers",
-        "brands.positive7": "Chat with influencers before working together",
-        "brands.positive8": "Recommended influencers for your needs",
+        "brands.title": "Para Marcas",
+        "brands.positive1": "Pesquisas ilimitadas dos melhores influencers para ti",
+        "brands.positive2": "Capacidade de criar ofertas para o influencer que queres",
+        "brands.positive3": "Guarda influencers para campanhas futuras",
+        "brands.positive4": "Campanhas ilimitadas",
+        "brands.positive5": "Influencers ilimitados podem candidatar-se à tua campanha",
+        "brands.positive6": "Avalia Influencers",
+        "brands.positive7": "Conversa com influencers antes de trabalharem juntos",
+        "brands.positive8": "Influeners recomendados para as tuas necessidades",
 
-        "influencers.title": "For Influencers",
-        "influencers.positive1": "Be part of a community",
-        "influencers.positive2": "Follow other influencers and trade ideas",
-        "influencers.positive3": "Dedicated profile page to share with brands",
-        "influencers.positive4": "Offers page tailored to your needs",
-        "influencers.positive5": "Rewards based on performance",
-        "influencers.positive6": "Ability to review the job",
-        "influencers.positive7": "Offers page tailored",
-        "influencers.positive8": "Find the best brand for you and introduce yourself"
+        "influencers.title": "Para Influencers",
+        "influencers.positive1": "Faz parte de uma comunidade",
+        "influencers.positive2": "Segue outros influencers e troca ideias",
+        "influencers.positive3": "Página profissional dedicada para partilhar com marcas",
+        "influencers.positive4": "Página de ofertas adaptadas às tuas necessidades",
+        "influencers.positive5": "Recompensas baseadas em performance",
+        "influencers.positive6": "Capacidade de avaliar as ofertas",
+        "influencers.positive7": "Página de ofertas adaptadas às tuas necessidades",
+        "influencers.positive8": "Encontra a melhor marca para ti e apresenta-te"
       }
     },
 
     "firstSteps": {
-      "next": "Next",
-      "previousStep": "Previous Step",
-      "skipStep": "Skip Step",
-      "nextStep": "Next Step",
-      "getStarted": "Get Started",
-      "Brand": "Brand",
+      "next": "Próximo",
+      "previousStep": "Passo Anterior",
+      "skipStep": "Saltar Passo",
+      "nextStep": "Próximo Passo",
+      "getStarted": "Começar",
+      "Brand": "Marca",
       "Influencer": "Influencer",
-      "Individual": "Individual",
+      "Individual": "Indivíduo",
 
-      "stepIdentifier1": "Step 1",
-      "stepIdentifier2": "Step 2",
-      "stepIdentifier3": "Step 3",
-      "stepIdentifier4": "Step 4",
-      "stepIdentifier5": "Step 5",
+      "stepIdentifier1": "Passo 1",
+      "stepIdentifier2": "Passo 2",
+      "stepIdentifier3": "Passo 3",
+      "stepIdentifier4": "Passo 4",
+      "stepIdentifier5": "Passo 5",
 
       "step0": {
         "title": "Create Your Identity",
@@ -201,10 +201,10 @@
       },
 
       "step3": {
-        "title": "Visual Portfolio",
-        "subTitle": "Create a portfolio related with your needs",
-        "mainTitle": "Build Your Visual Portfolio",
-        "mainSubTitle": "Showcase Your Best Photos on Your Profile"
+        "title": "Portfólio Visual",
+        "subTitle": "Cria um portfólio de acordo com as tuas necessidades",
+        "mainTitle": "Constrói o teu Portfólio Visual Build Your Visual Portfolio",
+        "mainSubTitle": "Mostra as tuas Melhores Foto no teu Perfil"
       },
 
       "step4": {
@@ -228,45 +228,45 @@
     },
 
     "publicProfilePage": {
-      "copySuccessfull": "Link was copied to clipboard",
-      "share": "Share",
-      "save": "Save",
-      "categories": "Categories",
-      "about": "About",
-      "campaigns": "Campaigns",
-      "noCampaignHistory": "There is no campaign history",
-      "reviews_one": "{{count}} Review",
-      "reviews_other": "{{count}} Reviews",
-      "platform": "Platform",
-      "platformPlaceholder": "Select the social media platform",
-      "tootlip": "We hold the payment for 72 hours. If the influencer doesn’t accept the order it will automatically be cancelled and your payments refunded",
-      "disclaimer": "We only charge when the order is complete",
+      "copySuccessfull": "Ligação foi copiada para o clipboard",
+      "share": "Partilha",
+      "save": "Guarda",
+      "categories": "Categorias",
+      "about": "Sobre",
+      "campaigns": "Campanhas",
+      "noCampaignHistory": "Não há histórico de campanhas",
+      "reviews_one": "{{count}} Comentário",
+      "reviews_other": "{{count}} Comentários",
+      "platform": "Plataforma",
+      "platformPlaceholder": "Seleciona a platforma da rede social",
+      "tootlip": "Guardamos o pagamento durante 72 horas. Se o influenciador não aceitar o pedido, este será automaticamente cancelado e o seu pagamento será reembolsado.",
+      "disclaimer": "Só cobramos quando o pedido estiver completo",
       "subtotal": "Subtotal",
-      "fee": "Fee",
+      "fee": "Taxa",
       "total": "Total",
-      "requestValuePack": "Request a custom value pack",
-      "copy": "Copy",
-      "loadMore": "Load More Reviews",
-      "shareModalTitle": "Share Influencer Page"
+      "requestValuePack": "Pede um pack personalizado",
+      "copy": "Copia",
+      "loadMore": "Carrega Mais Comentários",
+      "shareModalTitle": "Partilha a Página do Influencer"
     },
 
     "editPage": {
-      "toasterCreatedSocialMediaSuccess": "Created social media successfully",
-      "toasterDeletedSocialMediaSuccess": "Deleted social media successfully",
-      "toasterCreatedValuePackSuccess": "Created value pack successfully",
-      "toasterDeletedValuePack": "Deleted value pack successfully",
-      "toasterUpdatePortfolioSuccess": "Updated portfolio successfully",
-      "profileDescription": "Profile Description",
+      "toasterCreatedSocialMediaSuccess": "Rede social criada com sucesso",
+      "toasterDeletedSocialMediaSuccess": "Rede social apagada com sucesso",
+      "toasterCreatedValuePackSuccess": "Pack de valor criado com sucesso",
+      "toasterDeletedValuePack": "Pack de valor apagado com sucesso",
+      "toasterUpdatePortfolioSuccess": "Portfólio actualizado com sucesso",
+      "profileDescription": "Descrição do Perfil",
       "website": "Website",
-      "about": "About",
-      "categories": "Categories",
-      "socialMedia": "Social Media",
-      "noSocialMedia": "No social media information has been added",
-      "visualPortfolio": "Visual Portfolio",
-      "valuePacks": "Value Packs",
-      "noValuePacks": "No value packs have been added",
-      "profileModalTitle": "Profile Update",
-      "profileModalButton": "Update Profile"
+      "about": "Sobre",
+      "categories": "Categorias",
+      "socialMedia": "Redes Sociais",
+      "noSocialMedia": "Informação sobre redes sociais ainda não foi adicionada",
+      "visualPortfolio": "Portfólio Visual",
+      "valuePacks": "Packs de Valor",
+      "noValuePacks": "Não foi adicionado nenhum pack de valor",
+      "profileModalTitle": "Actualiza o Perfil",
+      "profileModalButton": "Actualiza Perfil"
     }
   }
 }
