@@ -28,8 +28,10 @@ import { ValuePack } from "../../components/ValuePack";
 import { type ValuePackType } from "../FirstStepsPage/Views/Step4";
 import { type Option } from "../../components/CustomMultiSelect";
 import { LoadingSpinner } from "../../components/LoadingSpinner";
+import { useTranslation } from "react-i18next";
 
 const EditPage = (params: { role: Option | undefined }) => {
+  const { t } = useTranslation();
   const ctx = api.useContext();
 
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -73,9 +75,12 @@ const EditPage = (params: { role: Option | undefined }) => {
           .invalidate()
           .then(() => {
             setIsLoading(false);
-            toast.success(`Created social media successfully`, {
-              position: "bottom-left",
-            });
+            toast.success(
+              t("pages.editPage.toasterCreatedSocialMediaSuccess"),
+              {
+                position: "bottom-left",
+              }
+            );
           });
       },
       onError: () => {
@@ -89,9 +94,12 @@ const EditPage = (params: { role: Option | undefined }) => {
           .invalidate()
           .then(() => {
             setIsLoading(false);
-            toast.success(`Deleted social media successfully`, {
-              position: "bottom-left",
-            });
+            toast.success(
+              t("pages.editPage.toasterDeletedSocialMediaSuccess"),
+              {
+                position: "bottom-left",
+              }
+            );
           });
       },
       onError: () => {
@@ -104,7 +112,7 @@ const EditPage = (params: { role: Option | undefined }) => {
       onSuccess: () => {
         void ctx.valuesPacks.getValuePacksByProfileId.invalidate().then(() => {
           setIsLoading(false);
-          toast.success(`Created value pack successfully`, {
+          toast.success(t("pages.editPage.toasterCreatedValuePackSuccess"), {
             position: "bottom-left",
           });
         });
@@ -118,7 +126,7 @@ const EditPage = (params: { role: Option | undefined }) => {
       onSuccess: () => {
         void ctx.valuesPacks.getValuePacksByProfileId.invalidate().then(() => {
           setIsLoading(false);
-          toast.success(`Deleted value pack successfully`, {
+          toast.success(t("pages.editPage.toasterDeletedValuePack"), {
             position: "bottom-left",
           });
         });
@@ -131,7 +139,7 @@ const EditPage = (params: { role: Option | undefined }) => {
     onSuccess: () => {
       void ctx.profiles.getProfileWithoutIncludes.invalidate().then(() => {
         setIsLoading(false);
-        toast.success(`Updated portfolio successfully`, {
+        toast.success(t("pages.editPage.toasterUpdatePortfolioSuccess"), {
           position: "bottom-left",
         });
       });
@@ -145,7 +153,7 @@ const EditPage = (params: { role: Option | undefined }) => {
     onSuccess: () => {
       void ctx.profiles.getProfileWithoutIncludes.invalidate().then(() => {
         setIsLoading(false);
-        toast.success(`Updated portfolio successfully`, {
+        toast.success(t("pages.editPage.toasterUpdatePortfolioSuccess"), {
           position: "bottom-left",
         });
       });
@@ -299,7 +307,9 @@ const EditPage = (params: { role: Option | undefined }) => {
     return (
       <>
         <div className="flex items-center gap-2">
-          <div className="text-2xl font-semibold">Profile Description</div>
+          <div className="text-2xl font-semibold">
+            {t("pages.editPage.profileDescription")}
+          </div>
           <FontAwesomeIcon
             icon={faPencil}
             className="fa-lg cursor-pointer text-influencer"
@@ -327,18 +337,24 @@ const EditPage = (params: { role: Option | undefined }) => {
         </div>
         {profile?.website && (
           <div className="flex flex-col gap-2">
-            <div className="text-2xl font-semibold">Website</div>
+            <div className="text-2xl font-semibold">
+              {t("pages.editPage.website")}
+            </div>
             <div className="text-gray2">{profile?.website}</div>
           </div>
         )}
         <div className="flex w-full flex-col gap-2">
-          <div className="text-2xl font-semibold">About</div>
+          <div className="text-2xl font-semibold">
+            {t("pages.editPage.about")}
+          </div>
           <div className="text-gray2 [overflow-wrap:anywhere]">
             {profile?.about}
           </div>
         </div>
         <div className="flex flex-1 flex-col gap-2">
-          <div className="text-2xl font-semibold">Categories</div>
+          <div className="text-2xl font-semibold">
+            {t("pages.editPage.categories")}
+          </div>
           <div className="flex flex-wrap gap-4">
             {profile?.categories.map((category) => {
               return (
@@ -360,7 +376,9 @@ const EditPage = (params: { role: Option | undefined }) => {
     return (
       <div className="flex flex-1 flex-col gap-4">
         <div className="flex items-center gap-2">
-          <div className="text-2xl font-semibold">Social Media</div>
+          <div className="text-2xl font-semibold">
+            {t("pages.editPage.socialMedia")}
+          </div>
           {platforms?.length !== profileSocialMedia?.length && (
             <div
               className="flex h-5 w-5 items-center justify-center rounded-full bg-influencer text-white"
@@ -399,7 +417,7 @@ const EditPage = (params: { role: Option | undefined }) => {
               );
             })
           ) : (
-            <div>No social media information has been added</div>
+            <div>{t("pages.editPage.noSocialMedia")}</div>
           )}
         </div>
       </div>
@@ -409,7 +427,9 @@ const EditPage = (params: { role: Option | undefined }) => {
   const renderVisualPortfolio = () => {
     return (
       <div className="flex flex-col gap-4">
-        <div className="text-2xl font-semibold ">Visual Portfolio</div>
+        <div className="text-2xl font-semibold ">
+          {t("pages.editPage.visualPortfolio")}
+        </div>
         <PictureCarrosel
           visual={false}
           portfolio={portfolio}
@@ -424,7 +444,9 @@ const EditPage = (params: { role: Option | undefined }) => {
     return (
       <div className="flex flex-1 flex-col gap-4">
         <div className="flex items-center gap-2">
-          <div className="text-2xl font-semibold">Value Packs</div>
+          <div className="text-2xl font-semibold">
+            {t("pages.editPage.valuePacks")}
+          </div>
           <div
             className="flex h-5 w-5 items-center justify-center rounded-full bg-influencer text-white"
             onClick={() => setIsValuePackModalOpen(true)}
@@ -450,7 +472,7 @@ const EditPage = (params: { role: Option | undefined }) => {
               );
             })
           ) : (
-            <div>No value packs have been added</div>
+            <div>{t("pages.editPage.noValuePacks")}</div>
           )}
         </div>
       </div>
@@ -515,7 +537,10 @@ const EditPage = (params: { role: Option | undefined }) => {
             />
           )}
           {isProfileModalOpen && (
-            <Modal onClose={onCloseProfileModal} title="Profile Update">
+            <Modal
+              onClose={onCloseProfileModal}
+              title={t("pages.editPage.profileModalTitle")}
+            >
               <div className="flex h-full w-full flex-col items-center gap-4 p-4 sm:w-full sm:px-8">
                 <ProfileForm
                   control={profileControl}
@@ -529,7 +554,7 @@ const EditPage = (params: { role: Option | undefined }) => {
                 <div className="flex w-full justify-center">
                   <Button
                     type="submit"
-                    title="Update Profile"
+                    title={t("pages.editPage.profileModalButton")}
                     level="primary"
                     form="form-hook"
                   />

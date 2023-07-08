@@ -15,9 +15,10 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faXmark } from "@fortawesome/free-solid-svg-icons";
 import { type SocialMediaDetails } from "../../components/AddSocialMediaModal";
 import { type ProfileData } from "../../components/ProfileForm";
-import { Step0 } from "./Views/Step0";
+import { RoleEnum, Step0 } from "./Views/Step0";
 import { type Option } from "../../components/CustomMultiSelect";
 import { type Picture } from "../../components/PictureCarrosel";
+import { useTranslation } from "react-i18next";
 
 enum StepsEnum {
   OnlinePresence,
@@ -49,101 +50,97 @@ export type ValuePacksData = {
   valuePacks: ValuePackType[];
 };
 
-const influencerSteps: Step[] = [
-  {
-    id: StepsEnum.OnlinePresence,
-    step: "Step 1",
-    title: "Online Presence",
-    subTitle: "Define Your Online Profile identity",
-    mainTitle: "Establish Your Online Presence",
-    mainSubTitle:
-      "Let's Establish who you are and what defines your online identity",
-  },
-  {
-    id: StepsEnum.SocialMedia,
-    step: "Step 2",
-    title: "Social Media",
-    subTitle: "Share your social media accounts",
-    mainTitle: "Connect and Showcase Your Influence",
-    mainSubTitle: "Fill in Relevant Details, Leave the Rest Optional",
-  },
-  {
-    id: StepsEnum.VisualPortfolio,
-    step: "Step 3",
-    title: "Visual Portfolio",
-    subTitle: "Create a portfolio related with your needs",
-    mainTitle: "Build Your Visual Portfolio",
-    mainSubTitle: "Showcase Your Best Photos on Your Profile",
-  },
-  {
-    id: StepsEnum.ValuePacks,
-    step: "Step 4",
-    title: "Value Packs",
-    subTitle: "Design Your Profitable Value Packs",
-    mainTitle: "Customized Value Packs",
-    mainSubTitle: "Select Your Platform and Craft Your Irresistible Offer",
-  },
-  {
-    id: StepsEnum.Final,
-    step: "Step 5",
-    title: "You're All Set",
-    subTitle: "Start Exploring the Exciting Opportunities Ahead!",
-    mainTitle: "Congratulations! You're All Set to Unleash Your Influence",
-    mainSubTitle:
-      "Welcome to the World of Endless Possibilities and Impactful Connections",
-  },
-];
-
-const individualSteps: Step[] = [
-  {
-    id: StepsEnum.Final,
-    step: "Step 2",
-    title: "You're All Set",
-    subTitle: "Start Exploring the Exciting Opportunities Ahead!",
-    mainTitle: "Congratulations! You're All Set to Unleash Your Influence",
-    mainSubTitle:
-      "Welcome to the World of Endless Possibilities and Impactful Connections",
-  },
-];
-
-const brandSteps: Step[] = [
-  {
-    id: StepsEnum.OnlinePresence,
-    step: "Step 1",
-    title: "Online Presence",
-    subTitle: "Define Your Online Profile identity",
-    mainTitle: "Establish Your Online Presence",
-    mainSubTitle:
-      "Let's Establish who you are and what defines your online identity",
-  },
-  {
-    id: StepsEnum.SocialMedia,
-    step: "Step 2",
-    title: "Social Media",
-    subTitle: "Share your social media accounts",
-    mainTitle: "Connect and Showcase Your Influence",
-    mainSubTitle: "Fill in Relevant Details, Leave the Rest Optional",
-  },
-  {
-    id: StepsEnum.VisualPortfolio,
-    step: "Step 3",
-    title: "Visual Portfolio",
-    subTitle: "Create a portfolio related with your needs",
-    mainTitle: "Build Your Visual Portfolio",
-    mainSubTitle: "Showcase Your Best Photos on Your Profile",
-  },
-  {
-    id: StepsEnum.Final,
-    step: "Step 4",
-    title: "You're All Set",
-    subTitle: "Start Exploring the Exciting Opportunities Ahead!",
-    mainTitle: "Congratulations! You're All Set to Unleash Your Influence",
-    mainSubTitle:
-      "Welcome to the World of Endless Possibilities and Impactful Connections",
-  },
-];
-
 const FirstStepsPage = () => {
+  const { t } = useTranslation();
+
+  const influencerSteps: Step[] = [
+    {
+      id: StepsEnum.OnlinePresence,
+      step: t("pages.firstSteps.stepIdentifier1"),
+      title: t("pages.firstSteps.step1.title"),
+      subTitle: t("pages.firstSteps.step1.subTitle"),
+      mainTitle: t("pages.firstSteps.step1.mainTitle"),
+      mainSubTitle: t("pages.firstSteps.step1.mainSubTitle"),
+    },
+    {
+      id: StepsEnum.SocialMedia,
+      step: t("pages.firstSteps.stepIdentifier2"),
+      title: t("pages.firstSteps.step2.title"),
+      subTitle: t("pages.firstSteps.step2.subTitle"),
+      mainTitle: t("pages.firstSteps.step2.mainTitle"),
+      mainSubTitle: t("pages.firstSteps.step2.mainSubTitle"),
+    },
+    {
+      id: StepsEnum.VisualPortfolio,
+      step: t("pages.firstSteps.stepIdentifier3"),
+      title: t("pages.firstSteps.step3.title"),
+      subTitle: t("pages.firstSteps.step3.subTitle"),
+      mainTitle: t("pages.firstSteps.step3.mainTitle"),
+      mainSubTitle: t("pages.firstSteps.step3.mainSubTitle"),
+    },
+    {
+      id: StepsEnum.ValuePacks,
+      step: t("pages.firstSteps.stepIdentifier4"),
+      title: t("pages.firstSteps.step4.title"),
+      subTitle: t("pages.firstSteps.step4.subTitle"),
+      mainTitle: t("pages.firstSteps.step4.mainTitle"),
+      mainSubTitle: t("pages.firstSteps.step4.mainSubTitle"),
+    },
+    {
+      id: StepsEnum.Final,
+      step: t("pages.firstSteps.stepIdentifier5"),
+      title: t("pages.firstSteps.step5.title"),
+      subTitle: t("pages.firstSteps.step5.subTitle"),
+      mainTitle: t("pages.firstSteps.step5.mainTitle"),
+      mainSubTitle: t("pages.firstSteps.step5.mainSubTitle"),
+    },
+  ];
+
+  const individualSteps: Step[] = [
+    {
+      id: StepsEnum.Final,
+      step: t("pages.firstSteps.stepIdentifier2"),
+      title: t("pages.firstSteps.step5.title"),
+      subTitle: t("pages.firstSteps.step5.subTitle"),
+      mainTitle: t("pages.firstSteps.step5.mainTitle"),
+      mainSubTitle: t("pages.firstSteps.step5.mainSubTitle"),
+    },
+  ];
+
+  const brandSteps: Step[] = [
+    {
+      id: StepsEnum.OnlinePresence,
+      step: t("pages.firstSteps.stepIdentifier1"),
+      title: t("pages.firstSteps.step1.title"),
+      subTitle: t("pages.firstSteps.step1.subTitle"),
+      mainTitle: t("pages.firstSteps.step1.mainTitle"),
+      mainSubTitle: t("pages.firstSteps.step1.mainSubTitle"),
+    },
+    {
+      id: StepsEnum.SocialMedia,
+      step: t("pages.firstSteps.stepIdentifier2"),
+      title: t("pages.firstSteps.step2.title"),
+      subTitle: t("pages.firstSteps.step2.subTitle"),
+      mainTitle: t("pages.firstSteps.step2.mainTitle"),
+      mainSubTitle: t("pages.firstSteps.step2.mainSubTitle"),
+    },
+    {
+      id: StepsEnum.VisualPortfolio,
+      step: t("pages.firstSteps.stepIdentifier3"),
+      title: t("pages.firstSteps.step3.title"),
+      subTitle: t("pages.firstSteps.step3.subTitle"),
+      mainTitle: t("pages.firstSteps.step3.mainTitle"),
+      mainSubTitle: t("pages.firstSteps.step3.mainSubTitle"),
+    },
+    {
+      id: StepsEnum.Final,
+      step: t("pages.firstSteps.stepIdentifier4"),
+      title: t("pages.firstSteps.step5.title"),
+      subTitle: t("pages.firstSteps.step5.subTitle"),
+      mainTitle: t("pages.firstSteps.step5.mainTitle"),
+      mainSubTitle: t("pages.firstSteps.step5.mainSubTitle"),
+    },
+  ];
   const mainContentRef = useRef<HTMLDivElement>(null);
   const [isUserTypeFormComplete, setIsUserTypeFormComplete] =
     useState<boolean>(false);
@@ -213,18 +210,19 @@ const FirstStepsPage = () => {
   const { mutate: userIdentityMutation } =
     api.users.updateUserIdentity.useMutation({
       onSuccess: () => {
-        updateStepper(userIdentityWatch("role").name);
+        updateStepper(userIdentityWatch("role").id);
       },
     });
 
   const submitStep0 = handleSubmitUserIdentityData((data) => {
     if (
-      (userIdentityWatch("role")?.name === "Brand" && usernameVerification) ||
-      (userIdentityWatch("role")?.name === "Influencer" &&
+      (userIdentityWatch("role")?.id === RoleEnum.Brand &&
+        usernameVerification) ||
+      (userIdentityWatch("role")?.id === RoleEnum.Influencer &&
         usernameVerification) ||
       userIdentityWatch("role")?.name !== ""
     ) {
-      if (userIdentityWatch("role")?.name === "Individual") {
+      if (userIdentityWatch("role")?.id === RoleEnum.Individual) {
         userIdentityMutation({
           role: data.role,
           username: "",
@@ -252,17 +250,17 @@ const FirstStepsPage = () => {
 
   useEffect(() => {
     if (user?.role) {
-      updateStepper(user.role?.name);
+      updateStepper(user.role?.id);
     }
   }, [user]);
 
-  const updateStepper = (roleName: string) => {
+  const updateStepper = (roleId: number) => {
     setIsUserTypeFormComplete(true);
 
-    if (roleName === "Brand") {
+    if (roleId === RoleEnum.Brand) {
       setCurrentStep(brandSteps[0]);
       setSteps(brandSteps);
-    } else if (roleName === "Individual") {
+    } else if (roleId === RoleEnum.Individual) {
       setCurrentStep(individualSteps[0]);
       setSteps(individualSteps);
     } else {
@@ -376,7 +374,7 @@ const FirstStepsPage = () => {
 
   const renderSteps = () => {
     return (
-      <div className="flex flex-col items-center justify-between gap-2 rounded-tl-2xl bg-light-red px-4 py-4 text-center sm:p-4 lg:w-[30%] lg:items-start lg:gap-4 lg:overflow-y-hidden lg:rounded-l-2xl lg:rounded-br-none lg:p-8 lg:text-left">
+      <div className="flex flex-col items-center justify-between gap-2 rounded-tl-2xl bg-light-red px-4 py-4 text-center sm:p-4 lg:w-[40%] lg:items-start lg:gap-4 lg:overflow-y-hidden lg:rounded-l-2xl lg:rounded-br-none lg:p-8 lg:text-left 2xl:w-[30%]">
         <h1 className=" cursor-pointer font-lobster text-2xl text-influencer lg:p-8 lg:text-4xl">
           Influencer Markt
         </h1>
@@ -403,7 +401,9 @@ const FirstStepsPage = () => {
             </div>
             <div className="text-base font-medium text-gray2 sm:hidden lg:text-lg">
               {steps[stepsCount + 1]?.title
-                ? `Next: ${steps[stepsCount + 1]?.title || ""} `
+                ? `${t("pages.firstSteps.next")}: ${
+                    steps[stepsCount + 1]?.title || ""
+                  } `
                 : ""}
             </div>
           </div>
@@ -448,7 +448,7 @@ const FirstStepsPage = () => {
         <div className="flex justify-center">
           {stepsCount > 0 && (
             <Button
-              title="Previous Step"
+              title={t("pages.firstSteps.previousStep")}
               level="secondary"
               onClick={() => changeStep("previous")}
             />
@@ -462,17 +462,24 @@ const FirstStepsPage = () => {
                   className="hidden cursor-pointer underline lg:flex"
                   onClick={() => changeStep("next")}
                 >
-                  Skip Step
+                  {t("pages.firstSteps.skipStep")}
                 </div>
               )}
 
-              <Button title="Next Step" level="primary" form="form-hook" />
+              <Button
+                title={t("pages.firstSteps.nextStep")}
+                level="primary"
+                form="form-hook"
+              />
             </>
           )}
 
           {stepsCount === steps.length - 1 && (
             <Link href="/" className="flex flex-1 justify-center sm:hidden">
-              <Button title="Get Started" level="primary" />
+              <Button
+                title={t("pages.firstSteps.getStarted")}
+                level="primary"
+              />
             </Link>
           )}
         </div>
@@ -549,11 +556,11 @@ const FirstStepsPage = () => {
             className="flex h-full w-full flex-col overflow-y-auto sm:px-8 lg:overscroll-none"
           >
             <div className="flex flex-col items-center justify-center gap-4 p-4 text-center font-playfair lg:mt-12 lg:py-0">
-              <div className="text-2xl sm:text-4xl">Create Your Identity</div>
+              <div className="text-2xl sm:text-4xl">
+                {t("pages.firstSteps.step0.title")}
+              </div>
               <div className="text-base text-gray2 sm:text-xl">
-                {
-                  "Welcome! Let's Get Started: Establish Your User And Claim Your Page"
-                }
+                {t("pages.firstSteps.step0.subTitle")}
               </div>
             </div>
             <Step0
@@ -566,14 +573,14 @@ const FirstStepsPage = () => {
             />
             <div className="flex-2 flex w-full flex-col justify-center gap-4 p-4 py-4 sm:flex-row sm:items-end sm:gap-0">
               <Button
-                title={"Start Your Journey"}
+                title={t("pages.firstSteps.step0.button")}
                 level="primary"
                 form="form-user"
                 size="regular"
                 disabled={
-                  (userIdentityWatch("role")?.name === "Brand" &&
+                  (userIdentityWatch("role")?.id === RoleEnum.Brand &&
                     !usernameVerification) ||
-                  (userIdentityWatch("role")?.name === "Influencer" &&
+                  (userIdentityWatch("role")?.id === RoleEnum.Influencer &&
                     !usernameVerification) ||
                   userIdentityWatch("role")?.name === ""
                 }

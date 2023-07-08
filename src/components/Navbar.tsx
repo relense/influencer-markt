@@ -1,6 +1,8 @@
+import { useState } from "react";
+import Link from "next/link";
+import { useTranslation } from "react-i18next";
 import { signOut } from "next-auth/react";
 import { type Session } from "next-auth";
-
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faMessage,
@@ -8,8 +10,6 @@ import {
   faFileLines,
   faUserCircle,
 } from "@fortawesome/free-regular-svg-icons";
-
-import { Button } from "./Button";
 import {
   faArrowRightFromBracket,
   faArrowRightToBracket,
@@ -18,8 +18,8 @@ import {
   faChevronUp,
   faPencil,
 } from "@fortawesome/free-solid-svg-icons";
-import { useState } from "react";
-import Link from "next/link";
+
+import { Button } from "./Button";
 import { type Option } from "./CustomMultiSelect";
 
 export const Navbar = (params: {
@@ -29,6 +29,8 @@ export const Navbar = (params: {
   openLoginModal: () => void;
   setIsSignUp: (isSignUp: boolean) => void;
 }) => {
+  const { t } = useTranslation();
+
   const [toggleHamburguer, setToggleHamburguer] = useState<boolean>(false);
   const [toggleOptions, setToggleOptions] = useState<boolean>(false);
 
@@ -41,10 +43,10 @@ export const Navbar = (params: {
     return (
       <div className="flex flex-1 justify-start">
         <Link href="/" className="cursor-pointer text-lg lg:p-2">
-          Home
+          {t("components.navbar.home")}
         </Link>
         <Link href="/explore" className="cursor-pointer text-lg lg:p-2">
-          Explore
+          {t("components.navbar.explore")}
           {params.sessionData && (
             <FontAwesomeIcon
               icon={faChevronDown}
@@ -54,7 +56,7 @@ export const Navbar = (params: {
         </Link>
         {params.sessionData && (
           <span className="cursor-pointer text-lg lg:p-2">
-            Saved
+            {t("components.navbar.saved")}
             <FontAwesomeIcon
               icon={faChevronDown}
               className="fa-sm cursor-pointer px-5"
@@ -74,10 +76,10 @@ export const Navbar = (params: {
               className="cursor-pointer text-lg lg:p-2"
               onClick={() => params.openLoginModal()}
             >
-              Sign in
+              {t("components.navbar.signIn")}
             </span>
             <Button
-              title="Join Marketplace"
+              title={t("components.navbar.joinMarketPlace")}
               level="primary"
               onClick={() => handleJoinMarketplace()}
             />
@@ -156,7 +158,9 @@ export const Navbar = (params: {
                   icon={faArrowRightToBracket}
                   className="fa-xl cursor-pointer"
                 />
-                <span className="cursor-pointer text-lg lg:p-2">Sign in</span>
+                <span className="cursor-pointer text-lg lg:p-2">
+                  {t("components.navbar.signIn")}
+                </span>
               </div>
             </>
           )}
@@ -172,7 +176,7 @@ export const Navbar = (params: {
                       icon={faFileLines}
                       className="fa-xl cursor-pointer"
                     />
-                    My Page
+                    {t("components.navbar.myPage")}
                   </Link>
                   <Link
                     href={`/${params.username}/edit`}
@@ -180,7 +184,7 @@ export const Navbar = (params: {
                   >
                     <FontAwesomeIcon icon={faPencil} className="fa-lg" />
 
-                    <div>Edit My Page</div>
+                    <div>{t("components.navbar.editMyPage")}</div>
                   </Link>
                   <div className="border-[1px] border-white1" />
                 </>
@@ -198,7 +202,7 @@ export const Navbar = (params: {
                   className="cursor-pointer text-lg"
                   onClick={() => void signOut()}
                 >
-                  Sign out
+                  {t("components.navbar.signOut")}
                 </span>
               </div>
             </>
@@ -235,7 +239,9 @@ export const Navbar = (params: {
                   icon={faFileLines}
                   className="fa-xl cursor-pointer"
                 />
-                <div className="hover:underline">My Page</div>
+                <div className="hover:underline">
+                  {t("components.navbar.myPage")}
+                </div>
               </Link>
 
               <Link
@@ -244,7 +250,9 @@ export const Navbar = (params: {
               >
                 <FontAwesomeIcon icon={faPencil} className="fa-lg" />
 
-                <div className="hover:underline">Edit My Page</div>
+                <div className="hover:underline">
+                  {t("components.navbar.editMyPage")}
+                </div>
               </Link>
 
               <div className="cursor-pointer border-[1px] border-white1" />
@@ -259,7 +267,7 @@ export const Navbar = (params: {
               className="text-lg hover:underline"
               onClick={() => void signOut()}
             >
-              Sign out
+              {t("components.navbar.signOut")}
             </span>
           </div>
         </div>

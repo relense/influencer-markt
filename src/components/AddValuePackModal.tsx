@@ -9,6 +9,7 @@ import { Button } from "./Button";
 import { CustomSelect } from "./CustomSelect";
 import { type SocialMedia } from "@prisma/client";
 import { type ValuePackType } from "../pageComponents/FirstStepsPage/Views/Step4";
+import { useTranslation } from "react-i18next";
 
 const AddValuePackModal = (params: {
   onCloseModal: () => void;
@@ -18,8 +19,13 @@ const AddValuePackModal = (params: {
   errors: FieldErrors<ValuePackType>;
   socialMedias: SocialMedia[] | undefined;
 }) => {
+  const { t } = useTranslation();
+
   return (
-    <Modal onClose={params.onCloseModal} title="Value Pack Builder">
+    <Modal
+      onClose={params.onCloseModal}
+      title={t("components.addValuePackModal.modalTitle")}
+    >
       <form
         id="pack-form"
         onSubmit={params.onAddValuePack}
@@ -31,11 +37,15 @@ const AddValuePackModal = (params: {
             required
             type="text"
             className="h-14 w-full rounded-lg border-[1px] border-gray3 p-4 placeholder-gray2"
-            placeholder="Value Pack Title: Provide a catchy and descriptive title for your offering"
+            placeholder={t("components.addValuePackModal.titlePlaceholder")}
             autoComplete="off"
           />
           {params.errors.title && params.errors.title.type === "maxLength" && (
-            <div className="px-4 py-1 text-red-600">Max is 50 characters</div>
+            <div className="px-4 py-1 text-red-600">
+              {t("components.addValuePackModal.characterWarning", {
+                count: 50,
+              })}
+            </div>
           )}
         </div>
         <Controller
@@ -47,7 +57,9 @@ const AddValuePackModal = (params: {
               <CustomSelect
                 register={params.register}
                 name="platform"
-                placeholder="Select the social media platform for your value pack"
+                placeholder={t(
+                  "components.addValuePackModal.platformPlaceholder"
+                )}
                 options={params.socialMedias}
                 handleOptionSelect={onChange}
                 value={value}
@@ -60,13 +72,17 @@ const AddValuePackModal = (params: {
             {...params.register("description", { maxLength: 200 })}
             required
             className="box-border min-h-[10rem] w-full overflow-visible rounded-lg border-[1px] border-gray3 p-4 placeholder-gray2 sm:h-48 sm:min-h-[unset]"
-            placeholder="Value Pack Description: Tell us about the unique offering in your package"
+            placeholder={t(
+              "components.addValuePackModal.descriptionPlaceholder"
+            )}
             autoComplete="off"
           />
           {params.errors.description &&
             params.errors.description.type === "maxLength" && (
               <div className="px-4 py-1 text-red-600">
-                Max is 200 characters
+                {t("components.addValuePackModal.characterWarning", {
+                  count: 200,
+                })}
               </div>
             )}
         </div>
@@ -77,7 +93,7 @@ const AddValuePackModal = (params: {
           required
           type="number"
           className="h-14 w-full rounded-lg border-[1px] border-gray3 p-4 placeholder-gray2"
-          placeholder="Delivery Time E.g 4 days"
+          placeholder={t("components.addValuePackModal.deliveryPlaceholder")}
           autoComplete="off"
           max="30"
           min="0"
@@ -87,7 +103,7 @@ const AddValuePackModal = (params: {
           required
           type="number"
           className="h-14 w-full rounded-lg border-[1px] border-gray3 p-4 placeholder-gray2"
-          placeholder="Number of Revisions E.g 1"
+          placeholder={t("components.addValuePackModal.revisionsPlaceholder")}
           autoComplete="off"
           max="3"
           min="0"
@@ -100,13 +116,17 @@ const AddValuePackModal = (params: {
           required
           type="number"
           className="h-14 w-full rounded-lg border-[1px] border-gray3 p-4 placeholder-gray2"
-          placeholder="Value Pack Price"
+          placeholder={t("components.addValuePackModal.valuePricePlaceholder")}
           autoComplete="off"
           max="1000000000"
           min="0"
         />
         <div className="flex w-full justify-center">
-          <Button type="submit" title="Add Value Pack" level="primary" />
+          <Button
+            type="submit"
+            title={t("components.addValuePackModal.button")}
+            level="primary"
+          />
         </div>
       </form>
     </Modal>

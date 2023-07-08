@@ -1,3 +1,101 @@
 {
-  "title": "Encontra o influencer certo para ti"
+  "components": {
+    "navbar": {
+      "home": "Home",
+      "explore": "Explore",
+      "saved": "Saved",
+      "signIn": "Sign in",
+      "joinMarketPlace": "Join Marketplace",
+      "myPage": "My Page",
+      "editMyPage": "Edit My Page",
+      "signOut": "Sign out"
+    },
+
+    "footer": {
+      "aboutUs": "About Us",
+      "contactUs": "Contact Us",
+      "faq": "Frequently asked Questions",
+      "sitemap": "Sitemap",
+      "terms": "Terms and Conditions",
+      "privacy": "Privacy Policy"
+    },
+
+    "searchBar": {
+      "categories": "categorias"
+    },
+
+    "loginModal": {
+      "signUpAgreement": "Ao aderir, concorda com os nossos",
+      "and": "e com a nossa",
+      "termsLink": "Termos de Serviço",
+      "privacyLink": "Política de Privacidade"
+    },
+
+    "profileForm": {
+      "Male": "Macho",
+      "Female": "Fêmea",
+      "Other": "Outro",
+      "characterWarning": "Max is {{count}} characters",
+      "invalidPictureAlert": "Pictures must be jpeg or png",
+      "addProfilePicture": "Add your Profile Image",
+      "displayNamePlaceholder": "Choose Your Display Name: How Would You Like to be Recognized?",
+      "genderPlaceholder": "Select your gender: Male, Female, Other",
+      "categoriesPlaceholder": "Choose Your Categories: e.g., Fashion, Travel, Fitness",
+      "countryPlaceholder": "Country",
+      "cityPlaceholder": "City",
+      "aboutPlaceholder": "Introduce Yourself: Share a Brief Description or Bio",
+      "websitePlaceholder": "Website URL: Provide Your Website Address"
+    }
+  },
+
+  "pages": {
+    "home": {
+      "section1.title": "Encontra o influencer certo para ti",
+      "section1.subtitle": "Todos podem escolher como influenciar",
+      "section2.title": "Don't know where to choose from?",
+      "section2.subTitle": "Tell us what you need and let influencers come to you instead",
+      "section2.buttonTitle": "Create Offer",
+      "section3.title": "Everything You Need Made Simple",
+      "section3.buttonTitle": "Get Started",
+
+      "offers": {
+        "offer1.title1": "Pay on Delivery",
+        "offer1.subTitle1": "Find influencers. Plan campaigns, only pay when the work is done",
+        "offer1.title2": "10% Marketplace Fee",
+        "offer1.subTitle2": "No plans, no subscriptions, only 10% transaction fee",
+
+        "offer2.title1": "Instant Messaging",
+        "offer2.subTitle1": "Communication is key for success,  instant messaging is always available",
+        "offer2.title2": "List of Contacts",
+        "offer2.subTitle2": "Create a list of your most important contacts and reach out when you need",
+
+        "offer3.title1": "Safe Transactions",
+        "offer3.subTitle1": "Complete payment protection until you give final approval",
+        "offer3.title2": "Verified Influencers",
+        "offer3.subTitle2": "Vetting process ensures professional content from all influencers"
+      },
+
+      "positivesBoards": {
+        "brands.title": "For Brands and Individuals",
+        "brands.positive1": "Unlimited searches of the best influencers for you",
+        "brands.positive2": "Ability to create offers for the influencer you want",
+        "brands.positive3": "Save influencers for future campaigns",
+        "brands.positive4": "Unlimited campaigns",
+        "brands.positive5": "Unlimited influencers can apply to your campaign",
+        "brands.positive6": "Rate Influencers",
+        "brands.positive7": "Chat with influencers before working together",
+        "brands.positive8": "Recommended influencers for your needs",
+
+        "influencers.title": "For Influencers",
+        "influencers.positive1": "Be part of a community",
+        "influencers.positive2": "Follow other influencers and trade ideas",
+        "influencers.positive3": "Dedicated profile page to share with brands",
+        "influencers.positive4": "Offers page tailored to your needs",
+        "influencers.positive5": "Rewards based on performance",
+        "influencers.positive6": "Ability to review the job",
+        "influencers.positive7": "Offers page tailored",
+        "influencers.positive8": "Find the best brand for you and introduce yourself"
+      }
+    }
+  }
 }

@@ -4,6 +4,7 @@ import { Button } from "./Button";
 import { useForm } from "react-hook-form";
 import Image from "next/image";
 import Link from "next/link";
+import { useTranslation } from "react-i18next";
 
 type EmailForm = {
   email: string;
@@ -16,6 +17,7 @@ const LoginModal = ({
   onClose: () => void;
   isSignUp: boolean;
 }) => {
+  const { t } = useTranslation();
   const { getValues, register } = useForm<EmailForm>();
 
   const emailSign = async () => {
@@ -39,7 +41,11 @@ const LoginModal = ({
             autoComplete="off"
           />
           <Button
-            title={isSignUp ? "Sign up with Email" : "Send secure link"}
+            title={
+              isSignUp
+                ? t("components.loginModal.signupButton")
+                : t("components.loginModal.signinButton")
+            }
             level="primary"
             size="large"
             onClick={() => emailSign()}
@@ -47,7 +53,7 @@ const LoginModal = ({
         </form>
         <div className="flex w-full flex-1 items-center gap-6">
           <div className="h-[1px] w-full border-[1px] border-gray3" />
-          <div>or</div>
+          <div>{t("components.loginModal.or")}</div>
           <div className="h-[1px] w-full border-[1px] border-gray3" />
         </div>
         <div className="flex flex-col gap-4">
@@ -65,7 +71,9 @@ const LoginModal = ({
               />
             </div>
             <div className="font-roboto font-medium ">
-              {isSignUp ? "Sign up with Google" : "Sign in with Google"}
+              {isSignUp
+                ? `${t("components.loginModal.signUpWith")} Google`
+                : `${t("components.loginModal.signInWith")} Google`}
             </div>
           </button>
           <button
@@ -86,19 +94,22 @@ const LoginModal = ({
               />
             </div>
             <div className="font-roboto font-medium ">
-              {isSignUp ? "Sign up with Github" : "Sign in with Github"}{" "}
+              {isSignUp
+                ? `${t("components.loginModal.signUpWith")} Github`
+                : `${t("components.loginModal.signInWith")} Github`}{" "}
             </div>
           </button>
         </div>
         <div className="text-center text-sm font-medium text-gray2">
-          By signing up, you agree to our{" "}
+          {t("components.loginModal.signUpAgreement")}{" "}
           <Link href="/terms-conditions" className="cursor-pointer text-black">
-            Terms of Service
+            {t("components.loginModal.termsLink")}
           </Link>{" "}
-          and{" "}
+          {t("components.loginModal.and")}{" "}
           <Link href="/privacy-policy" className="cursor-pointer text-black">
-            Privacy Policy
+            {t("components.loginModal.privacyLink")}
           </Link>
+          .
         </div>
       </div>
     </Modal>

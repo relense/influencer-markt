@@ -5,6 +5,7 @@ import {
   faTiktok,
   type IconDefinition,
 } from "@fortawesome/free-brands-svg-icons";
+import { useTranslation } from "react-i18next";
 
 type NavigationItems = {
   name: string;
@@ -12,13 +13,15 @@ type NavigationItems = {
 };
 
 export const Footer = () => {
+  const { t } = useTranslation();
+
   const navigationItems: NavigationItems[] = [
-    { name: "About Us", link: "" },
-    { name: "Contact Us", link: "" },
-    { name: "Frequently asked Questions", link: "" },
-    { name: "Sitemap", link: "" },
-    { name: "Terms and Conditions", link: "" },
-    { name: "Privacy Policy", link: "" },
+    { name: t("components.footer.aboutUs"), link: "" },
+    { name: t("components.footer.contactUs"), link: "" },
+    { name: t("components.footer.faq"), link: "" },
+    { name: t("components.footer.sitemap"), link: "" },
+    { name: t("components.footer.terms"), link: "" },
+    { name: t("components.footer.privacy"), link: "" },
   ];
 
   const renderNavigation = () => {

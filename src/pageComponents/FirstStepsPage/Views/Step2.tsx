@@ -16,6 +16,7 @@ import {
   AddSocialMediaModal,
   type SocialMediaDetails,
 } from "../../../components/AddSocialMediaModal";
+import { useTranslation } from "react-i18next";
 
 export const Step2 = (params: {
   registerSocialMedia: UseFormRegister<SocialMediaData>;
@@ -29,6 +30,8 @@ export const Step2 = (params: {
   const [socialMediaList, setSocialMediaList] = useState<SocialMediaDetails[]>(
     []
   );
+  const { t } = useTranslation();
+
   const {
     control,
     register,
@@ -125,7 +128,9 @@ export const Step2 = (params: {
                 />
               </div>
             </div>
-            <div className="underline">Add Social Media Details</div>
+            <div className="underline">
+              {t("pages.firstSteps.step2.addSocial")}
+            </div>
           </div>
         )}
       </form>
@@ -143,11 +148,15 @@ export const Step2 = (params: {
                   </div>
                   <div className="flex flex-col gap-2 xs:flex-row xs:gap-4">
                     <div className="break-words">
-                      <span className="font-medium">Handler:</span>{" "}
+                      <span className="font-medium">
+                        {t("pages.firstSteps.step2.handler")}:
+                      </span>{" "}
                       {socialMedia.socialMediaHandler}
                     </div>
                     <div>
-                      <span className="font-medium">Followers:</span>{" "}
+                      <span className="font-medium">
+                        {t("pages.firstSteps.step2.followers")}:
+                      </span>{" "}
                       {socialMedia.socialMediaFollowers}
                     </div>
                   </div>

@@ -15,6 +15,7 @@ import {
 import Image from "next/image";
 import { toast } from "react-hot-toast";
 import { usePrevious } from "../utils/helper";
+import { useTranslation } from "react-i18next";
 
 export type Picture = {
   id: number;
@@ -27,6 +28,7 @@ export const PictureCarrosel = (params: {
   addPicture?: (pictureUrl: string) => void;
   deletePicture?: (pictureId: number) => void;
 }) => {
+  const { t } = useTranslation();
   const pathname = usePathname();
   const [currentPicture, setCurrentPicture] = useState<Picture>({
     id: -1,
@@ -113,7 +115,7 @@ export const PictureCarrosel = (params: {
 
       reader.readAsDataURL(file);
     } else {
-      toast.error("Picture must be jpeg or png", {
+      toast.error(t("components.pictureCarrosel.invalidPictureWarning"), {
         duration: 5000,
         position: "bottom-left",
       });
@@ -170,7 +172,7 @@ export const PictureCarrosel = (params: {
                 <FontAwesomeIcon icon={faArrowUpFromBracket} />
               </div>
               <div className="flex flex-wrap overflow-hidden p-4">
-                Add your Profile Image
+                {t("components.pictureCarrosel.addPicture")}
               </div>
             </div>
           </div>

@@ -10,6 +10,13 @@ import { api } from "~/utils/api";
 import { type UserIdentityData } from "../FirstStepsPage";
 import { CustomSelect } from "../../../components/CustomSelect";
 import { ToolTip } from "../../../components/ToolTip";
+import { useTranslation } from "react-i18next";
+
+export enum RoleEnum {
+  Brand = 1,
+  Influencer = 2,
+  Individual = 3,
+}
 
 export const Step0 = (params: {
   control: Control<UserIdentityData, any>;
@@ -19,6 +26,8 @@ export const Step0 = (params: {
   usernameVerification: boolean | undefined;
   submit: () => void;
 }) => {
+  const { t } = useTranslation();
+
   const { data: roles } = api.allRoutes.getAllRoles.useQuery();
 
   return (
@@ -37,8 +46,17 @@ export const Step0 = (params: {
               <CustomSelect
                 register={params.register}
                 name="role"
-                placeholder="Choose Your Role: Influencer, Brand, or Individual"
-                options={roles?.filter((role) => role.name !== "Individual")}
+                placeholder={t("pages.firstSteps.step0.roleInputPLaceholder")}
+                options={roles
+                  ?.filter((role) => role.id !== RoleEnum.Individual)
+                  .map((role) => {
+                    return (
+                      {
+                        id: role.id,
+                        name: t(`pages.firstSteps.${role.name}`),
+                      } || { id: -1, name: "" }
+                    );
+                  })}
                 value={value}
                 handleOptionSelect={onChange}
               />
@@ -51,7 +69,7 @@ export const Step0 = (params: {
               <div className="flex flex-row items-center gap-2">
                 <ToolTip
                   color={params.usernameVerification ? "valid" : "warning"}
-                  content="This input will define your unique username or handle for your profile URL. It's like your personal identity on the platform, allowing others to easily find and access your page using this custom name. Choose something catchy and easy to remember, as this username will be a permanent representation of you on the platform. Have fun picking the perfect one!"
+                  content={t("pages.firstSteps.step0.tooltip")}
                 />
                 <div className="flex h-16 w-full items-center rounded-lg border-[1px] border-gray3 p-4 placeholder-gray2 ">
                   <div className="hidden h-16 items-center xs:flex">
@@ -62,7 +80,9 @@ export const Step0 = (params: {
                     required
                     type="text"
                     className="flex w-full flex-1 rounded-lg placeholder-gray2 focus:outline-none"
-                    placeholder="your-page-name"
+                    placeholder={t(
+                      "pages.firstSteps.step0.claimInputPlaceholder"
+                    )}
                     autoComplete="off"
                     onKeyDown={() => {
                       params.refetch();
@@ -78,11 +98,11 @@ export const Step0 = (params: {
 
                     {params.usernameVerification ? (
                       <div className="text-influencer-green">
-                        Page name is available
+                        {t("pages.firstSteps.step0.pageNameAvailable")}
                       </div>
                     ) : (
                       <div className="text-red-600">
-                        Page name is unavailable
+                        {t("pages.firstSteps.step0.pageNameUnavailable")}
                       </div>
                     )}
                   </div>
@@ -91,11 +111,10 @@ export const Step0 = (params: {
           )}
       </form>
       <div className="px-4 text-center text-sm">
-        <span>
-          Please choose the options that best represent you or align with your
-          preferences. Once selected, this information will be considered
-        </span>{" "}
-        <span className="font-extrabold">permanent</span>
+        <span>{t("pages.firstSteps.step0.disclaimer")}</span>{" "}
+        <span className="font-extrabold">
+          {t("pages.firstSteps.step0.permanent")}
+        </span>
       </div>
     </div>
   );

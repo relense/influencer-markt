@@ -32,36 +32,32 @@ const brands = [
   "twitch",
 ];
 
-const offers: Offer[] = [
-  {
-    icon: faHandHoldingDollar,
-    titleOne: "Pay on Delivery",
-    subTitleOne:
-      "Find influencers. Plan campaigns, only pay when the work is done",
-    titleTwo: "10% Marketplace Fee",
-    subTitleTwo: "No plans, no subscriptions, only 10% transaction fee",
-  },
-  {
-    icon: faMessage,
-    titleOne: "Instant Messaging",
-    subTitleOne:
-      "Communication is key for success,  instant messaging is always available",
-    titleTwo: "List of Contacts",
-    subTitleTwo:
-      "Create a list of your most important contacts and reach out when you need",
-  },
-  {
-    icon: faLock,
-    titleOne: "Safe Transactions",
-    subTitleOne: "Complete payment protection until you give final approval",
-    titleTwo: "Verified Influencers",
-    subTitleTwo:
-      "Vetting process ensures professional content from all influencers",
-  },
-];
-
 const HomePage = () => {
   const { t } = useTranslation();
+
+  const offers: Offer[] = [
+    {
+      icon: faHandHoldingDollar,
+      titleOne: t("pages.home.offers.offer1.title1"),
+      subTitleOne: t("pages.home.offers.offer1.subTitle1"),
+      titleTwo: t("pages.home.offers.offer1.title2"),
+      subTitleTwo: t("pages.home.offers.offer1.subTitle2"),
+    },
+    {
+      icon: faMessage,
+      titleOne: t("pages.home.offers.offer2.title1"),
+      subTitleOne: t("pages.home.offers.offer2.subTitle1"),
+      titleTwo: t("pages.home.offers.offer2.title2"),
+      subTitleTwo: t("pages.home.offers.offer2.subTitle2"),
+    },
+    {
+      icon: faLock,
+      titleOne: t("pages.home.offers.offer3.title1"),
+      subTitleOne: t("pages.home.offers.offer3.subTitle1"),
+      titleTwo: t("pages.home.offers.offer3.title2"),
+      subTitleTwo: t("pages.home.offers.offer3.subTitle2"),
+    },
+  ];
 
   const renderOffers = () => {
     return (
@@ -123,9 +119,11 @@ const HomePage = () => {
     return (
       <div className="flex flex-col items-center py-10 sm:px-5 lg:px-0">
         <div className="pointer-events-none px-4 text-center font-playfair">
-          <h1 className="text-2xl lg:text-5xl">{t("title")}</h1>
+          <h1 className="text-2xl lg:text-5xl">
+            {t("pages.home.section1.title")}
+          </h1>
           <h2 className="p-2 text-xl  text-gray1 lg:p-7 lg:text-3xl">
-            Everyone can choose how to influence
+            {t("pages.home.section1.subtitle")}
           </h2>
         </div>
         <div className="hidden items-center sm:mt-5 sm:flex">
@@ -164,12 +162,15 @@ const HomePage = () => {
       <div className="bg-influencer-green px-4 sm:px-5 lg:px-0">
         <div className="flex flex-col items-center justify-center py-10 text-center">
           <h1 className="pointer-events-none font-playfair text-2xl lg:text-5xl">
-            Don&apos;t know where to choose from?
+            {t("pages.home.section2.title")}
           </h1>
           <h2 className="pointer-events-none p-7 font-playfair text-xl text-white lg:text-3xl">
-            Tell us what you need and let influencers come to you instead
+            {t("pages.home.section2.subTitle")}
           </h2>
-          <Button title="Create Offer" level="primary" />
+          <Button
+            title={t("pages.home.section2.buttonTitle")}
+            level="primary"
+          />
         </div>
       </div>
     );
@@ -180,42 +181,45 @@ const HomePage = () => {
       <div className="flex flex-col items-center py-10 sm:px-5 lg:px-0">
         <div className="pointer-events-none text-center font-playfair">
           <h1 className="text-2xl lg:text-5xl">
-            Everything You Need Made Simple
+            {t("pages.home.section3.title")}
           </h1>
         </div>
         {renderOffers()}
         <div className="mb-11 flex flex-col justify-center p-4 lg:flex-row">
           {renderPositivesBoard(
-            "For Brands and Individuals",
+            t("pages.home.positivesBoards.brands.title"),
             [
-              "Unlimited searches of the best influencers for you",
-              "Ability to create offers for the influencer you want",
-              "Save influencers for future campaigns ",
-              "Unlimited campaigns",
-              "Unlimited influencers can apply to your campaign",
-              "Rate Influencers",
-              "Chat with influencers before working together",
-              "Recommended influencers for your needs",
+              t("pages.home.positivesBoards.brands.positive1"),
+              t("pages.home.positivesBoards.brands.positive2"),
+              t("pages.home.positivesBoards.brands.positive3"),
+              t("pages.home.positivesBoards.brands.positive4"),
+              t("pages.home.positivesBoards.brands.positive5"),
+              t("pages.home.positivesBoards.brands.positive6"),
+              t("pages.home.positivesBoards.brands.positive7"),
+              t("pages.home.positivesBoards.brands.positive8"),
             ],
             true
           )}
           {renderPositivesBoard(
-            "For Influencers",
+            t("pages.home.positivesBoards.influencers.title"),
             [
-              "Be part of a community",
-              "Follow other influencers and trade ideas",
-              "Dedicated profile page to share with brands",
-              "Offers page tailored to your needs",
-              "Rewards based on performance",
-              "Ability to review the job",
-              "Offers page tailored",
-              "Find the best brand for you and introduce yourself",
+              t("pages.home.positivesBoards.influencers.positive1"),
+              t("pages.home.positivesBoards.influencers.positive2"),
+              t("pages.home.positivesBoards.influencers.positive3"),
+              t("pages.home.positivesBoards.influencers.positive4"),
+              t("pages.home.positivesBoards.influencers.positive5"),
+              t("pages.home.positivesBoards.influencers.positive6"),
+              t("pages.home.positivesBoards.influencers.positive7"),
+              t("pages.home.positivesBoards.influencers.positive8"),
             ],
             false
           )}
         </div>
         <div className="flex w-full flex-1 justify-center px-4">
-          <Button title="Get Started" level="primary" />
+          <Button
+            title={t("pages.home.section3.buttonTitle")}
+            level="primary"
+          />
         </div>
       </div>
     );

@@ -11,6 +11,7 @@ import { Button } from "./Button";
 import { type Option } from "./CustomMultiSelect";
 import { useEffect, useState } from "react";
 import { type SocialMedia } from "@prisma/client";
+import { useTranslation } from "react-i18next";
 
 export type SocialMediaDetails = {
   platform: SocialMedia;
@@ -28,6 +29,7 @@ const AddSocialMediaModal = (params: {
   platforms: SocialMedia[] | undefined;
   socialMediaList: SocialMediaDetails[];
 }) => {
+  const { t } = useTranslation();
   const [availablePlatforms, setAvailablePlatforms] = useState<Option[]>([]);
 
   useEffect(() => {
@@ -67,7 +69,10 @@ const AddSocialMediaModal = (params: {
   };
 
   return (
-    <Modal onClose={params.onCloseModal} title="Add Social Media Details">
+    <Modal
+      onClose={params.onCloseModal}
+      title={t("components.addSocialMediaModal.modalTitle")}
+    >
       <form
         id="form-socialMedia"
         className="flex h-full w-full flex-col items-center gap-4 p-4 sm:w-full sm:px-8"
@@ -82,7 +87,9 @@ const AddSocialMediaModal = (params: {
               <CustomSelect
                 register={params.register}
                 name="platform"
-                placeholder="Choose your Social Media: e.g., Instagram, TikTok"
+                placeholder={t(
+                  "components.addSocialMediaModal.platformPlaceholder"
+                )}
                 options={availablePlatforms}
                 value={value}
                 handleOptionSelect={onChange}
@@ -103,13 +110,17 @@ const AddSocialMediaModal = (params: {
               required
               type="text"
               className="flex w-full flex-1 rounded-lg placeholder-gray2 focus:outline-none"
-              placeholder="Social media handler"
+              placeholder={t(
+                "components.addSocialMediaModal.handlerPlaceholder"
+              )}
               autoComplete="off"
             />
             {params.errors.socialMediaHandler &&
               params.errors.socialMediaHandler.type === "maxLength" && (
                 <div className="px-4 py-1 text-red-600">
-                  Max is 44 characters
+                  {t("components.addSocialMediaModal.characterWarning", {
+                    count: 44,
+                  })}
                 </div>
               )}
           </div>
@@ -121,14 +132,14 @@ const AddSocialMediaModal = (params: {
           required
           type="number"
           className="h-14 w-full rounded-lg border-[1px] border-gray3 p-4 placeholder-gray2"
-          placeholder="Social Media Followers"
+          placeholder={t("components.addSocialMediaModal.followersPlaceholder")}
           autoComplete="off"
           min="0"
           max="1000000000"
         />
         <div className="flex w-full justify-center">
           <Button
-            title="Add Social Media"
+            title={t("components.addSocialMediaModal.button")}
             level="primary"
             form="form-socialMedia"
           />

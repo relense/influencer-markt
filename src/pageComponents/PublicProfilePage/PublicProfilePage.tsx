@@ -27,8 +27,11 @@ import { ToolTip } from "../../components/ToolTip";
 import { Modal } from "../../components/Modal";
 import { Review } from "../../components/Review";
 import { LoadingSpinner } from "../../components/LoadingSpinner";
+import { useTranslation } from "react-i18next";
 
 const PublicProfilePage = (params: { username: string }) => {
+  const { t } = useTranslation();
+
   const [isCustomValuePackModalOpen, setIsCustomValuePackModalOpen] =
     useState<boolean>(false);
   const [isReviewModalOpen, setIsReviewModalOpen] = useState<boolean>(false);
@@ -167,7 +170,7 @@ const PublicProfilePage = (params: { username: string }) => {
   const onCopyLinkToShare = async () => {
     await navigator.clipboard.writeText(window.location.href);
 
-    toast.success("Link was copied to clipboard", {
+    toast.success(t("pages.publicProfilePage.copySuccessfull"), {
       duration: 5000,
       position: "bottom-left",
     });
@@ -263,12 +266,14 @@ const PublicProfilePage = (params: { username: string }) => {
           >
             <FontAwesomeIcon icon={faShareFromSquare} className="fa-lg" />
 
-            <div className="underline">Share</div>
+            <div className="underline">
+              {t("pages.publicProfilePage.share")}
+            </div>
           </div>
           <div className="flex cursor-pointer items-center gap-2">
             <FontAwesomeIcon icon={faBookmark} className="fa-lg" />
 
-            <div className="underline">Save</div>
+            <div className="underline">{t("pages.publicProfilePage.save")}</div>
           </div>
         </div>
       </div>
@@ -290,7 +295,9 @@ const PublicProfilePage = (params: { username: string }) => {
             }
           />
           <div className="flex flex-1 flex-col gap-4">
-            <div className="text-2xl font-semibold">Categories</div>
+            <div className="text-2xl font-semibold">
+              {t("pages.publicProfilePage.categories")}
+            </div>
             <div className="flex flex-wrap gap-4">
               {profile?.categories.map((category) => {
                 return (
@@ -313,7 +320,9 @@ const PublicProfilePage = (params: { username: string }) => {
 
         <div className="flex-2 flex flex-col gap-6">
           <div className="flex flex-col gap-2">
-            <div className="text-2xl font-semibold">About</div>
+            <div className="text-2xl font-semibold">
+              {t("pages.publicProfilePage.about")}
+            </div>
             <div className="text-gray2 [overflow-wrap:anywhere]">
               {profile?.about}
             </div>
@@ -350,19 +359,25 @@ const PublicProfilePage = (params: { username: string }) => {
                   <div>{profile?.rating}</div>
                 </div>
                 <div className="hidden h-2 w-2 rounded-full bg-black xs:block" />
-                <div className="text-gray2">{profileReviews[0]} Reviews</div>
+                <div className="text-gray2">
+                  {t("pages.publicProfilePage.reviews", {
+                    count: profileReviews[0],
+                  })}
+                </div>
               </div>
             )}
           </div>
 
           <div className="rounded-2xl border-[1px] border-white1">
             <div className="flex flex-col pt-4">
-              <div className="px-4 text-sm font-semibold">Platform</div>
+              <div className="px-4 text-sm font-semibold">
+                {t("pages.publicProfilePage.platform")}
+              </div>
 
               <CustomSelect
                 name={`platform ${name}`}
                 noBorder
-                placeholder="Select the social media platform"
+                placeholder={t("pages.publicProfilePage.platformPlaceholder")}
                 options={availablePlatforms}
                 handleOptionSelect={onChangePlatform}
                 value={platform}
@@ -398,13 +413,13 @@ const PublicProfilePage = (params: { username: string }) => {
             disabled={platform.id === -1 || selectedValuePack.id === -1}
           />
           <div className="flex items-center justify-center gap-2 text-gray2">
-            <ToolTip content="We hold the payment for 72 hours. If the influencer doesn’t accept the order it will automatically be cancelled and your payments refunded" />
-            <div>We only charge when the order is complete</div>
+            <ToolTip content={t("pages.publicProfilePage.tootlip")} />
+            <div>{t("pages.publicProfilePage.disclaimer")}</div>
           </div>
           <div className="flex flex-col gap-4 text-lg">
             <div className="flex flex-col gap-2">
               <div className="flex flex-1 justify-between">
-                <div>Subtotal</div>
+                <div>{t("pages.publicProfilePage.subtotal")}</div>
                 {selectedValuePack.id !== -1 ? (
                   <div>
                     {helper.formatNumber(selectedValuePack.valuePackPrice)}€
@@ -414,7 +429,7 @@ const PublicProfilePage = (params: { username: string }) => {
                 )}
               </div>
               <div className="flex flex-1 justify-between">
-                <div>Fee</div>
+                <div>{t("pages.publicProfilePage.fee")}</div>
                 {selectedValuePack.id !== -1 ? (
                   <div>
                     {helper.formatNumber(
@@ -429,7 +444,7 @@ const PublicProfilePage = (params: { username: string }) => {
             </div>
             <div className="w-full border-[1px] border-white1" />
             <div className="flex flex-1 justify-between font-semibold">
-              <div>Total</div>
+              <div>{t("pages.publicProfilePage.total")}</div>
               {selectedValuePack.id !== -1 ? (
                 <div>
                   {helper.formatNumber(
@@ -448,7 +463,7 @@ const PublicProfilePage = (params: { username: string }) => {
           className="cursor-pointer text-center underline"
           onClick={() => setIsCustomValuePackModalOpen(true)}
         >
-          Request a custom value pack
+          {t("pages.publicProfilePage.requestValuePack")}
         </div>
       </>
     );
@@ -457,8 +472,12 @@ const PublicProfilePage = (params: { username: string }) => {
   const renderCampaigns = () => {
     return (
       <div className="flex flex-col gap-6">
-        <div className="text-2xl font-semibold">Campaigns</div>
-        <div className="flex justify-center">There is no campaign history</div>
+        <div className="text-2xl font-semibold">
+          {t("pages.publicProfilePage.campaigns")}
+        </div>
+        <div className="flex justify-center">
+          {t("pages.publicProfilePage.noCampaignHistory")}
+        </div>
       </div>
     );
   };
@@ -480,7 +499,11 @@ const PublicProfilePage = (params: { username: string }) => {
               <div className="h-2 w-2 rounded-full bg-black" />
               <div className="text-gray2">
                 {profileReviews && profileReviews[0] > 0 ? (
-                  <div>{profileReviews[0]} reviews</div>
+                  <div>
+                    {t("pages.publicProfilePage.reviews", {
+                      count: profileReviews[0],
+                    })}
+                  </div>
                 ) : (
                   ""
                 )}
@@ -507,7 +530,7 @@ const PublicProfilePage = (params: { username: string }) => {
             {profileReviews[0] > reviews.length && (
               <div className="flex items-center justify-center">
                 <Button
-                  title="Load More Reviews"
+                  title={t("pages.publicProfilePage.loadMore")}
                   onClick={() => refetch()}
                   isLoading={isFetchingReviewsCursor}
                 />
@@ -526,7 +549,9 @@ const PublicProfilePage = (params: { username: string }) => {
         onClick={() => onCopyLinkToShare()}
       >
         <FontAwesomeIcon icon={faCopy} className="fa-lg text-white" />
-        <div className="flex text-white">Copy</div>
+        <div className="flex text-white">
+          {t("pages.publicProfilePage.copy")}
+        </div>
       </div>
     );
   };
@@ -574,7 +599,7 @@ const PublicProfilePage = (params: { username: string }) => {
           {isShareModalOpen && (
             <Modal
               onClose={() => setIsShareModalOpen(false)}
-              title="Share Influencer Page"
+              title={t("pages.publicProfilePage.shareModalTitle")}
             >
               <div className="flex flex-col gap-4 p-4 sm:w-full sm:px-8">
                 <div className="flex justify-center">

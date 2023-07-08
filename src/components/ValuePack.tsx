@@ -3,6 +3,7 @@ import { faArrowRightRotate, faXmark } from "@fortawesome/free-solid-svg-icons";
 import { faCalendar } from "@fortawesome/free-regular-svg-icons";
 
 import { type SocialMedia } from "@prisma/client";
+import { useTranslation } from "react-i18next";
 
 const ValuePack = (params: {
   title: string;
@@ -15,6 +16,7 @@ const ValuePack = (params: {
   closeButton: boolean;
   onDeleteValuePack?: () => void;
 }) => {
+  const { t } = useTranslation();
   let selected = "";
 
   if (params.selected) {
@@ -41,14 +43,22 @@ const ValuePack = (params: {
               icon={faCalendar}
               className="fa-lg cursor-pointer"
             />
-            <div>{params.deliveryTime} Days Delivery</div>
+            <div>
+              {t("components.valuePackInput.daysDelivery", {
+                count: params.deliveryTime,
+              })}
+            </div>
           </div>
           <div className="flex items-center gap-2">
             <FontAwesomeIcon
               icon={faArrowRightRotate}
               className="fa-lg cursor-pointer"
             />
-            <div>{params.numberOfRevisions} Of Revisions</div>
+            <div>
+              {t("components.valuePackInput.revision", {
+                count: params.numberOfRevisions,
+              })}
+            </div>
           </div>
         </div>
         <div className="self-end font-semibold">{params.valuePackPrice}€</div>

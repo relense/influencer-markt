@@ -17,6 +17,7 @@ import { type Option } from "../../../components/CustomMultiSelect";
 import { StepsReminder } from "../../../components/StepsReminder";
 import { type ValuePacksData } from "../FirstStepsPage";
 import { AddValuePackModal } from "../../../components/AddValuePackModal";
+import { useTranslation } from "react-i18next";
 
 export type ValuePackType = {
   id?: number;
@@ -35,6 +36,7 @@ export const Step4 = (params: {
   changeStep: (value: "next" | "previous") => void;
   socialMedias: SocialMedia[] | undefined;
 }) => {
+  const { t } = useTranslation();
   const [valuePacks, setValuePacks] = useState<ValuePackType[]>([]);
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const {
@@ -125,7 +127,11 @@ export const Step4 = (params: {
                     icon={faCalendar}
                     className="fa-lg cursor-pointer"
                   />
-                  <div>{pack.deliveryTime} Days Delivery</div>
+                  <div>
+                    {t("pages.firstSteps.step4.daysDelivery", {
+                      count: pack.deliveryTime,
+                    })}
+                  </div>
                 </div>
 
                 <div className="flex items-center gap-1">
@@ -133,7 +139,12 @@ export const Step4 = (params: {
                     icon={faArrowRightRotate}
                     className="fa-lg cursor-pointer"
                   />
-                  <div>{pack.numberOfRevisions} Revisions</div>
+                  <div>{pack.numberOfRevisions} </div>
+                  <div>
+                    {t("pages.firstSteps.step4.revisions", {
+                      count: pack.numberOfRevisions,
+                    })}
+                  </div>
                 </div>
               </div>
               <div className="self-end font-semibold sm:self-center">
@@ -168,7 +179,9 @@ export const Step4 = (params: {
           <div className="ml-[-10px] flex h-7 w-7 items-center justify-center rounded-full bg-influencer text-white">
             <FontAwesomeIcon icon={faPlus} className="fa-lg cursor-pointer " />
           </div>
-          <div className="text-base underline">Add Value Pack</div>
+          <div className="text-base underline">
+            {t("pages.firstSteps.step4.addValue")}
+          </div>
         </div>
         <div className="flex w-full flex-wrap justify-center gap-4">
           {valuePackList()}

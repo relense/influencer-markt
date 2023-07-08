@@ -1,5 +1,6 @@
 import Image from "next/image";
 import { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faArrowUpFromBracket,
@@ -39,6 +40,8 @@ const ProfileForm = (params: {
   isProfileUpdate: boolean;
   errors: FieldErrors<ProfileData>;
 }) => {
+  const { t } = useTranslation();
+
   const [profilePicture, setProfilePicture] = useState<string>();
   const { data: user } = api.users.getUser.useQuery();
   const { data: categories } = api.allRoutes.getAllCategories.useQuery();
@@ -66,7 +69,7 @@ const ProfileForm = (params: {
 
       reader.readAsDataURL(file);
     } else {
-      alert("Pictures must be jpeg or png");
+      alert(t("components.profileForm.invalidPictureAlert"));
     }
   };
 
@@ -114,7 +117,7 @@ const ProfileForm = (params: {
           <div className="hidden sm:flex">
             <FontAwesomeIcon icon={faArrowUpFromBracket} />
           </div>
-          <div>Add your Profile Image</div>
+          <div>{t("components.profileForm.addProfilePicture")}</div>
         </div>
       </div>
     );
@@ -133,12 +136,14 @@ const ProfileForm = (params: {
             required
             type="text"
             className="h-14 rounded-lg border-[1px] border-gray3 p-4 placeholder-gray2"
-            placeholder="Choose Your Display Name: How Would You Like to be Recognized?"
+            placeholder={t("components.profileForm.displayNamePlaceholder")}
             autoComplete="off"
           />
           {params.errors.displayName &&
             params.errors.displayName.type === "maxLength" && (
-              <div className="px-4 py-1 text-red-600">Max is 40 characters</div>
+              <div className="px-4 py-1 text-red-600">
+                {t("components.profileForm.characterWarning", { count: 40 })}
+              </div>
             )}
         </div>
         {!params.isProfileUpdate && user?.role?.name !== "Brand" && (
@@ -151,8 +156,13 @@ const ProfileForm = (params: {
                 <CustomSelect
                   register={params.register}
                   name="gender"
-                  placeholder="Select your gender: Male, Female, Other"
-                  options={genders}
+                  placeholder={t("components.profileForm.genderPlaceholder")}
+                  options={genders?.map((gender) => {
+                    return {
+                      id: gender.id,
+                      name: t(`components.profileForm.${gender.name}`),
+                    };
+                  })}
                   value={value}
                   handleOptionSelect={onChange}
                 />
@@ -168,7 +178,7 @@ const ProfileForm = (params: {
             return (
               <CustomMultiSelect
                 name="categories"
-                placeholder="Choose Your Categories: e.g., Fashion, Travel, Fitness"
+                placeholder={t("components.profileForm.categoriesPlaceholder")}
                 options={categories}
                 handleOptionSelect={onChange}
                 selectedOptions={value}
@@ -182,7 +192,7 @@ const ProfileForm = (params: {
             required
             type="text"
             className="h-14 w-full rounded-lg border-[1px] border-gray3 p-4 placeholder-gray2"
-            placeholder="Country"
+            placeholder={t("components.profileForm.countryPlaceholder")}
             autoComplete="off"
           />
           <input
@@ -190,7 +200,7 @@ const ProfileForm = (params: {
             required
             type="text"
             className="h-14 w-full rounded-lg border-[1px] border-gray3 p-4 placeholder-gray2"
-            placeholder="City"
+            placeholder={t("components.profileForm.cityPlaceholder")}
             autoComplete="off"
           />
         </div>
@@ -199,11 +209,13 @@ const ProfileForm = (params: {
             {...params.register("about", { maxLength: 446 })}
             required
             className="rounded-lg border-[1px] border-gray3 p-4 placeholder-gray2"
-            placeholder="Introduce Yourself: Share a Brief Description or Bio"
+            placeholder={t("components.profileForm.aboutPlaceholder")}
             autoComplete="off"
           />
           {params.errors.about && params.errors.about.type === "maxLength" && (
-            <div className="px-4 py-1 text-red-600">Max is 446 characters</div>
+            <div className="px-4 py-1 text-red-600">
+              {t("components.profileForm.characterWarning", { count: 446 })}
+            </div>
           )}
         </div>
         <div className="flex flex-col">
@@ -211,7 +223,7 @@ const ProfileForm = (params: {
             {...params.register("website", { maxLength: 64 })}
             type="text"
             className="h-14 w-full rounded-lg border-[1px] border-gray3 p-4 placeholder-gray2"
-            placeholder="Website URL: Provide Your Website Address"
+            placeholder={t("components.profileForm.websitePlaceholder")}
             autoComplete="off"
           />
           {params.errors.website && (
@@ -221,7 +233,9 @@ const ProfileForm = (params: {
           )}
           {params.errors.website &&
             params.errors.website.type === "maxLength" && (
-              <div className="px-4 py-1 text-red-600">Max is 64 characters</div>
+              <div className="px-4 py-1 text-red-600">
+                {t("components.profileForm.characterWarning", { count: 64 })}
+              </div>
             )}
         </div>
       </form>

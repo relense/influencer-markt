@@ -1,6 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { useOutsideClick } from "../../../utils/helper";
-import { type ValuePackType } from "../../FirstStepsPage/Views/Step4";
+import { useTranslation } from "react-i18next";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faArrowRightRotate,
@@ -8,6 +7,9 @@ import {
   faChevronDown,
   faChevronUp,
 } from "@fortawesome/free-solid-svg-icons";
+
+import { useOutsideClick } from "../../../utils/helper";
+import { type ValuePackType } from "../../FirstStepsPage/Views/Step4";
 import { type Option } from "../../../components/CustomMultiSelect";
 import { ValuePack } from "../../../components/ValuePack";
 
@@ -21,6 +23,7 @@ const ValuePackInput = (params: {
   const [availableValuePacks, setAvailableValuePacks] = useState<
     ValuePackType[]
   >([]);
+  const { t } = useTranslation();
   const valuePackRef = useRef(null);
 
   useOutsideClick(() => {
@@ -70,7 +73,9 @@ const ValuePackInput = (params: {
             {params.valuePack.title}
           </div>
         ) : (
-          <div className="px-4 text-sm font-semibold">Value pack</div>
+          <div className="px-4 text-sm font-semibold">
+            {t("components.valuePackInput.valuePack")}
+          </div>
         )}
         <div className="relative flex flex-1 justify-between gap-6 px-4">
           {params.valuePack && params.valuePack.id !== -1 ? (
@@ -79,7 +84,7 @@ const ValuePackInput = (params: {
             </div>
           ) : (
             <div className="w-96 overflow-hidden text-ellipsis whitespace-nowrap text-gray2">
-              Please choose a value pack
+              {t("components.valuePackInput.inputPlaceholder")}
             </div>
           )}
           <div>
@@ -105,9 +110,10 @@ const ValuePackInput = (params: {
               />
               <div>
                 {params.valuePack.deliveryTime !== -1
-                  ? params.valuePack.deliveryTime
-                  : ""}{" "}
-                Days Delivery
+                  ? t("components.valuePackInput.daysDelivery", {
+                      count: params.valuePack.deliveryTime,
+                    })
+                  : ""}
               </div>
             </div>
             <div className="flex items-center gap-2">
@@ -117,9 +123,10 @@ const ValuePackInput = (params: {
               />
               <div>
                 {params.valuePack.numberOfRevisions !== -1
-                  ? params.valuePack.numberOfRevisions
+                  ? t("components.valuePackInput.revision", {
+                      count: params.valuePack.deliveryTime,
+                    })
                   : ""}{" "}
-                Of Revisions
               </div>
             </div>
           </div>
