@@ -9,6 +9,7 @@ import {
   faHandHoldingDollar,
   faLock,
 } from "@fortawesome/free-solid-svg-icons";
+import { useTranslation } from "react-i18next";
 
 import { SearchBar } from "../../components/SearchBar";
 import { Button } from "../../components/Button";
@@ -60,6 +61,8 @@ const offers: Offer[] = [
 ];
 
 const HomePage = () => {
+  const { t } = useTranslation();
+
   const renderOffers = () => {
     return (
       <div className="flex flex-col text-center sm:px-14 lg:flex-row lg:pt-11">
@@ -120,9 +123,7 @@ const HomePage = () => {
     return (
       <div className="flex flex-col items-center py-10 sm:px-5 lg:px-0">
         <div className="pointer-events-none px-4 text-center font-playfair">
-          <h1 className="text-2xl lg:text-5xl">
-            Find The Right Influencer For You
-          </h1>
+          <h1 className="text-2xl lg:text-5xl">{t("title")}</h1>
           <h2 className="p-2 text-xl  text-gray1 lg:p-7 lg:text-3xl">
             Everyone can choose how to influence
           </h2>
