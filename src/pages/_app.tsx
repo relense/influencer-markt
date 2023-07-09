@@ -4,7 +4,6 @@ import { type Session } from "next-auth";
 import { type AppType } from "next/app";
 import { I18nextProvider } from "react-i18next";
 import { SessionProvider, useSession } from "next-auth/react";
-import Head from "next/head";
 import "@fortawesome/fontawesome-svg-core/styles.css";
 import { config } from "@fortawesome/fontawesome-svg-core";
 
@@ -30,14 +29,6 @@ const MyApp: AppType<{ session: Session | null }> = ({
 }) => {
   return (
     <>
-      <Head>
-        <title>Influencer Market</title>
-        <meta
-          name="description"
-          content="A Market to find your favorite influencers"
-        />
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
       <SessionProvider session={session}>
         <Toaster />
         <Auth>
