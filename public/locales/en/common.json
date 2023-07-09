@@ -174,7 +174,7 @@
         "title": "Create Your Identity",
         "subTitle": "Welcome! Let's Get Started: Establish Your User And Claim Your Page",
         "button": "Start Your Journey",
-        "roleInputPLaceholder": "Choose Your Role: Influencer, Brand, or Individual",
+        "roleInputPLaceholder": "Choose Your Role: Influencer or Brand",
         "claimInputPlaceholder": "your-page-name",
         "tootlip": "This input will define your unique username or handle for your profile URL. It's like your personal identity on the platform, allowing others to easily find and access your page using this custom name. Choose something catchy and easy to remember, as this username will be a permanent representation of you on the platform. Have fun picking the perfect one!",
         "disclaimer": "Please choose the options that best represent you or align with your preferences. Once selected, this information will be considered",
@@ -223,7 +223,8 @@
         "title": "You're All Set",
         "subTitle": "Start Exploring the Exciting Opportunities Ahead!",
         "mainTitle": "Congratulations! You're All Set to Unleash Your Influence",
-        "mainSubTitle": "Welcome to the World of Endless Possibilities and Impactful Connections"
+        "mainSubTitle": "Welcome to the World of Endless Possibilities and Impactful Connections",
+        "button": "Get Started"
       }
     },
 

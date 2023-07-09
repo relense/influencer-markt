@@ -37,7 +37,7 @@
     },
 
     "stepsReminder": {
-      "reminder": "Actualize e Modifique esta Informação a qualquer momento no teu",
+      "reminder": "Actualize e modifique esta informação a qualquer momento no teu",
       "dashboard": "Painel"
     },
 
@@ -47,40 +47,40 @@
       "Other": "Outro",
       "characterWarning": "Máximo de {{count}} caracteres",
       "invalidPictureAlert": "Images têm de ser jpeg ou png",
-      "addProfilePicture": "Adiciona a tua Imagem de Perfil",
-      "displayNamePlaceholder": "Choose Your Display Name: How Would You Like to be Recognized?",
+      "addProfilePicture": "Adiciona a tua imagem de perfil",
+      "displayNamePlaceholder": "Adiciona o teu nome: Como gostarias de ser reconhecido?",
       "genderPlaceholder": "Escolhe o teu géneo: Masculino, Feminino, Outro",
-      "categoriesPlaceholder": "Escolher as Tuas Categorias: e.g., Fashion, Travel, Fitness",
+      "categoriesPlaceholder": "Escolhe as tuas categorias: E.g. Fashion, Travel, Fitness",
       "countryPlaceholder": "País",
       "cityPlaceholder": "Cidade",
-      "aboutPlaceholder": "Apresenta-te: Partilha uma Breve Descrição ou Bio",
-      "websitePlaceholder": "Website URL: Fornece o Endereço do teu Website"
+      "aboutPlaceholder": "Apresenta-te: Partilha uma breve descrição ou bio",
+      "websitePlaceholder": "Website URL: fornece o endereço do teu website"
     },
 
     "addSocialMediaModal": {
       "characterWarning": "Máximo de {{count}} caracteres",
-      "modalTitle": "Adiciona Detalhes da Rede Social",
-      "platformPlaceholder": "Escolher a tua Rede Social: e.g., Instagram, TikTok",
-      "handlerPlaceholder": "Nome de Utilizador da Rede Social",
-      "followersPlaceholder": "Seguidores da Rede Social",
-      "button": "Add Rede Social"
+      "modalTitle": "Adiciona detalhes da rede social",
+      "platformPlaceholder": "Escolhe a tua rede social: E.g. Instagram, TikTok",
+      "handlerPlaceholder": "Nome de Utilizador da rede social",
+      "followersPlaceholder": "Seguidores da rede social",
+      "button": "Add rede social"
     },
 
     "addValuePackModal": {
       "characterWarning": "Máximo de {{count}} caracteres",
-      "modalTitle": "Construtor de Pack de Valor",
-      "titlePlaceholder": "Título do Pack de Valor: Fornece um título cativante e descritivo para a tua oferta",
+      "modalTitle": "Construtor de pack de valor",
+      "titlePlaceholder": "Título do pack de valor: Fornece um título cativante e descritivo para a tua oferta",
       "platformPlaceholder": "Seleciona a rede social para o teu pack de valor",
-      "descriptionPlaceholder": "Descrição do Pack de Valor: Conta-nos sobre a tua oferta unica",
-      "deliveryPlaceholder": "Tempo de Entrega E.g 4 dias",
-      "revisionsPlaceholder": "Número de Revisões E.g 1",
-      "valuePricePlaceholder": "Preço do Pack de Valor",
+      "descriptionPlaceholder": "Descrição do pack de valor: Conta-nos sobre a tua oferta unica",
+      "deliveryPlaceholder": "Tempo de entrega E.g 4 dias",
+      "revisionsPlaceholder": "Número de revisões E.g 1",
+      "valuePricePlaceholder": "Preço do pack de valor",
       "button": "Add Pack de Valor"
     },
 
     "pictureCarrosel": {
       "invalidPictureWarning": "Images têm de ser jpeg ou png",
-      "addPicture": "Adiciona a tua Imagem de Perfil"
+      "addPicture": "Adiciona a tua imagem de perfil"
     },
 
     "valuePackInput": {
@@ -171,59 +171,60 @@
       "stepIdentifier5": "Passo 5",
 
       "step0": {
-        "title": "Create Your Identity",
-        "subTitle": "Welcome! Let's Get Started: Establish Your User And Claim Your Page",
-        "button": "Start Your Journey",
-        "roleInputPLaceholder": "Choose Your Role: Influencer, Brand, or Individual",
-        "claimInputPlaceholder": "your-page-name",
-        "tootlip": "This input will define your unique username or handle for your profile URL. It's like your personal identity on the platform, allowing others to easily find and access your page using this custom name. Choose something catchy and easy to remember, as this username will be a permanent representation of you on the platform. Have fun picking the perfect one!",
-        "disclaimer": "Please choose the options that best represent you or align with your preferences. Once selected, this information will be considered",
-        "permanent": "permanent",
-        "pageNameAvailable": "Page name is available",
-        "pageNameUnavailable": "Page name is unavailable"
+        "title": "Cria a tua identidade",
+        "subTitle": "Bem-vindo! Vamos Começar: Establece o teu utilizador e reivindica a tua página",
+        "button": "Começa a tua jornada",
+        "roleInputPLaceholder": "Escolhe o teu papel: Influencer ou Marca",
+        "claimInputPlaceholder": "nome-da-tua-página",
+        "tootlip": "Isto irá definir o teu nome de utilizador único ou identificador para o URL do teu perfil. É como a tua identidade pessoal na plataforma, permitindo que os outros te encontrem e acedam facilmente à tua página utilizando este nome personalizado. Escolhe algo cativante e fácil de lembrar, pois este nome de utilizador será uma representação permanente de si na plataforma. Divirte-te a escolher o perfeito!",
+        "disclaimer": "Por favor, escolhe as opções que melhor te representam ou que estejam alinhadas com as tuas preferências. Uma vez selecionadas, essas informações serão consideradas",
+        "permanent": "permanentes",
+        "pageNameAvailable": "Nome para página está disponível",
+        "pageNameUnavailable": "Nome para página não está disponível"
       },
 
       "step1": {
-        "title": "Online Presence",
-        "subTitle": "Define Your Online Profile identity",
-        "mainTitle": "Establish Your Online Presence",
-        "mainSubTitle": "Let's Establish who you are and what defines your online identity"
+        "title": "Presença online",
+        "subTitle": "Define o teu perfil de identidade online",
+        "mainTitle": "Establece a tua presença online",
+        "mainSubTitle": "Vamos establecer quem tu és e o que define a tua identidade online"
       },
 
       "step2": {
-        "title": "Social Media",
-        "subTitle": "Share your social media accounts",
-        "mainTitle": "Connect and Showcase Your Influence",
-        "mainSubTitle": "Fill in Relevant Details, Leave the Rest Optional",
-        "addSocial": "Add Social Media Details",
-        "handler": "Handler",
-        "followers": "Followers"
+        "title": "Redes Sociais",
+        "subTitle": "Partilha as tuas contas das redes sociais",
+        "mainTitle": "Liga e demonstra a tua influência",
+        "mainSubTitle": "Preenche os detalhes relevantes, deixa o resto opcional",
+        "addSocial": "Adiciona Detalhes de uma Rede Social",
+        "handler": "Nome de Utilizador",
+        "followers": "Seguidores"
       },
 
       "step3": {
         "title": "Portfólio Visual",
         "subTitle": "Cria um portfólio de acordo com as tuas necessidades",
-        "mainTitle": "Constrói o teu Portfólio Visual Build Your Visual Portfolio",
-        "mainSubTitle": "Mostra as tuas Melhores Foto no teu Perfil"
+        "mainTitle": "Constrói o teu portfólio visual",
+        "mainSubTitle": "Mostra as tuas melhores fotos no teu perfil"
       },
 
       "step4": {
         "title": "Value Packs",
-        "subTitle": "Design Your Profitable Value Packs",
-        "mainTitle": "Customized Value Packs",
-        "mainSubTitle": "Select Your Platform and Craft Your Irresistible Offer",
-        "daysDelivery_one": "{{count}} Day Delivery",
-        "daysDelivery_other": "{{count}} Days Delivery",
-        "revisions_one": "Revision",
-        "revisions_other": "Revisions",
-        "addValue": "Add Value Pack"
+        "subTitle": "Desenha os teus lucrativos packs de valor",
+        "mainTitle": "Personaliza os teus packs de valor",
+        "mainSubTitle": "Seleciona a plataforma e constrói a tua oferta irresistível",
+        "daysDelivery_one": "{{count}} Dia de Entrega",
+        "daysDelivery_other": "{{count}} Dias de Entrega",
+        "revisions_one": "Revisão",
+        "revisions_other": "Revisões",
+        "addValue": "Adiciona um Pack de Valor"
       },
 
       "step5": {
-        "title": "You're All Set",
-        "subTitle": "Start Exploring the Exciting Opportunities Ahead!",
-        "mainTitle": "Congratulations! You're All Set to Unleash Your Influence",
-        "mainSubTitle": "Welcome to the World of Endless Possibilities and Impactful Connections"
+        "title": "Está tudo pronto",
+        "subTitle": "Começa a explorar as emocionantes oportunidades que estão por vir!",
+        "mainTitle": "Parabéns! Estás tudo pronto para libertar o teu poder de influência",
+        "mainSubTitle": "Bem-vindo ao mundo das infinitas possibilidades e das conexões impactantes",
+        "button": "Começar"
       }
     },
 
