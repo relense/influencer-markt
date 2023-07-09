@@ -1,9 +1,9 @@
 import dayjs from "dayjs";
+import relativeTime from "dayjs/plugin/relativeTime";
 import "dayjs/locale/pt";
 import "dayjs/locale/en";
 
 import { useEffect, useRef } from "react";
-import { Option } from "../components/CustomMultiSelect";
 
 export const useOutsideClick = (
   callback: (T?: unknown) => void,
@@ -43,7 +43,13 @@ const formatNumber = (value: number) => {
 };
 
 const formatDate = (date: Date | number, locale: string): string => {
-  return dayjs(date).locale(locale).format("DD MMMM YYYY");
+  dayjs.extend(relativeTime);
+
+  if (dayjs(date).isSame(new Date(), "day")) {
+    return dayjs(date).locale(locale).fromNow();
+  } else {
+    return dayjs(date).locale(locale).format("DD MMMM YYYY");
+  }
 };
 
 export const helper = {
