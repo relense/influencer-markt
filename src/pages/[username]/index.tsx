@@ -15,31 +15,35 @@ const PublicProfile: NextPage = () => {
     username: username || "",
   });
 
+  const { data: profile, isLoading: profileIsLoading } =
+    api.profiles.getProfileWithoutIncludes.useQuery();
+
   useEffect(() => {
     if (username === undefined || data) {
       void router.push("/");
     }
   }, [data, router, username]);
 
-  if (username && !isLoading && !data) {
-    return <PublicProfilePage username={username} />;
-  } else {
+  if (username && !isLoading && !profileIsLoading && !data) {
     return (
       <>
         <Head>
           <link rel="icon" href="/favicon.ico" />
           <meta property="og:url" content="your url" />
           <meta property="og:type" content="website" />
-          {/* <meta property="fb:app_id" content="your fb id" /> */}
           <meta property="og:title" content={`Influencer Market `} />
           <meta name="twitter:card" content="summary" />
-          <meta property="og:description" content="some description" />
-          {/* <meta property="og:image" content={photo?.url} /> */}
+          <meta property="og:description" content={profile?.about} />
+          <meta property="og:image" content={profile?.profilePicture} />
         </Head>
-        <Layout>
-          <LoadingSpinner />
-        </Layout>
+        <PublicProfilePage username={username} />;
       </>
+    );
+  } else {
+    return (
+      <Layout>
+        <LoadingSpinner />
+      </Layout>
     );
   }
 };
