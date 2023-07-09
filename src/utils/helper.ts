@@ -1,7 +1,9 @@
-import { format, type Locale } from "date-fns";
-import { enGB, pt } from "date-fns/locale";
+import dayjs from "dayjs";
+import "dayjs/locale/pt";
+import "dayjs/locale/en";
 
 import { useEffect, useRef } from "react";
+import { Option } from "../components/CustomMultiSelect";
 
 export const useOutsideClick = (
   callback: (T?: unknown) => void,
@@ -40,10 +42,8 @@ const formatNumber = (value: number) => {
   }
 };
 
-const formatDate = (date: Date | number): string => {
-  const locales: Record<string, Locale> = { enGB, pt };
-
-  return format(date, "dd MMMM yyyy");
+const formatDate = (date: Date | number, locale: string): string => {
+  return dayjs(date).locale(locale).format("DD MMMM YYYY");
 };
 
 export const helper = {
