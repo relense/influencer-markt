@@ -29,12 +29,24 @@ const PublicProfile: NextPage = () => {
       <>
         <Head>
           <link rel="icon" href="/favicon.ico" />
-          <meta property="og:url" content="your url" />
-          <meta property="og:type" content="website" />
-          <meta property="og:title" content={`Influencer Market `} />
-          <meta name="twitter:card" content="summary" />
+          <meta property="og:site_name" content="Influencers Market" />
+          <meta property="og:title" content="Influencers Market" />
           <meta property="og:description" content={profile?.about} />
-          <meta property="og:image" content={profile?.profilePicture} />
+          <meta
+            property="og:url"
+            content={`${process.env.NEXT_PUBLIC_BASE_URL || ""}/username`}
+          />
+          <meta property="og:type" content="website" />
+          <meta
+            property="og:title"
+            content={`Influencer Market: ${username} profile page `}
+          />
+          <meta name="twitter:card" content="summary" />
+          <meta
+            property="og:image:secure_url"
+            itemProp="image"
+            content={profile?.profilePicture}
+          />
         </Head>
         <PublicProfilePage username={username} />;
       </>
