@@ -179,7 +179,12 @@ const ProfileForm = (params: {
               <CustomMultiSelect
                 name="categories"
                 placeholder={t("components.profileForm.categoriesPlaceholder")}
-                options={categories}
+                options={categories?.map((category) => {
+                  return {
+                    id: category.id,
+                    name: t(`general.categories.${category.name}`),
+                  };
+                })}
                 handleOptionSelect={onChange}
                 selectedOptions={value}
               />

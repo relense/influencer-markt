@@ -1,4 +1,13 @@
 {
+  "general": {
+    "categories": {
+      "Lifestyle": "Lifestyle",
+      "Comedy": "Comédia",
+      "Fashion": "Moda",
+      "Gaming": "Gaming",
+      "Cannabis": "Canábis"
+    }
+  },
   "components": {
     "navbar": {
       "home": "Início",
@@ -7,7 +16,7 @@
       "signIn": "Entrar",
       "joinMarketPlace": "Junta-te ao Marketplace",
       "myPage": "A Minha Página",
-      "editMyPage": "Edita A Minha Página",
+      "editMyPage": "Editar A Minha Página",
       "signOut": "Sair"
     },
 
@@ -246,7 +255,7 @@
       "fee": "Taxa",
       "total": "Total",
       "requestValuePack": "Pede um pack personalizado",
-      "copy": "Copia",
+      "copy": "Copiar",
       "loadMore": "Carrega Mais Comentários",
       "shareModalTitle": "Partilha a Página do Influencer"
     },

@@ -35,10 +35,10 @@ export const CustomMultiSelect = (params: {
 
   const getIndexFromArrayOfObjects = (arr: Option[], option: Option) => {
     const stringArray = arr.map((item) => {
-      return item.name;
+      return item.id;
     });
 
-    return stringArray.indexOf(option.name);
+    return stringArray.indexOf(option.id);
   };
 
   useOutsideClick(() => {

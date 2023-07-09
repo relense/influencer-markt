@@ -205,7 +205,15 @@ const EditPage = (params: { role: Option | undefined }) => {
 
   useEffect(() => {
     profileSetValue("about", profile?.about || "");
-    profileSetValue("categories", profile?.categories || []);
+    profileSetValue(
+      "categories",
+      profile?.categories.map((category) => {
+        return {
+          id: category.id,
+          name: t(`general.categories.${category.name}`),
+        };
+      }) || []
+    );
     profileSetValue("city", profile?.city || "");
     profileSetValue("country", profile?.country || "");
     profileSetValue("displayName", profile?.name || "");
@@ -221,6 +229,7 @@ const EditPage = (params: { role: Option | undefined }) => {
     profile?.profilePicture,
     profileSetValue,
     isProfileModalOpen,
+    t,
   ]);
 
   useEffect(() => {
@@ -362,7 +371,7 @@ const EditPage = (params: { role: Option | undefined }) => {
                   key={category.id}
                   className="rounded-2xl border-[1px] border-gray2 px-4 py-1"
                 >
-                  {category.name}
+                  {t(`general.categories.${category.name}`)}
                 </div>
               );
             })}

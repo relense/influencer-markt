@@ -1,4 +1,13 @@
 {
+  "general": {
+    "categories": {
+      "Lifestyle": "Lifestyle",
+      "Comedy": "Comedy",
+      "Fashion": "Fashion",
+      "Gaming": "Gaming",
+      "Cannabis": "Cannabis"
+    }
+  },
   "components": {
     "navbar": {
       "home": "Home",

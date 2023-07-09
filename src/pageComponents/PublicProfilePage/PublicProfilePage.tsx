@@ -30,7 +30,7 @@ import { LoadingSpinner } from "../../components/LoadingSpinner";
 import { useTranslation } from "react-i18next";
 
 const PublicProfilePage = (params: { username: string }) => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
 
   const [isCustomValuePackModalOpen, setIsCustomValuePackModalOpen] =
     useState<boolean>(false);
@@ -83,7 +83,7 @@ const PublicProfilePage = (params: { username: string }) => {
             authorName: review.author?.name || "",
             profilePicture: review.author?.profilePicture || "",
             review: review.userReview || "",
-            reviewDate: helper.formatDate(review.date),
+            reviewDate: helper.formatDate(review.date, i18n.language),
             username: review.author?.user.username || "",
           };
         })
@@ -107,7 +107,7 @@ const PublicProfilePage = (params: { username: string }) => {
           authorName: review.author?.name || "",
           profilePicture: review.author?.profilePicture || "",
           review: review.userReview || "",
-          reviewDate: helper.formatDate(review.date),
+          reviewDate: helper.formatDate(review.date, i18n.language),
           username: review.author?.user.username || "",
         });
       });
@@ -218,7 +218,7 @@ const PublicProfilePage = (params: { username: string }) => {
           )}
           <div className="flex flex-1 flex-col gap-2 text-center lg:text-left">
             <div className="flex flex-col items-center justify-center gap-2 xs:flex-row xs:flex-wrap lg:justify-start">
-              {profile?.userSocialMedia?.map((socialMedia) => {
+              {profile?.userSocialMedia?.map((socialMedia, index) => {
                 return (
                   <div className="flex items-center gap-2" key={socialMedia.id}>
                     <Link
@@ -230,10 +230,12 @@ const PublicProfilePage = (params: { username: string }) => {
                       {socialMedia.socialMedia?.name}
                     </Link>
                     <div>{helper.formatNumber(socialMedia.followers)}</div>
-                    <div
-                      key={`${socialMedia.id} + dot`}
-                      className="hidden h-1 w-1 rounded-full bg-black sm:block"
-                    />
+                    {profile?.userSocialMedia.length - 1 !== index && (
+                      <div
+                        key={`${socialMedia.id} + dot`}
+                        className="hidden h-1 w-1 rounded-full bg-black sm:block"
+                      />
+                    )}
                   </div>
                 );
               })}
@@ -305,7 +307,7 @@ const PublicProfilePage = (params: { username: string }) => {
                     key={category.id}
                     className="rounded-2xl border-[1px] border-gray2 px-4 py-1"
                   >
-                    {category.name}
+                    {t(`general.categories.${category.name}`)}
                   </div>
                 );
               })}
