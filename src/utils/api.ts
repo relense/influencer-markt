@@ -38,14 +38,6 @@ export const api = createTRPCNext<AppRouter>({
           queries: {
             refetchOnWindowFocus: false,
             retry: (failureCount, error) => {
-              if (error instanceof TRPCClientError) {
-                if (error) {
-                  toast.error(`Something went wrong`, {
-                    position: "bottom-left",
-                  });
-                }
-              }
-
               return false;
             },
           },
