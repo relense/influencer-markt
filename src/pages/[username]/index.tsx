@@ -21,7 +21,7 @@ const PublicProfile: NextPage<PublicProfileProps> = ({ username }) => {
     },
     { enabled: false }
   );
-  const { data: profile } = api.profiles.getProfileByUniqueUsername.useQuery(
+  const { data: profile } = api.profiles.getProfileMinimumInfo.useQuery(
     {
       username,
     },
@@ -80,7 +80,7 @@ export const getStaticProps: GetStaticProps = async (context) => {
   if (typeof username !== "string") throw new Error("Invalid username");
 
   await ssg.users.usernameExists.prefetch({ username });
-  await ssg.profiles.getProfileByUniqueUsername.prefetch({ username });
+  await ssg.profiles.getProfileMinimumInfo.prefetch({ username });
 
   return {
     props: {
