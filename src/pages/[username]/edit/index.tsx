@@ -6,6 +6,7 @@ import { api } from "~/utils/api";
 import { ProtectedLayout } from "../../../components/ProtectedWrapper";
 import { EditPage } from "../../../pageComponents/EditPage/EditPage";
 import { LoadingSpinner } from "../../../components/LoadingSpinner";
+import { Layout } from "../../../components/Layout";
 
 const Edit: NextPage = () => {
   const { data: userData, isLoading } = api.users.getUser.useQuery();
@@ -22,13 +23,15 @@ const Edit: NextPage = () => {
     return (
       <>
         <ProtectedLayout>
-          <EditPage
-            role={
-              userData?.role
-                ? { id: userData?.role?.id, name: userData?.role?.name }
-                : undefined
-            }
-          />
+          <Layout>
+            <EditPage
+              role={
+                userData?.role
+                  ? { id: userData?.role?.id, name: userData?.role?.name }
+                  : undefined
+              }
+            />
+          </Layout>
         </ProtectedLayout>
       </>
     );

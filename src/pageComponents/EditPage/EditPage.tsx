@@ -490,15 +490,13 @@ const EditPage = (params: { role: Option | undefined }) => {
 
   if (isLoadingProfile) {
     return (
-      <Layout>
-        <div className="relative flex flex-1">
-          <LoadingSpinner />
-        </div>
-      </Layout>
+      <div className="relative flex flex-1">
+        <LoadingSpinner />
+      </div>
     );
   } else {
     return (
-      <Layout>
+      <>
         {isLoading && (
           <div className="absolute flex h-full w-full">
             <div className="relative top-0 flex flex-1 justify-center">
@@ -572,7 +570,7 @@ const EditPage = (params: { role: Option | undefined }) => {
             </Modal>
           )}
         </div>
-      </Layout>
+      </>
     );
   }
 };

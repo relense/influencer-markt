@@ -37,10 +37,13 @@ const PublicProfile: NextPage<PublicProfileProps> = ({ username }) => {
   return (
     <>
       <Head>
-        {/* <title>Influencers Market | {username} </title> */}
-        <link rel="icon" href="/favicon.ico" />
-        <meta property="og:site_name" content="cenas" />
-        <meta property="og:title" content="Cenas" />
+        <title>Influencers Market | {profile?.name} </title>
+        <meta
+          property="og:site_name"
+          content={`${process.env.NEXT_PUBLIC_BASE_URL || ""}/${
+            username || ""
+          }`}
+        />
         <meta property="og:description" content={profile?.about} />
         <meta
           property="og:url"
@@ -51,7 +54,7 @@ const PublicProfile: NextPage<PublicProfileProps> = ({ username }) => {
         <meta property="og:type" content="website" />
         <meta
           property="og:title"
-          content={`Influencer Market: ${username} profile page `}
+          content={`Influencer Market: ${profile?.name || ""} Profile Page `}
         />
         <meta name="twitter:card" content="summary" />
         <meta
