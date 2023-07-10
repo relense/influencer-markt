@@ -112,6 +112,40 @@ export const profilesRouter = createTRPCRouter({
     });
   }),
 
+  getProfileMinimumInfo: publicProcedure
+    .input(
+      z.object({
+        username: z.string(),
+      })
+    )
+    .query(async ({ ctx, input }) => {
+      const user = await ctx.prisma.user.findFirst({
+        where: { username: input.username },
+      });
+
+      return await ctx.prisma.profile.findUnique({
+        where: { userId: user?.id },
+        select: {
+          userSocialMedia: false,
+          valuePacks: false,
+          gender: false,
+          categories: false,
+          user: false,
+          website: false,
+          about: true,
+          city: false,
+          country: false,
+          name: true,
+          id: false,
+          profilePicture: true,
+          rating: false,
+          portfolio: false,
+          userId: false,
+          genderId: false,
+        },
+      });
+    }),
+
   getProfileByUniqueUsername: publicProcedure
     .input(
       z.object({
