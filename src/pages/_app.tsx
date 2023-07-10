@@ -1,15 +1,14 @@
-import { type ReactElement } from "react";
 import dynamic from "next/dynamic";
 import { type Session } from "next-auth";
 import { type AppType } from "next/app";
 import { I18nextProvider } from "react-i18next";
-import { SessionProvider, useSession } from "next-auth/react";
+import { SessionProvider } from "next-auth/react";
+import Head from "next/head";
 import "@fortawesome/fontawesome-svg-core/styles.css";
 import { config } from "@fortawesome/fontawesome-svg-core";
 
 import { api } from "~/utils/api";
 import "~/styles/globals.css";
-import { LoadingSpinner } from "../components/LoadingSpinner";
 import i18n from "../../i18n";
 
 config.autoAddCss = false;
@@ -29,26 +28,22 @@ const MyApp: AppType<{ session: Session | null }> = ({
 }) => {
   return (
     <>
+      <Head>
+        <title>Influencer Market</title>
+        <meta
+          name="description"
+          content="A Market to find your favorite influencers"
+        />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+      </Head>
       <SessionProvider session={session}>
         <Toaster />
-        <Auth>
-          <I18nextProvider i18n={i18n}>
-            <Component {...pageProps} />
-          </I18nextProvider>
-        </Auth>
+        <I18nextProvider i18n={i18n}>
+          <Component {...pageProps} />
+        </I18nextProvider>
       </SessionProvider>
     </>
   );
 };
 
 export default api.withTRPC(MyApp);
-
-const Auth = (params: { children: ReactElement }) => {
-  const { status } = useSession();
-
-  if (status === "loading") {
-    return <LoadingSpinner />;
-  }
-
-  return params.children;
-};
