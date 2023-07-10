@@ -13,7 +13,6 @@ import Image from "next/image";
 import { toast } from "react-hot-toast";
 import Link from "next/link";
 
-import { Layout } from "../../components/Layout";
 import { PictureCarrosel } from "../../components/PictureCarrosel";
 import { Button } from "../../components/Button";
 import { CustomSelect } from "../../components/CustomSelect";
@@ -56,6 +55,7 @@ const PublicProfilePage = (params: { username: string }) => {
     api.profiles.getProfileByUniqueUsername.useQuery({
       username: params.username,
     });
+
   const { data: profileReviews } = api.reviews.getProfileReviews.useQuery({
     profileId: profile?.id || -1,
   });
@@ -560,79 +560,75 @@ const PublicProfilePage = (params: { username: string }) => {
 
   if (isLoading) {
     return (
-      <Layout>
-        <div className="relative flex flex-1">
-          <LoadingSpinner />
-        </div>
-      </Layout>
+      <div className="relative flex flex-1">
+        <LoadingSpinner />
+      </div>
     );
   } else {
     return (
-      <Layout>
-        <div className="flex justify-center">
-          <div className="flex w-full cursor-default flex-col gap-6 self-center px-4 pb-10 sm:px-12 xl:w-3/4 2xl:w-2/4">
-            {renderHeader()}
-            {renderMiddleContent()}
-            {renderReviews()}
-          </div>
-          {isCustomValuePackModalOpen && (
-            <RequestCustomValuePackModal
-              availablePlatforms={availablePlatforms}
-              onClose={() => setIsCustomValuePackModalOpen(false)}
-            />
-          )}
-          {isReviewModalOpen && (
-            <Modal onClose={closeReviewModal}>
-              <div className="p-4 sm:w-full sm:px-8">
-                <Review
-                  review={{
-                    profilePicture: selectedReview?.profilePicture || "",
-                    authorName: selectedReview?.authorName || "",
-                    review: selectedReview?.review || "",
-                    reviewDate: selectedReview?.reviewDate || "",
-                    username: selectedReview?.username || "",
-                  }}
-                  isModal={true}
-                  onClick={openReviewModal}
-                />
-              </div>
-            </Modal>
-          )}
-          {isShareModalOpen && (
-            <Modal
-              onClose={() => setIsShareModalOpen(false)}
-              title={t("pages.publicProfilePage.shareModalTitle")}
-            >
-              <div className="flex flex-col gap-4 p-4 sm:w-full sm:px-8">
-                <div className="flex justify-center">
-                  <Link
-                    href={`https://api.whatsapp.com/send/?text=${window.location.href}`}
-                    data-action="share/whatsapp/share"
-                  >
-                    <Image
-                      src={`/images/whatsapp.svg`}
-                      height={44}
-                      width={44}
-                      alt="whatsapp logo"
-                      className="object-contain"
-                    />
-                  </Link>
-                </div>
-
-                <div className="flex h-14 w-full flex-1 gap-2 rounded-lg border-[1px] border-gray3 p-2">
-                  <input
-                    readOnly
-                    value={window.location.href}
-                    className="flex flex-1"
-                  />
-                  <div className="hidden sm:flex">{renderLinkToCopy()}</div>
-                </div>
-                <div className="flex sm:hidden">{renderLinkToCopy()}</div>
-              </div>
-            </Modal>
-          )}
+      <div className="flex justify-center">
+        <div className="flex w-full cursor-default flex-col gap-6 self-center px-4 pb-10 sm:px-12 xl:w-3/4 2xl:w-2/4">
+          {renderHeader()}
+          {renderMiddleContent()}
+          {renderReviews()}
         </div>
-      </Layout>
+        {isCustomValuePackModalOpen && (
+          <RequestCustomValuePackModal
+            availablePlatforms={availablePlatforms}
+            onClose={() => setIsCustomValuePackModalOpen(false)}
+          />
+        )}
+        {isReviewModalOpen && (
+          <Modal onClose={closeReviewModal}>
+            <div className="p-4 sm:w-full sm:px-8">
+              <Review
+                review={{
+                  profilePicture: selectedReview?.profilePicture || "",
+                  authorName: selectedReview?.authorName || "",
+                  review: selectedReview?.review || "",
+                  reviewDate: selectedReview?.reviewDate || "",
+                  username: selectedReview?.username || "",
+                }}
+                isModal={true}
+                onClick={openReviewModal}
+              />
+            </div>
+          </Modal>
+        )}
+        {isShareModalOpen && (
+          <Modal
+            onClose={() => setIsShareModalOpen(false)}
+            title={t("pages.publicProfilePage.shareModalTitle")}
+          >
+            <div className="flex flex-col gap-4 p-4 sm:w-full sm:px-8">
+              <div className="flex justify-center">
+                <Link
+                  href={`https://api.whatsapp.com/send/?text=${window.location.href}`}
+                  data-action="share/whatsapp/share"
+                >
+                  <Image
+                    src={`/images/whatsapp.svg`}
+                    height={44}
+                    width={44}
+                    alt="whatsapp logo"
+                    className="object-contain"
+                  />
+                </Link>
+              </div>
+
+              <div className="flex h-14 w-full flex-1 gap-2 rounded-lg border-[1px] border-gray3 p-2">
+                <input
+                  readOnly
+                  value={window.location.href}
+                  className="flex flex-1"
+                />
+                <div className="hidden sm:flex">{renderLinkToCopy()}</div>
+              </div>
+              <div className="flex sm:hidden">{renderLinkToCopy()}</div>
+            </div>
+          </Modal>
+        )}
+      </div>
     );
   }
 };
