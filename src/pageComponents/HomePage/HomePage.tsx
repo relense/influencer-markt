@@ -13,7 +13,6 @@ import { useTranslation } from "react-i18next";
 
 import { SearchBar } from "../../components/SearchBar";
 import { Button } from "../../components/Button";
-import { Layout } from "../../components/Layout";
 
 type Offer = {
   icon: IconDefinition;
@@ -226,11 +225,11 @@ const HomePage = () => {
   };
 
   return (
-    <Layout>
+    <>
       {renderSectionOne()}
       {renderSectionTwo()}
       {renderSectionThree()}
-    </Layout>
+    </>
   );
 };
 
