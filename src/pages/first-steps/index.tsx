@@ -1,6 +1,6 @@
 import { type NextPage } from "next";
 import { FirstStepsPage } from "../../pageComponents/FirstStepsPage/FirstStepsPage";
-import { ProtectedLayout } from "../../components/ProtectedWrapper";
+import { ProtectedLayout } from "../../components/ProtectedLayout";
 import { useEffect } from "react";
 import { api } from "../../utils/api";
 import { useRouter } from "next/router";

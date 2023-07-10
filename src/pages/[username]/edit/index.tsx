@@ -3,7 +3,7 @@ import { type NextPage } from "next";
 import { useRouter } from "next/router";
 import { api } from "~/utils/api";
 
-import { ProtectedLayout } from "../../../components/ProtectedWrapper";
+import { ProtectedLayout } from "../../../components/ProtectedLayout";
 import { EditPage } from "../../../pageComponents/EditPage/EditPage";
 import { LoadingSpinner } from "../../../components/LoadingSpinner";
 import { Layout } from "../../../components/Layout";
