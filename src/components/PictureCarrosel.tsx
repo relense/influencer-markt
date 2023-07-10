@@ -77,8 +77,6 @@ export const PictureCarrosel = (params: {
       setCurrentPicture(params.portfolio[0] || { id: -1, url: "" });
       setCurrentPictureIndex(0);
     }
-
-    console.log(prevCurrentPictureIndex);
   }, [
     currentPicture.id,
     currentPicture.url,
