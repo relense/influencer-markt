@@ -119,7 +119,7 @@ export const profilesRouter = createTRPCRouter({
       })
     )
     .query(async ({ ctx, input }) => {
-      const user = await ctx.prisma.user.findUnique({
+      const user = await ctx.prisma.user.findFirst({
         where: { username: input.username },
       });
 
