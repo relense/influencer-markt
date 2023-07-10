@@ -15,7 +15,12 @@ export const Layout = (props: PropsWithChildren) => {
   const scrollableContainer = useRef<HTMLDivElement>(null);
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [isSignUp, setIsSignUp] = useState<boolean>(false);
-  const { data: user, isLoading } = api.users.getUser.useQuery();
+  const { data: user, refetch: refetechUser } = api.users.getUser.useQuery(
+    undefined,
+    {
+      enabled: false,
+    }
+  );
 
   const onCloseModal = () => {
     setIsModalOpen(false);
@@ -23,12 +28,18 @@ export const Layout = (props: PropsWithChildren) => {
   };
 
   useEffect(() => {
+    if (status === "authenticated") {
+      void refetechUser();
+    }
+  }, [status]);
+
+  useEffect(() => {
     if (scrollableContainer && scrollableContainer.current) {
       scrollableContainer.current?.scrollTo(0, 0);
     }
   }, [pathname]);
 
-  if (isLoading || status === "loading") {
+  if (status === "loading") {
     return <LoadingSpinner />;
   } else {
     return (
