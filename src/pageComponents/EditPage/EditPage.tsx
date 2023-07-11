@@ -19,7 +19,6 @@ import {
   AddSocialMediaModal,
   type SocialMediaDetails,
 } from "../../components/AddSocialMediaModal";
-import { Layout } from "../../components/Layout";
 import { AddValuePackModal } from "../../components/AddValuePackModal";
 import { type ProfileData, ProfileForm } from "../../components/ProfileForm";
 import { Modal } from "../../components/Modal";
