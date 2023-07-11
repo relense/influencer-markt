@@ -7,21 +7,22 @@ const TermsConditionsPage = () => {
         </div>
         <div>
           These Terms of Use constitute a legally binding agreement made between
-          you, whether personally or on behalf of an entity ("you") and
-          Influencer Markt ("Company," "we," "us," or "our"), concerning your
-          access to and use of the influencermarkt.com website as well as any
-          other media form, media channel, mobile website, or mobile application
-          related, linked, or otherwise connected thereto (collectively, the
-          "Site"). The Site provides an online marketplace for the following
-          goods, products, and/or services: marketing influence via social media
-          platforms (the "Marketplace Offerings"). In order to help make the
-          Site a secure environment for the purchase and sale of Marketplace
-          Offerings, all users are required to accept and comply with these
-          Terms of Use, including the User Agreement posted on the Site, which
-          are incorporated into these Terms of Use. You agree that by accessing
-          the Site and/or the Marketplace Offerings, you have read, understood,
-          and agree to be bound by all of these Terms of Use. IF YOU DO NOT
-          AGREE WITH ALL OF THESE TERMS OF USE, THEN YOU ARE EXPRESSLY
+          you, whether personally or on behalf of an entity (&quot;you&quot;)
+          and Influencer Markt (&quot;Company,&quot; &quot;we,&quot;
+          &quot;us,&quot; or &quot;our&quot;), concerning your access to and use
+          of the influencermarkt.com website as well as any other media form,
+          media channel, mobile website, or mobile application related, linked,
+          or otherwise connected thereto (collectively, the &quot;Site&quot;).
+          The Site provides an online marketplace for the following goods,
+          products, and/or services: marketing influence via social media
+          platforms (the &quot;Marketplace Offerings&quot;). In order to help
+          make the Site a secure environment for the purchase and sale of
+          Marketplace Offerings, all users are required to accept and comply
+          with these Terms of Use, including the User Agreement posted on the
+          Site, which are incorporated into these Terms of Use. You agree that
+          by accessing the Site and/or the Marketplace Offerings, you have read,
+          understood, and agree to be bound by all of these Terms of Use. IF YOU
+          DO NOT AGREE WITH ALL OF THESE TERMS OF USE, THEN YOU ARE EXPRESSLY
           PROHIBITED FROM USING THE SITE AND/OR THE MARKETPLACE OFFERINGS AND
           YOU MUST DISCONTINUE USE IMMEDIATELY.
         </div>
@@ -30,8 +31,8 @@ const TermsConditionsPage = () => {
           the Site from time to time are hereby expressly incorporated herein by
           reference. We reserve the right, in our sole discretion, to make
           changes or modifications to these Terms of Use at any time and for any
-          reason. We will alert you about any changes by updating the "Last
-          updated" date of these Terms of Use, and you waive any right to
+          reason. We will alert you about any changes by updating the &quot;Last
+          updated&quot; date of these Terms of Use, and you waive any right to
           receive specific notice of each such change. It is your responsibility
           to periodically review these Terms of Use to stay informed of updates.
           You will be subject to, and will be deemed to have been made aware of
@@ -68,18 +69,18 @@ const TermsConditionsPage = () => {
           Unless otherwise indicated, the Site and the Marketplace Offerings are
           our exclusive property, and all source code, databases, functionality,
           software, website designs, audio, video, text, photographs, and
-          graphics on the Site (collectively, the "Content") and the trademarks,
-          service marks, and logos contained therein (the "Marks") are owned or
-          controlled by us or licensed to us. They are protected by copyright,
-          trademark, and other intellectual property laws, international
-          copyright laws, and international conventions. The Content and the
-          Marks are provided on the Site "AS IS" for your personal use and
-          information only. Without our express prior written permission, no
-          part of the Site or the Marketplace Offerings, including the Content
-          or Marks, may be copied, reproduced, aggregated, republished,
-          uploaded, posted, publicly displayed, encoded, translated,
-          transmitted, distributed, sold, licensed, or exploited for any
-          commercial purpose.
+          graphics on the Site (collectively, the &quot;Content&quot;) and the
+          trademarks, service marks, and logos contained therein (the
+          &quot;Marks&quot;) are owned or controlled by us or licensed to us.
+          They are protected by copyright, trademark, and other intellectual
+          property laws, international copyright laws, and international
+          conventions. The Content and the Marks are provided on the Site
+          &quot;AS IS&quot; for your personal use and information only. Without
+          our express prior written permission, no part of the Site or the
+          Marketplace Offerings, including the Content or Marks, may be copied,
+          reproduced, aggregated, republished, uploaded, posted, publicly
+          displayed, encoded, translated, transmitted, distributed, sold,
+          licensed, or exploited for any commercial purpose.
         </div>
         <div>
           Subject to your eligibility to use the Site, you are granted a limited
@@ -283,14 +284,16 @@ const TermsConditionsPage = () => {
         <div>
           In the event that an order is placed with an influencer, but the buyer
           fails to follow through with the order or requests cancellation due to
-          reasons beyond Influencer Markt's control, such as inadequate planning
-          or organization, the buyer may be subject to a fee upon refund.
+          reasons beyond Influencer Markt&apos;s control, such as inadequate
+          planning or organization, the buyer may be subject to a fee upon
+          refund.
         </div>
         <div>
           Refunds are automatically provided in the form of a platform credit,
-          which is added to the user's "Influencer Markt balance." Users can
-          exchange these credits for a complete refund, which will be directed
-          to their original payment method as specified on their "Account" page.
+          which is added to the user&apos;s &quot;Influencer Markt
+          balance.&quot; Users can exchange these credits for a complete refund,
+          which will be directed to their original payment method as specified
+          on their &quot;Account&quot; page.
         </div>
       </div>
     );
@@ -343,8 +346,8 @@ const TermsConditionsPage = () => {
             networks and services.
           </div>
           <div>
-            Attempt to impersonate another user or person, or use another user's
-            username.
+            Attempt to impersonate another user or person, or use another
+            user&apos;s username.
           </div>
           <div>Sell or transfer your profile.</div>
           <div>
@@ -364,8 +367,8 @@ const TermsConditionsPage = () => {
             involved in providing the Marketplace Offerings.
           </div>
           <div>
-            Copy or modify the Site's software, including code such as Flash,
-            PHP, HTML, JavaScript, or others.
+            Copy or modify the Site&apos;s software, including code such as
+            Flash, PHP, HTML, JavaScript, or others.
           </div>
           <div>
             Upload or transmit viruses, Trojan horses, or other materials that
@@ -394,11 +397,11 @@ const TermsConditionsPage = () => {
             message boards, online forums, and other features, allowing you to
             create, submit, post, display, transmit, perform, publish,
             distribute, or broadcast content and materials (collectively,
-            "Contributions"). Contributions may be visible to other users of the
-            Site, the Marketplace Offerings, and through third-party websites.
-            Therefore, any Contributions you transmit should be considered
-            non-confidential and non-proprietary. By creating or making
-            Contributions, you represent and warrant that:
+            &quot;Contributions&quot;). Contributions may be visible to other
+            users of the Site, the Marketplace Offerings, and through
+            third-party websites. Therefore, any Contributions you transmit
+            should be considered non-confidential and non-proprietary. By
+            creating or making Contributions, you represent and warrant that:
           </div>
         </div>
         <div>
@@ -447,7 +450,7 @@ const TermsConditionsPage = () => {
         </div>
         <div>
           Your Contributions do not violate laws concerning child pornography or
-          endanger minors' well-being.
+          endanger minor&apos;s well-being.
         </div>
         <div>
           Your Contributions do not include offensive comments related to race,
@@ -596,27 +599,28 @@ const TermsConditionsPage = () => {
         <div className="text-lg font-semibold">Apple and Android Devices</div>
         <div>
           The following terms apply when you use a mobile application obtained
-          from either the Apple Store or Google Play (each an "App Distributor")
-          to access the Marketplace Offerings: (1) the license granted to you
-          for our mobile application is limited to a non-transferable license to
-          use the application on a device that utilizes the Apple iOS or Android
-          operating systems, as applicable, and in accordance with the usage
-          rules set forth in the applicable App Distributor's terms of service;
-          (2) we are responsible for providing any maintenance and support
-          services with respect to the mobile application as specified in the
-          terms and conditions of this mobile application license contained in
-          these Terms of Use or as otherwise required under applicable law, and
-          you acknowledge that each App Distributor has no obligation whatsoever
-          to furnish any maintenance and support services with respect to the
-          mobile application; (3) in the event of any failure of the mobile
-          application to conform to any applicable warranty, you may notify the
-          applicable App Distributor, and the App Distributor, in accordance
-          with its terms and policies, may refund the purchase price, if any,
-          paid for the mobile application, and to the maximum extent permitted
-          by applicable law, the App Distributor will have no other warranty
-          obligation whatsoever with respect to the mobile application; (4) you
-          must comply with applicable third-party terms of agreement when using
-          the mobile application; and (5) you acknowledge and agree that the App
+          from either the Apple Store or Google Play (each an &quot;App
+          Distributor&quot;) to access the Marketplace Offerings: (1) the
+          license granted to you for our mobile application is limited to a
+          non-transferable license to use the application on a device that
+          utilizes the Apple iOS or Android operating systems, as applicable,
+          and in accordance with the usage rules set forth in the applicable App
+          Distributor&apos;s terms of service; (2) we are responsible for
+          providing any maintenance and support services with respect to the
+          mobile application as specified in the terms and conditions of this
+          mobile application license contained in these Terms of Use or as
+          otherwise required under applicable law, and you acknowledge that each
+          App Distributor has no obligation whatsoever to furnish any
+          maintenance and support services with respect to the mobile
+          application; (3) in the event of any failure of the mobile application
+          to conform to any applicable warranty, you may notify the applicable
+          App Distributor, and the App Distributor, in accordance with its terms
+          and policies, may refund the purchase price, if any, paid for the
+          mobile application, and to the maximum extent permitted by applicable
+          law, the App Distributor will have no other warranty obligation
+          whatsoever with respect to the mobile application; (4) you must comply
+          with applicable third-party terms of agreement when using the mobile
+          application; and (5) you acknowledge and agree that the App
           Distributors are third-party beneficiaries of the terms and conditions
           in this mobile application license contained in these Terms of Use,
           and that each App Distributor will have the right (and will be deemed
@@ -637,10 +641,10 @@ const TermsConditionsPage = () => {
         <div>
           As part of the functionality of the Site, you may link your account
           with online accounts you have with third-party service providers (each
-          such account, a "Third-Party Account") by either: (1) providing your
-          Third-Party Account login information through the Site; or (2)
-          allowing us to access your Third-Party Account, as is permitted under
-          the applicable terms and conditions that govern your use of each
+          such account, a &quot;Third-Party Account&quot;) by either: (1)
+          providing your Third-Party Account login information through the Site;
+          or (2) allowing us to access your Third-Party Account, as is permitted
+          under the applicable terms and conditions that govern your use of each
           Third-Party Account. You represent and warrant that you are entitled
           to disclose your Third-Party Account login information to us and/or
           grant us access to your Third-Party Account without breach by you of
@@ -650,37 +654,38 @@ const TermsConditionsPage = () => {
           service provider of the Third-Party Account. By granting us access to
           any Third-Party Accounts, you understand that (1) we may access, make
           available, and store (if applicable) any content that you have
-          provided to and stored in your Third-Party Account (the "Social
-          Network Content") so that it is available on and through the Site via
-          your account, including, without limitation, any friend lists and (2)
-          we may submit to and receive from your Third-Party Account additional
-          information to the extent you are notified when you link your account
-          with the Third-Party Account. Depending on the Third-Party Accounts
-          you choose and subject to the privacy settings that you have set in
-          such Third-Party Accounts, personally identifiable information that
-          you post to your Third-Party Accounts may be available on and through
-          your account on the Site. Please note that if a Third-Party Account or
-          associated service becomes unavailable or our access to such
-          Third-Party Account is terminated by the third-party service provider,
-          then Social Network Content may no longer be available on and through
-          the Site. You will have the ability to disable the connection between
-          your account on the Site and your Third-Party Accounts at any time.
-          PLEASE NOTE THAT YOUR RELATIONSHIP WITH THE THIRD-PARTY SERVICE
-          PROVIDERS ASSOCIATED WITH YOUR THIRD-PARTY ACCOUNTS IS GOVERNED SOLELY
-          BY YOUR AGREEMENT(S) WITH SUCH THIRD-PARTY SERVICE PROVIDERS. We make
-          no effort to review any Social Network Content for any purpose,
-          including but not limited to, accuracy, legality, or non-infringement,
-          and we are not responsible for any Social Network Content. You
-          acknowledge and agree that we may access your email address book
-          associated with a Third-Party Account and your contacts list stored on
-          your mobile device or tablet computer solely for purposes of
-          identifying and informing you of those contacts who have also
-          registered to use the Site. You can deactivate the connection between
-          the Site and your Third-Party Account by contacting us using the
-          contact information below or through your account settings (if
-          applicable). We will attempt to delete any information stored on our
-          servers that was obtained through such Third-Party Account, except the
-          username and profile picture that become associated with your account.
+          provided to and stored in your Third-Party Account (the &quot;Social
+          Network Content&quot;) so that it is available on and through the Site
+          via your account, including, without limitation, any friend lists and
+          (2) we may submit to and receive from your Third-Party Account
+          additional information to the extent you are notified when you link
+          your account with the Third-Party Account. Depending on the
+          Third-Party Accounts you choose and subject to the privacy settings
+          that you have set in such Third-Party Accounts, personally
+          identifiable information that you post to your Third-Party Accounts
+          may be available on and through your account on the Site. Please note
+          that if a Third-Party Account or associated service becomes
+          unavailable or our access to such Third-Party Account is terminated by
+          the third-party service provider, then Social Network Content may no
+          longer be available on and through the Site. You will have the ability
+          to disable the connection between your account on the Site and your
+          Third-Party Accounts at any time. PLEASE NOTE THAT YOUR RELATIONSHIP
+          WITH THE THIRD-PARTY SERVICE PROVIDERS ASSOCIATED WITH YOUR
+          THIRD-PARTY ACCOUNTS IS GOVERNED SOLELY BY YOUR AGREEMENT(S) WITH SUCH
+          THIRD-PARTY SERVICE PROVIDERS. We make no effort to review any Social
+          Network Content for any purpose, including but not limited to,
+          accuracy, legality, or non-infringement, and we are not responsible
+          for any Social Network Content. You acknowledge and agree that we may
+          access your email address book associated with a Third-Party Account
+          and your contacts list stored on your mobile device or tablet computer
+          solely for purposes of identifying and informing you of those contacts
+          who have also registered to use the Site. You can deactivate the
+          connection between the Site and your Third-Party Account by contacting
+          us using the contact information below or through your account
+          settings (if applicable). We will attempt to delete any information
+          stored on our servers that was obtained through such Third-Party
+          Account, except the username and profile picture that become
+          associated with your account.
         </div>
       </div>
     );
@@ -695,8 +700,8 @@ const TermsConditionsPage = () => {
         <div>
           You acknowledge and agree that any questions, comments, suggestions,
           ideas, feedback, or other information regarding the Site or the
-          Marketplace Offerings ("Submissions") provided by you to us are
-          non-confidential and shall become our sole property. We shall own
+          Marketplace Offerings (&quot;Submissions&quot;) provided by you to us
+          are non-confidential and shall become our sole property. We shall own
           exclusive rights, including all intellectual property rights, and
           shall be entitled to the unrestricted use and dissemination of these
           Submissions for any lawful purpose, commercial or otherwise, without
@@ -719,21 +724,21 @@ const TermsConditionsPage = () => {
         </div>
         <div>
           The Site may feature (or you may be directed to via the Site or the
-          Marketplace Offerings) links to other websites ("Third-Party
-          Websites") as well as articles, photos, text, graphics, images,
+          Marketplace Offerings) links to other websites (&quot;Third-Party
+          Websites&quot;) as well as articles, photos, text, graphics, images,
           designs, music, audio, videos, information, applications, software,
-          and other content or items from third parties ("Third-Party Content").
-          Please note that we do not investigate, monitor, or check the
-          accuracy, appropriateness, or completeness of such Third-Party
-          Websites and Third-Party Content. We are not responsible for any
-          Third-Party Websites accessed through the Site or any Third-Party
-          Content posted on, available through, or installed from the Site,
-          including the content, accuracy, offensiveness, opinions, reliability,
-          privacy practices, or other policies of the Third-Party Websites or
-          the Third-Party Content. The inclusion of, linking to, or use or
-          installation of any Third-Party Websites or Third-Party Content does
-          not imply our approval or endorsement. If you choose to leave the Site
-          and access Third-Party Websites or use or install any Third-Party
+          and other content or items from third parties (&quot;Third-Party
+          Content&quot;). Please note that we do not investigate, monitor, or
+          check the accuracy, appropriateness, or completeness of such
+          Third-Party Websites and Third-Party Content. We are not responsible
+          for any Third-Party Websites accessed through the Site or any
+          Third-Party Content posted on, available through, or installed from
+          the Site, including the content, accuracy, offensiveness, opinions,
+          reliability, privacy practices, or other policies of the Third-Party
+          Websites or the Third-Party Content. The inclusion of, linking to, or
+          use or installation of any Third-Party Websites or Third-Party Content
+          does not imply our approval or endorsement. If you choose to leave the
+          Site and access Third-Party Websites or use or install any Third-Party
           Content, you do so at your own risk, and these Terms of Use will no
           longer apply. We recommend reviewing the terms, policies, including
           privacy and data collection practices, of any website you visit or any
@@ -877,11 +882,12 @@ const TermsConditionsPage = () => {
           requirements described above, we will restore your removed or disabled
           material unless we receive notice from the party filing the
           Notification that they have initiated a court action to prevent you
-          from engaging in infringing activity related to the material. It's
-          important to note that filing a false Counter Notification constitutes
-          perjury, and if you materially misrepresent that the disabled or
-          removed content was taken down by mistake or misidentification, you
-          may be liable for damages, including costs and attorney's fees.
+          from engaging in infringing activity related to the material.
+          It&apos;s important to note that filing a false Counter Notification
+          constitutes perjury, and if you materially misrepresent that the
+          disabled or removed content was taken down by mistake or
+          misidentification, you may be liable for damages, including costs and
+          attorney&apos;s fees.
         </div>
         <div>Influencer Markt</div>
         <div>Address XXXXXXX</div>
@@ -1034,36 +1040,37 @@ const TermsConditionsPage = () => {
           Disclaimer
         </div>
         <div>
-          THE SITE AND THE MARKETPLACE OFFERINGS ARE PROVIDED ON AN "AS-IS" AND
-          "AS-AVAILABLE" BASIS. YOU ACKNOWLEDGE THAT YOUR USE OF THE SITE AND
-          OUR SERVICES WILL BE AT YOUR SOLE RISK. TO THE FULLEST EXTENT
-          PERMITTED BY LAW, WE DISCLAIM ALL WARRANTIES, EXPRESS OR IMPLIED, IN
-          CONNECTION WITH THE SITE AND THE MARKETPLACE OFFERINGS AND YOUR USE
-          THEREOF, INCLUDING, WITHOUT LIMITATION, THE IMPLIED WARRANTIES OF
-          MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, AND
-          NON-INFRINGEMENT. WE MAKE NO WARRANTIES OR REPRESENTATIONS ABOUT THE
-          ACCURACY OR COMPLETENESS OF THE SITE'S CONTENT OR THE CONTENT OF ANY
-          WEBSITES LINKED TO THE SITE, AND WE WILL ASSUME NO LIABILITY OR
-          RESPONSIBILITY FOR ANY (1) ERRORS, MISTAKES, OR INACCURACIES OF
-          CONTENT AND MATERIALS, (2) PERSONAL INJURY OR PROPERTY DAMAGE OF ANY
-          NATURE WHATSOEVER RESULTING FROM YOUR ACCESS TO AND USE OF THE SITE,
-          (3) ANY UNAUTHORIZED ACCESS TO OR USE OF OUR SECURE SERVERS AND/OR ANY
-          PERSONAL INFORMATION AND/OR FINANCIAL INFORMATION STORED THEREIN, (4)
-          ANY INTERRUPTION OR CESSATION OF TRANSMISSION TO OR FROM THE SITE OR
-          THE MARKETPLACE OFFERINGS, (5) ANY BUGS, VIRUSES, TROJAN HORSES, OR
-          SIMILAR ITEMS THAT MAY BE TRANSMITTED TO OR THROUGH THE SITE BY ANY
-          THIRD PARTY, AND/OR (6) ANY ERRORS OR OMISSIONS IN ANY CONTENT AND
-          MATERIALS OR FOR ANY LOSS OR DAMAGE OF ANY KIND INCURRED AS A RESULT
-          OF THE USE OF ANY CONTENT POSTED, TRANSMITTED, OR OTHERWISE MADE
-          AVAILABLE VIA THE SITE. WE DO NOT WARRANT, ENDORSE, GUARANTEE, OR
-          ASSUME RESPONSIBILITY FOR ANY PRODUCT OR SERVICE ADVERTISED OR OFFERED
-          BY A THIRD PARTY THROUGH THE SITE, ANY HYPERLINKED WEBSITE, OR ANY
-          WEBSITE OR MOBILE APPLICATION FEATURED IN ANY BANNER OR OTHER
-          ADVERTISING, AND WE WILL NOT BE A PARTY TO OR IN ANY WAY BE
-          RESPONSIBLE FOR MONITORING ANY TRANSACTION BETWEEN YOU AND ANY
-          THIRD-PARTY PROVIDERS OF PRODUCTS OR SERVICES. AS WITH THE PURCHASE OF
-          A PRODUCT OR SERVICE THROUGH ANY MEDIUM OR IN ANY ENVIRONMENT, YOU
-          SHOULD USE YOUR BEST JUDGMENT AND EXERCISE CAUTION WHERE APPROPRIATE.
+          THE SITE AND THE MARKETPLACE OFFERINGS ARE PROVIDED ON AN
+          &quot;AS-IS&quot; AND &quot;AS-AVAILABLE&quot; BASIS. YOU ACKNOWLEDGE
+          THAT YOUR USE OF THE SITE AND OUR SERVICES WILL BE AT YOUR SOLE RISK.
+          TO THE FULLEST EXTENT PERMITTED BY LAW, WE DISCLAIM ALL WARRANTIES,
+          EXPRESS OR IMPLIED, IN CONNECTION WITH THE SITE AND THE MARKETPLACE
+          OFFERINGS AND YOUR USE THEREOF, INCLUDING, WITHOUT LIMITATION, THE
+          IMPLIED WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR
+          PURPOSE, AND NON-INFRINGEMENT. WE MAKE NO WARRANTIES OR
+          REPRESENTATIONS ABOUT THE ACCURACY OR COMPLETENESS OF THE SITE&apos;S
+          CONTENT OR THE CONTENT OF ANY WEBSITES LINKED TO THE SITE, AND WE WILL
+          ASSUME NO LIABILITY OR RESPONSIBILITY FOR ANY (1) ERRORS, MISTAKES, OR
+          INACCURACIES OF CONTENT AND MATERIALS, (2) PERSONAL INJURY OR PROPERTY
+          DAMAGE OF ANY NATURE WHATSOEVER RESULTING FROM YOUR ACCESS TO AND USE
+          OF THE SITE, (3) ANY UNAUTHORIZED ACCESS TO OR USE OF OUR SECURE
+          SERVERS AND/OR ANY PERSONAL INFORMATION AND/OR FINANCIAL INFORMATION
+          STORED THEREIN, (4) ANY INTERRUPTION OR CESSATION OF TRANSMISSION TO
+          OR FROM THE SITE OR THE MARKETPLACE OFFERINGS, (5) ANY BUGS, VIRUSES,
+          TROJAN HORSES, OR SIMILAR ITEMS THAT MAY BE TRANSMITTED TO OR THROUGH
+          THE SITE BY ANY THIRD PARTY, AND/OR (6) ANY ERRORS OR OMISSIONS IN ANY
+          CONTENT AND MATERIALS OR FOR ANY LOSS OR DAMAGE OF ANY KIND INCURRED
+          AS A RESULT OF THE USE OF ANY CONTENT POSTED, TRANSMITTED, OR
+          OTHERWISE MADE AVAILABLE VIA THE SITE. WE DO NOT WARRANT, ENDORSE,
+          GUARANTEE, OR ASSUME RESPONSIBILITY FOR ANY PRODUCT OR SERVICE
+          ADVERTISED OR OFFERED BY A THIRD PARTY THROUGH THE SITE, ANY
+          HYPERLINKED WEBSITE, OR ANY WEBSITE OR MOBILE APPLICATION FEATURED IN
+          ANY BANNER OR OTHER ADVERTISING, AND WE WILL NOT BE A PARTY TO OR IN
+          ANY WAY BE RESPONSIBLE FOR MONITORING ANY TRANSACTION BETWEEN YOU AND
+          ANY THIRD-PARTY PROVIDERS OF PRODUCTS OR SERVICES. AS WITH THE
+          PURCHASE OF A PRODUCT OR SERVICE THROUGH ANY MEDIUM OR IN ANY
+          ENVIRONMENT, YOU SHOULD USE YOUR BEST JUDGMENT AND EXERCISE CAUTION
+          WHERE APPROPRIATE.
         </div>
       </div>
     );
@@ -1106,8 +1113,8 @@ const TermsConditionsPage = () => {
           You agree to defend, indemnify, and hold us harmless, including our
           subsidiaries, affiliates, and all of our respective officers, agents,
           partners, and employees, from and against any loss, damage, liability,
-          claim, or demand, including reasonable attorneys' fees and expenses,
-          made by any third party due to or arising out of: (1) your
+          claim, or demand, including reasonable attorney&apos;s fees and
+          expenses, made by any third party due to or arising out of: (1) your
           Contributions; (2) use of the Marketplace Offerings; (3) breach of
           these Terms of Use; (4) any breach of your representations and
           warranties set forth in these Terms of Use; (5) your violation of the
@@ -1190,12 +1197,13 @@ const TermsConditionsPage = () => {
           Use. Additionally:
         </div>
         <div>
-          "Referring User" is also referred to as "you" or "your" in these
-          Referral Program Terms.
+          &quot;Referring User&quot; is also referred to as &quot;you&quot; or
+          &quot;your&quot; in these Referral Program Terms.
         </div>
         <div>
-          "Referred User" means the person who joins Influencer Markt as a brand
-          or influencer via the Referring User's unique referral link.
+          &quot;Referred User&quot; means the person who joins Influencer Markt
+          as a brand or influencer via the Referring User&apos;s unique referral
+          link.
         </div>
         <div>
           <strong>What is the Influencer Markt Referral Program?</strong>{" "}
@@ -1210,14 +1218,14 @@ const TermsConditionsPage = () => {
         </div>
         <div>
           Only Users of Influencer Markt with a current User account can
-          participate in the Influencer Markt Referral Program. If a User's
+          participate in the Influencer Markt Referral Program. If a User&apos;s
           account has been suspended or terminated by us for any reason or
           deleted by the User, that User will not be eligible to participate in
           the Influencer Markt Referral Program. Each User has a unique referral
-          link (which can be accessed via the User's User account) that the User
-          may share with others. When sharing your unique referral link, you
-          must not impersonate Influencer Markt or give the impression that your
-          referral link is being shared or promoted by us. You must not use
+          link (which can be accessed via the User&apos;s User account) that the
+          User may share with others. When sharing your unique referral link,
+          you must not impersonate Influencer Markt or give the impression that
+          your referral link is being shared or promoted by us. You must not use
           Google Ads or any similar advertising platform or search engine
           advertising service to share or promote your unique referral link.
           Upon our request, you must disclose the methods by which you share
@@ -1260,8 +1268,8 @@ const TermsConditionsPage = () => {
           registered User of Influencer Markt in accordance with the rules of
           the Influencer Markt Referral Program described above, we will pay the
           Referring User a referral payment equal to fifty percent of Influencer
-          Markt's net profit on the transaction, up to ten percent of the total
-          transaction. Referring Users are only entitled to payments for
+          Markt&apos;s net profit on the transaction, up to ten percent of the
+          total transaction. Referring Users are only entitled to payments for
           completed transactions as determined by Influencer Markt.
         </div>
         <div>
@@ -1387,15 +1395,16 @@ const TermsConditionsPage = () => {
         <div>
           In the event a product is shipped to an influencer and the work is not
           completed by the influencer, Influencer Markt holds the right to
-          charge the influencer's credit card on file for the amount of the cost
-          of the product if we believe there is a valid reason to do so.
+          charge the influencer&apos;s credit card on file for the amount of the
+          cost of the product if we believe there is a valid reason to do so.
         </div>
         <div className="text-lg font-semibold">
           Influencer Contract Generator
         </div>
         <div>
           Influencer Markt is not liable for any contracts created using the
-          "influencer contract generator" or "influencer contract template".
+          &quot;influencer contract generator&quot; or &quot;influencer contract
+          template&quot;.
         </div>
       </div>
     );

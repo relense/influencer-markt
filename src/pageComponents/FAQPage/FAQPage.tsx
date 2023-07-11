@@ -137,7 +137,7 @@ const FAQPage = () => {
             setShowInfluencerQuestions(true);
           }}
         >
-          <div className="cursor-pointer text-xl font-medium lg:text-3xl">
+          <div className="cursor-pointer text-xl font-medium lg:text-2xl">
             {t("pages.faq.questions.influencers.title")}
           </div>
           {showInfluencerQuestions && (
@@ -152,7 +152,7 @@ const FAQPage = () => {
             setShowBrandQuestions(true);
           }}
         >
-          <div className="cursor-pointer text-xl font-medium lg:text-3xl">
+          <div className="cursor-pointer text-xl font-medium lg:text-2xl">
             {t("pages.faq.questions.brands.title")}
           </div>
           {showBrandQuestions && (

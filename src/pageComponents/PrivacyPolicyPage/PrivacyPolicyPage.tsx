@@ -23,8 +23,8 @@ const PrivacyPolicyPage = () => {
         <div className="text-lg font-semibold">What is personal data?</div>
         <div>
           We gather various types of information, including personal data. In
-          this Policy, "personal data" refers to any information that, either
-          alone or in combination with other data we process about you,
+          this Policy, &quot;personal data&quot; refers to any information that,
+          either alone or in combination with other data we process about you,
           identifies you as an individual. This may include your name, mailing
           address, email address, and telephone number.
         </div>
@@ -77,10 +77,10 @@ const PrivacyPolicyPage = () => {
         <div>
           Automatically Collected Information: When you access our website, we
           automatically log information about you and your device. This includes
-          your device's operating system, manufacturer and model, browser type,
-          language, screen resolution, the website you visited prior to ours,
-          pages viewed, time spent on each page, access times, and your actions
-          on our website. We collect this information using cookies.
+          your device&apos;s operating system, manufacturer and model, browser
+          type, language, screen resolution, the website you visited prior to
+          ours, pages viewed, time spent on each page, access times, and your
+          actions on our website. We collect this information using cookies.
         </div>
         <div>
           Automated Decision Making and Profiling: We do not use your personal
@@ -118,10 +118,10 @@ const PrivacyPolicyPage = () => {
         </div>
         <div className="text-lg font-semibold">What are cookies?</div>
         <div>
-          We may collect information using "cookies," which are small data files
-          stored on your computer or mobile device by a website. We use both
-          session cookies (which expire when you close your browser) and
-          persistent cookies (which remain on your computer or device until
+          We may collect information using &quot;cookies,&quot; which are small
+          data files stored on your computer or mobile device by a website. We
+          use both session cookies (which expire when you close your browser)
+          and persistent cookies (which remain on your computer or device until
           deleted) to provide a personalized and interactive experience on our
           website.
         </div>
@@ -176,8 +176,8 @@ const PrivacyPolicyPage = () => {
         </div>
         <div>
           To manage cookies, you can typically adjust your browser settings. The
-          "Help" section of your browser should provide instructions on how to
-          block, delete, or disable cookies. You can also visit
+          &quot;Help&quot; section of your browser should provide instructions
+          on how to block, delete, or disable cookies. You can also visit
           www.allaboutcookies.org for more information on managing cookies in
           different browsers.
         </div>
