@@ -83,9 +83,8 @@ const ContactUsPage = () => {
               );
             }}
           />
-          <div></div>
         </div>
-        <div className="flex w-full gap-4">
+        <div className="flex w-full flex-col gap-4 lg:flex-row">
           <div className="flex flex-1 flex-col gap-4">
             <input
               {...register("name")}
@@ -95,7 +94,6 @@ const ContactUsPage = () => {
               placeholder={t("pages.contactUs.nameInputPlaceholder")}
               autoComplete="off"
             />
-            <div></div>
           </div>
           <div className="flex flex-1 flex-col gap-4">
             <input
@@ -106,7 +104,6 @@ const ContactUsPage = () => {
               placeholder="Email"
               autoComplete="off"
             />
-            <div></div>
           </div>
         </div>
         <div className="flex w-full flex-1 flex-col">
