@@ -175,3 +175,30 @@ model Review {
   @@index([profileReviewdId])
   @@index([authorId])
 }
+
+model Reason {
+  id             Int              @id @default(autoincrement())
+  name           String           @unique
+  contactMessage ContactMessage[]
+}
+
+model ContactMessageState {
+  id             Int              @id @default(autoincrement())
+  name           String
+  contactMessage ContactMessage[]
+}
+
+model ContactMessage {
+  id                  Int                  @id @default(autoincrement())
+  name                String
+  email               String
+  message             String               @db.Text
+  contactMessageState ContactMessageState? @relation(fields: [contactMessageStateId], references: [id])
+  reason              Reason?              @relation(fields: [reasonId], references: [id])
+
+  contactMessageStateId Int
+  reasonId              Int
+
+  @@index([contactMessageStateId])
+  @@index([reasonId])
+}
