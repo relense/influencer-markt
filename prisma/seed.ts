@@ -13,10 +13,25 @@ async function main() {
   await prisma.category.createMany({
     data: [
       { name: "Lifestyle" },
-      { name: "Comedy" },
       { name: "Fashion" },
       { name: "Gaming" },
       { name: "Cannabis" },
+      { name: "Beauty" },
+      { name: "Travel" },
+      { name: "Health & Fitness" },
+      { name: "Food & Drink" },
+      { name: "Model" },
+      { name: "Comedy & Entertaiment" },
+      { name: "Art & Photography" },
+      { name: "Music & Dance" },
+      { name: "Entrepreuneur & Business" },
+      { name: "Family & Children" },
+      { name: "Animals & Pets" },
+      { name: "Athlete & Sports" },
+      { name: "Adventure & Outdoors" },
+      { name: "Education" },
+      { name: "Celebrity & Public Figure" },
+      { name: "Technology" },
     ],
   });
 
