@@ -6,6 +6,7 @@ import {
   type IconDefinition,
 } from "@fortawesome/free-brands-svg-icons";
 import { useTranslation } from "react-i18next";
+import Link from "next/link";
 
 type NavigationItems = {
   name: string;
@@ -16,12 +17,12 @@ export const Footer = () => {
   const { t } = useTranslation();
 
   const navigationItems: NavigationItems[] = [
-    { name: t("components.footer.aboutUs"), link: "" },
-    { name: t("components.footer.contactUs"), link: "" },
-    { name: t("components.footer.faq"), link: "" },
-    { name: t("components.footer.sitemap"), link: "" },
-    { name: t("components.footer.terms"), link: "" },
-    { name: t("components.footer.privacy"), link: "" },
+    { name: t("components.footer.aboutUs"), link: "/about" },
+    { name: t("components.footer.contactUs"), link: "/contact-us" },
+    { name: t("components.footer.faq"), link: "/faq" },
+    { name: t("components.footer.sitemap"), link: "/" },
+    { name: t("components.footer.terms"), link: "/terms-conditions" },
+    { name: t("components.footer.privacy"), link: "/privacy-policy" },
   ];
 
   const renderNavigation = () => {
@@ -29,9 +30,13 @@ export const Footer = () => {
       <div className="flex flex-col text-center lg:flex-row">
         {navigationItems.map((item) => {
           return (
-            <span key={item.name} className="cursor-pointer p-2">
+            <Link
+              href={item.link}
+              key={item.name}
+              className="cursor-pointer p-2"
+            >
               {item.name}
-            </span>
+            </Link>
           );
         })}
       </div>
