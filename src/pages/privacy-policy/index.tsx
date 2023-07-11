@@ -1,10 +1,11 @@
 import { type NextPage } from "next";
 import { Layout } from "../../components/Layout";
+import { PrivacyPolicyPage } from "../../pageComponents/PrivacyPolicyPage/PrivacyPolicyPage";
 
 const PrivacyPolicy: NextPage = () => {
   return (
     <Layout>
-      <div>Privacy Policy</div>
+      <PrivacyPolicyPage />
     </Layout>
   );
 };
