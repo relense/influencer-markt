@@ -127,7 +127,7 @@ const FAQPage = () => {
     }
   };
 
-  const renderQuestions2 = () => {
+  const renderQuestionsHeader = () => {
     return (
       <div className="flex justify-center gap-12">
         <div
@@ -171,7 +171,7 @@ const FAQPage = () => {
           {t("pages.faq.subTitle")}
         </h2>
       </div>
-      {renderQuestions2()}
+      {renderQuestionsHeader()}
       {renderBrandQuestions()}
       {renderInfluencersQuestion()}
     </div>

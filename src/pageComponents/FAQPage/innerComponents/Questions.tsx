@@ -19,7 +19,7 @@ const Question = (params: QuestionType) => {
         <div className="text-base font-semibold lg:text-lg">
           {params.question}
         </div>
-        <div className="flex flex-1 cursor-pointer justify-end">
+        <div className="pointer-events-none flex flex-1 cursor-pointer justify-end lg:pointer-events-auto">
           <div className="flex h-6 w-6 items-center justify-center rounded-full border-[1px] border-gray3">
             <FontAwesomeIcon
               icon={showAnswer ? faMinus : faPlus}
