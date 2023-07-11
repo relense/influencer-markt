@@ -6,13 +6,19 @@
       "Fashion": "Moda",
       "Gaming": "Gaming",
       "Cannabis": "Canábis"
+    },
+
+    "reasons": {
+      "Feedback": "Feedback",
+      "General Question": "Questão Geral",
+      "Other": "Outro"
     }
   },
   "components": {
     "navbar": {
       "home": "Início",
       "explore": "Explora",
-      "saved": "Gravados",
+      "saved": "Guardado",
       "signIn": "Entrar",
       "joinMarketPlace": "Junta-te ao Marketplace",
       "myPage": "A Minha Página",
@@ -277,6 +283,29 @@
       "noValuePacks": "Não foi adicionado nenhum pack de valor",
       "profileModalTitle": "Actualiza o Perfil",
       "profileModalButton": "Actualiza Perfil"
+    },
+
+    "contactUs": {
+      "title": "Contacta-nos",
+      "reasonPlaceholder": "Selecione a razão para nos contactar",
+      "nameInputPlaceholder": "Nome",
+      "emailInputPlaceholder": "Email",
+      "messageInputPlaceholder": "Diga-nos como o podemos assistir! Por favor forneça o maior número de detalhes quanto possível sobre o que pretende, objectivos, e algum pedido especifico que tenha. Quanta mais informação partilhar, mais fácil será entender as suas necessidades e fornecer suporte de acordo com estas. Esperamos ouvir de si em breve",
+      "warningMessage": "Máximo de {{count}} caracteres",
+      "modalTitle": "Veja as nossas FAQ antes de nos contactar",
+      "modalSubTitle": "Before contacting us, we kindly request that you check our FAQ page to see if your question has already been answered. We have compiled a list of frequently asked questions to provide you with quick and helpful information. You may find the answer you're looking for without the need to wait for a response. If you don't find what you need in the FAQ section, feel free to reach out to us using the contact form below. We'll be happy to assist you!",
+      "modalButton": "Explore FAQs"
+    },
+
+    "about": {
+      "title": "Something about our mission and what we want to do",
+      "subTitle": "Here is something to reinforce our mission orem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.",
+      "photoSubTitle": "Phrase that gives emphasis to the picture",
+      "selfPromoTitle": "Small catch phrase to bring confidence to our brand",
+      "selfPromoSubTitle": "Subtitle to introduce us to our story orem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+      "selfPromoText": "Here is where we tell our story orem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.",
+      "meetTeamTitle": "Meet our team",
+      "coFounder": "Co-Founder"
     }
   }
 }
