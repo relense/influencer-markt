@@ -3,7 +3,7 @@ import { type NextPage } from "next";
 import { useRouter } from "next/router";
 import { api } from "~/utils/api";
 
-import { ProtectedLayout } from "../../../components/ProtectedLayout";
+import { ProtectedWrapper } from "../../../components/ProtectedWrapper";
 import { EditPage } from "../../../pageComponents/EditPage/EditPage";
 import { LoadingSpinner } from "../../../components/LoadingSpinner";
 import { Layout } from "../../../components/Layout";
@@ -22,7 +22,7 @@ const Edit: NextPage = () => {
   if (isLoading === false && username === userData?.username) {
     return (
       <>
-        <ProtectedLayout>
+        <ProtectedWrapper>
           <Layout>
             <EditPage
               role={
@@ -32,14 +32,14 @@ const Edit: NextPage = () => {
               }
             />
           </Layout>
-        </ProtectedLayout>
+        </ProtectedWrapper>
       </>
     );
   } else {
     return (
-      <ProtectedLayout>
+      <ProtectedWrapper>
         <LoadingSpinner />
-      </ProtectedLayout>
+      </ProtectedWrapper>
     );
   }
 };

@@ -6,7 +6,7 @@ type Props = {
   children: React.ReactElement;
 };
 
-export const ProtectedLayout = ({ children }: Props) => {
+export const ProtectedWrapper = ({ children }: Props) => {
   const router = useRouter();
   const { status: sessionStatus } = useSession();
 

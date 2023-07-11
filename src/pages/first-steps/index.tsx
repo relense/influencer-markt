@@ -1,6 +1,6 @@
 import { type NextPage } from "next";
 import { FirstStepsPage } from "../../pageComponents/FirstStepsPage/FirstStepsPage";
-import { ProtectedLayout } from "../../components/ProtectedLayout";
+import { ProtectedWrapper } from "../../components/ProtectedWrapper";
 import { useEffect } from "react";
 import { api } from "../../utils/api";
 import { useRouter } from "next/router";
@@ -14,13 +14,13 @@ const FirstSteps: NextPage = () => {
     if (isLoading === false && userData?.firstSteps) {
       void router.push("/");
     }
-  }, [isLoading]);
+  }, [isLoading, router, userData?.firstSteps]);
 
   if (isLoading === false && !userData?.firstSteps) {
     return (
-      <ProtectedLayout>
+      <ProtectedWrapper>
         <FirstStepsPage />
-      </ProtectedLayout>
+      </ProtectedWrapper>
     );
   } else {
     return <LoadingSpinner />;
