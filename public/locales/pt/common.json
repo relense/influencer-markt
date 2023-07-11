@@ -306,6 +306,48 @@
       "selfPromoText": "Here is where we tell our story orem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.",
       "meetTeamTitle": "Meet our team",
       "coFounder": "Co-Founder"
+    },
+
+    "faq": {
+      "title": "Frequently Asked Questions",
+      "subTitle": "Have questions? We’re here to help",
+      "questions.influencers.title": "For Influencers",
+      "questions.influencers.question1": "How does Influencer Markt works?",
+      "answer.influencers.answer1": "To get started with Influencer Markt, you can create your own personal page and showcase your services across various platforms such as Instagram, TikTok, YouTube, Twitter, Twitch, Meta, Pinterest and LinkedIn. Once you've set up your page, simply share your customized link on your bio and social media profiles. This way, brands can discover your services, make purchases, and you can conveniently manage your brand deals and receive direct payments through the platform.",
+      "questions.influencers.question2": "How will I receive my payment?",
+      "answer.influencers.answer2": "Payments are processed directly through our website.",
+      "questions.influencers.question3": "What are the costs involved?",
+      "answer.influencers.answer3": "There are no upfront costs. We only charge a {{fee}}% transaction fee when you successfully make a sale.",
+      "questions.influencers.question4": "Is my payment secure?",
+      "answer.influencers.answer4": "Absolutely! We collect the payment from the buyer and hold it securely until the order is fulfilled. This ensures protection for both parties involved in the transaction.",
+      "questions.influencers.question5": "Can I reject orders?",
+      "answer.influencers.answer5": "Certainly! You have the freedom to accept or decline any order that comes your way. This way, you can choose to collaborate only with brands that align with your values and preferences.",
+      "questions.influencers.question6": "Which platforms does Influencer Markt support?",
+      "answer.influencers.answer6": "Currently, you can list your services for popular platforms such as Instagram, TikTok, YouTube, Twitter, Twitch, Meta, Pinterest and LinkedIn.",
+      "questions.influencers.question7": "Which countries does Influencer Markt support?",
+      "answer.influencers.answer7": "We launched in Portugal, but are committed to expand to other markets as soon as possible.",
+      "questions.influencers.question8": "Are there any binding contracts?",
+      "answer.influencers.answer8": "No, there are no contracts to sign. Influencer Markt is a self-serve platform, empowering you to manage your own deals independently. We provide the platform solely for you to showcase and promote your services to brands.",
+      "questions.influencers.question9": "Are you an agency?",
+      "answer.influencers.answer9": "No, Influencer Markt is not an agency. We are a platform that enables you to advertise your services and manage your own brand deals effectively.",
+
+      "questions.brands.title": "For Brands",
+      "questions.brands.question1": "How does Influencer Markt operate?",
+      "answer.brands.answer1": "To begin, you can explore a wide range of vetted influencers on platforms such as Instagram, TikTok, YouTube, Twitter, Twitch, Meta, Pinterest and LinkedIn. Once you find the influencers you'd like to collaborate with, you can securely purchase their services through the website. We hold your payment until the work is successfully completed. After completion, you'll receive the high-quality content directly from the influencers through our platform.",
+      "questions.brands.question2": "What is Influencer Markt?",
+      "answer.brands.answer2": "We serve as a marketplace where you can discover and hire influencers on popular platforms like as Instagram, TikTok, YouTube, Twitter, Twitch, Meta, Pinterest and LinkedIn. You can easily search through several content creators and make payments directly through the website.",
+      "questions.brands.question3": "How are influencers verified before joining Influencer Markt?",
+      "answer.brands.answer3": "We ensure the authenticity of each influencer listed on our platform by verifying their identity. Additionally, we conduct comprehensive audits of their social media accounts to detect any signs of fake followers or engagement. Their previous brand deals are also taken into consideration.",
+      "questions.brands.question4": "How can I send custom offers?",
+      "answer.brands.answer4": "If you have a specific request that doesn't fit within an influencer's existing packages, you can send them a custom offer. Simply visit the influencer's profile and click the ''Request a custom value pack'' button, then follow the provided steps. Additionally, you can open a public offer, allowing influencers to pitch you instead.",
+      "questions.brands.question5": "How long do influencers have to accept my order?",
+      "answer.brands.answer5": "Influencers are given 72 hours to accept new orders before they automatically expire.",
+      "questions.brands.question6": "What happens if an influencer declines my order?",
+      "answer.brands.answer6": "Rest assured, we do not charge you until an influencer accepts your order. Therefore, if your order is declined, no further action is required from you.",
+      "questions.brands.question7": "How can I be sure that I will receive the work I paid for?",
+      "answer.brands.answer7": "Influencer Markt safeguards your payment until the work is fully completed and approved by you. You will have a period of 48 hours, starting from the submission of the work, to request revisions or initiate a dispute with us if necessary.",
+      "questions.brands.question8": "What payment methods are accepted?",
+      "answer.brands.answer8": "We utilize Stripe?/ Paypal? as our payment processor, enabling us to accept all major credit and debit cards securely."
     }
   }
 }

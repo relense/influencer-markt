@@ -326,8 +326,8 @@
       "answer.influencers.answer6": "Currently, you can list your services for popular platforms such as Instagram, TikTok, YouTube, Twitter, Twitch, Meta, Pinterest and LinkedIn.",
       "questions.influencers.question7": "Which countries does Influencer Markt support?",
       "answer.influencers.answer7": "We launched in Portugal, but are committed to expand to other markets as soon as possible.",
-      "answer.influencers.answer8": "Are there any binding contracts?",
-      "questions.influencers.question8": "No, there are no contracts to sign. Influencer Markt is a self-serve platform, empowering you to manage your own deals independently. We provide the platform solely for you to showcase and promote your services to brands.",
+      "questions.influencers.question8": "Are there any binding contracts?",
+      "answer.influencers.answer8": "No, there are no contracts to sign. Influencer Markt is a self-serve platform, empowering you to manage your own deals independently. We provide the platform solely for you to showcase and promote your services to brands.",
       "questions.influencers.question9": "Are you an agency?",
       "answer.influencers.answer9": "No, Influencer Markt is not an agency. We are a platform that enables you to advertise your services and manage your own brand deals effectively.",
 
@@ -346,8 +346,8 @@
       "answer.brands.answer6": "Rest assured, we do not charge you until an influencer accepts your order. Therefore, if your order is declined, no further action is required from you.",
       "questions.brands.question7": "How can I be sure that I will receive the work I paid for?",
       "answer.brands.answer7": "Influencer Markt safeguards your payment until the work is fully completed and approved by you. You will have a period of 48 hours, starting from the submission of the work, to request revisions or initiate a dispute with us if necessary.",
-      "answer.brands.answer8": "What payment methods are accepted?",
-      "questions.brands.question8": "We utilize Stripe?/ Paypal? as our payment processor, enabling us to accept all major credit and debit cards securely."
+      "questions.brands.question8": "What payment methods are accepted?",
+      "answer.brands.answer8": "We utilize Stripe?/ Paypal? as our payment processor, enabling us to accept all major credit and debit cards securely."
     }
   }
 }
