@@ -41,27 +41,98 @@ export const Navbar = (params: {
 
   const leftNavBar = () => {
     return (
-      <div className="flex flex-1 justify-start">
+      <div className="flex flex-1 items-center justify-start">
         <Link href="/" className="cursor-pointer text-lg lg:p-2">
           {t("components.navbar.home")}
         </Link>
-        <Link href="/explore" className="cursor-pointer text-lg lg:p-2">
-          {t("components.navbar.explore")}
+
+        <div className="group relative flex px-4">
+          <div className="flex items-center gap-2">
+            <Link
+              href="/explore/influencers"
+              className="cursor-pointer text-lg"
+            >
+              {t("components.navbar.explore")}
+            </Link>
+            {params.sessionData && (
+              <>
+                <FontAwesomeIcon
+                  icon={faChevronDown}
+                  className="fa-sm flex cursor-pointer group-hover:hidden"
+                />
+                <FontAwesomeIcon
+                  icon={faChevronUp}
+                  className="fa-sm group hidden cursor-pointer group-hover:flex"
+                />
+              </>
+            )}
+          </div>
           {params.sessionData && (
-            <FontAwesomeIcon
-              icon={faChevronDown}
-              className="fa-sm cursor-pointer px-5"
-            />
+            <div className="absolute left-[-13px] top-7 hidden flex-col justify-center rounded-lg bg-white shadow-md group-hover:flex">
+              <Link
+                href="/explore/influencers"
+                className="cursor-pointer text-lg"
+              >
+                <div className="cursor-pointer rounded-t-lg px-8 py-4 hover:bg-influencer-green hover:text-white">
+                  {t("components.navbar.influencers")}
+                </div>
+              </Link>
+
+              <Link
+                href="/explore/brands"
+                className="hover: cursor-pointer rounded-b-lg px-8 py-4 text-lg hover:bg-influencer-green hover:text-white"
+              >
+                {t("components.navbar.brands")}
+              </Link>
+            </div>
           )}
-        </Link>
+        </div>
         {params.sessionData && (
-          <span className="cursor-pointer text-lg lg:p-2">
-            {t("components.navbar.saved")}
-            <FontAwesomeIcon
-              icon={faChevronDown}
-              className="fa-sm cursor-pointer px-5"
-            />
-          </span>
+          <div className="group relative flex px-4">
+            <div className="flex items-center gap-2">
+              <Link
+                href="/explore/influencers"
+                className="cursor-pointer text-lg"
+              >
+                {t("components.navbar.saved")}
+              </Link>
+              {params.sessionData && (
+                <>
+                  <FontAwesomeIcon
+                    icon={faChevronDown}
+                    className="fa-sm flex cursor-pointer group-hover:hidden"
+                  />
+                  <FontAwesomeIcon
+                    icon={faChevronUp}
+                    className="fa-sm group hidden cursor-pointer group-hover:flex"
+                  />
+                </>
+              )}
+            </div>
+            <div className="absolute left-[-13px] top-7 hidden flex-col justify-center rounded-lg bg-white shadow-md group-hover:flex">
+              <Link
+                href="/saved/influencers"
+                className="cursor-pointer text-lg"
+              >
+                <div className="cursor-pointer rounded-t-lg px-8 py-4 hover:bg-influencer-green hover:text-white">
+                  {t("components.navbar.influencers")}
+                </div>
+              </Link>
+
+              <Link
+                href="/saved/brands"
+                className="hover: cursor-pointer px-8 py-4 text-lg hover:bg-influencer-green hover:text-white"
+              >
+                {t("components.navbar.brands")}
+              </Link>
+              <Link
+                href="/saved/campaigns"
+                className="hover: cursor-pointer rounded-b-lg px-8 py-4 text-lg hover:bg-influencer-green hover:text-white"
+              >
+                {t("components.navbar.campaigns")}
+              </Link>
+            </div>
+          </div>
         )}
       </div>
     );
