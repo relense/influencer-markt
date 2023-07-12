@@ -3,6 +3,7 @@ import { type Option } from "../../../components/CustomMultiSelect";
 import { Modal } from "../../../components/Modal";
 import { CustomSelect } from "../../../components/CustomSelect";
 import { Button } from "../../../components/Button";
+import { useTranslation } from "react-i18next";
 
 type CustomValuePackData = {
   platform: Option;
@@ -18,6 +19,7 @@ const RequestCustomValuePackModal = (params: {
   onClose: () => void;
   availablePlatforms: Option[];
 }) => {
+  const { t } = useTranslation();
   const {
     control,
     register,
@@ -33,14 +35,19 @@ const RequestCustomValuePackModal = (params: {
     console.log(JSON.stringify(data));
   });
   return (
-    <Modal title="Request a custom value pack" onClose={params.onClose}>
+    <Modal
+      title={t("components.requestValuePack.modalTitle")}
+      onClose={params.onClose}
+    >
       <form
         id="form-requestValuePack"
         className="flex h-full w-full flex-col gap-4 p-4 sm:w-full sm:px-8"
         onSubmit={submitRequest}
       >
         <div className="flex flex-col gap-4">
-          <div className="text-xl font-medium">Platforms</div>
+          <div className="text-xl font-medium">
+            {t("components.requestValuePack.platformsLabel")}
+          </div>
           <Controller
             name="platform"
             control={control}
@@ -50,7 +57,9 @@ const RequestCustomValuePackModal = (params: {
                 <CustomSelect
                   register={register}
                   name="platform"
-                  placeholder="Choose your Social Media: e.g., Instagram, TikTok"
+                  placeholder={t(
+                    "components.requestValuePack.platformPlaceHolder"
+                  )}
                   options={params.availablePlatforms}
                   value={value}
                   handleOptionSelect={onChange}
@@ -61,52 +70,60 @@ const RequestCustomValuePackModal = (params: {
         </div>
         <div className="w-full border-[1px] border-white1" />
         <div className="flex flex-col gap-4">
-          <div className="text-xl font-medium">Request Summary</div>
+          <div className="text-xl font-medium">
+            {t("components.requestValuePack.summaryTitle")}
+          </div>
           <div className="flex w-full flex-col">
             <input
               {...register("requestSummary", { maxLength: 50 })}
               required
               type="text"
               className="flex h-14 flex-1 cursor-pointer rounded-lg border-[1px] border-gray3 bg-transparent p-4 placeholder-gray2 placeholder:w-11/12"
-              placeholder="E.g 1 Instagram Reel"
+              placeholder={t("components.requestValuePack.requestPlaceholder")}
               autoComplete="off"
             />
             {errors.requestSummary &&
               errors.requestSummary.type === "maxLength" && (
                 <div className="px-4 py-1 text-red-600">
-                  Max is 50 characters
+                  {t("components.requestValuePack.errorWarning", { count: 50 })}
                 </div>
               )}
           </div>
         </div>
         <div className="w-full border-[1px] border-white1" />
         <div className="flex flex-col gap-4">
-          <div className="text-xl font-medium">Request Details</div>
+          <div className="text-xl font-medium">
+            {t("components.requestValuePack.detailsTitle")}
+          </div>
           <div className="flex w-full flex-col">
             <textarea
               {...register("requestDetails", { maxLength: 200 })}
               required
               className="flex flex-1 cursor-pointer rounded-lg border-[1px] border-gray3 bg-transparent p-4 placeholder-gray2 placeholder:w-11/12"
-              placeholder="Specify your requirements for the chosen influencer. Share the desired number of posts or photos and the specific deliverables you expect. For example, if you need a TikTok video promoting our product, provide the necessary guidelines. Clear instructions help the influencer understand your expectations and engage your target audience effectively."
+              placeholder={t("components.requestValuePack.detailsPlaceholder")}
               autoComplete="off"
             />
             {errors.requestDetails &&
               errors.requestDetails.type === "maxLength" && (
                 <div className="px-4 py-1 text-red-600">
-                  Max is 200 characters
+                  {t("components.requestValuePack.errorWarning", {
+                    count: 200,
+                  })}
                 </div>
               )}
           </div>
         </div>
         <div className="w-full border-[1px] border-white1" />
         <div className="flex flex-col gap-4">
-          <div className="text-xl font-medium">Price</div>
+          <div className="text-xl font-medium">
+            {t("components.requestValuePack.priceTitle")}
+          </div>
           <input
             {...register("price")}
             required
             type="number"
             className="flex h-14 flex-1 cursor-pointer rounded-lg border-[1px] border-gray3 bg-transparent p-4 placeholder-gray2 placeholder:w-11/12"
-            placeholder="Value pack price"
+            placeholder={t("components.requestValuePack.pricePlaceholder")}
             autoComplete="off"
             min="0"
             max="1000000000"
@@ -114,13 +131,15 @@ const RequestCustomValuePackModal = (params: {
         </div>
         <div className="w-full border-[1px] border-white1" />
         <div className="flex flex-col gap-4">
-          <div className="text-xl font-medium">Delivery Date</div>
+          <div className="text-xl font-medium">
+            {t("components.requestValuePack.deliveryTitle")}
+          </div>
           <input
             {...register("deliveryDate")}
             required
             type="date"
             className="flex h-14 w-full flex-1 cursor-pointer rounded-lg border-[1px] border-gray3 bg-transparent p-4 placeholder-gray2 caret-transparent placeholder:w-11/12"
-            placeholder="Choose a delivery date"
+            placeholder={t("components.requestValuePack.deliveryPlaceholder")}
             autoComplete="off"
             min={new Date().toISOString().split("T")[0]}
           />
@@ -128,9 +147,11 @@ const RequestCustomValuePackModal = (params: {
         <div className="w-full border-[1px] border-white1" />
         <div className="flex flex-col gap-4">
           <div className="flex flex-col gap-2">
-            <div className="text-xl font-medium">Your Social Media</div>
+            <div className="text-xl font-medium">
+              {t("components.requestValuePack.youSocialTitle")}
+            </div>
             <div className="text-sm font-medium text-gray2">
-              Let the influencer know you better
+              {t("components.requestValuePack.yourSocialSubTitle")}
             </div>
             <div className="flex w-full flex-col">
               <input
@@ -138,12 +159,14 @@ const RequestCustomValuePackModal = (params: {
                 required
                 type="text"
                 className="flex h-14 flex-1 cursor-pointer rounded-lg border-[1px] border-gray3 bg-transparent p-4 placeholder-gray2 placeholder:w-11/12"
-                placeholder="Your website"
+                placeholder={t(
+                  "components.requestValuePack.websitePlaceholder"
+                )}
                 autoComplete="off"
               />
               {errors.website && errors.website.type === "maxLength" && (
                 <div className="px-4 py-1 text-red-600">
-                  Max is 64 characters
+                  {t("components.requestValuePack.errorWarning", { count: 64 })}
                 </div>
               )}
             </div>
@@ -153,13 +176,15 @@ const RequestCustomValuePackModal = (params: {
                 required
                 type="text"
                 className="flex h-14 flex-1 cursor-pointer rounded-lg border-[1px] border-gray3 bg-transparent p-4 placeholder-gray2 placeholder:w-11/12"
-                placeholder="Main social media account E.g. https://www.instagram.com/account"
+                placeholder={t("components.requestValuePack.socialPlaceholder")}
                 autoComplete="off"
               />
               {errors.socialMediaLink &&
                 errors.socialMediaLink.type === "maxLength" && (
                   <div className="px-4 py-1 text-red-600">
-                    Max is 64 characters
+                    {t("components.requestValuePack.errorWarning", {
+                      count: 64,
+                    })}
                   </div>
                 )}
             </div>
@@ -168,7 +193,7 @@ const RequestCustomValuePackModal = (params: {
         <div className="flex justify-center p-4">
           <Button
             type="submit"
-            title="Add Value Pack"
+            title={t("components.requestValuePack.modalButton")}
             level="primary"
             form="form-requestValuePack"
           />
