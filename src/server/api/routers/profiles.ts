@@ -3,25 +3,39 @@ import { createTRPCRouter, protectedProcedure, publicProcedure } from "../trpc";
 
 export const profilesRouter = createTRPCRouter({
   getAllInfluencerProfiles: publicProcedure.query(async ({ ctx }) => {
-    return await ctx.prisma.profile.findMany({
-      where: { user: { roleId: 2 } },
-      take: 10,
-      select: {
-        id: true,
-        userSocialMedia: true,
-        valuePacks: true,
-        name: true,
-        city: true,
-        country: true,
-        about: true,
-        user: {
-          select: {
-            username: true,
+    return await ctx.prisma.$transaction([
+      ctx.prisma.profile.count(),
+      ctx.prisma.profile.findMany({
+        where: { user: { roleId: 2 } },
+        take: 10,
+        select: {
+          id: true,
+          userSocialMedia: {
+            include: {
+              socialMedia: {
+                select: {
+                  name: true,
+                },
+              },
+            },
           },
+          valuePacks: true,
+          name: true,
+          city: true,
+          country: true,
+          about: true,
+          user: {
+            select: {
+              username: true,
+            },
+          },
+          profilePicture: true,
         },
-        profilePicture: true,
-      },
-    });
+        orderBy: {
+          name: "desc",
+        },
+      }),
+    ]);
   }),
 
   createProfile: protectedProcedure
