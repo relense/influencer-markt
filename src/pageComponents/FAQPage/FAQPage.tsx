@@ -2,6 +2,8 @@ import { useState } from "react";
 import { useTranslation } from "react-i18next";
 
 import { Question, type QuestionType } from "./innerComponents/Questions";
+import Link from "next/link";
+import { Button } from "../../components/Button";
 
 const FAQPage = () => {
   const [showInfluencerQuestions, setShowInfluencerQuestions] =
@@ -28,7 +30,7 @@ const FAQPage = () => {
     },
     {
       question: t("pages.faq.questions.influencers.question5"),
-      answer: t("pages.faq.questions.influencers.answer5"),
+      answer: t("pages.faq.answer.influencers.answer5"),
     },
     {
       question: t("pages.faq.questions.influencers.question6"),
@@ -163,17 +165,36 @@ const FAQPage = () => {
     );
   };
 
+  const renderGoToContacts = () => {
+    return (
+      <div className="flex flex-col items-center gap-4 rounded-t-2xl bg-influencer-green px-12 pb-4 pt-12 text-center">
+        <div className="text-xl font-semibold">
+          {t("pages.faq.doubt.title")}
+        </div>
+        <div className="text-lg font-semibold text-white">
+          {t("pages.faq.doubt.subTitle")}
+        </div>
+        <Link href="/contact-us">
+          <Button title={t("pages.faq.doubt.button")} level="primary" />
+        </Link>
+      </div>
+    );
+  };
+
   return (
-    <div className="flex flex-1 flex-col justify-center gap-12 p-4 xl:w-3/4 xl:self-center 2xl:w-2/4">
+    <div className="flex flex-1 flex-col justify-center gap-24 px-4 pt-4 xl:w-3/4 xl:self-center 2xl:w-2/4">
       <div className="flex flex-col justify-center text-center font-playfair text-5xl font-semibold">
         <h1 className="text-2xl lg:text-5xl">{t("pages.faq.title")}</h1>
         <h2 className="p-2 text-xl  font-normal text-gray1 lg:p-7 lg:text-3xl">
           {t("pages.faq.subTitle")}
         </h2>
       </div>
-      {renderQuestionsHeader()}
-      {renderBrandQuestions()}
-      {renderInfluencersQuestion()}
+      <div className="flex flex-col gap-16">
+        {renderQuestionsHeader()}
+        {renderBrandQuestions()}
+        {renderInfluencersQuestion()}
+      </div>
+      {renderGoToContacts()}
     </div>
   );
 };
