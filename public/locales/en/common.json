@@ -38,7 +38,10 @@
       "joinMarketPlace": "Join Marketplace",
       "myPage": "My Page",
       "editMyPage": "Edit My Page",
-      "signOut": "Sign out"
+      "signOut": "Sign out",
+      "influencers": "Influencers",
+      "brands": "Brands",
+      "campaigns": "Campaigns"
     },
 
     "footer": {

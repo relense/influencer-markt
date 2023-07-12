@@ -38,7 +38,10 @@
       "joinMarketPlace": "Junta-te ao Marketplace",
       "myPage": "A Minha Página",
       "editMyPage": "Editar A Minha Página",
-      "signOut": "Sair"
+      "signOut": "Sair",
+      "influencers": "Influencers",
+      "brands": "Marcas",
+      "campaigns": "Campanhas"
     },
 
     "footer": {
@@ -199,7 +202,7 @@
         "influencers.positive4": "Página de ofertas adaptadas às tuas necessidades",
         "influencers.positive5": "Recompensas baseadas em performance",
         "influencers.positive6": "Capacidade de avaliar as ofertas",
-        "influencers.positive7": "Página de ofertas adaptadas às tuas necessidades",
+        "influencers.positive7": "Página de ofertas adaptadas às tuas necessities",
         "influencers.positive8": "Encontra a melhor marca para ti e apresenta-te"
       }
     },
