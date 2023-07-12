@@ -2,10 +2,25 @@
   "general": {
     "categories": {
       "Lifestyle": "Lifestyle",
-      "Comedy": "Comedy",
       "Fashion": "Fashion",
       "Gaming": "Gaming",
-      "Cannabis": "Cannabis"
+      "Cannabis": "Cannabis",
+      "Beauty": "Beauty",
+      "Travel": "Travel",
+      "Health": "Health & Fitness",
+      "Food": "Food & Drink",
+      "Model": "Model",
+      "Comedy": "Comedy & Entertaiment",
+      "Art": "Art & Photography",
+      "Music": "Music & Dance",
+      "Entrepreuneur": "Entrepreuneur & Business",
+      "Family": "Family & Children",
+      "Animals": "Animals & Pets",
+      "Athlete": "Athlete & Sports",
+      "Adventure": "Adventure & Outdoors",
+      "Education": "Education",
+      "Celebrity": "Celebrity & Public Figure",
+      "Technology": "Technology"
     },
 
     "reasons": {
@@ -116,6 +131,26 @@
 
     "review": {
       "readMore": "Read More"
+    },
+
+    "requestValuePack": {
+      "modalTitle": "Request a custom value pack",
+      "errorWarning": "Max is {{count}} characters",
+      "platformsLabel": "Platforms",
+      "platformPlaceHolder": "Choose your Social Media: e.g., Instagram, TikTok",
+      "summaryTitle": "Request Summary",
+      "requestPlaceholder": "E.g 1 Instagram Reel",
+      "detailsTitle": "Request Details",
+      "detailsPlaceholder": "Specify your requirements for the chosen influencer. Share the desired number of posts or photos and the specific deliverables you expect. For example, if you need a TikTok video promoting your product, provide the necessary guidelines. Clear instructions help the influencer understand your expectations and engage your target audience effectively.",
+      "priceTitle": "Price",
+      "pricePlaceholder": "Value pack price",
+      "deliveryTitle": "Delivery Date",
+      "deliveryPlaceholder": "Choose a delivery date",
+      "youSocialTitle": "Your Social Media",
+      "yourSocialSubTitle": "Let the influencer know you better",
+      "websitePlaceholder": "Your website",
+      "socialPlaceholder": "Main social media account E.g. https://www.instagram.com/account",
+      "modalButton": "Add Value Pack"
     }
   },
 
@@ -310,7 +345,7 @@
 
     "faq": {
       "title": "Frequently Asked Questions",
-      "subTitle": "Have questions? We’re here to help",
+      "subTitle": "Have questions? We're here to help",
       "questions.influencers.title": "For Influencers",
       "questions.influencers.question1": "How does Influencer Markt works?",
       "answer.influencers.answer1": "To get started with Influencer Markt, you can create your own personal page and showcase your services across various platforms such as Instagram, TikTok, YouTube, Twitter, Twitch, Meta, Pinterest and LinkedIn. Once you've set up your page, simply share your customized link on your bio and social media profiles. This way, brands can discover your services, make purchases, and you can conveniently manage your brand deals and receive direct payments through the platform.",
@@ -347,7 +382,11 @@
       "questions.brands.question7": "How can I be sure that I will receive the work I paid for?",
       "answer.brands.answer7": "Influencer Markt safeguards your payment until the work is fully completed and approved by you. You will have a period of 48 hours, starting from the submission of the work, to request revisions or initiate a dispute with us if necessary.",
       "questions.brands.question8": "What payment methods are accepted?",
-      "answer.brands.answer8": "We utilize Stripe?/ Paypal? as our payment processor, enabling us to accept all major credit and debit cards securely."
+      "answer.brands.answer8": "We utilize Stripe?/ Paypal? as our payment processor, enabling us to accept all major credit and debit cards securely.",
+
+      "doubt.title": "Still have questions?",
+      "doubt.subTitle": "Can't find the answers you're looking for?",
+      "doubt.button": "Contact Us"
     }
   }
 }

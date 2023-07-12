@@ -2,10 +2,25 @@
   "general": {
     "categories": {
       "Lifestyle": "Lifestyle",
-      "Comedy": "Comédia",
       "Fashion": "Moda",
       "Gaming": "Gaming",
-      "Cannabis": "Canábis"
+      "Cannabis": "Canábis",
+      "Beauty": "Beleza",
+      "Travel": "Viajar",
+      "Health": "Health & Fitness",
+      "Food": "Comida & Bebida",
+      "Model": "Modelo",
+      "Comedy": "Comédia e Entretenimento",
+      "Art": "Art & Fotografia",
+      "Music": "Música & Dança",
+      "Entrepreuneur": "Empreendedorismo & Negócio",
+      "Family": "Família & Crianças",
+      "Animals": "Animais e Animais de Estimação",
+      "Athlete": "Atleta & Desporto",
+      "Adventure": "Aventura & Ar Livre",
+      "Education": "Educação",
+      "Celebrity": "Celebridade & Figura Pública",
+      "Technology": "Tecnologia"
     },
 
     "reasons": {
@@ -116,6 +131,26 @@
 
     "review": {
       "readMore": "Lê Mais"
+    },
+
+    "requestValuePack": {
+      "modalTitle": "Pede um pack de valor personalizado",
+      "errorWarning": "Máximo de {{count}} caracteres",
+      "platformsLabel": "Plataformas",
+      "platformPlaceHolder": "Escolhe a tua rede social: e.g., Instagram, TikTok",
+      "summaryTitle": "Sumário do Pedido",
+      "requestPlaceholder": "E.g 1 Reel do Instagram",
+      "detailsTitle": "Detalhes do Pedido",
+      "detailsPlaceholder": "Especifique os seus requisitos para o influenciador escolhido. Partilhe o número desejado de publicações ou fotografias e os resultados específicos que espera. Por exemplo, se precisar de um vídeo TikTok a promover o seu produto, forneça as orientações necessárias. Instruções claras ajudam o influenciador a compreender as suas expectativas e a envolver eficazmente o seu público-alvo.",
+      "priceTitle": "Preço",
+      "pricePlaceholder": "Preço do pack de valor",
+      "deliveryTitle": "Data de Entrega",
+      "deliveryPlaceholder": "Escolhe uma data de entrega",
+      "youSocialTitle": "A Tua Rede Social",
+      "yourSocialSubTitle": "Deixa o influencer conhecer-te melhor",
+      "websitePlaceholder": "O teu website",
+      "socialPlaceholder": "Link para a conta principal da rede social E.g. https://www.instagram.com/account",
+      "modalButton": "Add Pack de Valor"
     }
   },
 
@@ -309,9 +344,9 @@
     },
 
     "faq": {
-      "title": "Frequently Asked Questions",
-      "subTitle": "Have questions? We’re here to help",
-      "questions.influencers.title": "For Influencers",
+      "title": "Perguntas Frequentes",
+      "subTitle": "Têm uma questão? Estamos aqui para ajudar",
+      "questions.influencers.title": "Para Influencers",
       "questions.influencers.question1": "How does Influencer Markt works?",
       "answer.influencers.answer1": "To get started with Influencer Markt, you can create your own personal page and showcase your services across various platforms such as Instagram, TikTok, YouTube, Twitter, Twitch, Meta, Pinterest and LinkedIn. Once you've set up your page, simply share your customized link on your bio and social media profiles. This way, brands can discover your services, make purchases, and you can conveniently manage your brand deals and receive direct payments through the platform.",
       "questions.influencers.question2": "How will I receive my payment?",
@@ -331,7 +366,7 @@
       "questions.influencers.question9": "Are you an agency?",
       "answer.influencers.answer9": "No, Influencer Markt is not an agency. We are a platform that enables you to advertise your services and manage your own brand deals effectively.",
 
-      "questions.brands.title": "For Brands",
+      "questions.brands.title": "Para Marcas",
       "questions.brands.question1": "How does Influencer Markt operate?",
       "answer.brands.answer1": "To begin, you can explore a wide range of vetted influencers on platforms such as Instagram, TikTok, YouTube, Twitter, Twitch, Meta, Pinterest and LinkedIn. Once you find the influencers you'd like to collaborate with, you can securely purchase their services through the website. We hold your payment until the work is successfully completed. After completion, you'll receive the high-quality content directly from the influencers through our platform.",
       "questions.brands.question2": "What is Influencer Markt?",
@@ -347,7 +382,11 @@
       "questions.brands.question7": "How can I be sure that I will receive the work I paid for?",
       "answer.brands.answer7": "Influencer Markt safeguards your payment until the work is fully completed and approved by you. You will have a period of 48 hours, starting from the submission of the work, to request revisions or initiate a dispute with us if necessary.",
       "questions.brands.question8": "What payment methods are accepted?",
-      "answer.brands.answer8": "We utilize Stripe?/ Paypal? as our payment processor, enabling us to accept all major credit and debit cards securely."
+      "answer.brands.answer8": "We utilize Stripe?/ Paypal? as our payment processor, enabling us to accept all major credit and debit cards securely.",
+
+      "doubt.title": "Ainda têm questões?",
+      "doubt.subTitle": "Não consegue encontrar as respostas para o que procura?",
+      "doubt.button": "Contacte-nos"
     }
   }
 }
