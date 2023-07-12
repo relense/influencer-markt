@@ -50,15 +50,17 @@ const ProfileCard = (params: {
   return (
     <div className="flex flex-col gap-2 lg:w-80">
       <div className="relative h-80 rounded-xl shadow-xl lg:w-80">
-        <Image
-          src={params.profilePicture}
-          height={320}
-          width={500}
-          quality={100}
-          alt={params.name}
-          className="flex h-80 rounded-xl object-cover "
-          priority
-        />
+        <Link href={`/${params.username}`}>
+          <Image
+            src={params.profilePicture}
+            height={320}
+            width={500}
+            quality={100}
+            alt={params.name}
+            className="flex h-80 cursor-pointer rounded-xl object-cover"
+            priority
+          />
+        </Link>
 
         <div className="absolute left-2 top-2 flex gap-1 rounded-3xl border-[1px] bg-black-transparent px-4 text-white">
           <div>
