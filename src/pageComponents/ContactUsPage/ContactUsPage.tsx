@@ -133,8 +133,8 @@ const ContactUsPage = () => {
       {showFirstTimeModal && (
         <div className="flex justify-center">
           <Modal onClose={() => setfirstVisitInfo()}>
-            <div className="flex h-full w-full flex-1 flex-col items-center gap-6 px-12 py-4">
-              <h1 className="cursor-pointer text-left font-lobster text-2xl text-influencer lg:text-4xl">
+            <div className="flex h-full w-full flex-1 cursor-default flex-col items-center gap-6 px-12 py-4">
+              <h1 className="text-left font-lobster text-2xl text-influencer lg:text-4xl">
                 Influencer Markt
               </h1>
               <div className="text-center font-playfair text-3xl font-semibold">
