@@ -12,6 +12,7 @@ export default {
         roboto: ["Roboto", "sans-serif"],
       },
       colors: {
+        "black-transparent": "rgba(0, 0, 0, 0.3)",
         influencer: "#FD3A84",
         gray1: "#939393",
         gray2: "#888888",
