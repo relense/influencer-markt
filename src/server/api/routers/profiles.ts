@@ -2,6 +2,28 @@ import { z } from "zod";
 import { createTRPCRouter, protectedProcedure, publicProcedure } from "../trpc";
 
 export const profilesRouter = createTRPCRouter({
+  getAllInfluencerProfiles: publicProcedure.query(async ({ ctx }) => {
+    return await ctx.prisma.profile.findMany({
+      where: { user: { roleId: 2 } },
+      take: 10,
+      select: {
+        id: true,
+        userSocialMedia: true,
+        valuePacks: true,
+        name: true,
+        city: true,
+        country: true,
+        about: true,
+        user: {
+          select: {
+            username: true,
+          },
+        },
+        profilePicture: true,
+      },
+    });
+  }),
+
   createProfile: protectedProcedure
     .input(
       z.object({
