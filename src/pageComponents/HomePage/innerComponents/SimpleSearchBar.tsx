@@ -48,7 +48,7 @@ export const SimpleSearchBar = () => {
           return (
             <CustomMultiSelect
               name="categories"
-              placeholder={t("components.searchBar.categories")}
+              placeholder={t("components.simpleSearchBar.categories")}
               options={categories?.map((category) => {
                 return {
                   id: category.id,
@@ -59,6 +59,7 @@ export const SimpleSearchBar = () => {
               selectedOptions={value}
               hideArrow={true}
               hideBorder={true}
+              borderType="mega-rounded"
             />
           );
         }}
