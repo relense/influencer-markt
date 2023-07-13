@@ -17,6 +17,7 @@ export const CustomMultiSelect = (params: {
   handleOptionSelect: (options: Option[]) => void;
   hideArrow?: boolean;
   hideBorder?: boolean;
+  borderType?: "mega-rounded" | "normal";
 }) => {
   const [selectStatus, setSelectStatus] = useState<boolean>(false);
 
@@ -75,13 +76,17 @@ export const CustomMultiSelect = (params: {
       })
       .join(",  ");
 
-    let inputclasses =
-      "flex h-14 w-full flex-1 cursor-pointer rounded-lg border-[1px] border-gray3 bg-transparent p-4 placeholder-gray2 caret-transparent placeholder:w-11/12";
+    let border = "border-[1px] border-gray3";
+    let rounded = "rounded-lg";
 
     if (params.hideBorder) {
-      inputclasses =
-        "flex h-14 w-full flex-1 cursor-pointer rounded-lg bg-transparent p-4 placeholder-gray2 caret-transparent placeholder:w-11/12";
+      border = "";
     }
+    if (params.borderType === "mega-rounded") {
+      rounded = "rounded-2xl";
+    }
+
+    const inputclasses = `flex h-14 w-full flex-1 cursor-pointer ${rounded} ${border} bg-transparent p-4 placeholder-gray2 caret-transparent placeholder:w-11/12`;
 
     return (
       <div ref={multiSelectRef} className="h-14 w-full">
