@@ -68,7 +68,7 @@ export const Navbar = (params: {
             )}
           </div>
           {params.sessionData && (
-            <div className="absolute left-[-13px] top-7 hidden flex-col justify-center rounded-lg bg-white shadow-md group-hover:flex">
+            <div className="absolute left-[-13px] top-7 z-50 hidden flex-col justify-center rounded-lg bg-white shadow-md group-hover:flex">
               <Link
                 href="/explore/influencers"
                 className="cursor-pointer text-lg"
@@ -109,7 +109,7 @@ export const Navbar = (params: {
                 </>
               )}
             </div>
-            <div className="absolute left-[-13px] top-7 hidden flex-col justify-center rounded-lg bg-white shadow-md group-hover:flex">
+            <div className="absolute left-[-13px] top-7 z-50 hidden flex-col justify-center rounded-lg bg-white shadow-md group-hover:flex">
               <Link
                 href="/saved/influencers"
                 className="cursor-pointer text-lg"
