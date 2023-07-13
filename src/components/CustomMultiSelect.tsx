@@ -15,6 +15,8 @@ export const CustomMultiSelect = (params: {
   options: Option[] | undefined;
   selectedOptions: Option[];
   handleOptionSelect: (options: Option[]) => void;
+  hideArrow?: boolean;
+  hideBorder?: boolean;
 }) => {
   const [selectStatus, setSelectStatus] = useState<boolean>(false);
 
@@ -47,6 +49,24 @@ export const CustomMultiSelect = (params: {
     setSelectStatus(!selectStatus);
   }, multiSelectRef);
 
+  const renderArrows = () => {
+    if (selectStatus) {
+      return (
+        <FontAwesomeIcon
+          icon={faChevronUp}
+          className="pointer-events-none absolute right-3 top-1/2 h-4 w-4 -translate-y-1/2 transform"
+        />
+      );
+    } else {
+      return (
+        <FontAwesomeIcon
+          icon={faChevronDown}
+          className="pointer-events-none absolute right-3 top-1/2 h-4 w-4 -translate-y-1/2 transform"
+        />
+      );
+    }
+  };
+
   const renderInput = () => {
     const selectedOptionsCopy = [...params.selectedOptions];
     const newValues = selectedOptionsCopy
@@ -54,6 +74,14 @@ export const CustomMultiSelect = (params: {
         return option.name;
       })
       .join(",  ");
+
+    let inputclasses =
+      "flex h-14 w-full flex-1 cursor-pointer rounded-lg border-[1px] border-gray3 bg-transparent p-4 placeholder-gray2 caret-transparent placeholder:w-11/12";
+
+    if (params.hideBorder) {
+      inputclasses =
+        "flex h-14 w-full flex-1 cursor-pointer rounded-lg bg-transparent p-4 placeholder-gray2 caret-transparent placeholder:w-11/12";
+    }
 
     return (
       <div ref={multiSelectRef} className="h-14 w-full">
@@ -66,7 +94,7 @@ export const CustomMultiSelect = (params: {
               return false;
             }}
             inputMode="none"
-            className="flex h-14 w-full flex-1 cursor-pointer rounded-lg border-[1px] border-gray3 bg-transparent p-4 placeholder-gray2 caret-transparent placeholder:w-11/12"
+            className={inputclasses}
             placeholder={params.placeholder}
             value={newValues}
             autoComplete="off"
@@ -77,17 +105,7 @@ export const CustomMultiSelect = (params: {
               return;
             }}
           />
-          {selectStatus ? (
-            <FontAwesomeIcon
-              icon={faChevronUp}
-              className="pointer-events-none absolute right-3 top-1/2 h-4 w-4 -translate-y-1/2 transform"
-            />
-          ) : (
-            <FontAwesomeIcon
-              icon={faChevronDown}
-              className="pointer-events-none absolute right-3 top-1/2 h-4 w-4 -translate-y-1/2 transform"
-            />
-          )}
+          {!params.hideArrow && renderArrows()}
         </div>
         {renderOptions()}
       </div>
@@ -108,10 +126,10 @@ export const CustomMultiSelect = (params: {
                   -1
                 ) {
                   optionClass =
-                    "flex cursor-pointer items-center p-4 bg-influencer-green text-white hover:bg-influencer-green hover:text-white sm:m-2 sm:h-7 sm:w-28 sm:justify-center sm:rounded-full sm:border-[1px]";
+                    "flex cursor-pointer items-center p-4 bg-influencer-green text-white hover:bg-influencer-green hover:text-white sm:m-2 sm:h-7 sm:w-auto sm:justify-center sm:rounded-full sm:border-[1px]";
                 } else {
                   optionClass =
-                    "flex cursor-pointer items-center p-4 sm:hover:bg-influencer-green sm:hover:text-white sm:m-2 sm:h-7 sm:w-28 sm:justify-center sm:rounded-full sm:border-[1px]";
+                    "flex cursor-pointer items-center p-4 sm:hover:bg-influencer-green sm:hover:text-white sm:m-2 sm:h-7 sm:w-auto sm:justify-center sm:rounded-full sm:border-[1px]";
                 }
 
                 return (
