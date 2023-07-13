@@ -177,9 +177,13 @@ const ExplorePage = (params: { choosenCategories: Option[] }) => {
   };
 
   return (
-    <div className="flex flex-1 flex-col justify-center gap-6 p-12 xl:w-3/4 xl:self-center xl:p-4 2xl:w-3/4">
+    <div className="flex flex-1 flex-col justify-center gap-12 p-12 lg:gap-6 xl:w-3/4 xl:self-center xl:p-4 2xl:w-3/4">
       <div className="flex justify-center">
-        <ComplexSearchBar control={control} handleClick={profileRefetch} />
+        <ComplexSearchBar
+          control={control}
+          handleClick={profileRefetch}
+          register={register}
+        />
       </div>
       {profilesIsFetching ? (
         <div className="relative h-screen lg:flex lg:flex-1">
