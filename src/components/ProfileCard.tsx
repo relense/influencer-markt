@@ -7,7 +7,7 @@ import { faBookmark } from "@fortawesome/free-regular-svg-icons";
 
 import { helper } from "../utils/helper";
 
-type UserSocialMedia = {
+export type UserSocialMedia = {
   id: number;
   handler: string;
   followers: number;
@@ -48,16 +48,16 @@ const ProfileCard = (params: {
   }, [params.socialMedia, usefullSocialMedia.followers]);
 
   return (
-    <div className="flex flex-col gap-2 lg:w-80">
-      <div className="relative h-80 rounded-xl shadow-xl lg:w-80">
+    <div className="flex flex-col  gap-2 lg:w-80">
+      <div className="relative h-80 w-full self-center rounded-xl shadow-xl lg:w-80">
         <Link href={`/${params.username}`}>
           <Image
             src={params.profilePicture}
-            height={320}
-            width={500}
+            height={1000}
+            width={1000}
             quality={100}
             alt={params.name}
-            className="flex h-80 cursor-pointer rounded-xl object-cover"
+            className="flex h-80 w-full cursor-pointer rounded-xl object-cover lg:w-80"
             priority
           />
         </Link>

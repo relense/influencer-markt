@@ -2,12 +2,84 @@ import { z } from "zod";
 import { createTRPCRouter, protectedProcedure, publicProcedure } from "../trpc";
 
 export const profilesRouter = createTRPCRouter({
-  getAllInfluencerProfiles: publicProcedure.query(async ({ ctx }) => {
-    return await ctx.prisma.$transaction([
-      ctx.prisma.profile.count(),
-      ctx.prisma.profile.findMany({
-        where: { user: { roleId: 2 } },
+  getAllInfluencerProfiles: publicProcedure
+    .input(
+      z.object({
+        categories: z.array(z.number()),
+      })
+    )
+    .query(async ({ ctx, input }) => {
+      return await ctx.prisma.$transaction([
+        ctx.prisma.profile.count({
+          where: {
+            user: { roleId: 2 },
+            categories: {
+              some: {
+                id: {
+                  in:
+                    input.categories.length > 0 ? input.categories : undefined,
+                },
+              },
+            },
+          },
+        }),
+        ctx.prisma.profile.findMany({
+          where: {
+            user: { roleId: 2 },
+            categories: {
+              some: {
+                id: {
+                  in:
+                    input.categories.length > 0 ? input.categories : undefined,
+                },
+              },
+            },
+          },
+          take: 10,
+          select: {
+            id: true,
+            userSocialMedia: {
+              include: {
+                socialMedia: {
+                  select: {
+                    name: true,
+                  },
+                },
+              },
+            },
+            valuePacks: true,
+            name: true,
+            city: true,
+            country: true,
+            about: true,
+            user: {
+              select: {
+                username: true,
+              },
+            },
+            profilePicture: true,
+          },
+          orderBy: {
+            name: "desc",
+          },
+        }),
+      ]);
+    }),
+
+  getAllInfluencersProfileCursor: publicProcedure
+    .input(
+      z.object({
+        cursor: z.number(),
+      })
+    )
+    .query(async ({ ctx, input }) => {
+      return await ctx.prisma.profile.findMany({
         take: 10,
+        skip: 1,
+        cursor: {
+          id: input.cursor,
+        },
+        where: { user: { roleId: 2 } },
         select: {
           id: true,
           userSocialMedia: {
@@ -34,9 +106,8 @@ export const profilesRouter = createTRPCRouter({
         orderBy: {
           name: "desc",
         },
-      }),
-    ]);
-  }),
+      });
+    }),
 
   createProfile: protectedProcedure
     .input(
