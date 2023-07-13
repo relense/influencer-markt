@@ -53,8 +53,13 @@
       "privacy": "Política de Privacidade"
     },
 
-    "searchBar": {
+    "simpleSearchBar": {
       "categories": "categorias"
+    },
+
+    "complexSearchBar": {
+      "categoriesPlaceholder": "Escolhe categorias",
+      "platformPlaceHolder": "Escolhe redes sociais"
     },
 
     "loginModal": {
