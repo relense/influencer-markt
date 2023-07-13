@@ -1,3 +1,6 @@
+import { type IconDefinition } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+
 type ReactButtonProps = React.DetailedHTMLProps<
   React.ButtonHTMLAttributes<HTMLButtonElement>,
   HTMLButtonElement
@@ -10,6 +13,7 @@ type NewButtonProps = {
   size?: "regular" | "large";
   shadow?: boolean;
   disabled?: boolean;
+  icon?: IconDefinition;
 };
 
 export const Button = ({
@@ -19,6 +23,7 @@ export const Button = ({
   shadow,
   isLoading,
   disabled,
+  icon,
   ...params
 }: ReactButtonProps & NewButtonProps) => {
   let classes = "";
@@ -79,6 +84,7 @@ export const Button = ({
             </svg>
           </div>
         )}
+        {icon && <FontAwesomeIcon icon={icon} className="fa-lg text-white" />}
         <div className="flex justify-center">{title}</div>
       </div>
     </button>
