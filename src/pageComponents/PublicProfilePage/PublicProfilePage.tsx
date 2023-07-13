@@ -95,7 +95,7 @@ const PublicProfilePage = (params: { username: string }) => {
         setCursor(lastReviewInArray.id);
       }
     }
-  }, [profileReviews]);
+  }, [i18n.language, profileReviews]);
 
   useEffect(() => {
     if (profileReviewsCursor) {

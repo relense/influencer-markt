@@ -11,7 +11,7 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { useTranslation } from "react-i18next";
 
-import { SearchBar } from "../../components/SearchBar";
+import { SimpleSearchBar } from "./innerComponents/SimpleSearchBar";
 import { Button } from "../../components/Button";
 
 type Offer = {
@@ -116,7 +116,7 @@ const HomePage = () => {
 
   const renderSectionOne = () => {
     return (
-      <div className="flex flex-col items-center py-10 sm:px-5 lg:px-0">
+      <div className="flex flex-col items-center py-16 sm:px-5 lg:px-0 lg:py-10">
         <div className="pointer-events-none px-4 text-center font-playfair">
           <h1 className="text-2xl lg:text-5xl">
             {t("pages.home.section1.title")}
@@ -133,8 +133,9 @@ const HomePage = () => {
                   <Image
                     src={`/images/${elem}.png`}
                     height={68}
+                    style={{ width: "68px", height: "68px" }}
                     width={68}
-                    alt="Instagram"
+                    alt={elem}
                     className="object-contain"
                   />
                 </div>
@@ -143,7 +144,8 @@ const HomePage = () => {
                     src={`/images/${elem}.png`}
                     height={32}
                     width={32}
-                    alt="Instagram"
+                    style={{ width: "32px", height: "32px" }}
+                    alt={elem}
                     className="object-contain"
                   />
                 </div>
@@ -151,7 +153,7 @@ const HomePage = () => {
             );
           })}
         </div>
-        <SearchBar />
+        <SimpleSearchBar />
       </div>
     );
   };
