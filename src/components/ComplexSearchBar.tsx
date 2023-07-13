@@ -7,6 +7,7 @@ import {
   Controller,
   type UseFormRegister,
 } from "react-hook-form";
+
 import { api } from "~/utils/api";
 import { type SearchData } from "../pageComponents/ExplorePage/ExplorePage";
 import { Button } from "./Button";
@@ -22,7 +23,7 @@ export const ComplexSearchBar = (params: {
   const { t } = useTranslation();
 
   return (
-    <div className="my-10 flex h-14 w-full flex-col items-center gap-2 rounded-2xl border-[1px] border-gray3 pr-2 shadow-lg sm:m-10 lg:w-full lg:flex-row">
+    <div className="flex h-14 w-full flex-col items-center gap-2 rounded-2xl border-[1px] border-white1 pr-2 shadow-lg lg:w-3/4 lg:flex-row">
       <div className="flex w-full flex-1">
         <Controller
           name="categories"
@@ -46,12 +47,13 @@ export const ComplexSearchBar = (params: {
                 hideArrow={true}
                 hideBorder={true}
                 borderType="mega-rounded"
+                noFocus={true}
               />
             );
           }}
         />
       </div>
-      <div className="hidden h-10 w-[1px] border-[1px] border-gray2 lg:block" />
+      <div className="hidden h-10 w-[1px] border-[1px] border-white1 lg:block" />
       <div className="hidden lg:flex lg:flex-1">
         <Controller
           name="platform"
@@ -75,12 +77,13 @@ export const ComplexSearchBar = (params: {
                 hideArrow={true}
                 hideBorder={true}
                 borderType="mega-rounded"
+                noFocus={true}
               />
             );
           }}
         />
       </div>
-      <div className="hidden h-10 w-[1px] border-[1px] border-gray2 lg:block" />
+      <div className="hidden h-10 w-[1px] border-[1px] border-white1 lg:block" />
       <div className="hidden lg:flex lg:flex-1">
         <input
           {...params.register("city")}

@@ -1,7 +1,10 @@
+import { useForm } from "react-hook-form";
 import { api } from "~/utils/api";
 import { useEffect, useState } from "react";
 import { type ValuePack } from "@prisma/client";
-
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faSearch } from "@fortawesome/free-solid-svg-icons";
+2;
 import {
   ProfileCard,
   type UserSocialMedia,
@@ -11,7 +14,6 @@ import { LoadingSpinner } from "../../components/LoadingSpinner";
 import { Button } from "../../components/Button";
 import { type Option } from "../../components/CustomMultiSelect";
 import { ComplexSearchBar } from "../../components/ComplexSearchBar";
-import { useForm } from "react-hook-form";
 
 type UserProfiles = {
   id: number;
@@ -146,12 +148,10 @@ const ExplorePage = (params: { choosenCategories: Option[] }) => {
   const renderInfluencers = () => {
     return (
       <div className="flex flex-col justify-center gap-6">
-        <div className="flex flex-1 justify-center font-medium">
+        <div className="flex flex-1 justify-start text-xl font-medium lg:pl-6">
           {profiles?.[0] && profiles?.[0] > 0
-            ? ` ${helper.formatNumber(
-                profiles?.[0] || 0
-              )} Influencers Match Your Search`
-            : "No Influencer Matched Your Search"}
+            ? ` ${helper.formatNumber(profiles?.[0] || 0)} Influencers`
+            : "No Influencer"}
         </div>
         <div className="flex flex-1">
           <div className="flex flex-1 flex-wrap justify-center gap-12">
@@ -177,13 +177,18 @@ const ExplorePage = (params: { choosenCategories: Option[] }) => {
   };
 
   return (
-    <div className="flex flex-1 flex-col justify-center gap-12 p-12 lg:gap-6 xl:w-3/4 xl:self-center xl:p-4 2xl:w-3/4">
-      <div className="flex justify-center">
+    <div className="flex flex-1 flex-col justify-center gap-12 p-12 lg:w-full lg:gap-6 xl:self-center xl:p-4 2xl:w-3/4">
+      <div className="flex items-center justify-center">
         <ComplexSearchBar
           control={control}
           handleClick={profileRefetch}
           register={register}
         />
+        <div className="flex h-14 items-center justify-center rounded-2xl border-[1px] border-white1 p-4 shadow-lg">
+          <FontAwesomeIcon icon={faSearch} className="fa-lg text-influencer " />
+
+          <div>Filter</div>
+        </div>
       </div>
       {profilesIsFetching ? (
         <div className="relative h-screen lg:flex lg:flex-1">

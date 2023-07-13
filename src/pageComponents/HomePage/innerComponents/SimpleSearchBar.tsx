@@ -60,11 +60,12 @@ export const SimpleSearchBar = () => {
               hideArrow={true}
               hideBorder={true}
               borderType="mega-rounded"
+              noFocus={true}
             />
           );
         }}
       />
-      <button className="hidden cursor-pointer items-center justify-center rounded-2xl sm:bg-influencer sm:px-4 sm:py-2 lg:flex">
+      <button className="hidden cursor-pointer items-center justify-center rounded-2xl sm:bg-influencer sm:p-3 lg:flex">
         <FontAwesomeIcon
           icon={faSearch}
           className="fa-lg text-influencer sm:text-white"
