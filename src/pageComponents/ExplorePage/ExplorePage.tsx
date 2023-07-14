@@ -29,7 +29,7 @@ type UserProfiles = {
 
 export type SearchData = {
   categories: Option[];
-  platform: Option[];
+  platforms: Option[];
   city: string;
   country: string;
 };
@@ -47,7 +47,7 @@ const ExplorePage = (params: { choosenCategories: Option[] }) => {
     formState: { errors },
   } = useForm<SearchData>({
     defaultValues: {
-      platform: [],
+      platforms: [],
       categories:
         params.choosenCategories.length > 0 ? params.choosenCategories : [],
     },
@@ -58,6 +58,9 @@ const ExplorePage = (params: { choosenCategories: Option[] }) => {
     isFetching: profilesIsFetching,
     refetch: profileRefetch,
   } = api.profiles.getAllInfluencerProfiles.useQuery({
+    socialMedia: getValues("platforms").map((platform) => {
+      return platform.id;
+    }),
     categories: getValues("categories").map((category) => {
       return category.id;
     }),
@@ -177,18 +180,22 @@ const ExplorePage = (params: { choosenCategories: Option[] }) => {
   };
 
   return (
-    <div className="flex flex-1 flex-col justify-center gap-12 p-12 lg:w-full lg:gap-6 xl:self-center xl:p-4 2xl:w-3/4">
+    <div className="flex flex-1 flex-col justify-start gap-12 p-2 lg:w-full lg:gap-6 lg:p-12 xl:self-center xl:p-4 2xl:w-3/4">
       <div className="flex items-center justify-center">
         <ComplexSearchBar
           control={control}
-          handleClick={profileRefetch}
+          handleClick={() => {
+            setUserProfiles([]);
+            profileRefetch;
+          }}
           register={register}
+          setValue={setValue}
         />
-        <div className="flex h-14 items-center justify-center rounded-2xl border-[1px] border-white1 p-4 shadow-lg">
+        {/* <div className="flex h-14 items-center justify-center rounded-2xl border-[1px] border-white1 p-4 shadow-lg">
           <FontAwesomeIcon icon={faSearch} className="fa-lg text-influencer " />
 
           <div>Filter</div>
-        </div>
+        </div> */}
       </div>
       {profilesIsFetching ? (
         <div className="relative h-screen lg:flex lg:flex-1">

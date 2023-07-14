@@ -6,6 +6,7 @@ import {
   type Control,
   Controller,
   type UseFormRegister,
+  type UseFormSetValue,
 } from "react-hook-form";
 
 import { api } from "~/utils/api";
@@ -15,6 +16,7 @@ import { Button } from "./Button";
 export const ComplexSearchBar = (params: {
   control: Control<SearchData, any>;
   register: UseFormRegister<SearchData>;
+  setValue: UseFormSetValue<SearchData>;
   handleClick: () => void;
 }) => {
   const { data: categories } = api.allRoutes.getAllCategories.useQuery();
@@ -23,76 +25,69 @@ export const ComplexSearchBar = (params: {
   const { t } = useTranslation();
 
   return (
-    <div className="flex h-14 w-full flex-col items-center gap-2 rounded-2xl border-[1px] border-white1 pr-2 shadow-lg lg:w-3/4 lg:flex-row">
-      <div className="flex w-full flex-1">
-        <Controller
-          name="categories"
-          control={params.control}
-          rules={{ required: true }}
-          render={({ field: { value, onChange } }) => {
-            return (
-              <CustomMultiSelect
-                name="categories"
-                placeholder={t(
-                  "components.complexSearchBar.categoriesPlaceholder"
-                )}
-                options={categories?.map((category) => {
-                  return {
-                    id: category.id,
-                    name: t(`general.categories.${category.name}`),
-                  };
-                })}
-                handleOptionSelect={onChange}
-                selectedOptions={value}
-                hideArrow={true}
-                hideBorder={true}
-                borderType="mega-rounded"
-                noFocus={true}
-              />
-            );
-          }}
-        />
-      </div>
-      <div className="hidden h-10 w-[1px] border-[1px] border-white1 lg:block" />
-      <div className="hidden lg:flex lg:flex-1">
-        <Controller
-          name="platform"
-          control={params.control}
-          rules={{ required: true }}
-          render={({ field: { value, onChange } }) => {
-            return (
-              <CustomMultiSelect
-                name="platform"
-                placeholder={t(
-                  "components.complexSearchBar.platformPlaceHolder"
-                )}
-                options={platforms?.map((platform) => {
-                  return {
-                    id: platform.id,
-                    name: platform.name,
-                  };
-                })}
-                handleOptionSelect={onChange}
-                selectedOptions={value}
-                hideArrow={true}
-                hideBorder={true}
-                borderType="mega-rounded"
-                noFocus={true}
-              />
-            );
-          }}
-        />
-      </div>
-      <div className="hidden h-10 w-[1px] border-[1px] border-white1 lg:block" />
-      <div className="hidden lg:flex lg:flex-1">
-        <input
-          {...params.register("city")}
-          required
-          type="text"
-          className="flex h-14 w-full flex-1 cursor-pointer rounded-2xl bg-transparent p-4 placeholder-gray2 caret-transparent placeholder:w-11/12"
-          placeholder={t("components.profileForm.cityPlaceholder")}
-          autoComplete="off"
-        />
+    <div className="flex h-auto w-full flex-col items-center justify-center gap-4 rounded-2xl border-[1px] border-gray3 px-4 py-4 shadow-lg lg:h-14 lg:w-3/4  lg:flex-row lg:gap-1 lg:border-white1 lg:p-0 lg:pr-2">
+      <div className="flex w-full flex-1 flex-col items-center lg:flex-row">
+        <div className="flex h-14 w-full flex-1 rounded-t-2xl border-[1px] lg:border-none">
+          <Controller
+            name="categories"
+            control={params.control}
+            rules={{ required: true }}
+            render={({ field: { value, onChange } }) => {
+              return (
+                <CustomMultiSelect
+                  name="categories"
+                  placeholder={t(
+                    "components.complexSearchBar.categoriesPlaceholder"
+                  )}
+                  options={categories?.map((category) => {
+                    return {
+                      id: category.id,
+                      name: t(`general.categories.${category.name}`),
+                    };
+                  })}
+                  handleOptionSelect={onChange}
+                  selectedOptions={value}
+                  hideArrow={true}
+                  hideBorder={true}
+                  borderType="mega-rounded"
+                  hoverEffect={true}
+                  clearSelection={() => params.setValue("categories", [])}
+                />
+              );
+            }}
+          />
+        </div>
+        <div className="hidden h-10 w-[1px] border-[1px] border-white1 lg:block" />
+        <div className="flex h-14 w-full flex-1 rounded-b-2xl border-[1px] lg:border-none">
+          <Controller
+            name="platforms"
+            control={params.control}
+            rules={{ required: true }}
+            render={({ field: { value, onChange } }) => {
+              return (
+                <CustomMultiSelect
+                  name="platforms"
+                  placeholder={t(
+                    "components.complexSearchBar.platformPlaceHolder"
+                  )}
+                  options={platforms?.map((platform) => {
+                    return {
+                      id: platform.id,
+                      name: platform.name,
+                    };
+                  })}
+                  handleOptionSelect={onChange}
+                  selectedOptions={value}
+                  hideArrow={true}
+                  hideBorder={true}
+                  borderType="mega-rounded"
+                  hoverEffect={true}
+                  clearSelection={() => params.setValue("platforms", [])}
+                />
+              );
+            }}
+          />
+        </div>
       </div>
 
       <div
