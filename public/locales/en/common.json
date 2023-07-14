@@ -396,6 +396,19 @@
       "doubt.title": "Still have questions?",
       "doubt.subTitle": "Can't find the answers you're looking for?",
       "doubt.button": "Contact Us"
+    },
+
+    "explore": {
+      "filters": "Filters",
+      "followersInputLabel": "Followers",
+      "followersInputPlaceholder": "Followers",
+      "genderInputLabel": "Gender",
+      "genderInputPlaceholder": "Choose a gender",
+      "contentTypeInputLabel": "ContentType",
+      "priceInputLabel": "Price",
+      "priceInputPlaceholder": "",
+      "clearAllButton": "Clear all filters",
+      "showInfluencersButton": "Show Influencers"
     }
   }
 }

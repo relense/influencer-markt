@@ -87,7 +87,7 @@
       "invalidPictureAlert": "Images têm de ser jpeg ou png",
       "addProfilePicture": "Adiciona a tua imagem de perfil",
       "displayNamePlaceholder": "Adiciona o teu nome: Como gostarias de ser reconhecido?",
-      "genderPlaceholder": "Escolhe o teu géneo: Masculino, Feminino, Outro",
+      "genderPlaceholder": "Escolhe o teu género: Masculino, Feminino, Outro",
       "categoriesPlaceholder": "Escolhe as tuas categorias: E.g. Fashion, Travel, Fitness",
       "countryPlaceholder": "País",
       "cityPlaceholder": "Cidade",
@@ -396,6 +396,19 @@
       "doubt.title": "Ainda têm questões?",
       "doubt.subTitle": "Não consegue encontrar as respostas para o que procura?",
       "doubt.button": "Contacte-nos"
+    },
+
+    "explore": {
+      "filters": "Filtros",
+      "followersInputLabel": "Seguidores",
+      "followersInputPlaceholder": "Followers",
+      "genderInputLabel": "Género",
+      "genderInputPlaceholder": "Escolhe um género",
+      "contentTypeInputLabel": "Tipo de Conteúdo",
+      "priceInputLabel": "Preço",
+      "priceInputPlaceholder": "",
+      "clearAllButton": "Limpar filtros",
+      "showInfluencersButton": "Mostrar Influencers"
     }
   }
 }

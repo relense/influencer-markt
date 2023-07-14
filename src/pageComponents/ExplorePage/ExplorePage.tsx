@@ -3,7 +3,7 @@ import { api } from "~/utils/api";
 import { useEffect, useState } from "react";
 import { type ValuePack } from "@prisma/client";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faFilter, faSearch } from "@fortawesome/free-solid-svg-icons";
+import { faFilter } from "@fortawesome/free-solid-svg-icons";
 2;
 import {
   ProfileCard,
@@ -14,7 +14,8 @@ import { LoadingSpinner } from "../../components/LoadingSpinner";
 import { Button } from "../../components/Button";
 import { type Option } from "../../components/CustomMultiSelect";
 import { ComplexSearchBar } from "../../components/ComplexSearchBar";
-import { Modal } from "../../components/Modal";
+import { FilterModal } from "./innerComponents/FilterModal";
+import { useTranslation } from "react-i18next";
 
 type UserProfiles = {
   id: number;
@@ -31,11 +32,13 @@ type UserProfiles = {
 export type SearchData = {
   categories: Option[];
   platforms: Option[];
+  gender: Option;
   city: string;
   country: string;
 };
 
 const ExplorePage = (params: { choosenCategories: Option[] }) => {
+  const { t } = useTranslation();
   const [influencersCursor, setInfluencersCursor] = useState<number>(-1);
   const [userProfiles, setUserProfiles] = useState<UserProfiles[]>([]);
   const [isFilterModalOpen, setIsFilterModalOpen] = useState<boolean>(false);
@@ -49,6 +52,7 @@ const ExplorePage = (params: { choosenCategories: Option[] }) => {
     formState: { errors },
   } = useForm<SearchData>({
     defaultValues: {
+      gender: { id: -1, name: "" },
       platforms: [],
       categories:
         params.choosenCategories.length > 0 ? params.choosenCategories : [],
@@ -199,7 +203,7 @@ const ExplorePage = (params: { choosenCategories: Option[] }) => {
         >
           <FontAwesomeIcon icon={faFilter} className="fa-lg  " />
 
-          <div>Filters</div>
+          <div>{t("pages.explore.filters")}</div>
         </div>
       </div>
       {profilesIsFetching ? (
@@ -220,9 +224,11 @@ const ExplorePage = (params: { choosenCategories: Option[] }) => {
       )}
       {isFilterModalOpen && (
         <div className="flex flex-1 justify-center">
-          <Modal title="Filters" onClose={() => setIsFilterModalOpen(false)}>
-            <div></div>
-          </Modal>
+          <FilterModal
+            onClose={() => setIsFilterModalOpen(false)}
+            control={control}
+            register={register}
+          />
         </div>
       )}
     </div>
