@@ -3,6 +3,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faChevronDown, faChevronUp } from "@fortawesome/free-solid-svg-icons";
 
 import { useOutsideClick } from "../utils/helper";
+import { faCircleXmark } from "@fortawesome/free-regular-svg-icons";
 
 export type Option = {
   id: number;
@@ -18,7 +19,8 @@ export const CustomMultiSelect = (params: {
   hideArrow?: boolean;
   hideBorder?: boolean;
   borderType?: "mega-rounded" | "normal";
-  noFocus?: boolean;
+  hoverEffect?: boolean;
+  clearSelection: () => void;
 }) => {
   const [selectStatus, setSelectStatus] = useState<boolean>(false);
 
@@ -69,6 +71,16 @@ export const CustomMultiSelect = (params: {
     }
   };
 
+  const renderClearButton = () => {
+    return (
+      <FontAwesomeIcon
+        icon={faCircleXmark}
+        className="absolute right-10 top-1/2 h-5 w-5 -translate-y-1/2 transform cursor-pointer text-gray2"
+        onClick={() => params.clearSelection()}
+      />
+    );
+  };
+
   const renderInput = () => {
     const selectedOptionsCopy = [...params.selectedOptions];
     const newValues = selectedOptionsCopy
@@ -79,7 +91,7 @@ export const CustomMultiSelect = (params: {
 
     let border = "border-[1px] border-gray3";
     let rounded = "rounded-lg";
-    let noFocus = "";
+    let hoverEffect = "";
 
     if (params.hideBorder) {
       border = "";
@@ -88,46 +100,59 @@ export const CustomMultiSelect = (params: {
       rounded = "rounded-2xl";
     }
 
-    if (params.noFocus) {
-      noFocus = "outline-none";
+    if (params.hoverEffect) {
+      hoverEffect =
+        "hover:rounded-2xl hover:border-[1px] hover:border-black hover:shadow-xl";
     }
 
-    const inputclasses = `flex h-14 w-full flex-1 cursor-pointer ${rounded} ${border} bg-transparent p-4 placeholder-gray2 caret-transparent placeholder:w-11/12 ${noFocus}`;
+    if (selectStatus) {
+    }
+
+    const parentContainerClass = `flex h-auto w-full flex-col items-center justify-center gap-4 rounded-lg lg:h-14 lg:flex-row lg:gap-1 ${border}`;
+    const inputContainerClasses = `relative flex items-center justify-between ${hoverEffect}`;
+    const inputclasses = `flex h-14 w-10/12 cursor-pointer ${rounded} bg-transparent p-4 placeholder-gray2 caret-transparent placeholder:w-11/12 outline-none`;
 
     return (
-      <div ref={multiSelectRef} className="h-14 w-full">
-        <div className="relative flex items-center justify-between">
-          <input
-            required
-            id={`${params.name}1`}
-            onKeyDown={(e) => {
-              e.preventDefault();
-              return false;
-            }}
-            inputMode="none"
-            className={inputclasses}
-            placeholder={params.placeholder}
-            value={newValues}
-            autoComplete="off"
+      <div className={parentContainerClass}>
+        <div ref={multiSelectRef} className="h-14 w-full">
+          <div
+            className={inputContainerClasses}
             onClick={() => {
               setSelectStatus(!selectStatus);
             }}
-            onChange={() => {
-              return;
-            }}
-          />
-          {!params.hideArrow && renderArrows()}
+          >
+            <input
+              required
+              id={`${params.name}1`}
+              onKeyDown={(e) => {
+                e.preventDefault();
+                return false;
+              }}
+              inputMode="none"
+              className={inputclasses}
+              placeholder={params.placeholder}
+              value={newValues}
+              autoComplete="off"
+              onChange={() => {
+                return;
+              }}
+            />
+            {params.selectedOptions.length > 0 && renderClearButton()}
+            {renderArrows()}
+          </div>
+          {renderOptions()}
         </div>
-        {renderOptions()}
       </div>
     );
   };
 
   const renderOptions = () => {
+    const dropdownClasses = `relative z-10 h-56 overflow-hidden border-[1px] border-gray3  bg-white sm:h-auto rounded-2xl shadow-xl`;
+
     if (selectStatus) {
       return (
-        <div className="relative z-10 h-56 overflow-hidden rounded-lg border-[1px] border-gray3  bg-white sm:h-auto">
-          <div className="flex h-56 flex-col overflow-y-auto sm:h-auto sm:flex-row sm:flex-wrap sm:justify-start sm:p-2 ">
+        <div className={dropdownClasses}>
+          <div className="flex h-56 flex-col overflow-y-auto shadow-2xl sm:h-auto sm:flex-row sm:flex-wrap sm:justify-start sm:p-2">
             {params.options &&
               params.options.map((option) => {
                 let optionClass = "";
@@ -144,12 +169,22 @@ export const CustomMultiSelect = (params: {
                 }
 
                 return (
-                  <div
-                    className={optionClass}
-                    key={option.id}
-                    onClick={() => onHandleClick(option)}
-                  >
-                    {option.name}
+                  <div key={option.id}>
+                    <div
+                      className={optionClass + " hidden lg:flex"}
+                      onClick={() => onHandleClick(option)}
+                    >
+                      {option.name}
+                    </div>
+                    <div
+                      className={optionClass + " lg:hidden"}
+                      onClick={() => {
+                        setSelectStatus(false);
+                        onHandleClick(option);
+                      }}
+                    >
+                      {option.name}
+                    </div>
                   </div>
                 );
               })}

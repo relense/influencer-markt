@@ -17,11 +17,13 @@ export const SimpleSearchBar = () => {
 
   const { data: categories } = api.allRoutes.getAllCategories.useQuery();
 
-  const { control, handleSubmit } = useForm<{ categories: Option[] }>({
-    defaultValues: {
-      categories: [],
-    },
-  });
+  const { control, handleSubmit, setValue } = useForm<{ categories: Option[] }>(
+    {
+      defaultValues: {
+        categories: [],
+      },
+    }
+  );
 
   const submit = handleSubmit((data) => {
     void router.push(
@@ -60,7 +62,8 @@ export const SimpleSearchBar = () => {
               hideArrow={true}
               hideBorder={true}
               borderType="mega-rounded"
-              noFocus={true}
+              hoverEffect={true}
+              clearSelection={() => setValue("categories", [])}
             />
           );
         }}
