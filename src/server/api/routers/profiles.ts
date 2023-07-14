@@ -6,6 +6,7 @@ export const profilesRouter = createTRPCRouter({
     .input(
       z.object({
         categories: z.array(z.number()),
+        socialMedia: z.array(z.number()),
       })
     )
     .query(async ({ ctx, input }) => {
@@ -21,6 +22,16 @@ export const profilesRouter = createTRPCRouter({
                 },
               },
             },
+            userSocialMedia: {
+              some: {
+                socialMediaId: {
+                  in:
+                    input.socialMedia.length > 0
+                      ? input.socialMedia
+                      : undefined,
+                },
+              },
+            },
           },
         }),
         ctx.prisma.profile.findMany({
@@ -31,6 +42,16 @@ export const profilesRouter = createTRPCRouter({
                 id: {
                   in:
                     input.categories.length > 0 ? input.categories : undefined,
+                },
+              },
+            },
+            userSocialMedia: {
+              some: {
+                socialMediaId: {
+                  in:
+                    input.socialMedia.length > 0
+                      ? input.socialMedia
+                      : undefined,
                 },
               },
             },
