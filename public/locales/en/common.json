@@ -306,7 +306,8 @@
       "requestValuePack": "Request a custom value pack",
       "copy": "Copy",
       "loadMore": "Load More Reviews",
-      "shareModalTitle": "Share Influencer Page"
+      "shareModalTitle": "Share Influencer Page",
+      "valuePackSubmitButton": "Start Order"
     },
 
     "editPage": {

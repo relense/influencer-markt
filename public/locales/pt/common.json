@@ -306,7 +306,8 @@
       "requestValuePack": "Pede um pack personalizado",
       "copy": "Copiar",
       "loadMore": "Carrega Mais Comentários",
-      "shareModalTitle": "Partilha a Página do Influencer"
+      "shareModalTitle": "Partilha a Página do Influencer",
+      "valuePackSubmitButton": "Iniciar Pedido"
     },
 
     "editPage": {
