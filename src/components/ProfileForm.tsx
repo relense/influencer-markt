@@ -187,6 +187,8 @@ const ProfileForm = (params: {
                 })}
                 handleOptionSelect={onChange}
                 selectedOptions={value}
+                clearSelection={() => params.setValue("categories", [])}
+                borderType="normal"
               />
             );
           }}
