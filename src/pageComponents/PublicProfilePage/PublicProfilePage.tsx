@@ -409,7 +409,7 @@ const PublicProfilePage = (params: { username: string }) => {
             )}
           </div>
           <Button
-            title="Start Order"
+            title={t("pages.publicProfilePage.valuePackSubmitButton")}
             level="primary"
             size="large"
             disabled={platform.id === -1 || selectedValuePack.id === -1}
