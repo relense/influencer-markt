@@ -3,7 +3,7 @@ import { api } from "~/utils/api";
 import { useEffect, useState } from "react";
 import { type ValuePack } from "@prisma/client";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faSearch } from "@fortawesome/free-solid-svg-icons";
+import { faFilter, faSearch } from "@fortawesome/free-solid-svg-icons";
 2;
 import {
   ProfileCard,
@@ -14,6 +14,7 @@ import { LoadingSpinner } from "../../components/LoadingSpinner";
 import { Button } from "../../components/Button";
 import { type Option } from "../../components/CustomMultiSelect";
 import { ComplexSearchBar } from "../../components/ComplexSearchBar";
+import { Modal } from "../../components/Modal";
 
 type UserProfiles = {
   id: number;
@@ -37,6 +38,7 @@ export type SearchData = {
 const ExplorePage = (params: { choosenCategories: Option[] }) => {
   const [influencersCursor, setInfluencersCursor] = useState<number>(-1);
   const [userProfiles, setUserProfiles] = useState<UserProfiles[]>([]);
+  const [isFilterModalOpen, setIsFilterModalOpen] = useState<boolean>(false);
 
   const {
     control,
@@ -181,7 +183,7 @@ const ExplorePage = (params: { choosenCategories: Option[] }) => {
 
   return (
     <div className="flex flex-1 flex-col justify-start gap-12 p-2 lg:w-full lg:gap-6 lg:p-12 xl:self-center xl:p-4 2xl:w-3/4">
-      <div className="flex items-center justify-center">
+      <div className="flex flex-col items-center justify-center gap-4 lg:flex-row">
         <ComplexSearchBar
           control={control}
           handleClick={() => {
@@ -191,11 +193,14 @@ const ExplorePage = (params: { choosenCategories: Option[] }) => {
           register={register}
           setValue={setValue}
         />
-        {/* <div className="flex h-14 items-center justify-center rounded-2xl border-[1px] border-white1 p-4 shadow-lg">
-          <FontAwesomeIcon icon={faSearch} className="fa-lg text-influencer " />
+        <div
+          className="flex h-14 cursor-pointer items-center justify-center gap-2 rounded-2xl border-[1px] border-white1 p-4 shadow-lg hover:border-black"
+          onClick={() => setIsFilterModalOpen(!isFilterModalOpen)}
+        >
+          <FontAwesomeIcon icon={faFilter} className="fa-lg  " />
 
-          <div>Filter</div>
-        </div> */}
+          <div>Filters</div>
+        </div>
       </div>
       {profilesIsFetching ? (
         <div className="relative h-screen lg:flex lg:flex-1">
@@ -211,6 +216,13 @@ const ExplorePage = (params: { choosenCategories: Option[] }) => {
             onClick={() => profilesWithCursorRefetch()}
             isLoading={profilesWithCursorIsFetching}
           />
+        </div>
+      )}
+      {isFilterModalOpen && (
+        <div className="flex flex-1 justify-center">
+          <Modal title="Filters" onClose={() => setIsFilterModalOpen(false)}>
+            <div></div>
+          </Modal>
         </div>
       )}
     </div>

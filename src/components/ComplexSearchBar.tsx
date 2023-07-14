@@ -51,7 +51,10 @@ export const ComplexSearchBar = (params: {
                   hideBorder={true}
                   borderType="mega-rounded"
                   hoverEffect={true}
-                  clearSelection={() => params.setValue("categories", [])}
+                  clearSelection={() => {
+                    params.setValue("categories", []);
+                    params.handleClick();
+                  }}
                 />
               );
             }}
@@ -82,7 +85,10 @@ export const ComplexSearchBar = (params: {
                   hideBorder={true}
                   borderType="mega-rounded"
                   hoverEffect={true}
-                  clearSelection={() => params.setValue("platforms", [])}
+                  clearSelection={() => {
+                    params.setValue("platforms", []);
+                    params.handleClick();
+                  }}
                 />
               );
             }}
@@ -91,7 +97,7 @@ export const ComplexSearchBar = (params: {
       </div>
 
       <div
-        className="hidden cursor-pointer items-center justify-center rounded-2xl sm:bg-influencer sm:p-3 lg:flex"
+        className="hidden cursor-pointer items-center justify-center rounded-2xl hover:bg-influencer-dark sm:bg-influencer sm:p-3 lg:flex"
         onClick={() => params.handleClick()}
       >
         <FontAwesomeIcon
