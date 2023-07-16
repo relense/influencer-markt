@@ -147,7 +147,7 @@ export const CustomMultiSelect = (params: {
   };
 
   const renderOptions = () => {
-    const dropdownClasses = `relative z-10 h-56 overflow-hidden border-[1px] border-gray3  bg-white sm:h-auto rounded-2xl shadow-xl`;
+    const dropdownClasses = `relative z-10 h-56 overflow-hidden border-[1px] border-gray3  bg-white sm:h-auto rounded-2xl shadow-xl max-h-56 overflow-y-auto`;
 
     if (selectStatus) {
       return (

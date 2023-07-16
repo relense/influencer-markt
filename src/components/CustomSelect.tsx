@@ -86,7 +86,7 @@ export const CustomSelect = (params: {
       </div>
 
       {selectStatus && (
-        <div className="relative z-10 h-auto overflow-y-auto rounded-2xl border-[1px] border-gray3 bg-white shadow-xl">
+        <div className="relative z-10 h-auto max-h-52 overflow-y-auto rounded-2xl border-[1px] border-gray3 bg-white shadow-xl">
           {params.options &&
             params.options.map((option) => {
               let classes = "";
