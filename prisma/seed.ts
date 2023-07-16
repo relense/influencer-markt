@@ -1,7 +1,68 @@
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import { PrismaClient } from "@prisma/client";
 const prisma = new PrismaClient();
 
+type City = {
+  id: string;
+  name: string;
+};
+
+type State = {
+  id: string;
+  name: string;
+  cities: City[];
+};
+
+type Country = {
+  id: string;
+  name: string;
+  states: State[];
+};
+
+type Data = {
+  countries: Country[];
+};
+
 async function main() {
+  // const response = await fetch(
+  //   "https://developmentinfmarkt.blob.core.windows.net/developmentinfmarkt/countries+states+cityies-small.json"
+  // );
+  // const data: Data = await response.json();
+
+  // for (const country of data.countries) {
+  //   const currentCountry = await prisma.country.create({
+  //     data: {
+  //       name: country.name,
+  //     },
+  //   });
+
+  //   for (const state of country.states) {
+  //     const currentState = await prisma.state.create({
+  //       data: {
+  //         name: state.name,
+  //         country: {
+  //           connect: {
+  //             id: currentCountry.id,
+  //           },
+  //         },
+  //       },
+  //     });
+
+  //     for (const city of state.cities) {
+  //       await prisma.city.create({
+  //         data: {
+  //           name: city.name,
+  //           state: {
+  //             connect: {
+  //               id: currentState.id,
+  //             },
+  //           },
+  //         },
+  //       });
+  //     }
+  //   }
+  // }
+
   await prisma.role.createMany({
     data: [{ name: "Brand" }, { name: "Influencer" }, { name: "Individual" }],
   });
@@ -25,13 +86,22 @@ async function main() {
       { name: "Art" },
       { name: "Music" },
       { name: "Entrepreuneur" },
-      { name: "Family & Children" },
+      { name: "Family" },
       { name: "Animals" },
       { name: "Athlete" },
       { name: "Adventure" },
       { name: "Education" },
       { name: "Celebrity" },
       { name: "Technology" },
+    ],
+  });
+
+  await prisma.contentType.createMany({
+    data: [
+      { name: "Post" },
+      { name: "Story" },
+      { name: "Reel" },
+      { name: "Video" },
     ],
   });
 
@@ -199,8 +269,6 @@ async function main() {
       },
     ],
   });
-
-  await prisma.profile.findMany({});
 
   await prisma.userSocialMedia.createMany({
     data: [
