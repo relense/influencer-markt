@@ -54,7 +54,8 @@
     },
 
     "simpleSearchBar": {
-      "categories": "categories"
+      "categories": "categories",
+      "search": "Search"
     },
 
     "complexSearchBar": {
