@@ -75,7 +75,11 @@ export const SimpleSearchBar = () => {
         />
       </button>
       <div className="flex w-full flex-1 lg:hidden">
-        <Button title="Search" level="primary" icon={faSearch}>
+        <Button
+          title={t("components.simpleSearchBar.search")}
+          level="primary"
+          icon={faSearch}
+        >
           <FontAwesomeIcon
             icon={faSearch}
             className="fa-lg text-influencer sm:text-white"
