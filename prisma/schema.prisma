@@ -76,7 +76,7 @@ model Profile {
   gender          Gender?           @relation(fields: [genderId], references: [id])
   categories      Category[]
   about           String            @db.Text
-  country         String
+  country         Country?  @relation(fields: [countryId], references: [id])
   city            String
   user            User              @relation(fields: [userId], references: [id])
   valuePacks      ValuePack[]
@@ -89,9 +89,11 @@ model Profile {
 
   userId   String @unique
   genderId Int?
+  countryId Int?
 
   @@index([userId])
   @@index([genderId])
+  @@index([countryId])
 }
 
 model Category {
@@ -113,14 +115,15 @@ model Gender {
 }
 
 model ValuePack {
-  id                Int          @id @default(autoincrement())
-  title             String       @db.Text
-  socialMedia       SocialMedia? @relation(fields: [socialMediaId], references: [id])
-  description       String       @db.Text
+  id                Int           @id @default(autoincrement())
+  title             String        @db.Text
+  socialMedia       SocialMedia?  @relation(fields: [socialMediaId], references: [id])
+  description       String        @db.Text
   deliveryTime      Int
   numberOfRevisions Int
   valuePackPrice    Int
-  profile           Profile?     @relation(fields: [profileId], references: [id])
+  profile           Profile?      @relation(fields: [profileId], references: [id])
+  contentType       ContentType[]
 
   socialMediaId Int
   profileId     Int?
@@ -201,4 +204,38 @@ model ContactMessage {
 
   @@index([contactMessageStateId])
   @@index([reasonId])
+}
+
+model ContentType {
+  id         Int         @id @default(autoincrement())
+  name       String      @unique
+  valuePacks ValuePack[]
+}
+
+model Country {
+  id   Int    @id @default(autoincrement())
+  name String
+  profile Profile[]
+  state State[]
+}
+
+model State {
+  id     Int      @id @default(autoincrement())
+  name String
+  country Country? @relation(fields: [countryId], references: [id])
+  city City[]
+  
+  countryId Int
+
+  @@index([countryId])
+}
+
+model City {
+  id     Int      @id @default(autoincrement())
+  name   String
+  state State? @relation(fields: [stateId], references: [id])
+
+  stateId Int
+
+  @@index([stateId])
 }
