@@ -171,6 +171,7 @@ const EditPage = (params: { role: Option | undefined }) => {
     formState: { errors: profileErrors },
   } = useForm<ProfileData>({
     defaultValues: {
+      country: { id: -1, name: "" },
       categories: [],
       profilePicture: "",
       website: "",
@@ -214,7 +215,7 @@ const EditPage = (params: { role: Option | undefined }) => {
       }) || []
     );
     profileSetValue("city", profile?.city || "");
-    profileSetValue("country", profile?.country || "");
+    profileSetValue("country", profile?.country || { id: -1, name: "" });
     profileSetValue("displayName", profile?.name || "");
     profileSetValue("website", profile?.website || "");
     profileSetValue("profilePicture", profile?.profilePicture || "");
@@ -340,7 +341,7 @@ const EditPage = (params: { role: Option | undefined }) => {
           )}
           <div className="text-4xl font-bold">{profile?.name}</div>
           <div className="text-lg text-gray2">
-            {profile?.country}, {profile?.city}
+            {profile?.country?.name}, {profile?.city}
           </div>
         </div>
         {profile?.website && (

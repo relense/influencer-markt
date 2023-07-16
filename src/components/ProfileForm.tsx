@@ -25,7 +25,7 @@ export type ProfileData = {
   displayName: string;
   gender: Option;
   categories: Option[];
-  country: string;
+  country: Option;
   city: string;
   about: string;
   website: string;
@@ -46,6 +46,7 @@ const ProfileForm = (params: {
   const { data: user } = api.users.getUser.useQuery();
   const { data: categories } = api.allRoutes.getAllCategories.useQuery();
   const { data: genders } = api.allRoutes.getAllGenders.useQuery();
+  const { data: countries } = api.allRoutes.getAllCountries.useQuery();
 
   useEffect(() => {
     if (params.watch("profilePicture")) {
@@ -194,13 +195,27 @@ const ProfileForm = (params: {
           }}
         />
         <div className="flex flex-col gap-6 lg:flex-row lg:gap-11">
-          <input
-            {...params.register("country")}
-            required
-            type="text"
-            className="h-14 w-full rounded-lg border-[1px] border-gray3 p-4 placeholder-gray2"
-            placeholder={t("components.profileForm.countryPlaceholder")}
-            autoComplete="off"
+          <Controller
+            name="country"
+            control={params.control}
+            rules={{ required: true }}
+            render={({ field: { value, onChange } }) => {
+              return (
+                <CustomSelect
+                  register={params.register}
+                  name="country"
+                  placeholder="Country"
+                  options={countries?.map((country) => {
+                    return {
+                      id: country.id,
+                      name: country.name,
+                    };
+                  })}
+                  value={value}
+                  handleOptionSelect={onChange}
+                />
+              );
+            }}
           />
           <input
             {...params.register("city")}

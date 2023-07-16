@@ -28,4 +28,12 @@ export const allRouter = createTRPCRouter({
   getAllMessageReasons: publicProcedure.query(async ({ ctx }) => {
     return await ctx.prisma.reason.findMany();
   }),
+
+  getAllContentTypes: publicProcedure.query(async ({ ctx }) => {
+    return await ctx.prisma.contentType.findMany();
+  }),
+
+  getAllCountries: publicProcedure.query(async ({ ctx }) => {
+    return await ctx.prisma.country.findMany();
+  }),
 });

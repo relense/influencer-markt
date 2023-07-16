@@ -170,6 +170,7 @@ const FirstStepsPage = () => {
     formState: { errors },
   } = useForm<ProfileData>({
     defaultValues: {
+      country: { id: -1, name: "" },
       gender: { id: -1, name: "" },
       categories: [],
       profilePicture: "",
@@ -334,7 +335,7 @@ const FirstStepsPage = () => {
         categories: profileData.categories,
         gender: { id: profileData.gender.id, name: profileData.gender.name },
         about: profileData.about,
-        country: profileData.country,
+        country: { id: profileData.country.id, name: profileData.country.name },
         city: profileData.city,
         website: profileData.website,
       });

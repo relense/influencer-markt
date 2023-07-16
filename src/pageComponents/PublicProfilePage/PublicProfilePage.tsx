@@ -256,7 +256,7 @@ const PublicProfilePage = (params: { username: string }) => {
               )}
             </div>
             <div className="text-lg text-gray2">
-              {profile?.country}, {profile?.city}
+              {profile?.country?.name}, {profile?.city}
             </div>
           </div>
         </div>
