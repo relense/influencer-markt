@@ -31,7 +31,7 @@ export const Layout = (props: PropsWithChildren) => {
     if (status === "authenticated") {
       void refetechUser();
     }
-  }, [status]);
+  }, [refetechUser, status]);
 
   useEffect(() => {
     if (scrollableContainer && scrollableContainer.current) {
