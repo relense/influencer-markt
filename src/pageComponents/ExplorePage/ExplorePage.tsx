@@ -24,7 +24,7 @@ type UserProfiles = {
   name: string;
   about: string;
   city: string;
-  country: string;
+  country: Option;
   username: string;
   valuePacks: ValuePack[];
 };
@@ -34,7 +34,12 @@ export type SearchData = {
   platforms: Option[];
   gender: Option;
   city: string;
-  country: string;
+  country: Option;
+  contentType: Option;
+  minFollowers: number;
+  maxFollowers: number;
+  minPrice: number;
+  maxPrice: number;
 };
 
 const ExplorePage = (params: { choosenCategories: Option[] }) => {
@@ -49,10 +54,13 @@ const ExplorePage = (params: { choosenCategories: Option[] }) => {
     handleSubmit,
     getValues,
     setValue,
+    watch,
     formState: { errors },
   } = useForm<SearchData>({
     defaultValues: {
       gender: { id: -1, name: "" },
+      contentType: { id: -1, name: "" },
+      country: { id: -1, name: "" },
       platforms: [],
       categories:
         params.choosenCategories.length > 0 ? params.choosenCategories : [],
@@ -70,6 +78,9 @@ const ExplorePage = (params: { choosenCategories: Option[] }) => {
     categories: getValues("categories").map((category) => {
       return category.id;
     }),
+    gender: getValues("gender").id,
+    minFollowers: getValues("minFollowers") || -1,
+    maxFollowers: getValues("maxFollowers") || -1,
   });
 
   const {
@@ -83,6 +94,10 @@ const ExplorePage = (params: { choosenCategories: Option[] }) => {
     { enabled: false }
   );
 
+  const { data: genders } = api.allRoutes.getAllGenders.useQuery();
+  const { data: contentTypes } = api.allRoutes.getAllContentTypes.useQuery();
+  const { data: countries } = api.allRoutes.getAllCountries.useQuery();
+
   useEffect(() => {
     if (profiles) {
       setUserProfiles(
@@ -91,7 +106,7 @@ const ExplorePage = (params: { choosenCategories: Option[] }) => {
             id: profile.id,
             about: profile.about || "",
             city: profile.city || "",
-            country: profile.country || "",
+            country: profile.country || { id: -1, name: "" },
             name: profile.name || "",
             profilePicture: profile.profilePicture || "",
             socialMedia: profile.userSocialMedia.map((socialMedia) => {
@@ -126,7 +141,7 @@ const ExplorePage = (params: { choosenCategories: Option[] }) => {
           id: profile.id,
           about: profile.about || "",
           city: profile.city || "",
-          country: profile.country || "",
+          country: profile.country || { id: -1, name: "" },
           name: profile.name || "",
           profilePicture: profile.profilePicture || "",
           socialMedia: profile.userSocialMedia.map((socialMedia) => {
@@ -154,6 +169,11 @@ const ExplorePage = (params: { choosenCategories: Option[] }) => {
     }
   }, [profilesWithCursor, userProfiles]);
 
+  const onFilterSubmit = () => {
+    setIsFilterModalOpen(false);
+    void profileRefetch();
+  };
+
   const renderInfluencers = () => {
     return (
       <div className="flex flex-col justify-center gap-6">
@@ -170,7 +190,7 @@ const ExplorePage = (params: { choosenCategories: Option[] }) => {
                   key={profile.id}
                   about={profile.about}
                   city={profile.city}
-                  country={profile.country}
+                  country={profile.country.name}
                   name={profile.name}
                   profilePicture={profile.profilePicture}
                   socialMedia={profile.socialMedia}
@@ -222,12 +242,30 @@ const ExplorePage = (params: { choosenCategories: Option[] }) => {
           />
         </div>
       )}
-      {isFilterModalOpen && (
+      {isFilterModalOpen && genders && contentTypes && countries && (
         <div className="flex flex-1 justify-center">
           <FilterModal
             onClose={() => setIsFilterModalOpen(false)}
             control={control}
             register={register}
+            handleFilterSubmit={onFilterSubmit}
+            genders={genders?.map((gender) => {
+              return {
+                id: gender.id,
+                name: gender.name,
+              };
+            })}
+            countries={countries?.map((country) => {
+              return {
+                id: country.id,
+                name: country.name,
+              };
+            })}
+            contentTypes={contentTypes.map((contentType) => {
+              return { id: contentType.id, name: contentType.name };
+            })}
+            watch={watch}
+            setValue={setValue}
           />
         </div>
       )}

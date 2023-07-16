@@ -7,6 +7,9 @@ export const profilesRouter = createTRPCRouter({
       z.object({
         categories: z.array(z.number()),
         socialMedia: z.array(z.number()),
+        gender: z.number(),
+        minFollowers: z.number(),
+        maxFollowers: z.number(),
       })
     )
     .query(async ({ ctx, input }) => {
@@ -30,8 +33,21 @@ export const profilesRouter = createTRPCRouter({
                       ? input.socialMedia
                       : undefined,
                 },
+                AND: {
+                  followers: {
+                    gte:
+                      input.minFollowers !== -1
+                        ? input.minFollowers
+                        : undefined,
+                    lte:
+                      input.maxFollowers !== -1
+                        ? input.maxFollowers
+                        : undefined,
+                  },
+                },
               },
             },
+            genderId: input.gender !== -1 ? input.gender : undefined,
           },
         }),
         ctx.prisma.profile.findMany({
@@ -53,8 +69,15 @@ export const profilesRouter = createTRPCRouter({
                       ? input.socialMedia
                       : undefined,
                 },
+                followers: {
+                  gte:
+                    input.minFollowers !== -1 ? input.minFollowers : undefined,
+                  lte:
+                    input.maxFollowers !== -1 ? input.maxFollowers : undefined,
+                },
               },
             },
+            genderId: input.gender !== -1 ? input.gender : undefined,
           },
           take: 10,
           select: {
@@ -146,7 +169,10 @@ export const profilesRouter = createTRPCRouter({
           })
         ),
         about: z.string(),
-        country: z.string(),
+        country: z.object({
+          id: z.number(),
+          name: z.string(),
+        }),
         city: z.string(),
         website: z.string(),
       })
@@ -167,7 +193,7 @@ export const profilesRouter = createTRPCRouter({
             })),
           },
           about: input.about,
-          country: input.country,
+          countryId: input.country.id === -1 ? undefined : input.country.id,
           city: input.city,
           userId: ctx.session.user.id,
           website: input.website,
@@ -182,7 +208,7 @@ export const profilesRouter = createTRPCRouter({
             })),
           },
           about: input.about,
-          country: input.country,
+          countryId: input.country.id === -1 ? undefined : input.country.id,
           city: input.city,
           userId: ctx.session.user.id,
           website: input.website,
@@ -234,6 +260,7 @@ export const profilesRouter = createTRPCRouter({
     return await ctx.prisma.profile.findUnique({
       where: { userId: ctx.session.user.id },
       include: {
+        country: true,
         categories: true,
         portfolio: true,
       },
@@ -325,7 +352,10 @@ export const profilesRouter = createTRPCRouter({
     .input(
       z.object({
         name: z.string(),
-        country: z.string(),
+        country: z.object({
+          id: z.number(),
+          name: z.string(),
+        }),
         categories: z.array(
           z.object({
             id: z.number(),
@@ -352,7 +382,7 @@ export const profilesRouter = createTRPCRouter({
             })),
           },
           city: input.city,
-          country: input.country,
+          countryId: input.country.id === -1 ? undefined : input.country.id,
           name: input.name,
           website: input.website,
           profilePicture: input.profilePicture,
