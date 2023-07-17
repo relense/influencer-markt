@@ -76,7 +76,7 @@ const FilterModal = (params: {
         </div>
         <div className="flex flex-col gap-6 lg:flex-row lg:items-center lg:gap-11">
           <div className="flex flex-1 flex-col gap-1">
-            <label className="text-gray2">Minimum Followers</label>
+            <label className="text-gray2">Minimum</label>
             <input
               {...filterRegister("minFollowers", { valueAsNumber: true })}
               type="number"
@@ -89,7 +89,7 @@ const FilterModal = (params: {
           </div>
 
           <div className="flex flex-1 flex-col gap-1">
-            <label className="text-gray2">Maximum Followers</label>
+            <label className="text-gray2">Maximum</label>
             <input
               {...filterRegister("maxFollowers", { valueAsNumber: true })}
               type="number"
@@ -228,7 +228,7 @@ const FilterModal = (params: {
         </div>
         <div className="flex flex-col gap-6 lg:flex-row lg:items-center lg:gap-11">
           <div className="flex flex-1 flex-col gap-1">
-            <label className="text-gray2">Minimum Price</label>
+            <label className="text-gray2">Minimum</label>
             <input
               {...filterRegister("minPrice", { valueAsNumber: true })}
               type="number"
@@ -241,7 +241,7 @@ const FilterModal = (params: {
             />
           </div>
           <div className="flex flex-1 flex-col gap-1">
-            <label className="text-gray2">Maximum Price</label>
+            <label className="text-gray2">Maximum</label>
             <input
               {...filterRegister("maxPrice", { valueAsNumber: true })}
               type="number"

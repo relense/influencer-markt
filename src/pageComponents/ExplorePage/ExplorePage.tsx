@@ -73,6 +73,8 @@ const ExplorePage = (params: { choosenCategories: Option[] }) => {
     gender: filterState.gender.id,
     minFollowers: filterState.minFollowers || -1,
     maxFollowers: filterState.maxFollowers || -1,
+    minPrice: filterState.minPrice || -1,
+    maxPrice: filterState.maxPrice || -1,
   });
 
   const {

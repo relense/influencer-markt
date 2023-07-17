@@ -10,6 +10,8 @@ export const profilesRouter = createTRPCRouter({
         gender: z.number(),
         minFollowers: z.number(),
         maxFollowers: z.number(),
+        minPrice: z.number(),
+        maxPrice: z.number(),
       })
     )
     .query(async ({ ctx, input }) => {
@@ -48,6 +50,14 @@ export const profilesRouter = createTRPCRouter({
               },
             },
             genderId: input.gender !== -1 ? input.gender : undefined,
+            valuePacks: {
+              some: {
+                valuePackPrice: {
+                  gte: input.minPrice !== -1 ? input.minPrice : undefined,
+                  lte: input.maxPrice !== -1 ? input.maxPrice : undefined,
+                },
+              },
+            },
           },
         }),
         ctx.prisma.profile.findMany({
@@ -78,6 +88,14 @@ export const profilesRouter = createTRPCRouter({
               },
             },
             genderId: input.gender !== -1 ? input.gender : undefined,
+            valuePacks: {
+              some: {
+                valuePackPrice: {
+                  gte: input.minPrice !== -1 ? input.minPrice : undefined,
+                  lte: input.maxPrice !== -1 ? input.maxPrice : undefined,
+                },
+              },
+            },
           },
           take: 10,
           select: {
