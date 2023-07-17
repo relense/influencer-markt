@@ -48,7 +48,7 @@ const ProfileCard = (params: {
   }, [params.socialMedia, usefullSocialMedia.followers]);
 
   return (
-    <div className="flex flex-col  gap-2 lg:w-80">
+    <div className="flex w-full  flex-col gap-2 lg:w-80">
       <div className="relative h-80 w-full self-center overflow-hidden rounded-xl shadow-xl lg:w-80">
         <Link href={`/${params.username}`}>
           <Image
