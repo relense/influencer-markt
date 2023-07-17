@@ -1,4 +1,3 @@
-import { useForm } from "react-hook-form";
 import { api } from "~/utils/api";
 import { useEffect, useState } from "react";
 import { type ValuePack } from "@prisma/client";
@@ -10,12 +9,12 @@ import {
   type UserSocialMedia,
 } from "../../components/ProfileCard";
 import { helper } from "../../utils/helper";
-import { LoadingSpinner } from "../../components/LoadingSpinner";
 import { Button } from "../../components/Button";
 import { type Option } from "../../components/CustomMultiSelect";
 import { ComplexSearchBar } from "../../components/ComplexSearchBar";
 import { FilterModal } from "./innerComponents/FilterModal";
 import { useTranslation } from "react-i18next";
+import { LoadingSpinner } from "../../components/LoadingSpinner";
 
 type UserProfiles = {
   id: number;
@@ -29,13 +28,12 @@ type UserProfiles = {
   valuePacks: ValuePack[];
 };
 
-export type SearchData = {
-  categories: Option[];
+export type FilterState = {
   platforms: Option[];
+  categories: Option[];
   gender: Option;
-  city: string;
-  country: Option;
   contentType: Option;
+  country: Option;
   minFollowers: number;
   maxFollowers: number;
   minPrice: number;
@@ -48,39 +46,33 @@ const ExplorePage = (params: { choosenCategories: Option[] }) => {
   const [userProfiles, setUserProfiles] = useState<UserProfiles[]>([]);
   const [isFilterModalOpen, setIsFilterModalOpen] = useState<boolean>(false);
 
-  const {
-    control,
-    register,
-    handleSubmit,
-    getValues,
-    setValue,
-    watch,
-    formState: { errors },
-  } = useForm<SearchData>({
-    defaultValues: {
-      gender: { id: -1, name: "" },
-      contentType: { id: -1, name: "" },
-      country: { id: -1, name: "" },
-      platforms: [],
-      categories:
-        params.choosenCategories.length > 0 ? params.choosenCategories : [],
-    },
+  const [filterState, setFilterState] = useState<FilterState>({
+    platforms: [],
+    categories:
+      params.choosenCategories.length > 0 ? params.choosenCategories : [],
+    gender: { id: -1, name: "" },
+    contentType: { id: -1, name: "" },
+    country: { id: -1, name: "" },
+    minFollowers: 0,
+    maxFollowers: 100000,
+    minPrice: 0,
+    maxPrice: 100000,
   });
 
   const {
     data: profiles,
-    isFetching: profilesIsFetching,
     refetch: profileRefetch,
+    isLoading,
   } = api.profiles.getAllInfluencerProfiles.useQuery({
-    socialMedia: getValues("platforms").map((platform) => {
+    socialMedia: filterState.platforms.map((platform) => {
       return platform.id;
     }),
-    categories: getValues("categories").map((category) => {
+    categories: filterState.categories.map((category) => {
       return category.id;
     }),
-    gender: getValues("gender").id,
-    minFollowers: getValues("minFollowers") || -1,
-    maxFollowers: getValues("maxFollowers") || -1,
+    gender: filterState.gender.id,
+    minFollowers: filterState.minFollowers || -1,
+    maxFollowers: filterState.maxFollowers || -1,
   });
 
   const {
@@ -100,6 +92,7 @@ const ExplorePage = (params: { choosenCategories: Option[] }) => {
 
   useEffect(() => {
     if (profiles) {
+      setUserProfiles([]);
       setUserProfiles(
         profiles[1].map((profile) => {
           return {
@@ -169,8 +162,74 @@ const ExplorePage = (params: { choosenCategories: Option[] }) => {
     }
   }, [profilesWithCursor, userProfiles]);
 
-  const onFilterSubmit = () => {
+  const onHandleSearch = (categories: Option[], platforms: Option[]) => {
+    setFilterState({
+      ...filterState,
+      categories,
+      platforms,
+    });
+
+    if (categories.length > 0 || platforms.length > 0) {
+      setUserProfiles([]);
+      void profileRefetch();
+    }
+  };
+
+  const clearSearchBar = (type: "categories" | "platforms") => {
+    if (type === "categories") {
+      setFilterState({
+        ...filterState,
+        categories: [],
+      });
+    } else if (type === "platforms") {
+      setFilterState({
+        ...filterState,
+        platforms: [],
+      });
+    }
+
+    setUserProfiles([]);
+    void profileRefetch();
+  };
+
+  const onFilterSubmit = (params: {
+    gender: Option;
+    minFollowers: number;
+    maxFollowers: number;
+    minPrice: number;
+    maxPrice: number;
+    categories: Option[];
+    platforms: Option[];
+  }) => {
     setIsFilterModalOpen(false);
+    setFilterState({
+      ...filterState,
+      categories: params.categories,
+      platforms: params.platforms,
+      gender: params.gender,
+      minFollowers: params.minFollowers,
+      maxFollowers: params.maxFollowers,
+      minPrice: params.minPrice,
+      maxPrice: params.maxPrice,
+    });
+
+    void profileRefetch();
+  };
+
+  const onClearFilter = () => {
+    setIsFilterModalOpen(false);
+    setFilterState({
+      ...filterState,
+      categories: [],
+      platforms: [],
+      gender: { id: -1, name: "" },
+      minFollowers: 0,
+      maxFollowers: 1000000,
+      minPrice: 0,
+      maxPrice: 1000000,
+    });
+
+    setUserProfiles([]);
     void profileRefetch();
   };
 
@@ -209,13 +268,10 @@ const ExplorePage = (params: { choosenCategories: Option[] }) => {
     <div className="flex flex-1 flex-col justify-start gap-12 p-2 lg:w-full lg:gap-6 lg:p-12 xl:self-center xl:p-4 2xl:w-3/4">
       <div className="flex flex-col items-center justify-center gap-4 lg:flex-row">
         <ComplexSearchBar
-          control={control}
-          handleClick={() => {
-            setUserProfiles([]);
-            profileRefetch;
-          }}
-          register={register}
-          setValue={setValue}
+          handleClick={onHandleSearch}
+          categories={filterState.categories}
+          platforms={filterState.platforms}
+          clearSearchBar={clearSearchBar}
         />
         <div
           className="flex h-14 cursor-pointer items-center justify-center gap-2 rounded-2xl border-[1px] border-white1 p-4 shadow-lg hover:border-black"
@@ -226,7 +282,7 @@ const ExplorePage = (params: { choosenCategories: Option[] }) => {
           <div>{t("pages.explore.filters")}</div>
         </div>
       </div>
-      {profilesIsFetching ? (
+      {isLoading ? (
         <div className="relative h-screen lg:flex lg:flex-1">
           <LoadingSpinner />
         </div>
@@ -245,10 +301,10 @@ const ExplorePage = (params: { choosenCategories: Option[] }) => {
       {isFilterModalOpen && genders && contentTypes && countries && (
         <div className="flex flex-1 justify-center">
           <FilterModal
+            filterState={filterState}
             onClose={() => setIsFilterModalOpen(false)}
-            control={control}
-            register={register}
             handleFilterSubmit={onFilterSubmit}
+            handleClearFilter={onClearFilter}
             genders={genders?.map((gender) => {
               return {
                 id: gender.id,
@@ -264,8 +320,6 @@ const ExplorePage = (params: { choosenCategories: Option[] }) => {
             contentTypes={contentTypes.map((contentType) => {
               return { id: contentType.id, name: contentType.name };
             })}
-            watch={watch}
-            setValue={setValue}
           />
         </div>
       )}

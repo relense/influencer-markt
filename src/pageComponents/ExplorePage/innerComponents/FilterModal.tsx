@@ -1,52 +1,71 @@
-import {
-  type UseFormWatch,
-  type Control,
-  type UseFormRegister,
-  type UseFormSetValue,
-  useForm,
-  Controller,
-} from "react-hook-form";
+import { useForm, Controller } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 
 import { Modal } from "../../../components/Modal";
-import { type SearchData } from "../ExplorePage";
 import { Button } from "../../../components/Button";
 import { type Option } from "../../../components/CustomMultiSelect";
 import { CustomSelect } from "../../../components/CustomSelect";
-
-type FilterData = {
-  gender: Option;
-  contentType: Option;
-};
+import type { FilterState } from "../ExplorePage";
 
 const FilterModal = (params: {
   onClose: () => void;
-  control: Control<SearchData, any>;
-  register: UseFormRegister<SearchData>;
-  handleFilterSubmit: () => void;
+  handleFilterSubmit: (params: {
+    gender: Option;
+    minFollowers: number;
+    maxFollowers: number;
+    minPrice: number;
+    maxPrice: number;
+    categories: Option[];
+    platforms: Option[];
+  }) => void;
+  handleClearFilter: () => void;
   genders: Option[];
   contentTypes: Option[];
   countries: Option[];
-  watch: UseFormWatch<SearchData>;
-  setValue: UseFormSetValue<SearchData>;
+  filterState: FilterState;
 }) => {
   const { t } = useTranslation();
 
   const {
     handleSubmit,
+    control: filterControl,
+    register: filterRegister,
     setValue: filterSetValue,
     watch: filterWatch,
-    formState: { errors },
-  } = useForm<FilterData>({
+  } = useForm<FilterState>({
     defaultValues: {
-      gender: params.watch("gender"),
-      contentType: params.watch("contentType"),
+      gender: params.filterState.gender,
+      contentType: params.filterState.contentType,
+      minFollowers: params.filterState.minFollowers,
+      maxFollowers: params.filterState.maxFollowers,
+      minPrice: params.filterState.minPrice,
+      maxPrice: params.filterState.maxPrice,
+      categories: params.filterState.categories,
+      platforms: params.filterState.platforms,
+      country: { id: -1, name: "" },
     },
   });
 
-  const submit = handleSubmit(() => {
-    params.setValue("gender", filterWatch("gender"));
-    params.handleFilterSubmit();
+  const submit = handleSubmit((data) => {
+    params.handleFilterSubmit({
+      categories: data.categories,
+      platforms: data.platforms,
+      gender: data.gender,
+      minFollowers: data.minFollowers,
+      maxFollowers: data.maxFollowers,
+      minPrice: data.minPrice,
+      maxPrice: data.maxPrice,
+    });
+  });
+
+  const clearFilters = handleSubmit(() => {
+    filterSetValue("minFollowers", 0);
+    filterSetValue("maxFollowers", 1000000);
+    filterSetValue("gender", { id: -1, name: "" });
+    filterSetValue("minPrice", 0);
+    filterSetValue("maxPrice", 1000000);
+
+    params.handleClearFilter();
   });
 
   const renderFollowersInput = () => {
@@ -55,25 +74,32 @@ const FilterModal = (params: {
         <div className="text-xl font-medium">
           {t("pages.explore.followersInputLabel")}
         </div>
-        <div className="flex flex-col gap-6 lg:flex-row lg:gap-11">
-          <input
-            {...params.register("minFollowers", { valueAsNumber: true })}
-            type="number"
-            className="h-14 w-full rounded-lg border-[1px] border-gray3 p-4 placeholder-gray2"
-            placeholder="Min Followers"
-            autoComplete="off"
-            max="1000000000"
-            min="0"
-          />
-          <input
-            {...params.register("maxFollowers", { valueAsNumber: true })}
-            type="number"
-            className="h-14 w-full rounded-lg border-[1px] border-gray3 p-4 placeholder-gray2"
-            placeholder="Max Followers"
-            autoComplete="off"
-            max="1000000000"
-            min="0"
-          />
+        <div className="flex flex-col gap-6 lg:flex-row lg:items-center lg:gap-11">
+          <div className="flex flex-1 flex-col gap-1">
+            <label className="text-gray2">Minimum Followers</label>
+            <input
+              {...filterRegister("minFollowers", { valueAsNumber: true })}
+              type="number"
+              className="h-14 w-full rounded-lg border-[1px] border-gray3 p-4 placeholder-gray2"
+              placeholder="Min Followers"
+              autoComplete="off"
+              max="1000000000"
+              min="0"
+            />
+          </div>
+
+          <div className="flex flex-1 flex-col gap-1">
+            <label className="text-gray2">Maximum Followers</label>
+            <input
+              {...filterRegister("maxFollowers", { valueAsNumber: true })}
+              type="number"
+              className="h-14 w-full rounded-lg border-[1px] border-gray3 p-4 placeholder-gray2"
+              placeholder="Max Followers"
+              autoComplete="off"
+              max="1000000000"
+              min="0"
+            />
+          </div>
         </div>
       </div>
     );
@@ -85,7 +111,7 @@ const FilterModal = (params: {
         <div className="text-xl font-medium">
           {t("pages.explore.genderInputLabel")}
         </div>
-        <div className="flex gap-4 ">
+        <div className="flex flex-wrap justify-center gap-4 lg:justify-start ">
           <div
             key={-1}
             className={
@@ -123,7 +149,7 @@ const FilterModal = (params: {
         <div className="text-xl font-medium">
           {t("pages.explore.contentTypeInputLabel")}
         </div>
-        <div className="flex gap-4 ">
+        <div className="flex flex-wrap justify-center gap-4 lg:justify-start">
           <div
             key={-1}
             className={
@@ -162,11 +188,11 @@ const FilterModal = (params: {
         <div className="flex flex-col gap-6 lg:flex-row lg:gap-11">
           <Controller
             name="country"
-            control={params.control}
+            control={filterControl}
             render={({ field: { value, onChange } }) => {
               return (
                 <CustomSelect
-                  register={params.register}
+                  register={filterRegister}
                   name="country"
                   placeholder="Country"
                   options={params.countries?.map((country) => {
@@ -177,12 +203,13 @@ const FilterModal = (params: {
                   })}
                   value={value}
                   handleOptionSelect={onChange}
+                  required={false}
                 />
               );
             }}
           />
           <input
-            {...params.register("city")}
+            // {...filterRegister("city")}
             type="text"
             className="h-14 w-full rounded-lg border-[1px] border-gray3 p-4 placeholder-gray2"
             placeholder={t("components.profileForm.cityPlaceholder")}
@@ -199,25 +226,33 @@ const FilterModal = (params: {
         <div className="text-xl font-medium">
           {t("pages.explore.priceInputLabel")}
         </div>
-        <div className="flex flex-col gap-6 lg:flex-row lg:gap-11">
-          <input
-            {...params.register("minPrice")}
-            type="number"
-            className="h-14 w-full rounded-lg border-[1px] border-gray3 p-4 placeholder-gray2"
-            placeholder="Min Price Value"
-            autoComplete="off"
-            max="1000000000"
-            min="0"
-          />
-          <input
-            {...params.register("maxPrice")}
-            type="number"
-            className="h-14 w-full rounded-lg border-[1px] border-gray3 p-4 placeholder-gray2"
-            placeholder="Max Price Value"
-            autoComplete="off"
-            max="1000000000"
-            min="0"
-          />
+        <div className="flex flex-col gap-6 lg:flex-row lg:items-center lg:gap-11">
+          <div className="flex flex-1 flex-col gap-1">
+            <label className="text-gray2">Minimum Price</label>
+            <input
+              {...filterRegister("minPrice", { valueAsNumber: true })}
+              type="number"
+              className="h-14 w-full rounded-lg border-[1px] border-gray3 p-4 placeholder-gray2"
+              placeholder="Min Price Value"
+              autoComplete="off"
+              max="1000000000"
+              min="0"
+              value={filterWatch("minPrice")}
+            />
+          </div>
+          <div className="flex flex-1 flex-col gap-1">
+            <label className="text-gray2">Maximum Price</label>
+            <input
+              {...filterRegister("maxPrice", { valueAsNumber: true })}
+              type="number"
+              className="h-14 w-full rounded-lg border-[1px] border-gray3 p-4 placeholder-gray2"
+              placeholder="Max Price Value"
+              autoComplete="off"
+              max="1000000000"
+              min="0"
+              value={filterWatch("maxPrice")}
+            />
+          </div>
         </div>
       </div>
     );
@@ -228,7 +263,7 @@ const FilterModal = (params: {
       <form
         id="form-filterModal"
         className="flex h-full w-full flex-col gap-4 p-4 sm:w-full sm:px-8"
-        onSubmit={submit}
+        onSubmit={() => submit()}
       >
         {renderFollowersInput()}
         <div className="w-full border-[1px] border-white1" />
@@ -241,8 +276,11 @@ const FilterModal = (params: {
         <div className="w-full border-[1px] border-white1" />
         {renderPriceInput()}
         <div className="w-full border-[1px] border-white1" />
-        <div className="flex items-center justify-between">
-          <div className="text-lg font-medium underline">
+        <div className="flex flex-col items-center justify-between gap-4 lg:flex-row">
+          <div
+            className="flex cursor-pointer text-lg font-medium underline"
+            onClick={() => clearFilters()}
+          >
             {t("pages.explore.clearAllButton")}
           </div>
           <Button
