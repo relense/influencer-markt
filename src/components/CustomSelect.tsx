@@ -15,6 +15,7 @@ export const CustomSelect = (params: {
   value: Option;
   options: Option[] | undefined;
   handleOptionSelect: (option: Option) => void;
+  required?: boolean;
 }) => {
   const [selectStatus, setSelectStatus] = useState<boolean>(false);
   const customSelectWrapperRef = useRef(null);
@@ -43,7 +44,7 @@ export const CustomSelect = (params: {
         {params.register ? (
           <input
             {...params.register(params.name)}
-            required
+            required={!params.required ? params.required : true}
             ref={customSelectWrapperRef}
             id={`${params.name}1`}
             onKeyDown={(e) => {
@@ -58,7 +59,7 @@ export const CustomSelect = (params: {
           />
         ) : (
           <input
-            required
+            required={!params.required ? params.required : true}
             ref={customSelectWrapperRef}
             id={`${params.name}2`}
             onKeyDown={(e) => {

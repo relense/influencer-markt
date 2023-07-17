@@ -21,6 +21,7 @@ export const CustomMultiSelect = (params: {
   borderType?: "mega-rounded" | "normal";
   hoverEffect?: boolean;
   clearSelection: () => void;
+  required?: boolean;
 }) => {
   const [selectStatus, setSelectStatus] = useState<boolean>(false);
 
@@ -122,7 +123,7 @@ export const CustomMultiSelect = (params: {
             }}
           >
             <input
-              required
+              required={!params.required ? params.required : true}
               id={`${params.name}1`}
               onKeyDown={(e) => {
                 e.preventDefault();
