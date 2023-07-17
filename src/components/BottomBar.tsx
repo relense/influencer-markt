@@ -18,7 +18,7 @@ const navigationLinks: linkItem[] = [
     icon: faHome,
   },
   {
-    pageUrl: "/explore",
+    pageUrl: "/explore/influencers",
     icon: faSearch,
   },
   {
