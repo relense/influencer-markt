@@ -9,7 +9,7 @@ import {
 import { StepsReminder } from "../../../components/StepsReminder";
 import { ProfileForm, type ProfileData } from "../../../components/ProfileForm";
 
-export const Step1 = (params: {
+export const SetupProfileStep = (params: {
   control: Control<ProfileData, any>;
   register: UseFormRegister<ProfileData>;
   setValue: UseFormSetValue<ProfileData>;

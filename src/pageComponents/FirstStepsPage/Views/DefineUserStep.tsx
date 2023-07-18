@@ -18,7 +18,7 @@ export enum RoleEnum {
   Individual = 3,
 }
 
-export const Step0 = (params: {
+export const DefineUserStep = (params: {
   control: Control<UserIdentityData, any>;
   register: UseFormRegister<UserIdentityData>;
   watch: UseFormWatch<UserIdentityData>;
@@ -46,7 +46,9 @@ export const Step0 = (params: {
               <CustomSelect
                 register={params.register}
                 name="role"
-                placeholder={t("pages.firstSteps.step0.roleInputPLaceholder")}
+                placeholder={t(
+                  "pages.firstSteps.defineUserStep.roleInputPLaceholder"
+                )}
                 options={roles
                   ?.filter((role) => role.id !== RoleEnum.Individual)
                   .map((role) => {
@@ -69,7 +71,7 @@ export const Step0 = (params: {
               <div className="flex flex-row items-center gap-2">
                 <ToolTip
                   color={params.usernameVerification ? "valid" : "warning"}
-                  content={t("pages.firstSteps.step0.tooltip")}
+                  content={t("pages.firstSteps.defineUserStep.tooltip")}
                 />
                 <div className="flex h-16 w-full items-center rounded-lg border-[1px] border-gray3 p-4 placeholder-gray2 ">
                   <div className="hidden h-16 items-center xs:flex">
@@ -81,7 +83,7 @@ export const Step0 = (params: {
                     type="text"
                     className="flex w-full flex-1 rounded-lg placeholder-gray2 focus:outline-none"
                     placeholder={t(
-                      "pages.firstSteps.step0.claimInputPlaceholder"
+                      "pages.firstSteps.defineUserStep.claimInputPlaceholder"
                     )}
                     autoComplete="off"
                     onKeyDown={() => {
@@ -98,11 +100,13 @@ export const Step0 = (params: {
 
                     {params.usernameVerification ? (
                       <div className="text-influencer-green">
-                        {t("pages.firstSteps.step0.pageNameAvailable")}
+                        {t("pages.firstSteps.defineUserStep.pageNameAvailable")}
                       </div>
                     ) : (
                       <div className="text-red-600">
-                        {t("pages.firstSteps.step0.pageNameUnavailable")}
+                        {t(
+                          "pages.firstSteps.defineUserStep.pageNameUnavailable"
+                        )}
                       </div>
                     )}
                   </div>
@@ -111,9 +115,9 @@ export const Step0 = (params: {
           )}
       </form>
       <div className="px-4 text-center text-sm">
-        <span>{t("pages.firstSteps.step0.disclaimer")}</span>{" "}
+        <span>{t("pages.firstSteps.defineUserStep.disclaimer")}</span>{" "}
         <span className="font-extrabold">
-          {t("pages.firstSteps.step0.permanent")}
+          {t("pages.firstSteps.defineUserStep.permanent")}
         </span>
       </div>
     </div>

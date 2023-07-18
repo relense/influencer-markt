@@ -4,7 +4,7 @@ import {
   PictureCarrosel,
 } from "../../../components/PictureCarrosel";
 
-export const Step3 = (params: {
+export const VisualPortfolioStep = (params: {
   changeStep: (value: "next" | "previous") => void;
   porttoflio: Picture[] | [];
   addPicture?: (pictureUrl: string) => void;

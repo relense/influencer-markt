@@ -3,19 +3,18 @@ import { useForm } from "react-hook-form";
 import { api } from "~/utils/api";
 import Link from "next/link";
 
-import { Step1 } from "./Views/Step1";
-import { Step2 } from "./Views/Step2";
+import { SetupProfileStep } from "./Views/SetupProfileStep";
+import { SocialMediaStep } from "./Views/SocialMediaStep";
 
 import { ProgressRing } from "../../components/ProgressRing";
-import { Step3 } from "./Views/Step3";
-import { Step4, type ValuePackType } from "./Views/Step4";
-import { Step5 } from "./Views/Step5";
+import { VisualPortfolioStep } from "./Views/VisualPortfolioStep";
+import { FinalStep } from "./Views/FinalStep";
 import { Button } from "../../components/Button";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faXmark } from "@fortawesome/free-solid-svg-icons";
 import { type SocialMediaDetails } from "../../components/AddSocialMediaModal";
 import { type ProfileData } from "../../components/ProfileForm";
-import { RoleEnum, Step0 } from "./Views/Step0";
+import { RoleEnum, DefineUserStep } from "./Views/DefineUserStep";
 import { type Option } from "../../components/CustomMultiSelect";
 import { type Picture } from "../../components/PictureCarrosel";
 import { useTranslation } from "react-i18next";
@@ -24,7 +23,6 @@ enum StepsEnum {
   OnlinePresence,
   SocialMedia,
   VisualPortfolio,
-  ValuePacks,
   Final,
 }
 
@@ -46,8 +44,13 @@ export type SocialMediaData = {
   socialMedia: SocialMediaDetails[];
 };
 
-export type ValuePacksData = {
-  valuePacks: ValuePackType[];
+export type ValuePackType = {
+  id?: number;
+  platform: Option;
+  deliveryTime: number;
+  numberOfRevisions: number;
+  valuePackPrice: number;
+  contentType: Option;
 };
 
 const FirstStepsPage = () => {
@@ -57,42 +60,35 @@ const FirstStepsPage = () => {
     {
       id: StepsEnum.OnlinePresence,
       step: t("pages.firstSteps.stepIdentifier1"),
-      title: t("pages.firstSteps.step1.title"),
-      subTitle: t("pages.firstSteps.step1.subTitle"),
-      mainTitle: t("pages.firstSteps.step1.mainTitle"),
-      mainSubTitle: t("pages.firstSteps.step1.mainSubTitle"),
+      title: t("pages.firstSteps.setupProfileStep.title"),
+      subTitle: t("pages.firstSteps.setupProfileStep.subTitle"),
+      mainTitle: t("pages.firstSteps.setupProfileStep.mainTitle"),
+      mainSubTitle: t("pages.firstSteps.setupProfileStep.mainSubTitle"),
     },
     {
       id: StepsEnum.SocialMedia,
       step: t("pages.firstSteps.stepIdentifier2"),
-      title: t("pages.firstSteps.step2.title"),
-      subTitle: t("pages.firstSteps.step2.subTitle"),
-      mainTitle: t("pages.firstSteps.step2.mainTitle"),
-      mainSubTitle: t("pages.firstSteps.step2.mainSubTitle"),
+      title: t("pages.firstSteps.socialMediaStep.title"),
+      subTitle: t("pages.firstSteps.socialMediaStep.subTitle"),
+      mainTitle: t("pages.firstSteps.socialMediaStep.mainTitle"),
+      mainSubTitle: t("pages.firstSteps.socialMediaStep.mainSubTitle"),
     },
     {
       id: StepsEnum.VisualPortfolio,
       step: t("pages.firstSteps.stepIdentifier3"),
-      title: t("pages.firstSteps.step3.title"),
-      subTitle: t("pages.firstSteps.step3.subTitle"),
-      mainTitle: t("pages.firstSteps.step3.mainTitle"),
-      mainSubTitle: t("pages.firstSteps.step3.mainSubTitle"),
+      title: t("pages.firstSteps.visualPortfolioStep.title"),
+      subTitle: t("pages.firstSteps.visualPortfolioStep.subTitle"),
+      mainTitle: t("pages.firstSteps.visualPortfolioStep.mainTitle"),
+      mainSubTitle: t("pages.firstSteps.visualPortfolioStep.mainSubTitle"),
     },
-    {
-      id: StepsEnum.ValuePacks,
-      step: t("pages.firstSteps.stepIdentifier4"),
-      title: t("pages.firstSteps.step4.title"),
-      subTitle: t("pages.firstSteps.step4.subTitle"),
-      mainTitle: t("pages.firstSteps.step4.mainTitle"),
-      mainSubTitle: t("pages.firstSteps.step4.mainSubTitle"),
-    },
+
     {
       id: StepsEnum.Final,
-      step: t("pages.firstSteps.stepIdentifier5"),
-      title: t("pages.firstSteps.step5.title"),
-      subTitle: t("pages.firstSteps.step5.subTitle"),
-      mainTitle: t("pages.firstSteps.step5.mainTitle"),
-      mainSubTitle: t("pages.firstSteps.step5.mainSubTitle"),
+      step: t("pages.firstSteps.stepIdentifier4"),
+      title: t("pages.firstSteps.finalStep.title"),
+      subTitle: t("pages.firstSteps.finalStep.subTitle"),
+      mainTitle: t("pages.firstSteps.finalStep.mainTitle"),
+      mainSubTitle: t("pages.firstSteps.finalStep.mainSubTitle"),
     },
   ];
 
@@ -100,10 +96,10 @@ const FirstStepsPage = () => {
     {
       id: StepsEnum.Final,
       step: t("pages.firstSteps.stepIdentifier2"),
-      title: t("pages.firstSteps.step5.title"),
-      subTitle: t("pages.firstSteps.step5.subTitle"),
-      mainTitle: t("pages.firstSteps.step5.mainTitle"),
-      mainSubTitle: t("pages.firstSteps.step5.mainSubTitle"),
+      title: t("pages.firstSteps.finalStep.title"),
+      subTitle: t("pages.firstSteps.finalStep.subTitle"),
+      mainTitle: t("pages.firstSteps.finalStep.mainTitle"),
+      mainSubTitle: t("pages.firstSteps.finalStep.mainSubTitle"),
     },
   ];
 
@@ -111,34 +107,34 @@ const FirstStepsPage = () => {
     {
       id: StepsEnum.OnlinePresence,
       step: t("pages.firstSteps.stepIdentifier1"),
-      title: t("pages.firstSteps.step1.title"),
-      subTitle: t("pages.firstSteps.step1.subTitle"),
-      mainTitle: t("pages.firstSteps.step1.mainTitle"),
-      mainSubTitle: t("pages.firstSteps.step1.mainSubTitle"),
+      title: t("pages.firstSteps.setupProfileStep.title"),
+      subTitle: t("pages.firstSteps.setupProfileStep.subTitle"),
+      mainTitle: t("pages.firstSteps.setupProfileStep.mainTitle"),
+      mainSubTitle: t("pages.firstSteps.setupProfileStep.mainSubTitle"),
     },
     {
       id: StepsEnum.SocialMedia,
       step: t("pages.firstSteps.stepIdentifier2"),
-      title: t("pages.firstSteps.step2.title"),
-      subTitle: t("pages.firstSteps.step2.subTitle"),
-      mainTitle: t("pages.firstSteps.step2.mainTitle"),
-      mainSubTitle: t("pages.firstSteps.step2.mainSubTitle"),
+      title: t("pages.firstSteps.socialMediaStep.title"),
+      subTitle: t("pages.firstSteps.socialMediaStep.subTitle"),
+      mainTitle: t("pages.firstSteps.socialMediaStep.mainTitle"),
+      mainSubTitle: t("pages.firstSteps.socialMediaStep.mainSubTitle"),
     },
     {
       id: StepsEnum.VisualPortfolio,
       step: t("pages.firstSteps.stepIdentifier3"),
-      title: t("pages.firstSteps.step3.title"),
-      subTitle: t("pages.firstSteps.step3.subTitle"),
-      mainTitle: t("pages.firstSteps.step3.mainTitle"),
-      mainSubTitle: t("pages.firstSteps.step3.mainSubTitle"),
+      title: t("pages.firstSteps.visualPortfolioStep.title"),
+      subTitle: t("pages.firstSteps.visualPortfolioStep.subTitle"),
+      mainTitle: t("pages.firstSteps.visualPortfolioStep.mainTitle"),
+      mainSubTitle: t("pages.firstSteps.visualPortfolioStep.mainSubTitle"),
     },
     {
       id: StepsEnum.Final,
       step: t("pages.firstSteps.stepIdentifier4"),
-      title: t("pages.firstSteps.step5.title"),
-      subTitle: t("pages.firstSteps.step5.subTitle"),
-      mainTitle: t("pages.firstSteps.step5.mainTitle"),
-      mainSubTitle: t("pages.firstSteps.step5.mainSubTitle"),
+      title: t("pages.firstSteps.finalStep.title"),
+      subTitle: t("pages.firstSteps.finalStep.subTitle"),
+      mainTitle: t("pages.firstSteps.finalStep.mainTitle"),
+      mainSubTitle: t("pages.firstSteps.finalStep.mainSubTitle"),
     },
   ];
   const mainContentRef = useRef<HTMLDivElement>(null);
@@ -184,12 +180,6 @@ const FirstStepsPage = () => {
     handleSubmit: handleSubmitSocialMediaData,
   } = useForm<SocialMediaData>();
 
-  const {
-    getValues: getValuesValuePacks,
-    setValue: setValueValuePacks,
-    handleSubmit: handleSubmitValuePackData,
-  } = useForm<ValuePacksData>();
-
   const { data: user } = api.users.getUser.useQuery();
   const { data: platforms } = api.allRoutes.getAllSocialMedia.useQuery();
   const {
@@ -203,8 +193,6 @@ const FirstStepsPage = () => {
   const { mutate } = api.users.updateUserFirstSteps.useMutation();
   const { mutateAsync: profileMutation } =
     api.profiles.createProfile.useMutation();
-  const { mutate: valuePacksMutation } =
-    api.valuesPacks.createValuePacks.useMutation();
   const { mutate: userSocialMediaMutation } =
     api.userSocialMedias.createUserSocialMedias.useMutation();
 
@@ -242,10 +230,6 @@ const FirstStepsPage = () => {
   });
 
   const submitStep2 = handleSubmitSocialMediaData(() => {
-    changeStep("next");
-  });
-
-  const submitStep4 = handleSubmitValuePackData(() => {
     changeStep("next");
   });
 
@@ -322,7 +306,6 @@ const FirstStepsPage = () => {
   const saveAllData = async () => {
     const profileData = getValuesProfile();
     const socialMediaData = getValuesSocialMedia();
-    const valuePackData = getValuesValuePacks();
 
     if (
       profileData &&
@@ -353,21 +336,6 @@ const FirstStepsPage = () => {
       );
 
       userSocialMediaMutation(newSocialMediaData);
-    }
-
-    if (valuePackData && valuePackData?.valuePacks) {
-      const newData = valuePackData.valuePacks.map((valuePack) => {
-        return {
-          title: valuePack.title,
-          socialMedia: valuePack.platform,
-          description: valuePack.description,
-          deliveryTime: valuePack.deliveryTime,
-          numberOfRevisions: valuePack.numberOfRevisions,
-          valuePackPrice: valuePack.valuePackPrice,
-        };
-      });
-
-      valuePacksMutation(newData);
     }
 
     mutate({ firstSteps: true });
@@ -500,7 +468,7 @@ const FirstStepsPage = () => {
           >
             {currentStep?.id !== StepsEnum.Final && renderStepMainTitle()}
             {currentStep?.id === StepsEnum.OnlinePresence && (
-              <Step1
+              <SetupProfileStep
                 control={control}
                 register={register}
                 setValue={setValue}
@@ -510,7 +478,7 @@ const FirstStepsPage = () => {
               />
             )}
             {currentStep?.id === StepsEnum.SocialMedia && (
-              <Step2
+              <SocialMediaStep
                 registerSocialMedia={registerSocialMedia}
                 platforms={platforms}
                 setValue={setValueSocialMedia}
@@ -519,26 +487,17 @@ const FirstStepsPage = () => {
               />
             )}
             {currentStep?.id === StepsEnum.VisualPortfolio && (
-              <Step3
+              <VisualPortfolioStep
                 changeStep={changeStep}
                 porttoflio={portfolio}
                 addPicture={onAddPicture}
                 deletePicture={onDeletePicture}
               />
             )}
-            {currentStep?.id === StepsEnum.ValuePacks && (
-              <Step4
-                changeStep={changeStep}
-                socialMedias={platforms}
-                getValues={getValuesValuePacks}
-                setValue={setValueValuePacks}
-                submit={submitStep4}
-              />
-            )}
             {currentStep?.id === StepsEnum.Final && (
               <div className="mt-6 flex h-full w-full flex-1 flex-col justify-center gap-8 p-4 sm:mt-0">
                 {renderStepMainTitle()}
-                <Step5 changeStep={changeStep} saveAllData={saveAllData} />
+                <FinalStep changeStep={changeStep} saveAllData={saveAllData} />
               </div>
             )}
             {renderStepperButtons()}
@@ -558,13 +517,13 @@ const FirstStepsPage = () => {
           >
             <div className="flex flex-col items-center justify-center gap-4 p-4 text-center font-playfair lg:mt-12 lg:py-0">
               <div className="text-2xl sm:text-4xl">
-                {t("pages.firstSteps.step0.title")}
+                {t("pages.firstSteps.defineUserStep.title")}
               </div>
               <div className="text-base text-gray2 sm:text-xl">
-                {t("pages.firstSteps.step0.subTitle")}
+                {t("pages.firstSteps.defineUserStep.subTitle")}
               </div>
             </div>
-            <Step0
+            <DefineUserStep
               control={userIdentityControl}
               register={userIdentityRegister}
               watch={userIdentityWatch}
@@ -574,7 +533,7 @@ const FirstStepsPage = () => {
             />
             <div className="flex-2 flex w-full flex-col justify-center gap-4 p-4 py-4 sm:flex-row sm:items-end sm:gap-0">
               <Button
-                title={t("pages.firstSteps.step0.button")}
+                title={t("pages.firstSteps.defineUserStep.button")}
                 level="primary"
                 form="form-user"
                 size="regular"

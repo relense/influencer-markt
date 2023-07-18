@@ -17,6 +17,8 @@ const FilterModal = (params: {
     maxPrice: number;
     categories: Option[];
     platforms: Option[];
+    country: Option;
+    contentType: Option;
   }) => void;
   handleClearFilter: () => void;
   genders: Option[];
@@ -42,7 +44,7 @@ const FilterModal = (params: {
       maxPrice: params.filterState.maxPrice,
       categories: params.filterState.categories,
       platforms: params.filterState.platforms,
-      country: { id: -1, name: "" },
+      country: params.filterState.country,
     },
   });
 
@@ -55,6 +57,8 @@ const FilterModal = (params: {
       maxFollowers: data.maxFollowers,
       minPrice: data.minPrice,
       maxPrice: data.maxPrice,
+      country: data.country,
+      contentType: data.contentType,
     });
   });
 
@@ -64,6 +68,8 @@ const FilterModal = (params: {
     filterSetValue("gender", { id: -1, name: "" });
     filterSetValue("minPrice", 0);
     filterSetValue("maxPrice", 1000000);
+    filterSetValue("country", { id: -1, name: "" });
+    filterSetValue("contentType", { id: -1, name: "" });
 
     params.handleClearFilter();
   });

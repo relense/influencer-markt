@@ -229,7 +229,7 @@
       "stepIdentifier4": "Passo 4",
       "stepIdentifier5": "Passo 5",
 
-      "step0": {
+      "defineUserStep": {
         "title": "Cria a tua identidade",
         "subTitle": "Bem-vindo! Vamos Começar: Establece o teu utilizador e reivindica a tua página",
         "button": "Começa a tua jornada",
@@ -242,14 +242,14 @@
         "pageNameUnavailable": "Nome para página não está disponível"
       },
 
-      "step1": {
+      "setupProfileStep": {
         "title": "Presença online",
         "subTitle": "Define o teu perfil de identidade online",
         "mainTitle": "Establece a tua presença online",
         "mainSubTitle": "Vamos establecer quem tu és e o que define a tua identidade online"
       },
 
-      "step2": {
+      "socialMediaStep": {
         "title": "Redes Sociais",
         "subTitle": "Partilha as tuas contas das redes sociais",
         "mainTitle": "Liga e demonstra a tua influência",
@@ -259,7 +259,7 @@
         "followers": "Seguidores"
       },
 
-      "step3": {
+      "visualPortfolioStep": {
         "title": "Portfólio Visual",
         "subTitle": "Cria um portfólio de acordo com as tuas necessidades",
         "mainTitle": "Constrói o teu portfólio visual",
@@ -278,7 +278,7 @@
         "addValue": "Adiciona um Pack de Valor"
       },
 
-      "step5": {
+      "finalStep": {
         "title": "Está tudo pronto",
         "subTitle": "Começa a explorar as emocionantes oportunidades que estão por vir!",
         "mainTitle": "Parabéns! Estás tudo pronto para libertar o teu poder de influência",

@@ -75,6 +75,8 @@ const ExplorePage = (params: { choosenCategories: Option[] }) => {
     maxFollowers: filterState.maxFollowers || -1,
     minPrice: filterState.minPrice || -1,
     maxPrice: filterState.maxPrice || -1,
+    country: filterState.country.id,
+    contentType: filterState.contentType.id,
   });
 
   const {
@@ -202,6 +204,8 @@ const ExplorePage = (params: { choosenCategories: Option[] }) => {
     maxPrice: number;
     categories: Option[];
     platforms: Option[];
+    country: Option;
+    contentType: Option;
   }) => {
     setIsFilterModalOpen(false);
     setFilterState({
@@ -213,6 +217,8 @@ const ExplorePage = (params: { choosenCategories: Option[] }) => {
       maxFollowers: params.maxFollowers,
       minPrice: params.minPrice,
       maxPrice: params.maxPrice,
+      country: params.country,
+      contentType: params.contentType,
     });
 
     void profileRefetch();
@@ -225,6 +231,7 @@ const ExplorePage = (params: { choosenCategories: Option[] }) => {
       categories: [],
       platforms: [],
       gender: { id: -1, name: "" },
+      contentType: { id: -1, name: "" },
       minFollowers: 0,
       maxFollowers: 1000000,
       minPrice: 0,

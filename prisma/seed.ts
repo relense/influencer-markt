@@ -24,44 +24,44 @@ type Data = {
 };
 
 async function main() {
-  // const response = await fetch(
-  //   "https://developmentinfmarkt.blob.core.windows.net/developmentinfmarkt/countries+states+cityies-small.json"
-  // );
-  // const data: Data = await response.json();
+  const response = await fetch(
+    "https://developmentinfmarkt.blob.core.windows.net/developmentinfmarkt/portugal.json"
+  );
+  const data: Data = await response.json();
 
-  // for (const country of data.countries) {
-  //   const currentCountry = await prisma.country.create({
-  //     data: {
-  //       name: country.name,
-  //     },
-  //   });
+  for (const country of data.countries) {
+    const currentCountry = await prisma.country.create({
+      data: {
+        name: country.name,
+      },
+    });
 
-  //   for (const state of country.states) {
-  //     const currentState = await prisma.state.create({
-  //       data: {
-  //         name: state.name,
-  //         country: {
-  //           connect: {
-  //             id: currentCountry.id,
-  //           },
-  //         },
-  //       },
-  //     });
+    for (const state of country.states) {
+      const currentState = await prisma.state.create({
+        data: {
+          name: state.name,
+          country: {
+            connect: {
+              id: currentCountry.id,
+            },
+          },
+        },
+      });
 
-  //     for (const city of state.cities) {
-  //       await prisma.city.create({
-  //         data: {
-  //           name: city.name,
-  //           state: {
-  //             connect: {
-  //               id: currentState.id,
-  //             },
-  //           },
-  //         },
-  //       });
-  //     }
-  //   }
-  // }
+      for (const city of state.cities) {
+        await prisma.city.create({
+          data: {
+            name: city.name,
+            state: {
+              connect: {
+                id: currentState.id,
+              },
+            },
+          },
+        });
+      }
+    }
+  }
 
   await prisma.role.createMany({
     data: [{ name: "Brand" }, { name: "Influencer" }, { name: "Individual" }],
@@ -391,75 +391,62 @@ async function main() {
     data: [
       {
         deliveryTime: 1,
-        description: "super value pack 1 post and 2 stories",
         numberOfRevisions: 2,
-        socialMediaId: 1,
-        title: "super value",
+        userSocialMediaId: 1,
         valuePackPrice: 1000,
-        profileId: 5,
+        contentTypeId: 1,
       },
       {
         deliveryTime: 2,
-        description: "Mega value pack with 2 stories",
         numberOfRevisions: 2,
-        socialMediaId: 1,
-        title: "Mega Pack",
+        userSocialMediaId: 1,
         valuePackPrice: 1000,
-        profileId: 5,
+        contentTypeId: 1,
       },
       {
         deliveryTime: 1,
-        description: "super value pack 1 post and 2 stories",
+
         numberOfRevisions: 2,
-        socialMediaId: 1,
-        title: "super value",
+        userSocialMediaId: 1,
         valuePackPrice: 1000,
-        profileId: 6,
+        contentTypeId: 1,
       },
       {
         deliveryTime: 2,
-        description: "Mega value pack with 2 stories",
         numberOfRevisions: 2,
-        socialMediaId: 1,
-        title: "Mega Pack",
+        userSocialMediaId: 1,
         valuePackPrice: 1000,
-        profileId: 6,
+        contentTypeId: 1,
       },
       {
         deliveryTime: 1,
-        description: "super value pack 1 post and 2 stories",
+
         numberOfRevisions: 2,
-        socialMediaId: 1,
-        title: "super value",
+        userSocialMediaId: 1,
         valuePackPrice: 1000,
-        profileId: 7,
+        contentTypeId: 1,
       },
       {
         deliveryTime: 2,
-        description: "Mega value pack with 2 stories",
         numberOfRevisions: 2,
-        socialMediaId: 1,
-        title: "Mega Pack",
+        userSocialMediaId: 1,
         valuePackPrice: 1000,
-        profileId: 7,
+        contentTypeId: 1,
       },
       {
         deliveryTime: 1,
-        description: "super value pack 1 post and 2 stories",
+
         numberOfRevisions: 2,
-        socialMediaId: 1,
-        title: "super value",
+        userSocialMediaId: 1,
         valuePackPrice: 1000,
-        profileId: 8,
+        contentTypeId: 1,
       },
       {
         deliveryTime: 2,
-        description: "Mega value pack with 2 stories",
         numberOfRevisions: 2,
-        socialMediaId: 1,
-        title: "Mega Pack",
+        userSocialMediaId: 1,
         valuePackPrice: 1000,
-        profileId: 8,
+        contentTypeId: 1,
       },
     ],
   });

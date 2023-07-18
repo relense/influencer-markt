@@ -76,10 +76,9 @@ model Profile {
   gender          Gender?           @relation(fields: [genderId], references: [id])
   categories      Category[]
   about           String            @db.Text
-  country         Country?  @relation(fields: [countryId], references: [id])
+  country         Country?          @relation(fields: [countryId], references: [id])
   city            String
   user            User              @relation(fields: [userId], references: [id])
-  valuePacks      ValuePack[]
   website         String            @db.Text
   rating          String?
   userSocialMedia UserSocialMedia[]
@@ -87,8 +86,8 @@ model Profile {
   submitedReviews Review[]          @relation("author")
   portfolio       Portfolio[]
 
-  userId   String @unique
-  genderId Int?
+  userId    String @unique
+  genderId  Int?
   countryId Int?
 
   @@index([userId])
@@ -115,27 +114,23 @@ model Gender {
 }
 
 model ValuePack {
-  id                Int           @id @default(autoincrement())
-  title             String        @db.Text
-  socialMedia       SocialMedia?  @relation(fields: [socialMediaId], references: [id])
-  description       String        @db.Text
+  id                Int              @id @default(autoincrement())
   deliveryTime      Int
   numberOfRevisions Int
   valuePackPrice    Int
-  profile           Profile?      @relation(fields: [profileId], references: [id])
-  contentType       ContentType[]
+  userSocialMedia   UserSocialMedia? @relation(fields: [userSocialMediaId], references: [id])
+  contentType       ContentType?     @relation(fields: [contentTypeId], references: [id])
 
-  socialMediaId Int
-  profileId     Int?
+  contentTypeId     Int
+  userSocialMediaId Int
 
-  @@index([profileId])
-  @@index([socialMediaId])
+  @@index([contentTypeId])
+  @@index([userSocialMediaId])
 }
 
 model SocialMedia {
   id              Int               @id @default(autoincrement())
   name            String
-  valuePack       ValuePack[]
   UserSocialMedia UserSocialMedia[]
 }
 
@@ -156,6 +151,7 @@ model UserSocialMedia {
   followers   Int
   url         String
   profile     Profile?     @relation(fields: [profileId], references: [id])
+  valuePacks  ValuePack[]
 
   socialMediaId Int
   profileId     Int?
@@ -213,26 +209,26 @@ model ContentType {
 }
 
 model Country {
-  id   Int    @id @default(autoincrement())
-  name String
+  id      Int       @id @default(autoincrement())
+  name    String
   profile Profile[]
-  state State[]
+  state   State[]
 }
 
 model State {
-  id     Int      @id @default(autoincrement())
-  name String
+  id      Int      @id @default(autoincrement())
+  name    String
   country Country? @relation(fields: [countryId], references: [id])
-  city City[]
-  
+  city    City[]
+
   countryId Int
 
   @@index([countryId])
 }
 
 model City {
-  id     Int      @id @default(autoincrement())
-  name   String
+  id    Int    @id @default(autoincrement())
+  name  String
   state State? @relation(fields: [stateId], references: [id])
 
   stateId Int

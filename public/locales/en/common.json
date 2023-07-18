@@ -229,7 +229,7 @@
       "stepIdentifier4": "Step 4",
       "stepIdentifier5": "Step 5",
 
-      "step0": {
+      "defineUserStep": {
         "title": "Create Your Identity",
         "subTitle": "Welcome! Let's Get Started: Establish Your User And Claim Your Page",
         "button": "Start Your Journey",
@@ -242,14 +242,14 @@
         "pageNameUnavailable": "Page name is unavailable"
       },
 
-      "step1": {
+      "setupProfileStep": {
         "title": "Online Presence",
         "subTitle": "Define Your Online Profile identity",
         "mainTitle": "Establish Your Online Presence",
         "mainSubTitle": "Let's Establish who you are and what defines your online identity"
       },
 
-      "step2": {
+      "socialMediaStep": {
         "title": "Social Media",
         "subTitle": "Share your social media accounts",
         "mainTitle": "Connect and Showcase Your Influence",
@@ -259,7 +259,7 @@
         "followers": "Followers"
       },
 
-      "step3": {
+      "visualPortfolioStep": {
         "title": "Visual Portfolio",
         "subTitle": "Create a portfolio related with your needs",
         "mainTitle": "Build Your Visual Portfolio",
@@ -278,7 +278,7 @@
         "addValue": "Add Value Pack"
       },
 
-      "step5": {
+      "finalStep": {
         "title": "You're All Set",
         "subTitle": "Start Exploring the Exciting Opportunities Ahead!",
         "mainTitle": "Congratulations! You're All Set to Unleash Your Influence",
