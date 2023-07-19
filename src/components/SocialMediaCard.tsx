@@ -7,13 +7,17 @@ import type { SocialMediaDetails } from "../utils/globalTypes";
 
 const SocialMediaCard = (params: {
   socialMedia: SocialMediaDetails;
-  onDelete: (socialMedia: SocialMediaDetails) => void;
+  onDelete: () => void;
+  onClick: () => void;
 }) => {
   const { t } = useTranslation();
 
   return (
     <div className="relative w-full px-4 sm:h-auto sm:w-5/12 sm:px-0">
-      <div className="flex w-auto cursor-default flex-col gap-4 rounded-lg border-[1px] border-gray3 p-4 sm:h-auto">
+      <div
+        className="flex w-auto cursor-default flex-col gap-4 rounded-lg border-[1px] border-gray3 p-4 sm:h-auto"
+        onClick={params.onClick}
+      >
         <div className="font-semibold text-influencer">
           {params.socialMedia.platform.name}
         </div>
@@ -76,7 +80,7 @@ const SocialMediaCard = (params: {
       </div>
       <div
         className="absolute right-2 top-[-8px] flex h-8 w-8 cursor-pointer items-center justify-center  rounded-full bg-influencer-green sm:right-[-5px] sm:top-[-5px]"
-        onClick={() => params.onDelete(params.socialMedia)}
+        onClick={params.onDelete}
       >
         <FontAwesomeIcon icon={faXmark} className="fa-lg text-white" />
       </div>

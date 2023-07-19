@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import {
   useForm,
   type UseFormRegister,
@@ -7,7 +8,6 @@ import {
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
 
-import { useEffect, useState } from "react";
 import { StepsReminder } from "../../../components/StepsReminder";
 import { AddSocialMediaModal } from "../../../components/AddSocialMediaModal";
 import { useTranslation } from "react-i18next";
@@ -31,6 +31,8 @@ export const SocialMediaStep = (params: {
   const [socialMediaList, setSocialMediaList] = useState<SocialMediaDetails[]>(
     []
   );
+  const [selectedSocialMedia, setSelectedSocialMedia] =
+    useState<SocialMediaDetails>();
   const { t } = useTranslation();
 
   const {
@@ -84,6 +86,7 @@ export const SocialMediaStep = (params: {
     setSocialMediaList(newArrayList);
     params.setValue("socialMedia", newArrayList);
     setIsModalOpen(false);
+    setSelectedSocialMedia(undefined);
     reset();
   });
 
@@ -109,7 +112,18 @@ export const SocialMediaStep = (params: {
 
   const onCloseModal = () => {
     reset();
+    setSelectedSocialMedia(undefined);
     setIsModalOpen(false);
+  };
+
+  const handleOnclickSocialMediaCard = (socialMedia: SocialMediaDetails) => {
+    setIsModalOpen(true);
+    setValue("platform", socialMedia.platform);
+    setValue("socialMediaFollowers", socialMedia.socialMediaFollowers);
+    setValue("socialMediaHandler", socialMedia.socialMediaHandler);
+    setValue("valuePacks", socialMedia.valuePacks);
+
+    return null;
   };
 
   return (
@@ -145,7 +159,8 @@ export const SocialMediaStep = (params: {
               <SocialMediaCard
                 key={`${socialMedia.platform.name} ${index}`}
                 socialMedia={socialMedia}
-                onDelete={removeSocialMedia}
+                onDelete={() => removeSocialMedia(socialMedia)}
+                onClick={() => handleOnclickSocialMediaCard(socialMedia)}
               />
             );
           })}

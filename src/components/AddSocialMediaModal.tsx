@@ -45,6 +45,12 @@ const AddSocialMediaModal = (params: {
   const [valuePacks, setValuePacks] = useState<ValuePacks>([]);
 
   useEffect(() => {
+    if (params.watch("valuePacks")) {
+      setValuePacks(params.watch("valuePacks"));
+    }
+  }, [params]);
+
+  useEffect(() => {
     let availablePlatformsArray: Option[] = [];
 
     if (params.platforms && params.socialMediaList) {
@@ -82,7 +88,7 @@ const AddSocialMediaModal = (params: {
   ) => {
     setValuePacks((prevValuePacks) => {
       const existingValuePack = prevValuePacks.find(
-        (valuePack) => valuePack.contentType === contentType
+        (valuePack) => valuePack.contentType.id === contentType.id
       );
 
       if (!existingValuePack) {
@@ -102,7 +108,7 @@ const AddSocialMediaModal = (params: {
       }
 
       const updatedValuePacks = prevValuePacks.map((valuePack) => {
-        if (valuePack.contentType === contentType) {
+        if (valuePack.contentType.id === contentType.id) {
           const updatedValuePack = { ...valuePack };
 
           updatedValuePack[field] = value;
@@ -132,58 +138,81 @@ const AddSocialMediaModal = (params: {
       (platform) => platform.name === params.watch("platform").name
     );
 
-    return selectPlatform?.[0]?.contentTypes.map((contentType) => (
-      <div key={contentType.id} className="flex w-full flex-col gap-4">
-        <div className="text-xl font-medium">{contentType.name}</div>
-        <div className="flex flex-1 gap-4">
+    return selectPlatform?.[0]?.contentTypes.map((contentType, index) => {
+      return (
+        <div key={contentType.id} className="flex w-full flex-col gap-4">
+          <div className="text-xl font-medium">{contentType.name}</div>
+          <div className="flex flex-1 gap-4">
+            <input
+              type="number"
+              className="h-14 w-full rounded-lg border-[1px] border-gray3 p-4 placeholder-gray2"
+              placeholder="Delivery Time"
+              autoComplete="off"
+              max="30"
+              min="0"
+              defaultValue={
+                valuePacks[index]?.contentType.id === contentType.id &&
+                valuePacks[index]?.deliveryTime
+                  ? valuePacks[index]?.deliveryTime
+                  : ""
+              }
+              onWheel={(e) => e.currentTarget.blur()}
+              onChange={(e) =>
+                handleValuePackChange(
+                  contentType,
+                  "deliveryTime",
+                  parseInt(e.target.value)
+                )
+              }
+            />
+            <input
+              type="number"
+              className="h-14 w-full rounded-lg border-[1px] border-gray3 p-4 placeholder-gray2"
+              placeholder="Revision Time"
+              autoComplete="off"
+              max="3"
+              min="0"
+              defaultValue={
+                valuePacks[index]?.contentType.id === contentType.id &&
+                valuePacks[index]?.numberOfRevisions
+                  ? valuePacks[index]?.numberOfRevisions
+                  : ""
+              }
+              onWheel={(e) => e.currentTarget.blur()}
+              onChange={(e) =>
+                handleValuePackChange(
+                  contentType,
+                  "numberOfRevisions",
+                  parseInt(e.target.value)
+                )
+              }
+            />
+          </div>
           <input
             type="number"
             className="h-14 w-full rounded-lg border-[1px] border-gray3 p-4 placeholder-gray2"
-            placeholder="Delivery Time"
+            placeholder="Price"
             autoComplete="off"
-            max="30"
+            max="1000000000"
             min="0"
-            onChange={(e) =>
-              handleValuePackChange(
-                contentType,
-                "deliveryTime",
-                parseInt(e.target.value)
-              )
+            defaultValue={
+              valuePacks[index]?.contentType.id === contentType.id &&
+              valuePacks[index]?.valuePackPrice
+                ? valuePacks[index]?.valuePackPrice
+                : ""
             }
-          />
-          <input
-            type="number"
-            className="h-14 w-full rounded-lg border-[1px] border-gray3 p-4 placeholder-gray2"
-            placeholder="Revision Time"
-            autoComplete="off"
-            max="3"
-            min="0"
+            onWheel={(e) => e.currentTarget.blur()}
             onChange={(e) =>
               handleValuePackChange(
                 contentType,
-                "numberOfRevisions",
+                "valuePackPrice",
                 parseInt(e.target.value)
               )
             }
           />
         </div>
-        <input
-          type="number"
-          className="h-14 w-full rounded-lg border-[1px] border-gray3 p-4 placeholder-gray2"
-          placeholder="Price"
-          autoComplete="off"
-          max="1000000000"
-          min="0"
-          onChange={(e) =>
-            handleValuePackChange(
-              contentType,
-              "valuePackPrice",
-              parseInt(e.target.value)
-            )
-          }
-        />
-      </div>
-    ));
+      );
+    });
   };
 
   return (
@@ -196,25 +225,31 @@ const AddSocialMediaModal = (params: {
         className="flex h-full w-full flex-col items-center gap-4 p-4 sm:w-full sm:px-8"
         onSubmit={handleSubmit}
       >
-        <Controller
-          name="platform"
-          control={params.control}
-          rules={{ required: true }}
-          render={({ field: { value, onChange } }) => {
-            return (
-              <CustomSelect
-                register={params.register}
-                name="platform"
-                placeholder={t(
-                  "components.addSocialMediaModal.platformPlaceholder"
-                )}
-                options={availablePlatforms}
-                value={value}
-                handleOptionSelect={onChange}
-              />
-            );
-          }}
-        />
+        {params.watch("valuePacks").length === 0 ? (
+          <Controller
+            name="platform"
+            control={params.control}
+            rules={{ required: true }}
+            render={({ field: { value, onChange } }) => {
+              return (
+                <CustomSelect
+                  register={params.register}
+                  name="platform"
+                  placeholder={t(
+                    "components.addSocialMediaModal.platformPlaceholder"
+                  )}
+                  options={availablePlatforms}
+                  value={value}
+                  handleOptionSelect={onChange}
+                />
+              );
+            }}
+          />
+        ) : (
+          <div className="flex font-semibold">
+            {params.watch("platform").name}
+          </div>
+        )}
 
         <div className="flex w-full flex-col">
           <div className="flex h-16 w-full items-center rounded-lg border-[1px] border-gray3 p-4 placeholder-gray2 ">
@@ -249,6 +284,7 @@ const AddSocialMediaModal = (params: {
           })}
           required
           type="number"
+          onWheel={(e) => e.currentTarget.blur()}
           className="h-14 w-full rounded-lg border-[1px] border-gray3 p-4 placeholder-gray2"
           placeholder={t("components.addSocialMediaModal.followersPlaceholder")}
           autoComplete="off"
@@ -258,7 +294,11 @@ const AddSocialMediaModal = (params: {
         {renderValuePacks()}
         <div className="flex w-full justify-center">
           <Button
-            title={t("components.addSocialMediaModal.button")}
+            title={
+              params.watch("valuePacks").length === 0
+                ? t("components.addSocialMediaModal.button")
+                : "Edit Social Media"
+            }
             level="primary"
             form="form-socialMedia"
           />

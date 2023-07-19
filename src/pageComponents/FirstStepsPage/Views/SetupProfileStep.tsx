@@ -20,7 +20,7 @@ export const SetupProfileStep = (params: {
 }) => {
   return (
     <div className="mt-2 flex flex-1 flex-col items-center gap-4 lg:mt-11 lg:overflow-y-auto">
-      <div className="w-3/4 sm:w-full lg:w-2/4">
+      <div className="w-3/4 sm:w-full lg:w-3/4 2xl:w-2/4">
         <ProfileForm
           control={params.control}
           register={params.register}

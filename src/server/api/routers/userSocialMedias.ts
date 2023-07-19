@@ -41,33 +41,83 @@ export const userSocialMediasRouter = createTRPCRouter({
           }),
           handler: z.string(),
           followers: z.number(),
+          valuePacks: z.array(
+            z.object({
+              platformId: z.number(),
+              contentTypeId: z.number(),
+              deliveryTime: z.number(),
+              numberOfRevisions: z.number(),
+              valuePackPrice: z.number(),
+            })
+          ),
         })
       )
     )
     .mutation(async ({ ctx, input }) => {
-      const profile = await ctx.prisma.profile.update({
+      const profile = await ctx.prisma.profile.findUnique({
         where: { userId: ctx.session.user.id },
-        data: {
+        include: {
           userSocialMedia: {
-            set: [],
+            include: {
+              valuePack: true,
+            },
           },
         },
       });
 
-      if (profile) {
-        const socialMediasData = input.map((socialMedia) => ({
-          handler: socialMedia.handler,
-          followers: socialMedia.followers,
-          profileId: profile.id,
-          socialMediaId: socialMedia.socialMedia.id,
-          url: createSocialMediaUrl(
-            socialMedia.socialMedia.id,
-            socialMedia.handler
-          ),
-        }));
+      // Delete the associated UserSocialMedia records
 
-        return await ctx.prisma.userSocialMedia.createMany({
-          data: socialMediasData,
+      if (profile && input) {
+        profile.userSocialMedia.map(async (usm) => {
+          await ctx.prisma.valuePack.deleteMany({
+            where: {
+              id: { in: usm.valuePack.map((valuePack) => valuePack.id) },
+            },
+          });
+        });
+
+        // Delete the associated UserSocialMedia records
+        await ctx.prisma.userSocialMedia.deleteMany({
+          where: {
+            id: { in: profile.userSocialMedia.map((usm) => usm.id) },
+          },
+        });
+
+        // Update the UserSocialMedia relationship of the Profile
+        await ctx.prisma.profile.update({
+          where: { userId: ctx.session.user.id },
+          data: {
+            userSocialMedia: {
+              set: [],
+            },
+          },
+        });
+
+        input.map(async (socialMedia) => {
+          const userSocialMedia = await ctx.prisma.userSocialMedia.create({
+            data: {
+              socialMediaId: socialMedia.socialMedia.id,
+              handler: socialMedia.handler,
+              followers: socialMedia.followers,
+              url: createSocialMediaUrl(
+                socialMedia.socialMedia.id,
+                socialMedia.handler
+              ),
+              profileId: profile.id,
+            },
+          });
+
+          await ctx.prisma.valuePack.createMany({
+            data: socialMedia.valuePacks.map((valuePack) => {
+              return {
+                deliveryTime: valuePack.deliveryTime,
+                numberOfRevisions: valuePack.numberOfRevisions,
+                valuePackPrice: valuePack.valuePackPrice,
+                contentTypeId: valuePack.contentTypeId,
+                userSocialMediaId: userSocialMedia.id,
+              };
+            }),
+          });
         });
       }
     }),

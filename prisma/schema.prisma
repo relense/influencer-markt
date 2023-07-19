@@ -152,7 +152,7 @@ model UserSocialMedia {
   followers   Int
   url         String
   profile     Profile?     @relation(fields: [profileId], references: [id])
-  valuePacks  ValuePack[]
+  valuePack  ValuePack[]
 
   socialMediaId Int
   profileId     Int?

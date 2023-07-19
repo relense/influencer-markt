@@ -316,11 +316,18 @@ const FirstStepsPage = () => {
             handler: socialMedia.socialMediaHandler,
             followers: socialMedia.socialMediaFollowers,
             socialMedia: socialMedia.platform,
+            valuePacks: socialMedia.valuePacks.map((valuePack) => {
+              return {
+                platformId: valuePack.platform.id,
+                contentTypeId: valuePack.contentType.id,
+                deliveryTime: valuePack.deliveryTime,
+                numberOfRevisions: valuePack.numberOfRevisions,
+                valuePackPrice: valuePack.valuePackPrice,
+              };
+            }),
           };
         }
       );
-
-      debugger;
 
       userSocialMediaMutation(newSocialMediaData);
     }
