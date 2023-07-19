@@ -1,11 +1,7 @@
 import { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faMinus, faPlus } from "@fortawesome/free-solid-svg-icons";
-
-export type QuestionType = {
-  question: string;
-  answer: string;
-};
+import { type QuestionType } from "../../../utils/globalTypes";
 
 const Question = (params: QuestionType) => {
   const [showAnswer, setShowAnswer] = useState<boolean>(false);

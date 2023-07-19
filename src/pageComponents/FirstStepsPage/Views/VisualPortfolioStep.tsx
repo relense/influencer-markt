@@ -1,8 +1,6 @@
 import { StepsReminder } from "../../../components/StepsReminder";
-import {
-  type Picture,
-  PictureCarrosel,
-} from "../../../components/PictureCarrosel";
+import { PictureCarrosel } from "../../../components/PictureCarrosel";
+import { type Picture } from "../../../utils/globalTypes";
 
 export const VisualPortfolioStep = (params: {
   changeStep: (value: "next" | "previous") => void;

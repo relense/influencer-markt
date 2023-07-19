@@ -3,9 +3,9 @@ import { useTranslation } from "react-i18next";
 
 import { Modal } from "../../../components/Modal";
 import { Button } from "../../../components/Button";
-import { type Option } from "../../../components/CustomMultiSelect";
 import { CustomSelect } from "../../../components/CustomSelect";
 import type { FilterState } from "../ExplorePage";
+import { type Option } from "../../../utils/globalTypes";
 
 const FilterModal = (params: {
   onClose: () => void;

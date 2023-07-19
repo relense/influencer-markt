@@ -4,12 +4,10 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSearch } from "@fortawesome/free-solid-svg-icons";
 import { useTranslation } from "react-i18next";
 import { Controller, useForm } from "react-hook-form";
-import {
-  CustomMultiSelect,
-  type Option,
-} from "../../../components/CustomMultiSelect";
+import { CustomMultiSelect } from "../../../components/CustomMultiSelect";
 import { Button } from "../../../components/Button";
 import { useRouter } from "next/router";
+import { type Option } from "../../../utils/globalTypes";
 
 export const SimpleSearchBar = () => {
   const { t } = useTranslation();

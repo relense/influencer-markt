@@ -16,8 +16,6 @@ import Link from "next/link";
 import { PictureCarrosel } from "../../components/PictureCarrosel";
 import { Button } from "../../components/Button";
 import { CustomSelect } from "../../components/CustomSelect";
-import { type Option } from "../../components/CustomMultiSelect";
-import { type ValuePackType } from "../FirstStepsPage/Views/Step4";
 
 import { helper } from "../../utils/helper";
 import { ValuePackInput } from "./innerComponents/ValuePackInput";
@@ -27,6 +25,7 @@ import { Modal } from "../../components/Modal";
 import { Review } from "../../components/Review";
 import { LoadingSpinner } from "../../components/LoadingSpinner";
 import { useTranslation } from "react-i18next";
+import type { ValuePack, Option } from "../../utils/globalTypes";
 
 const PublicProfilePage = (params: { username: string }) => {
   const { t, i18n } = useTranslation();
@@ -36,14 +35,13 @@ const PublicProfilePage = (params: { username: string }) => {
   const [isReviewModalOpen, setIsReviewModalOpen] = useState<boolean>(false);
   const [isShareModalOpen, setIsShareModalOpen] = useState<boolean>(false);
   const [selectedReview, setSelectedReview] = useState<Review>();
-  const [selectedValuePack, setSelectedValuePack] = useState<ValuePackType>({
+  const [selectedValuePack, setSelectedValuePack] = useState<ValuePack>({
     id: -1,
-    title: "",
     platform: { id: -1, name: "" },
-    description: "",
     deliveryTime: -1,
     numberOfRevisions: -1,
     valuePackPrice: -1,
+    contentType: { id: -1, name: "" },
   });
 
   const [platform, setPlatform] = useState<Option>({ id: -1, name: "" });
@@ -121,51 +119,51 @@ const PublicProfilePage = (params: { username: string }) => {
         setCursor(lastReviewInArray.id);
       }
     }
-  }, [profileReviewsCursor, reviews]);
+  }, [i18n.language, profileReviewsCursor, reviews]);
 
-  useEffect(() => {
-    if (profile?.valuePacks && profile?.valuePacks[0]) {
-      setPlatform({
-        id: profile?.valuePacks[0]?.socialMedia?.id || -1,
-        name: profile?.valuePacks[0]?.socialMedia?.name || "",
-      });
+  // useEffect(() => {
+  //   if (profile?.valuePacks && profile?.valuePacks[0]) {
+  //     setPlatform({
+  //       id: profile?.valuePacks[0]?.socialMedia?.id || -1,
+  //       name: profile?.valuePacks[0]?.socialMedia?.name || "",
+  //     });
 
-      setSelectedValuePack({
-        id: profile?.valuePacks[0].id,
-        title: profile?.valuePacks[0].title,
-        platform: {
-          id: profile?.valuePacks[0].socialMedia?.id || -1,
-          name: profile?.valuePacks[0].socialMedia?.name || "",
-        },
-        description: profile?.valuePacks[0].description,
-        deliveryTime: profile?.valuePacks[0].deliveryTime,
-        numberOfRevisions: profile?.valuePacks[0].numberOfRevisions,
-        valuePackPrice: profile?.valuePacks[0].valuePackPrice,
-      });
-    }
-  }, [availablePlatforms, profile?.valuePacks]);
+  //     setSelectedValuePack({
+  //       id: profile?.valuePacks[0].id,
+  //       title: profile?.valuePacks[0].title,
+  //       platform: {
+  //         id: profile?.valuePacks[0].socialMedia?.id || -1,
+  //         name: profile?.valuePacks[0].socialMedia?.name || "",
+  //       },
+  //       description: profile?.valuePacks[0].description,
+  //       deliveryTime: profile?.valuePacks[0].deliveryTime,
+  //       numberOfRevisions: profile?.valuePacks[0].numberOfRevisions,
+  //       valuePackPrice: profile?.valuePacks[0].valuePackPrice,
+  //     });
+  //   }
+  // }, [availablePlatforms, profile?.valuePacks]);
 
-  useEffect(() => {
-    const uniqueOptionsSet = new Set<number>();
-    const uniqueOptions: Option[] = [];
+  // useEffect(() => {
+  //   const uniqueOptionsSet = new Set<number>();
+  //   const uniqueOptions: Option[] = [];
 
-    if (profile?.valuePacks) {
-      profile?.valuePacks.forEach((valuePack) => {
-        if (
-          valuePack.socialMedia &&
-          !uniqueOptionsSet.has(valuePack.socialMedia.id)
-        ) {
-          uniqueOptionsSet.add(valuePack.socialMedia.id);
-          uniqueOptions.push({
-            id: valuePack.socialMedia.id,
-            name: valuePack.socialMedia.name,
-          });
-        }
-      });
-    }
+  //   if (profile?.valuePacks) {
+  //     profile?.valuePacks.forEach((valuePack) => {
+  //       if (
+  //         valuePack.socialMedia &&
+  //         !uniqueOptionsSet.has(valuePack.socialMedia.id)
+  //       ) {
+  //         uniqueOptionsSet.add(valuePack.socialMedia.id);
+  //         uniqueOptions.push({
+  //           id: valuePack.socialMedia.id,
+  //           name: valuePack.socialMedia.name,
+  //         });
+  //       }
+  //     });
+  //   }
 
-    setAvailablePlatforms(uniqueOptions);
-  }, [profile?.valuePacks]);
+  //   setAvailablePlatforms(uniqueOptions);
+  // }, [profile?.valuePacks]);
 
   const onCopyLinkToShare = async () => {
     await navigator.clipboard.writeText(window.location.href);
@@ -180,12 +178,11 @@ const PublicProfilePage = (params: { username: string }) => {
     setPlatform(platform);
     setSelectedValuePack({
       id: -1,
-      title: "",
       platform: { id: -1, name: "" },
-      description: "",
       deliveryTime: -1,
       numberOfRevisions: -1,
       valuePackPrice: -1,
+      contentType: { id: -1, name: "" },
     });
   };
 
@@ -386,18 +383,16 @@ const PublicProfilePage = (params: { username: string }) => {
               />
             </div>
             <div className="w-full border-[1px] border-white1" />
-            {profile?.valuePacks && (
+            {/* {profile?.valuePacks && (
               <ValuePackInput
                 allValuePacks={profile?.valuePacks?.map((valuePack) => {
                   return {
                     deliveryTime: valuePack.deliveryTime,
-                    description: valuePack.description,
                     numberOfRevisions: valuePack.numberOfRevisions,
                     platform: {
                       id: valuePack.socialMedia?.id || -1,
                       name: valuePack.socialMedia?.name || "",
                     },
-                    title: valuePack.title,
                     valuePackPrice: valuePack.valuePackPrice,
                     id: valuePack.id || -1,
                   };
@@ -406,7 +401,7 @@ const PublicProfilePage = (params: { username: string }) => {
                 valuePack={selectedValuePack}
                 platform={platform}
               />
-            )}
+            )} */}
           </div>
           <Button
             title={t("pages.publicProfilePage.valuePackSubmitButton")}

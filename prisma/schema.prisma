@@ -132,6 +132,7 @@ model SocialMedia {
   id              Int               @id @default(autoincrement())
   name            String
   UserSocialMedia UserSocialMedia[]
+  contentTypes    ContentType[]
 }
 
 model Portfolio {
@@ -203,9 +204,10 @@ model ContactMessage {
 }
 
 model ContentType {
-  id         Int         @id @default(autoincrement())
-  name       String      @unique
-  valuePacks ValuePack[]
+  id          Int           @id @default(autoincrement())
+  name        String        @unique
+  valuePacks  ValuePack[]
+  socialMedia SocialMedia[]
 }
 
 model Country {

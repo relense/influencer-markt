@@ -4,17 +4,15 @@ import { type ValuePack } from "@prisma/client";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faFilter } from "@fortawesome/free-solid-svg-icons";
 2;
-import {
-  ProfileCard,
-  type UserSocialMedia,
-} from "../../components/ProfileCard";
+import { ProfileCard } from "../../components/ProfileCard";
 import { helper } from "../../utils/helper";
 import { Button } from "../../components/Button";
-import { type Option } from "../../components/CustomMultiSelect";
+
 import { ComplexSearchBar } from "../../components/ComplexSearchBar";
 import { FilterModal } from "./innerComponents/FilterModal";
 import { useTranslation } from "react-i18next";
 import { LoadingSpinner } from "../../components/LoadingSpinner";
+import type { Option, UserSocialMedia } from "../../utils/globalTypes";
 
 type UserProfiles = {
   id: number;
@@ -116,7 +114,7 @@ const ExplorePage = (params: { choosenCategories: Option[] }) => {
               };
             }),
             username: profile.user.username || "",
-            valuePacks: profile.valuePacks || [],
+            valuePacks: [],
           };
         })
       );
@@ -151,7 +149,7 @@ const ExplorePage = (params: { choosenCategories: Option[] }) => {
             };
           }),
           username: profile.user.username || "",
-          valuePacks: profile.valuePacks || [],
+          valuePacks: [],
         });
       });
 

@@ -5,10 +5,10 @@ import { api } from "~/utils/api";
 
 import { Button } from "../../components/Button";
 import { CustomSelect } from "../../components/CustomSelect";
-import type { Option } from "../../components/CustomMultiSelect";
 import { useEffect, useState } from "react";
 import { Modal } from "../../components/Modal";
 import Link from "next/link";
+import type { Option } from "../../utils/globalTypes";
 
 type ContactUsData = {
   reason: Option;

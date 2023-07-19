@@ -4,11 +4,7 @@ import { faChevronDown, faChevronUp } from "@fortawesome/free-solid-svg-icons";
 
 import { useOutsideClick } from "../utils/helper";
 import { faCircleXmark } from "@fortawesome/free-regular-svg-icons";
-
-export type Option = {
-  id: number;
-  name: string;
-};
+import type { Option } from "../utils/globalTypes";
 
 export const CustomMultiSelect = (params: {
   name: string;

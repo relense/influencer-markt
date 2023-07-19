@@ -11,23 +11,19 @@ import { api } from "~/utils/api";
 import { toast } from "react-hot-toast";
 import Image from "next/image";
 
-import {
-  type Picture,
-  PictureCarrosel,
-} from "../../components/PictureCarrosel";
-import {
-  AddSocialMediaModal,
-  type SocialMediaDetails,
-} from "../../components/AddSocialMediaModal";
-import { AddValuePackModal } from "../../components/AddValuePackModal";
-import { type ProfileData, ProfileForm } from "../../components/ProfileForm";
+import { PictureCarrosel } from "../../components/PictureCarrosel";
+import { AddSocialMediaModal } from "../../components/AddSocialMediaModal";
+import { ProfileForm } from "../../components/ProfileForm";
 import { Modal } from "../../components/Modal";
 import { Button } from "../../components/Button";
-import { ValuePack } from "../../components/ValuePack";
-import { type ValuePackType } from "../FirstStepsPage/Views/Step4";
-import { type Option } from "../../components/CustomMultiSelect";
 import { LoadingSpinner } from "../../components/LoadingSpinner";
 import { useTranslation } from "react-i18next";
+import type {
+  Option,
+  Picture,
+  ProfileData,
+  SocialMediaDetails,
+} from "../../utils/globalTypes";
 
 const EditPage = (params: { role: Option | undefined }) => {
   const { t } = useTranslation();
@@ -37,8 +33,6 @@ const EditPage = (params: { role: Option | undefined }) => {
   const [isProfileModalOpen, setIsProfileModalOpen] = useState<boolean>(false);
   const [isSocialMediaModalOpen, setIsSocialMediaModalOpen] =
     useState<boolean>(false);
-  const [isValuePackModalOpen, setIsValuePackModalOpen] =
-    useState<boolean>(false);
   const [portfolio, setPortfolio] = useState<Picture[]>([]);
 
   const { data: platforms } = api.allRoutes.getAllSocialMedia.useQuery();
@@ -46,10 +40,6 @@ const EditPage = (params: { role: Option | undefined }) => {
     api.profiles.getProfileWithoutIncludes.useQuery();
   const { data: profileSocialMedia } =
     api.userSocialMedias.getUserSocialMediaByProfileId.useQuery({
-      profileId: profile?.id || -1,
-    });
-  const { data: profileValuePack } =
-    api.valuesPacks.getValuePacksByProfileId.useQuery({
       profileId: profile?.id || -1,
     });
 
@@ -106,34 +96,6 @@ const EditPage = (params: { role: Option | undefined }) => {
       },
     });
 
-  const { mutate: createValuePack } =
-    api.valuesPacks.createValuePack.useMutation({
-      onSuccess: () => {
-        void ctx.valuesPacks.getValuePacksByProfileId.invalidate().then(() => {
-          setIsLoading(false);
-          toast.success(t("pages.editPage.toasterCreatedValuePackSuccess"), {
-            position: "bottom-left",
-          });
-        });
-      },
-      onError: () => {
-        setIsLoading(false);
-      },
-    });
-  const { mutate: deleteValuePack } =
-    api.valuesPacks.deleteValuePack.useMutation({
-      onSuccess: () => {
-        void ctx.valuesPacks.getValuePacksByProfileId.invalidate().then(() => {
-          setIsLoading(false);
-          toast.success(t("pages.editPage.toasterDeletedValuePack"), {
-            position: "bottom-left",
-          });
-        });
-      },
-      onError: () => {
-        setIsLoading(false);
-      },
-    });
   const { mutate: addPicture } = api.portfolios.createPicture.useMutation({
     onSuccess: () => {
       void ctx.profiles.getProfileWithoutIncludes.invalidate().then(() => {
@@ -183,21 +145,10 @@ const EditPage = (params: { role: Option | undefined }) => {
     register,
     watch: socialMediaWatch,
     reset: socialMediaReset,
+    setValue: socialMediaSetValue,
     handleSubmit: handleSubmitSocialMedia,
     formState: { errors: socialMediaErrors },
   } = useForm<SocialMediaDetails>({
-    defaultValues: {
-      platform: { id: -1, name: "" },
-    },
-  });
-
-  const {
-    control: valuePackControl,
-    register: valuePackRegister,
-    reset: valuePackReset,
-    handleSubmit: handleSubmitValuePack,
-    formState: { errors: valuePackErrors },
-  } = useForm<ValuePackType>({
     defaultValues: {
       platform: { id: -1, name: "" },
     },
@@ -268,26 +219,6 @@ const EditPage = (params: { role: Option | undefined }) => {
     deleteUserSocialMedia({ id });
   };
 
-  const onAddValuePack = handleSubmitValuePack((data) => {
-    createValuePack({
-      deliveryTime: data.deliveryTime,
-      description: data.description,
-      numberOfRevisions: data.numberOfRevisions,
-      socialMedia: data.platform,
-      title: data.title,
-      valuePackPrice: data.valuePackPrice,
-    });
-
-    setIsValuePackModalOpen(false);
-    valuePackReset();
-    setIsLoading(true);
-  });
-
-  const onDeleteValuePack = (id: number) => {
-    setIsLoading(true);
-    deleteValuePack({ id });
-  };
-
   const onCloseProfileModal = () => {
     setIsProfileModalOpen(false);
   };
@@ -295,11 +226,6 @@ const EditPage = (params: { role: Option | undefined }) => {
   const onCloseSocialMediaModal = () => {
     setIsSocialMediaModalOpen(false);
     socialMediaReset();
-  };
-
-  const onCloseValuePackModal = () => {
-    setIsValuePackModalOpen(false);
-    valuePackReset();
   };
 
   const onAddPicture = (pictureUrl: string) => {
@@ -449,45 +375,6 @@ const EditPage = (params: { role: Option | undefined }) => {
     );
   };
 
-  const renderValuePacks = () => {
-    return (
-      <div className="flex flex-1 flex-col gap-4">
-        <div className="flex items-center gap-2">
-          <div className="text-2xl font-semibold">
-            {t("pages.editPage.valuePacks")}
-          </div>
-          <div
-            className="flex h-5 w-5 items-center justify-center rounded-full bg-influencer text-white"
-            onClick={() => setIsValuePackModalOpen(true)}
-          >
-            <FontAwesomeIcon icon={faPlus} className="fa-sm cursor-pointer " />
-          </div>
-        </div>
-        <div className="flex flex-wrap gap-4">
-          {profileValuePack && profileValuePack.length > 0 ? (
-            profileValuePack.map((valuePack) => {
-              return (
-                <ValuePack
-                  key={valuePack.id}
-                  deliveryTime={valuePack.deliveryTime}
-                  description={valuePack.description}
-                  numberOfRevisions={valuePack.numberOfRevisions}
-                  onDeleteValuePack={() => onDeleteValuePack(valuePack.id)}
-                  socialMedia={valuePack.socialMedia || { id: -1, name: "" }}
-                  title={valuePack.title}
-                  valuePackPrice={valuePack.valuePackPrice}
-                  closeButton
-                />
-              );
-            })
-          ) : (
-            <div>{t("pages.editPage.noValuePacks")}</div>
-          )}
-        </div>
-      </div>
-    );
-  };
-
   if (isLoadingProfile) {
     return (
       <div className="relative flex flex-1">
@@ -513,7 +400,6 @@ const EditPage = (params: { role: Option | undefined }) => {
               {renderVisualPortfolio()}
             </div>
             {renderSocialMedia()}
-            {params?.role?.name === "Influencer" && renderValuePacks()}
           </div>
           {isSocialMediaModalOpen && profileSocialMedia && (
             <AddSocialMediaModal
@@ -525,22 +411,14 @@ const EditPage = (params: { role: Option | undefined }) => {
                   platform: item.socialMedia || { id: -1, name: "" },
                   socialMediaHandler: item.handler,
                   socialMediaFollowers: item.followers,
+                  valuePacks: [],
                 };
               })}
               control={control}
               register={register}
               watch={socialMediaWatch}
               onCloseModal={onCloseSocialMediaModal}
-            />
-          )}
-          {isValuePackModalOpen && (
-            <AddValuePackModal
-              errors={valuePackErrors}
-              control={valuePackControl}
-              onAddValuePack={onAddValuePack}
-              onCloseModal={onCloseValuePackModal}
-              register={valuePackRegister}
-              socialMedias={platforms}
+              setValue={socialMediaSetValue}
             />
           )}
           {isProfileModalOpen && (

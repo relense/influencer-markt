@@ -18,18 +18,8 @@ import {
 import { api } from "~/utils/api";
 
 import { CustomSelect } from "./CustomSelect";
-import { CustomMultiSelect, type Option } from "./CustomMultiSelect";
-
-export type ProfileData = {
-  profilePicture: string;
-  displayName: string;
-  gender: Option;
-  categories: Option[];
-  country: Option;
-  city: string;
-  about: string;
-  website: string;
-};
+import { CustomMultiSelect } from "./CustomMultiSelect";
+import type { ProfileData } from "../utils/globalTypes";
 
 const ProfileForm = (params: {
   submit: () => void;

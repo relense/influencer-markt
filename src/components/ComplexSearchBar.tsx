@@ -1,12 +1,13 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSearch } from "@fortawesome/free-solid-svg-icons";
 import { useTranslation } from "react-i18next";
-import { CustomMultiSelect, type Option } from "./CustomMultiSelect";
+import { CustomMultiSelect } from "./CustomMultiSelect";
 import { Controller, useForm } from "react-hook-form";
 
 import { api } from "~/utils/api";
 import { Button } from "./Button";
 import { useEffect } from "react";
+import { type Option } from "../utils/globalTypes";
 
 type ComplexSearchBarData = {
   categories: Option[];

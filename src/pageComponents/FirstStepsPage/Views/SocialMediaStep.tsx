@@ -5,25 +5,26 @@ import {
   type UseFormGetValues,
 } from "react-hook-form";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPlus, faXmark } from "@fortawesome/free-solid-svg-icons";
+import { faPlus } from "@fortawesome/free-solid-svg-icons";
 
 import { useEffect, useState } from "react";
-import { type Option } from "../../../components/CustomMultiSelect";
-import { type SocialMedia } from "@prisma/client";
 import { StepsReminder } from "../../../components/StepsReminder";
-import { type SocialMediaData } from "../FirstStepsPage";
-import {
-  AddSocialMediaModal,
-  type SocialMediaDetails,
-} from "../../../components/AddSocialMediaModal";
+import { AddSocialMediaModal } from "../../../components/AddSocialMediaModal";
 import { useTranslation } from "react-i18next";
+import { SocialMediaCard } from "../../../components/SocialMediaCard";
+import type {
+  SocialMediaData,
+  SocialMediaWithContentTypes,
+  SocialMediaDetails,
+  Option,
+} from "../../../utils/globalTypes";
 
 export const SocialMediaStep = (params: {
   registerSocialMedia: UseFormRegister<SocialMediaData>;
   setValue: UseFormSetValue<SocialMediaData>;
   getValues: UseFormGetValues<SocialMediaData>;
   submit: () => void;
-  platforms: SocialMedia[] | undefined;
+  platforms: SocialMediaWithContentTypes[] | undefined;
 }) => {
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [availablePlatforms, setAvailablePlatforms] = useState<Option[]>([]);
@@ -36,12 +37,14 @@ export const SocialMediaStep = (params: {
     control,
     register,
     handleSubmit,
+    setValue,
     reset,
     watch,
     formState: { errors },
   } = useForm<SocialMediaDetails>({
     defaultValues: {
       platform: { id: -1, name: "" },
+      valuePacks: [],
     },
   });
 
@@ -75,6 +78,7 @@ export const SocialMediaStep = (params: {
       platform: { id: data.platform.id, name: data.platform.name },
       socialMediaFollowers: data.socialMediaFollowers,
       socialMediaHandler: data.socialMediaHandler,
+      valuePacks: data.valuePacks,
     });
 
     setSocialMediaList(newArrayList);
@@ -108,44 +112,6 @@ export const SocialMediaStep = (params: {
     setIsModalOpen(false);
   };
 
-  const renderSocialMediaCard = (
-    socialMedia: SocialMediaDetails,
-    index: number
-  ) => {
-    return (
-      <div
-        key={index}
-        className="relative w-full px-4 sm:h-auto sm:w-5/12 sm:px-0"
-      >
-        <div className="flex w-auto cursor-default flex-col gap-4 rounded-lg border-[1px] border-gray3 p-4 sm:h-auto">
-          <div className="font-semibold text-influencer">
-            {socialMedia.platform.name}
-          </div>
-          <div className="flex flex-col gap-2 xs:flex-row xs:gap-4">
-            <div className="break-words">
-              <span className="font-medium">
-                {t("pages.firstSteps.socialMediaStep.handler")}:
-              </span>{" "}
-              {socialMedia.socialMediaHandler}
-            </div>
-            <div>
-              <span className="font-medium">
-                {t("pages.firstSteps.socialMediaStep.followers")}:
-              </span>{" "}
-              {socialMedia.socialMediaFollowers}
-            </div>
-          </div>
-        </div>
-        <div
-          className="absolute right-2 top-[-8px] flex h-8 w-8 cursor-pointer items-center justify-center  rounded-full bg-influencer-green sm:right-[-5px] sm:top-[-5px]"
-          onClick={() => removeSocialMedia(socialMedia)}
-        >
-          <FontAwesomeIcon icon={faXmark} className="fa-lg text-white" />
-        </div>
-      </div>
-    );
-  };
-
   return (
     <div className="mt-2 flex flex-1 flex-col items-center gap-4 lg:mt-11 lg:overflow-y-auto">
       <form
@@ -175,7 +141,13 @@ export const SocialMediaStep = (params: {
       <div className="flex w-full flex-wrap justify-center gap-4">
         {socialMediaList &&
           socialMediaList.map((socialMedia, index) => {
-            return renderSocialMediaCard(socialMedia, index);
+            return (
+              <SocialMediaCard
+                key={`${socialMedia.platform.name} ${index}`}
+                socialMedia={socialMedia}
+                onDelete={removeSocialMedia}
+              />
+            );
           })}
       </div>
       <StepsReminder />
@@ -189,6 +161,7 @@ export const SocialMediaStep = (params: {
           register={register}
           errors={errors}
           watch={watch}
+          setValue={setValue}
         />
       )}
     </div>

@@ -20,7 +20,7 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 
 import { Button } from "./Button";
-import { type Option } from "./CustomMultiSelect";
+import type { Option } from "../utils/globalTypes";
 
 export const Navbar = (params: {
   username: string;

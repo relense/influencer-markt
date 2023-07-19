@@ -6,14 +6,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBookmark } from "@fortawesome/free-regular-svg-icons";
 
 import { helper } from "../utils/helper";
-
-export type UserSocialMedia = {
-  id: number;
-  handler: string;
-  followers: number;
-  url: string;
-  socialMediaName: string;
-};
+import type { UserSocialMedia } from "../utils/globalTypes";
 
 const ProfileCard = (params: {
   profilePicture: string;

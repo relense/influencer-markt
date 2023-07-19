@@ -16,11 +16,7 @@ import Image from "next/image";
 import { toast } from "react-hot-toast";
 import { usePrevious } from "../utils/helper";
 import { useTranslation } from "react-i18next";
-
-export type Picture = {
-  id: number;
-  url: string;
-};
+import type { Picture } from "../utils/globalTypes";
 
 export const PictureCarrosel = (params: {
   visual: boolean;

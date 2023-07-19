@@ -102,6 +102,11 @@ async function main() {
       { name: "Story" },
       { name: "Reel" },
       { name: "Video" },
+      { name: "Short" },
+      { name: "Tweet" },
+      { name: "Live" },
+      { name: "Article" },
+      { name: "Stream" },
     ],
   });
 

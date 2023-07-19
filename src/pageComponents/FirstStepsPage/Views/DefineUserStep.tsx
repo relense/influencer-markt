@@ -7,10 +7,10 @@ import {
 
 import { api } from "~/utils/api";
 
-import { type UserIdentityData } from "../FirstStepsPage";
 import { CustomSelect } from "../../../components/CustomSelect";
 import { ToolTip } from "../../../components/ToolTip";
 import { useTranslation } from "react-i18next";
+import { type UserIdentityData } from "../../../utils/globalTypes";
 
 export enum RoleEnum {
   Brand = 1,

@@ -9,20 +9,18 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 
 import { useOutsideClick } from "../../../utils/helper";
-import { type ValuePackType } from "../../FirstStepsPage/Views/Step4";
-import { type Option } from "../../../components/CustomMultiSelect";
-import { ValuePack } from "../../../components/ValuePack";
+import type { Option, ValuePack } from "../../../utils/globalTypes";
 
 const ValuePackInput = (params: {
-  valuePack: ValuePackType | undefined;
+  valuePack: ValuePack | undefined;
   platform: Option;
-  allValuePacks: ValuePackType[];
-  onChangeValuePack: (valuePack: ValuePackType) => void;
+  allValuePacks: ValuePack[];
+  onChangeValuePack: (valuePack: ValuePack) => void;
 }) => {
   const [isValuePackModalOpen, setIsValuePackModal] = useState<boolean>(false);
-  const [availableValuePacks, setAvailableValuePacks] = useState<
-    ValuePackType[]
-  >([]);
+  const [availableValuePacks, setAvailableValuePacks] = useState<ValuePack[]>(
+    []
+  );
   const { t } = useTranslation();
   const valuePackRef = useRef(null);
 
@@ -42,11 +40,10 @@ const ValuePackInput = (params: {
           return {
             id: valuePack.id,
             deliveryTime: valuePack.deliveryTime,
-            description: valuePack.description,
             numberOfRevisions: valuePack.numberOfRevisions,
             platform: valuePack.platform,
-            title: valuePack.title,
             valuePackPrice: valuePack.valuePackPrice,
+            contentType: valuePack.contentType,
           };
         }) || [];
 
@@ -68,25 +65,7 @@ const ValuePackInput = (params: {
       }}
     >
       <div className={containerClasses} ref={valuePackRef}>
-        {params.valuePack && params.valuePack.id !== -1 ? (
-          <div className="px-4 text-sm font-semibold">
-            {params.valuePack.title}
-          </div>
-        ) : (
-          <div className="px-4 text-sm font-semibold">
-            {t("components.valuePackInput.valuePack")}
-          </div>
-        )}
         <div className="relative flex flex-1 justify-between gap-6 px-4">
-          {params.valuePack && params.valuePack.id !== -1 ? (
-            <div className="w-96 overflow-hidden text-ellipsis whitespace-nowrap">
-              {params.valuePack.description}
-            </div>
-          ) : (
-            <div className="w-96 overflow-hidden text-ellipsis whitespace-nowrap text-gray2">
-              {t("components.valuePackInput.inputPlaceholder")}
-            </div>
-          )}
           <div>
             {isValuePackModalOpen ? (
               <FontAwesomeIcon
@@ -141,18 +120,16 @@ const ValuePackInput = (params: {
                 className="cursor-pointer rounded-2xl hover:border-influencer-green hover:bg-influencer-green-light"
                 onClick={() => {
                   setIsValuePackModal(false);
-                  params.onChangeValuePack({
-                    id: valuePack.id,
-                    deliveryTime: valuePack.deliveryTime,
-                    description: valuePack.description,
-                    numberOfRevisions: valuePack.numberOfRevisions,
-                    platform: valuePack.platform,
-                    title: valuePack.title,
-                    valuePackPrice: valuePack.valuePackPrice,
-                  });
+                  // params.onChangeValuePack({
+                  //   id: valuePack.id,
+                  //   deliveryTime: valuePack.deliveryTime,
+                  //   numberOfRevisions: valuePack.numberOfRevisions,
+                  //   platform: valuePack.platform,
+                  //   valuePackPrice: valuePack.valuePackPrice,
+                  // });
                 }}
               >
-                <ValuePack
+                {/* <ValuePack
                   deliveryTime={valuePack.deliveryTime}
                   description={valuePack.description}
                   numberOfRevisions={valuePack.numberOfRevisions}
@@ -160,7 +137,7 @@ const ValuePackInput = (params: {
                   valuePackPrice={valuePack.valuePackPrice}
                   closeButton={false}
                   selected={valuePack.id === params.valuePack?.id}
-                />
+                /> */}
               </div>
             );
           })}

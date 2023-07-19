@@ -15,10 +15,22 @@ export const allRouter = createTRPCRouter({
 
   getAllSocialMedia: publicProcedure.query(async ({ ctx }) => {
     return await ctx.prisma.socialMedia.findMany({
+      include: {
+        contentTypes: {
+          select: {
+            id: true,
+            name: true,
+          },
+        },
+      },
       orderBy: {
         name: "asc",
       },
     });
+  }),
+
+  getAllContentTypes: publicProcedure.query(async ({ ctx }) => {
+    return await ctx.prisma.contentType.findMany();
   }),
 
   getAllGenders: publicProcedure.query(async ({ ctx }) => {
@@ -27,10 +39,6 @@ export const allRouter = createTRPCRouter({
 
   getAllMessageReasons: publicProcedure.query(async ({ ctx }) => {
     return await ctx.prisma.reason.findMany();
-  }),
-
-  getAllContentTypes: publicProcedure.query(async ({ ctx }) => {
-    return await ctx.prisma.contentType.findMany();
   }),
 
   getAllCountries: publicProcedure.query(async ({ ctx }) => {

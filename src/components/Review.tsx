@@ -1,15 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useTranslation } from "react-i18next";
-
-export type Review = {
-  id?: number;
-  profilePicture: string;
-  authorName: string;
-  reviewDate: string;
-  review: string;
-  username: string;
-};
+import { type Review } from "../utils/globalTypes";
 
 const Review = (params: {
   review: Review;

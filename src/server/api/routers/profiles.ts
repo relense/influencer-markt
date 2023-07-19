@@ -52,20 +52,6 @@ export const profilesRouter = createTRPCRouter({
               },
             },
             genderId: input.gender !== -1 ? input.gender : undefined,
-            valuePacks: {
-              some: {
-                valuePackPrice: {
-                  gte: input.minPrice !== -1 ? input.minPrice : undefined,
-                  lte: input.maxPrice !== -1 ? input.maxPrice : undefined,
-                },
-                contentType: {
-                  some: {
-                    id:
-                      input.contentType !== -1 ? input.contentType : undefined,
-                  },
-                },
-              },
-            },
             countryId: input.country !== -1 ? input.country : undefined,
           },
         }),
@@ -97,20 +83,6 @@ export const profilesRouter = createTRPCRouter({
               },
             },
             genderId: input.gender !== -1 ? input.gender : undefined,
-            valuePacks: {
-              some: {
-                valuePackPrice: {
-                  gte: input.minPrice !== -1 ? input.minPrice : undefined,
-                  lte: input.maxPrice !== -1 ? input.maxPrice : undefined,
-                },
-                contentType: {
-                  some: {
-                    id:
-                      input.contentType !== -1 ? input.contentType : undefined,
-                  },
-                },
-              },
-            },
             countryId: input.country !== -1 ? input.country : undefined,
           },
           take: 10,
@@ -125,7 +97,6 @@ export const profilesRouter = createTRPCRouter({
                 },
               },
             },
-            valuePacks: true,
             name: true,
             city: true,
             country: true,
@@ -169,7 +140,6 @@ export const profilesRouter = createTRPCRouter({
               },
             },
           },
-          valuePacks: true,
           name: true,
           city: true,
           country: true,
@@ -275,17 +245,6 @@ export const profilesRouter = createTRPCRouter({
             socialMedia: true,
           },
         },
-        valuePacks: {
-          select: {
-            deliveryTime: true,
-            description: true,
-            id: true,
-            numberOfRevisions: true,
-            title: true,
-            valuePackPrice: true,
-            socialMedia: true,
-          },
-        },
       },
     });
   }),
@@ -316,7 +275,6 @@ export const profilesRouter = createTRPCRouter({
         where: { userId: user?.id },
         select: {
           userSocialMedia: false,
-          valuePacks: false,
           gender: false,
           categories: false,
           user: false,
@@ -350,11 +308,6 @@ export const profilesRouter = createTRPCRouter({
         where: { userId: user?.id },
         select: {
           userSocialMedia: {
-            include: {
-              socialMedia: true,
-            },
-          },
-          valuePacks: {
             include: {
               socialMedia: true,
             },

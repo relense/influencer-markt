@@ -1,9 +1,10 @@
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 
-import { Question, type QuestionType } from "./innerComponents/Questions";
+import { Question } from "./innerComponents/Questions";
 import Link from "next/link";
 import { Button } from "../../components/Button";
+import { type QuestionType } from "../../utils/globalTypes";
 
 const FAQPage = () => {
   const [showInfluencerQuestions, setShowInfluencerQuestions] =

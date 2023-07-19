@@ -7,7 +7,8 @@ import {
 } from "react-hook-form";
 
 import { StepsReminder } from "../../../components/StepsReminder";
-import { ProfileForm, type ProfileData } from "../../../components/ProfileForm";
+import { ProfileForm } from "../../../components/ProfileForm";
+import { type ProfileData } from "../../../utils/globalTypes";
 
 export const SetupProfileStep = (params: {
   control: Control<ProfileData, any>;

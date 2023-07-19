@@ -12,12 +12,14 @@ import { FinalStep } from "./Views/FinalStep";
 import { Button } from "../../components/Button";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faXmark } from "@fortawesome/free-solid-svg-icons";
-import { type SocialMediaDetails } from "../../components/AddSocialMediaModal";
-import { type ProfileData } from "../../components/ProfileForm";
 import { RoleEnum, DefineUserStep } from "./Views/DefineUserStep";
-import { type Option } from "../../components/CustomMultiSelect";
-import { type Picture } from "../../components/PictureCarrosel";
 import { useTranslation } from "react-i18next";
+import type {
+  Picture,
+  ProfileData,
+  SocialMediaData,
+  UserIdentityData,
+} from "../../utils/globalTypes";
 
 enum StepsEnum {
   OnlinePresence,
@@ -33,24 +35,6 @@ type Step = {
   subTitle: string;
   mainTitle: string;
   mainSubTitle: string;
-};
-
-export type UserIdentityData = {
-  username: string;
-  role: Option;
-};
-
-export type SocialMediaData = {
-  socialMedia: SocialMediaDetails[];
-};
-
-export type ValuePackType = {
-  id?: number;
-  platform: Option;
-  deliveryTime: number;
-  numberOfRevisions: number;
-  valuePackPrice: number;
-  contentType: Option;
 };
 
 const FirstStepsPage = () => {
@@ -182,6 +166,7 @@ const FirstStepsPage = () => {
 
   const { data: user } = api.users.getUser.useQuery();
   const { data: platforms } = api.allRoutes.getAllSocialMedia.useQuery();
+
   const {
     data: usernameVerification,
     isLoading: usernameVeritifcationLoading,
@@ -334,6 +319,8 @@ const FirstStepsPage = () => {
           };
         }
       );
+
+      debugger;
 
       userSocialMediaMutation(newSocialMediaData);
     }

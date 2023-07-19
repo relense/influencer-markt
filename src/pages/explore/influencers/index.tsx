@@ -1,7 +1,7 @@
 import { type GetServerSideProps, type NextPage } from "next";
 import { Layout } from "../../../components/Layout";
 import { ExplorePage } from "../../../pageComponents/ExplorePage/ExplorePage";
-import { type Option } from "../../../components/CustomMultiSelect";
+import { type Option } from "../../../utils/globalTypes";
 
 type ExploreProps = {
   categories: string;
