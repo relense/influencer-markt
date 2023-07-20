@@ -188,11 +188,18 @@ export const userSocialMediasRouter = createTRPCRouter({
         },
       });
 
+      await ctx.prisma.valuePack.deleteMany({
+        where: {
+          userSocialMediaId: input.id,
+        },
+      });
+
       if (input.valuePacks) {
         input.valuePacks.map(async (valuePack) => {
-          await ctx.prisma.valuePack.update({
-            where: { userSocialMediaId: input.id, id: valuePack.id },
+          await ctx.prisma.valuePack.create({
             data: {
+              contentTypeId: valuePack.contentTypeId,
+              userSocialMediaId: input.id,
               deliveryTime: valuePack.deliveryTime,
               numberOfRevisions: valuePack.numberOfRevisions,
               valuePackPrice: valuePack.valuePackPrice,
