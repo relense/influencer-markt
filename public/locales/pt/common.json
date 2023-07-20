@@ -102,7 +102,10 @@
       "platformPlaceholder": "Escolhe a tua rede social: E.g. Instagram, TikTok",
       "handlerPlaceholder": "Nome de Utilizador da rede social",
       "followersPlaceholder": "Seguidores da rede social",
-      "button": "Add rede social"
+      "deliveryTime": "Tempo de Entrega",
+      "revisionTime": "Número de Revisões",
+      "price": "Preço",
+      "button": "Guarda Rede Social"
     },
 
     "addValuePackModal": {
@@ -120,15 +123,6 @@
     "pictureCarrosel": {
       "invalidPictureWarning": "Images têm de ser jpeg ou png",
       "addPicture": "Adiciona a tua imagem de perfil"
-    },
-
-    "valuePackInput": {
-      "valuePack": "Pack de Valor",
-      "inputPlaceholder": "Escolhe um pack de valor por favor",
-      "daysDelivery_one": "{{count}} Dia de Entrega",
-      "daysDelivery_other": "{{count}} Dias de Entrega",
-      "revision_one": "{{count}} Revisão",
-      "revision_other": "{{count}} Revisões"
     },
 
     "valuePack": {
@@ -160,6 +154,15 @@
       "websitePlaceholder": "O teu website",
       "socialPlaceholder": "Link para a conta principal da rede social E.g. https://www.instagram.com/account",
       "modalButton": "Add Pack de Valor"
+    },
+
+    "socialMediaCard": {
+      "daysDelivery_one": "{{count}} Dia de Entrega",
+      "daysDelivery_other": "{{count}} Dias de Entrega",
+      "revision_one": "{{count}} Revisão",
+      "revision_other": "{{count}} Revisões",
+      "handler": "Nome de Utilizador",
+      "followers": "Seguidores"
     }
   },
 
@@ -254,9 +257,7 @@
         "subTitle": "Partilha as tuas contas das redes sociais",
         "mainTitle": "Liga e demonstra a tua influência",
         "mainSubTitle": "Preenche os detalhes relevantes, deixa o resto opcional",
-        "addSocial": "Adiciona Detalhes de uma Rede Social",
-        "handler": "Nome de Utilizador",
-        "followers": "Seguidores"
+        "addSocial": "Adiciona Detalhes de uma Rede Social"
       },
 
       "visualPortfolioStep": {
@@ -264,18 +265,6 @@
         "subTitle": "Cria um portfólio de acordo com as tuas necessidades",
         "mainTitle": "Constrói o teu portfólio visual",
         "mainSubTitle": "Mostra as tuas melhores fotos no teu perfil"
-      },
-
-      "step4": {
-        "title": "Value Packs",
-        "subTitle": "Desenha os teus lucrativos packs de valor",
-        "mainTitle": "Personaliza os teus packs de valor",
-        "mainSubTitle": "Seleciona a plataforma e constrói a tua oferta irresistível",
-        "daysDelivery_one": "{{count}} Dia de Entrega",
-        "daysDelivery_other": "{{count}} Dias de Entrega",
-        "revisions_one": "Revisão",
-        "revisions_other": "Revisões",
-        "addValue": "Adiciona um Pack de Valor"
       },
 
       "finalStep": {
@@ -314,9 +303,8 @@
     "editPage": {
       "toasterCreatedSocialMediaSuccess": "Rede social criada com sucesso",
       "toasterDeletedSocialMediaSuccess": "Rede social apagada com sucesso",
-      "toasterCreatedValuePackSuccess": "Pack de valor criado com sucesso",
-      "toasterDeletedValuePack": "Pack de valor apagado com sucesso",
       "toasterUpdatePortfolioSuccess": "Portfólio actualizado com sucesso",
+      "toasterUpdateSuccessfully": "Rede social actualizada com sucesso",
       "profileDescription": "Descrição do Perfil",
       "website": "Website",
       "about": "Sobre",

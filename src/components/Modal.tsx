@@ -5,17 +5,19 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 const Modal = ({
   children,
   onClose,
+  onCloseBackground,
   title,
 }: {
   children: ReactElement;
   onClose: () => void;
+  onCloseBackground?: () => void;
   title?: string;
 }) => {
   return (
     <>
       <div
         className="absolute left-0 top-0 h-full w-full bg-gray1 opacity-30"
-        onClick={() => onClose()}
+        onClick={() => (onCloseBackground ? onCloseBackground() : onClose())}
       />
 
       <div className="absolute top-10 z-40 w-11/12 rounded-lg bg-white sm:h-auto md:top-10 md:w-2/4 lg:w-2/4 2xl:w-1/4">

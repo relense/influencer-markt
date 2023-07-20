@@ -1,12 +1,7 @@
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faCamera,
-  faPencil,
-  faPlus,
-  faXmark,
-} from "@fortawesome/free-solid-svg-icons";
+import { faCamera, faPencil, faPlus } from "@fortawesome/free-solid-svg-icons";
 import { api } from "~/utils/api";
 import { toast } from "react-hot-toast";
 import Image from "next/image";
@@ -24,6 +19,7 @@ import type {
   ProfileData,
   SocialMediaDetails,
 } from "../../utils/globalTypes";
+import { SocialMediaCard } from "../../components/SocialMediaCard";
 
 const EditPage = (params: { role: Option | undefined }) => {
   const { t } = useTranslation();
@@ -34,10 +30,12 @@ const EditPage = (params: { role: Option | undefined }) => {
   const [isSocialMediaModalOpen, setIsSocialMediaModalOpen] =
     useState<boolean>(false);
   const [portfolio, setPortfolio] = useState<Picture[]>([]);
+  const [socialMediaEditing, setSocialMediaEditing] = useState<boolean>(false);
 
-  const { data: platforms } = api.allRoutes.getAllSocialMedia.useQuery();
   const { data: profile, isLoading: isLoadingProfile } =
     api.profiles.getProfileWithoutIncludes.useQuery();
+
+  const { data: platforms } = api.allRoutes.getAllSocialMedia.useQuery();
   const { data: profileSocialMedia } =
     api.userSocialMedias.getUserSocialMediaByProfileId.useQuery({
       profileId: profile?.id || -1,
@@ -48,6 +46,34 @@ const EditPage = (params: { role: Option | undefined }) => {
       void ctx.profiles.getProfileWithoutIncludes.invalidate().then(() => {
         setIsLoading(false);
         toast.success(`Profile updated successfully`, {
+          position: "bottom-left",
+        });
+      });
+    },
+    onError: () => {
+      setIsLoading(false);
+    },
+  });
+
+  const { mutate: addPicture } = api.portfolios.createPicture.useMutation({
+    onSuccess: () => {
+      void ctx.profiles.getProfileWithoutIncludes.invalidate().then(() => {
+        setIsLoading(false);
+        toast.success(t("pages.editPage.toasterUpdatePortfolioSuccess"), {
+          position: "bottom-left",
+        });
+      });
+    },
+    onError: () => {
+      setIsLoading(false);
+    },
+  });
+
+  const { mutate: deletePicture } = api.portfolios.deletePicture.useMutation({
+    onSuccess: () => {
+      void ctx.profiles.getProfileWithoutIncludes.invalidate().then(() => {
+        setIsLoading(false);
+        toast.success(t("pages.editPage.toasterUpdatePortfolioSuccess"), {
           position: "bottom-left",
         });
       });
@@ -96,33 +122,24 @@ const EditPage = (params: { role: Option | undefined }) => {
       },
     });
 
-  const { mutate: addPicture } = api.portfolios.createPicture.useMutation({
-    onSuccess: () => {
-      void ctx.profiles.getProfileWithoutIncludes.invalidate().then(() => {
+  const { mutate: updateUserSocialMedia } =
+    api.userSocialMedias.updateUserSocialMedia.useMutation({
+      onSuccess: () => {
+        void ctx.userSocialMedias.getUserSocialMediaByProfileId
+          .invalidate()
+          .then(() => {
+            setIsLoading(false);
+            toast.success(t("pages.editPage.toasterUpdateSuccessfully"), {
+              position: "bottom-left",
+            });
+          });
+      },
+      onError: () => {
         setIsLoading(false);
-        toast.success(t("pages.editPage.toasterUpdatePortfolioSuccess"), {
-          position: "bottom-left",
-        });
-      });
-    },
-    onError: () => {
-      setIsLoading(false);
-    },
-  });
+      },
+    });
 
-  const { mutate: deletePicture } = api.portfolios.deletePicture.useMutation({
-    onSuccess: () => {
-      void ctx.profiles.getProfileWithoutIncludes.invalidate().then(() => {
-        setIsLoading(false);
-        toast.success(t("pages.editPage.toasterUpdatePortfolioSuccess"), {
-          position: "bottom-left",
-        });
-      });
-    },
-    onError: () => {
-      setIsLoading(false);
-    },
-  });
+  //FORMS FROM REACT HOOK
 
   const {
     control: profileControl,
@@ -133,7 +150,7 @@ const EditPage = (params: { role: Option | undefined }) => {
     formState: { errors: profileErrors },
   } = useForm<ProfileData>({
     defaultValues: {
-      country: { id: -1, name: "" },
+      nationOfBirth: { id: -1, name: "" },
       categories: [],
       profilePicture: "",
       website: "",
@@ -151,6 +168,7 @@ const EditPage = (params: { role: Option | undefined }) => {
   } = useForm<SocialMediaDetails>({
     defaultValues: {
       platform: { id: -1, name: "" },
+      valuePacks: [],
     },
   });
 
@@ -165,8 +183,8 @@ const EditPage = (params: { role: Option | undefined }) => {
         };
       }) || []
     );
-    profileSetValue("city", profile?.city || "");
-    profileSetValue("country", profile?.country || { id: -1, name: "" });
+    profileSetValue("placeThatLives", profile?.city || "");
+    profileSetValue("nationOfBirth", profile?.country || { id: -1, name: "" });
     profileSetValue("displayName", profile?.name || "");
     profileSetValue("website", profile?.website || "");
     profileSetValue("profilePicture", profile?.profilePicture || "");
@@ -187,12 +205,14 @@ const EditPage = (params: { role: Option | undefined }) => {
     setPortfolio(profile?.portfolio || []);
   }, [profile?.portfolio]);
 
+  // PROFILE FUNCTIONS
+
   const onUpdateProfile = handleSubmitProfile((data) => {
     updateProfile({
       about: data.about,
       categories: data.categories,
-      city: data.city,
-      country: data.country,
+      city: data.placeThatLives,
+      country: data.nationOfBirth,
       name: data.displayName,
       website: data.website,
       profilePicture: data.profilePicture,
@@ -202,31 +222,11 @@ const EditPage = (params: { role: Option | undefined }) => {
     setIsLoading(true);
   });
 
-  const onAddSocialMedia = handleSubmitSocialMedia((data) => {
-    createUserSocialMedia({
-      followers: data.socialMediaFollowers,
-      handler: data.socialMediaHandler,
-      socialMedia: data.platform,
-    });
-
-    setIsSocialMediaModalOpen(false);
-    socialMediaReset();
-    setIsLoading(true);
-  });
-
-  const onDeleteSocialMedia = (id: number) => {
-    setIsLoading(true);
-    deleteUserSocialMedia({ id });
-  };
-
   const onCloseProfileModal = () => {
     setIsProfileModalOpen(false);
   };
 
-  const onCloseSocialMediaModal = () => {
-    setIsSocialMediaModalOpen(false);
-    socialMediaReset();
-  };
+  //VISUAL PORTFOLIO FUNCTIONS
 
   const onAddPicture = (pictureUrl: string) => {
     setIsLoading(true);
@@ -237,6 +237,93 @@ const EditPage = (params: { role: Option | undefined }) => {
     setIsLoading(true);
     deletePicture({ pictureId });
   };
+
+  //SOCIAL MEDIA FUNCTIONS
+  const onDeleteSocialMedia = (socialMedia: SocialMediaDetails) => {
+    setIsLoading(true);
+
+    if (socialMedia && socialMedia.id) {
+      deleteUserSocialMedia({ id: socialMedia.id });
+    }
+  };
+
+  const handleOnclickSocialMediaCard = (socialMedia: SocialMediaDetails) => {
+    setIsSocialMediaModalOpen(true);
+    setSocialMediaEditing(true);
+    socialMediaSetValue("id", socialMedia.id);
+    socialMediaSetValue("platform", socialMedia.platform);
+    socialMediaSetValue(
+      "socialMediaFollowers",
+      socialMedia.socialMediaFollowers
+    );
+    socialMediaSetValue("socialMediaHandler", socialMedia.socialMediaHandler);
+    socialMediaSetValue("valuePacks", socialMedia.valuePacks);
+  };
+
+  const onCloseSocialMediaModal = () => {
+    setIsSocialMediaModalOpen(false);
+    socialMediaReset();
+  };
+
+  const onAddSocialMedia = handleSubmitSocialMedia((data) => {
+    if (
+      !data.platform ||
+      data.platform.id === -1 ||
+      data.socialMediaFollowers === -1 ||
+      data.socialMediaHandler === ""
+    ) {
+      setIsSocialMediaModalOpen(false);
+      socialMediaReset();
+      return;
+    }
+
+    createUserSocialMedia({
+      followers: data.socialMediaFollowers,
+      handler: data.socialMediaHandler,
+      socialMedia: data.platform,
+      valuePacks: data.valuePacks.map((valuePack) => {
+        return {
+          contentTypeId: valuePack.contentType.id,
+          deliveryTime: parseInt(valuePack.deliveryTime),
+          numberOfRevisions: parseInt(valuePack.numberOfRevisions),
+          platformId: data.platform.id,
+          valuePackPrice: parseInt(valuePack.valuePackPrice),
+        };
+      }),
+    });
+
+    setIsSocialMediaModalOpen(false);
+    socialMediaReset();
+    setIsLoading(true);
+  });
+
+  const onEditSocialMedia = handleSubmitSocialMedia((data) => {
+    if (data.id) {
+      updateUserSocialMedia({
+        id: data.id,
+        followers: data.socialMediaFollowers,
+        handler: data.socialMediaHandler,
+        socialMedia: data.platform,
+        valuePacks: data.valuePacks.map((valuePack) => {
+          return {
+            id: valuePack.id || -1,
+            contentTypeId: valuePack.contentType.id,
+            deliveryTime: parseInt(valuePack.deliveryTime),
+            numberOfRevisions: parseInt(valuePack.numberOfRevisions),
+            platformId: valuePack.platform.id,
+            valuePackPrice: parseInt(valuePack.valuePackPrice),
+          };
+        }),
+      });
+    }
+
+    setIsSocialMediaModalOpen(false);
+    setSocialMediaEditing(false);
+    socialMediaReset();
+    setIsLoading(true);
+  });
+
+  //RENDER FUNCTIONS
 
   const renderProfileDescription = () => {
     return (
@@ -307,6 +394,22 @@ const EditPage = (params: { role: Option | undefined }) => {
     );
   };
 
+  const renderVisualPortfolio = () => {
+    return (
+      <div className="flex flex-col gap-4">
+        <div className="text-2xl font-semibold ">
+          {t("pages.editPage.visualPortfolio")}
+        </div>
+        <PictureCarrosel
+          visual={false}
+          portfolio={portfolio}
+          addPicture={onAddPicture}
+          deletePicture={onDeletePicture}
+        />
+      </div>
+    );
+  };
+
   const renderSocialMedia = () => {
     return (
       <div className="flex flex-1 flex-col gap-4">
@@ -329,48 +432,44 @@ const EditPage = (params: { role: Option | undefined }) => {
         <div className="flex flex-wrap gap-4">
           {profileSocialMedia && profileSocialMedia.length > 0 ? (
             profileSocialMedia.map((socialMedia) => {
+              const parsedSocialMedia: SocialMediaDetails = {
+                id: socialMedia.id,
+                platform: socialMedia.socialMedia || { id: -1, name: "" },
+                socialMediaFollowers: socialMedia.followers,
+                socialMediaHandler: socialMedia.handler,
+                valuePacks: socialMedia.valuePack.map((valuePack) => {
+                  return {
+                    id: valuePack.id,
+                    contentType: {
+                      id: valuePack.contentType?.id || -1,
+                      name: valuePack.contentType?.name || "",
+                    },
+                    deliveryTime: valuePack.deliveryTime.toString(),
+                    numberOfRevisions: valuePack.numberOfRevisions.toString(),
+                    valuePackPrice: valuePack.valuePackPrice.toString(),
+                    platform: {
+                      id: socialMedia.socialMedia?.id || -1,
+                      name: socialMedia.socialMedia?.name || "",
+                    },
+                  };
+                }),
+              };
+
               return (
-                <div
+                <SocialMediaCard
                   key={socialMedia.id}
-                  className="relative flex flex-1 flex-wrap gap-2 rounded-2xl border-[1px] border-gray3 p-4 sm:flex-none"
-                >
-                  <div className="font-semibold text-influencer">
-                    {socialMedia.socialMedia?.name}
-                  </div>
-                  <div>{socialMedia.handler}</div>
-                  <div>{socialMedia.followers}</div>
-                  <div
-                    className="absolute right-[-8px] top-[-10px] z-10 flex h-6 w-6 cursor-pointer items-center justify-center rounded-full bg-influencer-green sm:top-[-8px]"
-                    onClick={() => onDeleteSocialMedia(socialMedia.id)}
-                  >
-                    <FontAwesomeIcon
-                      icon={faXmark}
-                      className="fa-sm text-white"
-                    />
-                  </div>
-                </div>
+                  onClick={() =>
+                    handleOnclickSocialMediaCard(parsedSocialMedia)
+                  }
+                  onDelete={() => onDeleteSocialMedia(parsedSocialMedia)}
+                  socialMedia={parsedSocialMedia}
+                />
               );
             })
           ) : (
             <div>{t("pages.editPage.noSocialMedia")}</div>
           )}
         </div>
-      </div>
-    );
-  };
-
-  const renderVisualPortfolio = () => {
-    return (
-      <div className="flex flex-col gap-4">
-        <div className="text-2xl font-semibold ">
-          {t("pages.editPage.visualPortfolio")}
-        </div>
-        <PictureCarrosel
-          visual={false}
-          portfolio={portfolio}
-          addPicture={onAddPicture}
-          deletePicture={onDeletePicture}
-        />
       </div>
     );
   };
@@ -403,7 +502,9 @@ const EditPage = (params: { role: Option | undefined }) => {
           </div>
           {isSocialMediaModalOpen && profileSocialMedia && (
             <AddSocialMediaModal
-              addSocialMedia={onAddSocialMedia}
+              addSocialMedia={
+                socialMediaEditing ? onEditSocialMedia : onAddSocialMedia
+              }
               platforms={platforms}
               errors={socialMediaErrors}
               socialMediaList={profileSocialMedia.map((item) => {
@@ -419,6 +520,7 @@ const EditPage = (params: { role: Option | undefined }) => {
               watch={socialMediaWatch}
               onCloseModal={onCloseSocialMediaModal}
               setValue={socialMediaSetValue}
+              isBrand={params.role?.name === "Brand"}
             />
           )}
           {isProfileModalOpen && (

@@ -120,6 +120,7 @@ const ProfileForm = (params: {
         onSubmit={params.submit}
         id="form-hook"
         className="mt-4 flex w-full flex-col gap-6"
+        autoComplete="off"
       >
         <div className="flex flex-col">
           <input
@@ -186,14 +187,14 @@ const ProfileForm = (params: {
         />
         <div className="flex flex-col gap-6 lg:flex-row lg:gap-11">
           <Controller
-            name="country"
+            name="nationOfBirth"
             control={params.control}
             rules={{ required: true }}
             render={({ field: { value, onChange } }) => {
               return (
                 <CustomSelect
                   register={params.register}
-                  name="country"
+                  name="nationOfBirth"
                   placeholder="Country"
                   options={countries?.map((country) => {
                     return {
@@ -208,12 +209,13 @@ const ProfileForm = (params: {
             }}
           />
           <input
-            {...params.register("city")}
+            {...params.register("placeThatLives")}
+            id="placeThatLives"
             required
             type="text"
             className="h-14 w-full rounded-lg border-[1px] border-gray3 p-4 placeholder-gray2"
             placeholder={t("components.profileForm.cityPlaceholder")}
-            autoComplete="off"
+            autoComplete="one-time-code"
           />
         </div>
         <div className="flex flex-col">
@@ -222,7 +224,7 @@ const ProfileForm = (params: {
             required
             className="rounded-lg border-[1px] border-gray3 p-4 placeholder-gray2"
             placeholder={t("components.profileForm.aboutPlaceholder")}
-            autoComplete="off"
+            autoComplete="one-time-code"
           />
           {params.errors.about && params.errors.about.type === "maxLength" && (
             <div className="px-4 py-1 text-red-600">
@@ -233,10 +235,11 @@ const ProfileForm = (params: {
         <div className="flex flex-col">
           <input
             {...params.register("website", { maxLength: 64 })}
+            id="website"
             type="text"
             className="h-14 w-full rounded-lg border-[1px] border-gray3 p-4 placeholder-gray2"
             placeholder={t("components.profileForm.websitePlaceholder")}
-            autoComplete="off"
+            autoComplete="one-time-code"
           />
           {params.errors.website && (
             <div className="pl-2 text-red-600">

@@ -8,9 +8,9 @@ export type ValuePack = {
   id?: number;
   platform: Option;
   contentType: Option;
-  deliveryTime: number;
-  numberOfRevisions: number;
-  valuePackPrice: number;
+  deliveryTime: string;
+  numberOfRevisions: string;
+  valuePackPrice: string;
 };
 
 export type Option = {
@@ -55,6 +55,7 @@ export type SocialMediaData = {
 };
 
 export type SocialMediaDetails = {
+  id?: number;
   platform: SocialMedia;
   socialMediaHandler: string;
   socialMediaFollowers: number;
@@ -66,8 +67,8 @@ export type ProfileData = {
   displayName: string;
   gender: Option;
   categories: Option[];
-  country: Option;
-  city: string;
+  nationOfBirth: Option;
+  placeThatLives: string;
   about: string;
   website: string;
 };

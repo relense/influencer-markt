@@ -40,7 +40,7 @@ type Step = {
 const FirstStepsPage = () => {
   const { t } = useTranslation();
 
-  const influencerSteps: Step[] = [
+  const generalSteps: Step[] = [
     {
       id: StepsEnum.OnlinePresence,
       step: t("pages.firstSteps.stepIdentifier1"),
@@ -76,55 +76,10 @@ const FirstStepsPage = () => {
     },
   ];
 
-  const individualSteps: Step[] = [
-    {
-      id: StepsEnum.Final,
-      step: t("pages.firstSteps.stepIdentifier2"),
-      title: t("pages.firstSteps.finalStep.title"),
-      subTitle: t("pages.firstSteps.finalStep.subTitle"),
-      mainTitle: t("pages.firstSteps.finalStep.mainTitle"),
-      mainSubTitle: t("pages.firstSteps.finalStep.mainSubTitle"),
-    },
-  ];
-
-  const brandSteps: Step[] = [
-    {
-      id: StepsEnum.OnlinePresence,
-      step: t("pages.firstSteps.stepIdentifier1"),
-      title: t("pages.firstSteps.setupProfileStep.title"),
-      subTitle: t("pages.firstSteps.setupProfileStep.subTitle"),
-      mainTitle: t("pages.firstSteps.setupProfileStep.mainTitle"),
-      mainSubTitle: t("pages.firstSteps.setupProfileStep.mainSubTitle"),
-    },
-    {
-      id: StepsEnum.SocialMedia,
-      step: t("pages.firstSteps.stepIdentifier2"),
-      title: t("pages.firstSteps.socialMediaStep.title"),
-      subTitle: t("pages.firstSteps.socialMediaStep.subTitle"),
-      mainTitle: t("pages.firstSteps.socialMediaStep.mainTitle"),
-      mainSubTitle: t("pages.firstSteps.socialMediaStep.mainSubTitle"),
-    },
-    {
-      id: StepsEnum.VisualPortfolio,
-      step: t("pages.firstSteps.stepIdentifier3"),
-      title: t("pages.firstSteps.visualPortfolioStep.title"),
-      subTitle: t("pages.firstSteps.visualPortfolioStep.subTitle"),
-      mainTitle: t("pages.firstSteps.visualPortfolioStep.mainTitle"),
-      mainSubTitle: t("pages.firstSteps.visualPortfolioStep.mainSubTitle"),
-    },
-    {
-      id: StepsEnum.Final,
-      step: t("pages.firstSteps.stepIdentifier4"),
-      title: t("pages.firstSteps.finalStep.title"),
-      subTitle: t("pages.firstSteps.finalStep.subTitle"),
-      mainTitle: t("pages.firstSteps.finalStep.mainTitle"),
-      mainSubTitle: t("pages.firstSteps.finalStep.mainSubTitle"),
-    },
-  ];
   const mainContentRef = useRef<HTMLDivElement>(null);
   const [isUserTypeFormComplete, setIsUserTypeFormComplete] =
     useState<boolean>(false);
-  const [steps, setSteps] = useState<Step[]>(influencerSteps);
+  const [steps, setSteps] = useState<Step[]>(generalSteps);
   const [currentStep, setCurrentStep] = useState<Step>();
   const [stepsCount, setStepsCount] = useState<number>(0);
   const [portfolio, setPortfolio] = useState<Picture[]>([]);
@@ -150,7 +105,7 @@ const FirstStepsPage = () => {
     formState: { errors },
   } = useForm<ProfileData>({
     defaultValues: {
-      country: { id: -1, name: "" },
+      nationOfBirth: { id: -1, name: "" },
       gender: { id: -1, name: "" },
       categories: [],
       profilePicture: "",
@@ -184,7 +139,7 @@ const FirstStepsPage = () => {
   const { mutate: userIdentityMutation } =
     api.users.updateUserIdentity.useMutation({
       onSuccess: () => {
-        updateStepper(userIdentityWatch("role").id);
+        updateStepper();
       },
     });
 
@@ -220,36 +175,15 @@ const FirstStepsPage = () => {
 
   useEffect(() => {
     if (user?.role) {
-      updateStepper(user.role?.id);
+      updateStepper();
     }
   }, [user]);
 
-  const updateStepper = (roleId: number) => {
+  const updateStepper = () => {
     setIsUserTypeFormComplete(true);
 
-    if (roleId === RoleEnum.Brand) {
-      setCurrentStep(brandSteps[0]);
-      setSteps(brandSteps);
-    } else if (roleId === RoleEnum.Individual) {
-      setCurrentStep(individualSteps[0]);
-      setSteps(individualSteps);
-    } else {
-      setCurrentStep(influencerSteps[0]);
-      setSteps(influencerSteps);
-    }
-  };
-
-  const renderCloseButton = () => {
-    return (
-      <Link href="/">
-        <div className="absolute right-1 top-1 flex h-14 w-14 cursor-pointer items-center justify-center rounded-full bg-influencer-green lg:right-2 lg:top-2">
-          <FontAwesomeIcon
-            icon={faXmark}
-            className="fa-2x cursor-pointer text-white"
-          />
-        </div>
-      </Link>
-    );
+    setCurrentStep(generalSteps[0]);
+    setSteps(generalSteps);
   };
 
   const changeStep = (type: "next" | "previous") => {
@@ -303,8 +237,11 @@ const FirstStepsPage = () => {
         categories: profileData.categories,
         gender: { id: profileData.gender.id, name: profileData.gender.name },
         about: profileData.about,
-        country: { id: profileData.country.id, name: profileData.country.name },
-        city: profileData.city,
+        country: {
+          id: profileData.nationOfBirth.id,
+          name: profileData.nationOfBirth.name,
+        },
+        city: profileData.placeThatLives,
         website: profileData.website,
       });
     }
@@ -320,9 +257,9 @@ const FirstStepsPage = () => {
               return {
                 platformId: valuePack.platform.id,
                 contentTypeId: valuePack.contentType.id,
-                deliveryTime: valuePack.deliveryTime,
-                numberOfRevisions: valuePack.numberOfRevisions,
-                valuePackPrice: valuePack.valuePackPrice,
+                deliveryTime: parseInt(valuePack.deliveryTime),
+                numberOfRevisions: parseInt(valuePack.numberOfRevisions),
+                valuePackPrice: parseInt(valuePack.valuePackPrice),
               };
             }),
           };
@@ -333,6 +270,19 @@ const FirstStepsPage = () => {
     }
 
     mutate({ firstSteps: true });
+  };
+
+  const renderCloseButton = () => {
+    return (
+      <Link href="/">
+        <div className="absolute right-1 top-1 flex h-14 w-14 cursor-pointer items-center justify-center rounded-full bg-influencer-green lg:right-2 lg:top-2">
+          <FontAwesomeIcon
+            icon={faXmark}
+            className="fa-2x cursor-pointer text-white"
+          />
+        </div>
+      </Link>
+    );
   };
 
   const renderSteps = () => {
@@ -478,6 +428,7 @@ const FirstStepsPage = () => {
                 setValue={setValueSocialMedia}
                 getValues={getValuesSocialMedia}
                 submit={submitStep2}
+                isBrand={user?.role?.name === "Brand"}
               />
             )}
             {currentStep?.id === StepsEnum.VisualPortfolio && (

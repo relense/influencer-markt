@@ -46,7 +46,8 @@ export const CustomSelect = (params: {
             {...params.register(params.name)}
             required={!params.required ? params.required : true}
             ref={customSelectWrapperRef}
-            id={`${params.name}1`}
+            id={`${params.name}`}
+            name={params.name}
             onKeyDown={(e) => {
               e.preventDefault();
               return false;
@@ -55,13 +56,14 @@ export const CustomSelect = (params: {
             className={customBorder}
             placeholder={params.placeholder}
             defaultValue={params.value.name}
-            autoComplete="off"
+            autoComplete="one-time-code"
           />
         ) : (
           <input
             required={!params.required ? params.required : true}
             ref={customSelectWrapperRef}
-            id={`${params.name}2`}
+            id={`${params.name}`}
+            name={params.name}
             onKeyDown={(e) => {
               e.preventDefault();
               return false;
@@ -70,7 +72,7 @@ export const CustomSelect = (params: {
             className={customBorder}
             placeholder={params.placeholder}
             defaultValue={params.value.name}
-            autoComplete="off"
+            autoComplete="one-time-code"
           />
         )}
         {selectStatus ? (

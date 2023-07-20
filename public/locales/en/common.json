@@ -98,11 +98,14 @@
 
     "addSocialMediaModal": {
       "characterWarning": "Max is {{count}} characters",
-      "modalTitle": "Add Social Media Details",
+      "modalTitle": "Social Media Details",
       "platformPlaceholder": "Choose your Social Media: e.g., Instagram, TikTok",
       "handlerPlaceholder": "Social media handler",
       "followersPlaceholder": "Social Media Followers",
-      "button": "Add Social Media"
+      "deliveryTime": "Delivery Time",
+      "revisionTime": "Number of Revisions",
+      "price": "Price",
+      "button": "Save Social Media"
     },
 
     "addValuePackModal": {
@@ -120,15 +123,6 @@
     "pictureCarrosel": {
       "invalidPictureWarning": "Picture must be jpeg or png",
       "addPicture": "Add your Profile Image"
-    },
-
-    "valuePackInput": {
-      "valuePack": "Value Pack",
-      "inputPlaceholder": "Please choose a value pack",
-      "daysDelivery_one": "{{count}} Day Delivery",
-      "daysDelivery_other": "{{count}} Days Deliverys",
-      "revision_one": "{{count}} Revision",
-      "revision_other": "{{count}} Revisions"
     },
 
     "valuePack": {
@@ -160,6 +154,15 @@
       "websitePlaceholder": "Your website",
       "socialPlaceholder": "Main social media account E.g. https://www.instagram.com/account",
       "modalButton": "Add Value Pack"
+    },
+
+    "socialMediaCard": {
+      "daysDelivery_one": "{{count}} Day Delivery",
+      "daysDelivery_other": "{{count}} Days Deliverys",
+      "revision_one": "{{count}} Revision",
+      "revision_other": "{{count}} Revisions",
+      "handler": "Handler",
+      "followers": "Followers"
     }
   },
 
@@ -254,9 +257,7 @@
         "subTitle": "Share your social media accounts",
         "mainTitle": "Connect and Showcase Your Influence",
         "mainSubTitle": "Fill in Relevant Details, Leave the Rest Optional",
-        "addSocial": "Add Social Media Details",
-        "handler": "Handler",
-        "followers": "Followers"
+        "addSocial": "Add Social Media Details"
       },
 
       "visualPortfolioStep": {
@@ -264,18 +265,6 @@
         "subTitle": "Create a portfolio related with your needs",
         "mainTitle": "Build Your Visual Portfolio",
         "mainSubTitle": "Showcase Your Best Photos on Your Profile"
-      },
-
-      "step4": {
-        "title": "Value Packs",
-        "subTitle": "Design Your Profitable Value Packs",
-        "mainTitle": "Customized Value Packs",
-        "mainSubTitle": "Select Your Platform and Craft Your Irresistible Offer",
-        "daysDelivery_one": "{{count}} Day Delivery",
-        "daysDelivery_other": "{{count}} Days Delivery",
-        "revisions_one": "Revision",
-        "revisions_other": "Revisions",
-        "addValue": "Add Value Pack"
       },
 
       "finalStep": {
@@ -314,9 +303,8 @@
     "editPage": {
       "toasterCreatedSocialMediaSuccess": "Created social media successfully",
       "toasterDeletedSocialMediaSuccess": "Deleted social media successfully",
-      "toasterCreatedValuePackSuccess": "Created value pack successfully",
-      "toasterDeletedValuePack": "Deleted value pack successfully",
       "toasterUpdatePortfolioSuccess": "Updated portfolio successfully",
+      "toasterUpdateSuccessfully": "Updated social media successfully",
       "profileDescription": "Profile Description",
       "website": "Website",
       "about": "About",

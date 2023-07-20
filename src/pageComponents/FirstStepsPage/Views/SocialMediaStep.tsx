@@ -25,14 +25,13 @@ export const SocialMediaStep = (params: {
   getValues: UseFormGetValues<SocialMediaData>;
   submit: () => void;
   platforms: SocialMediaWithContentTypes[] | undefined;
+  isBrand: boolean;
 }) => {
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [availablePlatforms, setAvailablePlatforms] = useState<Option[]>([]);
   const [socialMediaList, setSocialMediaList] = useState<SocialMediaDetails[]>(
     []
   );
-  const [selectedSocialMedia, setSelectedSocialMedia] =
-    useState<SocialMediaDetails>();
   const { t } = useTranslation();
 
   const {
@@ -75,18 +74,42 @@ export const SocialMediaStep = (params: {
   }, [params]);
 
   const addSocialMedia = handleSubmit((data) => {
+    if (
+      !data.platform ||
+      data.platform.id === -1 ||
+      data.socialMediaFollowers === -1 ||
+      data.socialMediaHandler === ""
+    ) {
+      setIsModalOpen(false);
+      reset();
+      return;
+    }
+
     const newArrayList = [...socialMediaList];
-    newArrayList.push({
-      platform: { id: data.platform.id, name: data.platform.name },
-      socialMediaFollowers: data.socialMediaFollowers,
-      socialMediaHandler: data.socialMediaHandler,
-      valuePacks: data.valuePacks,
-    });
+
+    const existingSocialMediaIndex = socialMediaList.findIndex(
+      (socialMedia) => socialMedia.platform.id === data.platform.id
+    );
+
+    if (existingSocialMediaIndex === -1) {
+      newArrayList.push({
+        platform: { id: data.platform.id, name: data.platform.name },
+        socialMediaFollowers: data.socialMediaFollowers,
+        socialMediaHandler: data.socialMediaHandler,
+        valuePacks: data.valuePacks,
+      });
+    } else {
+      newArrayList[existingSocialMediaIndex] = {
+        platform: { id: data.platform.id, name: data.platform.name },
+        socialMediaFollowers: data.socialMediaFollowers,
+        socialMediaHandler: data.socialMediaHandler,
+        valuePacks: data.valuePacks,
+      };
+    }
 
     setSocialMediaList(newArrayList);
     params.setValue("socialMedia", newArrayList);
     setIsModalOpen(false);
-    setSelectedSocialMedia(undefined);
     reset();
   });
 
@@ -112,7 +135,6 @@ export const SocialMediaStep = (params: {
 
   const onCloseModal = () => {
     reset();
-    setSelectedSocialMedia(undefined);
     setIsModalOpen(false);
   };
 
@@ -122,8 +144,6 @@ export const SocialMediaStep = (params: {
     setValue("socialMediaFollowers", socialMedia.socialMediaFollowers);
     setValue("socialMediaHandler", socialMedia.socialMediaHandler);
     setValue("valuePacks", socialMedia.valuePacks);
-
-    return null;
   };
 
   return (
@@ -177,6 +197,7 @@ export const SocialMediaStep = (params: {
           errors={errors}
           watch={watch}
           setValue={setValue}
+          isBrand={params.isBrand}
         />
       )}
     </div>

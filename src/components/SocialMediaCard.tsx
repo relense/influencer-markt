@@ -24,13 +24,13 @@ const SocialMediaCard = (params: {
         <div className="flex flex-col gap-2 xs:flex-row xs:gap-4">
           <div className="break-words">
             <span className="font-medium">
-              {t("pages.firstSteps.socialMediaStep.handler")}:
+              {t("components.socialMediaCard.handler")}:
             </span>{" "}
             {params.socialMedia.socialMediaHandler}
           </div>
           <div>
             <span className="font-medium">
-              {t("pages.firstSteps.socialMediaStep.followers")}:
+              {t("components.socialMediaCard.followers")}:
             </span>{" "}
             {params.socialMedia.socialMediaFollowers}
           </div>
@@ -54,8 +54,8 @@ const SocialMediaCard = (params: {
                       className="fa-lg cursor-pointer"
                     />
                     <div>
-                      {t("components.valuePackInput.daysDelivery", {
-                        count: valuePack.deliveryTime,
+                      {t("components.socialMediaCard.daysDelivery", {
+                        count: parseInt(valuePack.deliveryTime),
                       })}
                     </div>
                   </div>
@@ -65,8 +65,8 @@ const SocialMediaCard = (params: {
                       className="fa-lg cursor-pointer"
                     />
                     <div>
-                      {t("components.valuePackInput.revision", {
-                        count: valuePack.numberOfRevisions,
+                      {t("components.socialMediaCard.revision", {
+                        count: parseInt(valuePack.numberOfRevisions),
                       })}
                     </div>
                   </div>
