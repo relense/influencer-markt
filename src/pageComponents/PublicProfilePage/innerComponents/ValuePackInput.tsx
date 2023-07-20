@@ -88,9 +88,9 @@ const ValuePackInput = (params: {
                 className="fa-lg cursor-pointer"
               />
               <div>
-                {params.valuePack.deliveryTime !== -1
+                {params.valuePack.deliveryTime !== ""
                   ? t("components.valuePackInput.daysDelivery", {
-                      count: params.valuePack.deliveryTime,
+                      count: parseInt(params.valuePack.deliveryTime),
                     })
                   : ""}
               </div>
@@ -101,9 +101,9 @@ const ValuePackInput = (params: {
                 className="fa-lg cursor-pointer"
               />
               <div>
-                {params.valuePack.numberOfRevisions !== -1
+                {params.valuePack.numberOfRevisions !== ""
                   ? t("components.valuePackInput.revision", {
-                      count: params.valuePack.deliveryTime,
+                      count: parseInt(params.valuePack.deliveryTime),
                     })
                   : ""}{" "}
               </div>

@@ -18,7 +18,6 @@ import { Button } from "../../components/Button";
 import { CustomSelect } from "../../components/CustomSelect";
 
 import { helper } from "../../utils/helper";
-import { ValuePackInput } from "./innerComponents/ValuePackInput";
 import { RequestCustomValuePackModal } from "./innerComponents/RequestCustomValuePackModal";
 import { ToolTip } from "../../components/ToolTip";
 import { Modal } from "../../components/Modal";
@@ -38,9 +37,9 @@ const PublicProfilePage = (params: { username: string }) => {
   const [selectedValuePack, setSelectedValuePack] = useState<ValuePack>({
     id: -1,
     platform: { id: -1, name: "" },
-    deliveryTime: -1,
-    numberOfRevisions: -1,
-    valuePackPrice: -1,
+    deliveryTime: "",
+    numberOfRevisions: "",
+    valuePackPrice: "",
     contentType: { id: -1, name: "" },
   });
 
@@ -179,9 +178,9 @@ const PublicProfilePage = (params: { username: string }) => {
     setSelectedValuePack({
       id: -1,
       platform: { id: -1, name: "" },
-      deliveryTime: -1,
-      numberOfRevisions: -1,
-      valuePackPrice: -1,
+      deliveryTime: "",
+      numberOfRevisions: "",
+      valuePackPrice: "",
       contentType: { id: -1, name: "" },
     });
   };
@@ -419,7 +418,10 @@ const PublicProfilePage = (params: { username: string }) => {
                 <div>{t("pages.publicProfilePage.subtotal")}</div>
                 {selectedValuePack.id !== -1 ? (
                   <div>
-                    {helper.formatNumber(selectedValuePack.valuePackPrice)}€
+                    {helper.formatNumber(
+                      parseInt(selectedValuePack.valuePackPrice)
+                    )}
+                    €
                   </div>
                 ) : (
                   "-"
@@ -430,7 +432,7 @@ const PublicProfilePage = (params: { username: string }) => {
                 {selectedValuePack.id !== -1 ? (
                   <div>
                     {helper.formatNumber(
-                      selectedValuePack.valuePackPrice * 0.1
+                      parseInt(selectedValuePack.valuePackPrice) * 0.1
                     )}
                     €
                   </div>
@@ -445,8 +447,8 @@ const PublicProfilePage = (params: { username: string }) => {
               {selectedValuePack.id !== -1 ? (
                 <div>
                   {helper.formatNumber(
-                    selectedValuePack.valuePackPrice +
-                      selectedValuePack.valuePackPrice * 0.1
+                    parseInt(selectedValuePack.valuePackPrice) +
+                      parseInt(selectedValuePack.valuePackPrice) * 0.1
                   )}
                   €
                 </div>
