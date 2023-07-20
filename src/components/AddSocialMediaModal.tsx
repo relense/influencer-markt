@@ -162,6 +162,7 @@ const AddSocialMediaModal = (params: {
           <div className="text-xl font-medium">{contentType.name}</div>
           <div className="flex flex-1 gap-4">
             <input
+              name={`${contentType.name} deliveryTime`}
               type="number"
               className="h-14 w-full rounded-lg border-[1px] border-gray3 p-4 placeholder-gray2"
               placeholder={t("components.addSocialMediaModal.deliveryTime")}
@@ -174,15 +175,16 @@ const AddSocialMediaModal = (params: {
                   : ""
               }
               onWheel={(e) => e.currentTarget.blur()}
-              onChange={(e) =>
+              onChange={(e) => {
                 handleValuePackChange(
                   contentType,
                   "deliveryTime",
                   e.target.value.toString()
-                )
-              }
+                );
+              }}
             />
             <input
+              name={`${contentType.name} numberOfRevisions`}
               type="number"
               className="h-14 w-full rounded-lg border-[1px] border-gray3 p-4 placeholder-gray2"
               placeholder={t("components.addSocialMediaModal.revisionTime")}
@@ -205,6 +207,7 @@ const AddSocialMediaModal = (params: {
             />
           </div>
           <input
+            name={`${contentType.name} price`}
             type="number"
             className="h-14 w-full rounded-lg border-[1px] border-gray3 p-4 placeholder-gray2"
             placeholder={t("components.addSocialMediaModal.price")}
@@ -233,7 +236,6 @@ const AddSocialMediaModal = (params: {
   return (
     <Modal
       onClose={params.onCloseModal}
-      onCloseBackground={handleSubmit}
       title={t("components.addSocialMediaModal.modalTitle")}
     >
       <form

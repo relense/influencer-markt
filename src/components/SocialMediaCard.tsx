@@ -13,7 +13,7 @@ const SocialMediaCard = (params: {
   const { t } = useTranslation();
 
   return (
-    <div className="relative w-full px-4 sm:h-auto sm:w-5/12 sm:px-0">
+    <div className="relative w-full flex-[0_1_49%] px-4 sm:h-auto sm:w-5/12 sm:px-0">
       <div
         className="flex w-auto cursor-default flex-col gap-4 rounded-lg border-[1px] border-gray3 p-4 sm:h-auto"
         onClick={params.onClick}
