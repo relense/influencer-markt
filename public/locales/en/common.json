@@ -137,7 +137,7 @@
     },
 
     "requestValuePack": {
-      "modalTitle": "Request a custom value pack",
+      "modalTitle": "Request a custom pack",
       "errorWarning": "Max is {{count}} characters",
       "platformsLabel": "Platforms",
       "platformPlaceHolder": "Choose your Social Media: e.g., Instagram, TikTok",
@@ -293,7 +293,7 @@
       "subtotal": "Subtotal",
       "fee": "Fee",
       "total": "Total",
-      "requestValuePack": "Request a custom value pack",
+      "requestValuePack": "Request a custom pack",
       "copy": "Copy",
       "loadMore": "Load More Reviews",
       "shareModalTitle": "Share Influencer Page",
