@@ -23,7 +23,6 @@ type UserProfiles = {
   city: string;
   country: Option;
   username: string;
-  valuePacks: ValuePack[];
 };
 
 export type FilterState = {
@@ -111,10 +110,25 @@ const ExplorePage = (params: { choosenCategories: Option[] }) => {
                 followers: socialMedia.followers,
                 url: socialMedia.url,
                 socialMediaName: socialMedia.socialMedia?.name || "",
+                valuePacks: socialMedia.valuePacks.map((valuePack) => {
+                  return {
+                    id: valuePack.id,
+                    platform: {
+                      id: socialMedia.socialMedia?.id || -1,
+                      name: socialMedia.socialMedia?.name || "",
+                    },
+                    contentType: {
+                      id: valuePack.contentType?.id || -1,
+                      name: valuePack.contentType?.name || "",
+                    },
+                    deliveryTime: valuePack.deliveryTime.toString(),
+                    numberOfRevisions: valuePack.numberOfRevisions.toString(),
+                    valuePackPrice: valuePack.valuePackPrice.toString(),
+                  };
+                }),
               };
             }),
             username: profile.user.username || "",
-            valuePacks: [],
           };
         })
       );
@@ -146,10 +160,10 @@ const ExplorePage = (params: { choosenCategories: Option[] }) => {
               followers: socialMedia.followers,
               url: socialMedia.url,
               socialMediaName: socialMedia.socialMedia?.name || "",
+              valuePacks: [],
             };
           }),
           username: profile.user.username || "",
-          valuePacks: [],
         });
       });
 
@@ -261,7 +275,6 @@ const ExplorePage = (params: { choosenCategories: Option[] }) => {
                   profilePicture={profile.profilePicture}
                   socialMedia={profile.socialMedia}
                   username={profile.username}
-                  valuePacks={profile.valuePacks}
                 />
               );
             })}

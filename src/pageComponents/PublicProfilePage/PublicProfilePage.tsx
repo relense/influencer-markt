@@ -2,13 +2,14 @@ import { useEffect, useState } from "react";
 import { api } from "~/utils/api";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
+  faArrowRightRotate,
   faCamera,
   faCopy,
   faGlobe,
   faShareFromSquare,
   faStar,
 } from "@fortawesome/free-solid-svg-icons";
-import { faBookmark } from "@fortawesome/free-regular-svg-icons";
+import { faBookmark, faCalendar } from "@fortawesome/free-regular-svg-icons";
 import Image from "next/image";
 import { toast } from "react-hot-toast";
 import Link from "next/link";
@@ -24,7 +25,11 @@ import { Modal } from "../../components/Modal";
 import { Review } from "../../components/Review";
 import { LoadingSpinner } from "../../components/LoadingSpinner";
 import { useTranslation } from "react-i18next";
-import type { ValuePack, Option } from "../../utils/globalTypes";
+import type {
+  ValuePack,
+  Option,
+  SocialMediaDetails,
+} from "../../utils/globalTypes";
 
 const PublicProfilePage = (params: { username: string }) => {
   const { t, i18n } = useTranslation();
@@ -42,9 +47,13 @@ const PublicProfilePage = (params: { username: string }) => {
     valuePackPrice: "",
     contentType: { id: -1, name: "" },
   });
-
-  const [platform, setPlatform] = useState<Option>({ id: -1, name: "" });
-  const [availablePlatforms, setAvailablePlatforms] = useState<Option[]>([]);
+  const [platform, setPlatform] = useState<Option>({
+    id: -1,
+    name: "",
+  });
+  const [availableUserSocialMedia, setAvailableUserSocialMedia] = useState<
+    SocialMediaDetails[]
+  >([]);
   const [reviews, setReviews] = useState<Review[]>([]);
   const [reviewsCursor, setCursor] = useState<number>();
 
@@ -120,49 +129,39 @@ const PublicProfilePage = (params: { username: string }) => {
     }
   }, [i18n.language, profileReviewsCursor, reviews]);
 
-  // useEffect(() => {
-  //   if (profile?.valuePacks && profile?.valuePacks[0]) {
-  //     setPlatform({
-  //       id: profile?.valuePacks[0]?.socialMedia?.id || -1,
-  //       name: profile?.valuePacks[0]?.socialMedia?.name || "",
-  //     });
+  useEffect(() => {
+    const uniqueOptions: SocialMediaDetails[] = [];
 
-  //     setSelectedValuePack({
-  //       id: profile?.valuePacks[0].id,
-  //       title: profile?.valuePacks[0].title,
-  //       platform: {
-  //         id: profile?.valuePacks[0].socialMedia?.id || -1,
-  //         name: profile?.valuePacks[0].socialMedia?.name || "",
-  //       },
-  //       description: profile?.valuePacks[0].description,
-  //       deliveryTime: profile?.valuePacks[0].deliveryTime,
-  //       numberOfRevisions: profile?.valuePacks[0].numberOfRevisions,
-  //       valuePackPrice: profile?.valuePacks[0].valuePackPrice,
-  //     });
-  //   }
-  // }, [availablePlatforms, profile?.valuePacks]);
+    if (profile?.userSocialMedia) {
+      profile?.userSocialMedia.forEach((userSocialMedia) => {
+        uniqueOptions.push({
+          socialMediaFollowers: userSocialMedia.followers,
+          socialMediaHandler: userSocialMedia.handler,
+          valuePacks: userSocialMedia.valuePacks.map((valuePack) => {
+            return {
+              contentType: {
+                id: valuePack.contentType?.id || -1,
+                name: valuePack.contentType?.name || "",
+              },
+              deliveryTime: valuePack.deliveryTime.toString(),
+              numberOfRevisions: valuePack.numberOfRevisions.toString(),
+              valuePackPrice: valuePack.valuePackPrice.toString(),
+              platform: {
+                id: userSocialMedia.socialMedia?.id || -1,
+                name: userSocialMedia.socialMedia?.name || "",
+              },
+            };
+          }),
+          platform: {
+            id: userSocialMedia.socialMedia?.id || -1,
+            name: userSocialMedia.socialMedia?.name || "",
+          },
+        });
+      });
+    }
 
-  // useEffect(() => {
-  //   const uniqueOptionsSet = new Set<number>();
-  //   const uniqueOptions: Option[] = [];
-
-  //   if (profile?.valuePacks) {
-  //     profile?.valuePacks.forEach((valuePack) => {
-  //       if (
-  //         valuePack.socialMedia &&
-  //         !uniqueOptionsSet.has(valuePack.socialMedia.id)
-  //       ) {
-  //         uniqueOptionsSet.add(valuePack.socialMedia.id);
-  //         uniqueOptions.push({
-  //           id: valuePack.socialMedia.id,
-  //           name: valuePack.socialMedia.name,
-  //         });
-  //       }
-  //     });
-  //   }
-
-  //   setAvailablePlatforms(uniqueOptions);
-  // }, [profile?.valuePacks]);
+    setAvailableUserSocialMedia(uniqueOptions);
+  }, [profile?.userSocialMedia]);
 
   const onCopyLinkToShare = async () => {
     await navigator.clipboard.writeText(window.location.href);
@@ -280,8 +279,8 @@ const PublicProfilePage = (params: { username: string }) => {
 
   const renderMiddleContent = () => {
     return (
-      <div className="flex flex-1 flex-col-reverse gap-6 lg:flex-row">
-        <div className="flex flex-col gap-6">
+      <div className="flex flex-col-reverse gap-6 lg:flex-row">
+        <div className="flex flex-col items-center gap-6">
           <PictureCarrosel
             visual={true}
             portfolio={
@@ -292,7 +291,7 @@ const PublicProfilePage = (params: { username: string }) => {
               []
             }
           />
-          <div className="flex flex-1 flex-col gap-4">
+          <div className="flex flex-col gap-4">
             <div className="text-2xl font-semibold">
               {t("pages.publicProfilePage.categories")}
             </div>
@@ -316,7 +315,7 @@ const PublicProfilePage = (params: { username: string }) => {
           </div>
         </div>
 
-        <div className="flex-2 flex flex-col gap-6">
+        <div className="flex w-full flex-col gap-6">
           <div className="flex flex-col gap-2">
             <div className="text-2xl font-semibold">
               {t("pages.publicProfilePage.about")}
@@ -336,6 +335,11 @@ const PublicProfilePage = (params: { username: string }) => {
   };
 
   const renderValuePackChooser = (name: string) => {
+    const selectedUserSocialMedia: SocialMediaDetails | undefined =
+      availableUserSocialMedia.find((userSocialMedia) => {
+        return userSocialMedia.platform.id === platform.id;
+      });
+
     return (
       <>
         <div className="flex flex-col gap-4 rounded-2xl border-[1px] border-white1 p-4 shadow-xl">
@@ -376,31 +380,73 @@ const PublicProfilePage = (params: { username: string }) => {
                 name={`platform ${name}`}
                 noBorder
                 placeholder={t("pages.publicProfilePage.platformPlaceholder")}
-                options={availablePlatforms}
+                options={availableUserSocialMedia.map((userSocialMedia) => {
+                  return {
+                    id: userSocialMedia.platform.id,
+                    name: userSocialMedia.platform.name,
+                  };
+                })}
                 handleOptionSelect={onChangePlatform}
                 value={platform}
               />
             </div>
-            <div className="w-full border-[1px] border-white1" />
-            {/* {profile?.valuePacks && (
-              <ValuePackInput
-                allValuePacks={profile?.valuePacks?.map((valuePack) => {
-                  return {
-                    deliveryTime: valuePack.deliveryTime,
-                    numberOfRevisions: valuePack.numberOfRevisions,
-                    platform: {
-                      id: valuePack.socialMedia?.id || -1,
-                      name: valuePack.socialMedia?.name || "",
-                    },
-                    valuePackPrice: valuePack.valuePackPrice,
-                    id: valuePack.id || -1,
-                  };
-                })}
-                onChangeValuePack={setSelectedValuePack}
-                valuePack={selectedValuePack}
-                platform={platform}
-              />
-            )} */}
+            {platform.id !== -1 && (
+              <>
+                <div className="w-full border-[1px] border-white1" />
+                <div className="flex flex-wrap justify-start gap-2 p-2">
+                  {selectedUserSocialMedia &&
+                    selectedUserSocialMedia.valuePacks.map(
+                      (valuePack, index) => {
+                        return (
+                          <div
+                            key={`${valuePack.id || ""} ${index}`}
+                            className="group flex w-full flex-[0_1_48%] cursor-pointer flex-col items-start gap-2 rounded-lg border p-2 text-sm font-medium text-gray2 hover:bg-influencer-green"
+                            onClick={() => setSelectedValuePack(valuePack)}
+                          >
+                            <div className="flex w-full flex-1 justify-between">
+                              <div className="text-base font-medium text-black ">
+                                {valuePack.contentType.name}
+                              </div>
+                              <div className="text-base font-medium text-black ">
+                                {valuePack.valuePackPrice}€
+                              </div>
+                            </div>
+                            <div className="flex flex-col gap-2 group-hover:text-white">
+                              <div className="flex gap-2">
+                                <FontAwesomeIcon
+                                  icon={faCalendar}
+                                  className="fa-lg cursor-pointer"
+                                />
+                                <div>
+                                  {t(
+                                    "components.socialMediaCard.daysDelivery",
+                                    {
+                                      count: parseInt(valuePack.deliveryTime),
+                                    }
+                                  )}
+                                </div>
+                              </div>
+                              <div className="flex items-center gap-2">
+                                <FontAwesomeIcon
+                                  icon={faArrowRightRotate}
+                                  className="fa-lg cursor-pointer"
+                                />
+                                <div>
+                                  {t("components.socialMediaCard.revision", {
+                                    count: parseInt(
+                                      valuePack.numberOfRevisions
+                                    ),
+                                  })}
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        );
+                      }
+                    )}
+                </div>
+              </>
+            )}
           </div>
           <Button
             title={t("pages.publicProfilePage.valuePackSubmitButton")}
@@ -564,14 +610,21 @@ const PublicProfilePage = (params: { username: string }) => {
   } else {
     return (
       <div className="flex justify-center">
-        <div className="flex w-full cursor-default flex-col gap-6 self-center px-4 pb-10 sm:px-12 xl:w-3/4 2xl:w-2/4">
+        <div className="flex w-full cursor-default flex-col gap-6 self-center px-4 pb-10 sm:px-12 xl:w-3/4 2xl:w-3/4 3xl:w-2/4 ">
           {renderHeader()}
           {renderMiddleContent()}
           {renderReviews()}
         </div>
         {isCustomValuePackModalOpen && (
           <RequestCustomValuePackModal
-            availablePlatforms={availablePlatforms}
+            availablePlatforms={availableUserSocialMedia.map(
+              (userSocialMedia) => {
+                return {
+                  id: userSocialMedia.platform.id,
+                  name: userSocialMedia.platform.name,
+                };
+              }
+            )}
             onClose={() => setIsCustomValuePackModalOpen(false)}
           />
         )}

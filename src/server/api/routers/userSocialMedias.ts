@@ -28,7 +28,7 @@ export const userSocialMediasRouter = createTRPCRouter({
         include: {
           userSocialMedia: {
             include: {
-              valuePack: true,
+              valuePacks: true,
             },
           },
         },
@@ -89,7 +89,7 @@ export const userSocialMediasRouter = createTRPCRouter({
         include: {
           userSocialMedia: {
             include: {
-              valuePack: true,
+              valuePacks: true,
             },
           },
         },
@@ -99,10 +99,10 @@ export const userSocialMediasRouter = createTRPCRouter({
 
       if (profile && input) {
         profile.userSocialMedia.map(async (usm) => {
-          if (usm.valuePack) {
+          if (usm.valuePacks) {
             await ctx.prisma.valuePack.deleteMany({
               where: {
-                id: { in: usm.valuePack.map((valuePack) => valuePack.id) },
+                id: { in: usm.valuePacks.map((valuePack) => valuePack.id) },
               },
             });
           }
@@ -227,7 +227,7 @@ export const userSocialMediasRouter = createTRPCRouter({
           url: true,
           profileId: false,
           id: true,
-          valuePack: {
+          valuePacks: {
             select: {
               id: true,
               contentType: true,

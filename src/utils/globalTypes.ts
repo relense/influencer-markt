@@ -29,6 +29,7 @@ export type UserSocialMedia = {
   followers: number;
   url: string;
   socialMediaName: string;
+  valuePacks: ValuePack[];
 };
 
 export type Review = {

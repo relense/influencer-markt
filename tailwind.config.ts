@@ -30,6 +30,7 @@ export default {
       },
       screens: {
         xs: "300px",
+        "3xl": "1900px",
         ...defaultTheme.screens,
       },
     },

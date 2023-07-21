@@ -102,6 +102,7 @@ const EditPage = (params: { role: Option | undefined }) => {
         setIsLoading(false);
       },
     });
+
   const { mutate: deleteUserSocialMedia } =
     api.userSocialMedias.deleteUserSocialMedia.useMutation({
       onSuccess: () => {
@@ -437,7 +438,7 @@ const EditPage = (params: { role: Option | undefined }) => {
                 platform: socialMedia.socialMedia || { id: -1, name: "" },
                 socialMediaFollowers: socialMedia.followers,
                 socialMediaHandler: socialMedia.handler,
-                valuePacks: socialMedia.valuePack.map((valuePack) => {
+                valuePacks: socialMedia.valuePacks.map((valuePack) => {
                   return {
                     id: valuePack.id,
                     contentType: {

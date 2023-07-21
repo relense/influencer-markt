@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import type { ValuePack } from "@prisma/client";
 import Image from "next/image";
 import Link from "next/link";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -16,7 +15,6 @@ const ProfileCard = (params: {
   city: string;
   country: string;
   username: string;
-  valuePacks: ValuePack[];
 }) => {
   const [usefullSocialMedia, setUsefullSocialMedia] = useState<UserSocialMedia>(
     {
@@ -25,6 +23,7 @@ const ProfileCard = (params: {
       id: -1,
       socialMediaName: "",
       url: "",
+      valuePacks: [],
     }
   );
 
@@ -83,7 +82,7 @@ const ProfileCard = (params: {
             })}
           </div>
           <div className="text-lg font-semibold">
-            {params.valuePacks[0]?.valuePackPrice}€
+            {usefullSocialMedia.valuePacks[0]?.valuePackPrice}€
           </div>
         </div>
       </div>
