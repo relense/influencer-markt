@@ -73,7 +73,7 @@ const ExplorePage = (params: { choosenCategories: Option[] }) => {
     minPrice: filterState.minPrice || -1,
     maxPrice: filterState.maxPrice || -1,
     country: filterState.country.id,
-    contentType: filterState.contentType.id,
+    contentTypeId: filterState.contentType.id || -1,
   });
 
   const {

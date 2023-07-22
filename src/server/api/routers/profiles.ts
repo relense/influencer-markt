@@ -13,7 +13,7 @@ export const profilesRouter = createTRPCRouter({
         maxFollowers: z.number(),
         minPrice: z.number(),
         maxPrice: z.number(),
-        contentType: z.number(),
+        contentTypeId: z.number(),
       })
     )
     .query(async ({ ctx, input }) => {
@@ -37,16 +37,17 @@ export const profilesRouter = createTRPCRouter({
                       ? input.socialMedia
                       : undefined,
                 },
-                AND: {
-                  followers: {
-                    gte:
-                      input.minFollowers !== -1
-                        ? input.minFollowers
-                        : undefined,
-                    lte:
-                      input.maxFollowers !== -1
-                        ? input.maxFollowers
-                        : undefined,
+                followers: {
+                  gte:
+                    input.minFollowers !== -1 ? input.minFollowers : undefined,
+                  lte:
+                    input.maxFollowers !== -1 ? input.maxFollowers : undefined,
+                },
+                valuePacks: {
+                  some: {
+                    contentTypeId: input.contentTypeId
+                      ? input.contentTypeId
+                      : undefined,
                   },
                 },
               },
@@ -79,6 +80,18 @@ export const profilesRouter = createTRPCRouter({
                     input.minFollowers !== -1 ? input.minFollowers : undefined,
                   lte:
                     input.maxFollowers !== -1 ? input.maxFollowers : undefined,
+                },
+                valuePacks: {
+                  some: {
+                    contentTypeId:
+                      input.contentTypeId !== -1
+                        ? input.contentTypeId
+                        : undefined,
+                    valuePackPrice: {
+                      gte: input.minPrice !== -1 ? input.minPrice : undefined,
+                      lte: input.maxPrice !== -1 ? input.maxPrice : undefined,
+                    },
+                  },
                 },
               },
             },
