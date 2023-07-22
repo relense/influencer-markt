@@ -83,6 +83,19 @@ const ExplorePage = (params: { choosenCategories: Option[] }) => {
   } = api.profiles.getAllInfluencersProfileCursor.useQuery(
     {
       cursor: influencersCursor,
+      socialMedia: filterState.platforms.map((platform) => {
+        return platform.id;
+      }),
+      categories: filterState.categories.map((category) => {
+        return category.id;
+      }),
+      gender: filterState.gender.id,
+      minFollowers: filterState.minFollowers || -1,
+      maxFollowers: filterState.maxFollowers || -1,
+      minPrice: filterState.minPrice || -1,
+      maxPrice: filterState.maxPrice || -1,
+      country: filterState.country.id,
+      contentTypeId: filterState.contentType.id || -1,
     },
     { enabled: false }
   );
