@@ -139,6 +139,7 @@ const PublicProfilePage = (params: { username: string }) => {
           socialMediaHandler: userSocialMedia.handler,
           valuePacks: userSocialMedia.valuePacks.map((valuePack) => {
             return {
+              id: valuePack.id,
               contentType: {
                 id: valuePack.contentType?.id || -1,
                 name: valuePack.contentType?.name || "",
@@ -395,55 +396,61 @@ const PublicProfilePage = (params: { username: string }) => {
                 <div className="w-full border-[1px] border-white1" />
                 <div className="flex flex-wrap justify-start gap-2 p-2">
                   {selectedUserSocialMedia &&
-                    selectedUserSocialMedia.valuePacks.map(
-                      (valuePack, index) => {
-                        return (
-                          <div
-                            key={`${valuePack.id || ""} ${index}`}
-                            className="group flex w-full flex-[0_1_48%] cursor-pointer flex-col items-start gap-2 rounded-lg border p-2 text-sm font-medium text-gray2 hover:bg-influencer-green"
-                            onClick={() => setSelectedValuePack(valuePack)}
-                          >
-                            <div className="flex w-full flex-1 justify-between">
-                              <div className="text-base font-medium text-black ">
-                                {valuePack.contentType.name}
-                              </div>
-                              <div className="text-base font-medium text-black ">
-                                {valuePack.valuePackPrice}€
+                    selectedUserSocialMedia.valuePacks.map((valuePack) => {
+                      debugger;
+                      const selectedContainer =
+                        selectedValuePack.id === valuePack.id
+                          ? "bg-influencer-green"
+                          : "";
+
+                      const selectedValuePackDetails =
+                        selectedValuePack.id === valuePack.id
+                          ? "flex flex-col gap-2 group-hover:text-white text-white"
+                          : "flex flex-col gap-2 group-hover:text-white";
+
+                      const containerClass = `group flex w-full flex-[0_1_48%] cursor-pointer flex-col items-start gap-2 rounded-lg border p-2 text-sm font-medium text-gray2 hover:bg-influencer-green ${selectedContainer}`;
+
+                      return (
+                        <div
+                          key={valuePack.id}
+                          className={containerClass}
+                          onClick={() => setSelectedValuePack(valuePack)}
+                        >
+                          <div className="flex w-full flex-1 justify-between">
+                            <div className="text-base font-medium text-black">
+                              {valuePack.contentType.name}
+                            </div>
+                            <div className="text-base font-medium text-black">
+                              {valuePack.valuePackPrice}€
+                            </div>
+                          </div>
+                          <div className={selectedValuePackDetails}>
+                            <div className="flex gap-2">
+                              <FontAwesomeIcon
+                                icon={faCalendar}
+                                className="fa-lg cursor-pointer"
+                              />
+                              <div>
+                                {t("components.socialMediaCard.daysDelivery", {
+                                  count: parseInt(valuePack.deliveryTime),
+                                })}
                               </div>
                             </div>
-                            <div className="flex flex-col gap-2 group-hover:text-white">
-                              <div className="flex gap-2">
-                                <FontAwesomeIcon
-                                  icon={faCalendar}
-                                  className="fa-lg cursor-pointer"
-                                />
-                                <div>
-                                  {t(
-                                    "components.socialMediaCard.daysDelivery",
-                                    {
-                                      count: parseInt(valuePack.deliveryTime),
-                                    }
-                                  )}
-                                </div>
-                              </div>
-                              <div className="flex items-center gap-2">
-                                <FontAwesomeIcon
-                                  icon={faArrowRightRotate}
-                                  className="fa-lg cursor-pointer"
-                                />
-                                <div>
-                                  {t("components.socialMediaCard.revision", {
-                                    count: parseInt(
-                                      valuePack.numberOfRevisions
-                                    ),
-                                  })}
-                                </div>
+                            <div className="flex items-center gap-2">
+                              <FontAwesomeIcon
+                                icon={faArrowRightRotate}
+                                className="fa-lg cursor-pointer"
+                              />
+                              <div>
+                                {t("components.socialMediaCard.revision", {
+                                  count: parseInt(valuePack.numberOfRevisions),
+                                })}
                               </div>
                             </div>
                           </div>
-                        );
-                      }
-                    )}
+                        </div>
+                      );
+                    })}
                 </div>
               </>
             )}
