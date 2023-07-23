@@ -18,7 +18,7 @@ type UserProfiles = {
   socialMedia: UserSocialMedia[];
   name: string;
   about: string;
-  city: string;
+  city: Option;
   country: Option;
   username: string;
 };
@@ -29,7 +29,7 @@ export type FilterState = {
   gender: Option;
   contentType: Option;
   country: Option;
-  city: string;
+  city: Option;
   minFollowers: number;
   maxFollowers: number;
   minPrice: number;
@@ -49,7 +49,7 @@ const ExplorePage = (params: { choosenCategories: Option[] }) => {
     gender: { id: -1, name: "" },
     contentType: { id: -1, name: "" },
     country: { id: -1, name: "" },
-    city: "",
+    city: { id: -1, name: "" },
     minFollowers: 0,
     maxFollowers: 100000,
     minPrice: 0,
@@ -73,7 +73,7 @@ const ExplorePage = (params: { choosenCategories: Option[] }) => {
     minPrice: filterState.minPrice || -1,
     maxPrice: filterState.maxPrice || -1,
     country: filterState.country.id,
-    city: filterState.city.split(",")[0] || "",
+    city: filterState.city.name || "",
     contentTypeId: filterState.contentType.id || -1,
   });
 
@@ -96,7 +96,7 @@ const ExplorePage = (params: { choosenCategories: Option[] }) => {
       minPrice: filterState.minPrice || -1,
       maxPrice: filterState.maxPrice || -1,
       country: filterState.country.id,
-      city: filterState.city.split(",")[0] || "",
+      city: filterState.city.name || "",
       contentTypeId: filterState.contentType.id || -1,
     },
     { enabled: false }
@@ -114,7 +114,7 @@ const ExplorePage = (params: { choosenCategories: Option[] }) => {
           return {
             id: profile.id,
             about: profile.about || "",
-            city: profile.city || "",
+            city: profile.city || { id: -1, name: "" },
             country: profile.country || { id: -1, name: "" },
             name: profile.name || "",
             profilePicture: profile.profilePicture || "",
@@ -164,7 +164,7 @@ const ExplorePage = (params: { choosenCategories: Option[] }) => {
         newProfiles.push({
           id: profile.id,
           about: profile.about || "",
-          city: profile.city || "",
+          city: profile.city || { id: -1, name: "" },
           country: profile.country || { id: -1, name: "" },
           name: profile.name || "",
           profilePicture: profile.profilePicture || "",
@@ -232,7 +232,7 @@ const ExplorePage = (params: { choosenCategories: Option[] }) => {
     categories: Option[];
     platforms: Option[];
     country: Option;
-    city: string;
+    city: Option;
     contentType: Option;
   }) => {
     +setIsFilterModalOpen(false);
@@ -263,7 +263,7 @@ const ExplorePage = (params: { choosenCategories: Option[] }) => {
       contentType: { id: -1, name: "" },
       minFollowers: 0,
       country: { id: -1, name: "" },
-      city: "",
+      city: { id: -1, name: "" },
       maxFollowers: 1000000,
       minPrice: 0,
       maxPrice: 1000000,
@@ -288,7 +288,7 @@ const ExplorePage = (params: { choosenCategories: Option[] }) => {
                 <ProfileCard
                   key={profile.id}
                   about={profile.about}
-                  city={profile.city}
+                  city={profile.city.name}
                   country={profile.country.name}
                   name={profile.name}
                   profilePicture={profile.profilePicture}

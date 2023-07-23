@@ -5,18 +5,21 @@ import { faChevronDown, faChevronUp } from "@fortawesome/free-solid-svg-icons";
 import { type UseFormRegister } from "react-hook-form";
 
 import { useOutsideClick } from "../utils/helper";
+import { type Option } from "../utils/globalTypes";
 
 export const CustomSelectWithInput = (params: {
   register?: UseFormRegister<any>;
   noBorder?: boolean;
   name: string;
   placeholder: string;
-  value: string;
-  options: string[] | undefined;
-  handleOptionSelect: (value: string) => void;
+  value: Option;
+  options: Option[] | undefined;
+  handleOptionSelect: (options: Option) => void;
   required?: boolean;
   emptyOptionsMessage: string;
   isReadOnly?: boolean;
+  onChangeSearchKeys: (value: string) => void;
+  searchKeys: string;
 }) => {
   const [selectStatus, setSelectStatus] = useState<boolean>(false);
   const customSelectWrapperRef = useRef(null);
@@ -34,7 +37,7 @@ export const CustomSelectWithInput = (params: {
 
   const renderDropdown = () => {
     if (customSelectWrapperRef.current) {
-      if (params.value) {
+      if (params.searchKeys.length >= 3) {
         return (
           <div className="relative z-10 h-auto max-h-52 overflow-y-auto rounded-2xl border-[1px] border-gray3 bg-white shadow-xl">
             {params.options &&
@@ -49,14 +52,15 @@ export const CustomSelectWithInput = (params: {
                 }
                 return (
                   <div
-                    key={`${option} ${index}`}
+                    key={`${option.name} ${index}`}
                     onClick={() => {
+                      params.onChangeSearchKeys(option.name);
                       params.handleOptionSelect(option);
                     }}
                     className={classes}
                   >
                     <div className="flex items-center justify-between">
-                      <div className={`w-3/4`}>{option}</div>
+                      <div className={`w-3/4`}>{option.name}</div>
                       <div>
                         {params.value === option ? (
                           <FontAwesomeIcon
@@ -73,7 +77,7 @@ export const CustomSelectWithInput = (params: {
               })}
           </div>
         );
-      } else if (params.value === "") {
+      } else if (params.searchKeys.length < 3) {
         return (
           <div className="relative z-10 h-auto max-h-52 overflow-y-auto rounded-2xl border-[1px] border-gray3 bg-white shadow-xl">
             <div className="pointer-events-none p-4">
@@ -93,37 +97,24 @@ export const CustomSelectWithInput = (params: {
       }}
     >
       <div className="relative flex items-center justify-between ">
-        {params.register ? (
-          <input
-            {...params.register(params.name)}
-            required={!params.required ? params.required : true}
-            ref={customSelectWrapperRef}
-            id={`${params.name}`}
-            name={params.name}
-            className={customBorder}
-            placeholder={params.placeholder}
-            value={params.value}
-            autoComplete="one-time-code"
-            onChange={(e) => {
-              params.handleOptionSelect(e.target.value);
-            }}
-            readOnly={params.isReadOnly ? params.isReadOnly : false}
-          />
-        ) : (
-          <input
-            required={!params.required ? params.required : true}
-            ref={customSelectWrapperRef}
-            id={`${params.name}`}
-            name={params.name}
-            className={customBorder}
-            placeholder={params.placeholder}
-            value={params.value}
-            autoComplete="one-time-code"
-            onChange={(e) => {
-              params.handleOptionSelect(e.target.value);
-            }}
-          />
-        )}
+        <input
+          required={!params.required ? params.required : true}
+          ref={customSelectWrapperRef}
+          id={`${params.name}`}
+          name={params.name}
+          className={customBorder}
+          placeholder={params.placeholder}
+          value={params.searchKeys}
+          autoComplete="one-time-code"
+          onChange={(e) => {
+            params.onChangeSearchKeys(e.target.value);
+            if (e.target.value === "") {
+              params.handleOptionSelect({ id: -1, name: "" });
+            }
+          }}
+          readOnly={params.isReadOnly ? params.isReadOnly : false}
+        />
+
         {selectStatus ? (
           <FontAwesomeIcon
             icon={faChevronUp}

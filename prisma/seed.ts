@@ -183,7 +183,7 @@ async function main() {
       {
         about:
           "Nike, the iconic sportswear brand, revolutionizes athletic performance with innovation. From cutting-edge footwear to high-performance apparel, Nike empowers athletes worldwide. With a rich history of inspiring athletes, the brand's relentless pursuit of excellence drives them forward. Fuel your passion with Nike's dynamic range of products and experience the embodiment of sport and style. Elevate your game and unleash your true ",
-        city: "Portugal",
+        cityId: 3,
         countryId: 1,
         name: "Nike",
         profilePicture:
@@ -194,7 +194,7 @@ async function main() {
       {
         about:
           "Coca-Cola, the beloved beverage brand, quenches thirst with its iconic refreshment. For over a century, Coca-Cola has delighted taste buds with its signature fizzy and timeless flavor. From its classic cola to a wide range of refreshing drinks, Coca-Cola brings people together, sparking moments of happiness and celebration. With every sip, experience the effervescent joy that Coca-Cola brings. Let the bubbly ",
-        city: "Portugal",
+        cityId: 3,
         countryId: 1,
         name: "Coca Cola",
         profilePicture:
@@ -205,7 +205,7 @@ async function main() {
       {
         about:
           "Apple, the innovative tech giant, revolutionizes the way we live, work, and connect. With its sleek and cutting-edge products, Apple has redefined the world of technology. From the iconic iPhone to the powerful Mac computers and the versatile iPad, Apple devices empower users to create, communicate, and explore like never before. With a seamless integration of hardware and software, Apple",
-        city: "California, San Antonio",
+        cityId: 3,
         countryId: 1,
         name: "Apple",
         profilePicture:
@@ -216,7 +216,7 @@ async function main() {
       {
         about:
           "LG, a leading global technology company, brings innovation and convenience to your everyday life. With a diverse range of products, LG offers cutting-edge solutions that enhance your home, work, and entertainment experiences. From state-of-the-art televisions and home appliances to advanced mobile devices and cutting-edge audio systems, LG combines sleek design with exceptional performance. Immerse yourself in vibrant visuals",
-        city: "Seoul",
+        cityId: 3,
         countryId: 1,
         name: "LG",
         profilePicture:
@@ -227,7 +227,7 @@ async function main() {
       {
         about:
           "Tomas Oliveira, a charismatic adventurer with a passion for exploration. Born with wanderlust in his veins, he seeks thrill and beauty in every corner of the world. From climbing majestic mountains to diving into deep oceans, he embraces the unknown. With a heart full of curiosity, Tomas unravels diverse cultures, tasting exotic cuisines, and connecting with people from all walks of life. Through his travels, he's ",
-        city: "Barcelona",
+        cityId: 3,
         countryId: 1,
         name: "Tomas Oliveira",
         profilePicture:
@@ -239,7 +239,7 @@ async function main() {
       {
         about:
           "Andre Gomes, a charismatic adventurer with a passion for exploration. Born with wanderlust in his veins, he seeks thrill and beauty in every corner of the world. From climbing majestic mountains to diving into deep oceans, he embraces the unknown. With a heart full of curiosity, Tomas unravels diverse cultures, tasting exotic cuisines, and connecting with people from all walks of life. Through his travels, he's ",
-        city: "Portugal",
+        cityId: 3,
         countryId: 1,
         name: "Andre Gomes",
         profilePicture:
@@ -251,7 +251,7 @@ async function main() {
       {
         about:
           "Andreia Sofia, a charismatic adventurer with a passion for exploration. Born with wanderlust in his veins, he seeks thrill and beauty in every corner of the world. From climbing majestic mountains to diving into deep oceans, he embraces the unknown. With a heart full of curiosity, Tomas unravels diverse cultures, tasting exotic cuisines, and connecting with people from all walks of life. Through his travels, he's ",
-        city: "Portugal",
+        cityId: 3,
         countryId: 1,
         name: "Andreia Sofia",
         profilePicture:
@@ -263,7 +263,7 @@ async function main() {
       {
         about:
           "Ines Guerreiro, a charismatic adventurer with a passion for exploration. Born with wanderlust in his veins, he seeks thrill and beauty in every corner of the world. From climbing majestic mountains to diving into deep oceans, he embraces the unknown. With a heart full of curiosity, Tomas unravels diverse cultures, tasting exotic cuisines, and connecting with people from all walks of life. Through his travels, he's ",
-        city: "Portugal",
+        cityId: 3,
         countryId: 1,
         name: "Ines Guerreiro",
         profilePicture:

@@ -77,7 +77,7 @@ model Profile {
   categories      Category[]
   about           String            @db.Text
   country         Country?          @relation(fields: [countryId], references: [id])
-  city            String
+  city            City?             @relation(fields: [cityId], references: [id])
   user            User              @relation(fields: [userId], references: [id])
   website         String            @db.Text
   rating          String?
@@ -89,10 +89,12 @@ model Profile {
   userId    String @unique
   genderId  Int?
   countryId Int?
+  cityId    Int?
 
   @@index([userId])
   @@index([genderId])
   @@index([countryId])
+  @@index([cityId])
 }
 
 model Category {
@@ -229,9 +231,10 @@ model State {
 }
 
 model City {
-  id    Int    @id @default(autoincrement())
-  name  String
-  state State? @relation(fields: [stateId], references: [id])
+  id      Int       @id @default(autoincrement())
+  name    String
+  state   State?    @relation(fields: [stateId], references: [id])
+  profile Profile[]
 
   stateId Int
 

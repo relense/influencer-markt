@@ -61,7 +61,9 @@ export const profilesRouter = createTRPCRouter({
             genderId: input.gender !== -1 ? input.gender : undefined,
             countryId: input.country !== -1 ? input.country : undefined,
             city: {
-              contains: input.city ? input.city : undefined,
+              name: {
+                contains: input.city ? input.city : undefined,
+              },
             },
           },
         }),
@@ -107,7 +109,9 @@ export const profilesRouter = createTRPCRouter({
             genderId: input.gender !== -1 ? input.gender : undefined,
             countryId: input.country !== -1 ? input.country : undefined,
             city: {
-              contains: input.city ? input.city : undefined,
+              name: {
+                contains: input.city ? input.city : undefined,
+              },
             },
           },
           take: 10,
@@ -205,7 +209,9 @@ export const profilesRouter = createTRPCRouter({
           genderId: input.gender !== -1 ? input.gender : undefined,
           countryId: input.country !== -1 ? input.country : undefined,
           city: {
-            contains: input.city ? input.city : undefined,
+            name: {
+              contains: input.city ? input.city : undefined,
+            },
           },
         },
         select: {
@@ -256,7 +262,10 @@ export const profilesRouter = createTRPCRouter({
           id: z.number(),
           name: z.string(),
         }),
-        city: z.string(),
+        city: z.object({
+          id: z.number(),
+          name: z.string(),
+        }),
         website: z.string(),
       })
     )
@@ -277,7 +286,7 @@ export const profilesRouter = createTRPCRouter({
           },
           about: input.about,
           countryId: input.country.id === -1 ? undefined : input.country.id,
-          city: input.city,
+          cityId: input.city.id === -1 ? undefined : input.city.id,
           userId: ctx.session.user.id,
           website: input.website,
         },
@@ -292,7 +301,7 @@ export const profilesRouter = createTRPCRouter({
           },
           about: input.about,
           countryId: input.country.id === -1 ? undefined : input.country.id,
-          city: input.city,
+          cityId: input.city.id === -1 ? undefined : input.city.id,
           userId: ctx.session.user.id,
           website: input.website,
         },
@@ -333,6 +342,7 @@ export const profilesRouter = createTRPCRouter({
       where: { userId: ctx.session.user.id },
       include: {
         country: true,
+        city: true,
         categories: true,
         portfolio: true,
       },
@@ -433,7 +443,10 @@ export const profilesRouter = createTRPCRouter({
             name: z.string(),
           })
         ),
-        city: z.string(),
+        city: z.object({
+          id: z.number(),
+          name: z.string(),
+        }),
         about: z.string(),
         website: z.string(),
         profilePicture: z.string(),
@@ -452,7 +465,7 @@ export const profilesRouter = createTRPCRouter({
               id: category.id,
             })),
           },
-          city: input.city,
+          cityId: input.city.id === -1 ? undefined : input.city.id,
           countryId: input.country.id === -1 ? undefined : input.country.id,
           name: input.name,
           website: input.website,

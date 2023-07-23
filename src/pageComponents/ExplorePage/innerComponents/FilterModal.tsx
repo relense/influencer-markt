@@ -8,6 +8,7 @@ import { CustomSelect } from "../../../components/CustomSelect";
 import type { FilterState } from "../ExplorePage";
 import { type Option } from "../../../utils/globalTypes";
 import { CustomSelectWithInput } from "../../../components/CustomSelectWithInput";
+import { useState } from "react";
 
 const FilterModal = (params: {
   onClose: () => void;
@@ -20,7 +21,7 @@ const FilterModal = (params: {
     categories: Option[];
     platforms: Option[];
     country: Option;
-    city: string;
+    city: Option;
     contentType: Option;
   }) => void;
   handleClearFilter: () => void;
@@ -30,6 +31,9 @@ const FilterModal = (params: {
   filterState: FilterState;
 }) => {
   const { t } = useTranslation();
+  const [searchKeys, setSearchKeys] = useState<string>(
+    params.filterState.city.name || ""
+  );
 
   const {
     handleSubmit,
@@ -54,7 +58,7 @@ const FilterModal = (params: {
 
   const { data: cities } = api.allRoutes.getAllCitiesByCountry.useQuery({
     countryId: filterWatch("country")?.id || -1,
-    citySearch: filterWatch("city") || "",
+    citySearch: searchKeys || "",
   });
 
   const submit = handleSubmit((data) => {
@@ -77,7 +81,7 @@ const FilterModal = (params: {
     filterSetValue("minFollowers", 0);
     filterSetValue("maxFollowers", 1000000);
     filterSetValue("gender", { id: -1, name: "" });
-    filterSetValue("city", "");
+    filterSetValue("city", { id: -1, name: "" });
     filterSetValue("minPrice", 0);
     filterSetValue("maxPrice", 1000000);
     filterSetValue("country", { id: -1, name: "" });
@@ -232,17 +236,16 @@ const FilterModal = (params: {
                   placeholder="City"
                   options={cities?.map((city) => city)}
                   value={value}
-                  handleOptionSelect={(value) => {
-                    onChange(value);
-                    filterSetValue("city", value || "");
-                  }}
+                  handleOptionSelect={onChange}
                   required={false}
                   emptyOptionsMessage={
                     filterWatch("country")?.id !== -1
-                      ? "Search the city where you live"
+                      ? "Search the city where you live with first 3 letters"
                       : "Choose a country before choosing a city"
                   }
                   isReadOnly={filterWatch("country")?.id === -1}
+                  onChangeSearchKeys={setSearchKeys}
+                  searchKeys={searchKeys}
                 />
               );
             }}

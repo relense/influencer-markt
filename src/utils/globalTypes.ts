@@ -69,7 +69,7 @@ export type ProfileData = {
   gender: Option;
   categories: Option[];
   nationOfBirth: Option;
-  placeThatLives: string;
+  placeThatLives: Option;
   about: string;
   website: string;
 };

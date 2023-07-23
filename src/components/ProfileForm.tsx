@@ -32,6 +32,9 @@ const ProfileForm = (params: {
   errors: FieldErrors<ProfileData>;
 }) => {
   const { t } = useTranslation();
+  const [searchKeys, setSearchKeys] = useState<string>(
+    params.watch("placeThatLives").name || ""
+  );
 
   const [profilePicture, setProfilePicture] = useState<string>();
   const { data: user } = api.users.getUser.useQuery();
@@ -40,7 +43,7 @@ const ProfileForm = (params: {
   const { data: countries } = api.allRoutes.getAllCountries.useQuery();
   const { data: cities } = api.allRoutes.getAllCitiesByCountry.useQuery({
     countryId: params.watch("nationOfBirth")?.id || -1,
-    citySearch: params.watch("placeThatLives") || "",
+    citySearch: searchKeys || "",
   });
 
   useEffect(() => {
@@ -239,6 +242,8 @@ const ProfileForm = (params: {
                       ? "Search the city where you live"
                       : "Choose a country before choosing a city"
                   }
+                  onChangeSearchKeys={setSearchKeys}
+                  searchKeys={searchKeys}
                 />
               );
             }}
