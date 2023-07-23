@@ -44,6 +44,7 @@ const AddSocialMediaModal = (params: {
   const { t } = useTranslation();
   const [availablePlatforms, setAvailablePlatforms] = useState<Option[]>();
   const [valuePacks, setValuePacks] = useState<ValuePacks>([]);
+  const [isMyInputFocused, setIsMyInputFocused] = useState(false);
 
   useEffect(() => {
     if (params.watch("valuePacks")) {
@@ -164,7 +165,7 @@ const AddSocialMediaModal = (params: {
             <input
               name={`${contentType.name} deliveryTime`}
               type="number"
-              className="h-14 w-full rounded-lg border-[1px] border-gray3 p-4 placeholder-gray2"
+              className="h-14 w-full rounded-lg border-[1px] border-gray3 p-4 placeholder-gray2 focus:border-black focus:outline-none"
               placeholder={t("components.addSocialMediaModal.deliveryTime")}
               autoComplete="one-time-code"
               max="30"
@@ -186,7 +187,7 @@ const AddSocialMediaModal = (params: {
             <input
               name={`${contentType.name} numberOfRevisions`}
               type="number"
-              className="h-14 w-full rounded-lg border-[1px] border-gray3 p-4 placeholder-gray2"
+              className="h-14 w-full rounded-lg border-[1px] border-gray3 p-4 placeholder-gray2 focus:border-black focus:outline-none"
               placeholder={t("components.addSocialMediaModal.revisionTime")}
               autoComplete="one-time-code"
               max="3"
@@ -209,7 +210,7 @@ const AddSocialMediaModal = (params: {
           <input
             name={`${contentType.name} price`}
             type="number"
-            className="h-14 w-full rounded-lg border-[1px] border-gray3 p-4 placeholder-gray2"
+            className="h-14 w-full rounded-lg border-[1px] border-gray3 p-4 placeholder-gray2 focus:border-black focus:outline-none"
             placeholder={t("components.addSocialMediaModal.price")}
             autoComplete="one-time-code"
             max="1000000000"
@@ -232,6 +233,14 @@ const AddSocialMediaModal = (params: {
       );
     });
   };
+
+  let handleInputContainerClasses =
+    "flex h-16 w-full items-center rounded-lg border-[1px] border-gray3 p-4 placeholder-gray2";
+
+  if (isMyInputFocused) {
+    handleInputContainerClasses =
+      "flex h-16 w-full items-center rounded-lg border-[1px] border-black p-4 placeholder-gray2";
+  }
 
   return (
     <Modal
@@ -270,7 +279,7 @@ const AddSocialMediaModal = (params: {
         )}
 
         <div className="flex w-full flex-col">
-          <div className="flex h-16 w-full items-center rounded-lg border-[1px] border-gray3 p-4 placeholder-gray2 ">
+          <div className={handleInputContainerClasses}>
             {params.watch("platform") && params.watch("platform").id !== -1 && (
               <div className="hidden h-16 items-center xs:flex">
                 {addSocialMediaLink(params.watch("platform").name)}
@@ -280,8 +289,10 @@ const AddSocialMediaModal = (params: {
               {...params.register("socialMediaHandler", { maxLength: 44 })}
               id="socialMediaHandler"
               required
+              onBlur={() => setIsMyInputFocused(false)}
+              onFocus={() => setIsMyInputFocused(true)}
               type="text"
-              className="flex w-full flex-1 rounded-lg placeholder-gray2 focus:outline-none"
+              className="flex w-full flex-1 rounded-lg placeholder-gray2 focus:border-black focus:outline-none"
               placeholder={t(
                 "components.addSocialMediaModal.handlerPlaceholder"
               )}
@@ -304,7 +315,7 @@ const AddSocialMediaModal = (params: {
           required
           type="number"
           onWheel={(e) => e.currentTarget.blur()}
-          className="h-14 w-full rounded-lg border-[1px] border-gray3 p-4 placeholder-gray2"
+          className="h-14 w-full rounded-lg border-[1px] border-gray3 p-4 placeholder-gray2 focus:border-black focus:outline-none"
           placeholder={t("components.addSocialMediaModal.followersPlaceholder")}
           autoComplete="one-time-code"
           min="0"
