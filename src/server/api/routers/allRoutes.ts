@@ -55,7 +55,7 @@ export const allRouter = createTRPCRouter({
     )
     .query(async ({ ctx, input }) => {
       if (input.countryId !== -1 && input.citySearch) {
-        return await ctx.prisma.city.findMany({
+        const results = await ctx.prisma.city.findMany({
           where: {
             state: {
               countryId: input.countryId,
@@ -66,6 +66,15 @@ export const allRouter = createTRPCRouter({
               },
             },
           },
+          include: {
+            state: true,
+          },
+        });
+
+        return results.map((values) => {
+          return `${values.name}${
+            values.state?.name ? `, ${values.state.name}` : ""
+          }`;
         });
       } else {
         return [];
