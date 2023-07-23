@@ -20,7 +20,7 @@ export const CustomSelect = (params: {
   const [selectStatus, setSelectStatus] = useState<boolean>(false);
   const customSelectWrapperRef = useRef(null);
   let customBorder =
-    "flex h-14 w-full flex-1 cursor-pointer rounded-lg border-[1px] border-gray3 bg-transparent p-4 placeholder-gray2 caret-transparent placeholder:w-10/12";
+    "flex h-14 w-full flex-1 cursor-pointer rounded-lg border-[1px] border-gray3 bg-transparent p-4 placeholder-gray2 caret-transparent placeholder:w-10/12 focus:border-black focus:outline-none";
 
   useOutsideClick(() => {
     if (selectStatus === false) return;
@@ -55,7 +55,7 @@ export const CustomSelect = (params: {
             inputMode="none"
             className={customBorder}
             placeholder={params.placeholder}
-            defaultValue={params.value.name}
+            value={params.value.name}
             autoComplete="one-time-code"
           />
         ) : (
@@ -71,7 +71,7 @@ export const CustomSelect = (params: {
             inputMode="none"
             className={customBorder}
             placeholder={params.placeholder}
-            defaultValue={params.value.name}
+            value={params.value.name}
             autoComplete="one-time-code"
           />
         )}

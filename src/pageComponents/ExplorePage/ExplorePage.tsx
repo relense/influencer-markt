@@ -1,9 +1,7 @@
 import { api } from "~/utils/api";
 import { useEffect, useState } from "react";
-import { type ValuePack } from "@prisma/client";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faFilter } from "@fortawesome/free-solid-svg-icons";
-2;
 import { ProfileCard } from "../../components/ProfileCard";
 import { helper } from "../../utils/helper";
 import { Button } from "../../components/Button";

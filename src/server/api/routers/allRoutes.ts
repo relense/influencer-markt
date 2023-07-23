@@ -1,3 +1,4 @@
+import { z } from "zod";
 import { createTRPCRouter, publicProcedure } from "../trpc";
 
 export const allRouter = createTRPCRouter({
@@ -44,4 +45,30 @@ export const allRouter = createTRPCRouter({
   getAllCountries: publicProcedure.query(async ({ ctx }) => {
     return await ctx.prisma.country.findMany();
   }),
+
+  getAllCitiesByCountry: publicProcedure
+    .input(
+      z.object({
+        countryId: z.number(),
+        citySearch: z.string(),
+      })
+    )
+    .query(async ({ ctx, input }) => {
+      if (input.countryId !== -1 && input.citySearch) {
+        return await ctx.prisma.city.findMany({
+          where: {
+            state: {
+              countryId: input.countryId,
+            },
+            AND: {
+              name: {
+                contains: input.citySearch,
+              },
+            },
+          },
+        });
+      } else {
+        return [];
+      }
+    }),
 });

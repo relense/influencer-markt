@@ -103,6 +103,7 @@ export const CustomMultiSelect = (params: {
     }
 
     if (selectStatus) {
+      border = "border-[1px] border-black";
     }
 
     const parentContainerClass = `flex h-auto w-full flex-col items-center justify-center gap-4 rounded-lg lg:h-14 lg:flex-row lg:gap-1 ${border}`;
@@ -129,7 +130,7 @@ export const CustomMultiSelect = (params: {
               className={inputclasses}
               placeholder={params.placeholder}
               value={newValues}
-              autoComplete="off"
+              autoComplete="one-time-code"
               onChange={() => {
                 return;
               }}

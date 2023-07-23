@@ -397,7 +397,6 @@ const PublicProfilePage = (params: { username: string }) => {
                 <div className="flex flex-wrap justify-start gap-2 p-2">
                   {selectedUserSocialMedia &&
                     selectedUserSocialMedia.valuePacks.map((valuePack) => {
-                      debugger;
                       const selectedContainer =
                         selectedValuePack.id === valuePack.id
                           ? "bg-influencer-green"

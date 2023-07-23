@@ -20,6 +20,7 @@ import { api } from "~/utils/api";
 import { CustomSelect } from "./CustomSelect";
 import { CustomMultiSelect } from "./CustomMultiSelect";
 import type { ProfileData } from "../utils/globalTypes";
+import { CustomSelectWithInput } from "./CustomSelectWithInput";
 
 const ProfileForm = (params: {
   submit: () => void;
@@ -37,6 +38,10 @@ const ProfileForm = (params: {
   const { data: categories } = api.allRoutes.getAllCategories.useQuery();
   const { data: genders } = api.allRoutes.getAllGenders.useQuery();
   const { data: countries } = api.allRoutes.getAllCountries.useQuery();
+  const { data: cities } = api.allRoutes.getAllCitiesByCountry.useQuery({
+    countryId: params.watch("nationOfBirth")?.id || -1,
+    citySearch: params.watch("placeThatLives") || "",
+  });
 
   useEffect(() => {
     if (params.watch("profilePicture")) {
@@ -127,7 +132,7 @@ const ProfileForm = (params: {
             {...params.register("displayName", { maxLength: 40 })}
             required
             type="text"
-            className="h-14 rounded-lg border-[1px] border-gray3 p-4 placeholder-gray2"
+            className="h-14 rounded-lg border-[1px] border-gray3 p-4 placeholder-gray2 focus:border-black focus:outline-none"
             placeholder={t("components.profileForm.displayNamePlaceholder")}
             autoComplete="off"
           />
@@ -148,6 +153,7 @@ const ProfileForm = (params: {
                 <CustomSelect
                   register={params.register}
                   name="gender"
+                  required={true}
                   placeholder={t("components.profileForm.genderPlaceholder")}
                   options={genders?.map((gender) => {
                     return {
@@ -181,11 +187,12 @@ const ProfileForm = (params: {
                 selectedOptions={value}
                 clearSelection={() => params.setValue("categories", [])}
                 borderType="normal"
+                required={true}
               />
             );
           }}
         />
-        <div className="flex flex-col gap-6 lg:flex-row lg:gap-11">
+        <div className="flex flex-col gap-6 lg:flex-row lg:gap-6">
           <Controller
             name="nationOfBirth"
             control={params.control}
@@ -196,33 +203,52 @@ const ProfileForm = (params: {
                   register={params.register}
                   name="nationOfBirth"
                   placeholder="Country"
-                  options={countries?.map((country) => {
-                    return {
-                      id: country.id,
-                      name: country.name,
-                    };
-                  })}
+                  options={
+                    countries && countries.length > 0
+                      ? countries?.map((country) => {
+                          return {
+                            id: country.id,
+                            name: country.name,
+                          };
+                        })
+                      : []
+                  }
                   value={value}
                   handleOptionSelect={onChange}
+                  required={true}
                 />
               );
             }}
           />
-          <input
-            {...params.register("placeThatLives")}
-            id="placeThatLives"
-            required
-            type="text"
-            className="h-14 w-full rounded-lg border-[1px] border-gray3 p-4 placeholder-gray2"
-            placeholder={t("components.profileForm.cityPlaceholder")}
-            autoComplete="one-time-code"
+          <Controller
+            name="placeThatLives"
+            control={params.control}
+            rules={{ required: true }}
+            render={({ field: { value, onChange } }) => {
+              return (
+                <CustomSelectWithInput
+                  register={params.register}
+                  name="placeThatLives"
+                  placeholder={t("components.profileForm.cityPlaceholder")}
+                  options={cities?.map((country) => country.name)}
+                  value={value}
+                  handleOptionSelect={onChange}
+                  required={true}
+                  emptyOptionsMessage={
+                    params.watch("nationOfBirth")?.id !== -1
+                      ? "Search the city where you live"
+                      : "Choose a country before choosing a city"
+                  }
+                />
+              );
+            }}
           />
         </div>
         <div className="flex flex-col">
           <textarea
             {...params.register("about", { maxLength: 446 })}
             required
-            className="rounded-lg border-[1px] border-gray3 p-4 placeholder-gray2"
+            className="rounded-lg border-[1px] border-gray3 p-4 placeholder-gray2 focus:border-black focus:outline-none"
             placeholder={t("components.profileForm.aboutPlaceholder")}
             autoComplete="one-time-code"
           />
@@ -237,7 +263,7 @@ const ProfileForm = (params: {
             {...params.register("website", { maxLength: 64 })}
             id="website"
             type="text"
-            className="h-14 w-full rounded-lg border-[1px] border-gray3 p-4 placeholder-gray2"
+            className="h-14 w-full rounded-lg border-[1px] border-gray3 p-4 placeholder-gray2 focus:border-black focus:outline-none"
             placeholder={t("components.profileForm.websitePlaceholder")}
             autoComplete="one-time-code"
           />

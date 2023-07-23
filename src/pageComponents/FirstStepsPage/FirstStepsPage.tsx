@@ -106,6 +106,7 @@ const FirstStepsPage = () => {
   } = useForm<ProfileData>({
     defaultValues: {
       nationOfBirth: { id: -1, name: "" },
+      placeThatLives: "",
       gender: { id: -1, name: "" },
       categories: [],
       profilePicture: "",
