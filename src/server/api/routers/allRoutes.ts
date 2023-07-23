@@ -77,8 +77,8 @@ export const allRouter = createTRPCRouter({
         });
 
         return results.map((values) => {
-          return `${values.name}${
-            values.state?.name ? `, ${values.state.name}` : ""
+          return `${values.state?.name ? `${values.state.name}, ` : ""}${
+            values.name
           }`;
         });
       } else {

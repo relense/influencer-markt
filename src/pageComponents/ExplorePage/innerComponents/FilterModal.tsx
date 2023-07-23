@@ -58,6 +58,7 @@ const FilterModal = (params: {
   });
 
   const submit = handleSubmit((data) => {
+    debugger;
     params.handleFilterSubmit({
       categories: data.categories,
       platforms: data.platforms,
@@ -233,7 +234,7 @@ const FilterModal = (params: {
                   value={value}
                   handleOptionSelect={(value) => {
                     onChange(value);
-                    filterSetValue("city", value);
+                    filterSetValue("city", value || "");
                   }}
                   required={false}
                   emptyOptionsMessage={
