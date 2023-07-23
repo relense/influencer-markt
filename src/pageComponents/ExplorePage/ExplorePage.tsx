@@ -73,7 +73,7 @@ const ExplorePage = (params: { choosenCategories: Option[] }) => {
     minPrice: filterState.minPrice || -1,
     maxPrice: filterState.maxPrice || -1,
     country: filterState.country.id,
-    city: filterState.city || "",
+    city: filterState.city.split(",")[0] || "",
     contentTypeId: filterState.contentType.id || -1,
   });
 
@@ -96,7 +96,7 @@ const ExplorePage = (params: { choosenCategories: Option[] }) => {
       minPrice: filterState.minPrice || -1,
       maxPrice: filterState.maxPrice || -1,
       country: filterState.country.id,
-      city: filterState.city || "",
+      city: filterState.city.split(",")[0] || "",
       contentTypeId: filterState.contentType.id || -1,
     },
     { enabled: false }
