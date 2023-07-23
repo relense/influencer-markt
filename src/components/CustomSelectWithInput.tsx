@@ -16,6 +16,7 @@ export const CustomSelectWithInput = (params: {
   handleOptionSelect: (value: string) => void;
   required?: boolean;
   emptyOptionsMessage: string;
+  isReadOnly?: boolean;
 }) => {
   const [selectStatus, setSelectStatus] = useState<boolean>(false);
   const customSelectWrapperRef = useRef(null);
@@ -103,7 +104,10 @@ export const CustomSelectWithInput = (params: {
             placeholder={params.placeholder}
             value={params.value}
             autoComplete="one-time-code"
-            onChange={(e) => params.handleOptionSelect(e.target.value)}
+            onChange={(e) => {
+              params.handleOptionSelect(e.target.value);
+            }}
+            readOnly={params.isReadOnly ? params.isReadOnly : false}
           />
         ) : (
           <input
@@ -115,7 +119,9 @@ export const CustomSelectWithInput = (params: {
             placeholder={params.placeholder}
             value={params.value}
             autoComplete="one-time-code"
-            onChange={(e) => params.handleOptionSelect(e.target.value)}
+            onChange={(e) => {
+              params.handleOptionSelect(e.target.value);
+            }}
           />
         )}
         {selectStatus ? (

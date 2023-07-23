@@ -230,7 +230,7 @@ const ProfileForm = (params: {
                   register={params.register}
                   name="placeThatLives"
                   placeholder={t("components.profileForm.cityPlaceholder")}
-                  options={cities?.map((country) => country.name)}
+                  options={cities?.map((city) => city)}
                   value={value}
                   handleOptionSelect={onChange}
                   required={true}

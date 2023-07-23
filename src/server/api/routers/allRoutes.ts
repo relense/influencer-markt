@@ -54,8 +54,13 @@ export const allRouter = createTRPCRouter({
       })
     )
     .query(async ({ ctx, input }) => {
-      if (input.countryId !== -1 && input.citySearch) {
+      if (
+        input.countryId !== -1 &&
+        input.citySearch &&
+        input.citySearch.length >= 3
+      ) {
         const results = await ctx.prisma.city.findMany({
+          take: 5,
           where: {
             state: {
               countryId: input.countryId,

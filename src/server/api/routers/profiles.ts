@@ -8,6 +8,7 @@ export const profilesRouter = createTRPCRouter({
         categories: z.array(z.number()),
         socialMedia: z.array(z.number()),
         country: z.number(),
+        city: z.string(),
         gender: z.number(),
         minFollowers: z.number(),
         maxFollowers: z.number(),
@@ -59,6 +60,9 @@ export const profilesRouter = createTRPCRouter({
             },
             genderId: input.gender !== -1 ? input.gender : undefined,
             countryId: input.country !== -1 ? input.country : undefined,
+            city: {
+              contains: input.city ? input.city : undefined,
+            },
           },
         }),
         ctx.prisma.profile.findMany({
@@ -102,6 +106,9 @@ export const profilesRouter = createTRPCRouter({
             },
             genderId: input.gender !== -1 ? input.gender : undefined,
             countryId: input.country !== -1 ? input.country : undefined,
+            city: {
+              contains: input.city ? input.city : undefined,
+            },
           },
           take: 10,
           select: {
@@ -146,6 +153,7 @@ export const profilesRouter = createTRPCRouter({
         categories: z.array(z.number()),
         socialMedia: z.array(z.number()),
         country: z.number(),
+        city: z.string(),
         gender: z.number(),
         minFollowers: z.number(),
         maxFollowers: z.number(),
@@ -196,6 +204,9 @@ export const profilesRouter = createTRPCRouter({
           },
           genderId: input.gender !== -1 ? input.gender : undefined,
           countryId: input.country !== -1 ? input.country : undefined,
+          city: {
+            contains: input.city ? input.city : undefined,
+          },
         },
         select: {
           id: true,

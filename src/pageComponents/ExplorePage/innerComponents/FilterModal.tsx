@@ -1,3 +1,4 @@
+import { api } from "~/utils/api";
 import { useForm, Controller } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 
@@ -6,6 +7,7 @@ import { Button } from "../../../components/Button";
 import { CustomSelect } from "../../../components/CustomSelect";
 import type { FilterState } from "../ExplorePage";
 import { type Option } from "../../../utils/globalTypes";
+import { CustomSelectWithInput } from "../../../components/CustomSelectWithInput";
 
 const FilterModal = (params: {
   onClose: () => void;
@@ -18,6 +20,7 @@ const FilterModal = (params: {
     categories: Option[];
     platforms: Option[];
     country: Option;
+    city: string;
     contentType: Option;
   }) => void;
   handleClearFilter: () => void;
@@ -45,7 +48,13 @@ const FilterModal = (params: {
       categories: params.filterState.categories,
       platforms: params.filterState.platforms,
       country: params.filterState.country,
+      city: params.filterState.city,
     },
+  });
+
+  const { data: cities } = api.allRoutes.getAllCitiesByCountry.useQuery({
+    countryId: filterWatch("country")?.id || -1,
+    citySearch: filterWatch("city") || "",
   });
 
   const submit = handleSubmit((data) => {
@@ -58,6 +67,7 @@ const FilterModal = (params: {
       minPrice: data.minPrice,
       maxPrice: data.maxPrice,
       country: data.country,
+      city: data.city,
       contentType: data.contentType,
     });
   });
@@ -66,6 +76,7 @@ const FilterModal = (params: {
     filterSetValue("minFollowers", 0);
     filterSetValue("maxFollowers", 1000000);
     filterSetValue("gender", { id: -1, name: "" });
+    filterSetValue("city", "");
     filterSetValue("minPrice", 0);
     filterSetValue("maxPrice", 1000000);
     filterSetValue("country", { id: -1, name: "" });
@@ -86,7 +97,7 @@ const FilterModal = (params: {
             <input
               {...filterRegister("minFollowers", { valueAsNumber: true })}
               type="number"
-              className="h-14 w-full rounded-lg border-[1px] border-gray3 p-4 placeholder-gray2"
+              className="h-14 w-full rounded-lg border-[1px] border-gray3 p-4 placeholder-gray2 focus:border-black focus:outline-none"
               placeholder="Min Followers"
               autoComplete="off"
               max="1000000000"
@@ -99,7 +110,7 @@ const FilterModal = (params: {
             <input
               {...filterRegister("maxFollowers", { valueAsNumber: true })}
               type="number"
-              className="h-14 w-full rounded-lg border-[1px] border-gray3 p-4 placeholder-gray2"
+              className="h-14 w-full rounded-lg border-[1px] border-gray3 p-4 placeholder-gray2 focus:border-black focus:outline-none"
               placeholder="Max Followers"
               autoComplete="off"
               max="1000000000"
@@ -201,12 +212,7 @@ const FilterModal = (params: {
                   register={filterRegister}
                   name="country"
                   placeholder="Country"
-                  options={params.countries?.map((country) => {
-                    return {
-                      id: country.id,
-                      name: country.name,
-                    };
-                  })}
+                  options={params.countries}
                   value={value}
                   handleOptionSelect={onChange}
                   required={false}
@@ -214,12 +220,31 @@ const FilterModal = (params: {
               );
             }}
           />
-          <input
-            // {...filterRegister("city")}
-            type="text"
-            className="h-14 w-full rounded-lg border-[1px] border-gray3 p-4 placeholder-gray2"
-            placeholder={t("components.profileForm.cityPlaceholder")}
-            autoComplete="off"
+          <Controller
+            name="city"
+            control={filterControl}
+            render={({ field: { value, onChange } }) => {
+              return (
+                <CustomSelectWithInput
+                  register={filterRegister}
+                  name="city"
+                  placeholder="City"
+                  options={cities?.map((city) => city)}
+                  value={value}
+                  handleOptionSelect={(value) => {
+                    onChange(value);
+                    filterSetValue("city", value);
+                  }}
+                  required={false}
+                  emptyOptionsMessage={
+                    filterWatch("country")?.id !== -1
+                      ? "Search the city where you live"
+                      : "Choose a country before choosing a city"
+                  }
+                  isReadOnly={filterWatch("country")?.id === -1}
+                />
+              );
+            }}
           />
         </div>
       </div>
@@ -238,7 +263,7 @@ const FilterModal = (params: {
             <input
               {...filterRegister("minPrice", { valueAsNumber: true })}
               type="number"
-              className="h-14 w-full rounded-lg border-[1px] border-gray3 p-4 placeholder-gray2"
+              className="h-14 w-full rounded-lg border-[1px] border-gray3 p-4 placeholder-gray2 focus:border-black focus:outline-none"
               placeholder="Min Price Value"
               autoComplete="off"
               max="1000000000"
@@ -251,7 +276,7 @@ const FilterModal = (params: {
             <input
               {...filterRegister("maxPrice", { valueAsNumber: true })}
               type="number"
-              className="h-14 w-full rounded-lg border-[1px] border-gray3 p-4 placeholder-gray2"
+              className="h-14 w-full rounded-lg border-[1px] border-gray3 p-4 placeholder-gray2 focus:border-black focus:outline-none"
               placeholder="Max Price Value"
               autoComplete="off"
               max="1000000000"
@@ -269,7 +294,7 @@ const FilterModal = (params: {
       <form
         id="form-filterModal"
         className="flex h-full w-full flex-col gap-4 p-4 sm:w-full sm:px-8"
-        onSubmit={() => submit()}
+        onSubmit={submit}
       >
         {renderFollowersInput()}
         <div className="w-full border-[1px] border-white1" />

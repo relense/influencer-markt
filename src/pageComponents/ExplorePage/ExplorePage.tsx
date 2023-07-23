@@ -29,6 +29,7 @@ export type FilterState = {
   gender: Option;
   contentType: Option;
   country: Option;
+  city: string;
   minFollowers: number;
   maxFollowers: number;
   minPrice: number;
@@ -48,6 +49,7 @@ const ExplorePage = (params: { choosenCategories: Option[] }) => {
     gender: { id: -1, name: "" },
     contentType: { id: -1, name: "" },
     country: { id: -1, name: "" },
+    city: "",
     minFollowers: 0,
     maxFollowers: 100000,
     minPrice: 0,
@@ -71,6 +73,7 @@ const ExplorePage = (params: { choosenCategories: Option[] }) => {
     minPrice: filterState.minPrice || -1,
     maxPrice: filterState.maxPrice || -1,
     country: filterState.country.id,
+    city: filterState.city || "",
     contentTypeId: filterState.contentType.id || -1,
   });
 
@@ -93,6 +96,7 @@ const ExplorePage = (params: { choosenCategories: Option[] }) => {
       minPrice: filterState.minPrice || -1,
       maxPrice: filterState.maxPrice || -1,
       country: filterState.country.id,
+      city: filterState.city || "",
       contentTypeId: filterState.contentType.id || -1,
     },
     { enabled: false }
@@ -228,9 +232,10 @@ const ExplorePage = (params: { choosenCategories: Option[] }) => {
     categories: Option[];
     platforms: Option[];
     country: Option;
+    city: string;
     contentType: Option;
   }) => {
-    setIsFilterModalOpen(false);
+    +setIsFilterModalOpen(false);
     setFilterState({
       ...filterState,
       categories: params.categories,
@@ -241,6 +246,7 @@ const ExplorePage = (params: { choosenCategories: Option[] }) => {
       minPrice: params.minPrice,
       maxPrice: params.maxPrice,
       country: params.country,
+      city: params.city,
       contentType: params.contentType,
     });
 
@@ -256,6 +262,8 @@ const ExplorePage = (params: { choosenCategories: Option[] }) => {
       gender: { id: -1, name: "" },
       contentType: { id: -1, name: "" },
       minFollowers: 0,
+      country: { id: -1, name: "" },
+      city: "",
       maxFollowers: 1000000,
       minPrice: 0,
       maxPrice: 1000000,
