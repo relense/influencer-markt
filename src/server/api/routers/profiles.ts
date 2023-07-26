@@ -8,7 +8,7 @@ export const profilesRouter = createTRPCRouter({
         categories: z.array(z.number()),
         socialMedia: z.array(z.number()),
         country: z.number(),
-        city: z.string(),
+        city: z.number(),
         gender: z.number(),
         minFollowers: z.number(),
         maxFollowers: z.number(),
@@ -60,11 +60,7 @@ export const profilesRouter = createTRPCRouter({
             },
             genderId: input.gender !== -1 ? input.gender : undefined,
             countryId: input.country !== -1 ? input.country : undefined,
-            city: {
-              name: {
-                contains: input.city ? input.city : undefined,
-              },
-            },
+            cityId: input.city !== -1 ? input.city : undefined,
           },
         }),
         ctx.prisma.profile.findMany({
@@ -108,11 +104,7 @@ export const profilesRouter = createTRPCRouter({
             },
             genderId: input.gender !== -1 ? input.gender : undefined,
             countryId: input.country !== -1 ? input.country : undefined,
-            city: {
-              name: {
-                contains: input.city ? input.city : undefined,
-              },
-            },
+            cityId: input.city !== -1 ? input.city : undefined,
           },
           take: 10,
           select: {
@@ -157,7 +149,7 @@ export const profilesRouter = createTRPCRouter({
         categories: z.array(z.number()),
         socialMedia: z.array(z.number()),
         country: z.number(),
-        city: z.string(),
+        city: z.number(),
         gender: z.number(),
         minFollowers: z.number(),
         maxFollowers: z.number(),
@@ -208,11 +200,188 @@ export const profilesRouter = createTRPCRouter({
           },
           genderId: input.gender !== -1 ? input.gender : undefined,
           countryId: input.country !== -1 ? input.country : undefined,
-          city: {
-            name: {
-              contains: input.city ? input.city : undefined,
+          cityId: input.city !== -1 ? input.city : undefined,
+        },
+        select: {
+          id: true,
+          userSocialMedia: {
+            include: {
+              socialMedia: {
+                select: {
+                  name: true,
+                },
+              },
+              valuePacks: {
+                include: {
+                  contentType: true,
+                },
+              },
             },
           },
+          name: true,
+          city: true,
+          country: true,
+          about: true,
+          user: {
+            select: {
+              username: true,
+            },
+          },
+          profilePicture: true,
+        },
+        orderBy: {
+          name: "desc",
+        },
+      });
+    }),
+
+  getAllBrandsProfiles: publicProcedure
+    .input(
+      z.object({
+        categories: z.array(z.number()),
+        socialMedia: z.array(z.number()),
+        country: z.number(),
+        city: z.number(),
+        minFollowers: z.number(),
+        maxFollowers: z.number(),
+      })
+    )
+    .query(async ({ ctx, input }) => {
+      return await ctx.prisma.$transaction([
+        ctx.prisma.profile.count({
+          where: {
+            user: { roleId: 1 },
+            categories: {
+              some: {
+                id: {
+                  in:
+                    input.categories.length > 0 ? input.categories : undefined,
+                },
+              },
+            },
+            userSocialMedia: {
+              some: {
+                socialMediaId: {
+                  in:
+                    input.socialMedia.length > 0
+                      ? input.socialMedia
+                      : undefined,
+                },
+                followers: {
+                  gte:
+                    input.minFollowers !== -1 ? input.minFollowers : undefined,
+                  lte:
+                    input.maxFollowers !== -1 ? input.maxFollowers : undefined,
+                },
+              },
+            },
+            countryId: input.country !== -1 ? input.country : undefined,
+            cityId: input.city !== -1 ? input.city : undefined,
+          },
+        }),
+        ctx.prisma.profile.findMany({
+          where: {
+            user: { roleId: 1 },
+            categories: {
+              some: {
+                id: {
+                  in:
+                    input.categories.length > 0 ? input.categories : undefined,
+                },
+              },
+            },
+            userSocialMedia: {
+              some: {
+                socialMediaId: {
+                  in:
+                    input.socialMedia.length > 0
+                      ? input.socialMedia
+                      : undefined,
+                },
+                followers: {
+                  gte:
+                    input.minFollowers !== -1 ? input.minFollowers : undefined,
+                  lte:
+                    input.maxFollowers !== -1 ? input.maxFollowers : undefined,
+                },
+              },
+            },
+            countryId: input.country !== -1 ? input.country : undefined,
+            cityId: input.city !== -1 ? input.city : undefined,
+          },
+          take: 10,
+          select: {
+            id: true,
+            userSocialMedia: {
+              include: {
+                socialMedia: {
+                  select: {
+                    id: true,
+                    name: true,
+                  },
+                },
+              },
+            },
+            name: true,
+            city: true,
+            country: true,
+            about: true,
+            user: {
+              select: {
+                username: true,
+              },
+            },
+            profilePicture: true,
+          },
+          orderBy: {
+            name: "desc",
+          },
+        }),
+      ]);
+    }),
+
+  getAllBrandsProfilesCursor: publicProcedure
+    .input(
+      z.object({
+        cursor: z.number(),
+        categories: z.array(z.number()),
+        socialMedia: z.array(z.number()),
+        country: z.number(),
+        city: z.number(),
+        minFollowers: z.number(),
+        maxFollowers: z.number(),
+      })
+    )
+    .query(async ({ ctx, input }) => {
+      return await ctx.prisma.profile.findMany({
+        take: 10,
+        skip: 1,
+        cursor: {
+          id: input.cursor,
+        },
+        where: {
+          user: { roleId: 1 },
+          categories: {
+            some: {
+              id: {
+                in: input.categories.length > 0 ? input.categories : undefined,
+              },
+            },
+          },
+          userSocialMedia: {
+            some: {
+              socialMediaId: {
+                in:
+                  input.socialMedia.length > 0 ? input.socialMedia : undefined,
+              },
+              followers: {
+                gte: input.minFollowers !== -1 ? input.minFollowers : undefined,
+                lte: input.maxFollowers !== -1 ? input.maxFollowers : undefined,
+              },
+            },
+          },
+          countryId: input.country !== -1 ? input.country : undefined,
+          cityId: input.city !== -1 ? input.city : undefined,
         },
         select: {
           id: true,
@@ -393,7 +562,7 @@ export const profilesRouter = createTRPCRouter({
         where: { username: input.username },
       });
 
-      return await ctx.prisma.profile.findUnique({
+      const profile = await ctx.prisma.profile.findUnique({
         where: { userId: user?.id },
         select: {
           userSocialMedia: {
@@ -423,10 +592,15 @@ export const profilesRouter = createTRPCRouter({
           profilePicture: true,
           rating: true,
           portfolio: true,
-          userId: false,
-          genderId: false,
+          userId: true,
+          genderId: true,
+          favoriteBy: true,
+          cityId: true,
+          countryId: true,
         },
       });
+
+      return profile;
     }),
 
   updateProfile: protectedProcedure
@@ -472,5 +646,90 @@ export const profilesRouter = createTRPCRouter({
           profilePicture: input.profilePicture,
         },
       });
+    }),
+
+  getFavorites: protectedProcedure
+    .input(
+      z.object({
+        roleId: z.number(),
+      })
+    )
+    .query(async ({ ctx, input }) => {
+      return await ctx.prisma.profile.findFirst({
+        where: {
+          userId: ctx.session.user.id,
+        },
+        select: {
+          favorites: {
+            where: {
+              user: {
+                roleId: input.roleId,
+              },
+            },
+            include: {
+              city: true,
+              country: true,
+              userSocialMedia: {
+                include: {
+                  socialMedia: true,
+                  valuePacks: {
+                    include: {
+                      contentType: true,
+                    },
+                  },
+                },
+              },
+              user: true,
+            },
+          },
+        },
+      });
+    }),
+
+  updateFavorites: protectedProcedure
+    .input(
+      z.object({
+        profileId: z.number(),
+      })
+    )
+    .mutation(async ({ ctx, input }) => {
+      const isFavorite = await ctx.prisma.profile.findFirst({
+        where: {
+          userId: ctx.session.user.id,
+          favorites: {
+            some: {
+              id: input.profileId,
+            },
+          },
+        },
+      });
+
+      if (isFavorite) {
+        return await ctx.prisma.profile.update({
+          where: {
+            userId: ctx.session.user.id,
+          },
+          data: {
+            favorites: {
+              disconnect: {
+                id: input.profileId,
+              },
+            },
+          },
+        });
+      } else {
+        return await ctx.prisma.profile.update({
+          where: {
+            userId: ctx.session.user.id,
+          },
+          data: {
+            favorites: {
+              connect: {
+                id: input.profileId,
+              },
+            },
+          },
+        });
+      }
     }),
 });

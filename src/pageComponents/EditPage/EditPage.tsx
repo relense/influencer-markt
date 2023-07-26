@@ -286,8 +286,6 @@ const EditPage = (params: { role: Option | undefined }) => {
       valuePacks: data.valuePacks.map((valuePack) => {
         return {
           contentTypeId: valuePack.contentType.id,
-          deliveryTime: parseInt(valuePack.deliveryTime),
-          numberOfRevisions: parseInt(valuePack.numberOfRevisions),
           platformId: data.platform.id,
           valuePackPrice: parseInt(valuePack.valuePackPrice),
         };
@@ -310,8 +308,6 @@ const EditPage = (params: { role: Option | undefined }) => {
           return {
             id: valuePack.id || -1,
             contentTypeId: valuePack.contentType.id,
-            deliveryTime: parseInt(valuePack.deliveryTime),
-            numberOfRevisions: parseInt(valuePack.numberOfRevisions),
             platformId: valuePack.platform.id,
             valuePackPrice: parseInt(valuePack.valuePackPrice),
           };
@@ -446,8 +442,6 @@ const EditPage = (params: { role: Option | undefined }) => {
                       id: valuePack.contentType?.id || -1,
                       name: valuePack.contentType?.name || "",
                     },
-                    deliveryTime: valuePack.deliveryTime.toString(),
-                    numberOfRevisions: valuePack.numberOfRevisions.toString(),
                     valuePackPrice: valuePack.valuePackPrice.toString(),
                     platform: {
                       id: socialMedia.socialMedia?.id || -1,

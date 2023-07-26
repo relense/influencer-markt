@@ -30,7 +30,7 @@ export const CustomSelect = (params: {
 
   if (params.noBorder) {
     customBorder =
-      "flex h-14 w-full flex-1 cursor-pointer bg-transparent p-4 placeholder-gray2 caret-transparent placeholder:w-11/12";
+      "flex h-14 w-full flex-1 cursor-pointer bg-transparent p-4 placeholder-gray2 caret-transparent placeholder:w-11/12 focus:border-black focus:outline-none focus:border-[1px] focus:rounded-lg ";
   }
 
   return (
@@ -71,7 +71,7 @@ export const CustomSelect = (params: {
             inputMode="none"
             className={customBorder}
             placeholder={params.placeholder}
-            value={params.value.name}
+            defaultValue={params.value.name}
             autoComplete="one-time-code"
           />
         )}

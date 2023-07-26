@@ -8,8 +8,6 @@ export type ValuePack = {
   id?: number;
   platform: Option;
   contentType: Option;
-  deliveryTime: string;
-  numberOfRevisions: string;
   valuePackPrice: string;
 };
 
@@ -72,4 +70,15 @@ export type ProfileData = {
   placeThatLives: Option;
   about: string;
   website: string;
+};
+
+export type UserProfiles = {
+  id: number;
+  profilePicture: string;
+  socialMedia: UserSocialMedia[];
+  name: string;
+  about: string;
+  city: Option;
+  country: Option;
+  username: string;
 };

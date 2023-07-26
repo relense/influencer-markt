@@ -2,14 +2,15 @@ import { useEffect, useState } from "react";
 import { api } from "~/utils/api";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
-  faArrowRightRotate,
   faCamera,
   faCopy,
   faGlobe,
   faShareFromSquare,
   faStar,
 } from "@fortawesome/free-solid-svg-icons";
-import { faBookmark, faCalendar } from "@fortawesome/free-regular-svg-icons";
+import { faBookmark } from "@fortawesome/free-regular-svg-icons";
+import { faBookmark as faBookmarkSolid } from "@fortawesome/free-solid-svg-icons";
+
 import Image from "next/image";
 import { toast } from "react-hot-toast";
 import Link from "next/link";
@@ -31,7 +32,11 @@ import type {
   SocialMediaDetails,
 } from "../../utils/globalTypes";
 
-const PublicProfilePage = (params: { username: string }) => {
+const PublicProfilePage = (params: {
+  username: string;
+  openLoginModal: () => void;
+  loggedInProfileId: number;
+}) => {
   const { t, i18n } = useTranslation();
 
   const [isCustomValuePackModalOpen, setIsCustomValuePackModalOpen] =
@@ -39,11 +44,10 @@ const PublicProfilePage = (params: { username: string }) => {
   const [isReviewModalOpen, setIsReviewModalOpen] = useState<boolean>(false);
   const [isShareModalOpen, setIsShareModalOpen] = useState<boolean>(false);
   const [selectedReview, setSelectedReview] = useState<Review>();
+  const [isBookmarked, setIsBookmarked] = useState<boolean>(false);
   const [selectedValuePack, setSelectedValuePack] = useState<ValuePack>({
     id: -1,
     platform: { id: -1, name: "" },
-    deliveryTime: "",
-    numberOfRevisions: "",
     valuePackPrice: "",
     contentType: { id: -1, name: "" },
   });
@@ -79,6 +83,24 @@ const PublicProfilePage = (params: { username: string }) => {
       enabled: false,
     }
   );
+
+  const { mutate: updateFavorites } = api.profiles.updateFavorites.useMutation({
+    onSuccess: () => {
+      toast.success("Removed from Saved Profiles Successfully", {
+        position: "bottom-left",
+      });
+    },
+  });
+
+  useEffect(() => {
+    if (params.loggedInProfileId !== -1) {
+      const isFavorited = profile?.favoriteBy.find(
+        (profile) => params.loggedInProfileId === profile.id
+      );
+
+      setIsBookmarked(isFavorited ? true : false);
+    }
+  }, [params.loggedInProfileId, profile]);
 
   useEffect(() => {
     if (profileReviews) {
@@ -144,8 +166,6 @@ const PublicProfilePage = (params: { username: string }) => {
                 id: valuePack.contentType?.id || -1,
                 name: valuePack.contentType?.name || "",
               },
-              deliveryTime: valuePack.deliveryTime.toString(),
-              numberOfRevisions: valuePack.numberOfRevisions.toString(),
               valuePackPrice: valuePack.valuePackPrice.toString(),
               platform: {
                 id: userSocialMedia.socialMedia?.id || -1,
@@ -178,8 +198,6 @@ const PublicProfilePage = (params: { username: string }) => {
     setSelectedValuePack({
       id: -1,
       platform: { id: -1, name: "" },
-      deliveryTime: "",
-      numberOfRevisions: "",
       valuePackPrice: "",
       contentType: { id: -1, name: "" },
     });
@@ -193,6 +211,15 @@ const PublicProfilePage = (params: { username: string }) => {
   const closeReviewModal = () => {
     setSelectedReview(undefined);
     setIsReviewModalOpen(false);
+  };
+
+  const handleBookmark = (profileId: number) => {
+    if (params.loggedInProfileId === -1) {
+      params.openLoginModal();
+    } else {
+      updateFavorites({ profileId });
+      setIsBookmarked(!isBookmarked);
+    }
   };
 
   const renderHeader = () => {
@@ -268,11 +295,28 @@ const PublicProfilePage = (params: { username: string }) => {
               {t("pages.publicProfilePage.share")}
             </div>
           </div>
-          <div className="flex cursor-pointer items-center gap-2">
-            <FontAwesomeIcon icon={faBookmark} className="fa-lg" />
-
-            <div className="underline">{t("pages.publicProfilePage.save")}</div>
-          </div>
+          {profile && (
+            <div
+              className="flex cursor-pointer items-center gap-2"
+              onClick={() => handleBookmark(profile.id)}
+            >
+              {isBookmarked ? (
+                <>
+                  <FontAwesomeIcon icon={faBookmarkSolid} className="fa-lg" />
+                  <div className="underline">
+                    {t("pages.publicProfilePage.saved")}
+                  </div>
+                </>
+              ) : (
+                <>
+                  <FontAwesomeIcon icon={faBookmark} className="fa-lg " />
+                  <div className="underline">
+                    {t("pages.publicProfilePage.save")}
+                  </div>
+                </>
+              )}
+            </div>
+          )}
         </div>
       </div>
     );
@@ -402,11 +446,6 @@ const PublicProfilePage = (params: { username: string }) => {
                           ? "bg-influencer-green"
                           : "";
 
-                      const selectedValuePackDetails =
-                        selectedValuePack.id === valuePack.id
-                          ? "flex flex-col gap-2 group-hover:text-white text-white"
-                          : "flex flex-col gap-2 group-hover:text-white";
-
                       const containerClass = `group flex w-full flex-[0_1_48%] cursor-pointer flex-col items-start gap-2 rounded-lg border p-2 text-sm font-medium text-gray2 hover:bg-influencer-green ${selectedContainer}`;
 
                       return (
@@ -415,36 +454,15 @@ const PublicProfilePage = (params: { username: string }) => {
                           className={containerClass}
                           onClick={() => setSelectedValuePack(valuePack)}
                         >
-                          <div className="flex w-full flex-1 justify-between">
+                          <div className="flex w-full flex-1 justify-between ">
                             <div className="text-base font-medium text-black">
                               {valuePack.contentType.name}
                             </div>
                             <div className="text-base font-medium text-black">
-                              {valuePack.valuePackPrice}€
-                            </div>
-                          </div>
-                          <div className={selectedValuePackDetails}>
-                            <div className="flex gap-2">
-                              <FontAwesomeIcon
-                                icon={faCalendar}
-                                className="fa-lg cursor-pointer"
-                              />
-                              <div>
-                                {t("components.socialMediaCard.daysDelivery", {
-                                  count: parseInt(valuePack.deliveryTime),
-                                })}
-                              </div>
-                            </div>
-                            <div className="flex items-center gap-2">
-                              <FontAwesomeIcon
-                                icon={faArrowRightRotate}
-                                className="fa-lg cursor-pointer"
-                              />
-                              <div>
-                                {t("components.socialMediaCard.revision", {
-                                  count: parseInt(valuePack.numberOfRevisions),
-                                })}
-                              </div>
+                              {helper.formatNumber(
+                                parseInt(valuePack.valuePackPrice)
+                              )}
+                              €
                             </div>
                           </div>
                         </div>
@@ -509,12 +527,6 @@ const PublicProfilePage = (params: { username: string }) => {
               )}
             </div>
           </div>
-        </div>
-        <div
-          className="cursor-pointer text-center underline"
-          onClick={() => setIsCustomValuePackModalOpen(true)}
-        >
-          {t("pages.publicProfilePage.requestValuePack")}
         </div>
       </>
     );

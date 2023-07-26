@@ -163,6 +163,12 @@
       "revision_other": "{{count}} Revisions",
       "handler": "Handler",
       "followers": "Followers"
+    },
+
+    "profileCard": {
+      "numberOfFollowers_one": "{{count, number}} {{socialMedia}} Follower",
+      "numberOfFollowers_other": "{{count, number}} {{socialMedia}} Followers",
+      "readMore": "Read More"
     }
   },
 
@@ -280,6 +286,7 @@
       "copySuccessfull": "Link was copied to clipboard",
       "share": "Share",
       "save": "Save",
+      "saved": "Saved",
       "categories": "Categories",
       "about": "About",
       "campaigns": "Campaigns",
@@ -397,7 +404,30 @@
       "priceInputLabel": "Price",
       "priceInputPlaceholder": "",
       "clearAllButton": "Clear all filters",
-      "showInfluencersButton": "Show Influencers"
+      "showInfluencersButton": "Show Influencers",
+      "noInfluencers": "No Influencers",
+      "countInfluencers_one": "{{count, number}} Influencer",
+      "countInfluencers_other": "{{count, number}} Influencers",
+      "noBrands": "noBrands",
+      "countBrands_one": "{{count, number}} Brand",
+      "countBrands_other": "{{count, number}} Brands",
+      "loadMore": "Load More",
+      "minimum": "Minimum",
+      "minimumPlaceholder": "Min Followers",
+      "Maximum": "Maximum",
+      "MaximumPlaceholder": "Max Followers",
+      "any": "Any",
+      "Male": "Male",
+      "Female": "Female",
+      "Other": "Other",
+      "location": "Location",
+      "countryPlaceholder": "Country",
+      "cityPlaceHolder": "City",
+      "emptyMessageNoCountry": "Search a city with the first 3 letters",
+      "emptyMessageWithCountry": "Choose a country before choosing a city",
+      "minPricePlaceholder": "Min Price Value",
+      "maxPricePlaceholder": "Max Price Value",
+      "showBrandsButton": "Show Brands"
     }
   }
 }

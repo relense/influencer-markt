@@ -23,8 +23,6 @@ type ValuePacks = Array<
   ValuePack & {
     platform?: Option | undefined;
     contentType?: Option | undefined;
-    deliveryTime?: string | undefined;
-    numberOfRevisions?: string | undefined;
     valuePackPrice?: string | undefined;
   }
 >;
@@ -98,8 +96,6 @@ const AddSocialMediaModal = (params: {
         const newValuePack: ValuePack = {
           platform: params.watch("platform"),
           contentType: contentType,
-          deliveryTime: "",
-          numberOfRevisions: "",
           valuePackPrice: "",
         };
 
@@ -129,11 +125,7 @@ const AddSocialMediaModal = (params: {
     const newArrayList: ValuePack[] = [];
 
     valuePacks.forEach((valuePack) => {
-      if (
-        valuePack.deliveryTime &&
-        valuePack.numberOfRevisions &&
-        valuePack.valuePackPrice
-      ) {
+      if (valuePack.valuePackPrice) {
         newArrayList.push(valuePack);
       }
     });
@@ -161,52 +153,6 @@ const AddSocialMediaModal = (params: {
       return (
         <div key={contentType.id} className="flex w-full flex-col gap-4">
           <div className="text-xl font-medium">{contentType.name}</div>
-          <div className="flex flex-1 gap-4">
-            <input
-              name={`${contentType.name} deliveryTime`}
-              type="number"
-              className="h-14 w-full rounded-lg border-[1px] border-gray3 p-4 placeholder-gray2 focus:border-black focus:outline-none"
-              placeholder={t("components.addSocialMediaModal.deliveryTime")}
-              autoComplete="one-time-code"
-              max="30"
-              min="0"
-              value={
-                contentTypeValuePack && contentTypeValuePack.deliveryTime
-                  ? contentTypeValuePack.deliveryTime
-                  : ""
-              }
-              onWheel={(e) => e.currentTarget.blur()}
-              onChange={(e) => {
-                handleValuePackChange(
-                  contentType,
-                  "deliveryTime",
-                  e.target.value.toString()
-                );
-              }}
-            />
-            <input
-              name={`${contentType.name} numberOfRevisions`}
-              type="number"
-              className="h-14 w-full rounded-lg border-[1px] border-gray3 p-4 placeholder-gray2 focus:border-black focus:outline-none"
-              placeholder={t("components.addSocialMediaModal.revisionTime")}
-              autoComplete="one-time-code"
-              max="3"
-              min="0"
-              value={
-                contentTypeValuePack && contentTypeValuePack.numberOfRevisions
-                  ? contentTypeValuePack.numberOfRevisions
-                  : ""
-              }
-              onWheel={(e) => e.currentTarget.blur()}
-              onChange={(e) =>
-                handleValuePackChange(
-                  contentType,
-                  "numberOfRevisions",
-                  e.target.value.toString()
-                )
-              }
-            />
-          </div>
           <input
             name={`${contentType.name} price`}
             type="number"

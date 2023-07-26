@@ -3,11 +3,7 @@ import { Layout } from "../../components/Layout";
 import { ContactUsPage } from "../../pageComponents/ContactUsPage/ContactUsPage";
 
 const ContactUs: NextPage = () => {
-  return (
-    <Layout>
-      <ContactUsPage />
-    </Layout>
-  );
+  return <Layout>{() => <ContactUsPage />}</Layout>;
 };
 
 export default ContactUs;

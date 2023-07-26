@@ -1,9 +1,9 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faArrowRightRotate, faXmark } from "@fortawesome/free-solid-svg-icons";
-import { faCalendar } from "@fortawesome/free-regular-svg-icons";
-
+import { faXmark } from "@fortawesome/free-solid-svg-icons";
 import { useTranslation } from "react-i18next";
+
 import type { SocialMediaDetails } from "../utils/globalTypes";
+import { helper } from "../utils/helper";
 
 const SocialMediaCard = (params: {
   socialMedia: SocialMediaDetails;
@@ -13,7 +13,7 @@ const SocialMediaCard = (params: {
   const { t } = useTranslation();
 
   return (
-    <div className="relative w-full flex-1 px-4 sm:w-5/12 sm:px-0 lg:h-auto lg:flex-[0_1_49%]">
+    <div className="relative w-full flex-1 px-4 sm:w-5/12 sm:px-0 lg:h-auto lg:flex-[0_1_47%]">
       <div
         className="flex w-auto cursor-default flex-col gap-4 rounded-lg border-[1px] border-gray3 p-4 sm:h-auto"
         onClick={params.onClick}
@@ -48,31 +48,9 @@ const SocialMediaCard = (params: {
                   <div className="text-base font-medium text-black">
                     {valuePack.contentType.name}
                   </div>
-                  <div className="flex gap-2">
-                    <FontAwesomeIcon
-                      icon={faCalendar}
-                      className="fa-lg cursor-pointer"
-                    />
-                    <div>
-                      {t("components.socialMediaCard.daysDelivery", {
-                        count: parseInt(valuePack.deliveryTime),
-                      })}
-                    </div>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <FontAwesomeIcon
-                      icon={faArrowRightRotate}
-                      className="fa-lg cursor-pointer"
-                    />
-                    <div>
-                      {t("components.socialMediaCard.revision", {
-                        count: parseInt(valuePack.numberOfRevisions),
-                      })}
-                    </div>
-                  </div>
                 </div>
                 <div className="self-end font-semibold">
-                  {valuePack.valuePackPrice}€
+                  {helper.formatNumber(parseInt(valuePack.valuePackPrice))}€
                 </div>
               </div>
             );

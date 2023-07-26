@@ -24,13 +24,15 @@ const Edit: NextPage = () => {
       <>
         <ProtectedWrapper>
           <Layout>
-            <EditPage
-              role={
-                userData?.role
-                  ? { id: userData?.role?.id, name: userData?.role?.name }
-                  : undefined
-              }
-            />
+            {() => (
+              <EditPage
+                role={
+                  userData?.role
+                    ? { id: userData?.role?.id, name: userData?.role?.name }
+                    : undefined
+                }
+              />
+            )}
           </Layout>
         </ProtectedWrapper>
       </>

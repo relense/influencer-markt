@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import Link from "next/link";
 import { useTranslation } from "react-i18next";
 import { signOut } from "next-auth/react";
@@ -21,6 +21,7 @@ import {
 
 import { Button } from "./Button";
 import type { Option } from "../utils/globalTypes";
+import { useOutsideClick } from "../utils/helper";
 
 export const Navbar = (params: {
   username: string;
@@ -29,10 +30,17 @@ export const Navbar = (params: {
   openLoginModal: () => void;
   setIsSignUp: (isSignUp: boolean) => void;
 }) => {
+  const dropdownWrapperRef = useRef(null);
   const { t } = useTranslation();
 
   const [toggleHamburguer, setToggleHamburguer] = useState<boolean>(false);
   const [toggleOptions, setToggleOptions] = useState<boolean>(false);
+
+  useOutsideClick(() => {
+    if (toggleOptions === false) return;
+
+    setToggleOptions(!toggleOptions);
+  }, dropdownWrapperRef);
 
   const handleJoinMarketplace = () => {
     params.setIsSignUp(true);
@@ -91,7 +99,7 @@ export const Navbar = (params: {
           <div className="group relative flex px-4">
             <div className="flex items-center gap-2">
               <Link
-                href="/explore/influencers"
+                href="/saved/influencers"
                 className="cursor-pointer text-lg"
               >
                 {t("components.navbar.saved")}
@@ -163,7 +171,7 @@ export const Navbar = (params: {
               className="fa-xl cursor-pointer"
             />
             <FontAwesomeIcon icon={faBell} className="fa-xl cursor-pointer" />
-            <div>
+            <div ref={dropdownWrapperRef}>
               <FontAwesomeIcon
                 icon={!toggleOptions ? faChevronDown : faChevronUp}
                 className="fa-lg cursor-pointer"
@@ -355,6 +363,7 @@ export const Navbar = (params: {
       </div>
     );
   };
+
   const renderMobileMenu = () => {
     return (
       <div className="flex items-center justify-between px-4 py-2 lg:hidden">

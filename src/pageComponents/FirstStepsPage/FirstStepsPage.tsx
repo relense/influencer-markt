@@ -120,7 +120,7 @@ const FirstStepsPage = () => {
     handleSubmit: handleSubmitSocialMediaData,
   } = useForm<SocialMediaData>();
 
-  const { data: user } = api.users.getUser.useQuery();
+  const { data: user, refetch: userRefetch } = api.users.getUser.useQuery();
   const { data: platforms } = api.allRoutes.getAllSocialMedia.useQuery();
 
   const {
@@ -164,6 +164,8 @@ const FirstStepsPage = () => {
         });
       }
     }
+
+    void userRefetch();
   });
 
   const submitStep1 = handleSubmitProfileData(() => {
@@ -261,8 +263,6 @@ const FirstStepsPage = () => {
               return {
                 platformId: valuePack.platform.id,
                 contentTypeId: valuePack.contentType.id,
-                deliveryTime: parseInt(valuePack.deliveryTime),
-                numberOfRevisions: parseInt(valuePack.numberOfRevisions),
                 valuePackPrice: parseInt(valuePack.valuePackPrice),
               };
             }),

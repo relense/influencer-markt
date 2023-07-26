@@ -1,5 +1,5 @@
 import { usePathname } from "next/navigation";
-import { useEffect, useRef, useState, type PropsWithChildren } from "react";
+import { useEffect, useRef, useState, type ReactElement } from "react";
 import { api } from "~/utils/api";
 
 import { useSession } from "next-auth/react";
@@ -9,7 +9,12 @@ import { LoadingSpinner } from "./LoadingSpinner";
 import { LoginModal } from "./LoginModal";
 import { Navbar } from "./Navbar";
 
-export const Layout = (props: PropsWithChildren) => {
+export const Layout = (props: {
+  children: (params: {
+    openLoginModal: () => void;
+    loggedInProfileId: number;
+  }) => ReactElement;
+}) => {
   const pathname = usePathname();
   const { data: sessionData, status } = useSession();
   const scrollableContainer = useRef<HTMLDivElement>(null);
@@ -55,7 +60,12 @@ export const Layout = (props: PropsWithChildren) => {
           className="mb-12 flex w-full flex-1 flex-col overflow-y-auto sm:mb-0"
           ref={scrollableContainer}
         >
-          <div className="flex flex-1 flex-col">{props.children}</div>
+          <div className="flex flex-1 flex-col">
+            {props.children({
+              openLoginModal: () => setIsModalOpen(true),
+              loggedInProfileId: user?.profile?.id ? user.profile.id : -1,
+            })}
+          </div>
           <Footer />
         </div>
         <BottomBar />

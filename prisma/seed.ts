@@ -395,60 +395,41 @@ async function main() {
   await prisma.valuePack.createMany({
     data: [
       {
-        deliveryTime: 1,
-        numberOfRevisions: 2,
         userSocialMediaId: 1,
         valuePackPrice: 1000,
         contentTypeId: 1,
       },
       {
-        deliveryTime: 2,
-        numberOfRevisions: 2,
         userSocialMediaId: 1,
         valuePackPrice: 1000,
         contentTypeId: 1,
       },
       {
-        deliveryTime: 1,
-
-        numberOfRevisions: 2,
         userSocialMediaId: 1,
         valuePackPrice: 1000,
         contentTypeId: 1,
       },
       {
-        deliveryTime: 2,
-        numberOfRevisions: 2,
         userSocialMediaId: 1,
         valuePackPrice: 1000,
         contentTypeId: 1,
       },
       {
-        deliveryTime: 1,
-
-        numberOfRevisions: 2,
         userSocialMediaId: 1,
         valuePackPrice: 1000,
         contentTypeId: 1,
       },
       {
-        deliveryTime: 2,
-        numberOfRevisions: 2,
         userSocialMediaId: 1,
         valuePackPrice: 1000,
         contentTypeId: 1,
       },
       {
-        deliveryTime: 1,
-
-        numberOfRevisions: 2,
         userSocialMediaId: 1,
         valuePackPrice: 1000,
         contentTypeId: 1,
       },
       {
-        deliveryTime: 2,
-        numberOfRevisions: 2,
         userSocialMediaId: 1,
         valuePackPrice: 1000,
         contentTypeId: 1,

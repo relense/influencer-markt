@@ -86,6 +86,9 @@ model Profile {
   submitedReviews Review[]          @relation("author")
   portfolio       Portfolio[]
 
+  favoriteBy Profile[] @relation("profileFavorites")
+  favorites  Profile[] @relation("profileFavorites")
+
   userId    String @unique
   genderId  Int?
   countryId Int?
@@ -116,12 +119,10 @@ model Gender {
 }
 
 model ValuePack {
-  id                Int              @id @default(autoincrement())
-  deliveryTime      Int
-  numberOfRevisions Int
-  valuePackPrice    Int
-  userSocialMedia   UserSocialMedia? @relation(fields: [userSocialMediaId], references: [id])
-  contentType       ContentType?     @relation(fields: [contentTypeId], references: [id])
+  id              Int              @id @default(autoincrement())
+  valuePackPrice  Int
+  userSocialMedia UserSocialMedia? @relation(fields: [userSocialMediaId], references: [id])
+  contentType     ContentType?     @relation(fields: [contentTypeId], references: [id])
 
   contentTypeId     Int
   userSocialMediaId Int

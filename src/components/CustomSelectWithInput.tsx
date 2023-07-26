@@ -2,7 +2,7 @@ import { useRef, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCircle, faCircleCheck } from "@fortawesome/free-regular-svg-icons";
 import { faChevronDown, faChevronUp } from "@fortawesome/free-solid-svg-icons";
-import { type UseFormRegister } from "react-hook-form";
+import type { UseFormRegister } from "react-hook-form";
 
 import { useOutsideClick } from "../utils/helper";
 import { type Option } from "../utils/globalTypes";
@@ -20,6 +20,8 @@ export const CustomSelectWithInput = (params: {
   isReadOnly?: boolean;
   onChangeSearchKeys: (value: string) => void;
   searchKeys: string;
+  error?: boolean;
+  errorMessage?: string;
 }) => {
   const [selectStatus, setSelectStatus] = useState<boolean>(false);
   const customSelectWrapperRef = useRef(null);
@@ -114,8 +116,7 @@ export const CustomSelectWithInput = (params: {
           }}
           readOnly={params.isReadOnly ? params.isReadOnly : false}
         />
-
-        {selectStatus ? (
+        {selectStatus || params.error ? (
           <FontAwesomeIcon
             icon={faChevronUp}
             className="pointer-events-none absolute right-3 top-1/2 h-4 w-4 -translate-y-1/2 transform"
@@ -127,7 +128,10 @@ export const CustomSelectWithInput = (params: {
           />
         )}
       </div>
-      {selectStatus && renderDropdown()}
+      {params.error && (
+        <div className="absolute px-2 text-red-500">{params.errorMessage}</div>
+      )}
+      {(selectStatus || params.error) && renderDropdown()}
     </div>
   );
 };

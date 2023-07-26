@@ -3,85 +3,63 @@ import { useEffect, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faFilter } from "@fortawesome/free-solid-svg-icons";
 import { ProfileCard } from "../../components/ProfileCard";
-import { helper } from "../../utils/helper";
 import { Button } from "../../components/Button";
 
 import { ComplexSearchBar } from "../../components/ComplexSearchBar";
-import { FilterModal } from "./innerComponents/FilterModal";
+import { BrandsFilterModal } from "./innerComponents/BrandsFilterModal";
 import { useTranslation } from "react-i18next";
 import { LoadingSpinner } from "../../components/LoadingSpinner";
-import type { Option, UserSocialMedia } from "../../utils/globalTypes";
+import type { Option, UserProfiles } from "../../utils/globalTypes";
 
-type UserProfiles = {
-  id: number;
-  profilePicture: string;
-  socialMedia: UserSocialMedia[];
-  name: string;
-  about: string;
-  city: Option;
-  country: Option;
-  username: string;
-};
-
-export type FilterState = {
+export type BrandsFilterState = {
   platforms: Option[];
   categories: Option[];
-  gender: Option;
-  contentType: Option;
   country: Option;
   city: Option;
   minFollowers: number;
   maxFollowers: number;
-  minPrice: number;
-  maxPrice: number;
 };
 
-const ExplorePage = (params: { choosenCategories: Option[] }) => {
+const ExploreBrandsPage = (params: { choosenCategories: Option[] }) => {
   const { t } = useTranslation();
   const [influencersCursor, setInfluencersCursor] = useState<number>(-1);
   const [userProfiles, setUserProfiles] = useState<UserProfiles[]>([]);
   const [isFilterModalOpen, setIsFilterModalOpen] = useState<boolean>(false);
+  const [activeFiltersCount, setActiveFiltersCount] = useState<number>(0);
 
-  const [filterState, setFilterState] = useState<FilterState>({
+  const [filterState, setFilterState] = useState<BrandsFilterState>({
     platforms: [],
     categories:
       params.choosenCategories.length > 0 ? params.choosenCategories : [],
-    gender: { id: -1, name: "" },
-    contentType: { id: -1, name: "" },
     country: { id: -1, name: "" },
     city: { id: -1, name: "" },
     minFollowers: 0,
     maxFollowers: 100000,
-    minPrice: 0,
-    maxPrice: 100000,
   });
 
   const {
     data: profiles,
     refetch: profileRefetch,
     isLoading,
-  } = api.profiles.getAllInfluencerProfiles.useQuery({
+  } = api.profiles.getAllBrandsProfiles.useQuery({
     socialMedia: filterState.platforms.map((platform) => {
       return platform.id;
     }),
     categories: filterState.categories.map((category) => {
       return category.id;
     }),
-    gender: filterState.gender.id,
     minFollowers: filterState.minFollowers || -1,
     maxFollowers: filterState.maxFollowers || -1,
-    minPrice: filterState.minPrice || -1,
-    maxPrice: filterState.maxPrice || -1,
+
     country: filterState.country.id,
-    city: filterState.city.name || "",
-    contentTypeId: filterState.contentType.id || -1,
+    city: filterState.city.id,
   });
 
   const {
     data: profilesWithCursor,
     refetch: profilesWithCursorRefetch,
     isFetching: profilesWithCursorIsFetching,
-  } = api.profiles.getAllInfluencersProfileCursor.useQuery(
+  } = api.profiles.getAllBrandsProfilesCursor.useQuery(
     {
       cursor: influencersCursor,
       socialMedia: filterState.platforms.map((platform) => {
@@ -90,20 +68,14 @@ const ExplorePage = (params: { choosenCategories: Option[] }) => {
       categories: filterState.categories.map((category) => {
         return category.id;
       }),
-      gender: filterState.gender.id,
       minFollowers: filterState.minFollowers || -1,
       maxFollowers: filterState.maxFollowers || -1,
-      minPrice: filterState.minPrice || -1,
-      maxPrice: filterState.maxPrice || -1,
       country: filterState.country.id,
-      city: filterState.city.name || "",
-      contentTypeId: filterState.contentType.id || -1,
+      city: filterState.city.id,
     },
     { enabled: false }
   );
 
-  const { data: genders } = api.allRoutes.getAllGenders.useQuery();
-  const { data: contentTypes } = api.allRoutes.getAllContentTypes.useQuery();
   const { data: countries } = api.allRoutes.getAllCountries.useQuery();
 
   useEffect(() => {
@@ -125,22 +97,7 @@ const ExplorePage = (params: { choosenCategories: Option[] }) => {
                 followers: socialMedia.followers,
                 url: socialMedia.url,
                 socialMediaName: socialMedia.socialMedia?.name || "",
-                valuePacks: socialMedia.valuePacks.map((valuePack) => {
-                  return {
-                    id: valuePack.id,
-                    platform: {
-                      id: socialMedia.socialMedia?.id || -1,
-                      name: socialMedia.socialMedia?.name || "",
-                    },
-                    contentType: {
-                      id: valuePack.contentType?.id || -1,
-                      name: valuePack.contentType?.name || "",
-                    },
-                    deliveryTime: valuePack.deliveryTime.toString(),
-                    numberOfRevisions: valuePack.numberOfRevisions.toString(),
-                    valuePackPrice: valuePack.valuePackPrice.toString(),
-                  };
-                }),
+                valuePacks: [],
               };
             }),
             username: profile.user.username || "",
@@ -224,62 +181,82 @@ const ExplorePage = (params: { choosenCategories: Option[] }) => {
   };
 
   const onFilterSubmit = (params: {
-    gender: Option;
     minFollowers: number;
     maxFollowers: number;
-    minPrice: number;
-    maxPrice: number;
     categories: Option[];
     platforms: Option[];
     country: Option;
     city: Option;
-    contentType: Option;
   }) => {
-    +setIsFilterModalOpen(false);
+    setIsFilterModalOpen(false);
+    countActiveFilters(params);
+    setUserProfiles([]);
+
     setFilterState({
       ...filterState,
       categories: params.categories,
       platforms: params.platforms,
-      gender: params.gender,
       minFollowers: params.minFollowers,
       maxFollowers: params.maxFollowers,
-      minPrice: params.minPrice,
-      maxPrice: params.maxPrice,
       country: params.country,
       city: params.city,
-      contentType: params.contentType,
     });
 
     void profileRefetch();
   };
 
+  const countActiveFilters = (params: {
+    minFollowers: number;
+    maxFollowers: number;
+    categories: Option[];
+    platforms: Option[];
+    country: Option;
+    city: Option;
+  }) => {
+    let count = 0;
+
+    if (params.minFollowers !== 0) {
+      count++;
+    }
+    if (params.maxFollowers !== 100000) {
+      count++;
+    }
+    if (params.country.id > -1) {
+      count++;
+    }
+    if (params.city.id > -1) {
+      count++;
+    }
+
+    setActiveFiltersCount(count);
+  };
+
   const onClearFilter = () => {
     setIsFilterModalOpen(false);
+    setActiveFiltersCount(0);
     setFilterState({
       ...filterState,
       categories: [],
       platforms: [],
-      gender: { id: -1, name: "" },
-      contentType: { id: -1, name: "" },
       minFollowers: 0,
+      maxFollowers: 1000000,
       country: { id: -1, name: "" },
       city: { id: -1, name: "" },
-      maxFollowers: 1000000,
-      minPrice: 0,
-      maxPrice: 1000000,
     });
 
     setUserProfiles([]);
     void profileRefetch();
   };
 
-  const renderInfluencers = () => {
+  const renderBrands = () => {
     return (
       <div className="flex flex-col justify-center gap-6">
         <div className="flex flex-1 justify-start text-xl font-medium lg:pl-6">
           {profiles?.[0] && profiles?.[0] > 0
-            ? ` ${helper.formatNumber(profiles?.[0] || 0)} Influencers`
-            : "No Influencer"}
+            ? t("pages.explore.countBrands", {
+                count: profiles?.[0] || 0,
+              })
+            : t("pages.explore.noBrands")}
         </div>
         <div className="flex flex-1">
           <div className="flex flex-1 flex-wrap justify-center gap-12">
@@ -294,6 +271,7 @@ const ExplorePage = (params: { choosenCategories: Option[] }) => {
                   profilePicture={profile.profilePicture}
                   socialMedia={profile.socialMedia}
                   username={profile.username}
+                  type="Brand"
                 />
               );
             })}
@@ -302,6 +280,14 @@ const ExplorePage = (params: { choosenCategories: Option[] }) => {
       </div>
     );
   };
+
+  let filterButtonClasses =
+    "flex h-14 cursor-pointer items-center justify-center gap-2 rounded-2xl border-[1px] border-white1 p-4 shadow-lg hover:border-black";
+
+  if (activeFiltersCount > 0) {
+    filterButtonClasses =
+      "flex h-14 cursor-pointer items-center justify-center gap-2 rounded-2xl border-[1px] border-black p-4 shadow-lg hover:border-black";
+  }
 
   return (
     <div className="flex flex-1 flex-col justify-start gap-12 p-2 lg:w-full lg:gap-6 lg:p-12 xl:self-center xl:p-4 2xl:w-3/4">
@@ -312,13 +298,20 @@ const ExplorePage = (params: { choosenCategories: Option[] }) => {
           platforms={filterState.platforms}
           clearSearchBar={clearSearchBar}
         />
-        <div
-          className="flex h-14 cursor-pointer items-center justify-center gap-2 rounded-2xl border-[1px] border-white1 p-4 shadow-lg hover:border-black"
-          onClick={() => setIsFilterModalOpen(!isFilterModalOpen)}
-        >
-          <FontAwesomeIcon icon={faFilter} className="fa-lg  " />
+        <div className="relative flex">
+          <div
+            className={filterButtonClasses}
+            onClick={() => setIsFilterModalOpen(!isFilterModalOpen)}
+          >
+            <FontAwesomeIcon icon={faFilter} className="fa-lg" />
 
-          <div>{t("pages.explore.filters")}</div>
+            <div>{t("pages.explore.filters")}</div>
+          </div>
+          {activeFiltersCount > 0 && (
+            <div className="absolute right-[-10px] top-[-10px] flex h-7 w-7 items-center justify-center rounded-full bg-influencer text-center text-white">
+              {activeFiltersCount}
+            </div>
+          )}
         </div>
       </div>
       {isLoading ? (
@@ -326,38 +319,29 @@ const ExplorePage = (params: { choosenCategories: Option[] }) => {
           <LoadingSpinner />
         </div>
       ) : (
-        renderInfluencers()
+        renderBrands()
       )}
       {profiles && profiles[0] > userProfiles.length && (
         <div className="flex items-center justify-center">
           <Button
-            title="Load More"
+            title={t("pages.explore.loadMore")}
             onClick={() => profilesWithCursorRefetch()}
             isLoading={profilesWithCursorIsFetching}
           />
         </div>
       )}
-      {isFilterModalOpen && genders && contentTypes && countries && (
+      {isFilterModalOpen && countries && (
         <div className="flex flex-1 justify-center">
-          <FilterModal
+          <BrandsFilterModal
             filterState={filterState}
             onClose={() => setIsFilterModalOpen(false)}
             handleFilterSubmit={onFilterSubmit}
             handleClearFilter={onClearFilter}
-            genders={genders?.map((gender) => {
-              return {
-                id: gender.id,
-                name: gender.name,
-              };
-            })}
             countries={countries?.map((country) => {
               return {
                 id: country.id,
                 name: country.name,
               };
-            })}
-            contentTypes={contentTypes.map((contentType) => {
-              return { id: contentType.id, name: contentType.name };
             })}
           />
         </div>
@@ -366,4 +350,4 @@ const ExplorePage = (params: { choosenCategories: Option[] }) => {
   );
 };
 
-export { ExplorePage };
+export { ExploreBrandsPage };

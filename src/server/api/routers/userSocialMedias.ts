@@ -15,8 +15,6 @@ export const userSocialMediasRouter = createTRPCRouter({
           z.object({
             platformId: z.number(),
             contentTypeId: z.number(),
-            deliveryTime: z.number(),
-            numberOfRevisions: z.number(),
             valuePackPrice: z.number(),
           })
         ),
@@ -49,8 +47,6 @@ export const userSocialMediasRouter = createTRPCRouter({
           await ctx.prisma.valuePack.createMany({
             data: input.valuePacks.map((valuePack) => {
               return {
-                deliveryTime: valuePack.deliveryTime,
-                numberOfRevisions: valuePack.numberOfRevisions,
                 valuePackPrice: valuePack.valuePackPrice,
                 contentTypeId: valuePack.contentTypeId,
                 userSocialMediaId: userSocialMedia.id,
@@ -75,8 +71,6 @@ export const userSocialMediasRouter = createTRPCRouter({
             z.object({
               platformId: z.number(),
               contentTypeId: z.number(),
-              deliveryTime: z.number(),
-              numberOfRevisions: z.number(),
               valuePackPrice: z.number(),
             })
           ),
@@ -142,8 +136,6 @@ export const userSocialMediasRouter = createTRPCRouter({
           await ctx.prisma.valuePack.createMany({
             data: socialMedia.valuePacks.map((valuePack) => {
               return {
-                deliveryTime: valuePack.deliveryTime,
-                numberOfRevisions: valuePack.numberOfRevisions,
                 valuePackPrice: valuePack.valuePackPrice,
                 contentTypeId: valuePack.contentTypeId,
                 userSocialMediaId: userSocialMedia.id,
@@ -169,8 +161,6 @@ export const userSocialMediasRouter = createTRPCRouter({
             id: z.number(),
             platformId: z.number(),
             contentTypeId: z.number(),
-            deliveryTime: z.number(),
-            numberOfRevisions: z.number(),
             valuePackPrice: z.number(),
           })
         ),
@@ -200,8 +190,6 @@ export const userSocialMediasRouter = createTRPCRouter({
             data: {
               contentTypeId: valuePack.contentTypeId,
               userSocialMediaId: input.id,
-              deliveryTime: valuePack.deliveryTime,
-              numberOfRevisions: valuePack.numberOfRevisions,
               valuePackPrice: valuePack.valuePackPrice,
             },
           });
@@ -231,8 +219,6 @@ export const userSocialMediasRouter = createTRPCRouter({
             select: {
               id: true,
               contentType: true,
-              deliveryTime: true,
-              numberOfRevisions: true,
               valuePackPrice: true,
               contentTypeId: true,
               userSocialMediaId: true,

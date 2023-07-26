@@ -3,9 +3,11 @@ import Image from "next/image";
 import Link from "next/link";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBookmark } from "@fortawesome/free-regular-svg-icons";
+import { faBookmark as faBookmarkSolid } from "@fortawesome/free-solid-svg-icons";
 
 import { helper } from "../utils/helper";
 import type { UserSocialMedia } from "../utils/globalTypes";
+import { useTranslation } from "react-i18next";
 
 const ProfileCard = (params: {
   profilePicture: string;
@@ -15,7 +17,11 @@ const ProfileCard = (params: {
   city: string;
   country: string;
   username: string;
+  type: "Brand" | "Influencer";
+  bookmarked: boolean;
+  onHandleBookmark: () => void;
 }) => {
+  const { t } = useTranslation();
   const [usefullSocialMedia, setUsefullSocialMedia] = useState<UserSocialMedia>(
     {
       followers: -1,
@@ -56,13 +62,28 @@ const ProfileCard = (params: {
 
         <div className="absolute left-2 top-2 flex gap-1 rounded-3xl border-[1px] bg-black-transparent px-4 text-white">
           <div>
-            {helper.formatNumber(usefullSocialMedia.followers)}{" "}
-            {usefullSocialMedia.socialMediaName} Followers
+            {t("components.profileCard.numberOfFollowers", {
+              count: usefullSocialMedia.followers,
+              socialMedia: usefullSocialMedia.socialMediaName,
+            })}
           </div>
         </div>
 
-        <div className="absolute right-2 top-2 cursor-pointer">
-          <FontAwesomeIcon icon={faBookmark} className="fa-xl text-white" />
+        <div
+          className="absolute right-2 top-2 cursor-pointer"
+          onClick={params.onHandleBookmark}
+        >
+          {params.bookmarked ? (
+            <FontAwesomeIcon
+              icon={faBookmarkSolid}
+              className="fa-xl text-white hover:text-white1 "
+            />
+          ) : (
+            <FontAwesomeIcon
+              icon={faBookmark}
+              className="fa-xl text-white hover:text-white"
+            />
+          )}
         </div>
       </div>
       <div>
@@ -81,9 +102,14 @@ const ProfileCard = (params: {
               );
             })}
           </div>
-          <div className="text-lg font-semibold">
-            {usefullSocialMedia.valuePacks[0]?.valuePackPrice}€
-          </div>
+          {params.type === "Influencer" && (
+            <div className="text-lg font-semibold">
+              {helper.formatNumber(
+                parseInt(usefullSocialMedia.valuePacks[0]?.valuePackPrice || "")
+              )}
+              €
+            </div>
+          )}
         </div>
       </div>
       <div className="flex flex-col">
@@ -98,7 +124,7 @@ const ProfileCard = (params: {
           href={`/${params.username}`}
           className="font-bold text-influencer"
         >
-          Read More
+          {t("components.profileCard.readMore")}
         </Link>
       </div>
     </div>

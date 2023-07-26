@@ -125,7 +125,13 @@ const ProfileForm = (params: {
   const renderForm = () => {
     return (
       <form
-        onSubmit={params.submit}
+        onSubmit={
+          params.watch("placeThatLives").id !== -1
+            ? params.submit
+            : (e) => {
+                e.preventDefault();
+              }
+        }
         id="form-hook"
         className="mt-4 flex w-full flex-col gap-6"
         autoComplete="off"
@@ -226,7 +232,9 @@ const ProfileForm = (params: {
           <Controller
             name="placeThatLives"
             control={params.control}
-            rules={{ required: true }}
+            rules={{
+              required: true,
+            }}
             render={({ field: { value, onChange } }) => {
               return (
                 <CustomSelectWithInput
@@ -244,6 +252,12 @@ const ProfileForm = (params: {
                   }
                   onChangeSearchKeys={setSearchKeys}
                   searchKeys={searchKeys}
+                  error={
+                    params.watch("placeThatLives").id === -1 &&
+                    !!searchKeys &&
+                    params.watch("nationOfBirth").id !== -1
+                  }
+                  errorMessage="Search and select a city from the list"
                 />
               );
             }}

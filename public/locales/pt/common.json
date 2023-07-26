@@ -163,6 +163,12 @@
       "revision_other": "{{count}} Revisões",
       "handler": "Nome de Utilizador",
       "followers": "Seguidores"
+    },
+
+    "profileCard": {
+      "numberOfFollowers_one": "{{count, number}} Seguidor do {{socialMedia}}",
+      "numberOfFollowers_other": "{{count, number}} Seguidores do {{socialMedia}}",
+      "readMore": "Lê Mais"
     }
   },
 
@@ -280,6 +286,7 @@
       "copySuccessfull": "Ligação foi copiada para o clipboard",
       "share": "Partilha",
       "save": "Guarda",
+      "saved": "Guardado",
       "categories": "Categorias",
       "about": "Sobre",
       "campaigns": "Campanhas",
@@ -397,7 +404,30 @@
       "priceInputLabel": "Preço",
       "priceInputPlaceholder": "",
       "clearAllButton": "Limpar filtros",
-      "showInfluencersButton": "Mostrar Influencers"
+      "showInfluencersButton": "Mostrar Influencers",
+      "noInfluencers": "Não há Influencers",
+      "countInfluencers_one": "{{count}} Influencer",
+      "countInfluencers_other": "{{count}} Influencers",
+      "noBrands": "Não há Marcas",
+      "countBrands_one": "{{count, number}} Marca",
+      "countBrands_other": "{{count, number}} Marcas",
+      "loadMore": "Mostrar Mais",
+      "minimum": "Mínimo",
+      "minimumPlaceholder": "Seguidores Min",
+      "Maximum": "Máximo",
+      "MaximumPlaceholder": "Seguidores Max",
+      "any": "Todos",
+      "Male": "Masculino",
+      "Female": "Feminino",
+      "Other": "Outro",
+      "location": "Local",
+      "countryPlaceholder": "País",
+      "cityPlaceHolder": "Cidade",
+      "emptyMessageNoCountry": "Pesquisa a cidade com as primeiras 3 letras",
+      "emptyMessageWithCountry": "Escolhe um país antes de escolheres a cidade",
+      "minPricePlaceholder": "Preço Min",
+      "maxPricePlaceholder": "Preço Max",
+      "showBrandsButton": "Mostrar Marcas"
     }
   }
 }

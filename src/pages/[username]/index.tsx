@@ -64,7 +64,13 @@ const PublicProfile: NextPage<PublicProfileProps> = ({ username }) => {
         />
       </Head>
       <Layout>
-        <PublicProfilePage username={username} />
+        {(params) => (
+          <PublicProfilePage
+            username={username}
+            openLoginModal={params.openLoginModal}
+            loggedInProfileId={params.loggedInProfileId}
+          />
+        )}
       </Layout>
     </>
   );

@@ -1,15 +1,13 @@
 import { type GetServerSideProps, type NextPage } from "next";
 import { Layout } from "../../../components/Layout";
-import { ExploreInfluencersPage } from "../../../pageComponents/ExploreInfluencersPage/ExploreInfluencersPage";
+import { ExploreBrandsPage } from "../../../pageComponents/ExploreBrandsPage/ExploreBrandsPage";
 import { type Option } from "../../../utils/globalTypes";
 
-type ExploreInfluencersProps = {
+type ExploreBrandsProps = {
   categories: string;
 };
 
-const ExploreInfluencers: NextPage<ExploreInfluencersProps> = ({
-  categories,
-}) => {
+const ExploreBrands: NextPage<ExploreBrandsProps> = ({ categories }) => {
   let parsedCategories: Option[] = [];
   if (categories) {
     parsedCategories = JSON.parse(categories) as Option[];
@@ -17,12 +15,12 @@ const ExploreInfluencers: NextPage<ExploreInfluencersProps> = ({
 
   return (
     <Layout>
-      {() => <ExploreInfluencersPage choosenCategories={parsedCategories} />}
+      {() => <ExploreBrandsPage choosenCategories={parsedCategories} />}
     </Layout>
   );
 };
 
-export const getServerSideProps: GetServerSideProps<ExploreInfluencersProps> = (
+export const getServerSideProps: GetServerSideProps<ExploreBrandsProps> = (
   context
 ) => {
   const query = context.query?.categories;
@@ -35,4 +33,4 @@ export const getServerSideProps: GetServerSideProps<ExploreInfluencersProps> = (
   });
 };
 
-export default ExploreInfluencers;
+export default ExploreBrands;

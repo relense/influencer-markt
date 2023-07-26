@@ -86,7 +86,7 @@ export const CustomMultiSelect = (params: {
       })
       .join(",  ");
 
-    let border = "border-[1px] border-gray3";
+    let border = "border-[1px] border-gray3 rounded-lg";
     let rounded = "rounded-lg";
     let hoverEffect = "";
 
@@ -103,10 +103,11 @@ export const CustomMultiSelect = (params: {
     }
 
     if (selectStatus) {
-      border = "border-[1px] border-black";
+      border = "border-[1px] border-black rounded-2xl";
+      hoverEffect = "hover:none";
     }
 
-    const parentContainerClass = `flex h-auto w-full flex-col items-center justify-center gap-4 rounded-lg lg:h-14 lg:flex-row lg:gap-1 ${border}`;
+    const parentContainerClass = `flex h-auto w-full flex-col items-center justify-center gap-4 lg:h-14 lg:flex-row lg:gap-1 ${border}`;
     const inputContainerClasses = `relative flex items-center justify-between ${hoverEffect}`;
     const inputclasses = `flex h-14 w-10/12 cursor-pointer ${rounded} bg-transparent p-4 placeholder-gray2 caret-transparent placeholder:w-11/12 outline-none`;
 
