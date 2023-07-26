@@ -272,6 +272,8 @@ const ExploreBrandsPage = (params: { choosenCategories: Option[] }) => {
                   socialMedia={profile.socialMedia}
                   username={profile.username}
                   type="Brand"
+                  bookmarked={false}
+                  onHandleBookmark={() => console.log("io")}
                 />
               );
             })}

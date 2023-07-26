@@ -330,6 +330,8 @@ const ExploreInfluencersPage = (params: { choosenCategories: Option[] }) => {
                   socialMedia={profile.socialMedia}
                   username={profile.username}
                   type="Influencer"
+                  bookmarked={false}
+                  onHandleBookmark={() => console.log("io")}
                 />
               );
             })}
