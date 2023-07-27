@@ -9,14 +9,16 @@ const LoginCallback: NextPage = () => {
   const { status } = useSession();
   const { data: userData, isLoading } = api.users.getUser.useQuery();
   const router = useRouter();
+  const { returnTo } = router.query;
 
   useEffect(() => {
     if (userData?.firstSteps === false && status === "authenticated") {
       void router.push("/first-steps");
     } else if (userData?.firstSteps === true || status === "unauthenticated") {
-      void router.push("/");
+      const route = Array.isArray(returnTo) ? returnTo[0] : returnTo;
+      void router.push(route?.toString() || "/");
     }
-  }, [router, status, userData?.firstSteps]);
+  }, [returnTo, router, status, userData?.firstSteps]);
 
   if (isLoading) {
     return <LoadingSpinner />;
