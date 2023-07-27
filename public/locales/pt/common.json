@@ -166,8 +166,7 @@
     },
 
     "profileCard": {
-      "numberOfFollowers_one": "{{count, number}} Seguidor do {{socialMedia}}",
-      "numberOfFollowers_other": "{{count, number}} Seguidores do {{socialMedia}}",
+      "numberOfFollowers": "{{count, number}}",
       "readMore": "Lê Mais",
       "removedProfile": "Perfil Removido Com Sucesso",
       "savedProfile": "Perfil Guardado Com Sucesso"

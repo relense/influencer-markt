@@ -4,12 +4,26 @@ import Image from "next/image";
 import Link from "next/link";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBookmark } from "@fortawesome/free-regular-svg-icons";
-import { faBookmark as faBookmarkSolid } from "@fortawesome/free-solid-svg-icons";
+import {
+  IconDefinition,
+  faBookmark as faBookmarkSolid,
+  faGlobe,
+} from "@fortawesome/free-solid-svg-icons";
 
 import { helper } from "../utils/helper";
 import type { UserSocialMedia } from "../utils/globalTypes";
 import { useTranslation } from "react-i18next";
 import { toast } from "react-hot-toast";
+import {
+  faFacebook,
+  faInstagram,
+  faLinkedin,
+  faPinterest,
+  faTiktok,
+  faTwitch,
+  faTwitter,
+  faYoutube,
+} from "@fortawesome/free-brands-svg-icons";
 
 const ProfileCard = (params: {
   id: number;
@@ -71,6 +85,28 @@ const ProfileCard = (params: {
     socialMediaWithMostFollowers();
   }, [params.socialMedia, usefullSocialMedia.followers]);
 
+  const socialMediaIcon = (socialMediaName: string): IconDefinition => {
+    if (socialMediaName === "Instagram") {
+      return faInstagram;
+    } else if (socialMediaName === "Twitter") {
+      return faTwitter;
+    } else if (socialMediaName === "TikTok") {
+      return faTiktok;
+    } else if (socialMediaName === "YouTube") {
+      return faYoutube;
+    } else if (socialMediaName === "Facebook") {
+      return faFacebook;
+    } else if (socialMediaName === "Linkedin") {
+      return faLinkedin;
+    } else if (socialMediaName === "Pinterest") {
+      return faPinterest;
+    } else if (socialMediaName === "Twitch") {
+      return faTwitch;
+    } else {
+      return faGlobe;
+    }
+  };
+
   return (
     <div className="flex w-full  flex-col gap-2 lg:w-80">
       <div className="relative h-80 w-full self-center overflow-hidden rounded-xl shadow-xl lg:w-80">
@@ -86,14 +122,20 @@ const ProfileCard = (params: {
           />
         </Link>
 
-        <div className="absolute left-2 top-2 flex gap-1 rounded-3xl border-[1px] bg-black-transparent px-4 text-white">
-          <div>
-            {t("components.profileCard.numberOfFollowers", {
-              count: usefullSocialMedia.followers,
-              socialMedia: usefullSocialMedia.socialMediaName,
-            })}
+        <Link
+          href={usefullSocialMedia.url}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="absolute left-2 top-2 flex cursor-pointer gap-1 rounded-3xl border-[1px] border-transparent bg-black-transparent px-2 text-white"
+        >
+          <div className="flex items-center gap-2">
+            <FontAwesomeIcon
+              icon={socialMediaIcon(usefullSocialMedia.socialMediaName)}
+              className="fa-base text-white hover:text-white1 "
+            />
+            {helper.formatNumberWithKorM(usefullSocialMedia.followers)}
           </div>
-        </div>
+        </Link>
 
         <div
           className="absolute right-2 top-2 cursor-pointer"
@@ -120,6 +162,8 @@ const ProfileCard = (params: {
               return (
                 <Link
                   href={socialMedia.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
                   key={socialMedia.id}
                   className="font-bold text-influencer"
                 >

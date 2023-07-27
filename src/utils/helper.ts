@@ -52,7 +52,18 @@ const formatDate = (date: Date | number, locale: string): string => {
   }
 };
 
+const formatNumberWithKorM = (number: number) => {
+  if (Math.abs(number) >= 1e6) {
+    return (number / 1e6).toFixed(1) + "M";
+  } else if (Math.abs(number) >= 1e3) {
+    return (number / 1e3).toFixed(1) + "k";
+  } else {
+    return number.toString();
+  }
+};
+
 export const helper = {
   formatNumber,
   formatDate,
+  formatNumberWithKorM,
 };

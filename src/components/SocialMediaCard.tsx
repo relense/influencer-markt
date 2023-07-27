@@ -32,7 +32,7 @@ const SocialMediaCard = (params: {
             <span className="font-medium">
               {t("components.socialMediaCard.followers")}:
             </span>{" "}
-            {params.socialMedia.socialMediaFollowers}
+            {helper.formatNumber(params.socialMedia.socialMediaFollowers)}
           </div>
         </div>
         {params.socialMedia.valuePacks &&

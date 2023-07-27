@@ -260,7 +260,9 @@ const PublicProfilePage = (params: {
                     >
                       {socialMedia.socialMedia?.name}
                     </Link>
-                    <div>{helper.formatNumber(socialMedia.followers)}</div>
+                    <div>
+                      {helper.formatNumberWithKorM(socialMedia.followers)}
+                    </div>
                     {profile?.userSocialMedia.length - 1 !== index && (
                       <div
                         key={`${socialMedia.id} + dot`}
