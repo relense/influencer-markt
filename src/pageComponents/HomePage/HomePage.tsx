@@ -28,6 +28,7 @@ const brands = [
   "facebook",
   "linkedin",
   "pinterest",
+  "youtube",
   "twitch",
 ];
 
@@ -132,9 +133,9 @@ const HomePage = () => {
                 <div className="hidden lg:block lg:h-auto lg:px-12">
                   <Image
                     src={`/images/${elem}.png`}
-                    height={68}
+                    height={1000}
+                    width={1000}
                     style={{ width: "68px", height: "68px" }}
-                    width={68}
                     alt={elem}
                     className="object-contain"
                   />
@@ -142,8 +143,8 @@ const HomePage = () => {
                 <div className="sm:px-3 lg:hidden lg:h-auto lg:px-12">
                   <Image
                     src={`/images/${elem}.png`}
-                    height={32}
-                    width={32}
+                    height={1000}
+                    width={1000}
                     style={{ width: "32px", height: "32px" }}
                     alt={elem}
                     className="object-contain"

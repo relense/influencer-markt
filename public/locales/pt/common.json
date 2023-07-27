@@ -168,7 +168,9 @@
     "profileCard": {
       "numberOfFollowers_one": "{{count, number}} Seguidor do {{socialMedia}}",
       "numberOfFollowers_other": "{{count, number}} Seguidores do {{socialMedia}}",
-      "readMore": "Lê Mais"
+      "readMore": "Lê Mais",
+      "removedProfile": "Perfil Removido Com Sucesso",
+      "savedProfile": "Perfil Guardado Com Sucesso"
     }
   },
 
@@ -304,7 +306,9 @@
       "copy": "Copiar",
       "loadMore": "Carrega Mais Comentários",
       "shareModalTitle": "Partilha a Página do Influencer",
-      "valuePackSubmitButton": "Iniciar Pedido"
+      "valuePackSubmitButton": "Iniciar Pedido",
+      "removedProfile": "Perfil Removido Com Sucesso",
+      "savedProfile": "Perfil Guardado Com Sucesso"
     },
 
     "editPage": {

@@ -41,8 +41,8 @@ const ProfileCard = (params: {
     onSuccess: (removed) => {
       toast.success(
         removed
-          ? "Removed from Saved Profiles Successfully"
-          : "Saved Profile Successfully",
+          ? t("components.profileCard.removedProfile")
+          : t("components.profileCard.savedProfile"),
         {
           position: "bottom-left",
         }

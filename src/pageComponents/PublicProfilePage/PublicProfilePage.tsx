@@ -90,8 +90,8 @@ const PublicProfilePage = (params: {
       void ctx.profiles.getProfileByUniqueUsername.invalidate().then(() => {
         toast.success(
           removed
-            ? "Removed from Saved Profiles Successfully"
-            : "Saved Profile Successfully",
+            ? t("pages.publicProfilePage.removedProfile")
+            : t("pages.publicProfilePage.savedProfile"),
           {
             position: "bottom-left",
           }

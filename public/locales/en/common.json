@@ -168,7 +168,9 @@
     "profileCard": {
       "numberOfFollowers_one": "{{count, number}} {{socialMedia}} Follower",
       "numberOfFollowers_other": "{{count, number}} {{socialMedia}} Followers",
-      "readMore": "Read More"
+      "readMore": "Read More",
+      "removedProfile": "Removed Profile Successfully",
+      "savedProfile": "Saved Profile Successfully"
     }
   },
 
@@ -304,7 +306,9 @@
       "copy": "Copy",
       "loadMore": "Load More Reviews",
       "shareModalTitle": "Share Influencer Page",
-      "valuePackSubmitButton": "Start Order"
+      "valuePackSubmitButton": "Start Order",
+      "removedProfile": "Removed Profile Successfully",
+      "savedProfile": "Saved Profile Successfully"
     },
 
     "editPage": {
