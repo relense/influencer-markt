@@ -81,4 +81,6 @@ export type UserProfiles = {
   city: Option;
   country: Option;
   username: string;
+  bookmarked?: boolean;
+  favoritedBy?: number[];
 };

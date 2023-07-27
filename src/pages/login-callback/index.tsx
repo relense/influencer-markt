@@ -11,13 +11,12 @@ const LoginCallback: NextPage = () => {
   const router = useRouter();
 
   useEffect(() => {
-    console.log(isLoading);
     if (userData?.firstSteps === false && status === "authenticated") {
       void router.push("/first-steps");
     } else if (userData?.firstSteps === true || status === "unauthenticated") {
       void router.push("/");
     }
-  }, [isLoading]);
+  }, [router, status, userData?.firstSteps]);
 
   if (isLoading) {
     return <LoadingSpinner />;

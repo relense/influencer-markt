@@ -1,9 +1,10 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { type IconDefinition } from "@fortawesome/free-regular-svg-icons";
 import {
-  type IconDefinition,
-  faCircleUser,
-} from "@fortawesome/free-regular-svg-icons";
-import { faHome, faSearch } from "@fortawesome/free-solid-svg-icons";
+  faBookmark,
+  faHome,
+  faSearch,
+} from "@fortawesome/free-solid-svg-icons";
 import Link from "next/link";
 import { useRouter } from "next/router";
 
@@ -22,8 +23,8 @@ const navigationLinks: linkItem[] = [
     icon: faSearch,
   },
   {
-    pageUrl: "/profile",
-    icon: faCircleUser,
+    pageUrl: "/saved/influencers",
+    icon: faBookmark,
   },
 ];
 

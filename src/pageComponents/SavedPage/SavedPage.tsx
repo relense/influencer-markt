@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import { api } from "~/utils/api";
-import { toast } from "react-hot-toast";
 
 import { LoadingSpinner } from "../../components/LoadingSpinner";
 import { ProfileCard } from "../../components/ProfileCard";
@@ -13,14 +12,6 @@ const SavedPage = (params: { roleId: number }) => {
     api.profiles.getFavorites.useQuery({
       roleId: params.roleId,
     });
-
-  const { mutate: updateFavorites } = api.profiles.updateFavorites.useMutation({
-    onSuccess: () => {
-      toast.success("Removed from Saved Profiles Successfully", {
-        position: "bottom-left",
-      });
-    },
-  });
 
   useEffect(() => {
     if (profileFavorites) {
@@ -73,10 +64,6 @@ const SavedPage = (params: { roleId: number }) => {
     if (index > -1) {
       newUserProfiles.splice(index, 1);
       setUserProfiles(newUserProfiles);
-
-      updateFavorites({
-        profileId: profileId,
-      });
     }
   };
 
@@ -94,6 +81,7 @@ const SavedPage = (params: { roleId: number }) => {
             {userProfiles?.map((profile) => {
               return (
                 <ProfileCard
+                  id={profile.id}
                   key={profile.id}
                   about={profile.about}
                   city={profile.city.name}
@@ -102,7 +90,7 @@ const SavedPage = (params: { roleId: number }) => {
                   profilePicture={profile.profilePicture}
                   socialMedia={profile.socialMedia}
                   username={profile.username}
-                  type="Influencer"
+                  type={params.roleId === 2 ? "Influencer" : "Brand"}
                   bookmarked={true}
                   onHandleBookmark={() => onHandleBookmark(profile.id)}
                 />

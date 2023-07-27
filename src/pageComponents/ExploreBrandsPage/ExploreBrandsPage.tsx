@@ -41,19 +41,24 @@ const ExploreBrandsPage = (params: { choosenCategories: Option[] }) => {
     data: profiles,
     refetch: profileRefetch,
     isLoading,
-  } = api.profiles.getAllBrandsProfiles.useQuery({
-    socialMedia: filterState.platforms.map((platform) => {
-      return platform.id;
-    }),
-    categories: filterState.categories.map((category) => {
-      return category.id;
-    }),
-    minFollowers: filterState.minFollowers || -1,
-    maxFollowers: filterState.maxFollowers || -1,
+  } = api.profiles.getAllBrandsProfiles.useQuery(
+    {
+      socialMedia: filterState.platforms.map((platform) => {
+        return platform.id;
+      }),
+      categories: filterState.categories.map((category) => {
+        return category.id;
+      }),
+      minFollowers: filterState.minFollowers || -1,
+      maxFollowers: filterState.maxFollowers || -1,
 
-    country: filterState.country.id,
-    city: filterState.city.id,
-  });
+      country: filterState.country.id,
+      city: filterState.city.id,
+    },
+    {
+      cacheTime: 0,
+    }
+  );
 
   const {
     data: profilesWithCursor,
@@ -77,12 +82,21 @@ const ExploreBrandsPage = (params: { choosenCategories: Option[] }) => {
   );
 
   const { data: countries } = api.allRoutes.getAllCountries.useQuery();
+  const { data: loggedInProfileId } =
+    api.profiles.getLoggedInProfile.useQuery();
 
   useEffect(() => {
     if (profiles) {
       setUserProfiles([]);
       setUserProfiles(
         profiles[1].map((profile) => {
+          let isFavorited = false;
+          if (loggedInProfileId) {
+            isFavorited = !!profile?.favoriteBy.find(
+              (profile) => loggedInProfileId.id === profile.id
+            );
+          }
+
           return {
             id: profile.id,
             about: profile.about || "",
@@ -101,6 +115,7 @@ const ExploreBrandsPage = (params: { choosenCategories: Option[] }) => {
               };
             }),
             username: profile.user.username || "",
+            bookmarked: isFavorited,
           };
         })
       );
@@ -111,13 +126,20 @@ const ExploreBrandsPage = (params: { choosenCategories: Option[] }) => {
         setInfluencersCursor(lastProfileInArray.id);
       }
     }
-  }, [profiles]);
+  }, [loggedInProfileId, profiles]);
 
   useEffect(() => {
     if (profilesWithCursor) {
       const newProfiles: UserProfiles[] = [...userProfiles];
 
       profilesWithCursor.forEach((profile) => {
+        let isFavorited = false;
+        if (loggedInProfileId) {
+          isFavorited = !!profile?.favoriteBy.find(
+            (profile) => loggedInProfileId.id === profile.id
+          );
+        }
+
         newProfiles.push({
           id: profile.id,
           about: profile.about || "",
@@ -136,6 +158,7 @@ const ExploreBrandsPage = (params: { choosenCategories: Option[] }) => {
             };
           }),
           username: profile.user.username || "",
+          bookmarked: isFavorited,
         });
       });
 
@@ -148,7 +171,7 @@ const ExploreBrandsPage = (params: { choosenCategories: Option[] }) => {
         setInfluencersCursor(lastProfileInArray.id);
       }
     }
-  }, [profilesWithCursor, userProfiles]);
+  }, [loggedInProfileId, profilesWithCursor, userProfiles]);
 
   const onHandleSearch = (categories: Option[], platforms: Option[]) => {
     setFilterState({
@@ -263,6 +286,7 @@ const ExploreBrandsPage = (params: { choosenCategories: Option[] }) => {
             {userProfiles.map((profile) => {
               return (
                 <ProfileCard
+                  id={profile.id}
                   key={profile.id}
                   about={profile.about}
                   city={profile.city.name}
@@ -272,8 +296,7 @@ const ExploreBrandsPage = (params: { choosenCategories: Option[] }) => {
                   socialMedia={profile.socialMedia}
                   username={profile.username}
                   type="Brand"
-                  bookmarked={false}
-                  onHandleBookmark={() => console.log("io")}
+                  bookmarked={profile.bookmarked || false}
                 />
               );
             })}

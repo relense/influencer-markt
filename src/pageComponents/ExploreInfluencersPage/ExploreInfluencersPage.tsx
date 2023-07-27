@@ -49,22 +49,27 @@ const ExploreInfluencersPage = (params: { choosenCategories: Option[] }) => {
     data: profiles,
     refetch: profileRefetch,
     isLoading,
-  } = api.profiles.getAllInfluencerProfiles.useQuery({
-    socialMedia: filterState.platforms.map((platform) => {
-      return platform.id;
-    }),
-    categories: filterState.categories.map((category) => {
-      return category.id;
-    }),
-    gender: filterState.gender.id,
-    minFollowers: filterState.minFollowers || -1,
-    maxFollowers: filterState.maxFollowers || -1,
-    minPrice: filterState.minPrice || -1,
-    maxPrice: filterState.maxPrice || -1,
-    country: filterState.country.id,
-    city: filterState.city.id,
-    contentTypeId: filterState.contentType.id || -1,
-  });
+  } = api.profiles.getAllInfluencerProfiles.useQuery(
+    {
+      socialMedia: filterState.platforms.map((platform) => {
+        return platform.id;
+      }),
+      categories: filterState.categories.map((category) => {
+        return category.id;
+      }),
+      gender: filterState.gender.id,
+      minFollowers: filterState.minFollowers || -1,
+      maxFollowers: filterState.maxFollowers || -1,
+      minPrice: filterState.minPrice || -1,
+      maxPrice: filterState.maxPrice || -1,
+      country: filterState.country.id,
+      city: filterState.city.id,
+      contentTypeId: filterState.contentType.id || -1,
+    },
+    {
+      cacheTime: 0,
+    }
+  );
 
   const {
     data: profilesWithCursor,
@@ -94,11 +99,20 @@ const ExploreInfluencersPage = (params: { choosenCategories: Option[] }) => {
   const { data: genders } = api.allRoutes.getAllGenders.useQuery();
   const { data: contentTypes } = api.allRoutes.getAllContentTypes.useQuery();
   const { data: countries } = api.allRoutes.getAllCountries.useQuery();
+  const { data: loggedInProfileId } =
+    api.profiles.getLoggedInProfile.useQuery();
 
   useEffect(() => {
     if (profiles) {
       setUserProfiles(
         profiles[1].map((profile) => {
+          let isFavorited = false;
+          if (loggedInProfileId) {
+            isFavorited = !!profile?.favoriteBy.find(
+              (profile) => loggedInProfileId.id === profile.id
+            );
+          }
+
           return {
             id: profile.id,
             about: profile.about || "",
@@ -130,6 +144,7 @@ const ExploreInfluencersPage = (params: { choosenCategories: Option[] }) => {
               };
             }),
             username: profile.user.username || "",
+            bookmarked: isFavorited,
           };
         })
       );
@@ -140,13 +155,20 @@ const ExploreInfluencersPage = (params: { choosenCategories: Option[] }) => {
         setInfluencersCursor(lastProfileInArray.id);
       }
     }
-  }, [profiles]);
+  }, [loggedInProfileId, profiles]);
 
   useEffect(() => {
     if (profilesWithCursor) {
       const newProfiles: UserProfiles[] = [...userProfiles];
 
       profilesWithCursor.forEach((profile) => {
+        let isFavorited = false;
+        if (loggedInProfileId) {
+          isFavorited = !!profile?.favoriteBy.find(
+            (profile) => loggedInProfileId.id === profile.id
+          );
+        }
+
         newProfiles.push({
           id: profile.id,
           about: profile.about || "",
@@ -165,6 +187,7 @@ const ExploreInfluencersPage = (params: { choosenCategories: Option[] }) => {
             };
           }),
           username: profile.user.username || "",
+          bookmarked: isFavorited,
         });
       });
 
@@ -177,7 +200,7 @@ const ExploreInfluencersPage = (params: { choosenCategories: Option[] }) => {
         setInfluencersCursor(lastProfileInArray.id);
       }
     }
-  }, [profilesWithCursor, userProfiles]);
+  }, [loggedInProfileId, profilesWithCursor, userProfiles]);
 
   const onHandleSearch = (categories: Option[], platforms: Option[]) => {
     setFilterState({
@@ -321,6 +344,7 @@ const ExploreInfluencersPage = (params: { choosenCategories: Option[] }) => {
             {userProfiles.map((profile) => {
               return (
                 <ProfileCard
+                  id={profile.id}
                   key={profile.id}
                   about={profile.about}
                   city={profile.city.name}
@@ -330,8 +354,7 @@ const ExploreInfluencersPage = (params: { choosenCategories: Option[] }) => {
                   socialMedia={profile.socialMedia}
                   username={profile.username}
                   type="Influencer"
-                  bookmarked={false}
-                  onHandleBookmark={() => console.log("io")}
+                  bookmarked={profile.bookmarked || false}
                 />
               );
             })}

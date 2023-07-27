@@ -37,6 +37,7 @@ const PublicProfilePage = (params: {
   openLoginModal: () => void;
   loggedInProfileId: number;
 }) => {
+  const ctx = api.useContext();
   const { t, i18n } = useTranslation();
 
   const [isCustomValuePackModalOpen, setIsCustomValuePackModalOpen] =
@@ -85,9 +86,16 @@ const PublicProfilePage = (params: {
   );
 
   const { mutate: updateFavorites } = api.profiles.updateFavorites.useMutation({
-    onSuccess: () => {
-      toast.success("Removed from Saved Profiles Successfully", {
-        position: "bottom-left",
+    onSuccess: (removed) => {
+      void ctx.profiles.getProfileByUniqueUsername.invalidate().then(() => {
+        toast.success(
+          removed
+            ? "Removed from Saved Profiles Successfully"
+            : "Saved Profile Successfully",
+          {
+            position: "bottom-left",
+          }
+        );
       });
     },
   });

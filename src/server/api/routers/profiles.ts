@@ -134,6 +134,11 @@ export const profilesRouter = createTRPCRouter({
               },
             },
             profilePicture: true,
+            favoriteBy: {
+              select: {
+                id: true,
+              },
+            },
           },
           orderBy: {
             name: "desc",
@@ -228,6 +233,11 @@ export const profilesRouter = createTRPCRouter({
             },
           },
           profilePicture: true,
+          favoriteBy: {
+            select: {
+              id: true,
+            },
+          },
         },
         orderBy: {
           name: "desc",
@@ -332,6 +342,11 @@ export const profilesRouter = createTRPCRouter({
               },
             },
             profilePicture: true,
+            favoriteBy: {
+              select: {
+                id: true,
+              },
+            },
           },
           orderBy: {
             name: "desc",
@@ -404,6 +419,11 @@ export const profilesRouter = createTRPCRouter({
             },
           },
           profilePicture: true,
+          favoriteBy: {
+            select: {
+              id: true,
+            },
+          },
         },
         orderBy: {
           name: "desc",
@@ -562,7 +582,7 @@ export const profilesRouter = createTRPCRouter({
         where: { username: input.username },
       });
 
-      const profile = await ctx.prisma.profile.findUnique({
+      return await ctx.prisma.profile.findUnique({
         where: { userId: user?.id },
         select: {
           userSocialMedia: {
@@ -594,13 +614,15 @@ export const profilesRouter = createTRPCRouter({
           portfolio: true,
           userId: true,
           genderId: true,
-          favoriteBy: true,
+          favoriteBy: {
+            select: {
+              id: true,
+            },
+          },
           cityId: true,
           countryId: true,
         },
       });
-
-      return profile;
     }),
 
   updateProfile: protectedProcedure
@@ -705,7 +727,7 @@ export const profilesRouter = createTRPCRouter({
       });
 
       if (isFavorite) {
-        return await ctx.prisma.profile.update({
+        await ctx.prisma.profile.update({
           where: {
             userId: ctx.session.user.id,
           },
@@ -717,8 +739,10 @@ export const profilesRouter = createTRPCRouter({
             },
           },
         });
+
+        return true;
       } else {
-        return await ctx.prisma.profile.update({
+        await ctx.prisma.profile.update({
           where: {
             userId: ctx.session.user.id,
           },
@@ -730,6 +754,17 @@ export const profilesRouter = createTRPCRouter({
             },
           },
         });
+
+        return false;
       }
     }),
+
+  getLoggedInProfile: protectedProcedure.query(async ({ ctx }) => {
+    return await ctx.prisma.profile.findFirst({
+      where: { userId: ctx.session.user.id },
+      select: {
+        id: true,
+      },
+    });
+  }),
 });

@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { api } from "~/utils/api";
 import Image from "next/image";
 import Link from "next/link";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -8,8 +9,10 @@ import { faBookmark as faBookmarkSolid } from "@fortawesome/free-solid-svg-icons
 import { helper } from "../utils/helper";
 import type { UserSocialMedia } from "../utils/globalTypes";
 import { useTranslation } from "react-i18next";
+import { toast } from "react-hot-toast";
 
 const ProfileCard = (params: {
+  id: number;
   profilePicture: string;
   socialMedia: UserSocialMedia[];
   name: string;
@@ -19,9 +22,10 @@ const ProfileCard = (params: {
   username: string;
   type: "Brand" | "Influencer";
   bookmarked: boolean;
-  onHandleBookmark: () => void;
+  onHandleBookmark?: () => void;
 }) => {
   const { t } = useTranslation();
+  const [isBookmarked, setIsBookmarked] = useState<boolean>(params.bookmarked);
   const [usefullSocialMedia, setUsefullSocialMedia] = useState<UserSocialMedia>(
     {
       followers: -1,
@@ -32,6 +36,28 @@ const ProfileCard = (params: {
       valuePacks: [],
     }
   );
+
+  const { mutate: updateFavorites } = api.profiles.updateFavorites.useMutation({
+    onSuccess: (removed) => {
+      toast.success(
+        removed
+          ? "Removed from Saved Profiles Successfully"
+          : "Saved Profile Successfully",
+        {
+          position: "bottom-left",
+        }
+      );
+    },
+  });
+
+  const onClickBookmark = (profileId: number) => {
+    if (params.onHandleBookmark) {
+      params.onHandleBookmark();
+    }
+
+    setIsBookmarked(!isBookmarked);
+    updateFavorites({ profileId });
+  };
 
   useEffect(() => {
     const socialMediaWithMostFollowers = () => {
@@ -71,9 +97,9 @@ const ProfileCard = (params: {
 
         <div
           className="absolute right-2 top-2 cursor-pointer"
-          onClick={params.onHandleBookmark}
+          onClick={() => onClickBookmark(params.id)}
         >
-          {params.bookmarked ? (
+          {isBookmarked ? (
             <FontAwesomeIcon
               icon={faBookmarkSolid}
               className="fa-xl text-white hover:text-white1 "
