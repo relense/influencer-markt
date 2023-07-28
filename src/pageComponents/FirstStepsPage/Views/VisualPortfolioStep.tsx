@@ -1,10 +1,10 @@
 import { StepsReminder } from "../../../components/StepsReminder";
 import { PictureCarrosel } from "../../../components/PictureCarrosel";
-import { type Picture } from "../../../utils/globalTypes";
+import { type PreloadedImage } from "../../../utils/helper";
 
 export const VisualPortfolioStep = (params: {
   changeStep: (value: "next" | "previous") => void;
-  porttoflio: Picture[] | [];
+  portfolio: PreloadedImage[] | [];
   addPicture?: (pictureUrl: string) => void;
   deletePicture?: (pictureId: number) => void;
 }) => {
@@ -13,7 +13,7 @@ export const VisualPortfolioStep = (params: {
       <form id="form-hook" onSubmit={() => params.changeStep("next")} />
       <PictureCarrosel
         visual={false}
-        portfolio={params.porttoflio}
+        portfolio={params.portfolio}
         addPicture={params.addPicture}
         deletePicture={params.deletePicture}
       />

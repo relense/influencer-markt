@@ -15,11 +15,11 @@ import { faXmark } from "@fortawesome/free-solid-svg-icons";
 import { RoleEnum, DefineUserStep } from "./Views/DefineUserStep";
 import { useTranslation } from "react-i18next";
 import type {
-  Picture,
   ProfileData,
   SocialMediaData,
   UserIdentityData,
 } from "../../utils/globalTypes";
+import { type PreloadedImage } from "../../utils/helper";
 
 enum StepsEnum {
   OnlinePresence,
@@ -82,7 +82,7 @@ const FirstStepsPage = () => {
   const [steps, setSteps] = useState<Step[]>(generalSteps);
   const [currentStep, setCurrentStep] = useState<Step>();
   const [stepsCount, setStepsCount] = useState<number>(0);
-  const [portfolio, setPortfolio] = useState<Picture[]>([]);
+  const [portfolio, setPortfolio] = useState<PreloadedImage[]>([]);
 
   const {
     control: userIdentityControl,
@@ -209,7 +209,12 @@ const FirstStepsPage = () => {
 
   const onAddPicture = (pictureUrl: string) => {
     const newPortfolio = [...portfolio];
-    newPortfolio.push({ id: newPortfolio.length, url: pictureUrl });
+    newPortfolio.push({
+      id: newPortfolio.length,
+      url: pictureUrl,
+      width: 540,
+      height: 430,
+    });
     setPortfolio(newPortfolio);
   };
 
@@ -438,7 +443,7 @@ const FirstStepsPage = () => {
             {currentStep?.id === StepsEnum.VisualPortfolio && (
               <VisualPortfolioStep
                 changeStep={changeStep}
-                porttoflio={portfolio}
+                portfolio={portfolio}
                 addPicture={onAddPicture}
                 deletePicture={onDeletePicture}
               />

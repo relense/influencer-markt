@@ -15,11 +15,11 @@ import { LoadingSpinner } from "../../components/LoadingSpinner";
 import { useTranslation } from "react-i18next";
 import type {
   Option,
-  Picture,
   ProfileData,
   SocialMediaDetails,
 } from "../../utils/globalTypes";
 import { SocialMediaCard } from "../../components/SocialMediaCard";
+import { type PreloadedImage, helper } from "../../utils/helper";
 
 const EditPage = (params: { role: Option | undefined }) => {
   const { t } = useTranslation();
@@ -29,7 +29,7 @@ const EditPage = (params: { role: Option | undefined }) => {
   const [isProfileModalOpen, setIsProfileModalOpen] = useState<boolean>(false);
   const [isSocialMediaModalOpen, setIsSocialMediaModalOpen] =
     useState<boolean>(false);
-  const [portfolio, setPortfolio] = useState<Picture[]>([]);
+  const [portfolio, setPortfolio] = useState<PreloadedImage[]>([]);
   const [socialMediaEditing, setSocialMediaEditing] = useState<boolean>(false);
 
   const { data: profile, isLoading: isLoadingProfile } =
@@ -205,7 +205,15 @@ const EditPage = (params: { role: Option | undefined }) => {
   ]);
 
   useEffect(() => {
-    setPortfolio(profile?.portfolio || []);
+    if (profile?.portfolio) {
+      const portfolio = profile?.portfolio.map((pictures) => {
+        return { id: pictures.id, url: pictures.url };
+      });
+
+      void helper.preloadImages(portfolio).then((loadedImages) => {
+        setPortfolio(loadedImages);
+      });
+    }
   }, [profile?.portfolio]);
 
   // PROFILE FUNCTIONS

@@ -14,21 +14,22 @@ import {
 
 import Image from "next/image";
 import { toast } from "react-hot-toast";
-import { usePrevious } from "../utils/helper";
+import { type PreloadedImage, usePrevious } from "../utils/helper";
 import { useTranslation } from "react-i18next";
-import type { Picture } from "../utils/globalTypes";
 
 export const PictureCarrosel = (params: {
   visual: boolean;
-  portfolio: Picture[] | [];
+  portfolio: PreloadedImage[] | [];
   addPicture?: (pictureUrl: string) => void;
   deletePicture?: (pictureId: number) => void;
 }) => {
   const { t } = useTranslation();
   const pathname = usePathname();
-  const [currentPicture, setCurrentPicture] = useState<Picture>({
+  const [currentPicture, setCurrentPicture] = useState<PreloadedImage>({
     id: -1,
     url: "",
+    width: 540,
+    height: 430,
   });
   const [currentPictureIndex, setCurrentPictureIndex] = useState<number>(0);
 
@@ -47,11 +48,13 @@ export const PictureCarrosel = (params: {
         params.portfolio.length > 0 &&
         currentPicture.id === -1
       ) {
-        setCurrentPicture(params.portfolio[0] || { id: -1, url: "" });
+        setCurrentPicture(
+          params.portfolio[0] || { id: -1, url: "", width: 540, height: 430 }
+        );
         setCurrentPictureIndex(0);
       } else if (prevPortfolio.length > params.portfolio.length) {
         //means a picture was removed
-        const newPictureList: Picture[] = [...prevPortfolio];
+        const newPictureList: PreloadedImage[] = [...prevPortfolio];
         let newIndex = 0;
 
         if (prevCurrentPictureIndex) {
@@ -61,16 +64,30 @@ export const PictureCarrosel = (params: {
               : prevCurrentPictureIndex - 1;
         }
         setCurrentPictureIndex(newIndex);
-        setCurrentPicture(params.portfolio[newIndex] || { id: -1, url: "" });
+        setCurrentPicture(
+          params.portfolio[newIndex] || {
+            id: -1,
+            url: "",
+            width: 540,
+            height: 430,
+          }
+        );
       } else if (prevPortfolio.length < params.portfolio.length) {
         // means a picture was added
         setCurrentPicture(
-          params.portfolio[params.portfolio.length - 1] || { id: -1, url: "" }
+          params.portfolio[params.portfolio.length - 1] || {
+            id: -1,
+            url: "",
+            width: 540,
+            height: 430,
+          }
         );
         setCurrentPictureIndex(params.portfolio.length - 1);
       }
     } else if (!prevPortfolio || prevPathname !== pathname) {
-      setCurrentPicture(params.portfolio[0] || { id: -1, url: "" });
+      setCurrentPicture(
+        params.portfolio[0] || { id: -1, url: "", width: 540, height: 430 }
+      );
       setCurrentPictureIndex(0);
     }
   }, [
@@ -133,11 +150,16 @@ export const PictureCarrosel = (params: {
 
     setCurrentPictureIndex(newIndex);
 
-    const newCurrentPicture = params.portfolio[newIndex] || { id: -1, url: "" };
+    const newCurrentPicture = params.portfolio[newIndex] || {
+      id: -1,
+      url: "",
+      width: 540,
+      height: 430,
+    };
     setCurrentPicture(newCurrentPicture);
   };
 
-  const onHandleCarroselClick = (picture: Picture) => {
+  const onHandleCarroselClick = (picture: PreloadedImage) => {
     const index = params.portfolio
       .map((picture) => picture.url)
       .indexOf(picture.url);

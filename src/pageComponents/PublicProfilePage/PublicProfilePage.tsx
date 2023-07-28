@@ -19,7 +19,7 @@ import { PictureCarrosel } from "../../components/PictureCarrosel";
 import { Button } from "../../components/Button";
 import { CustomSelect } from "../../components/CustomSelect";
 
-import { helper } from "../../utils/helper";
+import { type PreloadedImage, helper } from "../../utils/helper";
 
 import { ToolTip } from "../../components/ToolTip";
 import { Modal } from "../../components/Modal";
@@ -59,11 +59,12 @@ const PublicProfilePage = (params: {
   >([]);
   const [reviews, setReviews] = useState<Review[]>([]);
   const [reviewsCursor, setCursor] = useState<number>();
+  const [portfolio, setPortfolio] = useState<PreloadedImage[]>();
+  const [isLoading, setIsLoading] = useState<boolean>(true);
 
-  const { data: profile, isLoading } =
-    api.profiles.getProfileByUniqueUsername.useQuery({
-      username: params.username,
-    });
+  const { data: profile } = api.profiles.getProfileByUniqueUsername.useQuery({
+    username: params.username,
+  });
 
   const { data: profileReviews } = api.reviews.getProfileReviews.useQuery({
     profileId: profile?.id || -1,
@@ -97,6 +98,19 @@ const PublicProfilePage = (params: {
       });
     },
   });
+
+  useEffect(() => {
+    if (profile?.portfolio) {
+      const portfolio = profile?.portfolio.map((pictures) => {
+        return { id: pictures.id, url: pictures.url };
+      });
+
+      void helper.preloadImages(portfolio).then((loadedImages) => {
+        setPortfolio(loadedImages);
+        setIsLoading(false);
+      });
+    }
+  }, [profile?.portfolio]);
 
   useEffect(() => {
     if (params.loggedInProfileId !== -1) {
@@ -334,16 +348,7 @@ const PublicProfilePage = (params: {
     return (
       <div className="flex flex-col-reverse gap-6 lg:flex-row">
         <div className="flex flex-col items-center gap-6">
-          <PictureCarrosel
-            visual={true}
-            portfolio={
-              (profile?.portfolio &&
-                profile?.portfolio.map((picture) => {
-                  return { id: picture.id, url: picture.url };
-                })) ||
-              []
-            }
-          />
+          <PictureCarrosel visual={true} portfolio={portfolio || []} />
           <div className="flex flex-col gap-4">
             <div className="text-2xl font-semibold">
               {t("pages.publicProfilePage.categories")}
