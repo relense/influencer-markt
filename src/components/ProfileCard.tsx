@@ -5,7 +5,7 @@ import Link from "next/link";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBookmark } from "@fortawesome/free-regular-svg-icons";
 import {
-  IconDefinition,
+  type IconDefinition,
   faBookmark as faBookmarkSolid,
   faGlobe,
 } from "@fortawesome/free-solid-svg-icons";

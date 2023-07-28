@@ -129,7 +129,9 @@ export const CustomSelectWithInput = (params: {
         )}
       </div>
       {params.error && (
-        <div className="absolute px-2 text-red-500">{params.errorMessage}</div>
+        <div className="w-58 absolute hidden px-2 text-red-500 xs:flex">
+          {params.errorMessage}
+        </div>
       )}
       {(selectStatus || params.error) && renderDropdown()}
     </div>
