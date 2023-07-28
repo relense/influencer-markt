@@ -29,7 +29,7 @@ const PublicProfile: NextPage<PublicProfileProps> = ({ username }) => {
   );
 
   useEffect(() => {
-    if (userExists) {
+    if (!userExists) {
       void router.push("/");
     }
   }, [userExists, router]);

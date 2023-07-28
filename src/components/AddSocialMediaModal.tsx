@@ -192,6 +192,15 @@ const AddSocialMediaModal = (params: {
     <Modal
       onClose={params.onCloseModal}
       title={t("components.addSocialMediaModal.modalTitle")}
+      button={
+        <div className="flex w-full justify-center p-4  sm:px-8">
+          <Button
+            title={t("components.addSocialMediaModal.button")}
+            level="primary"
+            form="form-socialMedia"
+          />
+        </div>
+      }
     >
       <form
         id="form-socialMedia"
@@ -268,13 +277,6 @@ const AddSocialMediaModal = (params: {
           max="1000000000"
         />
         {!params.isBrand && renderValuePacks()}
-        <div className="flex w-full justify-center">
-          <Button
-            title={t("components.addSocialMediaModal.button")}
-            level="primary"
-            form="form-socialMedia"
-          />
-        </div>
       </form>
     </Modal>
   );

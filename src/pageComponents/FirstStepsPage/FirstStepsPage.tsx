@@ -147,9 +147,9 @@ const FirstStepsPage = () => {
   const submitStep0 = handleSubmitUserIdentityData((data) => {
     if (
       (userIdentityWatch("role")?.id === RoleEnum.Brand &&
-        usernameVerification) ||
+        !usernameVerification) ||
       (userIdentityWatch("role")?.id === RoleEnum.Influencer &&
-        usernameVerification) ||
+        !usernameVerification) ||
       userIdentityWatch("role")?.name !== ""
     ) {
       if (userIdentityWatch("role")?.id === RoleEnum.Individual) {
@@ -478,7 +478,7 @@ const FirstStepsPage = () => {
               watch={userIdentityWatch}
               submit={submitStep0}
               refetch={usernameVerificationRefetch}
-              usernameVerification={usernameVerification}
+              usernameVerification={!usernameVerification}
             />
             <div className="flex-2 flex w-full flex-col justify-center gap-4 p-4 py-4 sm:flex-row sm:items-end sm:gap-0">
               <Button
@@ -488,9 +488,9 @@ const FirstStepsPage = () => {
                 size="regular"
                 disabled={
                   (userIdentityWatch("role")?.id === RoleEnum.Brand &&
-                    !usernameVerification) ||
+                    usernameVerification) ||
                   (userIdentityWatch("role")?.id === RoleEnum.Influencer &&
-                    !usernameVerification) ||
+                    usernameVerification) ||
                   userIdentityWatch("role")?.name === ""
                 }
                 isLoading={usernameVeritifcationLoading}

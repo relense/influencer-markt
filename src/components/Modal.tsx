@@ -7,11 +7,13 @@ const Modal = ({
   onClose,
   onCloseBackground,
   title,
+  button,
 }: {
   children: ReactElement;
   onClose: () => void;
   onCloseBackground?: () => void;
   title?: string;
+  button?: ReactElement;
 }) => {
   return (
     <>
@@ -27,7 +29,7 @@ const Modal = ({
         >
           <FontAwesomeIcon icon={faXmark} className="fa-lg text-white" />
         </div>
-        <div className="2xl:max-h-auto z-50 flex max-h-[400px] flex-col overflow-y-auto xs:max-h-[600px] ">
+        <div className="z-50 flex max-h-[400px] flex-col overflow-y-auto xs:max-h-[600px] 2xl:max-h-[800px] 3xl:max-h-[1200px]">
           {title && (
             <div className="flex flex-1 flex-col items-center">
               <div className="py-2 text-center">{title}</div>
@@ -36,6 +38,8 @@ const Modal = ({
           )}
           {children}
         </div>
+
+        {button && button}
       </div>
     </>
   );

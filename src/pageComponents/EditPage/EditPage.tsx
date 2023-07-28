@@ -148,7 +148,8 @@ const EditPage = (params: { role: Option | undefined }) => {
     setValue: profileSetValue,
     watch: profileWatch,
     handleSubmit: handleSubmitProfile,
-    formState: { errors: profileErrors },
+    reset: profileReset,
+    formState: { errors: profileErrors, isDirty: isProfileDirty },
   } = useForm<ProfileData>({
     defaultValues: {
       nationOfBirth: { id: -1, name: "" },
@@ -210,18 +211,22 @@ const EditPage = (params: { role: Option | undefined }) => {
   // PROFILE FUNCTIONS
 
   const onUpdateProfile = handleSubmitProfile((data) => {
-    updateProfile({
-      about: data.about,
-      categories: data.categories,
-      city: data.placeThatLives,
-      country: data.nationOfBirth,
-      name: data.displayName,
-      website: data.website,
-      profilePicture: data.profilePicture,
-    });
+    if (isProfileDirty) {
+      updateProfile({
+        about: data.about,
+        categories: data.categories,
+        city: data.placeThatLives,
+        country: data.nationOfBirth,
+        name: data.displayName,
+        website: data.website,
+        profilePicture: data.profilePicture,
+      });
+
+      setIsLoading(true);
+    }
 
     setIsProfileModalOpen(false);
-    setIsLoading(true);
+    profileReset();
   });
 
   const onCloseProfileModal = () => {
@@ -313,12 +318,13 @@ const EditPage = (params: { role: Option | undefined }) => {
           };
         }),
       });
+
+      setIsLoading(true);
     }
 
     setIsSocialMediaModalOpen(false);
     setSocialMediaEditing(false);
     socialMediaReset();
-    setIsLoading(true);
   });
 
   //RENDER FUNCTIONS
@@ -523,6 +529,16 @@ const EditPage = (params: { role: Option | undefined }) => {
             <Modal
               onClose={onCloseProfileModal}
               title={t("pages.editPage.profileModalTitle")}
+              button={
+                <div className="flex w-full justify-center p-4 sm:px-8">
+                  <Button
+                    type="submit"
+                    title={t("pages.editPage.profileModalButton")}
+                    level="primary"
+                    form="form-hook"
+                  />
+                </div>
+              }
             >
               <div className="flex h-full w-full flex-col items-center gap-4 p-4 sm:w-full sm:px-8">
                 <ProfileForm
@@ -534,14 +550,6 @@ const EditPage = (params: { role: Option | undefined }) => {
                   setValue={profileSetValue}
                   watch={profileWatch}
                 />
-                <div className="flex w-full justify-center">
-                  <Button
-                    type="submit"
-                    title={t("pages.editPage.profileModalButton")}
-                    level="primary"
-                    form="form-hook"
-                  />
-                </div>
               </div>
             </Modal>
           )}

@@ -56,9 +56,9 @@ export const usersRouter = createTRPCRouter({
       });
 
       if (username) {
-        return false;
-      } else {
         return true;
+      } else {
+        return false;
       }
     }),
 });

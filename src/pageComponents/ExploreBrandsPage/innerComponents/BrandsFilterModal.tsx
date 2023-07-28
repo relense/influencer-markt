@@ -64,7 +64,7 @@ const BrandsFilterModal = (params: {
 
   const clearFilters = handleSubmit(() => {
     filterSetValue("minFollowers", 0);
-    filterSetValue("maxFollowers", 1000000);
+    filterSetValue("maxFollowers", 1000000000);
     filterSetValue("city", { id: -1, name: "" });
     filterSetValue("country", { id: -1, name: "" });
 
@@ -161,17 +161,11 @@ const BrandsFilterModal = (params: {
   };
 
   return (
-    <Modal title={t("pages.explore.filters")} onClose={params.onClose}>
-      <form
-        id="form-filterModal"
-        className="flex h-full w-full flex-col gap-4 p-4 sm:w-full sm:px-8"
-        onSubmit={submit}
-      >
-        {renderFollowersInput()}
-        <div className="w-full border-[1px] border-white1" />
-        {renderLocationInputs()}
-        <div className="w-full border-[1px] border-white1" />
-        <div className="flex flex-col items-center justify-between gap-4 lg:flex-row">
+    <Modal
+      title={t("pages.explore.filters")}
+      onClose={params.onClose}
+      button={
+        <div className="flex flex-col items-center justify-between gap-4 p-4 sm:px-8 lg:flex-row">
           <div
             className="flex cursor-pointer text-lg font-medium underline"
             onClick={() => clearFilters()}
@@ -185,6 +179,17 @@ const BrandsFilterModal = (params: {
             form="form-filterModal"
           />
         </div>
+      }
+    >
+      <form
+        id="form-filterModal"
+        className="flex h-full w-full flex-col gap-4 p-4 sm:w-full sm:px-8"
+        onSubmit={submit}
+      >
+        {renderFollowersInput()}
+        <div className="w-full border-[1px] border-white1" />
+        {renderLocationInputs()}
+        <div className="w-full border-[1px] border-white1" />
       </form>
     </Modal>
   );

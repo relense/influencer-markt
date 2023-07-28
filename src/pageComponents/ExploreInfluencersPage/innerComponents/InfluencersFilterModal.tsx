@@ -78,7 +78,7 @@ const InfluencersFilterModal = (params: {
 
   const clearFilters = handleSubmit(() => {
     filterSetValue("minFollowers", 0);
-    filterSetValue("maxFollowers", 1000000);
+    filterSetValue("maxFollowers", 1000000000);
     filterSetValue("gender", { id: -1, name: "" });
     filterSetValue("city", { id: -1, name: "" });
     filterSetValue("minPrice", 0);
@@ -293,7 +293,26 @@ const InfluencersFilterModal = (params: {
   };
 
   return (
-    <Modal title={t("pages.explore.filters")} onClose={params.onClose}>
+    <Modal
+      title={t("pages.explore.filters")}
+      onClose={params.onClose}
+      button={
+        <div className="flex flex-col items-center justify-between gap-4 p-4 sm:px-8 lg:flex-row">
+          <div
+            className="flex cursor-pointer text-lg font-medium underline"
+            onClick={() => clearFilters()}
+          >
+            {t("pages.explore.clearAllButton")}
+          </div>
+          <Button
+            title={t("pages.explore.showInfluencersButton")}
+            level="primary"
+            type="submit"
+            form="form-filterModal"
+          />
+        </div>
+      }
+    >
       <form
         id="form-filterModal"
         className="flex h-full w-full flex-col gap-4 p-4 sm:w-full sm:px-8"
@@ -310,20 +329,6 @@ const InfluencersFilterModal = (params: {
         <div className="w-full border-[1px] border-white1" />
         {renderPriceInput()}
         <div className="w-full border-[1px] border-white1" />
-        <div className="flex flex-col items-center justify-between gap-4 lg:flex-row">
-          <div
-            className="flex cursor-pointer text-lg font-medium underline"
-            onClick={() => clearFilters()}
-          >
-            {t("pages.explore.clearAllButton")}
-          </div>
-          <Button
-            title={t("pages.explore.showInfluencersButton")}
-            level="primary"
-            type="submit"
-            form="form-filterModal"
-          />
-        </div>
       </form>
     </Modal>
   );

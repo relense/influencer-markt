@@ -20,7 +20,7 @@ import { Button } from "../../components/Button";
 import { CustomSelect } from "../../components/CustomSelect";
 
 import { helper } from "../../utils/helper";
-import { RequestCustomValuePackModal } from "./innerComponents/RequestCustomValuePackModal";
+
 import { ToolTip } from "../../components/ToolTip";
 import { Modal } from "../../components/Modal";
 import { Review } from "../../components/Review";
@@ -40,8 +40,6 @@ const PublicProfilePage = (params: {
   const ctx = api.useContext();
   const { t, i18n } = useTranslation();
 
-  const [isCustomValuePackModalOpen, setIsCustomValuePackModalOpen] =
-    useState<boolean>(false);
   const [isReviewModalOpen, setIsReviewModalOpen] = useState<boolean>(false);
   const [isShareModalOpen, setIsShareModalOpen] = useState<boolean>(false);
   const [selectedReview, setSelectedReview] = useState<Review>();
@@ -643,19 +641,6 @@ const PublicProfilePage = (params: {
           {renderMiddleContent()}
           {renderReviews()}
         </div>
-        {isCustomValuePackModalOpen && (
-          <RequestCustomValuePackModal
-            availablePlatforms={availableUserSocialMedia.map(
-              (userSocialMedia) => {
-                return {
-                  id: userSocialMedia.platform.id,
-                  name: userSocialMedia.platform.name,
-                };
-              }
-            )}
-            onClose={() => setIsCustomValuePackModalOpen(false)}
-          />
-        )}
         {isReviewModalOpen && (
           <Modal onClose={closeReviewModal}>
             <div className="p-4 sm:w-full sm:px-8">

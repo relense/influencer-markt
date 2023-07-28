@@ -40,7 +40,7 @@ const ExploreInfluencersPage = (params: { choosenCategories: Option[] }) => {
     country: { id: -1, name: "" },
     city: { id: -1, name: "" },
     minFollowers: 0,
-    maxFollowers: 100000,
+    maxFollowers: 1000000000,
     minPrice: 0,
     maxPrice: 100000,
   });

@@ -21,7 +21,11 @@ export const profilesRouter = createTRPCRouter({
       return await ctx.prisma.$transaction([
         ctx.prisma.profile.count({
           where: {
-            user: { roleId: 2 },
+            user: { roleId: 2, firstSteps: true },
+            profilePicture: {
+              not: "",
+            },
+            portfolio: { some: {} },
             categories: {
               some: {
                 id: {
@@ -65,7 +69,11 @@ export const profilesRouter = createTRPCRouter({
         }),
         ctx.prisma.profile.findMany({
           where: {
-            user: { roleId: 2 },
+            user: { roleId: 2, firstSteps: true },
+            profilePicture: {
+              not: "",
+            },
+            portfolio: { some: {} },
             categories: {
               some: {
                 id: {
@@ -171,7 +179,11 @@ export const profilesRouter = createTRPCRouter({
           id: input.cursor,
         },
         where: {
-          user: { roleId: 2 },
+          user: { roleId: 2, firstSteps: true },
+          profilePicture: {
+            not: "",
+          },
+          portfolio: { some: {} },
           categories: {
             some: {
               id: {
@@ -260,7 +272,11 @@ export const profilesRouter = createTRPCRouter({
       return await ctx.prisma.$transaction([
         ctx.prisma.profile.count({
           where: {
-            user: { roleId: 1 },
+            user: { roleId: 1, firstSteps: true },
+            profilePicture: {
+              not: "",
+            },
+            portfolio: { some: {} },
             categories: {
               some: {
                 id: {
@@ -291,7 +307,11 @@ export const profilesRouter = createTRPCRouter({
         }),
         ctx.prisma.profile.findMany({
           where: {
-            user: { roleId: 1 },
+            user: { roleId: 1, firstSteps: true },
+            profilePicture: {
+              not: "",
+            },
+            portfolio: { some: {} },
             categories: {
               some: {
                 id: {
@@ -375,7 +395,11 @@ export const profilesRouter = createTRPCRouter({
           id: input.cursor,
         },
         where: {
-          user: { roleId: 1 },
+          user: { roleId: 1, firstSteps: true },
+          profilePicture: {
+            not: "",
+          },
+          portfolio: { some: {} },
           categories: {
             some: {
               id: {

@@ -21,7 +21,7 @@ const SocialMediaCard = (params: {
         <div className="font-semibold text-influencer">
           {params.socialMedia.platform.name}
         </div>
-        <div className="flex flex-col gap-2 xs:flex-row xs:gap-4">
+        <div className="flex flex-col gap-2 xs:gap-4 2xl:flex-row">
           <div className="break-words">
             <span className="font-medium">
               {t("components.socialMediaCard.handler")}:
