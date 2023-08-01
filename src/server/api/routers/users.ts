@@ -44,6 +44,19 @@ export const usersRouter = createTRPCRouter({
       });
     }),
 
+  getAllUsernames: publicProcedure.query(async ({ ctx }) => {
+    return await ctx.prisma.user.findMany({
+      where: {
+        username: {
+          not: null,
+        },
+      },
+      select: {
+        username: true,
+      },
+    });
+  }),
+
   usernameExists: publicProcedure
     .input(z.object({ username: z.string() }))
     .query(async ({ ctx, input }) => {

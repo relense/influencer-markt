@@ -20,7 +20,6 @@ export const Footer = () => {
     { name: t("components.footer.aboutUs"), link: "/about" },
     { name: t("components.footer.contactUs"), link: "/contact-us" },
     { name: t("components.footer.faq"), link: "/faq" },
-    { name: t("components.footer.sitemap"), link: "/" },
     { name: t("components.footer.terms"), link: "/terms-conditions" },
     { name: t("components.footer.privacy"), link: "/privacy-policy" },
   ];
