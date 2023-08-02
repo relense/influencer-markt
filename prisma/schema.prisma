@@ -104,6 +104,7 @@ model Category {
   id      Int       @id @default(autoincrement())
   name    String    @unique
   profile Profile[]
+  Offer   Offer[]
 }
 
 model Role {
@@ -116,6 +117,7 @@ model Gender {
   id      Int       @id @default(autoincrement())
   name    String    @unique
   profile Profile[]
+  Offer   Offer[]
 }
 
 model ValuePack {
@@ -136,6 +138,7 @@ model SocialMedia {
   name            String
   UserSocialMedia UserSocialMedia[]
   contentTypes    ContentType[]
+  Offer           Offer[]
 }
 
 model Portfolio {
@@ -207,10 +210,12 @@ model ContactMessage {
 }
 
 model ContentType {
-  id          Int           @id @default(autoincrement())
-  name        String        @unique
-  valuePacks  ValuePack[]
-  socialMedia SocialMedia[]
+  id                      Int                       @id @default(autoincrement())
+  name                    String                    @unique
+  valuePacks              ValuePack[]
+  socialMedia             SocialMedia[]
+  Offer                   Offer[]
+  ContentTypeWithQuantity ContentTypeWithQuantity[]
 }
 
 model Country {
@@ -218,6 +223,7 @@ model Country {
   name    String
   profile Profile[]
   state   State[]
+  Offer   Offer[]
 }
 
 model State {
@@ -227,6 +233,7 @@ model State {
   city    City[]
 
   countryId Int
+  Offer     Offer[]
 
   @@index([countryId])
 }
@@ -240,4 +247,46 @@ model City {
   stateId Int
 
   @@index([stateId])
+}
+
+model Offer {
+  id                      Int                       @id @default(autoincrement())
+  offerSummary            String
+  OfferDetails            String
+  socialMedia             SocialMedia               @relation(fields: [socialMediaId], references: [id])
+  contentTypeWithQuantity ContentTypeWithQuantity[]
+  categories              Category[]
+  price                   Int
+  numberOfInfluencers     Int
+  country                 Country                   @relation(fields: [countryId], references: [id])
+  state                   State?                    @relation(fields: [stateId], references: [id])
+  minFollowers            Int
+  maxFollowers            Int
+  gender                  Gender                    @relation(fields: [genderId], references: [id])
+
+  socialMediaId Int
+  contentTypeId Int
+  countryId     Int
+  genderId      Int
+  stateId       Int
+  ContentType   ContentType @relation(fields: [contentTypeId], references: [id])
+
+  @@index([socialMediaId])
+  @@index([contentTypeId])
+  @@index([countryId])
+  @@index([genderId])
+  @@index([stateId])
+}
+
+model ContentTypeWithQuantity {
+  id          Int         @id @default(autoincrement())
+  contentType ContentType @relation(fields: [contentTypeId], references: [id])
+  amount      Int
+  Offer       Offer?      @relation(fields: [offerId], references: [id])
+
+  contentTypeId Int
+  offerId       Int?
+
+  @@index([contentTypeId])
+  @@index([offerId])
 }

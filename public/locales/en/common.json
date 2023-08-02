@@ -431,6 +431,34 @@
       "minPricePlaceholder": "Min Price Value",
       "maxPricePlaceholder": "Max Price Value",
       "showBrandsButton": "Show Brands"
+    },
+
+    "offer": {
+      "errorWarning": "Max is {{count}} characters",
+      "createOffer": "Create Offer",
+      "offerSummary": "Offer Summary",
+      "offerSummaryPlaceholder": "Provide a catchy and descriptive title for your offering",
+      "offerDetails": "Offer Details",
+      "detailsPlaceholder": "Specify your requirements for this offer. Share the desired number of posts or photos and the specific deliverables you expect. For example, if you need a video promoting your product, provide the necessary guidelines. Clear instructions help the influencer understand your expectations and engage your target audience effectively.",
+      "platformTitle": "Offer Platform",
+      "platformPlaceholder": "Select the social media platform for your offer",
+      "offerCategories": "Offer Categories",
+      "categoriesPlaceholder": "Choose Categories",
+      "contentTypesTitle": "Platform Content Types",
+      "contentTypePlaceholder": "Content Type",
+      "howMany": "How Many",
+      "offerPriceTitle": "Offer Price",
+      "pricePlaceholder": "Price",
+      "numberOfInfluencers": "Number of Influencers",
+      "numberOfInfluencersPlaceholder": "How many influencers do you need?",
+      "influencerLocation": "Influencer Location",
+      "country": "Country",
+      "influencerFollowers": "Influencer Followers",
+      "minimum": "Minimum",
+      "minFollowers": "Min Followers",
+      "maximum": "Maximum",
+      "maxFollowers": "Max Followers",
+      "influencerGender": "Influencer Gender"
     }
   }
 }

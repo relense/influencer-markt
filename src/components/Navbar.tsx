@@ -96,51 +96,58 @@ export const Navbar = (params: {
           )}
         </div>
         {params.sessionData && (
-          <div className="group relative flex px-4">
-            <div className="flex items-center gap-2">
-              <Link
-                href="/saved/influencers"
-                className="cursor-pointer text-lg"
-              >
-                {t("components.navbar.saved")}
-              </Link>
-              {params.sessionData && (
-                <>
-                  <FontAwesomeIcon
-                    icon={faChevronDown}
-                    className="fa-sm flex cursor-pointer group-hover:hidden"
-                  />
-                  <FontAwesomeIcon
-                    icon={faChevronUp}
-                    className="fa-sm group hidden cursor-pointer group-hover:flex"
-                  />
-                </>
-              )}
-            </div>
-            <div className="absolute left-[-13px] top-7 z-50 hidden flex-col justify-center rounded-lg bg-white shadow-md group-hover:flex">
-              <Link
-                href="/saved/influencers"
-                className="cursor-pointer text-lg"
-              >
-                <div className="cursor-pointer rounded-t-lg px-8 py-4 hover:bg-influencer-green hover:text-white">
-                  {t("components.navbar.influencers")}
-                </div>
-              </Link>
+          <>
+            <div className="group relative flex px-4">
+              <div className="flex items-center gap-2">
+                <Link
+                  href="/saved/influencers"
+                  className="cursor-pointer text-lg"
+                >
+                  {t("components.navbar.saved")}
+                </Link>
+                {params.sessionData && (
+                  <>
+                    <FontAwesomeIcon
+                      icon={faChevronDown}
+                      className="fa-sm flex cursor-pointer group-hover:hidden"
+                    />
+                    <FontAwesomeIcon
+                      icon={faChevronUp}
+                      className="fa-sm group hidden cursor-pointer group-hover:flex"
+                    />
+                  </>
+                )}
+              </div>
+              <div className="absolute left-[-13px] top-7 z-50 hidden flex-col justify-center rounded-lg bg-white shadow-md group-hover:flex">
+                <Link
+                  href="/saved/influencers"
+                  className="cursor-pointer text-lg"
+                >
+                  <div className="cursor-pointer rounded-t-lg px-8 py-4 hover:bg-influencer-green hover:text-white">
+                    {t("components.navbar.influencers")}
+                  </div>
+                </Link>
 
-              <Link
-                href="/saved/brands"
-                className="hover: cursor-pointer px-8 py-4 text-lg hover:bg-influencer-green hover:text-white"
-              >
-                {t("components.navbar.brands")}
-              </Link>
-              <Link
+                <Link
+                  href="/saved/brands"
+                  className="hover: cursor-pointer px-8 py-4 text-lg hover:bg-influencer-green hover:text-white"
+                >
+                  {t("components.navbar.brands")}
+                </Link>
+                {/* <Link
                 href="/saved/campaigns"
                 className="hover: cursor-pointer rounded-b-lg px-8 py-4 text-lg hover:bg-influencer-green hover:text-white"
               >
                 {t("components.navbar.campaigns")}
-              </Link>
+              </Link> */}
+              </div>
             </div>
-          </div>
+            {params.role?.id === 1 && (
+              <Link href="/offers" className="cursor-pointer text-lg lg:p-2">
+                Offers
+              </Link>
+            )}
+          </>
         )}
       </div>
     );

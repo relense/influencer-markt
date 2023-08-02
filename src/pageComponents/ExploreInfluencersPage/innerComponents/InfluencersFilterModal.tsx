@@ -91,204 +91,223 @@ const InfluencersFilterModal = (params: {
 
   const renderFollowersInput = () => {
     return (
-      <div className="flex flex-col gap-4">
-        <div className="text-xl font-medium">
-          {t("pages.explore.followersInputLabel")}
-        </div>
-        <div className="flex flex-col gap-6 lg:flex-row lg:items-center lg:gap-11">
-          <div className="flex flex-1 flex-col gap-1">
-            <label className="text-gray2">{t("pages.explore.minimum")}</label>
-            <input
-              {...filterRegister("minFollowers", { valueAsNumber: true })}
-              type="number"
-              className="h-14 w-full rounded-lg border-[1px] border-gray3 p-4 placeholder-gray2 focus:border-black focus:outline-none"
-              placeholder={t("pages.explore.minimumPlaceholder")}
-              autoComplete="off"
-              max="1000000000"
-              min="0"
-            />
+      <>
+        <div className="flex flex-col gap-4">
+          <div className="text-xl font-medium">
+            {t("pages.explore.followersInputLabel")}
           </div>
+          <div className="flex flex-col gap-6 lg:flex-row lg:items-center lg:gap-11">
+            <div className="flex flex-1 flex-col gap-1">
+              <label className="text-gray2">{t("pages.explore.minimum")}</label>
+              <input
+                {...filterRegister("minFollowers", { valueAsNumber: true })}
+                type="number"
+                className="h-14 w-full rounded-lg border-[1px] border-gray3 p-4 placeholder-gray2 focus:border-black focus:outline-none"
+                placeholder={t("pages.explore.minimumPlaceholder")}
+                autoComplete="off"
+                max="1000000000"
+                min="0"
+              />
+            </div>
 
-          <div className="flex flex-1 flex-col gap-1">
-            <label className="text-gray2">{t("pages.explore.Maximum")}</label>
-            <input
-              {...filterRegister("maxFollowers", { valueAsNumber: true })}
-              type="number"
-              className="h-14 w-full rounded-lg border-[1px] border-gray3 p-4 placeholder-gray2 focus:border-black focus:outline-none"
-              placeholder={t("pages.explore.MaximumPlaceholder")}
-              autoComplete="off"
-              max="1000000000"
-              min="0"
-            />
+            <div className="flex flex-1 flex-col gap-1">
+              <label className="text-gray2">{t("pages.explore.Maximum")}</label>
+              <input
+                {...filterRegister("maxFollowers", { valueAsNumber: true })}
+                type="number"
+                className="h-14 w-full rounded-lg border-[1px] border-gray3 p-4 placeholder-gray2 focus:border-black focus:outline-none"
+                placeholder={t("pages.explore.MaximumPlaceholder")}
+                autoComplete="off"
+                max="1000000000"
+                min="0"
+              />
+            </div>
           </div>
         </div>
-      </div>
+        <div className="w-full border-[1px] border-white1" />
+      </>
     );
   };
 
   const renderGenderInput = () => {
     return (
-      <div className="flex flex-col gap-4">
-        <div className="text-xl font-medium">
-          {t("pages.explore.genderInputLabel")}
-        </div>
-        <div className="flex flex-wrap justify-center gap-4 lg:justify-start ">
-          <div
-            key={-1}
-            className={
-              filterWatch("gender").id === -1
-                ? "flex w-24 cursor-pointer justify-center rounded-2xl border-[1px] border-gray3 bg-influencer-green p-2 text-center text-white"
-                : "flex w-24 cursor-pointer justify-center rounded-2xl border-[1px] border-gray3 p-2 text-center"
-            }
-            onClick={() => filterSetValue("gender", { id: -1, name: "" })}
-          >
-            {t("pages.explore.any")}
+      <>
+        <div className="flex flex-col gap-4">
+          <div className="text-xl font-medium">
+            {t("pages.explore.genderInputLabel")}
           </div>
-          {params.genders?.map((gender) => {
-            return (
-              <div
-                key={gender.id}
-                className={
-                  filterWatch("gender").id === gender.id
-                    ? "flex w-24 cursor-pointer justify-center rounded-2xl border-[1px] border-gray3 bg-influencer-green p-2 text-center text-white"
-                    : "flex w-24 cursor-pointer justify-center rounded-2xl border-[1px] border-gray3 p-2 text-center"
-                }
-                onClick={() => filterSetValue("gender", gender)}
-              >
-                {t(`pages.explore.${gender.name}`)}
-              </div>
-            );
-          })}
+          <div className="flex flex-wrap justify-center gap-4 lg:justify-start ">
+            <div
+              key={-1}
+              className={
+                filterWatch("gender").id === -1
+                  ? "flex w-24 cursor-pointer justify-center rounded-2xl border-[1px] border-gray3 bg-influencer-green p-2 text-center text-white"
+                  : "flex w-24 cursor-pointer justify-center rounded-2xl border-[1px] border-gray3 p-2 text-center"
+              }
+              onClick={() => filterSetValue("gender", { id: -1, name: "" })}
+            >
+              {t("pages.explore.any")}
+            </div>
+            {params.genders?.map((gender) => {
+              return (
+                <div
+                  key={gender.id}
+                  className={
+                    filterWatch("gender").id === gender.id
+                      ? "flex w-24 cursor-pointer justify-center rounded-2xl border-[1px] border-gray3 bg-influencer-green p-2 text-center text-white"
+                      : "flex w-24 cursor-pointer justify-center rounded-2xl border-[1px] border-gray3 p-2 text-center"
+                  }
+                  onClick={() => filterSetValue("gender", gender)}
+                >
+                  {t(`pages.explore.${gender.name}`)}
+                </div>
+              );
+            })}
+          </div>
         </div>
-      </div>
+        <div className="w-full border-[1px] border-white1" />
+      </>
     );
   };
 
   const renderContentType = () => {
     return (
-      <div className="flex flex-col gap-4">
-        <div className="text-xl font-medium">
-          {t("pages.explore.contentTypeInputLabel")}
-        </div>
-        <div className="flex flex-wrap justify-center gap-4 lg:justify-start">
-          <div
-            key={-1}
-            className={
-              filterWatch("contentType").id === -1
-                ? "flex w-24 cursor-pointer justify-center rounded-2xl border-[1px] border-gray3 bg-influencer-green  p-2 text-center text-white"
-                : "flex w-24 cursor-pointer justify-center rounded-2xl border-[1px] border-gray3 p-2 text-center"
-            }
-            onClick={() => filterSetValue("contentType", { id: -1, name: "" })}
-          >
-            {t("pages.explore.any")}
+      <>
+        <div className="flex flex-col gap-4">
+          <div className="text-xl font-medium">
+            {t("pages.explore.contentTypeInputLabel")}
           </div>
-          {params.contentTypes?.map((contentType) => {
-            return (
-              <div
-                key={contentType.id}
-                className={
-                  filterWatch("contentType").id === contentType.id
-                    ? "flex w-24 cursor-pointer justify-center rounded-2xl border-[1px] border-gray3 bg-influencer-green p-2 text-center text-white"
-                    : "flex w-24 cursor-pointer justify-center rounded-2xl border-[1px] border-gray3 p-2 text-center"
-                }
-                onClick={() => filterSetValue("contentType", contentType)}
-              >
-                {contentType.name}
-              </div>
-            );
-          })}
+          <div className="flex flex-wrap justify-center gap-4 lg:justify-start">
+            <div
+              key={-1}
+              className={
+                filterWatch("contentType").id === -1
+                  ? "flex w-24 cursor-pointer justify-center rounded-2xl border-[1px] border-gray3 bg-influencer-green  p-2 text-center text-white"
+                  : "flex w-24 cursor-pointer justify-center rounded-2xl border-[1px] border-gray3 p-2 text-center"
+              }
+              onClick={() =>
+                filterSetValue("contentType", { id: -1, name: "" })
+              }
+            >
+              {t("pages.explore.any")}
+            </div>
+            {params.contentTypes?.map((contentType) => {
+              return (
+                <div
+                  key={contentType.id}
+                  className={
+                    filterWatch("contentType").id === contentType.id
+                      ? "flex w-24 cursor-pointer justify-center rounded-2xl border-[1px] border-gray3 bg-influencer-green p-2 text-center text-white"
+                      : "flex w-24 cursor-pointer justify-center rounded-2xl border-[1px] border-gray3 p-2 text-center"
+                  }
+                  onClick={() => filterSetValue("contentType", contentType)}
+                >
+                  {contentType.name}
+                </div>
+              );
+            })}
+          </div>
         </div>
-      </div>
+        <div className="w-full border-[1px] border-white1" />
+      </>
     );
   };
 
   const renderLocationInputs = () => {
     return (
-      <div className="flex flex-col gap-4">
-        <div className="text-xl font-medium">{t("pages.explore.location")}</div>
-        <div className="flex flex-col gap-6 lg:flex-row lg:gap-11">
-          <Controller
-            name="country"
-            control={filterControl}
-            render={({ field: { value, onChange } }) => {
-              return (
-                <CustomSelect
-                  register={filterRegister}
-                  name="country"
-                  placeholder={t("pages.explore.countryPlaceholder")}
-                  options={params.countries}
-                  value={value}
-                  handleOptionSelect={onChange}
-                  required={false}
-                />
-              );
-            }}
-          />
-          <Controller
-            name="city"
-            control={filterControl}
-            render={({ field: { value, onChange } }) => {
-              return (
-                <CustomSelectWithInput
-                  register={filterRegister}
-                  name="city"
-                  placeholder={t("pages.explore.cityPlaceHolder")}
-                  options={cities?.map((city) => city)}
-                  value={value}
-                  handleOptionSelect={onChange}
-                  required={false}
-                  emptyOptionsMessage={
-                    filterWatch("country")?.id !== -1
-                      ? t("pages.explore.emptyMessageNoCountry")
-                      : t("pages.explore.emptyMessageWithCountry")
-                  }
-                  isReadOnly={filterWatch("country")?.id === -1}
-                  onChangeSearchKeys={setSearchKeys}
-                  searchKeys={searchKeys}
-                />
-              );
-            }}
-          />
+      <>
+        <div className="flex flex-col gap-4">
+          <div className="text-xl font-medium">
+            {t("pages.explore.location")}
+          </div>
+          <div className="flex flex-col gap-6 lg:flex-row lg:gap-11">
+            <Controller
+              name="country"
+              control={filterControl}
+              render={({ field: { value, onChange } }) => {
+                return (
+                  <CustomSelect
+                    register={filterRegister}
+                    name="country"
+                    placeholder={t("pages.explore.countryPlaceholder")}
+                    options={params.countries}
+                    value={value}
+                    handleOptionSelect={onChange}
+                    required={false}
+                  />
+                );
+              }}
+            />
+            <Controller
+              name="city"
+              control={filterControl}
+              render={({ field: { value, onChange } }) => {
+                return (
+                  <CustomSelectWithInput
+                    register={filterRegister}
+                    name="city"
+                    placeholder={t("pages.explore.cityPlaceHolder")}
+                    options={cities?.map((city) => city)}
+                    value={value}
+                    handleOptionSelect={onChange}
+                    required={false}
+                    emptyOptionsMessage={
+                      filterWatch("country")?.id !== -1
+                        ? t("pages.explore.emptyMessageNoCountry")
+                        : t("pages.explore.emptyMessageWithCountry")
+                    }
+                    isReadOnly={filterWatch("country")?.id === -1}
+                    onChangeSearchKeys={setSearchKeys}
+                    searchKeys={searchKeys}
+                  />
+                );
+              }}
+            />
+          </div>
         </div>
-      </div>
+        <div className="w-full border-[1px] border-white1" />
+      </>
     );
   };
 
   const renderPriceInput = () => {
     return (
-      <div className="flex flex-col gap-4">
-        <div className="text-xl font-medium">
-          {t("pages.explore.priceInputLabel")}
-        </div>
-        <div className="flex flex-col gap-6 lg:flex-row lg:items-center lg:gap-11">
-          <div className="flex flex-1 flex-col gap-1">
-            <label className="text-gray2">{t("pages.explore.minimum")}</label>
-            <input
-              {...filterRegister("minPrice", { valueAsNumber: true })}
-              type="number"
-              className="h-14 w-full rounded-lg border-[1px] border-gray3 p-4 placeholder-gray2 focus:border-black focus:outline-none"
-              placeholder={t("pages.explore.minPricePlaceholder")}
-              autoComplete="off"
-              max="1000000000"
-              min="0"
-              value={filterWatch("minPrice")}
-            />
+      <>
+        <div className="flex flex-col gap-4">
+          <div className="text-xl font-medium">
+            {t("pages.explore.priceInputLabel")}
           </div>
-          <div className="flex flex-1 flex-col gap-1">
-            <label className="text-gray2">{t("pages.explore.Maximum")}</label>
-            <input
-              {...filterRegister("maxPrice", { valueAsNumber: true })}
-              type="number"
-              className="h-14 w-full rounded-lg border-[1px] border-gray3 p-4 placeholder-gray2 focus:border-black focus:outline-none"
-              placeholder={t("pages.explore.maxPricePlaceholder")}
-              autoComplete="off"
-              max="1000000000"
-              min="0"
-              value={filterWatch("maxPrice")}
-            />
+          <div className="flex flex-col gap-6 lg:flex-row lg:items-center lg:gap-11">
+            <div className="flex flex-1 flex-col gap-1">
+              <label className="text-gray2">{t("pages.explore.minimum")}</label>
+              <input
+                {...filterRegister("minPrice", { valueAsNumber: true })}
+                type="number"
+                className="h-14 w-full rounded-lg border-[1px] border-gray3 p-4 placeholder-gray2 focus:border-black focus:outline-none"
+                placeholder={t("pages.explore.minPricePlaceholder")}
+                autoComplete="off"
+                max="1000000000"
+                min="0"
+                value={filterWatch("minPrice")}
+              />
+            </div>
+            <div className="flex flex-1 flex-col gap-1">
+              <label className="text-gray2">{t("pages.explore.Maximum")}</label>
+              <input
+                {...filterRegister("maxPrice", { valueAsNumber: true })}
+                type="number"
+                className="h-14 w-full rounded-lg border-[1px] border-gray3 p-4 placeholder-gray2 focus:border-black focus:outline-none"
+                placeholder={t("pages.explore.maxPricePlaceholder")}
+                autoComplete="off"
+                max="1000000000"
+                min="0"
+                value={filterWatch("maxPrice")}
+              />
+            </div>
           </div>
         </div>
-      </div>
+        <div className="w-full border-[1px] border-white1" />
+      </>
     );
   };
 
@@ -319,16 +338,10 @@ const InfluencersFilterModal = (params: {
         onSubmit={submit}
       >
         {renderFollowersInput()}
-        <div className="w-full border-[1px] border-white1" />
-
         {renderGenderInput()}
-        <div className="w-full border-[1px] border-white1" />
         {renderContentType()}
-        <div className="w-full border-[1px] border-white1" />
         {renderLocationInputs()}
-        <div className="w-full border-[1px] border-white1" />
         {renderPriceInput()}
-        <div className="w-full border-[1px] border-white1" />
       </form>
     </Modal>
   );

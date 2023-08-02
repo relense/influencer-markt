@@ -431,6 +431,34 @@
       "minPricePlaceholder": "Preço Min",
       "maxPricePlaceholder": "Preço Max",
       "showBrandsButton": "Mostrar Marcas"
+    },
+
+    "offer": {
+      "errorWarning": "Máximo de {{count}} caracteres",
+      "createOffer": "Cria Oferta",
+      "offerSummary": "Sumário da Oferta",
+      "offerSummaryPlaceholder": "Fornece um título cativante e descritivo para a tua oferta",
+      "offerDetails": "Detalhes da Oferta",
+      "detailsPlaceholder": "Especifique os seus requisitos para esta oferta. Partilhe o número desejado de publicações ou fotografias e os resultados específicos que espera. Por exemplo, se precisar de um vídeo a promover o seu produto, forneça as orientações necessárias. Instruções claras ajudam o influenciador a compreender as suas expectativas e a envolver eficazmente o seu público-alvo.",
+      "platformTitle": "Platforma da Oferta",
+      "platformPlaceholder": "Seleciona a rede social para a tua oferta",
+      "offerCategories": "Categorias da Oferta",
+      "categoriesPlaceholder": "Escolha as Categorias",
+      "contentTypesTitle": "Tipos de Conteúdo da Plataforma",
+      "contentTypePlaceholder": "Tipo de conteúdo",
+      "howMany": "Quantos",
+      "offerPriceTitle": "Preço da Oferta",
+      "pricePlaceholder": "Preço",
+      "numberOfInfluencers": "Número de Influencers",
+      "numberOfInfluencersPlaceholder": "De quantos influencers precisa?",
+      "influencerLocation": "Localização do Influencer",
+      "country": "País",
+      "influencerFollowers": "Seguidos do Influencer",
+      "minimum": "Mínimo",
+      "minFollowers": "Seguidores Min",
+      "maximum": "Máximo",
+      "maxFollowers": "Seguidores Max",
+      "influencerGender": "Género do Influencer"
     }
   }
 }
