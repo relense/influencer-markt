@@ -41,24 +41,19 @@ const ExploreBrandsPage = (params: { choosenCategories: Option[] }) => {
     data: profiles,
     refetch: profileRefetch,
     isLoading,
-  } = api.profiles.getAllBrandsProfiles.useQuery(
-    {
-      socialMedia: filterState.platforms.map((platform) => {
-        return platform.id;
-      }),
-      categories: filterState.categories.map((category) => {
-        return category.id;
-      }),
-      minFollowers: filterState.minFollowers || -1,
-      maxFollowers: filterState.maxFollowers || -1,
+  } = api.profiles.getAllBrandsProfiles.useQuery({
+    socialMedia: filterState.platforms.map((platform) => {
+      return platform.id;
+    }),
+    categories: filterState.categories.map((category) => {
+      return category.id;
+    }),
+    minFollowers: filterState.minFollowers || -1,
+    maxFollowers: filterState.maxFollowers || -1,
 
-      country: filterState.country.id,
-      city: filterState.city.id,
-    },
-    {
-      cacheTime: 0,
-    }
-  );
+    country: filterState.country.id,
+    city: filterState.city.id,
+  });
 
   const {
     data: profilesWithCursor,
@@ -213,7 +208,6 @@ const ExploreBrandsPage = (params: { choosenCategories: Option[] }) => {
   }) => {
     setIsFilterModalOpen(false);
     countActiveFilters(params);
-    setUserProfiles([]);
 
     setFilterState({
       ...filterState,
@@ -224,6 +218,10 @@ const ExploreBrandsPage = (params: { choosenCategories: Option[] }) => {
       country: params.country,
       city: params.city,
     });
+
+    if (activeFiltersCount > 0) {
+      setUserProfiles([]);
+    }
 
     void profileRefetch();
   };
@@ -241,7 +239,7 @@ const ExploreBrandsPage = (params: { choosenCategories: Option[] }) => {
     if (params.minFollowers !== 0) {
       count++;
     }
-    if (params.maxFollowers !== 100000) {
+    if (params.maxFollowers !== 1000000000) {
       count++;
     }
     if (params.country.id > -1) {
@@ -262,12 +260,15 @@ const ExploreBrandsPage = (params: { choosenCategories: Option[] }) => {
       categories: [],
       platforms: [],
       minFollowers: 0,
-      maxFollowers: 1000000,
+      maxFollowers: 1000000000,
       country: { id: -1, name: "" },
       city: { id: -1, name: "" },
     });
 
-    setUserProfiles([]);
+    if (activeFiltersCount > 0) {
+      setUserProfiles([]);
+    }
+
     void profileRefetch();
   };
 

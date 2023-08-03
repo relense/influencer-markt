@@ -77,14 +77,14 @@ const InfluencersFilterModal = (params: {
   });
 
   const clearFilters = handleSubmit(() => {
-    filterSetValue("minFollowers", 0);
-    filterSetValue("maxFollowers", 1000000000);
     filterSetValue("gender", { id: -1, name: "" });
+    filterSetValue("contentType", { id: -1, name: "" });
+    filterSetValue("country", { id: -1, name: "" });
     filterSetValue("city", { id: -1, name: "" });
     filterSetValue("minPrice", 0);
-    filterSetValue("maxPrice", 1000000);
-    filterSetValue("country", { id: -1, name: "" });
-    filterSetValue("contentType", { id: -1, name: "" });
+    filterSetValue("maxPrice", 100000000);
+    filterSetValue("minFollowers", 0);
+    filterSetValue("maxFollowers", 1000000000);
 
     params.handleClearFilter();
   });
@@ -299,7 +299,7 @@ const InfluencersFilterModal = (params: {
                 className="h-14 w-full rounded-lg border-[1px] border-gray3 p-4 placeholder-gray2 focus:border-black focus:outline-none"
                 placeholder={t("pages.explore.maxPricePlaceholder")}
                 autoComplete="off"
-                max="1000000000"
+                max="100000000"
                 min="0"
                 value={filterWatch("maxPrice")}
               />

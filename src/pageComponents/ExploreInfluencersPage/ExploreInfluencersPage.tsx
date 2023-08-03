@@ -40,9 +40,9 @@ const ExploreInfluencersPage = (params: { choosenCategories: Option[] }) => {
     country: { id: -1, name: "" },
     city: { id: -1, name: "" },
     minFollowers: 0,
-    maxFollowers: 1000000000,
+    maxFollowers: 100000000,
     minPrice: 0,
-    maxPrice: 100000,
+    maxPrice: 100000000,
   });
 
   const {
@@ -246,7 +246,10 @@ const ExploreInfluencersPage = (params: { choosenCategories: Option[] }) => {
   }) => {
     setIsFilterModalOpen(false);
     countActiveFilters(params);
-    setUserProfiles([]);
+
+    if (activeFiltersCount > 0) {
+      setUserProfiles([]);
+    }
 
     setFilterState({
       ...filterState,
@@ -282,7 +285,7 @@ const ExploreInfluencersPage = (params: { choosenCategories: Option[] }) => {
     if (params.minFollowers !== 0) {
       count++;
     }
-    if (params.maxFollowers !== 100000) {
+    if (params.maxFollowers !== 100000000) {
       count++;
     }
     if (params.gender.id > -1) {
@@ -300,7 +303,7 @@ const ExploreInfluencersPage = (params: { choosenCategories: Option[] }) => {
     if (params.minPrice !== 0) {
       count++;
     }
-    if (params.maxPrice !== 100000) {
+    if (params.maxPrice !== 100000000) {
       count++;
     }
 
@@ -317,15 +320,18 @@ const ExploreInfluencersPage = (params: { choosenCategories: Option[] }) => {
       platforms: [],
       gender: { id: -1, name: "" },
       contentType: { id: -1, name: "" },
-      minFollowers: 0,
       country: { id: -1, name: "" },
       city: { id: -1, name: "" },
-      maxFollowers: 1000000,
+      minFollowers: 0,
+      maxFollowers: 100000000,
       minPrice: 0,
-      maxPrice: 1000000,
+      maxPrice: 100000000,
     });
 
-    setUserProfiles([]);
+    if (activeFiltersCount > 0) {
+      setUserProfiles([]);
+    }
+
     void profileRefetch();
   };
 
