@@ -30,10 +30,11 @@ type ContentTypeWithQuantity = {
 };
 
 const CreateOfferModal = (params: { onClose: () => void }) => {
-  const [contentTypes, setContentTypes] = useState<ContentTypeWithQuantity[]>([
-    { contentType: { id: -1, name: "" }, amount: 0 },
-  ]);
   const { t } = useTranslation();
+
+  const [contentTypesList, setContentTypesList] = useState<
+    ContentTypeWithQuantity[]
+  >([{ contentType: { id: -1, name: "" }, amount: 0 }]);
 
   const {
     control,
@@ -56,11 +57,33 @@ const CreateOfferModal = (params: { onClose: () => void }) => {
   const { data: genders } = api.allRoutes.getAllGenders.useQuery();
   const { data: countries } = api.allRoutes.getAllCountries.useQuery();
 
+  const { mutate: offerMutation } = api.offers.createOffer.useMutation();
+
   const submitRequest = handleSubmit((data) => {
-    console.log(contentTypes);
-    console.log(JSON.stringify(data));
+    const payload = {
+      offerSummary: data.offerSummary,
+      offerDetails: data.offerDetails,
+      socialMediaId: data.platform.id,
+      contentTypes: contentTypesList.map((item) => {
+        return {
+          contentTypeId: item.contentType.id,
+          amount: item.amount,
+        };
+      }),
+      categories: data.categories.map((category) => {
+        return category.id;
+      }),
+      price: data.offerPrice,
+      numberOfInfluencers: data.numberOfInfluencers,
+      countryId: data.country.id,
+      minFollowers: data.minFollowers,
+      maxFollowers: data.maxFollowers,
+      genderId: data.gender.id,
+    };
 
     debugger;
+
+    offerMutation(payload);
   });
 
   const renderOfferSummaryInput = () => {
@@ -145,7 +168,7 @@ const CreateOfferModal = (params: { onClose: () => void }) => {
                   value={value}
                   handleOptionSelect={(value) => {
                     onChange(value);
-                    setContentTypes([
+                    setContentTypesList([
                       {
                         contentType: { id: -1, name: "" },
                         amount: 0,
@@ -174,6 +197,9 @@ const CreateOfferModal = (params: { onClose: () => void }) => {
       (platform) => platform.id === watch("platform").id
     );
 
+    const allContentTypesSelected =
+      selectPlatform?.[0]?.contentTypes.length === contentTypesList.length;
+
     if (selectPlatform?.[0]) {
       return (
         <>
@@ -182,18 +208,31 @@ const CreateOfferModal = (params: { onClose: () => void }) => {
               <div className="text-xl font-medium">
                 {t("pages.offer.contentTypesTitle")}
               </div>
-              <div className="flex h-5 w-5 items-center justify-center rounded-full bg-influencer text-white">
-                <FontAwesomeIcon
-                  icon={faPlus}
-                  className="fa-sm cursor-pointer"
-                  onClick={() => addContentTypeInput()}
-                />
-              </div>
+              {!allContentTypesSelected && (
+                <div className="flex h-6 w-6 items-center justify-center rounded-full bg-influencer text-white">
+                  <FontAwesomeIcon
+                    icon={faPlus}
+                    className="fa-sm cursor-pointer"
+                    onClick={() => addContentTypeInput()}
+                  />
+                </div>
+              )}
             </div>
-            {contentTypes.map((contentType, index) => {
+            {contentTypesList.map((contentType, index) => {
+              const selectedContentIds = new Set(
+                contentTypesList.map((contentType, i) => {
+                  if (i !== index) return contentType.contentType.id;
+                })
+              );
+
+              const availableTypes: Option[] =
+                selectPlatform?.[0]?.contentTypes.filter(
+                  (contentType) => !selectedContentIds.has(contentType.id)
+                ) ?? [];
+
               return renderContentTypeWithQuantityInput(
                 index,
-                selectPlatform[0]?.contentTypes || []
+                availableTypes || []
               );
             })}
           </div>
@@ -214,8 +253,8 @@ const CreateOfferModal = (params: { onClose: () => void }) => {
         className="flex w-full flex-1 items-center gap-2"
         key={`${types?.[index]?.name || ""} ${index}`}
       >
-        {contentTypes.length > 1 && (
-          <div className="flex h-5 w-5 items-center justify-center rounded-full bg-influencer text-white">
+        {contentTypesList.length > 1 && (
+          <div className="flex h-6 w-6 items-center justify-center rounded-full bg-influencer text-white">
             <FontAwesomeIcon
               icon={faSubtract}
               className="fa-sm cursor-pointer"
@@ -228,10 +267,12 @@ const CreateOfferModal = (params: { onClose: () => void }) => {
             name="contentType"
             placeholder={t("pages.offer.contentTypePlaceholder")}
             options={types}
-            value={contentTypes[index]?.contentType || { id: -1, name: "" }}
-            handleOptionSelect={(value: Option) =>
-              handleContentTypeChange(index, value)
+            value={
+              contentTypesList?.[index]?.contentType || { id: -1, name: "" }
             }
+            handleOptionSelect={(value: Option) => {
+              handleContentTypeChange(index, value);
+            }}
             required={true}
           />
 
@@ -242,7 +283,8 @@ const CreateOfferModal = (params: { onClose: () => void }) => {
             placeholder={t("pages.offer.howMany")}
             max="1000000000"
             min="1"
-            value={contentTypes[index]?.amount || ""}
+            value={contentTypesList[index]?.amount || ""}
+            onWheel={(e) => e.currentTarget.blur()}
             onChange={(e) =>
               handleQuantityChange(index, e.target.valueAsNumber)
             }
@@ -253,7 +295,7 @@ const CreateOfferModal = (params: { onClose: () => void }) => {
   };
 
   const handleContentTypeChange = (index: number, value: Option) => {
-    setContentTypes((prevContentTypes) =>
+    setContentTypesList((prevContentTypes) =>
       prevContentTypes.map((contentType, i) =>
         i === index ? { ...contentType, contentType: value } : contentType
       )
@@ -261,7 +303,7 @@ const CreateOfferModal = (params: { onClose: () => void }) => {
   };
 
   const handleQuantityChange = (index: number, value: number) => {
-    setContentTypes((prevContentTypes) =>
+    setContentTypesList((prevContentTypes) =>
       prevContentTypes.map((contentType, i) =>
         i === index ? { ...contentType, amount: value } : contentType
       )
@@ -269,14 +311,14 @@ const CreateOfferModal = (params: { onClose: () => void }) => {
   };
 
   const addContentTypeInput = () => {
-    setContentTypes((prevContentTypes) => [
+    setContentTypesList((prevContentTypes) => [
       ...prevContentTypes,
       { contentType: { id: -1, name: "" }, amount: 0 },
     ]);
   };
 
   const removeContentTypeInput = (index: number) => {
-    setContentTypes((prevContentTypes) =>
+    setContentTypesList((prevContentTypes) =>
       prevContentTypes.filter((_, i) => i !== index)
     );
   };
@@ -326,7 +368,7 @@ const CreateOfferModal = (params: { onClose: () => void }) => {
             {t("pages.offer.offerPriceTitle")}
           </div>
           <input
-            {...register("offerPrice")}
+            {...register("offerPrice", { valueAsNumber: true })}
             required
             type="number"
             className="flex h-14 flex-1 cursor-pointer rounded-lg border-[1px] border-gray3 bg-transparent p-4 placeholder-gray2 placeholder:w-11/12"
@@ -334,6 +376,7 @@ const CreateOfferModal = (params: { onClose: () => void }) => {
             autoComplete="off"
             min="0"
             max="1000000000"
+            onWheel={(e) => e.currentTarget.blur()}
           />
         </div>
         <div className="w-full border-[1px] border-white1" />
@@ -349,7 +392,7 @@ const CreateOfferModal = (params: { onClose: () => void }) => {
             {t("pages.offer.numberOfInfluencers")}
           </div>
           <input
-            {...register("numberOfInfluencers")}
+            {...register("numberOfInfluencers", { valueAsNumber: true })}
             required
             type="number"
             className="flex h-14 flex-1 cursor-pointer rounded-lg border-[1px] border-gray3 bg-transparent p-4 placeholder-gray2 placeholder:w-11/12"
@@ -357,6 +400,7 @@ const CreateOfferModal = (params: { onClose: () => void }) => {
             autoComplete="off"
             min="1"
             max="1000000"
+            onWheel={(e) => e.currentTarget.blur()}
           />
         </div>
         <div className="w-full border-[1px] border-white1" />
@@ -425,6 +469,7 @@ const CreateOfferModal = (params: { onClose: () => void }) => {
                 autoComplete="off"
                 max="1000000000"
                 min="0"
+                onWheel={(e) => e.currentTarget.blur()}
               />
             </div>
 
@@ -439,6 +484,7 @@ const CreateOfferModal = (params: { onClose: () => void }) => {
                 autoComplete="off"
                 max="1000000000"
                 min="0"
+                onWheel={(e) => e.currentTarget.blur()}
               />
             </div>
           </div>

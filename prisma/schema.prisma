@@ -86,6 +86,10 @@ model Profile {
   submitedReviews Review[]          @relation("author")
   portfolio       Portfolio[]
 
+  createdOffers  Offer[] @relation("offerCreator")
+  appliedOffers  Offer[] @relation("offerApplicants")
+  acceptedOffers Offer[] @relation("offerAcceptedApplicants")
+
   favoriteBy Profile[] @relation("profileFavorites")
   favorites  Profile[] @relation("profileFavorites")
 
@@ -214,7 +218,6 @@ model ContentType {
   name                    String                    @unique
   valuePacks              ValuePack[]
   socialMedia             SocialMedia[]
-  Offer                   Offer[]
   ContentTypeWithQuantity ContentTypeWithQuantity[]
 }
 
@@ -262,20 +265,24 @@ model Offer {
   state                   State?                    @relation(fields: [stateId], references: [id])
   minFollowers            Int
   maxFollowers            Int
-  gender                  Gender                    @relation(fields: [genderId], references: [id])
+  gender                  Gender?                   @relation(fields: [genderId], references: [id])
+  isOpen                  Boolean
+  offerCreator            Profile                   @relation("offerCreator", fields: [profileId], references: [id])
+
+  applicants         Profile[] @relation("offerApplicants")
+  acceptedApplicants Profile[] @relation("offerAcceptedApplicants")
 
   socialMediaId Int
-  contentTypeId Int
   countryId     Int
-  genderId      Int
-  stateId       Int
-  ContentType   ContentType @relation(fields: [contentTypeId], references: [id])
+  genderId      Int?
+  stateId       Int?
+  profileId     Int
 
   @@index([socialMediaId])
-  @@index([contentTypeId])
   @@index([countryId])
   @@index([genderId])
   @@index([stateId])
+  @@index([profileId])
 }
 
 model ContentTypeWithQuantity {
