@@ -431,7 +431,7 @@ const EditPage = (params: { role: Option | undefined }) => {
           </div>
           {platforms?.length !== profileSocialMedia?.length && (
             <div
-              className="flex h-5 w-5 items-center justify-center rounded-full bg-influencer text-white"
+              className="flex h-6 w-6 items-center justify-center rounded-full bg-influencer text-white"
               onClick={() => setIsSocialMediaModalOpen(true)}
             >
               <FontAwesomeIcon

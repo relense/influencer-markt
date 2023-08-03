@@ -303,7 +303,7 @@ export const PictureCarrosel = (params: {
                 />
               </div>
             </div>
-            <div className="ml-[-10px] flex h-5 w-5 cursor-pointer items-center justify-center rounded-full bg-influencer text-white">
+            <div className="ml-[-10px] flex h-6 w-6 cursor-pointer items-center justify-center rounded-full bg-influencer text-white">
               <FontAwesomeIcon
                 icon={faPlus}
                 className="fa-sm cursor-pointer "

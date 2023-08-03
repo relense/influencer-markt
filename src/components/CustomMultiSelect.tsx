@@ -72,7 +72,7 @@ export const CustomMultiSelect = (params: {
     return (
       <FontAwesomeIcon
         icon={faCircleXmark}
-        className="absolute right-10 top-1/2 h-5 w-5 -translate-y-1/2 transform cursor-pointer text-gray2"
+        className="absolute right-10 top-1/2 h-6 w-6 -translate-y-1/2 transform cursor-pointer text-gray2"
         onClick={() => params.clearSelection()}
       />
     );

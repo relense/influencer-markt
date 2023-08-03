@@ -17,11 +17,8 @@ const OffersPage = () => {
           onClick={() => setOpenCreateModal(true)}
         >
           <div className="flex items-center gap-2 rounded-xl border-[1px] p-4">
-            <div className="flex h-5 w-5 items-center justify-center rounded-full bg-influencer text-white">
-              <FontAwesomeIcon
-                icon={faPlus}
-                className="fa-sm cursor-pointer "
-              />
+            <div className="flex h-6 w-6 items-center justify-center rounded-full bg-influencer text-white">
+              <FontAwesomeIcon icon={faPlus} className="fa-sm cursor-pointer" />
             </div>
             <div>{t("pages.offer.createOffer")}</div>
           </div>
