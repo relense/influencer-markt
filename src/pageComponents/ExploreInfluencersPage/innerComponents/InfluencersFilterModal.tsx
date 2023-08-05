@@ -82,7 +82,7 @@ const InfluencersFilterModal = (params: {
     filterSetValue("country", { id: -1, name: "" });
     filterSetValue("city", { id: -1, name: "" });
     filterSetValue("minPrice", 0);
-    filterSetValue("maxPrice", 100000000);
+    filterSetValue("maxPrice", 1000000000);
     filterSetValue("minFollowers", 0);
     filterSetValue("maxFollowers", 1000000000);
 
@@ -299,14 +299,13 @@ const InfluencersFilterModal = (params: {
                 className="h-14 w-full rounded-lg border-[1px] border-gray3 p-4 placeholder-gray2 focus:border-black focus:outline-none"
                 placeholder={t("pages.explore.maxPricePlaceholder")}
                 autoComplete="off"
-                max="100000000"
+                max="1000000000"
                 min="0"
                 value={filterWatch("maxPrice")}
               />
             </div>
           </div>
         </div>
-        <div className="w-full border-[1px] border-white1" />
       </>
     );
   };
@@ -318,7 +317,7 @@ const InfluencersFilterModal = (params: {
       button={
         <div className="flex flex-col items-center justify-between gap-4 p-4 sm:px-8 lg:flex-row">
           <div
-            className="flex cursor-pointer text-lg font-medium underline"
+            className="hidden cursor-pointer text-lg font-medium underline sm:flex"
             onClick={() => clearFilters()}
           >
             {t("pages.explore.clearAllButton")}

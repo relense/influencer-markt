@@ -189,7 +189,6 @@ const BrandsFilterModal = (params: {
         {renderFollowersInput()}
         <div className="w-full border-[1px] border-white1" />
         {renderLocationInputs()}
-        <div className="w-full border-[1px] border-white1" />
       </form>
     </Modal>
   );

@@ -40,9 +40,9 @@ const ExploreInfluencersPage = (params: { choosenCategories: Option[] }) => {
     country: { id: -1, name: "" },
     city: { id: -1, name: "" },
     minFollowers: 0,
-    maxFollowers: 100000000,
+    maxFollowers: 1000000000,
     minPrice: 0,
-    maxPrice: 100000000,
+    maxPrice: 1000000000,
   });
 
   const {
@@ -228,7 +228,6 @@ const ExploreInfluencersPage = (params: { choosenCategories: Option[] }) => {
       });
     }
 
-    setUserProfiles([]);
     void profileRefetch();
   };
 
@@ -285,7 +284,7 @@ const ExploreInfluencersPage = (params: { choosenCategories: Option[] }) => {
     if (params.minFollowers !== 0) {
       count++;
     }
-    if (params.maxFollowers !== 100000000) {
+    if (params.maxFollowers !== 1000000000) {
       count++;
     }
     if (params.gender.id > -1) {
@@ -303,7 +302,7 @@ const ExploreInfluencersPage = (params: { choosenCategories: Option[] }) => {
     if (params.minPrice !== 0) {
       count++;
     }
-    if (params.maxPrice !== 100000000) {
+    if (params.maxPrice !== 1000000000) {
       count++;
     }
 
@@ -323,9 +322,9 @@ const ExploreInfluencersPage = (params: { choosenCategories: Option[] }) => {
       country: { id: -1, name: "" },
       city: { id: -1, name: "" },
       minFollowers: 0,
-      maxFollowers: 100000000,
+      maxFollowers: 1000000000,
       minPrice: 0,
-      maxPrice: 100000000,
+      maxPrice: 1000000000,
     });
 
     if (activeFiltersCount > 0) {
@@ -387,6 +386,14 @@ const ExploreInfluencersPage = (params: { choosenCategories: Option[] }) => {
           platforms={filterState.platforms}
           clearSearchBar={clearSearchBar}
         />
+        {activeFiltersCount > 0 && (
+          <div
+            className="flex cursor-pointer text-lg font-medium underline sm:hidden"
+            onClick={() => onClearFilter()}
+          >
+            {t("pages.explore.clearAllButton")}
+          </div>
+        )}
         <div className="relative flex">
           <div
             className={filterButtonClasses}

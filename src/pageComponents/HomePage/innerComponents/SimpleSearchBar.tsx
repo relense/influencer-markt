@@ -15,13 +15,13 @@ export const SimpleSearchBar = () => {
 
   const { data: categories } = api.allRoutes.getAllCategories.useQuery();
 
-  const { control, handleSubmit, setValue } = useForm<{ categories: Option[] }>(
-    {
-      defaultValues: {
-        categories: [],
-      },
-    }
-  );
+  const { control, handleSubmit, setValue, watch } = useForm<{
+    categories: Option[];
+  }>({
+    defaultValues: {
+      categories: [],
+    },
+  });
 
   const submit = handleSubmit((data) => {
     void router.push(
@@ -38,7 +38,14 @@ export const SimpleSearchBar = () => {
   return (
     <form
       className="my-10 flex h-14 w-11/12 flex-col items-center gap-4 rounded-2xl  border-[1px] border-white1 pr-2 shadow-lg sm:m-10 lg:w-8/12 lg:flex-row lg:gap-0"
-      onSubmit={submit}
+      onSubmit={(e) => {
+        e.preventDefault();
+        if (watch("categories").length === 0) {
+          void router.push("/explore/influencers");
+        } else {
+          void submit();
+        }
+      }}
     >
       <Controller
         name="categories"

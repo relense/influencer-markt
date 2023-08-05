@@ -491,7 +491,7 @@ const PublicProfilePage = (params: {
             size="large"
             disabled={platform.id === -1 || selectedValuePack.id === -1}
           />
-          <div className="flex items-center justify-center gap-2 text-gray2">
+          <div className="flex items-center justify-center gap-2 text-center text-gray2">
             <ToolTip content={t("pages.publicProfilePage.tootlip")} />
             <div>{t("pages.publicProfilePage.disclaimer")}</div>
           </div>

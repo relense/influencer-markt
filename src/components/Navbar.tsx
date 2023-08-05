@@ -266,7 +266,7 @@ export const Navbar = (params: {
                   </Link>
                   <Link
                     href={`/${params.username}/edit`}
-                    className="flex cursor-pointer items-center gap-2"
+                    className="flex cursor-pointer items-center gap-4"
                   >
                     <FontAwesomeIcon icon={faPencil} className="fa-lg" />
 
@@ -313,44 +313,44 @@ export const Navbar = (params: {
             <FontAwesomeIcon icon={faUserCircle} className="fa-xl" />
             <div>{params.sessionData?.user.email}</div>
           </div>
-          <div className="cursor-pointer border-[1px] border-white1" />
 
           {params.role && params.role.name !== "Individual" && (
-            <>
+            <div>
+              <div className="cursor-pointer border-[1px] border-white1" />
               <Link
                 href={params.username ? `/${params.username}` : "/"}
-                className="flex cursor-pointer gap-4"
+                className="group flex cursor-pointer gap-4 py-2"
               >
                 <FontAwesomeIcon
                   icon={faFileLines}
                   className="fa-xl cursor-pointer"
                 />
-                <div className="hover:underline">
+                <div className="group-hover:underline">
                   {t("components.navbar.myPage")}
                 </div>
               </Link>
 
               <Link
                 href={`/${params.username}/edit`}
-                className="flex cursor-pointer items-center gap-2"
+                className="group flex cursor-pointer items-center gap-4 py-2"
               >
                 <FontAwesomeIcon icon={faPencil} className="fa-lg" />
 
-                <div className="hover:underline">
+                <div className="group-hover:underline">
                   {t("components.navbar.editMyPage")}
                 </div>
               </Link>
 
               <div className="cursor-pointer border-[1px] border-white1" />
-            </>
+            </div>
           )}
           <div
-            className="flex cursor-pointer items-center gap-4"
+            className="group flex cursor-pointer items-center gap-4"
             onClick={() => void signOut()}
           >
             <FontAwesomeIcon icon={faArrowRightFromBracket} className="fa-xl" />
             <span
-              className="text-lg hover:underline"
+              className="text-lg group-hover:underline"
               onClick={() => void signOut()}
             >
               {t("components.navbar.signOut")}

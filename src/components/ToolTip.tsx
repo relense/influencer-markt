@@ -1,7 +1,10 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCircleQuestion } from "@fortawesome/free-regular-svg-icons";
+import { useState } from "react";
 
 const ToolTip = (params: { content: string; color?: "warning" | "valid" }) => {
+  const [showTip, setShowtip] = useState<boolean>(false);
+
   let color = "text-gray2";
 
   if (params.color === "warning") {
@@ -14,11 +17,22 @@ const ToolTip = (params: { content: string; color?: "warning" | "valid" }) => {
 
   return (
     <>
-      <div className="group relative flex items-center">
+      <div
+        className="group relative flex items-center"
+        onClick={() => setShowtip(!showTip)}
+      >
         <FontAwesomeIcon icon={faCircleQuestion} className={iconClasses} />
         <div className="absolute top-3 z-10 hidden w-auto rounded-lg border-[1px] bg-gray4 px-4 py-4 text-white opacity-90 group-hover:flex xs:left-[-35px] xs:w-72 lg:w-96">
           {params.content}
         </div>
+        {showTip && (
+          <div
+            className="absolute top-3 z-10 w-auto rounded-lg border-[1px] bg-gray4 px-4 py-4 text-white opacity-90 xs:left-[-35px] xs:w-72 sm:hidden lg:w-96"
+            onClick={() => setShowtip(!showTip)}
+          >
+            {params.content}
+          </div>
+        )}
       </div>
     </>
   );

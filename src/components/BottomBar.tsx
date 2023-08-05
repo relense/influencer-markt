@@ -2,33 +2,46 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { type IconDefinition } from "@fortawesome/free-regular-svg-icons";
 import {
   faBookmark,
+  faBriefcase,
   faHome,
   faSearch,
 } from "@fortawesome/free-solid-svg-icons";
 import Link from "next/link";
 import { useRouter } from "next/router";
+import { type Session } from "next-auth";
 
 type linkItem = {
   pageUrl: string;
   icon: IconDefinition;
+  loggedIn: boolean;
 };
 
 const navigationLinks: linkItem[] = [
   {
     pageUrl: "/",
     icon: faHome,
+    loggedIn: false,
   },
   {
     pageUrl: "/explore/influencers",
     icon: faSearch,
+    loggedIn: false,
   },
   {
     pageUrl: "/saved/influencers",
     icon: faBookmark,
+    loggedIn: true,
+  },
+  {
+    pageUrl: "/offers",
+    icon: faBriefcase,
+    loggedIn: true,
   },
 ];
 
-const BottomBar = () => {
+const BottomBar = (params: {
+  status: "authenticated" | "loading" | "unauthenticated";
+}) => {
   const router = useRouter();
 
   return (
@@ -39,15 +52,23 @@ const BottomBar = () => {
             ? "fa-lg"
             : "fa-lg text-gray1";
 
-        return (
-          <Link
-            key={navigationItem.pageUrl}
-            href={navigationItem.pageUrl}
-            className="flex flex-1 cursor-pointer items-center justify-center  p-4 text-center"
-          >
-            <FontAwesomeIcon icon={navigationItem.icon} className={iconClass} />
-          </Link>
-        );
+        if (
+          !navigationItem.loggedIn ||
+          (params.status === "authenticated" && navigationItem.loggedIn)
+        ) {
+          return (
+            <Link
+              key={navigationItem.pageUrl}
+              href={navigationItem.pageUrl}
+              className="flex flex-1 cursor-pointer items-center justify-center  p-4 text-center"
+            >
+              <FontAwesomeIcon
+                icon={navigationItem.icon}
+                className={iconClass}
+              />
+            </Link>
+          );
+        }
       })}
     </div>
   );

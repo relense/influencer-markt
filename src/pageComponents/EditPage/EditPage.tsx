@@ -337,6 +337,28 @@ const EditPage = (params: { role: Option | undefined }) => {
 
   //RENDER FUNCTIONS
 
+  const renderCategories = () => {
+    return (
+      <div className="flex flex-1 flex-col gap-2">
+        <div className="text-2xl font-semibold">
+          {t("pages.editPage.categories")}
+        </div>
+        <div className="flex flex-wrap gap-4">
+          {profile?.categories.map((category) => {
+            return (
+              <div
+                key={category.id}
+                className="rounded-2xl border-[1px] border-gray2 px-4 py-1"
+              >
+                {t(`general.categories.${category.name}`)}
+              </div>
+            );
+          })}
+        </div>
+      </div>
+    );
+  };
+
   const renderProfileDescription = () => {
     return (
       <>
@@ -385,22 +407,8 @@ const EditPage = (params: { role: Option | undefined }) => {
             {profile?.about}
           </div>
         </div>
-        <div className="flex flex-1 flex-col gap-2">
-          <div className="text-2xl font-semibold">
-            {t("pages.editPage.categories")}
-          </div>
-          <div className="flex flex-wrap gap-4">
-            {profile?.categories.map((category) => {
-              return (
-                <div
-                  key={category.id}
-                  className="rounded-2xl border-[1px] border-gray2 px-4 py-1"
-                >
-                  {t(`general.categories.${category.name}`)}
-                </div>
-              );
-            })}
-          </div>
+        <div key="categoriesDesktop" className="hidden lg:flex">
+          {renderCategories()}
         </div>
       </>
     );
@@ -441,7 +449,7 @@ const EditPage = (params: { role: Option | undefined }) => {
             </div>
           )}
         </div>
-        <div className="flex flex-wrap gap-4">
+        <div className="flex flex-col gap-4 lg:flex-row lg:flex-wrap">
           {profileSocialMedia && profileSocialMedia.length > 0 ? (
             profileSocialMedia.map((socialMedia) => {
               const parsedSocialMedia: SocialMediaDetails = {
@@ -502,11 +510,14 @@ const EditPage = (params: { role: Option | undefined }) => {
         )}
         <div className="flex w-full flex-1 justify-center pb-10 xl:w-3/4 xl:self-center 2xl:w-2/4">
           <div className="flex w-full flex-1 cursor-default flex-col gap-6 px-4 sm:w-8/12 sm:px-12">
-            <div className="flex w-full flex-1 flex-col gap-6 xl:flex-row xl:gap-12">
+            <div className="flex w-full flex-1 flex-col gap-6 md:flex-row xl:gap-12">
               <div className="flex flex-1 flex-col gap-6">
                 {renderProfileDescription()}
               </div>
               {renderVisualPortfolio()}
+            </div>
+            <div key="categoriesMobile" className="flex lg:hidden">
+              {renderCategories()}
             </div>
             {renderSocialMedia()}
           </div>

@@ -247,8 +247,8 @@ const ProfileForm = (params: {
                   required={true}
                   emptyOptionsMessage={
                     params.watch("nationOfBirth")?.id !== -1
-                      ? "Search the city where you live"
-                      : "Choose a country before choosing a city"
+                      ? t("components.profileForm.emptyMessageNoCountry")
+                      : t("components.profileForm.emptyMessageWithCountry")
                   }
                   onChangeSearchKeys={setSearchKeys}
                   searchKeys={searchKeys}

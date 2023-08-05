@@ -93,7 +93,9 @@
       "countryPlaceholder": "Country",
       "cityPlaceholder": "City",
       "aboutPlaceholder": "Introduce Yourself: Share a Brief Description or Bio",
-      "websitePlaceholder": "Website URL: Provide Your Website Address"
+      "websitePlaceholder": "Website URL: Provide Your Website Address",
+      "emptyMessageNoCountry": "Search the city where you live",
+      "emptyMessageWithCountry": "Choose a country before choosing a city"
     },
 
     "addSocialMediaModal": {
