@@ -45,7 +45,7 @@ export const Layout = (props: {
     }
   }, [pathname]);
 
-  if (status === "loading") {
+  if (status === "loading" || (userIsLoading && status === "authenticated")) {
     return <LoadingSpinner />;
   } else {
     return (
