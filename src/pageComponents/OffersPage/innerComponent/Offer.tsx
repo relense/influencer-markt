@@ -8,17 +8,10 @@ import {
   faEllipsis,
   faTrash,
 } from "@fortawesome/free-solid-svg-icons";
-import { type Prisma } from "@prisma/client";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { helper } from "../../../utils/helper";
-
-type OfferWithIncludes = Prisma.OfferGetPayload<{
-  include: {
-    applicants: { select: { id: true } };
-    acceptedApplicants: { select: { id: true } };
-  };
-}>;
+import { type OfferWithIncludes } from "../../../utils/globalTypes";
 
 const Offer = (params: { offer: OfferWithIncludes }) => {
   const { t, i18n } = useTranslation();
@@ -58,11 +51,13 @@ const Offer = (params: { offer: OfferWithIncludes }) => {
         className="flex h-auto cursor-pointer flex-col justify-between gap-4 rounded-xl border-[1px] p-4"
         onClick={() => void router.push(`/offers/${params.offer.id}`)}
       >
-        <div className="flex flex-col gap-4">
+        <div className="flex flex-col gap-2">
           <div className="line-clamp-2 font-semibold xs:w-3/4">
             {params.offer.offerSummary}
           </div>
-          <div>{helper.formatDate(params.offer.createdAt, i18n.language)}</div>
+          <div className="font-semibold text-gray2">
+            {helper.formatDate(params.offer.createdAt, i18n.language)}
+          </div>
           <div className="line-clamp-3">{params.offer.OfferDetails}</div>
         </div>
         <div className="flex flex-col gap-4 sm:flex-row sm:gap-6">

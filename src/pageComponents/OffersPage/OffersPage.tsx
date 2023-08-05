@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
 import { useTranslation } from "react-i18next";
@@ -7,23 +7,67 @@ import { api } from "~/utils/api";
 import { CreateOfferModal } from "./innerComponent/CreateOfferModal";
 import { Offer } from "./innerComponent/Offer";
 import { LoadingSpinner } from "../../components/LoadingSpinner";
+import { type OfferWithIncludes } from "../../utils/globalTypes";
+import { Button } from "../../components/Button";
 
 const OffersPage = () => {
   const { t } = useTranslation();
   const [isOpenSelected, setIsOpenSelected] = useState<boolean>(true);
   const [openCreateModal, setOpenCreateModal] = useState<boolean>(false);
+  const [offers, setOffers] = useState<OfferWithIncludes[]>([]);
+  const [offersCursor, setOffersCursor] = useState<number>(-1);
 
   const {
-    data: offers,
-    refetch,
-    isRefetching,
+    data: offersData,
+    refetch: refetchOffers,
+    isRefetching: isRefetchingOffers,
   } = api.offers.getAllOffers.useQuery({
     isOpen: isOpenSelected,
   });
 
+  const {
+    data: offersWithCursorData,
+    refetch: refetchOffersWithCursor,
+    isFetching: isRefetchingOffersWithCursor,
+  } = api.offers.getAllOffersWithCursor.useQuery(
+    {
+      isOpen: isOpenSelected,
+      cursor: offersCursor,
+    },
+    { enabled: false }
+  );
+
+  useEffect(() => {
+    if (offersData) {
+      setOffers(offersData[1]);
+
+      const lastOfferInArray = offersData[1][offersData[1].length - 1];
+
+      if (lastOfferInArray) {
+        setOffersCursor(lastOfferInArray.id);
+      }
+    }
+  }, [offersData]);
+
+  useEffect(() => {
+    if (offersWithCursorData) {
+      const newOffers = [...offers];
+      offersWithCursorData.forEach((offer) => newOffers.push(offer));
+      setOffers(newOffers);
+
+      const lastOfferInArray =
+        offersWithCursorData[offersWithCursorData.length - 1];
+
+      if (lastOfferInArray) {
+        setOffersCursor(lastOfferInArray.id);
+      }
+    }
+  }, [offers, offersWithCursorData]);
+
   const changeOpenSelected = () => {
     setIsOpenSelected(!isOpenSelected);
-    void refetch();
+    setOffers([]);
+    void refetchOffers();
   };
 
   return (
@@ -61,14 +105,25 @@ const OffersPage = () => {
           </div>
         </div>
 
-        {isRefetching ? (
+        {isRefetchingOffers ? (
           <LoadingSpinner />
         ) : (
-          <div className="flex flex-col gap-4 lg:flex-row lg:flex-wrap">
-            {offers?.map((offer) => {
-              return <Offer offer={offer} key={offer.id} />;
-            })}
-          </div>
+          <>
+            <div className="flex flex-col gap-4 lg:flex-row lg:flex-wrap">
+              {offers?.map((offer) => {
+                return <Offer offer={offer} key={offer.id} />;
+              })}
+            </div>
+            {offersData && offersData[0] > offers.length && (
+              <div className="flex items-center justify-center">
+                <Button
+                  title={t("pages.publicProfilePage.loadMore")}
+                  onClick={() => refetchOffersWithCursor()}
+                  isLoading={isRefetchingOffersWithCursor}
+                />
+              </div>
+            )}
+          </>
         )}
       </div>
       <div className="flex justify-center">

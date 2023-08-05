@@ -1,6 +1,5 @@
 import { z } from "zod";
 import { createTRPCRouter, protectedProcedure } from "../trpc";
-import { Input } from "postcss";
 
 export const OffersRouter = createTRPCRouter({
   createOffer: protectedProcedure
@@ -82,22 +81,33 @@ export const OffersRouter = createTRPCRouter({
       });
 
       if (profile) {
-        return await ctx.prisma.offer.findMany({
-          where: { profileId: profile.id, isOpen: input.isOpen },
-          take: 10,
-          include: {
-            applicants: {
-              select: {
-                id: true,
+        return await ctx.prisma.$transaction([
+          ctx.prisma.offer.count({
+            where: { profileId: profile.id, isOpen: input.isOpen },
+          }),
+          ctx.prisma.offer.findMany({
+            where: { profileId: profile.id, isOpen: input.isOpen },
+            take: 10,
+            select: {
+              id: true,
+              isOpen: true,
+              createdAt: true,
+              offerSummary: true,
+              OfferDetails: true,
+              numberOfInfluencers: true,
+              applicants: {
+                select: {
+                  id: true,
+                },
+              },
+              acceptedApplicants: {
+                select: {
+                  id: true,
+                },
               },
             },
-            acceptedApplicants: {
-              select: {
-                id: true,
-              },
-            },
-          },
-        });
+          }),
+        ]);
       }
     }),
 
@@ -120,7 +130,17 @@ export const OffersRouter = createTRPCRouter({
         return await ctx.prisma.offer.findMany({
           where: { profileId: profile.id, isOpen: input.isOpen },
           take: 10,
-          include: {
+          skip: 1,
+          cursor: {
+            id: input.cursor,
+          },
+          select: {
+            id: true,
+            isOpen: true,
+            createdAt: true,
+            offerSummary: true,
+            OfferDetails: true,
+            numberOfInfluencers: true,
             applicants: {
               select: {
                 id: true,

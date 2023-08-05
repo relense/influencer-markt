@@ -73,7 +73,7 @@ const PublicProfilePage = (params: {
   const {
     data: profileReviewsCursor,
     isFetching: isFetchingReviewsCursor,
-    refetch,
+    refetch: isRefetchingWithCursor,
   } = api.reviews.getProfileReviewsWithCursor.useQuery(
     {
       profileId: profile?.id || -1,
@@ -608,7 +608,7 @@ const PublicProfilePage = (params: {
               <div className="flex items-center justify-center">
                 <Button
                   title={t("pages.publicProfilePage.loadMore")}
-                  onClick={() => refetch()}
+                  onClick={() => isRefetchingWithCursor()}
                   isLoading={isFetchingReviewsCursor}
                 />
               </div>

@@ -468,6 +468,7 @@
       "close": "Close",
       "duplicate": "Duplicate",
       "delete": "Delete",
+      "applicants_zero": "{{count}} Applicants",
       "applicants_one": "{{count}} Applicant",
       "applicants_other": "{{count}} Applicants",
       "openings_one": "{{acceptedAplicants}}/{{count}} Opening",

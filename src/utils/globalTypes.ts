@@ -84,3 +84,16 @@ export type UserProfiles = {
   bookmarked?: boolean;
   favoritedBy?: number[];
 };
+
+export type OfferWithIncludes = Prisma.OfferGetPayload<{
+  select: {
+    id: true;
+    isOpen: true;
+    createdAt: true;
+    offerSummary: true;
+    OfferDetails: true;
+    numberOfInfluencers: true;
+    applicants: { select: { id: true } };
+    acceptedApplicants: { select: { id: true } };
+  };
+}>;
