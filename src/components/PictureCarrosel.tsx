@@ -251,6 +251,7 @@ export const PictureCarrosel = (params: {
                 alt="Uploaded Image"
                 width={540}
                 height={430}
+                quality={100}
                 className="h-full rounded-lg object-cover"
                 priority
               />

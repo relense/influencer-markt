@@ -106,9 +106,9 @@ const ProfileForm = (params: {
             <Image
               src={profilePicture}
               alt="Profile Picture"
-              width={96}
-              height={96}
-              className="h-full rounded-full object-cover"
+              width={1000}
+              height={1000}
+              className="h-24 w-24 rounded-full object-cover"
             />
           </div>
         )}
