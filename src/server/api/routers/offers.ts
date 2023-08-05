@@ -1,5 +1,6 @@
 import { z } from "zod";
 import { createTRPCRouter, protectedProcedure } from "../trpc";
+import { Input } from "postcss";
 
 export const OffersRouter = createTRPCRouter({
   createOffer: protectedProcedure
@@ -66,30 +67,72 @@ export const OffersRouter = createTRPCRouter({
       return offer;
     }),
 
-  getAllOffers: protectedProcedure.query(async ({ ctx }) => {
-    const profile = await ctx.prisma.profile.findFirst({
-      where: { userId: ctx.session.user.id },
-      select: {
-        id: true,
-      },
-    });
-
-    if (profile) {
-      return await ctx.prisma.offer.findMany({
-        where: { profileId: profile.id },
-        include: {
-          applicants: {
-            select: {
-              id: true,
-            },
-          },
-          acceptedApplicants: {
-            select: {
-              id: true,
-            },
-          },
+  getAllOffers: protectedProcedure
+    .input(
+      z.object({
+        isOpen: z.boolean(),
+      })
+    )
+    .query(async ({ ctx, input }) => {
+      const profile = await ctx.prisma.profile.findFirst({
+        where: { userId: ctx.session.user.id },
+        select: {
+          id: true,
         },
       });
-    }
-  }),
+
+      if (profile) {
+        return await ctx.prisma.offer.findMany({
+          where: { profileId: profile.id, isOpen: input.isOpen },
+          take: 10,
+          include: {
+            applicants: {
+              select: {
+                id: true,
+              },
+            },
+            acceptedApplicants: {
+              select: {
+                id: true,
+              },
+            },
+          },
+        });
+      }
+    }),
+
+  getAllOffersWithCursor: protectedProcedure
+    .input(
+      z.object({
+        isOpen: z.boolean(),
+        cursor: z.number(),
+      })
+    )
+    .query(async ({ ctx, input }) => {
+      const profile = await ctx.prisma.profile.findFirst({
+        where: { userId: ctx.session.user.id },
+        select: {
+          id: true,
+        },
+      });
+
+      if (profile) {
+        return await ctx.prisma.offer.findMany({
+          where: { profileId: profile.id, isOpen: input.isOpen },
+          take: 10,
+          include: {
+            applicants: {
+              select: {
+                id: true,
+              },
+            },
+            acceptedApplicants: {
+              select: {
+                id: true,
+              },
+            },
+          },
+        });
+      }
+    }),
 });

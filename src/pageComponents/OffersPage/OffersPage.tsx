@@ -1,77 +1,29 @@
 import { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faBriefcase,
-  faCircleCheck,
-  faEllipsis,
-  faPlus,
-} from "@fortawesome/free-solid-svg-icons";
+import { faPlus } from "@fortawesome/free-solid-svg-icons";
 import { useTranslation } from "react-i18next";
 import { api } from "~/utils/api";
 
 import { CreateOfferModal } from "./innerComponent/CreateOfferModal";
-import { useRouter } from "next/router";
-import { type Prisma } from "@prisma/client";
-
-export type OfferWithIncludes = Prisma.OfferGetPayload<{
-  include: {
-    applicants: { select: { id: true } };
-    acceptedApplicants: { select: { id: true } };
-  };
-}>;
+import { Offer } from "./innerComponent/Offer";
+import { LoadingSpinner } from "../../components/LoadingSpinner";
 
 const OffersPage = () => {
   const { t } = useTranslation();
-  const router = useRouter();
-
+  const [isOpenSelected, setIsOpenSelected] = useState<boolean>(true);
   const [openCreateModal, setOpenCreateModal] = useState<boolean>(false);
 
-  const { data: offers } = api.offers.getAllOffers.useQuery();
+  const {
+    data: offers,
+    refetch,
+    isRefetching,
+  } = api.offers.getAllOffers.useQuery({
+    isOpen: isOpenSelected,
+  });
 
-  const renderOffer = (offer: OfferWithIncludes) => {
-    return (
-      <div
-        key={offer.id}
-        className="relative flex h-auto flex-[0_1_49%] cursor-pointer flex-col justify-between gap-4 rounded-xl border-[1px] p-4"
-        onClick={() => void router.push(`/offers/${offer.id}`)}
-      >
-        <div className="flex flex-col gap-4">
-          <div className="flex justify-between gap-2">
-            <div className="line-clamp-2 w-32 font-semibold xs:w-full">
-              {offer.offerSummary}
-            </div>
-            <div className="hover:text-influencer">
-              <FontAwesomeIcon
-                icon={faEllipsis}
-                className="fa-xl cursor-pointer "
-              />
-            </div>
-          </div>
-          <div className="line-clamp-3">{offer.OfferDetails}</div>
-        </div>
-        <div className="flex flex-col gap-4 sm:flex-row sm:gap-6">
-          <div className="flex items-center gap-2">
-            <FontAwesomeIcon
-              icon={faBriefcase}
-              className="fa-xl cursor-pointer text-influencer"
-            />
-            <div className="font-semibold">
-              {offer.applicants.length} Applicants
-            </div>
-          </div>
-          <div className="flex items-center gap-2">
-            <FontAwesomeIcon
-              icon={faCircleCheck}
-              className="fa-xl cursor-pointer text-influencer"
-            />
-            <div className="font-semibold">
-              {offer.acceptedApplicants.length}/{offer.numberOfInfluencers}{" "}
-              Openings
-            </div>
-          </div>
-        </div>
-      </div>
-    );
+  const changeOpenSelected = () => {
+    setIsOpenSelected(!isOpenSelected);
+    void refetch();
   };
 
   return (
@@ -86,14 +38,38 @@ const OffersPage = () => {
           </div>
           <div>{t("pages.offer.createOffer")}</div>
         </div>
-        <div className="text-xl font-semibold">Open Offers</div>
-        <div className="flex flex-wrap gap-4">
-          {offers?.map((offer) => {
-            if (offer.isOpen) {
-              return renderOffer(offer);
+        <div className="flex justify-center gap-4">
+          <div
+            className={
+              isOpenSelected
+                ? "cursor-default text-xl font-semibold text-influencer"
+                : "cursor-pointer text-xl font-semibold text-gray4"
             }
-          })}
+            onClick={() => changeOpenSelected()}
+          >
+            {t("pages.offer.openOffers")}
+          </div>
+          <div
+            className={
+              !isOpenSelected
+                ? "cursor-default text-xl font-semibold text-influencer"
+                : "cursor-pointer text-xl font-semibold text-gray4"
+            }
+            onClick={() => changeOpenSelected()}
+          >
+            {t("pages.offer.closedOffers")}
+          </div>
         </div>
+
+        {isRefetching ? (
+          <LoadingSpinner />
+        ) : (
+          <div className="flex flex-col gap-4 lg:flex-row lg:flex-wrap">
+            {offers?.map((offer) => {
+              return <Offer offer={offer} key={offer.id} />;
+            })}
+          </div>
+        )}
       </div>
       <div className="flex justify-center">
         {openCreateModal && (

@@ -15,6 +15,17 @@ const ToolTip = (params: { content: string; color?: "warning" | "valid" }) => {
 
   const iconClasses = `fa-lg cursor-pointer ${color}`;
 
+  const dropdown = () => {
+    return (
+      <div
+        className="absolute top-3 z-10 w-auto rounded-lg border-[1px] bg-gray4 px-4 py-4 text-white opacity-90 xs:left-[-35px] xs:w-72 lg:w-96"
+        onClick={() => setShowtip(!showTip)}
+      >
+        {params.content}
+      </div>
+    );
+  };
+
   return (
     <>
       <div
@@ -22,17 +33,8 @@ const ToolTip = (params: { content: string; color?: "warning" | "valid" }) => {
         onClick={() => setShowtip(!showTip)}
       >
         <FontAwesomeIcon icon={faCircleQuestion} className={iconClasses} />
-        <div className="absolute top-3 z-10 hidden w-auto rounded-lg border-[1px] bg-gray4 px-4 py-4 text-white opacity-90 group-hover:flex xs:left-[-35px] xs:w-72 lg:w-96">
-          {params.content}
-        </div>
-        {showTip && (
-          <div
-            className="absolute top-3 z-10 w-auto rounded-lg border-[1px] bg-gray4 px-4 py-4 text-white opacity-90 xs:left-[-35px] xs:w-72 sm:hidden lg:w-96"
-            onClick={() => setShowtip(!showTip)}
-          >
-            {params.content}
-          </div>
-        )}
+        <div className="hidden group-hover:flex">{dropdown()}</div>
+        {showTip && <div className="flex sm:hidden">{dropdown()}</div>}
       </div>
     </>
   );

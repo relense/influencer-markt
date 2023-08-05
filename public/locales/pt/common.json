@@ -464,7 +464,16 @@
       "any": "Todos",
       "Male": "Masculino",
       "Female": "Feminino",
-      "Other": "Outro"
+      "Other": "Outro",
+      "close": "Fechar",
+      "duplicate": "Duplicar",
+      "delete": "Apagar",
+      "applicants_one": "{{count}} Candidato",
+      "applicants_other": "{{count}} Candidatos",
+      "openings_one": "{{acceptedAplicants}}/{{count}} Vaga",
+      "openings_other": "{{acceptedAplicants}}/{{count}} Vagas",
+      "openOffers": "Ofertas Abertas",
+      "closedOffers": "Ofertas Fechadas"
     }
   }
 }
