@@ -33,45 +33,24 @@ export const OffersRouter = createTRPCRouter({
         throw new Error("Profile not found.");
       }
 
-      let offerData;
-
-      if (input.genderId !== -1) {
-        offerData = {
-          offerSummary: input.offerSummary,
-          OfferDetails: input.offerDetails,
-          socialMedia: { connect: { id: input.socialMediaId } },
-          categories: {
-            connect: input.categories.map((categoryId) => ({ id: categoryId })),
-          },
-          price: input.price,
-          numberOfInfluencers: input.numberOfInfluencers,
-          country: { connect: { id: input.socialMediaId } },
-          minFollowers: input.minFollowers,
-          maxFollowers: input.maxFollowers,
-          offerCreator: { connect: { id: profile.id } },
-          gender: { connect: { id: input.genderId } },
-          isOpen: true,
-        };
-      } else {
-        offerData = {
-          offerSummary: input.offerSummary,
-          OfferDetails: input.offerDetails,
-          socialMedia: { connect: { id: input.socialMediaId } },
-          categories: {
-            connect: input.categories.map((categoryId) => ({ id: categoryId })),
-          },
-          price: input.price,
-          numberOfInfluencers: input.numberOfInfluencers,
-          country: { connect: { id: input.socialMediaId } },
-          minFollowers: input.minFollowers,
-          maxFollowers: input.maxFollowers,
-          offerCreator: { connect: { id: profile.id } },
-          isOpen: true,
-        };
-      }
-
       const offer = await ctx.prisma.offer.create({
-        data: offerData,
+        data: {
+          offerSummary: input.offerSummary,
+          OfferDetails: input.offerDetails,
+          socialMedia: { connect: { id: input.socialMediaId } },
+          categories: {
+            connect: input.categories.map((categoryId) => ({ id: categoryId })),
+          },
+          price: input.price,
+          numberOfInfluencers: input.numberOfInfluencers,
+          country: { connect: { id: input.countryId } },
+          minFollowers: input.minFollowers,
+          maxFollowers: input.maxFollowers,
+          offerCreator: { connect: { id: profile.id } },
+          gender:
+            input.genderId !== -1 ? { connect: { id: input.genderId } } : {},
+          isOpen: true,
+        },
       });
 
       await ctx.prisma.contentTypeWithQuantity.createMany({
@@ -79,11 +58,38 @@ export const OffersRouter = createTRPCRouter({
           return {
             contentTypeId: contentType.contentTypeId,
             amount: contentType.amount,
-            offer: { connect: { id: offer.id } },
+            offerId: offer.id,
           };
         }),
       });
 
       return offer;
     }),
+
+  getAllOffers: protectedProcedure.query(async ({ ctx }) => {
+    const profile = await ctx.prisma.profile.findFirst({
+      where: { userId: ctx.session.user.id },
+      select: {
+        id: true,
+      },
+    });
+
+    if (profile) {
+      return await ctx.prisma.offer.findMany({
+        where: { profileId: profile.id },
+        include: {
+          applicants: {
+            select: {
+              id: true,
+            },
+          },
+          acceptedApplicants: {
+            select: {
+              id: true,
+            },
+          },
+        },
+      });
+    }
+  }),
 });

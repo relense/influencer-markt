@@ -10,6 +10,7 @@ import { Button } from "../../../components/Button";
 import type { Option } from "../../../utils/globalTypes";
 import { CustomMultiSelect } from "../../../components/CustomMultiSelect";
 import { useState } from "react";
+import { toast } from "react-hot-toast";
 
 type OfferData = {
   offerSummary: string;
@@ -31,6 +32,7 @@ type ContentTypeWithQuantity = {
 
 const CreateOfferModal = (params: { onClose: () => void }) => {
   const { t } = useTranslation();
+  const ctx = api.useContext();
 
   const [contentTypesList, setContentTypesList] = useState<
     ContentTypeWithQuantity[]
@@ -57,7 +59,16 @@ const CreateOfferModal = (params: { onClose: () => void }) => {
   const { data: genders } = api.allRoutes.getAllGenders.useQuery();
   const { data: countries } = api.allRoutes.getAllCountries.useQuery();
 
-  const { mutate: offerMutation } = api.offers.createOffer.useMutation();
+  const { mutate: offerMutation } = api.offers.createOffer.useMutation({
+    onSuccess: () => {
+      void ctx.offers.getAllOffers.invalidate().then(() => {
+        params.onClose();
+        toast.success("Offer created successfully", {
+          position: "bottom-left",
+        });
+      });
+    },
+  });
 
   const submitRequest = handleSubmit((data) => {
     const payload = {
@@ -80,8 +91,6 @@ const CreateOfferModal = (params: { onClose: () => void }) => {
       maxFollowers: data.maxFollowers,
       genderId: data.gender.id,
     };
-
-    debugger;
 
     offerMutation(payload);
   });
@@ -124,7 +133,7 @@ const CreateOfferModal = (params: { onClose: () => void }) => {
           </div>
           <div className="flex w-full flex-col">
             <textarea
-              {...register("offerDetails", { maxLength: 200 })}
+              {...register("offerDetails", { maxLength: 464 })}
               required
               className="flex flex-1 cursor-pointer rounded-lg border-[1px] border-gray3 bg-transparent p-4 placeholder-gray2 placeholder:w-11/12"
               placeholder={t("pages.offer.detailsPlaceholder")}
@@ -134,7 +143,7 @@ const CreateOfferModal = (params: { onClose: () => void }) => {
               errors.offerDetails.type === "maxLength" && (
                 <div className="px-4 py-1 text-red-600">
                   {t("pages.offer..errorWarning", {
-                    count: 200,
+                    count: 464,
                   })}
                 </div>
               )}
@@ -251,7 +260,7 @@ const CreateOfferModal = (params: { onClose: () => void }) => {
     return (
       <div
         className="flex w-full flex-1 items-center gap-2"
-        key={`${types?.[index]?.name || ""} ${index}`}
+        key={`contentTypeWithQuantity${index}`}
       >
         {contentTypesList.length > 1 && (
           <div className="flex h-6 w-6 items-center justify-center rounded-full bg-influencer text-white">
@@ -268,7 +277,10 @@ const CreateOfferModal = (params: { onClose: () => void }) => {
             placeholder={t("pages.offer.contentTypePlaceholder")}
             options={types}
             value={
-              contentTypesList?.[index]?.contentType || { id: -1, name: "" }
+              contentTypesList?.[index]?.contentType || {
+                id: -1,
+                name: "",
+              }
             }
             handleOptionSelect={(value: Option) => {
               handleContentTypeChange(index, value);
@@ -510,7 +522,7 @@ const CreateOfferModal = (params: { onClose: () => void }) => {
             }
             onClick={() => setValue("gender", { id: -1, name: "" })}
           >
-            Any
+            {t(`pages.offer.any`)}
           </div>
           {genders?.map((gender) => {
             return (
@@ -523,7 +535,7 @@ const CreateOfferModal = (params: { onClose: () => void }) => {
                 }
                 onClick={() => setValue("gender", gender)}
               >
-                {t(`pages.explore.${gender.name}`)}
+                {t(`pages.offer.${gender.name}`)}
               </div>
             );
           })}

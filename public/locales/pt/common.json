@@ -33,7 +33,7 @@
     "navbar": {
       "home": "Início",
       "explore": "Explora",
-      "saved": "Guardado",
+      "saved": "Favoritos",
       "signIn": "Entrar",
       "joinMarketPlace": "Junta-te ao Marketplace",
       "myPage": "A Minha Página",
@@ -453,12 +453,16 @@
       "numberOfInfluencersPlaceholder": "De quantos influencers precisa?",
       "influencerLocation": "Localização do Influencer",
       "country": "País",
-      "influencerFollowers": "Seguidos do Influencer",
+      "influencerFollowers": "Seguidores do Influencer",
       "minimum": "Mínimo",
       "minFollowers": "Seguidores Min",
       "maximum": "Máximo",
       "maxFollowers": "Seguidores Max",
-      "influencerGender": "Género do Influencer"
+      "influencerGender": "Género do Influencer",
+      "any": "Todos",
+      "Male": "Masculino",
+      "Female": "Feminino",
+      "Other": "Outro"
     }
   }
 }

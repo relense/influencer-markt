@@ -1,11 +1,10 @@
-import type { GetStaticProps, NextPage } from "next";
+import type { NextPage } from "next";
 import { useRouter } from "next/router";
 import { api } from "~/utils/api";
 
 import { ProtectedWrapper } from "../../components/ProtectedWrapper";
 import { Layout } from "../../components/Layout";
 import { OffersPage } from "../../pageComponents/OffersPage/OffersPage";
-import { generateSSGHelper } from "../../server/helper/ssgHelper";
 import { useEffect } from "react";
 
 const CreateOffer: NextPage = () => {
@@ -23,18 +22,6 @@ const CreateOffer: NextPage = () => {
       <Layout>{() => <OffersPage />}</Layout>
     </ProtectedWrapper>
   );
-};
-
-export const getStaticProps: GetStaticProps = async () => {
-  const ssg = generateSSGHelper();
-
-  await ssg.users.getUser.prefetch();
-
-  return {
-    props: {
-      trpcState: ssg.dehydrate(),
-    },
-  };
 };
 
 export default CreateOffer;

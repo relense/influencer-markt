@@ -458,7 +458,11 @@
       "minFollowers": "Min Followers",
       "maximum": "Maximum",
       "maxFollowers": "Max Followers",
-      "influencerGender": "Influencer Gender"
+      "influencerGender": "Influencer Gender",
+      "any": "Any",
+      "Male": "Male",
+      "Female": "Female",
+      "Other": "Other"
     }
   }
 }
