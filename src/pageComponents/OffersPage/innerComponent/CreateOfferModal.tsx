@@ -63,7 +63,7 @@ const CreateOfferModal = (params: { onClose: () => void }) => {
     onSuccess: () => {
       void ctx.offers.getAllOffers.invalidate().then(() => {
         params.onClose();
-        toast.success("Offer created successfully", {
+        toast.success(t("pages.offer.offerCreated"), {
           position: "bottom-left",
         });
       });

@@ -266,8 +266,9 @@ model Offer {
   minFollowers            Int
   maxFollowers            Int
   gender                  Gender?                   @relation(fields: [genderId], references: [id])
-  isOpen                  Boolean
+  archived                Boolean                   @default(false)
   offerCreator            Profile                   @relation("offerCreator", fields: [profileId], references: [id])
+  published               Boolean                   @default(false)
 
   applicants         Profile[] @relation("offerApplicants")
   acceptedApplicants Profile[] @relation("offerAcceptedApplicants")

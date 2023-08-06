@@ -88,11 +88,12 @@ export type UserProfiles = {
 export type OfferWithIncludes = Prisma.OfferGetPayload<{
   select: {
     id: true;
-    isOpen: true;
+    archived: true;
     createdAt: true;
     offerSummary: true;
     OfferDetails: true;
     numberOfInfluencers: true;
+    published: true;
     applicants: { select: { id: true } };
     acceptedApplicants: { select: { id: true } };
   };

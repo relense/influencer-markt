@@ -465,7 +465,8 @@
       "Male": "Masculino",
       "Female": "Feminino",
       "Other": "Outro",
-      "close": "Fechar",
+      "publish": "Publicar",
+      "archive": "Arquivar",
       "duplicate": "Duplicar",
       "delete": "Apagar",
       "applicants_zero": "{{count}} Candidatos",
@@ -474,7 +475,13 @@
       "openings_one": "{{acceptedAplicants}}/{{count}} Vaga",
       "openings_other": "{{acceptedAplicants}}/{{count}} Vagas",
       "openOffers": "Ofertas Abertas",
-      "closedOffers": "Ofertas Fechadas"
+      "closedOffers": "Ofertas Arquivadas",
+      "published": "Publicado",
+      "unpublished": "Não Publicado",
+      "offerCreated": "Oferta criada com sucesso",
+      "offerPublished": "Oferta publicada com sucesso",
+      "offerArchived": "Oferta arquivada com sucesso",
+      "offerDuplicated": "Oferta duplicada com sucesso"
     }
   }
 }

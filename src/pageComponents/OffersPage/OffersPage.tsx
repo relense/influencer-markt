@@ -12,7 +12,7 @@ import { Button } from "../../components/Button";
 
 const OffersPage = () => {
   const { t } = useTranslation();
-  const [isOpenSelected, setIsOpenSelected] = useState<boolean>(true);
+  const [isArchived, setIsArchived] = useState<boolean>(false);
   const [openCreateModal, setOpenCreateModal] = useState<boolean>(false);
   const [offers, setOffers] = useState<OfferWithIncludes[]>([]);
   const [offersCursor, setOffersCursor] = useState<number>(-1);
@@ -22,7 +22,7 @@ const OffersPage = () => {
     refetch: refetchOffers,
     isRefetching: isRefetchingOffers,
   } = api.offers.getAllOffers.useQuery({
-    isOpen: isOpenSelected,
+    archived: isArchived,
   });
 
   const {
@@ -31,7 +31,7 @@ const OffersPage = () => {
     isFetching: isRefetchingOffersWithCursor,
   } = api.offers.getAllOffersWithCursor.useQuery(
     {
-      isOpen: isOpenSelected,
+      archived: isArchived,
       cursor: offersCursor,
     },
     { enabled: false }
@@ -65,7 +65,7 @@ const OffersPage = () => {
   }, [offers, offersWithCursorData]);
 
   const changeOpenSelected = () => {
-    setIsOpenSelected(!isOpenSelected);
+    setIsArchived(!isArchived);
     setOffers([]);
     void refetchOffers();
   };
@@ -85,7 +85,7 @@ const OffersPage = () => {
         <div className="flex justify-center gap-4">
           <div
             className={
-              isOpenSelected
+              !isArchived
                 ? "cursor-default text-xl font-semibold text-influencer"
                 : "cursor-pointer text-xl font-semibold text-gray4"
             }
@@ -95,7 +95,7 @@ const OffersPage = () => {
           </div>
           <div
             className={
-              !isOpenSelected
+              isArchived
                 ? "cursor-default text-xl font-semibold text-influencer"
                 : "cursor-pointer text-xl font-semibold text-gray4"
             }
@@ -105,26 +105,23 @@ const OffersPage = () => {
           </div>
         </div>
 
-        {isRefetchingOffers ? (
-          <LoadingSpinner />
-        ) : (
-          <>
-            <div className="flex flex-col gap-4 lg:flex-row lg:flex-wrap">
-              {offers?.map((offer) => {
-                return <Offer offer={offer} key={offer.id} />;
-              })}
+        <>
+          {isRefetchingOffers && <LoadingSpinner />}
+          <div className="flex flex-col gap-4 lg:flex-row lg:flex-wrap">
+            {offers?.map((offer) => {
+              return <Offer offer={offer} key={offer.id} />;
+            })}
+          </div>
+          {offersData && offersData[0] > offers.length && (
+            <div className="flex items-center justify-center">
+              <Button
+                title={t("pages.publicProfilePage.loadMore")}
+                onClick={() => refetchOffersWithCursor()}
+                isLoading={isRefetchingOffersWithCursor}
+              />
             </div>
-            {offersData && offersData[0] > offers.length && (
-              <div className="flex items-center justify-center">
-                <Button
-                  title={t("pages.publicProfilePage.loadMore")}
-                  onClick={() => refetchOffersWithCursor()}
-                  isLoading={isRefetchingOffersWithCursor}
-                />
-              </div>
-            )}
-          </>
-        )}
+          )}
+        </>
       </div>
       <div className="flex justify-center">
         {openCreateModal && (

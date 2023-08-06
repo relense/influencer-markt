@@ -306,7 +306,7 @@ export const Navbar = (params: {
           onClick={() => setToggleOptions(!toggleOptions)}
         />
         <div
-          className="absolute right-1 top-20 z-10 flex h-auto w-11/12 flex-col gap-4 rounded-2xl border-[1px] border-white1 bg-white p-8 shadow-lg sm:right-5 sm:w-auto"
+          className="absolute right-1 top-20 z-50 flex h-auto w-11/12 flex-col gap-4 rounded-2xl border-[1px] border-white1 bg-white p-8 shadow-lg sm:right-5 sm:w-auto"
           onClick={() => setToggleOptions(!toggleOptions)}
         >
           <div className="flex items-center gap-4">

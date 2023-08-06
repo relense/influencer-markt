@@ -465,7 +465,7 @@
       "Male": "Male",
       "Female": "Female",
       "Other": "Other",
-      "close": "Close",
+      "archive": "Archive",
       "duplicate": "Duplicate",
       "delete": "Delete",
       "applicants_zero": "{{count}} Applicants",
@@ -474,7 +474,13 @@
       "openings_one": "{{acceptedAplicants}}/{{count}} Opening",
       "openings_other": "{{acceptedAplicants}}/{{count}} Openings",
       "openOffers": "Open Offers",
-      "closedOffers": "Closed Offers"
+      "closedOffers": "Archived Offers",
+      "published": "Published",
+      "unpublished": "Unpublished",
+      "offerCreated": "Offer created successfully",
+      "offerPublished": "Offer published successfully",
+      "offerArchived": "Offer archived successfully",
+      "offerDuplicated": "Offer duplicated sucessfully"
     }
   }
 }

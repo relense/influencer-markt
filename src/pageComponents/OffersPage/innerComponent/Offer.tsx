@@ -1,3 +1,5 @@
+import { useState } from "react";
+import { useTranslation } from "react-i18next";
 import { useRouter } from "next/router";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -6,18 +8,51 @@ import {
   faCircleCheck,
   faClone,
   faEllipsis,
+  faPaperPlane,
   faTrash,
 } from "@fortawesome/free-solid-svg-icons";
-import { useState } from "react";
-import { useTranslation } from "react-i18next";
+import { api } from "~/utils/api";
+
 import { helper } from "../../../utils/helper";
 import { type OfferWithIncludes } from "../../../utils/globalTypes";
+import { toast } from "react-hot-toast";
 
 const Offer = (params: { offer: OfferWithIncludes }) => {
+  const ctx = api.useContext();
   const { t, i18n } = useTranslation();
   const router = useRouter();
 
   const [isDropdownOpen, setIsDropdownOpen] = useState<boolean>(false);
+
+  const { mutate: publishOffer } = api.offers.publishOffer.useMutation({
+    onSuccess: () => {
+      void ctx.offers.getAllOffers.invalidate().then(() => {
+        toast.success(t("pages.offer.offerPublished"), {
+          position: "bottom-left",
+        });
+      });
+    },
+  });
+
+  const { mutate: archiveOffer } = api.offers.archiveOffer.useMutation({
+    onSuccess: () => {
+      void ctx.offers.getAllOffers.invalidate().then(() => {
+        toast.success(t("pages.offer.offerArchived"), {
+          position: "bottom-left",
+        });
+      });
+    },
+  });
+
+  const { mutate: duplicateOffer } = api.offers.duplicateOffer.useMutation({
+    onSuccess: () => {
+      void ctx.offers.getAllOffers.invalidate().then(() => {
+        toast.success(t("pages.offer.offerDuplicated"), {
+          position: "bottom-left",
+        });
+      });
+    },
+  });
 
   const dropdown = () => {
     return (
@@ -25,21 +60,43 @@ const Offer = (params: { offer: OfferWithIncludes }) => {
         className="absolute right-0 z-50 flex-col rounded-lg border-[1px] bg-white"
         onClick={() => setIsDropdownOpen(!isDropdownOpen)}
       >
-        <div className="flex cursor-pointer items-center gap-2 rounded-t-lg p-4 hover:bg-influencer-green-dark hover:text-white">
-          <FontAwesomeIcon
-            icon={faBoxArchive}
-            className="fa-lg cursor-pointer"
-          />
-          {t("pages.offer.close")}
-        </div>
-        <div className="flex cursor-pointer items-center gap-2 p-4 hover:bg-influencer-green-dark hover:text-white">
+        {!params.offer.published && !params.offer.archived && (
+          <div
+            className="flex cursor-pointer items-center gap-2 rounded-t-lg p-4 hover:bg-influencer-green-dark hover:text-white"
+            onClick={() => publishOffer({ offerId: params.offer.id })}
+          >
+            <FontAwesomeIcon
+              icon={faPaperPlane}
+              className="fa-lg cursor-pointer"
+            />
+            {t("pages.offer.publish")}
+          </div>
+        )}
+        {!params.offer.archived && (
+          <div
+            className="flex cursor-pointer items-center gap-2 rounded-t-lg p-4 hover:bg-influencer-green-dark hover:text-white"
+            onClick={() => archiveOffer({ offerId: params.offer.id })}
+          >
+            <FontAwesomeIcon
+              icon={faBoxArchive}
+              className="fa-lg cursor-pointer"
+            />
+            {t("pages.offer.archive")}
+          </div>
+        )}
+        <div
+          className="flex cursor-pointer items-center gap-2 p-4 hover:bg-influencer-green-dark hover:text-white"
+          onClick={() => duplicateOffer({ offerId: params.offer.id })}
+        >
           <FontAwesomeIcon icon={faClone} className="fa-lg cursor-pointer" />
           {t("pages.offer.duplicate")}
         </div>
-        <div className="flex cursor-pointer items-center gap-2 rounded-b-lg p-4 hover:bg-influencer-green-dark hover:text-white">
-          <FontAwesomeIcon icon={faTrash} className="fa-lg cursor-pointer" />
-          {t("pages.offer.delete")}
-        </div>
+        {(!params.offer.published || params.offer.archived) && (
+          <div className="flex cursor-pointer items-center gap-2 rounded-b-lg p-4 hover:bg-influencer-green-dark hover:text-white">
+            <FontAwesomeIcon icon={faTrash} className="fa-lg cursor-pointer" />
+            {t("pages.offer.delete")}
+          </div>
+        )}
       </div>
     );
   };
@@ -55,8 +112,15 @@ const Offer = (params: { offer: OfferWithIncludes }) => {
           <div className="line-clamp-2 font-semibold xs:w-3/4">
             {params.offer.offerSummary}
           </div>
-          <div className="font-semibold text-gray2">
-            {helper.formatDate(params.offer.createdAt, i18n.language)}
+          <div className="flex flex-col sm:flex-row sm:items-center sm:gap-4">
+            <div className="font-semibold text-gray2">
+              {helper.formatDate(params.offer.createdAt, i18n.language)}
+            </div>
+            <div className="font-semibold text-influencer">
+              {params.offer.published
+                ? t("pages.offer.published")
+                : t("pages.offer.unpublished")}
+            </div>
           </div>
           <div className="line-clamp-3">{params.offer.OfferDetails}</div>
         </div>
@@ -86,7 +150,7 @@ const Offer = (params: { offer: OfferWithIncludes }) => {
           </div>
         </div>
       </div>
-      <div className="group absolute right-0 top-0 z-50 p-4">
+      <div className="z-5 group absolute right-0 top-0 p-4">
         <FontAwesomeIcon
           icon={faEllipsis}
           className="fa-xl cursor-pointer hover:text-influencer"

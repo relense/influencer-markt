@@ -49,7 +49,6 @@ export const OffersRouter = createTRPCRouter({
           offerCreator: { connect: { id: profile.id } },
           gender:
             input.genderId !== -1 ? { connect: { id: input.genderId } } : {},
-          isOpen: true,
         },
       });
 
@@ -69,7 +68,7 @@ export const OffersRouter = createTRPCRouter({
   getAllOffers: protectedProcedure
     .input(
       z.object({
-        isOpen: z.boolean(),
+        archived: z.boolean(),
       })
     )
     .query(async ({ ctx, input }) => {
@@ -83,18 +82,19 @@ export const OffersRouter = createTRPCRouter({
       if (profile) {
         return await ctx.prisma.$transaction([
           ctx.prisma.offer.count({
-            where: { profileId: profile.id, isOpen: input.isOpen },
+            where: { profileId: profile.id, archived: input.archived },
           }),
           ctx.prisma.offer.findMany({
-            where: { profileId: profile.id, isOpen: input.isOpen },
+            where: { profileId: profile.id, archived: input.archived },
             take: 10,
             select: {
               id: true,
-              isOpen: true,
+              archived: true,
               createdAt: true,
               offerSummary: true,
               OfferDetails: true,
               numberOfInfluencers: true,
+              published: true,
               applicants: {
                 select: {
                   id: true,
@@ -114,7 +114,7 @@ export const OffersRouter = createTRPCRouter({
   getAllOffersWithCursor: protectedProcedure
     .input(
       z.object({
-        isOpen: z.boolean(),
+        archived: z.boolean(),
         cursor: z.number(),
       })
     )
@@ -128,7 +128,7 @@ export const OffersRouter = createTRPCRouter({
 
       if (profile) {
         return await ctx.prisma.offer.findMany({
-          where: { profileId: profile.id, isOpen: input.isOpen },
+          where: { profileId: profile.id, archived: input.archived },
           take: 10,
           skip: 1,
           cursor: {
@@ -136,11 +136,12 @@ export const OffersRouter = createTRPCRouter({
           },
           select: {
             id: true,
-            isOpen: true,
+            archived: true,
             createdAt: true,
             offerSummary: true,
             OfferDetails: true,
             numberOfInfluencers: true,
+            published: true,
             applicants: {
               select: {
                 id: true,
@@ -153,6 +154,86 @@ export const OffersRouter = createTRPCRouter({
             },
           },
         });
+      }
+    }),
+
+  publishOffer: protectedProcedure
+    .input(
+      z.object({
+        offerId: z.number(),
+      })
+    )
+    .mutation(async ({ ctx, input }) => {
+      return await ctx.prisma.offer.update({
+        where: { id: input.offerId },
+        data: {
+          published: true,
+        },
+      });
+    }),
+
+  archiveOffer: protectedProcedure
+    .input(
+      z.object({
+        offerId: z.number(),
+      })
+    )
+    .mutation(async ({ ctx, input }) => {
+      return await ctx.prisma.offer.update({
+        where: { id: input.offerId },
+        data: {
+          archived: true,
+        },
+      });
+    }),
+
+  duplicateOffer: protectedProcedure
+    .input(
+      z.object({
+        offerId: z.number(),
+      })
+    )
+    .mutation(async ({ ctx, input }) => {
+      const offer = await ctx.prisma.offer.findFirst({
+        where: { id: input.offerId },
+        include: {
+          categories: true,
+          contentTypeWithQuantity: true,
+        },
+      });
+
+      if (offer) {
+        const duplicatedOffer = await ctx.prisma.offer.create({
+          data: {
+            offerSummary: offer.offerSummary,
+            OfferDetails: offer.OfferDetails,
+            socialMedia: { connect: { id: offer.socialMediaId } },
+            categories: {
+              connect: offer.categories.map((category) => ({
+                id: category.id,
+              })),
+            },
+            price: offer.price,
+            numberOfInfluencers: offer.numberOfInfluencers,
+            country: { connect: { id: offer.countryId } },
+            minFollowers: offer.minFollowers,
+            maxFollowers: offer.maxFollowers,
+            offerCreator: { connect: { id: offer.profileId } },
+            gender: offer.genderId ? { connect: { id: offer.genderId } } : {},
+          },
+        });
+
+        await ctx.prisma.contentTypeWithQuantity.createMany({
+          data: offer.contentTypeWithQuantity.map((contentType) => {
+            return {
+              contentTypeId: contentType.contentTypeId,
+              amount: contentType.amount,
+              offerId: offer.id,
+            };
+          }),
+        });
+
+        return duplicatedOffer;
       }
     }),
 });
