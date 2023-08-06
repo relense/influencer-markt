@@ -228,12 +228,47 @@ export const OffersRouter = createTRPCRouter({
             return {
               contentTypeId: contentType.contentTypeId,
               amount: contentType.amount,
-              offerId: offer.id,
+              offerId: duplicatedOffer.id,
             };
           }),
         });
 
         return duplicatedOffer;
       }
+    }),
+
+  deleteOffer: protectedProcedure
+    .input(
+      z.object({
+        offerId: z.number(),
+      })
+    )
+    .mutation(async ({ ctx, input }) => {
+      const deleteContentTypesQuantity =
+        ctx.prisma.contentTypeWithQuantity.deleteMany({
+          where: {
+            Offer: {
+              id: input.offerId,
+            },
+          },
+        });
+
+      const deleteOffer = ctx.prisma.offer.delete({
+        where: { id: input.offerId },
+      });
+
+      await ctx.prisma.$transaction([deleteContentTypesQuantity, deleteOffer]);
+    }),
+
+  getOffer: protectedProcedure
+    .input(
+      z.object({
+        offerId: z.number(),
+      })
+    )
+    .query(async ({ ctx, input }) => {
+      return await ctx.prisma.offer.findFirst({
+        where: { id: input.offerId },
+      });
     }),
 });

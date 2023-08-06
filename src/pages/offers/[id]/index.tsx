@@ -7,8 +7,11 @@ import { Layout } from "../../../components/Layout";
 import { OfferDetailsPage } from "../../../pageComponents/OfferDetailsPage/OfferDetailsPage";
 import { generateSSGHelper } from "../../../server/helper/ssgHelper";
 import { useEffect } from "react";
+interface OfferDetailsProps {
+  id: string;
+}
 
-const OfferDetails: NextPage = () => {
+const OfferDetails: NextPage<OfferDetailsProps> = ({ id }) => {
   const router = useRouter();
   const { data: user, isLoading } = api.users.getUser.useQuery();
 
@@ -20,19 +23,22 @@ const OfferDetails: NextPage = () => {
 
   return (
     <ProtectedWrapper>
-      <Layout>{() => <OfferDetailsPage />}</Layout>
+      <Layout>{() => <OfferDetailsPage offerId={parseInt(id)} />}</Layout>
     </ProtectedWrapper>
   );
 };
 
-export const getStaticProps: GetStaticProps = async () => {
+export const getStaticProps: GetStaticProps = async (context) => {
   const ssg = generateSSGHelper();
+
+  const id = context.params?.id;
 
   await ssg.users.getUser.prefetch();
 
   return {
     props: {
       trpcState: ssg.dehydrate(),
+      id,
     },
   };
 };

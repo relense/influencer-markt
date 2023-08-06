@@ -19,6 +19,7 @@ const OffersPage = () => {
 
   const {
     data: offersData,
+    isLoading: isLoadingOffers,
     refetch: refetchOffers,
     isRefetching: isRefetchingOffers,
   } = api.offers.getAllOffers.useQuery({
@@ -70,66 +71,74 @@ const OffersPage = () => {
     void refetchOffers();
   };
 
-  return (
-    <>
-      <div className="flex flex-1 flex-col justify-start gap-6 p-6 lg:w-full lg:gap-6 lg:p-12 xl:self-center xl:p-4 2xl:w-3/4">
-        <div
-          className="flex h-auto cursor-pointer items-center justify-center gap-2 rounded-xl border-[1px] p-4 hover:bg-light-red"
-          onClick={() => setOpenCreateModal(true)}
-        >
-          <div className="flex h-6 w-6 items-center justify-center rounded-full bg-influencer text-white">
-            <FontAwesomeIcon icon={faPlus} className="fa-sm cursor-pointer" />
-          </div>
-          <div>{t("pages.offer.createOffer")}</div>
-        </div>
-        <div className="flex justify-center gap-4">
+  if (isLoadingOffers) {
+    return (
+      <div className="relative flex flex-1">
+        <LoadingSpinner />
+      </div>
+    );
+  } else {
+    return (
+      <>
+        <div className="flex flex-1 flex-col justify-start gap-6 p-6 lg:w-full lg:gap-6 lg:p-12 xl:self-center xl:p-4 2xl:w-3/4">
           <div
-            className={
-              !isArchived
-                ? "cursor-default text-xl font-semibold text-influencer"
-                : "cursor-pointer text-xl font-semibold text-gray4"
-            }
-            onClick={() => changeOpenSelected()}
+            className="flex h-auto cursor-pointer items-center justify-center gap-2 rounded-xl border-[1px] p-4 hover:bg-light-red"
+            onClick={() => setOpenCreateModal(true)}
           >
-            {t("pages.offer.openOffers")}
-          </div>
-          <div
-            className={
-              isArchived
-                ? "cursor-default text-xl font-semibold text-influencer"
-                : "cursor-pointer text-xl font-semibold text-gray4"
-            }
-            onClick={() => changeOpenSelected()}
-          >
-            {t("pages.offer.closedOffers")}
-          </div>
-        </div>
-
-        <>
-          {isRefetchingOffers && <LoadingSpinner />}
-          <div className="flex flex-col gap-4 lg:flex-row lg:flex-wrap">
-            {offers?.map((offer) => {
-              return <Offer offer={offer} key={offer.id} />;
-            })}
-          </div>
-          {offersData && offersData[0] > offers.length && (
-            <div className="flex items-center justify-center">
-              <Button
-                title={t("pages.publicProfilePage.loadMore")}
-                onClick={() => refetchOffersWithCursor()}
-                isLoading={isRefetchingOffersWithCursor}
-              />
+            <div className="flex h-6 w-6 items-center justify-center rounded-full bg-influencer text-white">
+              <FontAwesomeIcon icon={faPlus} className="fa-sm cursor-pointer" />
             </div>
+            <div>{t("pages.offer.createOffer")}</div>
+          </div>
+          <div className="flex justify-center gap-4">
+            <div
+              className={
+                !isArchived
+                  ? "cursor-default text-xl font-semibold text-influencer"
+                  : "cursor-pointer text-xl font-semibold text-gray4"
+              }
+              onClick={() => changeOpenSelected()}
+            >
+              {t("pages.offer.openOffers")}
+            </div>
+            <div
+              className={
+                isArchived
+                  ? "cursor-default text-xl font-semibold text-influencer"
+                  : "cursor-pointer text-xl font-semibold text-gray4"
+              }
+              onClick={() => changeOpenSelected()}
+            >
+              {t("pages.offer.closedOffers")}
+            </div>
+          </div>
+
+          <>
+            {isRefetchingOffers && <LoadingSpinner />}
+            <div className="flex flex-col gap-4 lg:flex-row lg:flex-wrap">
+              {offers?.map((offer) => {
+                return <Offer offer={offer} key={offer.id} />;
+              })}
+            </div>
+            {offersData && offersData[0] > offers.length && (
+              <div className="flex items-center justify-center">
+                <Button
+                  title={t("pages.publicProfilePage.loadMore")}
+                  onClick={() => refetchOffersWithCursor()}
+                  isLoading={isRefetchingOffersWithCursor}
+                />
+              </div>
+            )}
+          </>
+        </div>
+        <div className="flex justify-center">
+          {openCreateModal && (
+            <CreateOfferModal onClose={() => setOpenCreateModal(false)} />
           )}
-        </>
-      </div>
-      <div className="flex justify-center">
-        {openCreateModal && (
-          <CreateOfferModal onClose={() => setOpenCreateModal(false)} />
-        )}
-      </div>
-    </>
-  );
+        </div>
+      </>
+    );
+  }
 };
 
 export { OffersPage };

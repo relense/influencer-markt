@@ -172,6 +172,18 @@
       "readMore": "Lê Mais",
       "removedProfile": "Perfil Removido Com Sucesso",
       "savedProfile": "Perfil Guardado Com Sucesso"
+    },
+
+    "offerDropdown": {
+      "publish": "Publicar",
+      "archive": "Arquivar",
+      "duplicate": "Duplicar",
+      "delete": "Apagar",
+      "offerCreated": "Oferta criada com sucesso",
+      "offerPublished": "Oferta publicada com sucesso",
+      "offerArchived": "Oferta arquivada com sucesso",
+      "offerDuplicated": "Oferta duplicada com sucesso",
+      "offerDeleted": "Oferta apagada com sucesso"
     }
   },
 
@@ -465,10 +477,7 @@
       "Male": "Masculino",
       "Female": "Feminino",
       "Other": "Outro",
-      "publish": "Publicar",
-      "archive": "Arquivar",
-      "duplicate": "Duplicar",
-      "delete": "Apagar",
+
       "applicants_zero": "{{count}} Candidatos",
       "applicants_one": "{{count}} Candidato",
       "applicants_other": "{{count}} Candidatos",
@@ -477,11 +486,7 @@
       "openOffers": "Ofertas Abertas",
       "closedOffers": "Ofertas Arquivadas",
       "published": "Publicado",
-      "unpublished": "Não Publicado",
-      "offerCreated": "Oferta criada com sucesso",
-      "offerPublished": "Oferta publicada com sucesso",
-      "offerArchived": "Oferta arquivada com sucesso",
-      "offerDuplicated": "Oferta duplicada com sucesso"
+      "unpublished": "Não Publicado"
     }
   }
 }
