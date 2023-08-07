@@ -106,6 +106,9 @@ export const OffersRouter = createTRPCRouter({
                 },
               },
             },
+            orderBy: {
+              createdAt: "desc",
+            },
           }),
         ]);
       }
@@ -269,6 +272,68 @@ export const OffersRouter = createTRPCRouter({
     .query(async ({ ctx, input }) => {
       return await ctx.prisma.offer.findFirst({
         where: { id: input.offerId },
+        include: {
+          acceptedApplicants: {
+            select: {
+              id: true,
+              profilePicture: true,
+              userSocialMedia: {
+                include: {
+                  socialMedia: true,
+                },
+              },
+              name: true,
+              about: true,
+              city: { select: { name: true } },
+              country: { select: { name: true } },
+              user: { select: { username: true } },
+            },
+          },
+          categories: true,
+          applicants: { select: { id: true } },
+          contentTypeWithQuantity: {
+            select: {
+              amount: true,
+              contentType: true,
+              id: true,
+            },
+          },
+          country: { select: { name: true } },
+          gender: { select: { name: true } },
+          socialMedia: { select: { name: true } },
+          state: { select: { name: true } },
+        },
+      });
+    }),
+
+  getApplicants: protectedProcedure
+    .input(
+      z.object({
+        offerId: z.number(),
+      })
+    )
+    .query(async ({ ctx, input }) => {
+      return await ctx.prisma.offer.findFirst({
+        where: { id: input.offerId },
+        take: 1,
+        select: {
+          applicants: {
+            select: {
+              id: true,
+              profilePicture: true,
+              userSocialMedia: {
+                include: {
+                  socialMedia: true,
+                },
+              },
+              name: true,
+              about: true,
+              city: { select: { name: true } },
+              country: { select: { name: true } },
+              user: { select: { username: true } },
+            },
+          },
+        },
       });
     }),
 });

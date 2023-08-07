@@ -7,12 +7,15 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { api } from "~/utils/api";
 
-import { type OfferWithIncludes } from "../utils/globalTypes";
+import type {
+  OfferWithAllData,
+  OfferWithApplicants,
+} from "../utils/globalTypes";
 import { toast } from "react-hot-toast";
 import { useTranslation } from "react-i18next";
 
 const OfferDropDown = (params: {
-  offer: OfferWithIncludes;
+  offer: OfferWithApplicants | OfferWithAllData;
   closeDropDown: () => void;
 }) => {
   const { t } = useTranslation();

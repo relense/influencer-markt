@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useRouter } from "next/router";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -8,15 +8,22 @@ import {
   faEllipsis,
 } from "@fortawesome/free-solid-svg-icons";
 
-import { helper } from "../../../utils/helper";
-import { type OfferWithIncludes } from "../../../utils/globalTypes";
+import { helper, useOutsideClick } from "../../../utils/helper";
+import { type OfferWithApplicants } from "../../../utils/globalTypes";
 import { OfferDropDown } from "../../../components/OfferDropdown";
 
-const Offer = (params: { offer: OfferWithIncludes }) => {
+const Offer = (params: { offer: OfferWithApplicants }) => {
   const { t, i18n } = useTranslation();
+  const dropdownRef = useRef(null);
   const router = useRouter();
 
   const [isDropdownOpen, setIsDropdownOpen] = useState<boolean>(false);
+
+  useOutsideClick(() => {
+    if (isDropdownOpen === false) return;
+
+    setIsDropdownOpen(!isDropdownOpen);
+  }, dropdownRef);
 
   return (
     <div className="relative flex-1 lg:flex-[0_1_49%]">
@@ -67,7 +74,7 @@ const Offer = (params: { offer: OfferWithIncludes }) => {
           </div>
         </div>
       </div>
-      <div className="z-5 group absolute right-0 top-0 p-4">
+      <div className="z-5 group absolute right-0 top-0 p-4" ref={dropdownRef}>
         <FontAwesomeIcon
           icon={faEllipsis}
           className="fa-xl cursor-pointer hover:text-influencer"

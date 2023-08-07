@@ -85,7 +85,7 @@ export type UserProfiles = {
   favoritedBy?: number[];
 };
 
-export type OfferWithIncludes = Prisma.OfferGetPayload<{
+export type OfferWithApplicants = Prisma.OfferGetPayload<{
   select: {
     id: true;
     archived: true;
@@ -96,5 +96,25 @@ export type OfferWithIncludes = Prisma.OfferGetPayload<{
     published: true;
     applicants: { select: { id: true } };
     acceptedApplicants: { select: { id: true } };
+  };
+}>;
+
+export type OfferWithAllData = Prisma.OfferGetPayload<{
+  select: {
+    id: true;
+    archived: true;
+    createdAt: true;
+    offerSummary: true;
+    OfferDetails: true;
+    numberOfInfluencers: true;
+    published: true;
+    applicants: { select: { id: true } };
+    acceptedApplicants: true;
+    categories: true;
+    gender: { select: { name: true } };
+    country: { select: { name: true } };
+    socialMedia: { select: { name: true } };
+    state: true;
+    contentTypeWithQuantity: true;
   };
 }>;

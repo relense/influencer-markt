@@ -29,7 +29,8 @@ export default {
         boxShadow: "#64646f80",
       },
       screens: {
-        xs: "300px",
+        xxs: "360px",
+        xs: "380px",
         "3xl": "1900px",
         ...defaultTheme.screens,
       },

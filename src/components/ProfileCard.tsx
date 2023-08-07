@@ -35,11 +35,13 @@ const ProfileCard = (params: {
   country: string;
   username: string;
   type: "Brand" | "Influencer";
-  bookmarked: boolean;
+  bookmarked?: boolean;
   onHandleBookmark?: () => void;
 }) => {
   const { t } = useTranslation();
-  const [isBookmarked, setIsBookmarked] = useState<boolean>(params.bookmarked);
+  const [isBookmarked, setIsBookmarked] = useState<boolean>(
+    params.bookmarked ? params.bookmarked : false
+  );
   const [usefullSocialMedia, setUsefullSocialMedia] = useState<UserSocialMedia>(
     {
       followers: -1,
@@ -137,22 +139,24 @@ const ProfileCard = (params: {
           </div>
         </Link>
 
-        <div
-          className="absolute right-2 top-2 cursor-pointer"
-          onClick={() => onClickBookmark(params.id)}
-        >
-          {isBookmarked ? (
-            <FontAwesomeIcon
-              icon={faBookmarkSolid}
-              className="fa-xl text-white hover:text-white1 "
-            />
-          ) : (
-            <FontAwesomeIcon
-              icon={faBookmark}
-              className="fa-xl text-white hover:text-white"
-            />
-          )}
-        </div>
+        {params.bookmarked !== undefined && (
+          <div
+            className="absolute right-2 top-2 cursor-pointer"
+            onClick={() => onClickBookmark(params.id)}
+          >
+            {isBookmarked ? (
+              <FontAwesomeIcon
+                icon={faBookmarkSolid}
+                className="fa-xl text-white hover:text-white1 "
+              />
+            ) : (
+              <FontAwesomeIcon
+                icon={faBookmark}
+                className="fa-xl text-white hover:text-white"
+              />
+            )}
+          </div>
+        )}
       </div>
       <div>
         <div className="flex justify-between">
@@ -172,7 +176,7 @@ const ProfileCard = (params: {
               );
             })}
           </div>
-          {params.type === "Influencer" && (
+          {params.type === "Influencer" && usefullSocialMedia.valuePacks[0] && (
             <div className="text-lg font-semibold">
               {helper.formatNumber(
                 parseInt(usefullSocialMedia.valuePacks[0]?.valuePackPrice || "")

@@ -300,28 +300,38 @@ const FirstStepsPage = () => {
         <h1 className=" cursor-pointer font-lobster text-2xl text-influencer lg:p-8 lg:text-4xl">
           Influencer Markt
         </h1>
-        <div className="flex items-center gap-2 sm:flex-col sm:items-start sm:gap-0">
-          <div className="flex sm:hidden">
+        <div className="m-auto hidden justify-center lg:flex">
+          <ProgressRing
+            radius={150}
+            stroke={25}
+            progress={((stepsCount + 1) / steps.length) * 100}
+            progressText={`${stepsCount + 1}/${steps.length}`}
+            fontSize="big"
+          />
+        </div>
+
+        <div className="flex items-center gap-2 lg:flex-col lg:items-start lg:gap-0">
+          <div className="flex lg:hidden">
             <ProgressRing
               radius={40}
               stroke={7}
               progress={((stepsCount + 1) / steps.length) * 100}
               progressText={`${stepsCount + 1}/${steps.length}`}
-              underBarColor={"influencer"}
-              upperBarColor={"influencer-green"}
+              fontSize="normal"
             />
           </div>
+
           <div className="hidden justify-center text-xl font-medium lg:flex lg:justify-start">
             <div>{currentStep?.step}</div>
           </div>
-          <div className="flex flex-col sm:gap-2">
+          <div className="flex flex-col lg:gap-2">
             <div className="text-xl font-semibold sm:text-2xl lg:text-4xl">
               {currentStep?.title}{" "}
             </div>
-            <div className="hidden text-sm font-medium text-gray2 sm:flex sm:text-base lg:text-lg">
+            <div className="hidden text-sm font-medium text-gray2 sm:text-base lg:flex lg:text-lg">
               {currentStep?.subTitle}
             </div>
-            <div className="text-base font-medium text-gray2 sm:hidden lg:text-lg">
+            <div className="text-base font-medium text-gray2 lg:hidden lg:text-lg">
               {steps[stepsCount + 1]?.title
                 ? `${t("pages.firstSteps.next")}: ${
                     steps[stepsCount + 1]?.title || ""
@@ -329,7 +339,7 @@ const FirstStepsPage = () => {
                 : ""}
             </div>
           </div>
-          <div className="hidden flex-wrap justify-center gap-3 py-2 sm:flex sm:justify-normal lg:pt-4">
+          {/* <div className="hidden flex-wrap justify-center gap-3 py-2 sm:flex sm:justify-normal lg:pt-4">
             {steps.map((step, index) => {
               if (index <= stepsCount) {
                 return (
@@ -347,7 +357,7 @@ const FirstStepsPage = () => {
                 );
               }
             })}
-          </div>
+          </div> */}
         </div>
       </div>
     );

@@ -485,7 +485,9 @@
       "openOffers": "Open Offers",
       "closedOffers": "Archived Offers",
       "published": "Published",
-      "unpublished": "Unpublished"
+      "unpublished": "Unpublished",
+      "open": "Open",
+      "archived": "Archived"
     }
   }
 }
