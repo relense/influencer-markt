@@ -9,10 +9,17 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 
 import { helper, useOutsideClick } from "../../../utils/helper";
-import { type OfferWithApplicants } from "../../../utils/globalTypes";
+import { type OfferWithAllData } from "../../../utils/globalTypes";
 import { OfferDropDown } from "../../../components/OfferDropdown";
 
-const Offer = (params: { offer: OfferWithApplicants }) => {
+const Offer = (params: {
+  offer: OfferWithAllData;
+  openOfferModal: () => void;
+  openWarningModal: (
+    type: "archive" | "delete" | "publish",
+    offerId: number
+  ) => void;
+}) => {
   const { t, i18n } = useTranslation();
   const dropdownRef = useRef(null);
   const router = useRouter();
@@ -86,6 +93,8 @@ const Offer = (params: { offer: OfferWithApplicants }) => {
               <OfferDropDown
                 offer={params.offer}
                 closeDropDown={() => setIsDropdownOpen(false)}
+                openEditOfferModal={() => params.openOfferModal()}
+                openWarningModal={params.openWarningModal}
               />
             }
           </div>
@@ -95,6 +104,8 @@ const Offer = (params: { offer: OfferWithApplicants }) => {
             <OfferDropDown
               offer={params.offer}
               closeDropDown={() => setIsDropdownOpen(false)}
+              openEditOfferModal={() => params.openOfferModal()}
+              openWarningModal={params.openWarningModal}
             />
           }
         </div>

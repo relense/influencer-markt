@@ -3,43 +3,26 @@ import {
   faBoxArchive,
   faClone,
   faPaperPlane,
+  faPencil,
   faTrash,
 } from "@fortawesome/free-solid-svg-icons";
+import { toast } from "react-hot-toast";
 import { api } from "~/utils/api";
 
-import type {
-  OfferWithAllData,
-  OfferWithApplicants,
-} from "../utils/globalTypes";
-import { toast } from "react-hot-toast";
+import type { OfferWithAllData } from "../utils/globalTypes";
 import { useTranslation } from "react-i18next";
 
 const OfferDropDown = (params: {
-  offer: OfferWithApplicants | OfferWithAllData;
+  offer: OfferWithAllData;
   closeDropDown: () => void;
+  openEditOfferModal: () => void;
+  openWarningModal: (
+    type: "archive" | "delete" | "publish",
+    offerId: number
+  ) => void;
 }) => {
   const { t } = useTranslation();
   const ctx = api.useContext();
-
-  const { mutate: publishOffer } = api.offers.publishOffer.useMutation({
-    onSuccess: () => {
-      void ctx.offers.getAllOffers.invalidate().then(() => {
-        toast.success(t("components.offerDropdown.offerPublished"), {
-          position: "bottom-left",
-        });
-      });
-    },
-  });
-
-  const { mutate: archiveOffer } = api.offers.archiveOffer.useMutation({
-    onSuccess: () => {
-      void ctx.offers.getAllOffers.invalidate().then(() => {
-        toast.success(t("components.offerDropdown.offerArchived"), {
-          position: "bottom-left",
-        });
-      });
-    },
-  });
 
   const { mutate: duplicateOffer } = api.offers.duplicateOffer.useMutation({
     onSuccess: () => {
@@ -51,25 +34,15 @@ const OfferDropDown = (params: {
     },
   });
 
-  const { mutate: deleteOffer } = api.offers.deleteOffer.useMutation({
-    onSuccess: () => {
-      void ctx.offers.getAllOffers.invalidate().then(() => {
-        toast.success(t("components.offerDropdown.offerDeleted"), {
-          position: "bottom-left",
-        });
-      });
-    },
-  });
-
   return (
     <div
-      className="absolute right-0 z-50 flex-col rounded-lg border-[1px] bg-white"
+      className="absolute right-0 z-30 flex-col rounded-lg border-[1px] bg-white"
       onClick={() => params.closeDropDown()}
     >
       {!params.offer.published && !params.offer.archived && (
         <div
-          className="flex cursor-pointer items-center gap-2 rounded-t-lg p-4 hover:bg-influencer-green-dark hover:text-white"
-          onClick={() => publishOffer({ offerId: params.offer.id })}
+          className="flex cursor-pointer items-center gap-2 rounded-lg p-4 hover:bg-influencer-green-dark hover:text-white"
+          onClick={() => params.openWarningModal("publish", params.offer.id)}
         >
           <FontAwesomeIcon
             icon={faPaperPlane}
@@ -80,8 +53,8 @@ const OfferDropDown = (params: {
       )}
       {!params.offer.archived && (
         <div
-          className="flex cursor-pointer items-center gap-2 rounded-t-lg p-4 hover:bg-influencer-green-dark hover:text-white"
-          onClick={() => archiveOffer({ offerId: params.offer.id })}
+          className="flex cursor-pointer items-center gap-2 rounded-lg p-4 hover:bg-influencer-green-dark hover:text-white"
+          onClick={() => params.openWarningModal("archive", params.offer.id)}
         >
           <FontAwesomeIcon
             icon={faBoxArchive}
@@ -90,8 +63,17 @@ const OfferDropDown = (params: {
           {t("components.offerDropdown.archive")}
         </div>
       )}
+      {!params.offer.published && !params.offer.archived && (
+        <div
+          className="flex cursor-pointer items-center gap-2 rounded-lg p-4 hover:bg-influencer-green-dark hover:text-white"
+          onClick={() => params.openEditOfferModal()}
+        >
+          <FontAwesomeIcon icon={faPencil} className="fa-lg cursor-pointer" />
+          {t("components.offerDropdown.update")}
+        </div>
+      )}
       <div
-        className="flex cursor-pointer items-center gap-2 p-4 hover:bg-influencer-green-dark hover:text-white"
+        className="flex cursor-pointer items-center gap-2 rounded-lg p-4 hover:bg-influencer-green-dark hover:text-white"
         onClick={() => duplicateOffer({ offerId: params.offer.id })}
       >
         <FontAwesomeIcon icon={faClone} className="fa-lg cursor-pointer" />
@@ -99,8 +81,8 @@ const OfferDropDown = (params: {
       </div>
       {(!params.offer.published || params.offer.archived) && (
         <div
-          className="flex cursor-pointer items-center gap-2 rounded-b-lg p-4 hover:bg-influencer-green-dark hover:text-white"
-          onClick={() => deleteOffer({ offerId: params.offer.id })}
+          className="flex cursor-pointer items-center gap-2 rounded-lg p-4 hover:bg-influencer-green-dark hover:text-white"
+          onClick={() => params.openWarningModal("delete", params.offer.id)}
         >
           <FontAwesomeIcon icon={faTrash} className="fa-lg cursor-pointer" />
           {t("components.offerDropdown.delete")}

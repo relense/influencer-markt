@@ -65,6 +65,71 @@ export const OffersRouter = createTRPCRouter({
       return offer;
     }),
 
+  updateOffer: protectedProcedure
+    .input(
+      z.object({
+        offerId: z.number(),
+        offerSummary: z.string(),
+        offerDetails: z.string(),
+        socialMediaId: z.number(),
+        contentTypes: z.array(
+          z.object({
+            contentTypeId: z.number(),
+            amount: z.number(),
+          })
+        ),
+        categories: z.array(z.number()),
+        price: z.number(),
+        numberOfInfluencers: z.number(),
+        countryId: z.number(),
+        stateId: z.number().optional(),
+        minFollowers: z.number(),
+        maxFollowers: z.number(),
+        genderId: z.number(),
+      })
+    )
+    .mutation(async ({ ctx, input }) => {
+      const offer = await ctx.prisma.offer.update({
+        where: {
+          id: input.offerId,
+        },
+        data: {
+          offerSummary: input.offerSummary,
+          OfferDetails: input.offerDetails,
+          socialMedia: { connect: { id: input.socialMediaId } },
+          categories: {
+            set: [],
+            connect: input.categories.map((categoryId) => ({ id: categoryId })),
+          },
+          price: input.price,
+          numberOfInfluencers: input.numberOfInfluencers,
+          country: { connect: { id: input.countryId } },
+          minFollowers: input.minFollowers,
+          maxFollowers: input.maxFollowers,
+          gender:
+            input.genderId !== -1
+              ? { connect: { id: input.genderId } }
+              : { disconnect: true },
+        },
+      });
+
+      await ctx.prisma.contentTypeWithQuantity.deleteMany({
+        where: { Offer: { id: input.offerId } },
+      });
+
+      await ctx.prisma.contentTypeWithQuantity.createMany({
+        data: input.contentTypes.map((contentType) => {
+          return {
+            contentTypeId: contentType.contentTypeId,
+            amount: contentType.amount,
+            offerId: offer.id,
+          };
+        }),
+      });
+
+      return offer;
+    }),
+
   getAllOffers: protectedProcedure
     .input(
       z.object({
@@ -87,24 +152,36 @@ export const OffersRouter = createTRPCRouter({
           ctx.prisma.offer.findMany({
             where: { profileId: profile.id, archived: input.archived },
             take: 10,
-            select: {
-              id: true,
-              archived: true,
-              createdAt: true,
-              offerSummary: true,
-              OfferDetails: true,
-              numberOfInfluencers: true,
-              published: true,
-              applicants: {
-                select: {
-                  id: true,
-                },
-              },
+            include: {
               acceptedApplicants: {
                 select: {
                   id: true,
+                  profilePicture: true,
+                  userSocialMedia: {
+                    include: {
+                      socialMedia: true,
+                    },
+                  },
+                  name: true,
+                  about: true,
+                  city: true,
+                  country: true,
+                  user: { select: { username: true } },
                 },
               },
+              categories: true,
+              applicants: { select: { id: true } },
+              contentTypeWithQuantity: {
+                select: {
+                  amount: true,
+                  contentType: true,
+                  id: true,
+                },
+              },
+              country: true,
+              gender: true,
+              socialMedia: true,
+              state: true,
             },
             orderBy: {
               createdAt: "desc",
@@ -137,24 +214,39 @@ export const OffersRouter = createTRPCRouter({
           cursor: {
             id: input.cursor,
           },
-          select: {
-            id: true,
-            archived: true,
-            createdAt: true,
-            offerSummary: true,
-            OfferDetails: true,
-            numberOfInfluencers: true,
-            published: true,
-            applicants: {
-              select: {
-                id: true,
-              },
-            },
+          include: {
             acceptedApplicants: {
               select: {
                 id: true,
+                profilePicture: true,
+                userSocialMedia: {
+                  include: {
+                    socialMedia: true,
+                  },
+                },
+                name: true,
+                about: true,
+                city: true,
+                country: true,
+                user: { select: { username: true } },
               },
             },
+            categories: true,
+            applicants: { select: { id: true } },
+            contentTypeWithQuantity: {
+              select: {
+                amount: true,
+                contentType: true,
+                id: true,
+              },
+            },
+            country: true,
+            gender: true,
+            socialMedia: true,
+            state: true,
+          },
+          orderBy: {
+            createdAt: "desc",
           },
         });
       }
@@ -284,8 +376,8 @@ export const OffersRouter = createTRPCRouter({
               },
               name: true,
               about: true,
-              city: { select: { name: true } },
-              country: { select: { name: true } },
+              city: true,
+              country: true,
               user: { select: { username: true } },
             },
           },
@@ -298,10 +390,10 @@ export const OffersRouter = createTRPCRouter({
               id: true,
             },
           },
-          country: { select: { name: true } },
-          gender: { select: { name: true } },
-          socialMedia: { select: { name: true } },
-          state: { select: { name: true } },
+          country: true,
+          gender: true,
+          socialMedia: true,
+          state: true,
         },
       });
     }),

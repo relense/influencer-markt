@@ -179,11 +179,13 @@
       "archive": "Archive",
       "duplicate": "Duplicate",
       "delete": "Delete",
+      "update": "Update",
       "offerCreated": "Offer created successfully",
       "offerPublished": "Offer published successfully",
       "offerArchived": "Offer archived successfully",
       "offerDuplicated": "Offer duplicated sucessfully",
-      "offerDeleted": "Offer deleted successfully"
+      "offerDeleted": "Offer deleted successfully",
+      "offerUpdated": "Offer updated successfully"
     }
   },
 
@@ -450,6 +452,8 @@
     "offer": {
       "errorWarning": "Max is {{count}} characters",
       "createOffer": "Create Offer",
+      "updateOffer": "Update Offer",
+      "saveOffer": "Save Offer",
       "offerSummary": "Offer Summary",
       "offerSummaryPlaceholder": "Provide a catchy and descriptive title for your offering",
       "offerDetails": "Offer Details",
@@ -487,7 +491,21 @@
       "published": "Published",
       "unpublished": "Unpublished",
       "open": "Open",
-      "archived": "Archived"
+      "archived": "Archived",
+      "gender": "Gender",
+      "followers": "Followers",
+      "offerDescription": "Offer Description:",
+      "categories": "Categories:",
+      "price": "Price",
+      "acceptedAplicants": "Accepted Applicants",
+      "applicants": "Applicants",
+      "areYouSure": "Are You Sure?",
+      "archiveWarning": "Are you sure you want to archive this offer? After the offer is archived nobody can apply.",
+      "deleteWarning": "Are you sure you want to delete the offer? This action is permanent",
+      "publishWarning": "Are you sure you want to publish the offer? Afer this action you can't edit the offer anymore.",
+      "archiveButton": "Archive Offer",
+      "deleteButton": "Delete Offer",
+      "publishButton": "Publish Offer"
     }
   }
 }

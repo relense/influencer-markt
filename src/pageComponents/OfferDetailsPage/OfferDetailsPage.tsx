@@ -14,15 +14,23 @@ import { helper, useOutsideClick } from "../../utils/helper";
 import { LoadingSpinner } from "../../components/LoadingSpinner";
 import { OfferDropDown } from "../../components/OfferDropdown";
 import { ProfileCard } from "../../components/ProfileCard";
+import { OfferModal } from "../../components/OfferModal";
+import { OffersActionConfirmationModal } from "../../components/OffersActionConfirmationModal";
 
 const OfferDetailsPage = (params: { offerId: number }) => {
   const { t, i18n } = useTranslation();
   const dropdownRef = useRef(null);
   const [isDropdownOpen, setIsDropdownOpen] = useState<boolean>(false);
   const [isDetailsOpen, setIsDetailsOpen] = useState<boolean>(true);
+  const [openCreateModal, setOpenCreateModal] = useState<boolean>(false);
   const [isAcceptedApplicantsOpen, setIsAcceptedApplicantsOpen] =
     useState<boolean>(true);
+  const [isWarningModalOpen, setIsWarningModalOpen] = useState<boolean>(false);
   const [isApplicantsOpen, setIsApplicantsOpen] = useState<boolean>(true);
+  const [warningModalType, setWarningModalType] = useState<
+    "archive" | "delete" | "publish"
+  >("archive");
+  const [warningModalOfferId, setWarningModalOfferId] = useState<number>(-1);
 
   const { data: offer, isLoading } = api.offers.getOffer.useQuery({
     offerId: params.offerId,
@@ -37,6 +45,15 @@ const OfferDetailsPage = (params: { offerId: number }) => {
 
     setIsDropdownOpen(!isDropdownOpen);
   }, dropdownRef);
+
+  const openWarningModal = (
+    type: "archive" | "delete" | "publish",
+    offerId: number
+  ) => {
+    setIsWarningModalOpen(true);
+    setWarningModalType(type);
+    setWarningModalOfferId(offerId);
+  };
 
   const optionsMenu = () => {
     if (offer) {
@@ -53,6 +70,8 @@ const OfferDetailsPage = (params: { offerId: number }) => {
                 <OfferDropDown
                   offer={offer}
                   closeDropDown={() => setIsDropdownOpen(false)}
+                  openEditOfferModal={() => setOpenCreateModal(true)}
+                  openWarningModal={openWarningModal}
                 />
               }
             </div>
@@ -62,6 +81,8 @@ const OfferDetailsPage = (params: { offerId: number }) => {
               <OfferDropDown
                 offer={offer}
                 closeDropDown={() => setIsDropdownOpen(false)}
+                openEditOfferModal={() => setOpenCreateModal(true)}
+                openWarningModal={openWarningModal}
               />
             }
           </div>
@@ -122,19 +143,20 @@ const OfferDetailsPage = (params: { offerId: number }) => {
               })}
             </div>
           </div>
-          {offer.gender?.name && (
-            <>
-              <div className="hidden h-1 w-1 rounded-full bg-black sm:flex"></div>
-              <div className="flex items-center gap-2 font-semibold">
-                <div className="text-influencer">Gender</div>
-                <div>{offer.gender?.name}</div>
-              </div>
-            </>
-          )}
+
           <>
             <div className="hidden h-1 w-1 rounded-full bg-black sm:flex"></div>
             <div className="flex items-center gap-2 font-semibold">
-              <div className="text-influencer">Followers</div>
+              <div className="text-influencer">{t("pages.offer.gender")}</div>
+              <div>{offer.gender?.name || t("pages.offer.any")}</div>
+            </div>
+          </>
+          <>
+            <div className="hidden h-1 w-1 rounded-full bg-black sm:flex"></div>
+            <div className="flex items-center gap-2 font-semibold">
+              <div className="text-influencer">
+                {t("pages.offer.followers")}
+              </div>
               <div>
                 {helper.formatNumberWithKorM(offer.minFollowers)} -{" "}
                 {helper.formatNumberWithKorM(offer.maxFollowers)}
@@ -144,7 +166,7 @@ const OfferDetailsPage = (params: { offerId: number }) => {
           <>
             <div className="hidden h-1 w-1 rounded-full bg-black sm:flex"></div>
             <div className="flex items-center gap-2 font-semibold">
-              <div className="text-influencer">Price</div>
+              <div className="text-influencer">{t("pages.offer.price")}</div>
               <div>{helper.formatNumber(offer.price)}€</div>
             </div>
           </>
@@ -159,7 +181,7 @@ const OfferDetailsPage = (params: { offerId: number }) => {
         <div>
           <div>
             <span className="pr-2 font-semibold text-influencer">
-              Offer Description:
+              {t("pages.offer.offerDescription")}
             </span>
             {offer.OfferDetails}
           </div>
@@ -174,7 +196,7 @@ const OfferDetailsPage = (params: { offerId: number }) => {
         <div>
           <div className="flex flex-wrap">
             <div className="pr-2 font-semibold text-influencer">
-              Categories:
+              {t("pages.offer.categories")}
             </div>
             {offer.categories.map((category, index) => {
               return (
@@ -230,7 +252,9 @@ const OfferDetailsPage = (params: { offerId: number }) => {
             className="flex cursor-pointer items-center gap-2"
             onClick={() => setIsDetailsOpen(!isDetailsOpen)}
           >
-            <div className="text-2xl font-bold">Offer Details</div>
+            <div className="text-2xl font-bold">
+              {t("pages.offer.offerDetails")}
+            </div>
             <div className="flex h-6 w-6 justify-center rounded-full border-[1px]">
               <div>
                 {isDetailsOpen ? (
@@ -277,7 +301,9 @@ const OfferDetailsPage = (params: { offerId: number }) => {
               setIsAcceptedApplicantsOpen(!isAcceptedApplicantsOpen)
             }
           >
-            <div className="text-2xl font-bold">Accepted Applicants</div>
+            <div className="text-2xl font-bold">
+              {t("pages.offer.acceptedAplicants")}
+            </div>
             <div className="flex h-6 w-6 justify-center rounded-full border-[1px]">
               <div>
                 {isAcceptedApplicantsOpen ? (
@@ -338,7 +364,9 @@ const OfferDetailsPage = (params: { offerId: number }) => {
             className="flex cursor-pointer items-center gap-2"
             onClick={() => setIsApplicantsOpen(!isApplicantsOpen)}
           >
-            <div className="text-2xl font-bold">Applicants</div>
+            <div className="text-2xl font-bold">
+              {t("pages.offer.applicants")}
+            </div>
             <div className="flex h-6 w-6 justify-center rounded-full border-[1px]">
               <div>
                 {isApplicantsOpen ? (
@@ -396,11 +424,32 @@ const OfferDetailsPage = (params: { offerId: number }) => {
   } else {
     if (offer) {
       return (
-        <div className="flex w-full cursor-default flex-col gap-12 self-center px-4 pb-10 sm:px-12 xl:w-3/4 2xl:w-3/4 3xl:w-2/4">
-          {offerDetails()}
-          {renderAcceptedApplicants()}
-          {renderApplicants()}
-        </div>
+        <>
+          <div className="flex w-full cursor-default flex-col gap-12 self-center px-4 pb-10 sm:px-12 xl:w-3/4 2xl:w-3/4 3xl:w-2/4">
+            {offerDetails()}
+            {offer.acceptedApplicants.length > 0 && renderAcceptedApplicants()}
+            {offer.applicants.length > 0 && renderApplicants()}
+          </div>
+          <div className="flex justify-center">
+            {openCreateModal && (
+              <OfferModal
+                onClose={() => setOpenCreateModal(false)}
+                edit={true}
+                offer={offer}
+              />
+            )}
+          </div>
+          <div className="flex justify-center">
+            {isWarningModalOpen && (
+              <OffersActionConfirmationModal
+                onClose={() => setIsWarningModalOpen(false)}
+                type={warningModalType}
+                offerId={warningModalOfferId}
+                isOfferDetails={true}
+              />
+            )}
+          </div>
+        </>
       );
     }
   }

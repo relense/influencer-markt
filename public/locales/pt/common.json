@@ -179,11 +179,13 @@
       "archive": "Arquivar",
       "duplicate": "Duplicar",
       "delete": "Apagar",
+      "update": "Actualizar",
       "offerCreated": "Oferta criada com sucesso",
       "offerPublished": "Oferta publicada com sucesso",
       "offerArchived": "Oferta arquivada com sucesso",
       "offerDuplicated": "Oferta duplicada com sucesso",
-      "offerDeleted": "Oferta apagada com sucesso"
+      "offerDeleted": "Oferta apagada com sucesso",
+      "offerUpdated": "Oferta actualizada com sucesso"
     }
   },
 
@@ -449,7 +451,9 @@
 
     "offer": {
       "errorWarning": "Máximo de {{count}} caracteres",
-      "createOffer": "Cria Oferta",
+      "createOffer": "Criar Oferta",
+      "updateOffer": "Actualizar Oferta",
+      "saveOffer": "Guardar Oferta",
       "offerSummary": "Sumário da Oferta",
       "offerSummaryPlaceholder": "Fornece um título cativante e descritivo para a tua oferta",
       "offerDetails": "Detalhes da Oferta",
@@ -477,7 +481,6 @@
       "Male": "Masculino",
       "Female": "Feminino",
       "Other": "Outro",
-
       "applicants_zero": "{{count}} Candidatos",
       "applicants_one": "{{count}} Candidato",
       "applicants_other": "{{count}} Candidatos",
@@ -488,7 +491,20 @@
       "published": "Publicado",
       "unpublished": "Não Publicado",
       "open": "Aberta",
-      "archived": "Arquivada"
+      "archived": "Arquivada",
+      "gender": "Género",
+      "followers": "Seguidores",
+      "offerDescription": "Descrição da Oferta:",
+      "categories": "Categorias:",
+      "price": "Preço",
+      "acceptedAplicants": "Candidatos Aceites",
+      "applicants": "Candidatos",
+      "archiveWarning": "Are you sure you want to archive this offer? After the offer is archived nobody can apply.",
+      "deleteWarning": "Are you sure you want to delete the offer? This action is permanent",
+      "publishWarning": "Are you sure you want to publish the offer? Afer this action you can't edit the offer anymore.",
+      "archiveButton": "Archive Offer",
+      "deleteButton": "Delete Offer",
+      "publishButton": "Publish Offer"
     }
   }
 }

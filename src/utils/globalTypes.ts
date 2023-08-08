@@ -85,36 +85,37 @@ export type UserProfiles = {
   favoritedBy?: number[];
 };
 
-export type OfferWithApplicants = Prisma.OfferGetPayload<{
-  select: {
-    id: true;
-    archived: true;
-    createdAt: true;
-    offerSummary: true;
-    OfferDetails: true;
-    numberOfInfluencers: true;
-    published: true;
-    applicants: { select: { id: true } };
-    acceptedApplicants: { select: { id: true } };
-  };
-}>;
-
 export type OfferWithAllData = Prisma.OfferGetPayload<{
-  select: {
-    id: true;
-    archived: true;
-    createdAt: true;
-    offerSummary: true;
-    OfferDetails: true;
-    numberOfInfluencers: true;
-    published: true;
-    applicants: { select: { id: true } };
-    acceptedApplicants: true;
+  include: {
+    id?: true;
+    acceptedApplicants: {
+      select: {
+        id: true;
+        profilePicture: true;
+        userSocialMedia: {
+          include: {
+            socialMedia: true;
+          };
+        };
+        name: true;
+        about: true;
+        city: true;
+        country: true;
+        user: { select: { username: true } };
+      };
+    };
     categories: true;
-    gender: { select: { name: true } };
-    country: { select: { name: true } };
-    socialMedia: { select: { name: true } };
+    applicants: { select: { id: true } };
+    contentTypeWithQuantity: {
+      select: {
+        amount: true;
+        contentType: true;
+        id: true;
+      };
+    };
+    country: true;
+    gender: true;
+    socialMedia: true;
     state: true;
-    contentTypeWithQuantity: true;
   };
 }>;

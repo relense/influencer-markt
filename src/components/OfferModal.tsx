@@ -4,13 +4,15 @@ import { api } from "~/utils/api";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus, faSubtract } from "@fortawesome/free-solid-svg-icons";
 
-import { Modal } from "../../../components/Modal";
-import { CustomSelect } from "../../../components/CustomSelect";
-import { Button } from "../../../components/Button";
-import type { Option } from "../../../utils/globalTypes";
-import { CustomMultiSelect } from "../../../components/CustomMultiSelect";
-import { useState } from "react";
+import { Modal } from "./Modal";
+import { CustomSelect } from "./CustomSelect";
+import { Button } from "./Button";
+import type { OfferWithAllData, Option } from "../utils/globalTypes";
+import { CustomMultiSelect } from "./CustomMultiSelect";
+import { useEffect, useState } from "react";
 import { toast } from "react-hot-toast";
+import { usePrevious } from "../utils/helper";
+import { useRouter } from "next/router";
 
 type OfferData = {
   offerSummary: string;
@@ -30,13 +32,24 @@ type ContentTypeWithQuantity = {
   amount: number;
 };
 
-const CreateOfferModal = (params: { onClose: () => void }) => {
+const OfferModal = (params: {
+  onClose: () => void;
+  edit: boolean;
+  offer: OfferWithAllData | undefined;
+}) => {
   const { t } = useTranslation();
   const ctx = api.useContext();
+  const router = useRouter();
 
   const [contentTypesList, setContentTypesList] = useState<
     ContentTypeWithQuantity[]
   >([{ contentType: { id: -1, name: "" }, amount: 0 }]);
+
+  const prevContentTypes = usePrevious(
+    params?.offer?.contentTypeWithQuantity || null
+  );
+
+  const prevGender = usePrevious(params?.offer?.gender || null);
 
   const {
     control,
@@ -44,55 +57,99 @@ const CreateOfferModal = (params: { onClose: () => void }) => {
     handleSubmit,
     setValue,
     watch,
-    formState: { errors },
+    formState: { errors, isDirty },
   } = useForm<OfferData>({
     defaultValues: {
       categories: [],
       platform: { id: -1, name: "" },
       country: { id: -1, name: "" },
-      gender: { id: -1, name: "" },
+      gender: params?.offer?.gender || { id: -1, name: "" },
     },
   });
+
+  useEffect(() => {
+    if (params.offer) {
+      setValue("country", params.offer.country);
+      setValue("categories", params.offer.categories);
+      setValue("gender", params.offer.gender || { id: -1, name: "" });
+      setValue("maxFollowers", params.offer.maxFollowers);
+      setValue("minFollowers", params.offer.minFollowers);
+      setValue("numberOfInfluencers", params.offer.numberOfInfluencers);
+      setValue("offerDetails", params.offer.OfferDetails);
+      setValue("offerSummary", params.offer.offerSummary);
+      setValue("offerPrice", params.offer.price);
+      setValue("platform", params.offer.socialMedia);
+      setContentTypesList(params.offer.contentTypeWithQuantity);
+    }
+  }, [params.offer, setValue]);
 
   const { data: platforms } = api.allRoutes.getAllSocialMedia.useQuery();
   const { data: categories } = api.allRoutes.getAllCategories.useQuery();
   const { data: genders } = api.allRoutes.getAllGenders.useQuery();
   const { data: countries } = api.allRoutes.getAllCountries.useQuery();
 
-  const { mutate: offerMutation } = api.offers.createOffer.useMutation({
-    onSuccess: () => {
-      void ctx.offers.getAllOffers.invalidate().then(() => {
-        params.onClose();
-        toast.success(t("pages.offer.offerCreated"), {
-          position: "bottom-left",
+  const { mutate: offerCreation, isLoading: isLoadingCreate } =
+    api.offers.createOffer.useMutation({
+      onSuccess: (offer) => {
+        void router.push(`/offers/${offer.id}`);
+        void ctx.offers.getAllOffers.invalidate().then(() => {
+          toast.success(t("components.offerDropDown.offerCreated"), {
+            position: "bottom-left",
+          });
         });
-      });
-    },
-  });
+      },
+    });
+
+  const { mutate: offerUpdate, isLoading: isLoadingUpdate } =
+    api.offers.updateOffer.useMutation({
+      onSuccess: () => {
+        params.onClose();
+        void ctx.offers.getOffer.invalidate();
+        void ctx.offers.getApplicants.invalidate();
+        void ctx.offers.getAllOffers.invalidate().then(() => {
+          toast.success(t("components.offerDropDown.offerUpdated"), {
+            position: "bottom-left",
+          });
+        });
+      },
+    });
 
   const submitRequest = handleSubmit((data) => {
-    const payload = {
-      offerSummary: data.offerSummary,
-      offerDetails: data.offerDetails,
-      socialMediaId: data.platform.id,
-      contentTypes: contentTypesList.map((item) => {
-        return {
-          contentTypeId: item.contentType.id,
-          amount: item.amount,
-        };
-      }),
-      categories: data.categories.map((category) => {
-        return category.id;
-      }),
-      price: data.offerPrice,
-      numberOfInfluencers: data.numberOfInfluencers,
-      countryId: data.country.id,
-      minFollowers: data.minFollowers,
-      maxFollowers: data.maxFollowers,
-      genderId: data.gender.id,
-    };
+    if (
+      isDirty ||
+      prevContentTypes !== contentTypesList ||
+      prevGender !== data.gender
+    ) {
+      const payload = {
+        offerId: params.offer?.id || -1,
+        offerSummary: data.offerSummary,
+        offerDetails: data.offerDetails,
+        socialMediaId: data.platform.id,
+        contentTypes: contentTypesList.map((item) => {
+          return {
+            contentTypeId: item.contentType.id,
+            amount: item.amount,
+          };
+        }),
+        categories: data.categories.map((category) => {
+          return category.id;
+        }),
+        price: data.offerPrice,
+        numberOfInfluencers: data.numberOfInfluencers,
+        countryId: data.country.id,
+        minFollowers: data.minFollowers,
+        maxFollowers: data.maxFollowers,
+        genderId: data.gender.id,
+      };
 
-    offerMutation(payload);
+      if (params.edit) {
+        offerUpdate(payload);
+      } else {
+        offerCreation(payload);
+      }
+    } else {
+      params.onClose();
+    }
   });
 
   const renderOfferSummaryInput = () => {
@@ -546,21 +603,26 @@ const CreateOfferModal = (params: { onClose: () => void }) => {
 
   return (
     <Modal
-      title={t("pages.offer.createOffer")}
+      title={
+        params.edit
+          ? t("pages.offer.updateOffer")
+          : t("pages.offer.createOffer")
+      }
       onClose={params.onClose}
       button={
         <div className="flex justify-center p-4">
           <Button
             type="submit"
-            title={t("pages.offer.createOffer")}
+            title={t("pages.offer.saveOffer")}
             level="primary"
-            form="form-requestValuePack"
+            form="form-createModal"
+            isLoading={isLoadingCreate || isLoadingUpdate}
           />
         </div>
       }
     >
       <form
-        id="form-requestValuePack"
+        id="form-createModal"
         className="flex h-full w-full flex-col gap-4 p-4 sm:w-full sm:px-8"
         onSubmit={submitRequest}
       >
@@ -579,4 +641,4 @@ const CreateOfferModal = (params: { onClose: () => void }) => {
   );
 };
 
-export { CreateOfferModal };
+export { OfferModal };

@@ -1,12 +1,12 @@
 const LoadingSpinner = () => {
   return (
     <>
-      <div className="absolute left-0 top-0 h-full w-full bg-gray1 opacity-10" />
-      <div className="absolute top-0 flex h-full w-full items-center justify-center">
+      <div className="absolute left-0 top-0 z-50 h-full w-full bg-gray1 opacity-10" />
+      <div className="absolute top-0 z-50 flex h-full w-full items-center justify-center">
         <div role="status">
           <svg
             aria-hidden="true"
-            className="mr-2 inline h-10 w-10 animate-spin fill-influencer text-gray-200 dark:text-gray3"
+            className="mr-2 inline h-14 w-14 animate-spin fill-influencer text-gray-200 dark:text-gray3"
             viewBox="0 0 100 101"
             fill="none"
             xmlns="http://www.w3.org/2000/svg"
