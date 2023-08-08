@@ -41,7 +41,9 @@
       "signOut": "Sign out",
       "influencers": "Influencers",
       "brands": "Brands",
-      "campaigns": "Campaigns"
+      "campaigns": "Campaigns",
+      "myOffers": "My Offers",
+      "offers": "Offer"
     },
 
     "footer": {

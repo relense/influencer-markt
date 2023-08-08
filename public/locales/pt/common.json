@@ -41,7 +41,9 @@
       "signOut": "Sair",
       "influencers": "Influencers",
       "brands": "Marcas",
-      "campaigns": "Campanhas"
+      "campaigns": "Campanhas",
+      "myOffers": "As Minhas Ofertas",
+      "offers": "Ofertas"
     },
 
     "footer": {

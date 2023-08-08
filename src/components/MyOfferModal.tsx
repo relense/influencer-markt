@@ -32,7 +32,7 @@ type ContentTypeWithQuantity = {
   amount: number;
 };
 
-const OfferModal = (params: {
+const MyOfferModal = (params: {
   onClose: () => void;
   edit: boolean;
   offer: OfferWithAllData | undefined;
@@ -91,7 +91,7 @@ const OfferModal = (params: {
   const { mutate: offerCreation, isLoading: isLoadingCreate } =
     api.offers.createOffer.useMutation({
       onSuccess: (offer) => {
-        void router.push(`/offers/${offer.id}`);
+        void router.push(`/my-offers/${offer.id}`);
         void ctx.offers.getAllOffers.invalidate().then(() => {
           toast.success(t("components.offerDropDown.offerCreated"), {
             position: "bottom-left",
@@ -641,4 +641,4 @@ const OfferModal = (params: {
   );
 };
 
-export { OfferModal };
+export { MyOfferModal };

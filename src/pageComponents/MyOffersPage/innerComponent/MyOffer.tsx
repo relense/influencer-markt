@@ -12,7 +12,7 @@ import { helper, useOutsideClick } from "../../../utils/helper";
 import { type OfferWithAllData } from "../../../utils/globalTypes";
 import { OfferDropDown } from "../../../components/OfferDropdown";
 
-const Offer = (params: {
+const MyOffer = (params: {
   offer: OfferWithAllData;
   openOfferModal: () => void;
   openWarningModal: (
@@ -114,4 +114,4 @@ const Offer = (params: {
   );
 };
 
-export { Offer };
+export { MyOffer };

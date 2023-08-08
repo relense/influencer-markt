@@ -6,7 +6,7 @@ import { useTranslation } from "react-i18next";
 import { Button } from "./Button";
 import { useRouter } from "next/router";
 
-const OffersActionConfirmationModal = (params: {
+const MyOffersActionConfirmationModal = (params: {
   onClose: () => void;
   type: "archive" | "delete" | "publish";
   offerId: number;
@@ -38,7 +38,7 @@ const OffersActionConfirmationModal = (params: {
 
   const { mutate: deleteOffer } = api.offers.deleteOffer.useMutation({
     onSuccess: () => {
-      void router.push("/offers");
+      void router.push("/my-offers");
       void ctx.offers.getAllOffers.invalidate().then(() => {
         toast.success(t("components.offerDropdown.offerDeleted"), {
           position: "bottom-left",
@@ -89,4 +89,4 @@ const OffersActionConfirmationModal = (params: {
   );
 };
 
-export { OffersActionConfirmationModal };
+export { MyOffersActionConfirmationModal };

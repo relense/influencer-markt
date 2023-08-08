@@ -14,6 +14,7 @@ import {
   faArrowRightFromBracket,
   faArrowRightToBracket,
   faBars,
+  faBriefcase,
   faChevronDown,
   faChevronUp,
   faPencil,
@@ -50,11 +51,11 @@ export const Navbar = (params: {
   const leftNavBar = () => {
     return (
       <div className="flex flex-1 items-center justify-start">
-        <Link href="/" className="cursor-pointer text-lg lg:p-2">
+        <Link href="/" className="cursor-pointer text-lg lg:px-2">
           {t("components.navbar.home")}
         </Link>
 
-        <div className="group relative flex px-4">
+        <div className="group relative flex px-2">
           <div className="flex items-center gap-2">
             <Link
               href="/explore/influencers"
@@ -97,7 +98,7 @@ export const Navbar = (params: {
         </div>
         {params.sessionData && (
           <>
-            <div className="group relative flex px-4">
+            <div className="group relative flex px-2">
               <div className="flex items-center gap-2">
                 <Link
                   href="/saved/influencers"
@@ -134,21 +135,13 @@ export const Navbar = (params: {
                 >
                   {t("components.navbar.brands")}
                 </Link>
-                {/* <Link
-                href="/saved/campaigns"
-                className="hover: cursor-pointer rounded-b-lg px-8 py-4 text-lg hover:bg-influencer-green hover:text-white"
-              >
-                {t("components.navbar.campaigns")}
-              </Link> */}
               </div>
             </div>
-            {params.role?.id === 1 && (
-              <Link href="/offers" className="cursor-pointer text-lg lg:p-2">
-                Offers
-              </Link>
-            )}
           </>
         )}
+        <Link href="/offers" className="cursor-pointer px-2 text-lg">
+          {t("components.navbar.offers")}
+        </Link>
       </div>
     );
   };
@@ -272,6 +265,20 @@ export const Navbar = (params: {
 
                     <div>{t("components.navbar.editMyPage")}</div>
                   </Link>
+
+                  {params.role?.id === 1 && (
+                    <Link
+                      href="/my-offers"
+                      className="group flex cursor-pointer items-center gap-4 py-2"
+                    >
+                      <FontAwesomeIcon icon={faBriefcase} className="fa-lg" />
+
+                      <div className="group-hover:underline">
+                        {" "}
+                        {t("components.navbar.myOffers")}
+                      </div>
+                    </Link>
+                  )}
                   <div className="border-[1px] border-white1" />
                 </>
               )}
@@ -340,6 +347,19 @@ export const Navbar = (params: {
                   {t("components.navbar.editMyPage")}
                 </div>
               </Link>
+
+              {params.role?.id === 1 && (
+                <Link
+                  href="/my-offers"
+                  className="group flex cursor-pointer items-center gap-4 py-2"
+                >
+                  <FontAwesomeIcon icon={faBriefcase} className="fa-lg" />
+
+                  <div className="group-hover:underline">
+                    {t("components.navbar.myOffers")}
+                  </div>
+                </Link>
+              )}
 
               <div className="cursor-pointer border-[1px] border-white1" />
             </div>

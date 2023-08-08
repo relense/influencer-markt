@@ -4,14 +4,14 @@ import { faPlus } from "@fortawesome/free-solid-svg-icons";
 import { useTranslation } from "react-i18next";
 import { api } from "~/utils/api";
 
-import { OfferModal } from "../../components/OfferModal";
-import { Offer } from "./innerComponent/Offer";
+import { MyOfferModal } from "../../components/MyOfferModal";
+import { MyOffer } from "./innerComponent/MyOffer";
 import { LoadingSpinner } from "../../components/LoadingSpinner";
 import type { OfferWithAllData } from "../../utils/globalTypes";
 import { Button } from "../../components/Button";
-import { OffersActionConfirmationModal } from "../../components/OffersActionConfirmationModal";
+import { MyOffersActionConfirmationModal } from "../../components/MyOffersActionConfirmationModal";
 
-const OffersPage = () => {
+const MyOffersPage = () => {
   const { t } = useTranslation();
   const [isArchived, setIsArchived] = useState<boolean>(false);
   const [openCreateModal, setOpenCreateModal] = useState<boolean>(false);
@@ -137,7 +137,7 @@ const OffersPage = () => {
         <div className="flex flex-col gap-4 lg:flex-row lg:flex-wrap">
           {offers?.map((offer) => {
             return (
-              <Offer
+              <MyOffer
                 offer={offer}
                 key={offer.id}
                 openOfferModal={() => openModalToEdit(offer)}
@@ -158,7 +158,7 @@ const OffersPage = () => {
       </div>
       <div className="flex justify-center">
         {openCreateModal && (
-          <OfferModal
+          <MyOfferModal
             onClose={() => setOpenCreateModal(false)}
             edit={offerToEdit !== undefined ? true : false}
             offer={offerToEdit || undefined}
@@ -167,7 +167,7 @@ const OffersPage = () => {
       </div>
       <div className="flex justify-center">
         {isWarningModalOpen && (
-          <OffersActionConfirmationModal
+          <MyOffersActionConfirmationModal
             onClose={() => setIsWarningModalOpen(false)}
             type={warningModalType}
             offerId={warningModalOfferId}
@@ -179,4 +179,4 @@ const OffersPage = () => {
   );
 };
 
-export { OffersPage };
+export { MyOffersPage };

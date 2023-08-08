@@ -4,7 +4,7 @@ import { api } from "~/utils/api";
 
 import { ProtectedWrapper } from "../../../components/ProtectedWrapper";
 import { Layout } from "../../../components/Layout";
-import { OfferDetailsPage } from "../../../pageComponents/OfferDetailsPage/OfferDetailsPage";
+import { MyOfferDetailsPage } from "../../../pageComponents/MyOfferDetailsPage/MyOfferDetailsPage";
 import { generateSSGHelper } from "../../../server/helper/ssgHelper";
 import { useEffect } from "react";
 interface OfferDetailsProps {
@@ -23,7 +23,7 @@ const OfferDetails: NextPage<OfferDetailsProps> = ({ id }) => {
 
   return (
     <ProtectedWrapper>
-      <Layout>{() => <OfferDetailsPage offerId={parseInt(id)} />}</Layout>
+      <Layout>{() => <MyOfferDetailsPage offerId={parseInt(id)} />}</Layout>
     </ProtectedWrapper>
   );
 };

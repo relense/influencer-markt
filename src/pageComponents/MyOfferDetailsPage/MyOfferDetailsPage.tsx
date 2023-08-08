@@ -14,10 +14,10 @@ import { helper, useOutsideClick } from "../../utils/helper";
 import { LoadingSpinner } from "../../components/LoadingSpinner";
 import { OfferDropDown } from "../../components/OfferDropdown";
 import { ProfileCard } from "../../components/ProfileCard";
-import { OfferModal } from "../../components/OfferModal";
-import { OffersActionConfirmationModal } from "../../components/OffersActionConfirmationModal";
+import { MyOfferModal } from "../../components/MyOfferModal";
+import { MyOffersActionConfirmationModal } from "../../components/MyOffersActionConfirmationModal";
 
-const OfferDetailsPage = (params: { offerId: number }) => {
+const MyOfferDetailsPage = (params: { offerId: number }) => {
   const { t, i18n } = useTranslation();
   const dropdownRef = useRef(null);
   const [isDropdownOpen, setIsDropdownOpen] = useState<boolean>(false);
@@ -432,7 +432,7 @@ const OfferDetailsPage = (params: { offerId: number }) => {
           </div>
           <div className="flex justify-center">
             {openCreateModal && (
-              <OfferModal
+              <MyOfferModal
                 onClose={() => setOpenCreateModal(false)}
                 edit={true}
                 offer={offer}
@@ -441,7 +441,7 @@ const OfferDetailsPage = (params: { offerId: number }) => {
           </div>
           <div className="flex justify-center">
             {isWarningModalOpen && (
-              <OffersActionConfirmationModal
+              <MyOffersActionConfirmationModal
                 onClose={() => setIsWarningModalOpen(false)}
                 type={warningModalType}
                 offerId={warningModalOfferId}
@@ -455,4 +455,4 @@ const OfferDetailsPage = (params: { offerId: number }) => {
   }
 };
 
-export { OfferDetailsPage };
+export { MyOfferDetailsPage };
