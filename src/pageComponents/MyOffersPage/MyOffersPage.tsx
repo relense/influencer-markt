@@ -31,7 +31,7 @@ const MyOffersPage = () => {
     isLoading: isLoadingOffers,
     refetch: refetchOffers,
     isRefetching: isRefetchingOffers,
-  } = api.offers.getAllOffers.useQuery({
+  } = api.offers.getAllUserOffers.useQuery({
     archived: isArchived,
   });
 
@@ -39,7 +39,7 @@ const MyOffersPage = () => {
     data: offersWithCursorData,
     refetch: refetchOffersWithCursor,
     isFetching: isRefetchingOffersWithCursor,
-  } = api.offers.getAllOffersWithCursor.useQuery(
+  } = api.offers.getAllUserOffersWithCursor.useQuery(
     {
       archived: isArchived,
       cursor: offersCursor,
@@ -109,7 +109,7 @@ const MyOffersPage = () => {
           <div className="flex h-6 w-6 items-center justify-center rounded-full bg-influencer text-white">
             <FontAwesomeIcon icon={faPlus} className="fa-sm cursor-pointer" />
           </div>
-          <div>{t("pages.offer.createOffer")}</div>
+          <div>{t("pages.myOffer.createOffer")}</div>
         </div>
         <div className="flex justify-center gap-4 text-center">
           <div
@@ -120,7 +120,7 @@ const MyOffersPage = () => {
             }
             onClick={() => changeOpenSelected()}
           >
-            {t("pages.offer.openOffers")}
+            {t("pages.myOffer.openOffers")}
           </div>
           <div
             className={
@@ -130,7 +130,7 @@ const MyOffersPage = () => {
             }
             onClick={() => changeOpenSelected()}
           >
-            {t("pages.offer.closedOffers")}
+            {t("pages.myOffer.closedOffers")}
           </div>
         </div>
 

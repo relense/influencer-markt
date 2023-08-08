@@ -10,7 +10,7 @@ import {
 
 import { helper, useOutsideClick } from "../../../utils/helper";
 import { type OfferWithAllData } from "../../../utils/globalTypes";
-import { OfferDropDown } from "../../../components/OfferDropdown";
+import { MyOfferDropdown } from "../../../components/MyOfferDropdown";
 
 const MyOffer = (params: {
   offer: OfferWithAllData;
@@ -37,7 +37,7 @@ const MyOffer = (params: {
       <div
         key={params.offer.id}
         className="flex h-auto cursor-pointer flex-col justify-between gap-4 rounded-xl border-[1px] p-4"
-        onClick={() => void router.push(`/offers/${params.offer.id}`)}
+        onClick={() => void router.push(`/my-offers/${params.offer.id}`)}
       >
         <div className="flex flex-col gap-2">
           <div className="line-clamp-2 font-semibold xs:w-3/4">
@@ -49,8 +49,8 @@ const MyOffer = (params: {
             </div>
             <div className="font-semibold text-influencer">
               {params.offer.published
-                ? t("pages.offer.published")
-                : t("pages.offer.unpublished")}
+                ? t("pages.myOffer.published")
+                : t("pages.myOffer.unpublished")}
             </div>
           </div>
           <div className="line-clamp-3">{params.offer.OfferDetails}</div>
@@ -62,7 +62,7 @@ const MyOffer = (params: {
               className="fa-xl cursor-pointer text-influencer"
             />
             <div className="font-semibold">
-              {t("pages.offer.applicants", {
+              {t("pages.myOffer.applicants", {
                 count: params.offer.applicants.length,
               })}
             </div>
@@ -73,7 +73,7 @@ const MyOffer = (params: {
               className="fa-xl cursor-pointer text-influencer"
             />
             <div className="font-semibold">
-              {t("pages.offer.openings", {
+              {t("pages.myOffer.openings", {
                 acceptedAplicants: params.offer.acceptedApplicants.length,
                 count: params.offer.numberOfInfluencers,
               })}
@@ -90,7 +90,7 @@ const MyOffer = (params: {
         {isDropdownOpen && (
           <div className="flex lg:hidden">
             {
-              <OfferDropDown
+              <MyOfferDropdown
                 offer={params.offer}
                 closeDropDown={() => setIsDropdownOpen(false)}
                 openEditOfferModal={() => params.openOfferModal()}
@@ -101,7 +101,7 @@ const MyOffer = (params: {
         )}
         <div className="hidden group-hover:flex">
           {
-            <OfferDropDown
+            <MyOfferDropdown
               offer={params.offer}
               closeDropDown={() => setIsDropdownOpen(false)}
               openEditOfferModal={() => params.openOfferModal()}

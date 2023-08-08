@@ -18,8 +18,8 @@ const MyOffersActionConfirmationModal = (params: {
 
   const { mutate: publishOffer } = api.offers.publishOffer.useMutation({
     onSuccess: () => {
-      void ctx.offers.getAllOffers.invalidate().then(() => {
-        toast.success(t("components.offerDropdown.offerPublished"), {
+      void ctx.offers.getAllUserOffers.invalidate().then(() => {
+        toast.success(t("components.myOfferDropDown.offerPublished"), {
           position: "bottom-left",
         });
       });
@@ -28,8 +28,8 @@ const MyOffersActionConfirmationModal = (params: {
 
   const { mutate: archiveOffer } = api.offers.archiveOffer.useMutation({
     onSuccess: () => {
-      void ctx.offers.getAllOffers.invalidate().then(() => {
-        toast.success(t("components.offerDropdown.offerArchived"), {
+      void ctx.offers.getAllUserOffers.invalidate().then(() => {
+        toast.success(t("components.myOfferDropDown.offerArchived"), {
           position: "bottom-left",
         });
       });
@@ -39,8 +39,8 @@ const MyOffersActionConfirmationModal = (params: {
   const { mutate: deleteOffer } = api.offers.deleteOffer.useMutation({
     onSuccess: () => {
       void router.push("/my-offers");
-      void ctx.offers.getAllOffers.invalidate().then(() => {
-        toast.success(t("components.offerDropdown.offerDeleted"), {
+      void ctx.offers.getAllUserOffers.invalidate().then(() => {
+        toast.success(t("components.myOfferDropDown.offerDeleted"), {
           position: "bottom-left",
         });
       });
@@ -66,7 +66,7 @@ const MyOffersActionConfirmationModal = (params: {
         <div className="flex justify-center p-4">
           <Button
             type="submit"
-            title={t(`pages.offer.${params.type}Button`)}
+            title={t(`pages.myOffer.${params.type}Button`)}
             level="primary"
             form="form-warningModal"
           />
@@ -79,10 +79,10 @@ const MyOffersActionConfirmationModal = (params: {
         className="flex flex-col gap-4 p-4"
       >
         <div className="text-center text-3xl font-semibold text-influencer">
-          {t("pages.offer.areYouSure")}
+          {t("pages.myOffer.areYouSure")}
         </div>
         <div className="text-center text-lg">
-          {t(`pages.offer.${params.type}Warning`)}
+          {t(`pages.myOffer.${params.type}Warning`)}
         </div>
       </form>
     </Modal>

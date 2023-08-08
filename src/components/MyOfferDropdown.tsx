@@ -12,7 +12,7 @@ import { api } from "~/utils/api";
 import type { OfferWithAllData } from "../utils/globalTypes";
 import { useTranslation } from "react-i18next";
 
-const OfferDropDown = (params: {
+const MyOfferDropdown = (params: {
   offer: OfferWithAllData;
   closeDropDown: () => void;
   openEditOfferModal: () => void;
@@ -26,8 +26,8 @@ const OfferDropDown = (params: {
 
   const { mutate: duplicateOffer } = api.offers.duplicateOffer.useMutation({
     onSuccess: () => {
-      void ctx.offers.getAllOffers.invalidate().then(() => {
-        toast.success(t("components.offerDropdown.offerDuplicated"), {
+      void ctx.offers.getAllUserOffers.invalidate().then(() => {
+        toast.success(t("components.myOfferDropDown.offerDuplicated"), {
           position: "bottom-left",
         });
       });
@@ -48,7 +48,7 @@ const OfferDropDown = (params: {
             icon={faPaperPlane}
             className="fa-lg cursor-pointer"
           />
-          {t("components.offerDropdown.publish")}
+          {t("components.myOfferDropDown.publish")}
         </div>
       )}
       {!params.offer.archived && (
@@ -60,7 +60,7 @@ const OfferDropDown = (params: {
             icon={faBoxArchive}
             className="fa-lg cursor-pointer"
           />
-          {t("components.offerDropdown.archive")}
+          {t("components.myOfferDropDown.archive")}
         </div>
       )}
       {!params.offer.published && !params.offer.archived && (
@@ -69,7 +69,7 @@ const OfferDropDown = (params: {
           onClick={() => params.openEditOfferModal()}
         >
           <FontAwesomeIcon icon={faPencil} className="fa-lg cursor-pointer" />
-          {t("components.offerDropdown.update")}
+          {t("components.myOfferDropDown.update")}
         </div>
       )}
       <div
@@ -77,7 +77,7 @@ const OfferDropDown = (params: {
         onClick={() => duplicateOffer({ offerId: params.offer.id })}
       >
         <FontAwesomeIcon icon={faClone} className="fa-lg cursor-pointer" />
-        {t("components.offerDropdown.duplicate")}
+        {t("components.myOfferDropDown.duplicate")}
       </div>
       {(!params.offer.published || params.offer.archived) && (
         <div
@@ -85,11 +85,11 @@ const OfferDropDown = (params: {
           onClick={() => params.openWarningModal("delete", params.offer.id)}
         >
           <FontAwesomeIcon icon={faTrash} className="fa-lg cursor-pointer" />
-          {t("components.offerDropdown.delete")}
+          {t("components.myOfferDropDown.delete")}
         </div>
       )}
     </div>
   );
 };
 
-export { OfferDropDown };
+export { MyOfferDropdown };

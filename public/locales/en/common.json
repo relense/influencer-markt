@@ -176,7 +176,7 @@
       "savedProfile": "Saved Profile Successfully"
     },
 
-    "offerDropDown": {
+    "myOfferDropDown": {
       "publish": "Publish",
       "archive": "Archive",
       "duplicate": "Duplicate",
@@ -451,7 +451,7 @@
       "showBrandsButton": "Show Brands"
     },
 
-    "offer": {
+    "myOffer": {
       "errorWarning": "Max is {{count}} characters",
       "createOffer": "Create Offer",
       "updateOffer": "Update Offer",

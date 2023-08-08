@@ -12,7 +12,7 @@ import { api } from "~/utils/api";
 
 import { helper, useOutsideClick } from "../../utils/helper";
 import { LoadingSpinner } from "../../components/LoadingSpinner";
-import { OfferDropDown } from "../../components/OfferDropdown";
+import { MyOfferDropdown } from "../../components/MyOfferDropdown";
 import { ProfileCard } from "../../components/ProfileCard";
 import { MyOfferModal } from "../../components/MyOfferModal";
 import { MyOffersActionConfirmationModal } from "../../components/MyOffersActionConfirmationModal";
@@ -67,7 +67,7 @@ const MyOfferDetailsPage = (params: { offerId: number }) => {
           {isDropdownOpen && (
             <div className="flex lg:hidden">
               {
-                <OfferDropDown
+                <MyOfferDropdown
                   offer={offer}
                   closeDropDown={() => setIsDropdownOpen(false)}
                   openEditOfferModal={() => setOpenCreateModal(true)}
@@ -78,7 +78,7 @@ const MyOfferDetailsPage = (params: { offerId: number }) => {
           )}
           <div className="hidden group-hover:flex">
             {
-              <OfferDropDown
+              <MyOfferDropdown
                 offer={offer}
                 closeDropDown={() => setIsDropdownOpen(false)}
                 openEditOfferModal={() => setOpenCreateModal(true)}
@@ -101,14 +101,14 @@ const MyOfferDetailsPage = (params: { offerId: number }) => {
           <div className="flex items-center gap-2">
             <div className="font-semibold text-influencer">
               {offer.published
-                ? t("pages.offer.published")
-                : t("pages.offer.unpublished")}
+                ? t("pages.myOffer.published")
+                : t("pages.myOffer.unpublished")}
             </div>
             <div className="h-1 w-1 rounded-full bg-black"></div>
             <div className="font-semibold text-influencer">
               {offer.archived
-                ? t("pages.offer.archived")
-                : t("pages.offer.open")}
+                ? t("pages.myOffer.archived")
+                : t("pages.myOffer.open")}
             </div>
           </div>
         </div>
@@ -147,15 +147,15 @@ const MyOfferDetailsPage = (params: { offerId: number }) => {
           <>
             <div className="hidden h-1 w-1 rounded-full bg-black sm:flex"></div>
             <div className="flex items-center gap-2 font-semibold">
-              <div className="text-influencer">{t("pages.offer.gender")}</div>
-              <div>{offer.gender?.name || t("pages.offer.any")}</div>
+              <div className="text-influencer">{t("pages.myOffer.gender")}</div>
+              <div>{offer.gender?.name || t("pages.myOffer.any")}</div>
             </div>
           </>
           <>
             <div className="hidden h-1 w-1 rounded-full bg-black sm:flex"></div>
             <div className="flex items-center gap-2 font-semibold">
               <div className="text-influencer">
-                {t("pages.offer.followers")}
+                {t("pages.myOffer.followers")}
               </div>
               <div>
                 {helper.formatNumberWithKorM(offer.minFollowers)} -{" "}
@@ -166,7 +166,7 @@ const MyOfferDetailsPage = (params: { offerId: number }) => {
           <>
             <div className="hidden h-1 w-1 rounded-full bg-black sm:flex"></div>
             <div className="flex items-center gap-2 font-semibold">
-              <div className="text-influencer">{t("pages.offer.price")}</div>
+              <div className="text-influencer">{t("pages.myOffer.price")}</div>
               <div>{helper.formatNumber(offer.price)}€</div>
             </div>
           </>
@@ -181,7 +181,7 @@ const MyOfferDetailsPage = (params: { offerId: number }) => {
         <div>
           <div>
             <span className="pr-2 font-semibold text-influencer">
-              {t("pages.offer.offerDescription")}
+              {t("pages.myOffer.offerDescription")}
             </span>
             {offer.OfferDetails}
           </div>
@@ -196,7 +196,7 @@ const MyOfferDetailsPage = (params: { offerId: number }) => {
         <div>
           <div className="flex flex-wrap">
             <div className="pr-2 font-semibold text-influencer">
-              {t("pages.offer.categories")}
+              {t("pages.myOffer.categories")}
             </div>
             {offer.categories.map((category, index) => {
               return (
@@ -222,7 +222,7 @@ const MyOfferDetailsPage = (params: { offerId: number }) => {
               className="fa-xl cursor-pointer text-influencer"
             />
             <div className="font-semibold">
-              {t("pages.offer.applicants", {
+              {t("pages.myOffer.applicants", {
                 count: offer.applicants.length,
               })}
             </div>
@@ -233,7 +233,7 @@ const MyOfferDetailsPage = (params: { offerId: number }) => {
               className="fa-xl cursor-pointer text-influencer"
             />
             <div className="font-semibold">
-              {t("pages.offer.openings", {
+              {t("pages.myOffer.openings", {
                 acceptedAplicants: offer.acceptedApplicants.length,
                 count: offer.numberOfInfluencers,
               })}
@@ -253,7 +253,7 @@ const MyOfferDetailsPage = (params: { offerId: number }) => {
             onClick={() => setIsDetailsOpen(!isDetailsOpen)}
           >
             <div className="text-2xl font-bold">
-              {t("pages.offer.offerDetails")}
+              {t("pages.myOffer.offerDetails")}
             </div>
             <div className="flex h-6 w-6 justify-center rounded-full border-[1px]">
               <div>
@@ -302,7 +302,7 @@ const MyOfferDetailsPage = (params: { offerId: number }) => {
             }
           >
             <div className="text-2xl font-bold">
-              {t("pages.offer.acceptedAplicants")}
+              {t("pages.myOffer.acceptedAplicants")}
             </div>
             <div className="flex h-6 w-6 justify-center rounded-full border-[1px]">
               <div>
@@ -365,7 +365,7 @@ const MyOfferDetailsPage = (params: { offerId: number }) => {
             onClick={() => setIsApplicantsOpen(!isApplicantsOpen)}
           >
             <div className="text-2xl font-bold">
-              {t("pages.offer.applicants")}
+              {t("pages.myOffer.applicants")}
             </div>
             <div className="flex h-6 w-6 justify-center rounded-full border-[1px]">
               <div>

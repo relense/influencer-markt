@@ -176,7 +176,7 @@
       "savedProfile": "Perfil Guardado Com Sucesso"
     },
 
-    "offerDropdown": {
+    "myOfferDropdown": {
       "publish": "Publicar",
       "archive": "Arquivar",
       "duplicate": "Duplicar",
@@ -451,7 +451,7 @@
       "showBrandsButton": "Mostrar Marcas"
     },
 
-    "offer": {
+    "myOffer": {
       "errorWarning": "Máximo de {{count}} caracteres",
       "createOffer": "Criar Oferta",
       "updateOffer": "Actualizar Oferta",
@@ -501,12 +501,13 @@
       "price": "Preço",
       "acceptedAplicants": "Candidatos Aceites",
       "applicants": "Candidatos",
-      "archiveWarning": "Are you sure you want to archive this offer? After the offer is archived nobody can apply.",
-      "deleteWarning": "Are you sure you want to delete the offer? This action is permanent",
-      "publishWarning": "Are you sure you want to publish the offer? Afer this action you can't edit the offer anymore.",
-      "archiveButton": "Archive Offer",
-      "deleteButton": "Delete Offer",
-      "publishButton": "Publish Offer"
+      "areYouSure": "Tens a certeza?",
+      "archiveWarning": "Tens a certeza de que queres arquivar esta oferta? Depois da oferta estar arquivada ninguém se pode candidatar.",
+      "deleteWarning": "Tens a certeza que queres apagar esta oferta? Esta acção é permanente.",
+      "publishWarning": "Tens a certeza de que queres publicar esta oferta? Depois desta accção não podes voltar a editar esta oferta.",
+      "archiveButton": "Arquivar Oferta",
+      "deleteButton": "Apagar Oferta",
+      "publishButton": "Publicar Oferta"
     }
   }
 }

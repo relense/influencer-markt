@@ -92,8 +92,8 @@ const MyOfferModal = (params: {
     api.offers.createOffer.useMutation({
       onSuccess: (offer) => {
         void router.push(`/my-offers/${offer.id}`);
-        void ctx.offers.getAllOffers.invalidate().then(() => {
-          toast.success(t("components.offerDropDown.offerCreated"), {
+        void ctx.offers.getAllUserOffers.invalidate().then(() => {
+          toast.success(t("components.myOfferDropDown.offerCreated"), {
             position: "bottom-left",
           });
         });
@@ -106,8 +106,8 @@ const MyOfferModal = (params: {
         params.onClose();
         void ctx.offers.getOffer.invalidate();
         void ctx.offers.getApplicants.invalidate();
-        void ctx.offers.getAllOffers.invalidate().then(() => {
-          toast.success(t("components.offerDropDown.offerUpdated"), {
+        void ctx.offers.getAllUserOffers.invalidate().then(() => {
+          toast.success(t("components.myOfferDropDown.offerUpdated"), {
             position: "bottom-left",
           });
         });
@@ -157,7 +157,7 @@ const MyOfferModal = (params: {
       <>
         <div className="flex flex-col gap-4">
           <div className="text-xl font-medium">
-            {t("pages.offer.offerSummary")}
+            {t("pages.myOffer.offerSummary")}
           </div>
           <div className="flex w-full flex-col">
             <input
@@ -165,13 +165,13 @@ const MyOfferModal = (params: {
               required
               type="text"
               className="flex h-14 flex-1 cursor-pointer rounded-lg border-[1px] border-gray3 bg-transparent p-4 placeholder-gray2 placeholder:w-11/12"
-              placeholder={t("pages.offer.offerSummaryPlaceholder")}
+              placeholder={t("pages.myOffer.offerSummaryPlaceholder")}
               autoComplete="off"
             />
             {errors.offerSummary &&
               errors.offerSummary.type === "maxLength" && (
                 <div className="px-4 py-1 text-red-600">
-                  {t("pages.offer.errorWarning", { count: 50 })}
+                  {t("pages.myOffer.errorWarning", { count: 50 })}
                 </div>
               )}
           </div>
@@ -186,20 +186,20 @@ const MyOfferModal = (params: {
       <>
         <div className="flex flex-col gap-4">
           <div className="text-xl font-medium">
-            {t("pages.offer.offerDetails")}
+            {t("pages.myOffer.offerDetails")}
           </div>
           <div className="flex w-full flex-col">
             <textarea
               {...register("offerDetails", { maxLength: 464 })}
               required
               className="flex flex-1 cursor-pointer rounded-lg border-[1px] border-gray3 bg-transparent p-4 placeholder-gray2 placeholder:w-11/12"
-              placeholder={t("pages.offer.detailsPlaceholder")}
+              placeholder={t("pages.myOffer.detailsPlaceholder")}
               autoComplete="off"
             />
             {errors.offerDetails &&
               errors.offerDetails.type === "maxLength" && (
                 <div className="px-4 py-1 text-red-600">
-                  {t("pages.offer..errorWarning", {
+                  {t("pages.myOffer..errorWarning", {
                     count: 464,
                   })}
                 </div>
@@ -216,7 +216,7 @@ const MyOfferModal = (params: {
       <>
         <div className="flex flex-col gap-4">
           <div className="text-xl font-medium">
-            {t("pages.offer.platformTitle")}
+            {t("pages.myOffer.platformTitle")}
           </div>
           <Controller
             name="platform"
@@ -227,7 +227,7 @@ const MyOfferModal = (params: {
                 <CustomSelect
                   register={register}
                   name="platform"
-                  placeholder={t("pages.offer.platformPlaceholder")}
+                  placeholder={t("pages.myOffer.platformPlaceholder")}
                   options={platforms?.map((platform) => {
                     return { id: platform.id, name: platform.name };
                   })}
@@ -272,7 +272,7 @@ const MyOfferModal = (params: {
           <div className="flex flex-col gap-4">
             <div className="flex items-center gap-2">
               <div className="text-xl font-medium">
-                {t("pages.offer.contentTypesTitle")}
+                {t("pages.myOffer.contentTypesTitle")}
               </div>
               {!allContentTypesSelected && (
                 <div className="flex h-6 w-6 items-center justify-center rounded-full bg-influencer text-white">
@@ -331,7 +331,7 @@ const MyOfferModal = (params: {
         <div className="flex flex-1 items-center gap-2">
           <CustomSelect
             name="contentType"
-            placeholder={t("pages.offer.contentTypePlaceholder")}
+            placeholder={t("pages.myOffer.contentTypePlaceholder")}
             options={types}
             value={
               contentTypesList?.[index]?.contentType || {
@@ -349,7 +349,7 @@ const MyOfferModal = (params: {
             type="number"
             required
             className="h-14 w-full rounded-lg border-[1px] border-gray3 p-4 placeholder-gray2 focus:border-black focus:outline-none"
-            placeholder={t("pages.offer.howMany")}
+            placeholder={t("pages.myOffer.howMany")}
             max="1000000000"
             min="1"
             value={contentTypesList[index]?.amount || ""}
@@ -397,7 +397,7 @@ const MyOfferModal = (params: {
       <>
         <div className="flex flex-col gap-4">
           <div className="text-xl font-medium">
-            {t("pages.offer.offerCategories")}
+            {t("pages.myOffer.offerCategories")}
           </div>
           <Controller
             name="categories"
@@ -407,7 +407,7 @@ const MyOfferModal = (params: {
               return (
                 <CustomMultiSelect
                   name="categories"
-                  placeholder={t("pages.offer.categoriesPlaceholder")}
+                  placeholder={t("pages.myOffer.categoriesPlaceholder")}
                   options={categories?.map((category) => {
                     return {
                       id: category.id,
@@ -434,14 +434,14 @@ const MyOfferModal = (params: {
       <>
         <div className="flex flex-col gap-4">
           <div className="text-xl font-medium">
-            {t("pages.offer.offerPriceTitle")}
+            {t("pages.myOffer.offerPriceTitle")}
           </div>
           <input
             {...register("offerPrice", { valueAsNumber: true })}
             required
             type="number"
             className="flex h-14 flex-1 cursor-pointer rounded-lg border-[1px] border-gray3 bg-transparent p-4 placeholder-gray2 placeholder:w-11/12"
-            placeholder={t("pages.offer.pricePlaceholder")}
+            placeholder={t("pages.myOffer.pricePlaceholder")}
             autoComplete="off"
             min="0"
             max="1000000000"
@@ -458,14 +458,14 @@ const MyOfferModal = (params: {
       <>
         <div className="flex flex-col gap-4">
           <div className="text-xl font-medium">
-            {t("pages.offer.numberOfInfluencers")}
+            {t("pages.myOffer.numberOfInfluencers")}
           </div>
           <input
             {...register("numberOfInfluencers", { valueAsNumber: true })}
             required
             type="number"
             className="flex h-14 flex-1 cursor-pointer rounded-lg border-[1px] border-gray3 bg-transparent p-4 placeholder-gray2 placeholder:w-11/12"
-            placeholder={t("pages.offer.numberOfInfluencersPlaceholder")}
+            placeholder={t("pages.myOffer.numberOfInfluencersPlaceholder")}
             autoComplete="off"
             min="1"
             max="1000000"
@@ -482,7 +482,7 @@ const MyOfferModal = (params: {
       <>
         <div className="flex flex-col gap-4">
           <div className="text-xl font-medium">
-            {t("pages.offer.influencerLocation")}
+            {t("pages.myOffer.influencerLocation")}
           </div>
           <div className="flex flex-col gap-6 lg:flex-row lg:gap-6">
             <Controller
@@ -494,7 +494,7 @@ const MyOfferModal = (params: {
                   <CustomSelect
                     register={register}
                     name="country"
-                    placeholder={t("pages.offer.country")}
+                    placeholder={t("pages.myOffer.country")}
                     options={
                       countries && countries.length > 0
                         ? countries?.map((country) => {
@@ -524,17 +524,17 @@ const MyOfferModal = (params: {
       <>
         <div className="flex flex-col gap-4">
           <div className="text-xl font-medium">
-            {t("pages.offer.influencerFollowers")}
+            {t("pages.myOffer.influencerFollowers")}
           </div>
           <div className="flex flex-col gap-6 lg:flex-row lg:items-center lg:gap-11">
             <div className="flex flex-1 flex-col gap-1">
-              <label className="text-gray2">{t("pages.offer.minimum")}</label>
+              <label className="text-gray2">{t("pages.myOffer.minimum")}</label>
               <input
                 {...register("minFollowers", { valueAsNumber: true })}
                 type="number"
                 required
                 className="h-14 w-full rounded-lg border-[1px] border-gray3 p-4 placeholder-gray2 focus:border-black focus:outline-none"
-                placeholder={t("pages.offer.minFollowers")}
+                placeholder={t("pages.myOffer.minFollowers")}
                 autoComplete="off"
                 max="1000000000"
                 min="0"
@@ -543,13 +543,13 @@ const MyOfferModal = (params: {
             </div>
 
             <div className="flex flex-1 flex-col gap-1">
-              <label className="text-gray2">{t("pages.offer.maximum")}</label>
+              <label className="text-gray2">{t("pages.myOffer.maximum")}</label>
               <input
                 {...register("maxFollowers", { valueAsNumber: true })}
                 type="number"
                 required
                 className="h-14 w-full rounded-lg border-[1px] border-gray3 p-4 placeholder-gray2 focus:border-black focus:outline-none"
-                placeholder={t("pages.offer.maxFollowers")}
+                placeholder={t("pages.myOffer.maxFollowers")}
                 autoComplete="off"
                 max="1000000000"
                 min="0"
@@ -567,7 +567,7 @@ const MyOfferModal = (params: {
     return (
       <div className="flex flex-col gap-4">
         <div className="text-xl font-medium">
-          {t("pages.offer.influencerGender")}
+          {t("pages.myOffer.influencerGender")}
         </div>
         <div className="flex flex-wrap justify-center gap-4 lg:justify-start ">
           <div
@@ -579,7 +579,7 @@ const MyOfferModal = (params: {
             }
             onClick={() => setValue("gender", { id: -1, name: "" })}
           >
-            {t(`pages.offer.any`)}
+            {t(`pages.myOffer.any`)}
           </div>
           {genders?.map((gender) => {
             return (
@@ -592,7 +592,7 @@ const MyOfferModal = (params: {
                 }
                 onClick={() => setValue("gender", gender)}
               >
-                {t(`pages.offer.${gender.name}`)}
+                {t(`pages.myOffer.${gender.name}`)}
               </div>
             );
           })}
@@ -605,15 +605,15 @@ const MyOfferModal = (params: {
     <Modal
       title={
         params.edit
-          ? t("pages.offer.updateOffer")
-          : t("pages.offer.createOffer")
+          ? t("pages.myOffer.updateOffer")
+          : t("pages.myOffer.createOffer")
       }
       onClose={params.onClose}
       button={
         <div className="flex justify-center p-4">
           <Button
             type="submit"
-            title={t("pages.offer.saveOffer")}
+            title={t("pages.myOffer.saveOffer")}
             level="primary"
             form="form-createModal"
             isLoading={isLoadingCreate || isLoadingUpdate}

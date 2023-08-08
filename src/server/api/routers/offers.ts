@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { createTRPCRouter, protectedProcedure } from "../trpc";
+import { createTRPCRouter, protectedProcedure, publicProcedure } from "../trpc";
 
 export const OffersRouter = createTRPCRouter({
   createOffer: protectedProcedure
@@ -130,7 +130,7 @@ export const OffersRouter = createTRPCRouter({
       return offer;
     }),
 
-  getAllOffers: protectedProcedure
+  getAllUserOffers: protectedProcedure
     .input(
       z.object({
         archived: z.boolean(),
@@ -191,7 +191,7 @@ export const OffersRouter = createTRPCRouter({
       }
     }),
 
-  getAllOffersWithCursor: protectedProcedure
+  getAllUserOffersWithCursor: protectedProcedure
     .input(
       z.object({
         archived: z.boolean(),
@@ -425,6 +425,52 @@ export const OffersRouter = createTRPCRouter({
               user: { select: { username: true } },
             },
           },
+        },
+      });
+    }),
+
+  getAllOffers: publicProcedure.query(async ({ ctx }) => {
+    return await ctx.prisma.offer.findMany({
+      where: {
+        published: true,
+        archived: false,
+      },
+      take: 10,
+      include: {
+        contentTypeWithQuantity: true,
+        country: true,
+        state: true,
+        gender: true,
+        socialMedia: true,
+        offerCreator: true,
+      },
+    });
+  }),
+
+  getAllOffersWithCursor: publicProcedure
+    .input(
+      z.object({
+        cursor: z.number(),
+      })
+    )
+    .query(async ({ ctx, input }) => {
+      return await ctx.prisma.offer.findMany({
+        where: {
+          published: true,
+          archived: false,
+        },
+        take: 10,
+        skip: 1,
+        cursor: {
+          id: input.cursor,
+        },
+        include: {
+          contentTypeWithQuantity: true,
+          country: true,
+          state: true,
+          gender: true,
+          socialMedia: true,
+          offerCreator: true,
         },
       });
     }),
