@@ -36,7 +36,7 @@ const MyOffer = (params: {
     <div className="relative flex-1 lg:flex-[0_1_49%]">
       <div
         key={params.offer.id}
-        className="flex h-auto cursor-pointer flex-col justify-between gap-4 rounded-xl border-[1px] p-4"
+        className="flex h-full cursor-pointer flex-col justify-between gap-4 rounded-xl border-[1px] p-4"
         onClick={() => void router.push(`/my-offers/${params.offer.id}`)}
       >
         <div className="flex flex-col gap-2">
@@ -53,7 +53,9 @@ const MyOffer = (params: {
                 : t("pages.myOffer.unpublished")}
             </div>
           </div>
-          <div className="line-clamp-3">{params.offer.OfferDetails}</div>
+          <div className="line-clamp-3 whitespace-pre-line">
+            {params.offer.OfferDetails}
+          </div>
         </div>
         <div className="flex flex-col gap-4 sm:flex-row sm:gap-6">
           <div className="flex items-center gap-2">
@@ -84,7 +86,7 @@ const MyOffer = (params: {
       <div className="z-5 group absolute right-0 top-0 p-4" ref={dropdownRef}>
         <FontAwesomeIcon
           icon={faEllipsis}
-          className="fa-xl cursor-pointer hover:text-influencer"
+          className="fa-xl cursor-pointer text-gray2 hover:text-influencer"
           onClick={() => setIsDropdownOpen(!isDropdownOpen)}
         />
         {isDropdownOpen && (

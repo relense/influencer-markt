@@ -61,7 +61,7 @@ const MyOfferDetailsPage = (params: { offerId: number }) => {
         <div className="z-5 group absolute right-0 top-0" ref={dropdownRef}>
           <FontAwesomeIcon
             icon={faEllipsis}
-            className="fa-xl cursor-pointer hover:text-influencer"
+            className="fa-xl cursor-pointer text-gray2 hover:text-influencer"
             onClick={() => setIsDropdownOpen(!isDropdownOpen)}
           />
           {isDropdownOpen && (
@@ -183,7 +183,7 @@ const MyOfferDetailsPage = (params: { offerId: number }) => {
             <span className="pr-2 font-semibold text-influencer">
               {t("pages.myOffer.offerDescription")}
             </span>
-            {offer.OfferDetails}
+            <div className="whitespace-pre-line">{offer.OfferDetails}</div>
           </div>
         </div>
       );
@@ -201,7 +201,7 @@ const MyOfferDetailsPage = (params: { offerId: number }) => {
             {offer.categories.map((category, index) => {
               return (
                 <div key={category.id} className="pr-2">
-                  {category.name}
+                  {t(`general.categories.${category.name}`)}
                   {index !== offer.categories.length - 1 && ","}
                 </div>
               );

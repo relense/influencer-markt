@@ -46,7 +46,7 @@ export const Button = ({
   }
 
   if (size === "large") {
-    wSize = "lg:w-full";
+    wSize = "w-full";
   }
 
   if (shadow) {

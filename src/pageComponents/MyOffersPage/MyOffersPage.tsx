@@ -94,6 +94,11 @@ const MyOffersPage = () => {
     setWarningModalOfferId(offerId);
   };
 
+  const closeMyOffersModal = () => {
+    setOfferToEdit(undefined);
+    setOpenCreateModal(false);
+  };
+
   return (
     <>
       {(isLoadingOffers || isRefetchingOffers) && (
@@ -101,7 +106,7 @@ const MyOffersPage = () => {
           <LoadingSpinner />
         </div>
       )}
-      <div className="flex flex-1 flex-col justify-start gap-6 p-6 lg:w-full lg:gap-6 lg:p-12 xl:self-center xl:p-4 2xl:w-3/4">
+      <div className="flex w-full cursor-default flex-col gap-6 self-center px-4 pb-10 sm:px-12 xl:w-3/4 2xl:w-3/4 3xl:w-2/4">
         <div
           className="flex h-auto cursor-pointer items-center justify-center gap-2 rounded-xl border-[1px] p-4 hover:bg-light-red"
           onClick={() => setOpenCreateModal(true)}
@@ -159,7 +164,7 @@ const MyOffersPage = () => {
       <div className="flex justify-center">
         {openCreateModal && (
           <MyOfferModal
-            onClose={() => setOpenCreateModal(false)}
+            onClose={() => closeMyOffersModal()}
             edit={offerToEdit !== undefined ? true : false}
             offer={offerToEdit || undefined}
           />

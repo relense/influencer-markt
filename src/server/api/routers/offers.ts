@@ -430,21 +430,41 @@ export const OffersRouter = createTRPCRouter({
     }),
 
   getAllOffers: publicProcedure.query(async ({ ctx }) => {
-    return await ctx.prisma.offer.findMany({
-      where: {
-        published: true,
-        archived: false,
-      },
-      take: 10,
-      include: {
-        contentTypeWithQuantity: true,
-        country: true,
-        state: true,
-        gender: true,
-        socialMedia: true,
-        offerCreator: true,
-      },
-    });
+    return await ctx.prisma.$transaction([
+      ctx.prisma.offer.count({
+        where: {
+          published: true,
+          archived: false,
+        },
+      }),
+      ctx.prisma.offer.findMany({
+        where: {
+          published: true,
+          archived: false,
+        },
+        take: 10,
+        include: {
+          contentTypeWithQuantity: {
+            select: {
+              amount: true,
+              contentType: true,
+              id: true,
+            },
+          },
+          country: true,
+          state: true,
+          gender: true,
+          socialMedia: true,
+          offerCreator: true,
+          categories: true,
+          applicants: true,
+          acceptedApplicants: true,
+        },
+        orderBy: {
+          createdAt: "desc",
+        },
+      }),
+    ]);
   }),
 
   getAllOffersWithCursor: publicProcedure
@@ -465,12 +485,24 @@ export const OffersRouter = createTRPCRouter({
           id: input.cursor,
         },
         include: {
-          contentTypeWithQuantity: true,
+          contentTypeWithQuantity: {
+            select: {
+              amount: true,
+              contentType: true,
+              id: true,
+            },
+          },
           country: true,
           state: true,
           gender: true,
           socialMedia: true,
           offerCreator: true,
+          categories: true,
+          applicants: true,
+          acceptedApplicants: true,
+        },
+        orderBy: {
+          createdAt: "desc",
         },
       });
     }),

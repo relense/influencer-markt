@@ -15,7 +15,7 @@ const SocialMediaCard = (params: {
   return (
     <div className="relative w-full cursor-pointer px-4 sm:px-0 lg:flex-[0_1_47%]">
       <div
-        className="flex h-auto w-auto flex-col gap-4 rounded-lg border-[1px] border-gray3 p-4"
+        className="flex h-full w-auto flex-col gap-4 rounded-lg border-[1px] border-gray3 p-4"
         onClick={params.onClick}
       >
         <div className="font-semibold text-influencer">

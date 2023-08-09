@@ -57,6 +57,7 @@ const MyOfferModal = (params: {
     handleSubmit,
     setValue,
     watch,
+    reset,
     formState: { errors, isDirty },
   } = useForm<OfferData>({
     defaultValues: {
@@ -104,6 +105,7 @@ const MyOfferModal = (params: {
     api.offers.updateOffer.useMutation({
       onSuccess: () => {
         params.onClose();
+        reset();
         void ctx.offers.getOffer.invalidate();
         void ctx.offers.getApplicants.invalidate();
         void ctx.offers.getAllUserOffers.invalidate().then(() => {
@@ -149,6 +151,7 @@ const MyOfferModal = (params: {
       }
     } else {
       params.onClose();
+      reset();
     }
   });
 
@@ -190,7 +193,7 @@ const MyOfferModal = (params: {
           </div>
           <div className="flex w-full flex-col">
             <textarea
-              {...register("offerDetails", { maxLength: 464 })}
+              {...register("offerDetails", { maxLength: 2200 })}
               required
               className="flex flex-1 cursor-pointer rounded-lg border-[1px] border-gray3 bg-transparent p-4 placeholder-gray2 placeholder:w-11/12"
               placeholder={t("pages.myOffer.detailsPlaceholder")}
@@ -200,7 +203,7 @@ const MyOfferModal = (params: {
               errors.offerDetails.type === "maxLength" && (
                 <div className="px-4 py-1 text-red-600">
                   {t("pages.myOffer..errorWarning", {
-                    count: 464,
+                    count: 2200,
                   })}
                 </div>
               )}
@@ -314,6 +317,7 @@ const MyOfferModal = (params: {
     index: number,
     types: Option[]
   ) => {
+    debugger;
     return (
       <div
         className="flex w-full flex-1 items-center gap-2"
@@ -334,10 +338,7 @@ const MyOfferModal = (params: {
             placeholder={t("pages.myOffer.contentTypePlaceholder")}
             options={types}
             value={
-              contentTypesList?.[index]?.contentType || {
-                id: -1,
-                name: "",
-              }
+              contentTypesList?.[index]?.contentType || { id: -1, name: "" }
             }
             handleOptionSelect={(value: Option) => {
               handleContentTypeChange(index, value);
@@ -608,7 +609,10 @@ const MyOfferModal = (params: {
           ? t("pages.myOffer.updateOffer")
           : t("pages.myOffer.createOffer")
       }
-      onClose={params.onClose}
+      onClose={() => {
+        params.onClose();
+        reset();
+      }}
       button={
         <div className="flex justify-center p-4">
           <Button

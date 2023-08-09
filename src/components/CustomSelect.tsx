@@ -71,8 +71,11 @@ export const CustomSelect = (params: {
             inputMode="none"
             className={customBorder}
             placeholder={params.placeholder}
-            defaultValue={params.value.name}
+            value={params.value.name}
             autoComplete="one-time-code"
+            onChange={() => {
+              return;
+            }}
           />
         )}
         {selectStatus ? (
