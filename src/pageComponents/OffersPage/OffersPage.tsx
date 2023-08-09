@@ -106,9 +106,8 @@ const OffersPage = () => {
               }
 
               return (
-                <>
+                <div key={`offer${offer.id}`}>
                   <div
-                    key={offer.id}
                     className={offerClass}
                     onClick={() => setSelectedOffer(offer)}
                   >
@@ -139,7 +138,7 @@ const OffersPage = () => {
                           {offer.contentTypeWithQuantity.map((contentType) => {
                             return (
                               <div
-                                key={`${contentType.id}${offer.offerCreator.name}`}
+                                key={`offersList${contentType.id}${offer.offerCreator.name}`}
                                 className="flex gap-1 font-semibold text-black"
                               >
                                 <div>{contentType.amount}</div>
@@ -154,7 +153,7 @@ const OffersPage = () => {
                   {index !== offers.length - 1 && (
                     <div className="w-full border-[1px] border-white1" />
                   )}
-                </>
+                </div>
               );
             })
           )}
@@ -212,7 +211,7 @@ const OffersPage = () => {
               {selectedOffer?.contentTypeWithQuantity.map((contentType) => {
                 return (
                   <div
-                    key={`${contentType.id}${selectedOffer?.offerCreator?.name}`}
+                    key={`details${contentType.id}${selectedOffer?.offerCreator?.name}`}
                     className="flex gap-1 text-black"
                   >
                     <div>{contentType.amount}</div>
@@ -243,7 +242,7 @@ const OffersPage = () => {
             </span>
             {selectedOffer?.categories.map((category, index) => {
               return (
-                <div key={category.id} className="pr-2">
+                <div key={`categories${category.id}`} className="pr-2">
                   {`${t(`general.categories.${category.name}`)}${
                     selectedOffer?.categories.length !== index ? "," : ""
                   }`}
