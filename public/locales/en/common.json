@@ -188,6 +188,11 @@
       "offerDuplicated": "Offer duplicated sucessfully",
       "offerDeleted": "Offer deleted successfully",
       "offerUpdated": "Offer updated successfully"
+    },
+
+    "shareModal": {
+      "copySuccessfull": "Link was copied to clipboard",
+      "copy": "Copy"
     }
   },
 
@@ -302,7 +307,6 @@
     },
 
     "publicProfilePage": {
-      "copySuccessfull": "Link was copied to clipboard",
       "share": "Share",
       "save": "Save",
       "saved": "Saved",
@@ -320,12 +324,11 @@
       "fee": "Fee",
       "total": "Total",
       "requestValuePack": "Request a custom pack",
-      "copy": "Copy",
       "loadMore": "Load More Reviews",
-      "shareModalTitle": "Share Influencer Page",
       "valuePackSubmitButton": "Start Order",
       "removedProfile": "Removed Profile Successfully",
-      "savedProfile": "Saved Profile Successfully"
+      "savedProfile": "Saved Profile Successfully",
+      "shareModalTitle": "Share Influencer Page"
     },
 
     "editPage": {
@@ -517,14 +520,15 @@
       "offerPay": "Offer Pay",
       "aboutOffer": "About the offer",
       "apply": "Apply",
-      "removeApplication": "Remove Application",
+      "removeApplication": "Withdraw Application",
       "loadMore": "Load More",
       "applicants_zero": "{{count}} Applicants",
       "applicants_one": "{{count}} Applicant",
       "applicants_other": "{{count}} Applicants",
       "goBack": "Go Back",
       "appliedSuccess": "Application submit successfully",
-      "removedApplicationSuccess": "Removed application successfully"
+      "removedApplicationSuccess": "Withdrawn application successfully",
+      "shareModalTitle": "Share Offer"
     }
   }
 }

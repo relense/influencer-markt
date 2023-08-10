@@ -8,18 +8,22 @@ import { ComplexSearchBar } from "../../components/ComplexSearchBar";
 import { type OfferIncludes } from "../../utils/globalTypes";
 import { OffersList } from "./innerComponents/OffersList";
 import { OfferDetails } from "./innerComponents/OfferDetails";
+import { ShareModal } from "../../components/ShareModal";
+import { useTranslation } from "react-i18next";
 
 const OffersPage = (params: {
   scrollLayoutToPreviousPosition: () => void;
   saveScrollPosition: () => void;
   openLoginModal: () => void;
 }) => {
+  const { t } = useTranslation();
   const session = useSession();
   const width = useWindowWidth();
 
   const [offers, setOffers] = useState<OfferIncludes[]>([]);
   const [offersCursor, setOffersCursor] = useState<number>(-1);
   const [selectedOffer, setSelectedOffer] = useState<OfferIncludes>();
+  const [isShareModalOpen, setIsShareModalOpen] = useState<boolean>();
 
   const {
     data: offersData,
@@ -111,6 +115,7 @@ const OffersPage = (params: {
               selectedOffer={selectedOffer || undefined}
               setSelectedOffer={setSelectedOffer}
               isLoading={isLoadingOffers || isRefetchingOffers}
+              openShareModal={() => setIsShareModalOpen(true)}
               type="mobile"
               key={"offerDetailMobile"}
               openLoginModal={params.openLoginModal}
@@ -148,6 +153,7 @@ const OffersPage = (params: {
             selectedOffer={selectedOffer || undefined}
             isLoading={isLoadingOffers || isRefetchingOffers}
             setSelectedOffer={setSelectedOffer}
+            openShareModal={() => setIsShareModalOpen(true)}
             type="desktop"
             key={"offerDetailDesktop"}
             openLoginModal={params.openLoginModal}
@@ -162,6 +168,15 @@ const OffersPage = (params: {
       <div className="flex w-full cursor-default flex-col gap-8 self-center px-4 sm:px-12 xl:w-3/4 2xl:w-3/4 3xl:w-2/4">
         {renderMobile()}
         {renderDesktop()}
+      </div>
+      <div className="flex justify-center">
+        {isShareModalOpen && selectedOffer && (
+          <ShareModal
+            modalTitle={t("pages.offers.shareModalTitle")}
+            onClose={() => setIsShareModalOpen(false)}
+            url={`${window.location.origin}/offers/${selectedOffer.id}`}
+          />
+        )}
       </div>
     </>
   );

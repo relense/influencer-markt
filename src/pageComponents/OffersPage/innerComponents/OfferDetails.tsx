@@ -2,7 +2,11 @@ import { useTranslation } from "react-i18next";
 import { type OfferIncludes } from "../../../utils/globalTypes";
 import { useEffect, useRef, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faBriefcase, faChevronLeft } from "@fortawesome/free-solid-svg-icons";
+import {
+  faBriefcase,
+  faChevronLeft,
+  faShareFromSquare,
+} from "@fortawesome/free-solid-svg-icons";
 import { api } from "~/utils/api";
 
 import { LoadingSpinner } from "../../../components/LoadingSpinner";
@@ -16,6 +20,7 @@ const OfferDetails = (params: {
   setSelectedOffer: (offer: OfferIncludes | undefined) => void;
   isLoading: boolean;
   openLoginModal: () => void;
+  openShareModal: () => void;
   type: "mobile" | "desktop";
 }) => {
   const { t, i18n } = useTranslation();
@@ -127,17 +132,33 @@ const OfferDetails = (params: {
     }
   };
 
-  const renderBackButton = () => {
+  const shareButton = () => {
     return (
       <div
-        className="flex cursor-pointer items-center gap-2 py-2 lg:hidden"
-        onClick={() => params.setSelectedOffer(undefined)}
+        className="flex cursor-pointer items-center gap-2"
+        onClick={() => params.openShareModal()}
       >
-        <FontAwesomeIcon
-          icon={faChevronLeft}
-          className="fa-sm text-gray2 hover:text-influencer "
-        />
-        {t("pages.offers.goBack")}
+        <FontAwesomeIcon icon={faShareFromSquare} className="fa-lg" />
+
+        <div className="underline">{t("pages.publicProfilePage.share")}</div>
+      </div>
+    );
+  };
+
+  const renderBackButton = () => {
+    return (
+      <div className="flex items-center justify-between lg:hidden">
+        <div
+          className="flex cursor-pointer items-center gap-2 py-2 lg:hidden"
+          onClick={() => params.setSelectedOffer(undefined)}
+        >
+          <FontAwesomeIcon
+            icon={faChevronLeft}
+            className="fa-sm text-gray2 hover:text-influencer "
+          />
+          {t("pages.offers.goBack")}
+        </div>
+        {shareButton()}
       </div>
     );
   };
@@ -145,9 +166,10 @@ const OfferDetails = (params: {
   const renderOfferHeader = () => {
     return (
       <div className="flex justify-between">
-        <div className="w-4/5 text-2xl font-semibold">
+        <div className="w-full text-2xl font-semibold lg:w-4/5">
           {offer?.offerSummary}
         </div>
+        <div className="hidden lg:flex">{shareButton()}</div>
       </div>
     );
   };
@@ -310,7 +332,7 @@ const OfferDetails = (params: {
 
   return (
     <div
-      className="flex flex-1 flex-col overflow-y-auto rounded-lg border-0 p-4 lg:rounded-none lg:border-0 lg:border-l-[1px]"
+      className="flex flex-1 flex-col overflow-y-auto rounded-lg border-0 px-4 lg:rounded-none lg:border-0 lg:border-l-[1px]"
       ref={detailsContainer}
     >
       {params.isLoading ? (
@@ -319,8 +341,8 @@ const OfferDetails = (params: {
         </div>
       ) : (
         <div className="flex w-full flex-col gap-3">
+          {renderBackButton()}
           <div>
-            {renderBackButton()}
             {renderOfferHeader()}
             {renderOfferSubHeader()}
           </div>

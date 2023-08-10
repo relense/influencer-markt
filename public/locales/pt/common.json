@@ -188,6 +188,11 @@
       "offerDuplicated": "Oferta duplicada com sucesso",
       "offerDeleted": "Oferta apagada com sucesso",
       "offerUpdated": "Oferta actualizada com sucesso"
+    },
+
+    "shareModal": {
+      "copySuccessfull": "Ligação foi copiada para o clipboard",
+      "copy": "Copiar"
     }
   },
 
@@ -302,7 +307,6 @@
     },
 
     "publicProfilePage": {
-      "copySuccessfull": "Ligação foi copiada para o clipboard",
       "share": "Partilha",
       "save": "Guarda",
       "saved": "Guardado",
@@ -320,12 +324,11 @@
       "fee": "Taxa",
       "total": "Total",
       "requestValuePack": "Pede um pack personalizado",
-      "copy": "Copiar",
       "loadMore": "Carrega Mais Comentários",
-      "shareModalTitle": "Partilha a Página do Influencer",
       "valuePackSubmitButton": "Iniciar Pedido",
       "removedProfile": "Perfil Removido Com Sucesso",
-      "savedProfile": "Perfil Guardado Com Sucesso"
+      "savedProfile": "Perfil Guardado Com Sucesso",
+      "shareModalTitle": "Partilha a Página do Influencer"
     },
 
     "editPage": {
@@ -524,7 +527,8 @@
       "applicants_other": "{{count}} Candidatos",
       "goBack": "Voltar",
       "appliedSuccess": "Candidatura submetida com sucesso",
-      "removedApplicationSuccess": "Candidatura removida com sucesso"
+      "removedApplicationSuccess": "Candidatura removida com sucesso",
+      "shareModalTitle": "Partilha A Oferta"
     }
   }
 }

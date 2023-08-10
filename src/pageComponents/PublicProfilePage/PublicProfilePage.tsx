@@ -3,7 +3,6 @@ import { api } from "~/utils/api";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faCamera,
-  faCopy,
   faGlobe,
   faShareFromSquare,
   faStar,
@@ -31,6 +30,7 @@ import type {
   Option,
   SocialMediaDetails,
 } from "../../utils/globalTypes";
+import { ShareModal } from "../../components/ShareModal";
 
 const PublicProfilePage = (params: {
   username: string;
@@ -203,15 +203,6 @@ const PublicProfilePage = (params: {
 
     setAvailableUserSocialMedia(uniqueOptions);
   }, [profile?.userSocialMedia]);
-
-  const onCopyLinkToShare = async () => {
-    await navigator.clipboard.writeText(window.location.href);
-
-    toast.success(t("pages.publicProfilePage.copySuccessfull"), {
-      duration: 5000,
-      position: "bottom-left",
-    });
-  };
 
   const onChangePlatform = (platform: Option) => {
     setPlatform(platform);
@@ -619,20 +610,6 @@ const PublicProfilePage = (params: {
     }
   };
 
-  const renderLinkToCopy = () => {
-    return (
-      <div
-        className="flex flex-1 cursor-pointer justify-center gap-2 rounded-lg bg-influencer px-4 py-2 hover:bg-influencer-dark"
-        onClick={() => onCopyLinkToShare()}
-      >
-        <FontAwesomeIcon icon={faCopy} className="fa-lg text-white" />
-        <div className="flex text-white">
-          {t("pages.publicProfilePage.copy")}
-        </div>
-      </div>
-    );
-  };
-
   if (isLoading) {
     return (
       <div className="relative flex flex-1">
@@ -665,37 +642,11 @@ const PublicProfilePage = (params: {
           </Modal>
         )}
         {isShareModalOpen && (
-          <Modal
+          <ShareModal
+            modalTitle={t("pages.shareModalTitle.shareModalTitle")}
             onClose={() => setIsShareModalOpen(false)}
-            title={t("pages.publicProfilePage.shareModalTitle")}
-          >
-            <div className="flex flex-col gap-4 p-4 sm:w-full sm:px-8">
-              <div className="flex justify-center">
-                <Link
-                  href={`https://api.whatsapp.com/send/?text=${window.location.href}`}
-                  data-action="share/whatsapp/share"
-                >
-                  <Image
-                    src={`/images/whatsapp.svg`}
-                    height={44}
-                    width={44}
-                    alt="whatsapp logo"
-                    className="object-contain"
-                  />
-                </Link>
-              </div>
-
-              <div className="flex h-14 w-full flex-1 gap-2 rounded-lg border-[1px] border-gray3 p-2">
-                <input
-                  readOnly
-                  value={window.location.href}
-                  className="flex flex-1"
-                />
-                <div className="hidden sm:flex">{renderLinkToCopy()}</div>
-              </div>
-              <div className="flex sm:hidden">{renderLinkToCopy()}</div>
-            </div>
-          </Modal>
+            url={window.location.href}
+          />
         )}
       </div>
     );
