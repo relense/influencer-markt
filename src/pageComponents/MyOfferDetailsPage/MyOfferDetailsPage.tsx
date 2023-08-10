@@ -365,7 +365,7 @@ const MyOfferDetailsPage = (params: { offerId: number }) => {
             onClick={() => setIsApplicantsOpen(!isApplicantsOpen)}
           >
             <div className="text-2xl font-bold">
-              {t("pages.myOffer.applicants")}
+              {t("pages.myOffer.applicantsWithoutCount")}
             </div>
             <div className="flex h-6 w-6 justify-center rounded-full border-[1px]">
               <div>

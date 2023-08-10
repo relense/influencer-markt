@@ -500,7 +500,7 @@
       "categories": "Categories:",
       "price": "Price",
       "acceptedAplicants": "Accepted Applicants",
-      "applicants": "Applicants",
+      "applicantsWithoutCount": "Applicants",
       "areYouSure": "Are You Sure?",
       "archiveWarning": "Are you sure you want to archive this offer? After the offer is archived nobody can apply.",
       "deleteWarning": "Are you sure you want to delete the offer? This action is permanent",
@@ -508,6 +508,21 @@
       "archiveButton": "Archive Offer",
       "deleteButton": "Delete Offer",
       "publishButton": "Publish Offer"
+    },
+
+    "offers": {
+      "followers": "Followers",
+      "gender": "Gender",
+      "categories": "Categories",
+      "offerPay": "Offer Pay",
+      "aboutOffer": "About the offer",
+      "apply": "Apply",
+      "alreadyApplied": "Already Applied",
+      "loadMore": "Load More",
+      "applicants_zero": "{{count}} Applicants",
+      "applicants_one": "{{count}} Applicant",
+      "applicants_other": "{{count}} Applicants",
+      "goBack": "Go Back"
     }
   }
 }

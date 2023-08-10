@@ -3,7 +3,7 @@ import relativeTime from "dayjs/plugin/relativeTime";
 import "dayjs/locale/pt";
 import "dayjs/locale/en";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
 
 export const useOutsideClick = (
   callback: (T?: unknown) => void,
@@ -32,6 +32,21 @@ export const usePrevious = <T>(value: T): T | undefined => {
   });
 
   return ref.current;
+};
+
+export const useWindowWidth = () => {
+  const [width, setWidth] = useState<number>(0);
+
+  useLayoutEffect(() => {
+    function updateSize() {
+      setWidth(window.innerWidth);
+    }
+    window.addEventListener("resize", updateSize);
+    updateSize();
+    return () => window.removeEventListener("resize", updateSize);
+  }, []);
+
+  return width;
 };
 
 const formatNumber = (value: number) => {

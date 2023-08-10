@@ -113,9 +113,30 @@ export type OfferWithAllData = Prisma.OfferGetPayload<{
         id: true;
       };
     };
+    offerCreator: true;
     country: true;
     gender: true;
     socialMedia: true;
     state: true;
+  };
+}>;
+
+export type OfferIncludes = Prisma.OfferGetPayload<{
+  include: {
+    contentTypeWithQuantity: {
+      select: {
+        amount: true;
+        contentType: true;
+        id: true;
+      };
+    };
+    country: true;
+    state: true;
+    gender: true;
+    socialMedia: true;
+    offerCreator: true;
+    categories: true;
+    applicants: true;
+    acceptedApplicants: true;
   };
 }>;

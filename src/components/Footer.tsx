@@ -61,7 +61,7 @@ export const Footer = () => {
   };
 
   return (
-    <div className="border-slate-5 border-t-[1px]">
+    <div className="border-slate-5 hidden border-t-[1px] sm:block">
       <div className="flex flex-col items-center py-5">
         {renderSocialMedia()}
         {renderNavigation()}

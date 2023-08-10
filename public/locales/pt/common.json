@@ -500,7 +500,7 @@
       "categories": "Categorias:",
       "price": "Preço",
       "acceptedAplicants": "Candidatos Aceites",
-      "applicants": "Candidatos",
+      "applicantsWithoutCount": "Candidatos",
       "areYouSure": "Tens a certeza?",
       "archiveWarning": "Tens a certeza de que queres arquivar esta oferta? Depois da oferta estar arquivada ninguém se pode candidatar.",
       "deleteWarning": "Tens a certeza que queres apagar esta oferta? Esta acção é permanente.",
@@ -508,6 +508,21 @@
       "archiveButton": "Arquivar Oferta",
       "deleteButton": "Apagar Oferta",
       "publishButton": "Publicar Oferta"
+    },
+
+    "offers": {
+      "followers": "Seguidores",
+      "gender": "Género",
+      "categories": "Categorias",
+      "offerPay": "Valor da Oferta",
+      "aboutOffer": "Sobre a oferta",
+      "apply": "Candidatar",
+      "alreadyApplied": "Já te candidataste",
+      "loadMore": "Carregar Mais",
+      "applicants_zero": "{{count}} Candidatos",
+      "applicants_one": "{{count}} Candidato",
+      "applicants_other": "{{count}} Candidatos",
+      "goBack": "Voltar"
     }
   }
 }

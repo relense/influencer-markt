@@ -390,6 +390,7 @@ export const OffersRouter = createTRPCRouter({
               id: true,
             },
           },
+          offerCreator: true,
           country: true,
           gender: true,
           socialMedia: true,
@@ -425,6 +426,35 @@ export const OffersRouter = createTRPCRouter({
               user: { select: { username: true } },
             },
           },
+        },
+      });
+    }),
+
+  getSimpleOffer: protectedProcedure
+    .input(
+      z.object({
+        offerId: z.number(),
+      })
+    )
+    .query(async ({ ctx, input }) => {
+      return await ctx.prisma.offer.findFirst({
+        where: { id: input.offerId },
+        include: {
+          contentTypeWithQuantity: {
+            select: {
+              amount: true,
+              contentType: true,
+              id: true,
+            },
+          },
+          country: true,
+          state: true,
+          gender: true,
+          socialMedia: true,
+          offerCreator: true,
+          categories: true,
+          applicants: true,
+          acceptedApplicants: true,
         },
       });
     }),
@@ -505,5 +535,29 @@ export const OffersRouter = createTRPCRouter({
           createdAt: "desc",
         },
       });
+    }),
+
+  applyToOffer: protectedProcedure
+    .input(
+      z.object({
+        offerId: z.number(),
+      })
+    )
+    .mutation(async ({ ctx, input }) => {
+      const profile = await ctx.prisma.profile.findFirst({
+        where: { userId: ctx.session.user.id },
+        select: {
+          id: true,
+        },
+      });
+
+      if (profile) {
+        return await ctx.prisma.offer.update({
+          where: { id: input.offerId },
+          data: {
+            applicants: { connect: { id: profile.id } },
+          },
+        });
+      }
     }),
 });

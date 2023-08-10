@@ -13,6 +13,8 @@ export const Layout = (props: {
   children: (params: {
     openLoginModal: () => void;
     loggedInProfileId: number;
+    scrollLayoutToPreviousPosition: () => void;
+    saveScrollPosition: () => void;
   }) => ReactElement;
 }) => {
   const pathname = usePathname();
@@ -20,6 +22,7 @@ export const Layout = (props: {
   const scrollableContainer = useRef<HTMLDivElement>(null);
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [isSignUp, setIsSignUp] = useState<boolean>(false);
+  const [layoutScrollPosition, setLayoutScrollPosition] = useState<number>(0);
   const {
     data: user,
     refetch: refetechUser,
@@ -45,6 +48,18 @@ export const Layout = (props: {
     }
   }, [pathname]);
 
+  const scrollLayoutToPreviousPosition = () => {
+    if (scrollableContainer && scrollableContainer.current) {
+      scrollableContainer.current?.scrollTo(0, layoutScrollPosition);
+    }
+  };
+
+  const saveScrollPosition = () => {
+    if (scrollableContainer && scrollableContainer.current) {
+      setLayoutScrollPosition(scrollableContainer.current?.scrollTop);
+    }
+  };
+
   if (status === "loading" || (userIsLoading && status === "authenticated")) {
     return <LoadingSpinner />;
   } else {
@@ -64,6 +79,9 @@ export const Layout = (props: {
           <div className="flex flex-1 flex-col">
             {props.children({
               openLoginModal: () => setIsModalOpen(true),
+              scrollLayoutToPreviousPosition: () =>
+                scrollLayoutToPreviousPosition(),
+              saveScrollPosition: () => saveScrollPosition(),
               loggedInProfileId: user?.profile?.id ? user.profile.id : -1,
             })}
           </div>
