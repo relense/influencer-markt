@@ -517,7 +517,7 @@
       "offerPay": "Offer Pay",
       "aboutOffer": "About the offer",
       "apply": "Apply",
-      "alreadyApplied": "Already Applied",
+      "removeApplication": "Remove Application",
       "loadMore": "Load More",
       "applicants_zero": "{{count}} Applicants",
       "applicants_one": "{{count}} Applicant",

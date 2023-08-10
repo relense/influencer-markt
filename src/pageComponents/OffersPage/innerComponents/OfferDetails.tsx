@@ -58,9 +58,13 @@ const OfferDetails = (params: {
     }
   }, [params, offer, params.type]);
 
-  const applyToOffer = (offerId: number) => {
+  const applyToOffer = (offer: OfferIncludes) => {
+    if (checkIfUserHasApplied(offer)) {
+      console.log("oi");
+    } else {
+      params.onApply(offer.id);
+    }
     void refetcheOffer();
-    params.onApply(offerId);
   };
 
   const checkIfUserHasApplied = (offer: OfferIncludes) => {
@@ -237,14 +241,13 @@ const OfferDetails = (params: {
           <Button
             title={
               checkIfUserHasApplied(offer)
-                ? t("pages.offers.alreadyApplied")
+                ? t("pages.offers.removeApplication")
                 : t("pages.offers.apply")
             }
             level="primary"
             size="large"
             isLoading={isRefetching || isFetching}
-            disabled={checkIfUserHasApplied(offer)}
-            onClick={() => applyToOffer(params?.selectedOffer?.id || -1)}
+            onClick={() => applyToOffer(offer)}
           />
         </div>
       );

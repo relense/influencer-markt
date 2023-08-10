@@ -517,7 +517,7 @@
       "offerPay": "Valor da Oferta",
       "aboutOffer": "Sobre a oferta",
       "apply": "Candidatar",
-      "alreadyApplied": "Já te candidataste",
+      "removeApplication": "Remover Candidatura",
       "loadMore": "Carregar Mais",
       "applicants_zero": "{{count}} Candidatos",
       "applicants_one": "{{count}} Candidato",

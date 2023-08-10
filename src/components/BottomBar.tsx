@@ -35,7 +35,7 @@ const navigationLinks: linkItem[] = [
   {
     pageUrl: "/offers",
     icon: faBriefcase,
-    loggedIn: true,
+    loggedIn: false,
   },
 ];
 
