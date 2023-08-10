@@ -178,6 +178,7 @@ export const OffersRouter = createTRPCRouter({
                   id: true,
                 },
               },
+              offerCreator: true,
               country: true,
               gender: true,
               socialMedia: true,
@@ -240,6 +241,7 @@ export const OffersRouter = createTRPCRouter({
                 id: true,
               },
             },
+            offerCreator: true,
             country: true,
             gender: true,
             socialMedia: true,
@@ -430,7 +432,7 @@ export const OffersRouter = createTRPCRouter({
       });
     }),
 
-  getSimpleOffer: protectedProcedure
+  getSimpleOffer: publicProcedure
     .input(
       z.object({
         offerId: z.number(),
