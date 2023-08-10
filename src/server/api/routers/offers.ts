@@ -562,4 +562,28 @@ export const OffersRouter = createTRPCRouter({
         });
       }
     }),
+
+  removeOfferApplicantion: protectedProcedure
+    .input(
+      z.object({
+        offerId: z.number(),
+      })
+    )
+    .mutation(async ({ ctx, input }) => {
+      const profile = await ctx.prisma.profile.findFirst({
+        where: { userId: ctx.session.user.id },
+        select: {
+          id: true,
+        },
+      });
+
+      if (profile) {
+        return await ctx.prisma.offer.update({
+          where: { id: input.offerId },
+          data: {
+            applicants: { disconnect: { id: profile.id } },
+          },
+        });
+      }
+    }),
 });

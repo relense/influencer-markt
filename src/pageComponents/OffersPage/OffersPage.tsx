@@ -38,8 +38,6 @@ const OffersPage = (params: {
     { enabled: false }
   );
 
-  const { mutate: applyToOffer } = api.offers.applyToOffer.useMutation();
-
   useEffect(() => {
     if (offersData && offersData[1].length > 0) {
       setOffers(offersData[1]);
@@ -76,12 +74,6 @@ const OffersPage = (params: {
   const onChangeOffer = (offer: OfferIncludes) => {
     params.saveScrollPosition();
     setSelectedOffer(offer);
-  };
-
-  const onApply = (offerId: number) => {
-    applyToOffer({
-      offerId: offerId,
-    });
   };
 
   const renderMobile = () => {
@@ -121,7 +113,7 @@ const OffersPage = (params: {
               isLoading={isLoadingOffers || isRefetchingOffers}
               type="mobile"
               key={"offerDetailMobile"}
-              onApply={onApply}
+              openLoginModal={params.openLoginModal}
             />
           )}
         </div>
@@ -158,7 +150,7 @@ const OffersPage = (params: {
             setSelectedOffer={setSelectedOffer}
             type="desktop"
             key={"offerDetailDesktop"}
-            onApply={onApply}
+            openLoginModal={params.openLoginModal}
           />
         </div>
       </>

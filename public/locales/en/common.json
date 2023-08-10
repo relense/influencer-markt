@@ -522,7 +522,9 @@
       "applicants_zero": "{{count}} Applicants",
       "applicants_one": "{{count}} Applicant",
       "applicants_other": "{{count}} Applicants",
-      "goBack": "Go Back"
+      "goBack": "Go Back",
+      "appliedSuccess": "Application submit successfully",
+      "removedApplicationSuccess": "Removed application successfully"
     }
   }
 }

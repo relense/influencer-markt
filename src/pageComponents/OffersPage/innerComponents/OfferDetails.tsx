@@ -2,29 +2,27 @@ import { useTranslation } from "react-i18next";
 import { type OfferIncludes } from "../../../utils/globalTypes";
 import { useEffect, useRef, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faBriefcase,
-  faChevronLeft,
-  faEllipsis,
-} from "@fortawesome/free-solid-svg-icons";
+import { faBriefcase, faChevronLeft } from "@fortawesome/free-solid-svg-icons";
 import { api } from "~/utils/api";
 
 import { LoadingSpinner } from "../../../components/LoadingSpinner";
 import { helper } from "../../../utils/helper";
 import { Button } from "../../../components/Button";
 import { useSession } from "next-auth/react";
+import { toast } from "react-hot-toast";
 
 const OfferDetails = (params: {
   selectedOffer: OfferIncludes | undefined;
   setSelectedOffer: (offer: OfferIncludes | undefined) => void;
   isLoading: boolean;
-  onApply: (offerId: number) => void;
+  openLoginModal: () => void;
   type: "mobile" | "desktop";
 }) => {
   const { t, i18n } = useTranslation();
   const session = useSession();
   const detailsContainer = useRef<HTMLDivElement>(null);
   const [offer, setOffer] = useState<OfferIncludes>();
+  const [applied, setApplied] = useState<boolean>();
 
   const {
     data: offerData,
@@ -40,15 +38,74 @@ const OfferDetails = (params: {
     }
   );
 
-  useEffect(() => {
-    setOffer(params.selectedOffer);
-  }, [params.selectedOffer]);
+  const { mutate: applyToOffer, isLoading: applicationIsLoading } =
+    api.offers.applyToOffer.useMutation({
+      onSuccess: () => {
+        void refetcheOffer();
+        toast.success(t("pages.offers.appliedSuccess"), {
+          position: "bottom-left",
+        });
+      },
+    });
+  const { mutate: removeApplication, isLoading: removingIsLoading } =
+    api.offers.removeOfferApplicantion.useMutation({
+      onSuccess: () => {
+        void refetcheOffer();
+        toast.success(t("pages.offers.removedApplicationSuccess"), {
+          position: "bottom-left",
+        });
+      },
+    });
 
   useEffect(() => {
+    const checkIfUserHasApplied = (offer: OfferIncludes) => {
+      let hasApplied = false;
+
+      const applied = !!offer.applicants.find(
+        (applicant) => applicant.userId === session.data?.user.id
+      );
+
+      const isAccepted = !!offer.acceptedApplicants.find(
+        (applicant) => applicant.userId === session.data?.user.id
+      );
+
+      if (applied || isAccepted) {
+        hasApplied = true;
+      }
+
+      return hasApplied;
+    };
+
+    if (params.selectedOffer) {
+      setApplied(checkIfUserHasApplied(params.selectedOffer));
+      setOffer(params.selectedOffer);
+    }
+  }, [params.selectedOffer, session.data?.user.id]);
+
+  useEffect(() => {
+    const checkIfUserHasApplied = (offer: OfferIncludes) => {
+      let hasApplied = false;
+
+      const applied = !!offer.applicants.find(
+        (applicant) => applicant.userId === session.data?.user.id
+      );
+
+      const isAccepted = !!offer.acceptedApplicants.find(
+        (applicant) => applicant.userId === session.data?.user.id
+      );
+
+      if (applied || isAccepted) {
+        hasApplied = true;
+      }
+
+      return hasApplied;
+    };
+
     if (offerData) {
       setOffer(offerData);
+      setApplied(checkIfUserHasApplied(offerData));
     }
-  }, [offerData]);
+  }, [offerData, session.data?.user.id]);
 
   useEffect(() => {
     detailsContainer.current?.scrollTo(0, 0);
@@ -58,31 +115,16 @@ const OfferDetails = (params: {
     }
   }, [params, offer, params.type]);
 
-  const applyToOffer = (offer: OfferIncludes) => {
-    if (checkIfUserHasApplied(offer)) {
-      console.log("oi");
+  const onApply = (offer: OfferIncludes) => {
+    if (session.status === "authenticated") {
+      if (applied) {
+        removeApplication({ offerId: offer.id });
+      } else {
+        applyToOffer({ offerId: offer.id });
+      }
     } else {
-      params.onApply(offer.id);
+      params.openLoginModal();
     }
-    void refetcheOffer();
-  };
-
-  const checkIfUserHasApplied = (offer: OfferIncludes) => {
-    let hasApplied = false;
-
-    const applied = !!offer.applicants.find(
-      (applicant) => applicant.userId === session.data?.user.id
-    );
-
-    const isAccepted = !!offer.acceptedApplicants.find(
-      (applicant) => applicant.userId === session.data?.user.id
-    );
-
-    if (applied || isAccepted) {
-      hasApplied = true;
-    }
-
-    return hasApplied;
   };
 
   const renderBackButton = () => {
@@ -106,10 +148,6 @@ const OfferDetails = (params: {
         <div className="w-4/5 text-2xl font-semibold">
           {offer?.offerSummary}
         </div>
-        <FontAwesomeIcon
-          icon={faEllipsis}
-          className="fa-xl cursor-pointer text-gray2 hover:text-influencer"
-        />
       </div>
     );
   };
@@ -240,14 +278,19 @@ const OfferDetails = (params: {
         <div>
           <Button
             title={
-              checkIfUserHasApplied(offer)
+              applied
                 ? t("pages.offers.removeApplication")
                 : t("pages.offers.apply")
             }
-            level="primary"
+            level={applied ? "secondary" : "primary"}
             size="large"
-            isLoading={isRefetching || isFetching}
-            onClick={() => applyToOffer(offer)}
+            isLoading={
+              isRefetching ||
+              isFetching ||
+              applicationIsLoading ||
+              removingIsLoading
+            }
+            onClick={() => onApply(offer)}
           />
         </div>
       );
@@ -270,7 +313,7 @@ const OfferDetails = (params: {
       className="flex flex-1 flex-col overflow-y-auto rounded-lg border-0 p-4 lg:rounded-none lg:border-0 lg:border-l-[1px]"
       ref={detailsContainer}
     >
-      {isRefetching || params.isLoading ? (
+      {params.isLoading ? (
         <div className="relative h-full w-full items-center justify-center">
           <LoadingSpinner />
         </div>

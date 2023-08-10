@@ -522,7 +522,9 @@
       "applicants_zero": "{{count}} Candidatos",
       "applicants_one": "{{count}} Candidato",
       "applicants_other": "{{count}} Candidatos",
-      "goBack": "Voltar"
+      "goBack": "Voltar",
+      "appliedSuccess": "Candidatura submetida com sucesso",
+      "removedApplicationSuccess": "Candidatura removida com sucesso"
     }
   }
 }
