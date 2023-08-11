@@ -5,6 +5,7 @@ import { LoadingSpinner } from "../../../components/LoadingSpinner";
 import { type OfferIncludes } from "../../../utils/globalTypes";
 import { Button } from "../../../components/Button";
 import { useTranslation } from "react-i18next";
+import { helper } from "../../../utils/helper";
 
 const OffersList = (params: {
   offersCount: number;
@@ -34,6 +35,11 @@ const OffersList = (params: {
         </div>
       ) : (
         <>
+          <div className="bg-influencer-green-dark p-4 text-center text-white">
+            {t("pages.offers.offersAvailable", {
+              available: helper.formatNumberWithKorM(params.offersCount),
+            })}
+          </div>
           {params.offers?.map((offer, index) => {
             let offerClass =
               "flex cursor-pointer gap-4 p-4 hover:bg-influencer-green-light";

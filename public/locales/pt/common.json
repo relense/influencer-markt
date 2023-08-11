@@ -532,7 +532,8 @@
       "goBack": "Voltar",
       "appliedSuccess": "Candidatura submetida com sucesso",
       "removedApplicationSuccess": "Candidatura removida com sucesso",
-      "shareModalTitle": "Partilha A Oferta"
+      "shareModalTitle": "Partilha A Oferta",
+      "offersAvailable": "Há {{ available }} ofertas disponíveis"
     }
   }
 }

@@ -532,7 +532,8 @@
       "goBack": "Go Back",
       "appliedSuccess": "Application submit successfully",
       "removedApplicationSuccess": "Withdrawn application successfully",
-      "shareModalTitle": "Share Offer"
+      "shareModalTitle": "Share Offer",
+      "offersAvailable": "There are {{ available }} offers available"
     }
   }
 }
