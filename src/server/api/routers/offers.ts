@@ -454,55 +454,136 @@ export const OffersRouter = createTRPCRouter({
           gender: true,
           socialMedia: true,
           offerCreator: true,
-          categories: true,
+          categories: {
+            orderBy: {
+              name: "asc",
+            },
+          },
           applicants: true,
           acceptedApplicants: true,
         },
       });
     }),
 
-  getAllOffers: publicProcedure.query(async ({ ctx }) => {
-    return await ctx.prisma.$transaction([
-      ctx.prisma.offer.count({
-        where: {
-          published: true,
-          archived: false,
-        },
-      }),
-      ctx.prisma.offer.findMany({
-        where: {
-          published: true,
-          archived: false,
-        },
-        take: 10,
-        include: {
-          contentTypeWithQuantity: {
-            select: {
-              amount: true,
-              contentType: true,
-              id: true,
+  getAllOffers: publicProcedure
+    .input(
+      z.object({
+        categories: z.array(z.number()),
+        socialMedia: z.array(z.number()),
+        country: z.number(),
+        gender: z.number(),
+        minFollowers: z.number(),
+        maxFollowers: z.number(),
+        minPrice: z.number(),
+        maxPrice: z.number(),
+      })
+    )
+    .query(async ({ ctx, input }) => {
+      return await ctx.prisma.$transaction([
+        ctx.prisma.offer.count({
+          where: {
+            published: true,
+            archived: false,
+            categories: {
+              some: {
+                id: {
+                  in:
+                    input.categories.length > 0 ? input.categories : undefined,
+                },
+              },
             },
+            socialMedia: {
+              id: {
+                in:
+                  input.socialMedia.length > 0 ? input.socialMedia : undefined,
+              },
+            },
+            minFollowers: {
+              gte: input.minFollowers !== -1 ? input.minFollowers : undefined,
+            },
+            maxFollowers: {
+              lte: input.maxFollowers !== -1 ? input.maxFollowers : undefined,
+            },
+            price: {
+              gte: input.minPrice !== -1 ? input.minPrice : undefined,
+              lte: input.maxPrice !== -1 ? input.maxPrice : undefined,
+            },
+            genderId: input.gender !== -1 ? input.gender : undefined,
+            countryId: input.country !== -1 ? input.country : undefined,
           },
-          country: true,
-          state: true,
-          gender: true,
-          socialMedia: true,
-          offerCreator: true,
-          categories: true,
-          applicants: true,
-          acceptedApplicants: true,
-        },
-        orderBy: {
-          createdAt: "desc",
-        },
-      }),
-    ]);
-  }),
+        }),
+        ctx.prisma.offer.findMany({
+          where: {
+            published: true,
+            archived: false,
+            categories: {
+              some: {
+                id: {
+                  in:
+                    input.categories.length > 0 ? input.categories : undefined,
+                },
+              },
+            },
+            socialMedia: {
+              id: {
+                in:
+                  input.socialMedia.length > 0 ? input.socialMedia : undefined,
+              },
+            },
+            minFollowers: {
+              gte: input.minFollowers !== -1 ? input.minFollowers : undefined,
+            },
+            maxFollowers: {
+              lte: input.maxFollowers !== -1 ? input.maxFollowers : undefined,
+            },
+            price: {
+              gte: input.minPrice !== -1 ? input.minPrice : undefined,
+              lte: input.maxPrice !== -1 ? input.maxPrice : undefined,
+            },
+            genderId: input.gender !== -1 ? input.gender : undefined,
+            countryId: input.country !== -1 ? input.country : undefined,
+          },
+          take: 10,
+          include: {
+            contentTypeWithQuantity: {
+              select: {
+                amount: true,
+                contentType: true,
+                id: true,
+              },
+            },
+            country: true,
+            state: true,
+            gender: true,
+            socialMedia: true,
+            offerCreator: true,
+            categories: {
+              orderBy: {
+                name: "asc",
+              },
+            },
+            applicants: true,
+            acceptedApplicants: true,
+          },
+          orderBy: {
+            createdAt: "desc",
+          },
+        }),
+      ]);
+    }),
 
   getAllOffersWithCursor: publicProcedure
     .input(
       z.object({
         cursor: z.number(),
+        categories: z.array(z.number()),
+        socialMedia: z.array(z.number()),
+        country: z.number(),
+        gender: z.number(),
+        minFollowers: z.number(),
+        maxFollowers: z.number(),
+        minPrice: z.number(),
+        maxPrice: z.number(),
       })
     )
     .query(async ({ ctx, input }) => {
@@ -510,6 +591,30 @@ export const OffersRouter = createTRPCRouter({
         where: {
           published: true,
           archived: false,
+          categories: {
+            some: {
+              id: {
+                in: input.categories.length > 0 ? input.categories : undefined,
+              },
+            },
+          },
+          socialMedia: {
+            id: {
+              in: input.socialMedia.length > 0 ? input.socialMedia : undefined,
+            },
+          },
+          minFollowers: {
+            gte: input.minFollowers !== -1 ? input.minFollowers : undefined,
+          },
+          maxFollowers: {
+            lte: input.maxFollowers !== -1 ? input.maxFollowers : undefined,
+          },
+          price: {
+            gte: input.minPrice !== -1 ? input.minPrice : undefined,
+            lte: input.maxPrice !== -1 ? input.maxPrice : undefined,
+          },
+          genderId: input.gender !== -1 ? input.gender : undefined,
+          countryId: input.country !== -1 ? input.country : undefined,
         },
         take: 10,
         skip: 1,
@@ -529,7 +634,11 @@ export const OffersRouter = createTRPCRouter({
           gender: true,
           socialMedia: true,
           offerCreator: true,
-          categories: true,
+          categories: {
+            orderBy: {
+              name: "asc",
+            },
+          },
           applicants: true,
           acceptedApplicants: true,
         },

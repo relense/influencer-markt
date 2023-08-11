@@ -1,16 +1,17 @@
-import { api } from "~/utils/api";
+import { useState } from "react";
 import { useForm, Controller } from "react-hook-form";
 import { useTranslation } from "react-i18next";
+import { api } from "~/utils/api";
 
 import { Modal } from "../../../components/Modal";
 import { Button } from "../../../components/Button";
 import { CustomSelect } from "../../../components/CustomSelect";
-import type { InfluencersFilterState } from "../ExploreInfluencersPage";
+import { type OffersFilterState } from "../OffersPage";
+
 import { type Option } from "../../../utils/globalTypes";
 import { CustomSelectWithInput } from "../../../components/CustomSelectWithInput";
-import { useState } from "react";
 
-const InfluencersFilterModal = (params: {
+const OffersFilterModal = (params: {
   onClose: () => void;
   handleFilterSubmit: (params: {
     gender: Option;
@@ -20,13 +21,11 @@ const InfluencersFilterModal = (params: {
     maxPrice: number;
     country: Option;
     city: Option;
-    contentType: Option;
   }) => void;
   handleClearFilter: () => void;
   genders: Option[];
-  contentTypes: Option[];
   countries: Option[];
-  filterState: InfluencersFilterState;
+  filterState: OffersFilterState;
 }) => {
   const { t } = useTranslation();
   const [searchKeys, setSearchKeys] = useState<string>(
@@ -39,10 +38,9 @@ const InfluencersFilterModal = (params: {
     register: filterRegister,
     setValue: filterSetValue,
     watch: filterWatch,
-  } = useForm<InfluencersFilterState>({
+  } = useForm<OffersFilterState>({
     defaultValues: {
       gender: params.filterState.gender,
-      contentType: params.filterState.contentType,
       minFollowers: params.filterState.minFollowers,
       maxFollowers: params.filterState.maxFollowers,
       minPrice: params.filterState.minPrice,
@@ -66,13 +64,11 @@ const InfluencersFilterModal = (params: {
       maxPrice: data.maxPrice,
       country: data.country,
       city: data.city,
-      contentType: data.contentType,
     });
   });
 
   const clearFilters = handleSubmit(() => {
     filterSetValue("gender", { id: -1, name: "" });
-    filterSetValue("contentType", { id: -1, name: "" });
     filterSetValue("country", { id: -1, name: "" });
     filterSetValue("city", { id: -1, name: "" });
     filterSetValue("minPrice", 0);
@@ -134,7 +130,7 @@ const InfluencersFilterModal = (params: {
           <div className="text-xl font-medium">
             {t("components.filter.genderInputLabel")}
           </div>
-          <div className="flex flex-wrap justify-center gap-4 lg:justify-start ">
+          <div className="flex flex-wrap justify-center gap-4 lg:justify-start">
             <div
               key={-1}
               className={
@@ -158,49 +154,6 @@ const InfluencersFilterModal = (params: {
                   onClick={() => filterSetValue("gender", gender)}
                 >
                   {t(`components.filter.${gender.name}`)}
-                </div>
-              );
-            })}
-          </div>
-        </div>
-        <div className="w-full border-[1px] border-white1" />
-      </>
-    );
-  };
-
-  const renderContentType = () => {
-    return (
-      <>
-        <div className="flex flex-col gap-4">
-          <div className="text-xl font-medium">
-            {t("components.filter.contentTypeInputLabel")}
-          </div>
-          <div className="flex flex-wrap justify-center gap-4 lg:justify-start">
-            <div
-              key={-1}
-              className={
-                filterWatch("contentType").id === -1
-                  ? "flex w-24 cursor-pointer justify-center rounded-2xl border-[1px] border-gray3 bg-influencer-green  p-2 text-center text-white"
-                  : "flex w-24 cursor-pointer justify-center rounded-2xl border-[1px] border-gray3 p-2 text-center"
-              }
-              onClick={() =>
-                filterSetValue("contentType", { id: -1, name: "" })
-              }
-            >
-              {t("components.filter.any")}
-            </div>
-            {params.contentTypes?.map((contentType) => {
-              return (
-                <div
-                  key={contentType.id}
-                  className={
-                    filterWatch("contentType").id === contentType.id
-                      ? "flex w-24 cursor-pointer justify-center rounded-2xl border-[1px] border-gray3 bg-influencer-green p-2 text-center text-white"
-                      : "flex w-24 cursor-pointer justify-center rounded-2xl border-[1px] border-gray3 p-2 text-center"
-                  }
-                  onClick={() => filterSetValue("contentType", contentType)}
-                >
-                  {contentType.name}
                 </div>
               );
             })}
@@ -325,7 +278,7 @@ const InfluencersFilterModal = (params: {
             {t("components.filter.clearAllButton")}
           </div>
           <Button
-            title={t("components.filter.showInfluencersButton")}
+            title={t("components.filter.showOffers")}
             level="primary"
             type="submit"
             form="form-filterModal"
@@ -340,7 +293,6 @@ const InfluencersFilterModal = (params: {
       >
         {renderFollowersInput()}
         {renderGenderInput()}
-        {renderContentType()}
         {renderLocationInputs()}
         {renderPriceInput()}
       </form>
@@ -348,4 +300,4 @@ const InfluencersFilterModal = (params: {
   );
 };
 
-export { InfluencersFilterModal };
+export { OffersFilterModal };

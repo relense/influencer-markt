@@ -321,7 +321,7 @@ const MyOfferDetailsPage = (params: { offerId: number }) => {
             </div>
           </div>
           {isAcceptedApplicantsOpen && (
-            <div>
+            <div className="flex gap-8">
               {offer.acceptedApplicants.map((applicant) => {
                 return (
                   <ProfileCard

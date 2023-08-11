@@ -336,7 +336,7 @@ const OfferDetails = (params: {
       ref={detailsContainer}
     >
       {params.isLoading ? (
-        <div className="relative h-full w-full items-center justify-center">
+        <div className="h-full w-full items-center justify-center lg:relative">
           <LoadingSpinner />
         </div>
       ) : (

@@ -237,8 +237,6 @@ const ExploreInfluencersPage = (params: { choosenCategories: Option[] }) => {
     maxFollowers: number;
     minPrice: number;
     maxPrice: number;
-    categories: Option[];
-    platforms: Option[];
     country: Option;
     city: Option;
     contentType: Option;
@@ -252,8 +250,6 @@ const ExploreInfluencersPage = (params: { choosenCategories: Option[] }) => {
 
     setFilterState({
       ...filterState,
-      categories: params.categories,
-      platforms: params.platforms,
       gender: params.gender,
       minFollowers: params.minFollowers,
       maxFollowers: params.maxFollowers,
@@ -273,8 +269,6 @@ const ExploreInfluencersPage = (params: { choosenCategories: Option[] }) => {
     maxFollowers: number;
     minPrice: number;
     maxPrice: number;
-    categories: Option[];
-    platforms: Option[];
     country: Option;
     city: Option;
     contentType: Option;
@@ -391,7 +385,7 @@ const ExploreInfluencersPage = (params: { choosenCategories: Option[] }) => {
             className="flex cursor-pointer text-lg font-medium underline sm:hidden"
             onClick={() => onClearFilter()}
           >
-            {t("pages.explore.clearAllButton")}
+            {t("components.filter.clearAllButton")}
           </div>
         )}
         <div className="relative flex">
@@ -401,7 +395,7 @@ const ExploreInfluencersPage = (params: { choosenCategories: Option[] }) => {
           >
             <FontAwesomeIcon icon={faFilter} className="fa-lg" />
 
-            <div>{t("pages.explore.filters")}</div>
+            <div>{t("components.filter.filters")}</div>
           </div>
           {activeFiltersCount > 0 && (
             <div className="absolute right-[-10px] top-[-10px] flex h-7 w-7 items-center justify-center rounded-full bg-influencer text-center text-white">

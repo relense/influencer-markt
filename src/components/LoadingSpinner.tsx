@@ -1,7 +1,7 @@
 const LoadingSpinner = () => {
   return (
     <>
-      <div className="absolute left-0 top-0 z-50 h-full w-full bg-gray1 opacity-10" />
+      <div className="absolute left-0 top-0 z-40 h-full w-full bg-gray1 opacity-10" />
       <div className="absolute top-0 z-50 flex h-full w-full items-center justify-center">
         <div role="status">
           <svg

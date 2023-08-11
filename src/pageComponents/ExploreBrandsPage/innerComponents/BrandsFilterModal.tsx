@@ -15,8 +15,6 @@ const BrandsFilterModal = (params: {
   handleFilterSubmit: (params: {
     minFollowers: number;
     maxFollowers: number;
-    categories: Option[];
-    platforms: Option[];
     country: Option;
     city: Option;
   }) => void;
@@ -39,8 +37,6 @@ const BrandsFilterModal = (params: {
     defaultValues: {
       minFollowers: params.filterState.minFollowers,
       maxFollowers: params.filterState.maxFollowers,
-      categories: params.filterState.categories,
-      platforms: params.filterState.platforms,
       country: params.filterState.country,
       city: params.filterState.city,
     },
@@ -53,8 +49,6 @@ const BrandsFilterModal = (params: {
 
   const submit = handleSubmit((data) => {
     params.handleFilterSubmit({
-      categories: data.categories,
-      platforms: data.platforms,
       minFollowers: data.minFollowers,
       maxFollowers: data.maxFollowers,
       country: data.country,
@@ -75,16 +69,18 @@ const BrandsFilterModal = (params: {
     return (
       <div className="flex flex-col gap-4">
         <div className="text-xl font-medium">
-          {t("pages.explore.followersInputLabel")}
+          {t("components.filter.followersInputLabel")}
         </div>
         <div className="flex flex-col gap-6 lg:flex-row lg:items-center lg:gap-11">
           <div className="flex flex-1 flex-col gap-1">
-            <label className="text-gray2">{t("pages.explore.minimum")}</label>
+            <label className="text-gray2">
+              {t("components.filter.minimum")}
+            </label>
             <input
               {...filterRegister("minFollowers", { valueAsNumber: true })}
               type="number"
               className="h-14 w-full rounded-lg border-[1px] border-gray3 p-4 placeholder-gray2 focus:border-black focus:outline-none"
-              placeholder={t("pages.explore.minimumPlaceholder")}
+              placeholder={t("components.filter.minimumPlaceholder")}
               autoComplete="off"
               max="1000000000"
               min="0"
@@ -92,12 +88,14 @@ const BrandsFilterModal = (params: {
           </div>
 
           <div className="flex flex-1 flex-col gap-1">
-            <label className="text-gray2">{t("pages.explore.Maximum")}</label>
+            <label className="text-gray2">
+              {t("components.filter.Maximum")}
+            </label>
             <input
               {...filterRegister("maxFollowers", { valueAsNumber: true })}
               type="number"
               className="h-14 w-full rounded-lg border-[1px] border-gray3 p-4 placeholder-gray2 focus:border-black focus:outline-none"
-              placeholder={t("pages.explore.MaximumPlaceholder")}
+              placeholder={t("components.filter.MaximumPlaceholder")}
               autoComplete="off"
               max="1000000000"
               min="0"
@@ -111,7 +109,9 @@ const BrandsFilterModal = (params: {
   const renderLocationInputs = () => {
     return (
       <div className="flex flex-col gap-4">
-        <div className="text-xl font-medium">{t("pages.explore.location")}</div>
+        <div className="text-xl font-medium">
+          {t("components.filter.location")}
+        </div>
         <div className="flex flex-col gap-6 lg:flex-row lg:gap-11">
           <Controller
             name="country"
@@ -121,7 +121,7 @@ const BrandsFilterModal = (params: {
                 <CustomSelect
                   register={filterRegister}
                   name="country"
-                  placeholder={t("pages.explore.countryPlaceholder")}
+                  placeholder={t("components.filter.countryPlaceholder")}
                   options={params.countries}
                   value={value}
                   handleOptionSelect={onChange}
@@ -138,15 +138,15 @@ const BrandsFilterModal = (params: {
                 <CustomSelectWithInput
                   register={filterRegister}
                   name="city"
-                  placeholder={t("pages.explore.cityPlaceHolder")}
+                  placeholder={t("components.filter.cityPlaceHolder")}
                   options={cities?.map((city) => city)}
                   value={value}
                   handleOptionSelect={onChange}
                   required={false}
                   emptyOptionsMessage={
                     filterWatch("country")?.id !== -1
-                      ? t("pages.explore.emptyMessageNoCountry")
-                      : t("pages.explore.emptyMessageWithCountry")
+                      ? t("components.filter.emptyMessageNoCountry")
+                      : t("components.filter.emptyMessageWithCountry")
                   }
                   isReadOnly={filterWatch("country")?.id === -1}
                   onChangeSearchKeys={setSearchKeys}
@@ -162,7 +162,7 @@ const BrandsFilterModal = (params: {
 
   return (
     <Modal
-      title={t("pages.explore.filters")}
+      title={t("components.filter.filters")}
       onClose={params.onClose}
       button={
         <div className="flex flex-col items-center justify-between gap-4 p-4 sm:px-8 lg:flex-row">
@@ -170,10 +170,10 @@ const BrandsFilterModal = (params: {
             className="flex cursor-pointer text-lg font-medium underline"
             onClick={() => clearFilters()}
           >
-            {t("pages.explore.clearAllButton")}
+            {t("components.filter.clearAllButton")}
           </div>
           <Button
-            title={t("pages.explore.showBrandsButton")}
+            title={t("components.filter.showBrandsButton")}
             level="primary"
             type="submit"
             form="form-filterModal"
@@ -186,9 +186,9 @@ const BrandsFilterModal = (params: {
         className="flex h-full w-full flex-col gap-4 p-4 sm:w-full sm:px-8"
         onSubmit={submit}
       >
-        {renderFollowersInput()}
-        <div className="w-full border-[1px] border-white1" />
         {renderLocationInputs()}
+        <div className="w-full border-[1px] border-white1" />
+        {renderFollowersInput()}
       </form>
     </Modal>
   );

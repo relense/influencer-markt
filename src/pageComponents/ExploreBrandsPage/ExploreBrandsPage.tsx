@@ -20,7 +20,7 @@ export type BrandsFilterState = {
   maxFollowers: number;
 };
 
-const ExploreBrandsPage = (params: { choosenCategories: Option[] }) => {
+const ExploreBrandsPage = () => {
   const { t } = useTranslation();
   const [influencersCursor, setInfluencersCursor] = useState<number>(-1);
   const [userProfiles, setUserProfiles] = useState<UserProfiles[]>([]);
@@ -29,8 +29,7 @@ const ExploreBrandsPage = (params: { choosenCategories: Option[] }) => {
 
   const [filterState, setFilterState] = useState<BrandsFilterState>({
     platforms: [],
-    categories:
-      params.choosenCategories.length > 0 ? params.choosenCategories : [],
+    categories: [],
     country: { id: -1, name: "" },
     city: { id: -1, name: "" },
     minFollowers: 0,
@@ -201,8 +200,6 @@ const ExploreBrandsPage = (params: { choosenCategories: Option[] }) => {
   const onFilterSubmit = (params: {
     minFollowers: number;
     maxFollowers: number;
-    categories: Option[];
-    platforms: Option[];
     country: Option;
     city: Option;
   }) => {
@@ -211,8 +208,6 @@ const ExploreBrandsPage = (params: { choosenCategories: Option[] }) => {
 
     setFilterState({
       ...filterState,
-      categories: params.categories,
-      platforms: params.platforms,
       minFollowers: params.minFollowers,
       maxFollowers: params.maxFollowers,
       country: params.country,
@@ -229,8 +224,6 @@ const ExploreBrandsPage = (params: { choosenCategories: Option[] }) => {
   const countActiveFilters = (params: {
     minFollowers: number;
     maxFollowers: number;
-    categories: Option[];
-    platforms: Option[];
     country: Option;
     city: Option;
   }) => {
@@ -324,6 +317,14 @@ const ExploreBrandsPage = (params: { choosenCategories: Option[] }) => {
           platforms={filterState.platforms}
           clearSearchBar={clearSearchBar}
         />
+        {activeFiltersCount > 0 && (
+          <div
+            className="flex cursor-pointer text-lg font-medium underline sm:hidden"
+            onClick={() => onClearFilter()}
+          >
+            {t("components.filter.clearAllButton")}
+          </div>
+        )}
         <div className="relative flex">
           <div
             className={filterButtonClasses}
@@ -331,7 +332,7 @@ const ExploreBrandsPage = (params: { choosenCategories: Option[] }) => {
           >
             <FontAwesomeIcon icon={faFilter} className="fa-lg" />
 
-            <div>{t("pages.explore.filters")}</div>
+            <div>{t("components.filter.filters")}</div>
           </div>
           {activeFiltersCount > 0 && (
             <div className="absolute right-[-10px] top-[-10px] flex h-7 w-7 items-center justify-center rounded-full bg-influencer text-center text-white">

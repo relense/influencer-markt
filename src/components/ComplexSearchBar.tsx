@@ -58,7 +58,7 @@ export const ComplexSearchBar = (params: {
   return (
     <form
       id="form-searchBar"
-      className="flex h-auto w-full flex-col items-center justify-center gap-4 rounded-2xl border-[1px] border-gray3 px-4 py-4 shadow-lg lg:h-14 lg:w-3/4  lg:flex-row lg:gap-1 lg:border-white1 lg:p-0 lg:pr-2"
+      className="flex h-auto w-full flex-col items-center justify-center gap-4 rounded-2xl border-[1px] border-gray3 px-4 py-4 shadow-lg lg:h-14 lg:w-3/4 lg:flex-row lg:gap-1 lg:border-white1 lg:p-0 lg:pr-2"
       onSubmit={submit}
     >
       <div className="flex w-full flex-1 flex-col items-center lg:flex-row">

@@ -193,6 +193,36 @@
     "shareModal": {
       "copySuccessfull": "Link was copied to clipboard",
       "copy": "Copy"
+    },
+
+    "filter": {
+      "filters": "Filters",
+      "followersInputLabel": "Followers",
+      "followersInputPlaceholder": "Followers",
+      "genderInputLabel": "Gender",
+      "genderInputPlaceholder": "Choose a gender",
+      "contentTypeInputLabel": "ContentType",
+      "priceInputLabel": "Price",
+      "priceInputPlaceholder": "",
+      "clearAllButton": "Clear all filters",
+      "showInfluencersButton": "Show Influencers",
+      "minimum": "Minimum",
+      "minimumPlaceholder": "Min Followers",
+      "Maximum": "Maximum",
+      "MaximumPlaceholder": "Max Followers",
+      "any": "Any",
+      "Male": "Male",
+      "Female": "Female",
+      "Other": "Other",
+      "location": "Location",
+      "countryPlaceholder": "Country",
+      "cityPlaceHolder": "City",
+      "emptyMessageNoCountry": "Search a city with the first 3 letters",
+      "emptyMessageWithCountry": "Choose a country before choosing a city",
+      "minPricePlaceholder": "Min Price Value",
+      "maxPricePlaceholder": "Max Price Value",
+      "showBrandsButton": "Show Brands",
+      "showOffers": "Show Offers"
     }
   },
 
@@ -419,39 +449,13 @@
     },
 
     "explore": {
-      "filters": "Filters",
-      "followersInputLabel": "Followers",
-      "followersInputPlaceholder": "Followers",
-      "genderInputLabel": "Gender",
-      "genderInputPlaceholder": "Choose a gender",
-      "contentTypeInputLabel": "ContentType",
-      "priceInputLabel": "Price",
-      "priceInputPlaceholder": "",
-      "clearAllButton": "Clear all filters",
-      "showInfluencersButton": "Show Influencers",
       "noInfluencers": "No Influencers",
       "countInfluencers_one": "{{count, number}} Influencer",
       "countInfluencers_other": "{{count, number}} Influencers",
       "noBrands": "noBrands",
       "countBrands_one": "{{count, number}} Brand",
       "countBrands_other": "{{count, number}} Brands",
-      "loadMore": "Load More",
-      "minimum": "Minimum",
-      "minimumPlaceholder": "Min Followers",
-      "Maximum": "Maximum",
-      "MaximumPlaceholder": "Max Followers",
-      "any": "Any",
-      "Male": "Male",
-      "Female": "Female",
-      "Other": "Other",
-      "location": "Location",
-      "countryPlaceholder": "Country",
-      "cityPlaceHolder": "City",
-      "emptyMessageNoCountry": "Search a city with the first 3 letters",
-      "emptyMessageWithCountry": "Choose a country before choosing a city",
-      "minPricePlaceholder": "Min Price Value",
-      "maxPricePlaceholder": "Max Price Value",
-      "showBrandsButton": "Show Brands"
+      "loadMore": "Load More"
     },
 
     "myOffer": {
