@@ -40,6 +40,8 @@ const OffersPage = (params: {
   const [isShareModalOpen, setIsShareModalOpen] = useState<boolean>();
   const [activeFiltersCount, setActiveFiltersCount] = useState<number>(0);
   const [isFilterModalOpen, setIsFilterModalOpen] = useState<boolean>(false);
+  const [filterCategories, setFilterCategories] = useState<Option[]>([]);
+  const [filterPlatforms, setFilterPlatforms] = useState<Option[]>([]);
   const [filterState, setFilterState] = useState<OffersFilterState>({
     platforms: [],
     categories: [],
@@ -193,11 +195,14 @@ const OffersPage = (params: {
     countActiveFilters(params);
 
     if (activeFiltersCount > 0) {
+      setSelectedOffer(undefined);
       setOffers([]);
     }
 
     setFilterState({
       ...filterState,
+      categories: filterCategories,
+      platforms: filterPlatforms,
       gender: params.gender,
       minFollowers: params.minFollowers,
       maxFollowers: params.maxFollowers,
@@ -228,6 +233,7 @@ const OffersPage = (params: {
     });
 
     if (activeFiltersCount > 0) {
+      setSelectedOffer(undefined);
       setOffers([]);
     }
 
@@ -279,6 +285,8 @@ const OffersPage = (params: {
           categories={filterState.categories}
           platforms={filterState.platforms}
           clearSearchBar={clearSearchBar}
+          updateCategories={setFilterCategories}
+          updatePlatforms={setFilterPlatforms}
         />
         {activeFiltersCount > 0 && (
           <div
@@ -385,9 +393,7 @@ const OffersPage = (params: {
   return (
     <>
       <div className="mt-5 flex w-full cursor-default flex-col gap-8 self-center px-4 sm:px-12 xl:w-3/4 2xl:w-3/4 3xl:w-2/4">
-        {((width > 1024 && selectedOffer) ||
-          (width < 1024 && !selectedOffer)) &&
-          filterBar()}
+        {(width > 1024 || (width < 1024 && !selectedOffer)) && filterBar()}
         {offers.length === 0 &&
           !isLoadingOffers &&
           !isRefetchingOffers &&

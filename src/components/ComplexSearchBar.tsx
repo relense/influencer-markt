@@ -19,6 +19,8 @@ export const ComplexSearchBar = (params: {
   categories: Option[];
   platforms: Option[];
   clearSearchBar: (type: "categories" | "platforms") => void;
+  updatePlatforms: (options: Option[]) => void;
+  updateCategories: (options: Option[]) => void;
 }) => {
   const {
     handleSubmit,
@@ -79,7 +81,10 @@ export const ComplexSearchBar = (params: {
                       name: t(`general.categories.${category.name}`),
                     };
                   })}
-                  handleOptionSelect={onChange}
+                  handleOptionSelect={(value) => {
+                    onChange(value);
+                    params.updateCategories(value);
+                  }}
                   selectedOptions={value}
                   hideArrow={true}
                   hideBorder={true}
@@ -110,7 +115,10 @@ export const ComplexSearchBar = (params: {
                       name: platform.name,
                     };
                   })}
-                  handleOptionSelect={onChange}
+                  handleOptionSelect={(value) => {
+                    onChange(value);
+                    params.updatePlatforms(value);
+                  }}
                   selectedOptions={value}
                   hideArrow={true}
                   hideBorder={true}

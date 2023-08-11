@@ -30,6 +30,8 @@ const ExploreInfluencersPage = (params: { choosenCategories: Option[] }) => {
   const [userProfiles, setUserProfiles] = useState<UserProfiles[]>([]);
   const [isFilterModalOpen, setIsFilterModalOpen] = useState<boolean>(false);
   const [activeFiltersCount, setActiveFiltersCount] = useState<number>(0);
+  const [filterCategories, setFilterCategories] = useState<Option[]>([]);
+  const [filterPlatforms, setFilterPlatforms] = useState<Option[]>([]);
 
   const [filterState, setFilterState] = useState<InfluencersFilterState>({
     platforms: [],
@@ -250,6 +252,8 @@ const ExploreInfluencersPage = (params: { choosenCategories: Option[] }) => {
 
     setFilterState({
       ...filterState,
+      categories: filterCategories,
+      platforms: filterPlatforms,
       gender: params.gender,
       minFollowers: params.minFollowers,
       maxFollowers: params.maxFollowers,
@@ -379,6 +383,8 @@ const ExploreInfluencersPage = (params: { choosenCategories: Option[] }) => {
           categories={filterState.categories}
           platforms={filterState.platforms}
           clearSearchBar={clearSearchBar}
+          updateCategories={setFilterCategories}
+          updatePlatforms={setFilterPlatforms}
         />
         {activeFiltersCount > 0 && (
           <div

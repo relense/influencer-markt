@@ -508,7 +508,17 @@ export const OffersRouter = createTRPCRouter({
               gte: input.minPrice !== -1 ? input.minPrice : undefined,
               lte: input.maxPrice !== -1 ? input.maxPrice : undefined,
             },
-            genderId: input.gender !== -1 ? input.gender : undefined,
+            OR: [
+              {
+                genderId: null,
+              },
+              {
+                genderId:
+                  input.gender !== -1
+                    ? { in: [input.gender] }
+                    : { in: [1, 2, 3] },
+              },
+            ],
             countryId: input.country !== -1 ? input.country : undefined,
           },
         }),
@@ -540,7 +550,17 @@ export const OffersRouter = createTRPCRouter({
               gte: input.minPrice !== -1 ? input.minPrice : undefined,
               lte: input.maxPrice !== -1 ? input.maxPrice : undefined,
             },
-            genderId: input.gender !== -1 ? input.gender : undefined,
+            OR: [
+              {
+                genderId: null,
+              },
+              {
+                genderId:
+                  input.gender !== -1
+                    ? { in: [input.gender] }
+                    : { in: [1, 2, 3] },
+              },
+            ],
             countryId: input.country !== -1 ? input.country : undefined,
           },
           take: 10,
@@ -613,7 +633,17 @@ export const OffersRouter = createTRPCRouter({
             gte: input.minPrice !== -1 ? input.minPrice : undefined,
             lte: input.maxPrice !== -1 ? input.maxPrice : undefined,
           },
-          genderId: input.gender !== -1 ? input.gender : undefined,
+          OR: [
+            {
+              genderId: null,
+            },
+            {
+              genderId:
+                input.gender !== -1
+                  ? { in: [input.gender] }
+                  : { in: [1, 2, 3] },
+            },
+          ],
           countryId: input.country !== -1 ? input.country : undefined,
         },
         take: 10,
