@@ -721,6 +721,7 @@ export const OffersRouter = createTRPCRouter({
           where: { id: input.offerId },
           data: {
             applicants: { disconnect: { id: profile.id } },
+            acceptedApplicants: { disconnect: { id: profile.id } },
           },
         });
       }
