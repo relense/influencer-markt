@@ -245,42 +245,38 @@ export const Navbar = (params: {
           )}
           {params.sessionData && (
             <>
-              {params.role && params.role.name !== "Individual" && (
-                <>
-                  <Link
-                    href={params.username ? `/${params.username}` : "/"}
-                    className="flex cursor-pointer gap-4"
-                  >
-                    <FontAwesomeIcon
-                      icon={faFileLines}
-                      className="fa-xl cursor-pointer"
-                    />
-                    {t("components.navbar.myPage")}
-                  </Link>
-                  <Link
-                    href={`/${params.username}/edit`}
-                    className="flex cursor-pointer items-center gap-4"
-                  >
-                    <FontAwesomeIcon icon={faPencil} className="fa-lg" />
+              <Link
+                href={params.username ? `/${params.username}` : "/"}
+                className="flex cursor-pointer gap-4"
+              >
+                <FontAwesomeIcon
+                  icon={faFileLines}
+                  className="fa-xl cursor-pointer"
+                />
+                {t("components.navbar.myPage")}
+              </Link>
+              <Link
+                href={`/${params.username}/edit`}
+                className="flex cursor-pointer items-center gap-4"
+              >
+                <FontAwesomeIcon icon={faPencil} className="fa-lg" />
 
-                    <div>{t("components.navbar.editMyPage")}</div>
-                  </Link>
+                <div>{t("components.navbar.editMyPage")}</div>
+              </Link>
 
-                  <Link
-                    href="/my-offers"
-                    className="group flex cursor-pointer items-center gap-4 py-2"
-                  >
-                    <FontAwesomeIcon icon={faBriefcase} className="fa-lg" />
+              <Link
+                href="/my-offers"
+                className="group flex cursor-pointer items-center gap-4 py-2"
+              >
+                <FontAwesomeIcon icon={faBriefcase} className="fa-lg" />
 
-                    <div className="group-hover:underline">
-                      {" "}
-                      {t("components.navbar.myOffers")}
-                    </div>
-                  </Link>
+                <div className="group-hover:underline">
+                  {" "}
+                  {t("components.navbar.myOffers")}
+                </div>
+              </Link>
 
-                  <div className="border-[1px] border-white1" />
-                </>
-              )}
+              <div className="border-[1px] border-white1" />
 
               <div
                 className="flex items-center gap-4"
@@ -320,47 +316,46 @@ export const Navbar = (params: {
             <div>{params.sessionData?.user.email}</div>
           </div>
 
-          {params.role && params.role.name !== "Individual" && (
-            <div>
-              <div className="cursor-pointer border-[1px] border-white1" />
-              <Link
-                href={params.username ? `/${params.username}` : "/"}
-                className="group flex cursor-pointer gap-4 py-2"
-              >
-                <FontAwesomeIcon
-                  icon={faFileLines}
-                  className="fa-xl cursor-pointer"
-                />
-                <div className="group-hover:underline">
-                  {t("components.navbar.myPage")}
-                </div>
-              </Link>
+          <div>
+            <div className="cursor-pointer border-[1px] border-white1" />
+            <Link
+              href={params.username ? `/${params.username}` : "/"}
+              className="group flex cursor-pointer gap-4 py-2"
+            >
+              <FontAwesomeIcon
+                icon={faFileLines}
+                className="fa-xl cursor-pointer"
+              />
+              <div className="group-hover:underline">
+                {t("components.navbar.myPage")}
+              </div>
+            </Link>
 
-              <Link
-                href={`/${params.username}/edit`}
-                className="group flex cursor-pointer items-center gap-4 py-2"
-              >
-                <FontAwesomeIcon icon={faPencil} className="fa-lg" />
+            <Link
+              href={`/${params.username}/edit`}
+              className="group flex cursor-pointer items-center gap-4 py-2"
+            >
+              <FontAwesomeIcon icon={faPencil} className="fa-lg" />
 
-                <div className="group-hover:underline">
-                  {t("components.navbar.editMyPage")}
-                </div>
-              </Link>
+              <div className="group-hover:underline">
+                {t("components.navbar.editMyPage")}
+              </div>
+            </Link>
 
-              <Link
-                href="/my-offers"
-                className="group flex cursor-pointer items-center gap-4 py-2"
-              >
-                <FontAwesomeIcon icon={faBriefcase} className="fa-lg" />
+            <Link
+              href="/my-offers"
+              className="group flex cursor-pointer items-center gap-4 py-2"
+            >
+              <FontAwesomeIcon icon={faBriefcase} className="fa-lg" />
 
-                <div className="group-hover:underline">
-                  {t("components.navbar.myOffers")}
-                </div>
-              </Link>
+              <div className="group-hover:underline">
+                {t("components.navbar.myOffers")}
+              </div>
+            </Link>
 
-              <div className="cursor-pointer border-[1px] border-white1" />
-            </div>
-          )}
+            <div className="cursor-pointer border-[1px] border-white1" />
+          </div>
+
           <div
             className="group flex cursor-pointer items-center gap-4"
             onClick={() => void signOut()}

@@ -64,11 +64,15 @@ async function main() {
   }
 
   await prisma.role.createMany({
-    data: [{ name: "Brand" }, { name: "Influencer" }, { name: "Individual" }],
+    data: [{ name: "Brand" }, { name: "Influencer" }],
   });
 
   await prisma.gender.createMany({
     data: [{ name: "Male" }, { name: "Female" }, { name: "Other" }],
+  });
+
+  await prisma.offerStatus.createMany({
+    data: [{ name: "open" }, { name: "progress" }, { name: "closed" }],
   });
 
   await prisma.category.createMany({

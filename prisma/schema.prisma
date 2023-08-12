@@ -86,9 +86,10 @@ model Profile {
   submitedReviews Review[]          @relation("author")
   portfolio       Portfolio[]
 
-  createdOffers  Offer[] @relation("offerCreator")
-  appliedOffers  Offer[] @relation("offerApplicants")
-  acceptedOffers Offer[] @relation("offerAcceptedApplicants")
+  createdOffers      Offer[] @relation("offerCreator")
+  appliedOffers      Offer[] @relation("offerApplicants")
+  acceptedOffers     Offer[] @relation("offerAcceptedApplicants")
+  rejectedApplicants Offer[] @relation("offerRejectedApplicants")
 
   favoriteBy Profile[] @relation("profileFavorites")
   favorites  Profile[] @relation("profileFavorites")
@@ -266,12 +267,13 @@ model Offer {
   minFollowers            Int
   maxFollowers            Int
   gender                  Gender?                   @relation(fields: [genderId], references: [id])
-  archived                Boolean                   @default(false)
+  offerStatus             OfferStatus               @relation(fields: [offerStatusId], references: [id])
   offerCreator            Profile                   @relation("offerCreator", fields: [profileId], references: [id])
   published               Boolean                   @default(false)
 
   applicants         Profile[] @relation("offerApplicants")
   acceptedApplicants Profile[] @relation("offerAcceptedApplicants")
+  rejectedApplicants Profile[] @relation("offerRejectedApplicants")
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -281,12 +283,14 @@ model Offer {
   genderId      Int?
   stateId       Int?
   profileId     Int
+  offerStatusId Int  @default(1)
 
   @@index([socialMediaId])
   @@index([countryId])
   @@index([genderId])
   @@index([stateId])
   @@index([profileId])
+  @@index([offerStatusId])
 }
 
 model ContentTypeWithQuantity {
@@ -300,4 +304,11 @@ model ContentTypeWithQuantity {
 
   @@index([contentTypeId])
   @@index([offerId])
+}
+
+model OfferStatus {
+  id   Int    @id @default(autoincrement())
+  name String
+
+  offer Offer[]
 }

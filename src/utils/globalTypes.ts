@@ -104,6 +104,7 @@ export type OfferWithAllData = Prisma.OfferGetPayload<{
         user: { select: { username: true } };
       };
     };
+    offerStatus: true;
     categories: true;
     applicants: { select: { id: true } };
     contentTypeWithQuantity: {
@@ -130,6 +131,7 @@ export type OfferIncludes = Prisma.OfferGetPayload<{
         id: true;
       };
     };
+    offerStatus: true;
     country: true;
     state: true;
     gender: true;

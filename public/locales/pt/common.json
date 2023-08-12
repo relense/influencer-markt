@@ -284,7 +284,6 @@
       "getStarted": "Começar",
       "Brand": "Marca",
       "Influencer": "Influencer",
-      "Individual": "Indivíduo",
 
       "stepIdentifier1": "Passo 1",
       "stepIdentifier2": "Passo 2",
@@ -497,15 +496,17 @@
       "openings_other": "{{acceptedAplicants}}/{{count}} Vagas",
       "openOffers": "Ofertas Abertas",
       "closedOffers": "Ofertas Arquivadas",
+      "progressOffers": "Ofertas Em Progresso",
       "published": "Publicado",
       "unpublished": "Não Publicado",
       "open": "Aberta",
       "archived": "Arquivada",
+      "progress": "Em Progresso",
       "gender": "Género",
       "followers": "Seguidores",
       "offerDescription": "Descrição da Oferta",
       "categories": "Categorias:",
-      "price": "Preço",
+      "price": "Valor da Oferta",
       "acceptedAplicants": "Candidatos Aceites",
       "applicantsWithoutCount": "Candidatos",
       "areYouSure": "Tens a certeza?",
@@ -514,7 +515,11 @@
       "publishWarning": "Tens a certeza de que queres publicar esta oferta? Depois desta accção não podes voltar a editar esta oferta.",
       "archiveButton": "Arquivar Oferta",
       "deleteButton": "Apagar Oferta",
-      "publishButton": "Publicar Oferta"
+      "publishButton": "Publicar Oferta",
+      "noOffersArchived": "Não há ofertas arquivadas",
+      "noOffersOpen": "Não há ofertas abertas",
+      "noOffersProgress": "Não há ofertas em progresso",
+      "loadMore": "Carregar Mais"
     },
 
     "offers": {

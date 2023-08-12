@@ -7,13 +7,16 @@ import { api } from "~/utils/api";
 import { MyOfferModal } from "../../components/MyOfferModal";
 import { MyOffer } from "./innerComponent/MyOffer";
 import { LoadingSpinner } from "../../components/LoadingSpinner";
-import type { OfferWithAllData } from "../../utils/globalTypes";
+import type { OfferWithAllData, Option } from "../../utils/globalTypes";
 import { Button } from "../../components/Button";
 import { MyOffersActionConfirmationModal } from "../../components/MyOffersActionConfirmationModal";
 
 const MyOffersPage = () => {
   const { t } = useTranslation();
-  const [isArchived, setIsArchived] = useState<boolean>(false);
+  const [offerStatus, setOfferStatus] = useState<Option>({
+    id: 1,
+    name: "open",
+  });
   const [openCreateModal, setOpenCreateModal] = useState<boolean>(false);
   const [isWarningModalOpen, setIsWarningModalOpen] = useState<boolean>(false);
   const [offers, setOffers] = useState<OfferWithAllData[]>([]);
@@ -32,7 +35,7 @@ const MyOffersPage = () => {
     refetch: refetchOffers,
     isRefetching: isRefetchingOffers,
   } = api.offers.getAllUserOffers.useQuery({
-    archived: isArchived,
+    offerStatusId: offerStatus.id,
   });
 
   const {
@@ -41,11 +44,13 @@ const MyOffersPage = () => {
     isFetching: isRefetchingOffersWithCursor,
   } = api.offers.getAllUserOffersWithCursor.useQuery(
     {
-      archived: isArchived,
+      offerStatusId: offerStatus.id,
       cursor: offersCursor,
     },
     { enabled: false }
   );
+
+  const { data: offerStatusData } = api.allRoutes.getAllOfferStatus.useQuery();
 
   useEffect(() => {
     if (offersData) {
@@ -74,8 +79,8 @@ const MyOffersPage = () => {
     }
   }, [offers, offersWithCursorData]);
 
-  const changeOpenSelected = () => {
-    setIsArchived(!isArchived);
+  const changeOpenSelected = (offerStatus: Option) => {
+    setOfferStatus(offerStatus);
     setOffers([]);
     void refetchOffers();
   };
@@ -99,13 +104,65 @@ const MyOffersPage = () => {
     setOpenCreateModal(false);
   };
 
+  const renderOfferButtons = () => {
+    if (offerStatusData) {
+      return (
+        <div className="flex justify-center gap-4 text-center">
+          {offerStatusData.map((offerStatusElem) => {
+            return (
+              <div
+                key={offerStatusElem.id}
+                className={
+                  offerStatusElem.name === offerStatus.name
+                    ? "cursor-default text-xl font-semibold text-influencer"
+                    : "cursor-pointer text-xl font-semibold text-gray4"
+                }
+                onClick={() => changeOpenSelected(offerStatusElem)}
+              >
+                {t(`pages.myOffer.${offerStatusElem.name}Offers`)}
+              </div>
+            );
+          })}
+        </div>
+      );
+    }
+  };
+
+  const renderOffers = () => {
+    return (
+      <div className="flex flex-col gap-4 lg:flex-row lg:flex-wrap">
+        {isLoadingOffers || isRefetchingOffers ? (
+          <div className="relative h-[80vh] lg:flex lg:h-[70vh] lg:flex-1">
+            <LoadingSpinner />
+          </div>
+        ) : (
+          <>
+            {offers.length > 0 ? (
+              offers?.map((offer) => {
+                return (
+                  <MyOffer
+                    offer={offer}
+                    key={offer.id}
+                    openOfferModal={() => openModalToEdit(offer)}
+                    openWarningModal={openWarningModal}
+                  />
+                );
+              })
+            ) : (
+              <div className="flex flex-1 items-center justify-center">
+                {offerStatus.id === 1 && t("pages.myOffer.noOffersOpen")}
+                {offerStatus.id === 2 && t("pages.myOffer.noOffersProgress")}
+                {offerStatus.id === 3 && t("pages.myOffer.noOffersArchived")}
+              </div>
+            )}
+          </>
+        )}
+      </div>
+    );
+  };
+
   return (
     <>
-      {(isLoadingOffers || isRefetchingOffers) && (
-        <div className="absolute h-full w-full items-center justify-center">
-          <LoadingSpinner />
-        </div>
-      )}
       <div className="flex w-full cursor-default flex-col gap-6 self-center px-4 pb-10 sm:px-12 xl:w-3/4 2xl:w-3/4 3xl:w-2/4">
         <div
           className="flex h-auto cursor-pointer items-center justify-center gap-2 rounded-xl border-[1px] p-4 hover:bg-light-red"
@@ -116,45 +173,12 @@ const MyOffersPage = () => {
           </div>
           <div>{t("pages.myOffer.createOffer")}</div>
         </div>
-        <div className="flex justify-center gap-4 text-center">
-          <div
-            className={
-              !isArchived
-                ? "cursor-default text-xl font-semibold text-influencer"
-                : "cursor-pointer text-xl font-semibold text-gray4"
-            }
-            onClick={() => changeOpenSelected()}
-          >
-            {t("pages.myOffer.openOffers")}
-          </div>
-          <div
-            className={
-              isArchived
-                ? "cursor-default text-xl font-semibold text-influencer"
-                : "cursor-pointer text-xl font-semibold text-gray4"
-            }
-            onClick={() => changeOpenSelected()}
-          >
-            {t("pages.myOffer.closedOffers")}
-          </div>
-        </div>
-
-        <div className="flex flex-col gap-4 lg:flex-row lg:flex-wrap">
-          {offers?.map((offer) => {
-            return (
-              <MyOffer
-                offer={offer}
-                key={offer.id}
-                openOfferModal={() => openModalToEdit(offer)}
-                openWarningModal={openWarningModal}
-              />
-            );
-          })}
-        </div>
+        {renderOfferButtons()}
+        {renderOffers()}
         {offersData && offersData[0] > offers.length && (
           <div className="flex items-center justify-center">
             <Button
-              title={t("pages.publicProfilePage.loadMore")}
+              title={t("pages.myOffer.loadMore")}
               onClick={() => refetchOffersWithCursor()}
               isLoading={isRefetchingOffersWithCursor}
             />

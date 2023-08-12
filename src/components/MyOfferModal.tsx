@@ -317,7 +317,6 @@ const MyOfferModal = (params: {
     index: number,
     types: Option[]
   ) => {
-    debugger;
     return (
       <div
         className="flex w-full flex-1 items-center gap-2"

@@ -94,24 +94,33 @@ const MyOfferDetailsPage = (params: { offerId: number }) => {
   const offerDateDetails = () => {
     if (offer) {
       return (
-        <div className="flex flex-col sm:flex-row sm:items-center sm:gap-4">
-          <div className="font-semibold text-gray2">
-            {helper.formatDate(offer.createdAt, i18n.language)}
+        <>
+          <div className="line-clamp-2 text-xl font-semibold xs:w-3/4">
+            {offer.offerSummary}
           </div>
-          <div className="flex items-center gap-2">
-            <div className="font-semibold text-influencer">
-              {offer.published
-                ? t("pages.myOffer.published")
-                : t("pages.myOffer.unpublished")}
+          <div className="flex flex-col sm:flex-row sm:items-center sm:gap-6">
+            <div className="flex items-center gap-2">
+              <div className="text-gray2">{offer.country.name}</div>
+              <div className="h-1 w-1 rounded-full bg-black"></div>
+              <div className="text-gray2">
+                {helper.formatDate(offer.createdAt, i18n.language)}
+              </div>
             </div>
-            <div className="h-1 w-1 rounded-full bg-black"></div>
-            <div className="font-semibold text-influencer">
-              {offer.archived
-                ? t("pages.myOffer.archived")
-                : t("pages.myOffer.open")}
+            <div className="flex items-center gap-2">
+              <div className="font-semibold text-influencer">
+                {offer.published
+                  ? t("pages.myOffer.published")
+                  : t("pages.myOffer.unpublished")}
+              </div>
+              <div className="h-1 w-1 rounded-full bg-black"></div>
+              <div className="font-semibold text-influencer">
+                {offer.offerStatus.id === 1 && t("pages.myOffer.open")}
+                {offer.offerStatus.id === 2 && t("pages.myOffer.progress")}
+                {offer.offerStatus.id === 3 && t("pages.myOffer.archived")}
+              </div>
             </div>
           </div>
-        </div>
+        </>
       );
     }
   };
@@ -128,10 +137,7 @@ const MyOfferDetailsPage = (params: { offerId: number }) => {
             <div className="flex gap-2">
               {offer.contentTypeWithQuantity.map((contentType, index) => {
                 return (
-                  <div
-                    key={contentType.id}
-                    className="flex items-center gap-2 font-semibold"
-                  >
+                  <div key={contentType.id} className="flex items-center gap-2">
                     <div>{contentType.amount}</div>
                     <div>
                       {contentType.contentType.name}
@@ -146,15 +152,17 @@ const MyOfferDetailsPage = (params: { offerId: number }) => {
 
           <>
             <div className="hidden h-1 w-1 rounded-full bg-black sm:flex"></div>
-            <div className="flex items-center gap-2 font-semibold">
-              <div className="text-influencer">{t("pages.myOffer.gender")}</div>
+            <div className="flex items-center gap-2">
+              <div className="font-semibold text-influencer">
+                {t("pages.myOffer.gender")}
+              </div>
               <div>{offer.gender?.name || t("pages.myOffer.any")}</div>
             </div>
           </>
           <>
             <div className="hidden h-1 w-1 rounded-full bg-black sm:flex"></div>
-            <div className="flex items-center gap-2 font-semibold">
-              <div className="text-influencer">
+            <div className="flex items-center gap-2">
+              <div className="font-semibold text-influencer">
                 {t("pages.myOffer.followers")}
               </div>
               <div>
@@ -165,8 +173,10 @@ const MyOfferDetailsPage = (params: { offerId: number }) => {
           </>
           <>
             <div className="hidden h-1 w-1 rounded-full bg-black sm:flex"></div>
-            <div className="flex items-center gap-2 font-semibold">
-              <div className="text-influencer">{t("pages.myOffer.price")}</div>
+            <div className="flex items-center gap-2">
+              <div className="font-semibold text-influencer">
+                {t("pages.myOffer.price")}
+              </div>
               <div>{helper.formatNumber(offer.price)}€</div>
             </div>
           </>
@@ -274,13 +284,10 @@ const MyOfferDetailsPage = (params: { offerId: number }) => {
           {isDetailsOpen && (
             <div className="relative">
               <div className="flex flex-col gap-4">
-                <div className="line-clamp-2 font-semibold xs:w-3/4">
-                  {offer.offerSummary}
-                </div>
                 {offerDateDetails()}
                 {renderSearchRequirements()}
-                {renderDescription()}
                 {renderCategories()}
+                {renderDescription()}
                 {renderInterestedProfiles()}
               </div>
               {optionsMenu()}
@@ -321,7 +328,7 @@ const MyOfferDetailsPage = (params: { offerId: number }) => {
             </div>
           </div>
           {isAcceptedApplicantsOpen && (
-            <div className="flex gap-8">
+            <div className="flex flex-wrap gap-8">
               {offer.acceptedApplicants.map((applicant) => {
                 return (
                   <ProfileCard
@@ -425,10 +432,21 @@ const MyOfferDetailsPage = (params: { offerId: number }) => {
     if (offer) {
       return (
         <>
-          <div className="flex w-full cursor-default flex-col gap-12 self-center px-4 pb-10 sm:px-12 xl:w-3/4 2xl:w-3/4 3xl:w-2/4">
+          <div className="flex w-full cursor-default flex-col gap-8 self-center px-4 pb-10 sm:px-12 xl:w-3/4 2xl:w-3/4 3xl:w-2/4">
             {offerDetails()}
-            {offer.acceptedApplicants.length > 0 && renderAcceptedApplicants()}
-            {offer.applicants.length > 0 && renderApplicants()}
+
+            {offer.acceptedApplicants.length > 0 && (
+              <>
+                <div className="w-full border-[1px] border-white1" />
+                {renderAcceptedApplicants()}
+              </>
+            )}
+            {offer.applicants.length > 0 && (
+              <>
+                <div className="w-full border-[1px] border-white1" />
+                {renderApplicants()}
+              </>
+            )}
           </div>
           <div className="flex justify-center">
             {openCreateModal && (

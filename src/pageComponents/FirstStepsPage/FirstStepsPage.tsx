@@ -152,17 +152,10 @@ const FirstStepsPage = () => {
         !usernameVerification) ||
       userIdentityWatch("role")?.name !== ""
     ) {
-      if (userIdentityWatch("role")?.id === RoleEnum.Individual) {
-        userIdentityMutation({
-          role: data.role,
-          username: "",
-        });
-      } else {
-        userIdentityMutation({
-          role: data.role,
-          username: data.username,
-        });
-      }
+      userIdentityMutation({
+        role: data.role,
+        username: data.username,
+      });
     }
 
     void userRefetch();

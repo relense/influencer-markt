@@ -133,7 +133,7 @@ export const OffersRouter = createTRPCRouter({
   getAllUserOffers: protectedProcedure
     .input(
       z.object({
-        archived: z.boolean(),
+        offerStatusId: z.number(),
       })
     )
     .query(async ({ ctx, input }) => {
@@ -147,10 +147,16 @@ export const OffersRouter = createTRPCRouter({
       if (profile) {
         return await ctx.prisma.$transaction([
           ctx.prisma.offer.count({
-            where: { profileId: profile.id, archived: input.archived },
+            where: {
+              profileId: profile.id,
+              offerStatusId: input.offerStatusId,
+            },
           }),
           ctx.prisma.offer.findMany({
-            where: { profileId: profile.id, archived: input.archived },
+            where: {
+              profileId: profile.id,
+              offerStatusId: input.offerStatusId,
+            },
             take: 10,
             include: {
               acceptedApplicants: {
@@ -169,6 +175,7 @@ export const OffersRouter = createTRPCRouter({
                   user: { select: { username: true } },
                 },
               },
+              offerStatus: true,
               categories: true,
               applicants: { select: { id: true } },
               contentTypeWithQuantity: {
@@ -195,7 +202,7 @@ export const OffersRouter = createTRPCRouter({
   getAllUserOffersWithCursor: protectedProcedure
     .input(
       z.object({
-        archived: z.boolean(),
+        offerStatusId: z.number(),
         cursor: z.number(),
       })
     )
@@ -209,7 +216,7 @@ export const OffersRouter = createTRPCRouter({
 
       if (profile) {
         return await ctx.prisma.offer.findMany({
-          where: { profileId: profile.id, archived: input.archived },
+          where: { profileId: profile.id, offerStatusId: input.offerStatusId },
           take: 10,
           skip: 1,
           cursor: {
@@ -232,6 +239,7 @@ export const OffersRouter = createTRPCRouter({
                 user: { select: { username: true } },
               },
             },
+            offerStatus: true,
             categories: true,
             applicants: { select: { id: true } },
             contentTypeWithQuantity: {
@@ -279,7 +287,7 @@ export const OffersRouter = createTRPCRouter({
       return await ctx.prisma.offer.update({
         where: { id: input.offerId },
         data: {
-          archived: true,
+          offerStatusId: 3,
         },
       });
     }),
@@ -383,6 +391,7 @@ export const OffersRouter = createTRPCRouter({
               user: { select: { username: true } },
             },
           },
+          offerStatus: true,
           categories: true,
           applicants: { select: { id: true } },
           contentTypeWithQuantity: {
@@ -449,6 +458,7 @@ export const OffersRouter = createTRPCRouter({
               id: true,
             },
           },
+          offerStatus: true,
           country: true,
           state: true,
           gender: true,
@@ -487,7 +497,7 @@ export const OffersRouter = createTRPCRouter({
         ctx.prisma.offer.count({
           where: {
             published: true,
-            archived: false,
+            offerStatusId: 1,
             categories: {
               some: {
                 id: {
@@ -529,7 +539,7 @@ export const OffersRouter = createTRPCRouter({
         ctx.prisma.offer.findMany({
           where: {
             published: true,
-            archived: false,
+            offerStatusId: 1,
             categories: {
               some: {
                 id: {
@@ -576,6 +586,7 @@ export const OffersRouter = createTRPCRouter({
                 id: true,
               },
             },
+            offerStatus: true,
             country: true,
             state: true,
             gender: true,
@@ -618,7 +629,7 @@ export const OffersRouter = createTRPCRouter({
       return await ctx.prisma.offer.findMany({
         where: {
           published: true,
-          archived: false,
+          offerStatusId: 1,
           categories: {
             some: {
               id: {
@@ -667,6 +678,7 @@ export const OffersRouter = createTRPCRouter({
               id: true,
             },
           },
+          offerStatus: true,
           country: true,
           state: true,
           gender: true,

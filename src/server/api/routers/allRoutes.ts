@@ -42,6 +42,10 @@ export const allRouter = createTRPCRouter({
     return await ctx.prisma.reason.findMany();
   }),
 
+  getAllOfferStatus: publicProcedure.query(async ({ ctx }) => {
+    return await ctx.prisma.offerStatus.findMany();
+  }),
+
   getAllCountries: publicProcedure.query(async ({ ctx }) => {
     return await ctx.prisma.country.findMany();
   }),

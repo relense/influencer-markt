@@ -284,7 +284,6 @@
       "getStarted": "Get Started",
       "Brand": "Brand",
       "Influencer": "Influencer",
-      "Individual": "Individual",
 
       "stepIdentifier1": "Step 1",
       "stepIdentifier2": "Step 2",
@@ -497,15 +496,17 @@
       "openings_other": "{{acceptedAplicants}}/{{count}} Openings",
       "openOffers": "Open Offers",
       "closedOffers": "Archived Offers",
+      "progressOffers": "In Progress Offers",
       "published": "Published",
       "unpublished": "Unpublished",
       "open": "Open",
       "archived": "Archived",
+      "progress": "In Progress",
       "gender": "Gender",
       "followers": "Followers",
       "offerDescription": "Offer Description",
       "categories": "Categories:",
-      "price": "Price",
+      "price": "Offer Value",
       "acceptedAplicants": "Accepted Applicants",
       "applicantsWithoutCount": "Applicants",
       "areYouSure": "Are You Sure?",
@@ -514,7 +515,11 @@
       "publishWarning": "Are you sure you want to publish the offer? Afer this action you can't edit the offer anymore.",
       "archiveButton": "Archive Offer",
       "deleteButton": "Delete Offer",
-      "publishButton": "Publish Offer"
+      "publishButton": "Publish Offer",
+      "noOffersArchived": "There are no archived offers",
+      "noOffersOpen": "There are no open offers",
+      "noOffersProgress": "There are no offers in progress",
+      "loadMore": "Load More"
     },
 
     "offers": {

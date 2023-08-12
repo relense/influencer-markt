@@ -39,7 +39,7 @@ const MyOfferDropdown = (params: {
       className="absolute right-0 z-30 flex-col rounded-lg border-[1px] bg-white"
       onClick={() => params.closeDropDown()}
     >
-      {!params.offer.published && !params.offer.archived && (
+      {!params.offer.published && params.offer.offerStatus.id === 1 && (
         <div
           className="flex cursor-pointer items-center gap-2 rounded-lg p-4 hover:bg-influencer-green-dark hover:text-white"
           onClick={() => params.openWarningModal("publish", params.offer.id)}
@@ -51,7 +51,7 @@ const MyOfferDropdown = (params: {
           {t("components.myOfferDropDown.publish")}
         </div>
       )}
-      {!params.offer.archived && (
+      {params.offer.offerStatus.id !== 3 && (
         <div
           className="flex cursor-pointer items-center gap-2 rounded-lg p-4 hover:bg-influencer-green-dark hover:text-white"
           onClick={() => params.openWarningModal("archive", params.offer.id)}
@@ -63,7 +63,7 @@ const MyOfferDropdown = (params: {
           {t("components.myOfferDropDown.archive")}
         </div>
       )}
-      {!params.offer.published && !params.offer.archived && (
+      {!params.offer.published && params.offer.offerStatus.id === 1 && (
         <div
           className="flex cursor-pointer items-center gap-2 rounded-lg p-4 hover:bg-influencer-green-dark hover:text-white"
           onClick={() => params.openEditOfferModal()}
@@ -79,7 +79,7 @@ const MyOfferDropdown = (params: {
         <FontAwesomeIcon icon={faClone} className="fa-lg cursor-pointer" />
         {t("components.myOfferDropDown.duplicate")}
       </div>
-      {(!params.offer.published || params.offer.archived) && (
+      {(!params.offer.published || params.offer.offerStatus.id === 3) && (
         <div
           className="flex cursor-pointer items-center gap-2 rounded-lg p-4 hover:bg-influencer-green-dark hover:text-white"
           onClick={() => params.openWarningModal("delete", params.offer.id)}
