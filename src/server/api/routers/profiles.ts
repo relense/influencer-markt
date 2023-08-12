@@ -791,4 +791,17 @@ export const profilesRouter = createTRPCRouter({
       },
     });
   }),
+
+  getProfileOffers: protectedProcedure.query(async ({ ctx }) => {
+    return await ctx.prisma.profile.findFirst({
+      where: { userId: ctx.session.user.id },
+      select: {
+        createdOffers: {
+          select: {
+            id: true,
+          },
+        },
+      },
+    });
+  }),
 });

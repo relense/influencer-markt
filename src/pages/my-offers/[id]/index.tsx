@@ -1,31 +1,49 @@
 import type { GetStaticProps, NextPage } from "next";
+import { api } from "~/utils/api";
 
 import { ProtectedWrapper } from "../../../components/ProtectedWrapper";
 import { Layout } from "../../../components/Layout";
 import { MyOfferDetailsPage } from "../../../pageComponents/MyOfferDetailsPage/MyOfferDetailsPage";
-import { generateSSGHelper } from "../../../server/helper/ssgHelper";
+import { useRouter } from "next/router";
+import { useEffect } from "react";
+import { LoadingSpinner } from "../../../components/LoadingSpinner";
 interface OfferDetailsProps {
   id: string;
 }
 
 const OfferDetails: NextPage<OfferDetailsProps> = ({ id }) => {
-  return (
+  const router = useRouter();
+  const { data: profileOffers, isLoading } =
+    api.profiles.getProfileOffers.useQuery();
+
+  useEffect(() => {
+    const value = !!profileOffers?.createdOffers.find(
+      (offer) => offer.id === parseInt(id)
+    );
+
+    if (!value) {
+      void router.push("/");
+    }
+  }, [id, profileOffers, router]);
+
+  if (isLoading) {
     <ProtectedWrapper>
-      <Layout>{() => <MyOfferDetailsPage offerId={parseInt(id)} />}</Layout>
-    </ProtectedWrapper>
-  );
+      <LoadingSpinner />
+    </ProtectedWrapper>;
+  } else {
+    return (
+      <ProtectedWrapper>
+        <Layout>{() => <MyOfferDetailsPage offerId={parseInt(id)} />}</Layout>
+      </ProtectedWrapper>
+    );
+  }
 };
 
-export const getStaticProps: GetStaticProps = async (context) => {
-  const ssg = generateSSGHelper();
-
+export const getStaticProps: GetStaticProps = (context) => {
   const id = context.params?.id;
-
-  await ssg.users.getUser.prefetch();
 
   return {
     props: {
-      trpcState: ssg.dehydrate(),
       id,
     },
   };
