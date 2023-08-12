@@ -324,6 +324,21 @@ export const OffersRouter = createTRPCRouter({
       });
     }),
 
+  startOffer: protectedProcedure
+    .input(
+      z.object({
+        offerId: z.number(),
+      })
+    )
+    .mutation(async ({ ctx, input }) => {
+      return await ctx.prisma.offer.update({
+        where: { id: input.offerId },
+        data: {
+          offerStatusId: 2,
+        },
+      });
+    }),
+
   duplicateOffer: protectedProcedure
     .input(
       z.object({

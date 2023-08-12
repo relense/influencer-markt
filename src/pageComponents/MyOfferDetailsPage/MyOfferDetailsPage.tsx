@@ -18,11 +18,13 @@ import { MyOfferModal } from "../../components/MyOfferModal";
 import { MyOffersActionConfirmationModal } from "../../components/MyOffersActionConfirmationModal";
 import { Button } from "../../components/Button";
 import { toast } from "react-hot-toast";
+import { useRouter } from "next/router";
 
 const MyOfferDetailsPage = (params: { offerId: number }) => {
   const { t, i18n } = useTranslation();
   const dropdownRef = useRef(null);
   const ctx = api.useContext();
+  const router = useRouter();
 
   const [isDropdownOpen, setIsDropdownOpen] = useState<boolean>(false);
   const [isDetailsOpen, setIsDetailsOpen] = useState<boolean>(true);
@@ -94,6 +96,13 @@ const MyOfferDetailsPage = (params: { offerId: number }) => {
             });
           });
         });
+      },
+    });
+
+  const { mutate: startOffer, isLoading: isLoadingStartOffer } =
+    api.offers.startOffer.useMutation({
+      onSuccess: () => {
+        // void router.push("/");
       },
     });
 
@@ -334,6 +343,19 @@ const MyOfferDetailsPage = (params: { offerId: number }) => {
               })}
             </div>
           </div>
+          {offer.acceptedApplicants.length === offer.numberOfInfluencers &&
+            offer.offerStatus.id === 1 && (
+              <Button
+                title={t("pages.myOffer.initiateOffer")}
+                level="primary"
+                isLoading={isLoadingStartOffer}
+                onClick={() =>
+                  startOffer({
+                    offerId: offer.id,
+                  })
+                }
+              />
+            )}
         </div>
       );
     }
@@ -441,14 +463,14 @@ const MyOfferDetailsPage = (params: { offerId: number }) => {
                       type="Influencer"
                     />
 
-                    <div className="flex justify-around gap-4">
+                    {offer.offerStatus.id === 1 && (
                       <Button
                         title={t("pages.myOffer.removeButton")}
                         level="secondary"
                         size="large"
                         onClick={() => onRemoveFromAccepted(applicant.id)}
                       />
-                    </div>
+                    )}
                   </div>
                 );
               })}
@@ -599,14 +621,12 @@ const MyOfferDetailsPage = (params: { offerId: number }) => {
                       type="Influencer"
                     />
 
-                    <div className="flex justify-around gap-4">
-                      <Button
-                        title={t("pages.myOffer.removeButton")}
-                        level="secondary"
-                        size="large"
-                        onClick={() => onRemoveFromRejected(applicant.id)}
-                      />
-                    </div>
+                    <Button
+                      title={t("pages.myOffer.removeButton")}
+                      level="secondary"
+                      size="large"
+                      onClick={() => onRemoveFromRejected(applicant.id)}
+                    />
                   </div>
                 );
               })}
@@ -632,18 +652,19 @@ const MyOfferDetailsPage = (params: { offerId: number }) => {
                 {renderAcceptedApplicants()}
               </>
             )}
-            {offer.applicants.length > 0 && (
+            {offer.applicants.length > 0 && offer.offerStatus.id === 1 && (
               <>
                 <div className="w-full border-[1px] border-white1" />
                 {renderApplicants()}
               </>
             )}
-            {offer.rejectedApplicants.length > 0 && (
-              <>
-                <div className="w-full border-[1px] border-white1" />
-                {renderRejectedApplicants()}
-              </>
-            )}
+            {offer.rejectedApplicants.length > 0 &&
+              offer.offerStatus.id === 1 && (
+                <>
+                  <div className="w-full border-[1px] border-white1" />
+                  {renderRejectedApplicants()}
+                </>
+              )}
           </div>
           <div className="flex justify-center">
             {openCreateModal && (

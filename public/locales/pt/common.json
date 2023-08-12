@@ -526,7 +526,8 @@
       "removedApplicant": "Candidato removido com sucesso",
       "removeButton": "Remover",
       "rejectButton": "Rejeitar",
-      "acceptButton": "Aceitar"
+      "acceptButton": "Aceitar",
+      "initiateOffer": "Iniciar Ordem"
     },
 
     "offers": {

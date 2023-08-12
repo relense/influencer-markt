@@ -19,8 +19,10 @@ const MyOffersActionConfirmationModal = (params: {
   const { mutate: publishOffer } = api.offers.publishOffer.useMutation({
     onSuccess: () => {
       void ctx.offers.getAllUserOffers.invalidate().then(() => {
-        toast.success(t("components.myOfferDropDown.offerPublished"), {
-          position: "bottom-left",
+        void ctx.offers.getOffer.invalidate().then(() => {
+          toast.success(t("components.myOfferDropDown.offerPublished"), {
+            position: "bottom-left",
+          });
         });
       });
     },
@@ -29,8 +31,10 @@ const MyOffersActionConfirmationModal = (params: {
   const { mutate: archiveOffer } = api.offers.archiveOffer.useMutation({
     onSuccess: () => {
       void ctx.offers.getAllUserOffers.invalidate().then(() => {
-        toast.success(t("components.myOfferDropDown.offerArchived"), {
-          position: "bottom-left",
+        void ctx.offers.getOffer.invalidate().then(() => {
+          toast.success(t("components.myOfferDropDown.offerArchived"), {
+            position: "bottom-left",
+          });
         });
       });
     },
@@ -40,8 +44,10 @@ const MyOffersActionConfirmationModal = (params: {
     onSuccess: () => {
       void router.push("/my-offers");
       void ctx.offers.getAllUserOffers.invalidate().then(() => {
-        toast.success(t("components.myOfferDropDown.offerDeleted"), {
-          position: "bottom-left",
+        void ctx.offers.getOffer.invalidate().then(() => {
+          toast.success(t("components.myOfferDropDown.offerDeleted"), {
+            position: "bottom-left",
+          });
         });
       });
     },

@@ -526,7 +526,8 @@
       "removedApplicant": "Applicant removed successfully",
       "removeButton": "Remove",
       "rejectButton": "Reject",
-      "acceptButton": "Accept"
+      "acceptButton": "Accept",
+      "initiateOffer": "Start Order"
     },
 
     "offers": {
