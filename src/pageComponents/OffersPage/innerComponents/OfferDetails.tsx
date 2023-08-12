@@ -190,7 +190,12 @@ const OfferDetails = (params: {
   const renderOfferSubHeader = () => {
     return (
       <div className="flex flex-wrap items-center gap-2 text-gray2">
-        <div>{offer?.offerCreator?.name}</div>
+        <Link
+          href={`/${offer?.offerCreator?.user?.username || ""}`}
+          className="hover:underline"
+        >
+          {offer?.offerCreator?.name}
+        </Link>
         <div className="h-1 w-1 rounded-full bg-black" />
         <div>
           {offer?.country?.name}

@@ -453,7 +453,11 @@ export const OffersRouter = createTRPCRouter({
           state: true,
           gender: true,
           socialMedia: true,
-          offerCreator: true,
+          offerCreator: {
+            include: {
+              user: true,
+            },
+          },
           categories: {
             orderBy: {
               name: "asc",
@@ -576,7 +580,11 @@ export const OffersRouter = createTRPCRouter({
             state: true,
             gender: true,
             socialMedia: true,
-            offerCreator: true,
+            offerCreator: {
+              include: {
+                user: true,
+              },
+            },
             categories: {
               orderBy: {
                 name: "asc",
@@ -663,7 +671,11 @@ export const OffersRouter = createTRPCRouter({
           state: true,
           gender: true,
           socialMedia: true,
-          offerCreator: true,
+          offerCreator: {
+            include: {
+              user: true,
+            },
+          },
           categories: {
             orderBy: {
               name: "asc",

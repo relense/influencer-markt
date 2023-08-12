@@ -134,7 +134,11 @@ export type OfferIncludes = Prisma.OfferGetPayload<{
     state: true;
     gender: true;
     socialMedia: true;
-    offerCreator: true;
+    offerCreator: {
+      include: {
+        user: true;
+      };
+    };
     categories: true;
     applicants: true;
     acceptedApplicants: true;
