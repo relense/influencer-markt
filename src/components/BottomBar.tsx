@@ -45,7 +45,7 @@ const BottomBar = (params: {
   const router = useRouter();
 
   return (
-    <div className="fixed bottom-0 flex w-full justify-between border-t-[1px] border-gray3 bg-white sm:hidden">
+    <div className="fixed bottom-0 z-50 flex w-full justify-between border-t-[1px] border-gray3 bg-white sm:hidden">
       {navigationLinks.map((navigationItem) => {
         const iconClass =
           router.pathname === navigationItem.pageUrl
