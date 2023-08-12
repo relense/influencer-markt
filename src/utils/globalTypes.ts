@@ -104,6 +104,22 @@ export type OfferWithAllData = Prisma.OfferGetPayload<{
         user: { select: { username: true } };
       };
     };
+    rejectedApplicants: {
+      select: {
+        id: true;
+        profilePicture: true;
+        userSocialMedia: {
+          include: {
+            socialMedia: true;
+          };
+        };
+        name: true;
+        about: true;
+        city: true;
+        country: true;
+        user: { select: { username: true } };
+      };
+    };
     offerStatus: true;
     categories: true;
     applicants: { select: { id: true } };
@@ -144,5 +160,6 @@ export type OfferIncludes = Prisma.OfferGetPayload<{
     categories: true;
     applicants: true;
     acceptedApplicants: true;
+    rejectedApplicants: true;
   };
 }>;

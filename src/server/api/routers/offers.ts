@@ -175,6 +175,22 @@ export const OffersRouter = createTRPCRouter({
                   user: { select: { username: true } },
                 },
               },
+              rejectedApplicants: {
+                select: {
+                  id: true,
+                  profilePicture: true,
+                  userSocialMedia: {
+                    include: {
+                      socialMedia: true,
+                    },
+                  },
+                  name: true,
+                  about: true,
+                  city: true,
+                  country: true,
+                  user: { select: { username: true } },
+                },
+              },
               offerStatus: true,
               categories: true,
               applicants: { select: { id: true } },
@@ -224,6 +240,22 @@ export const OffersRouter = createTRPCRouter({
           },
           include: {
             acceptedApplicants: {
+              select: {
+                id: true,
+                profilePicture: true,
+                userSocialMedia: {
+                  include: {
+                    socialMedia: true,
+                  },
+                },
+                name: true,
+                about: true,
+                city: true,
+                country: true,
+                user: { select: { username: true } },
+              },
+            },
+            rejectedApplicants: {
               select: {
                 id: true,
                 profilePicture: true,
@@ -391,6 +423,22 @@ export const OffersRouter = createTRPCRouter({
               user: { select: { username: true } },
             },
           },
+          rejectedApplicants: {
+            select: {
+              id: true,
+              profilePicture: true,
+              userSocialMedia: {
+                include: {
+                  socialMedia: true,
+                },
+              },
+              name: true,
+              about: true,
+              city: true,
+              country: true,
+              user: { select: { username: true } },
+            },
+          },
           offerStatus: true,
           categories: true,
           applicants: { select: { id: true } },
@@ -475,6 +523,7 @@ export const OffersRouter = createTRPCRouter({
           },
           applicants: true,
           acceptedApplicants: true,
+          rejectedApplicants: true,
         },
       });
     }),
@@ -603,6 +652,7 @@ export const OffersRouter = createTRPCRouter({
             },
             applicants: true,
             acceptedApplicants: true,
+            rejectedApplicants: true,
           },
           orderBy: {
             createdAt: "desc",
@@ -695,6 +745,7 @@ export const OffersRouter = createTRPCRouter({
           },
           applicants: true,
           acceptedApplicants: true,
+          rejectedApplicants: true,
         },
         orderBy: {
           createdAt: "desc",
@@ -780,6 +831,7 @@ export const OffersRouter = createTRPCRouter({
         where: { id: input.offerId },
         data: {
           applicants: { disconnect: { id: input.profileId } },
+          rejectedApplicants: { connect: { id: input.profileId } },
         },
       });
     }),
@@ -797,6 +849,23 @@ export const OffersRouter = createTRPCRouter({
         data: {
           applicants: { connect: { id: input.profileId } },
           acceptedApplicants: { disconnect: { id: input.profileId } },
+        },
+      });
+    }),
+
+  removeApplicantFromRejected: protectedProcedure
+    .input(
+      z.object({
+        offerId: z.number(),
+        profileId: z.number(),
+      })
+    )
+    .mutation(async ({ ctx, input }) => {
+      return await ctx.prisma.offer.update({
+        where: { id: input.offerId },
+        data: {
+          applicants: { connect: { id: input.profileId } },
+          rejectedApplicants: { disconnect: { id: input.profileId } },
         },
       });
     }),

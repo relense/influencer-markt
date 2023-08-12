@@ -29,6 +29,8 @@ const MyOfferDetailsPage = (params: { offerId: number }) => {
   const [openCreateModal, setOpenCreateModal] = useState<boolean>(false);
   const [isAcceptedApplicantsOpen, setIsAcceptedApplicantsOpen] =
     useState<boolean>(true);
+  const [isRejectedApplicantsOpen, setIsRejectedApplicantsOpen] =
+    useState<boolean>(false);
   const [isWarningModalOpen, setIsWarningModalOpen] = useState<boolean>(false);
   const [isApplicantsOpen, setIsApplicantsOpen] = useState<boolean>(true);
   const [warningModalType, setWarningModalType] = useState<
@@ -82,6 +84,19 @@ const MyOfferDetailsPage = (params: { offerId: number }) => {
       },
     });
 
+  const { mutate: removeApplicantFromRejected } =
+    api.offers.removeApplicantFromRejected.useMutation({
+      onSuccess: () => {
+        void ctx.offers.getOffer.invalidate().then(() => {
+          void ctx.offers.getApplicants.invalidate().then(() => {
+            toast.success(t("pages.myOffer.removedApplicant"), {
+              position: "bottom-left",
+            });
+          });
+        });
+      },
+    });
+
   useOutsideClick(() => {
     if (isDropdownOpen === false) return;
 
@@ -104,6 +119,13 @@ const MyOfferDetailsPage = (params: { offerId: number }) => {
 
   const onRemoveFromAccepted = (profileId: number) => {
     removeApplicantFromAccepted({
+      offerId: params.offerId,
+      profileId: profileId,
+    });
+  };
+
+  const onRemoveFromRejected = (profileId: number) => {
+    removeApplicantFromRejected({
       offerId: params.offerId,
       profileId: profileId,
     });
@@ -519,6 +541,82 @@ const MyOfferDetailsPage = (params: { offerId: number }) => {
     }
   };
 
+  const renderRejectedApplicants = () => {
+    if (offer) {
+      return (
+        <div className="flex flex-col gap-4">
+          <div
+            className="flex cursor-pointer items-center gap-2"
+            onClick={() =>
+              setIsRejectedApplicantsOpen(!isRejectedApplicantsOpen)
+            }
+          >
+            <div className="text-2xl font-bold">
+              {t("pages.myOffer.acceptedAplicants")}
+            </div>
+            <div className="flex h-6 w-6 justify-center rounded-full border-[1px]">
+              <div>
+                {isRejectedApplicantsOpen ? (
+                  <FontAwesomeIcon
+                    icon={faSubtract}
+                    className="fa-2xs cursor-pointer text-gray2"
+                  />
+                ) : (
+                  <FontAwesomeIcon
+                    icon={faPlus}
+                    className="fa-2xs cursor-pointer text-gray2"
+                  />
+                )}
+              </div>
+            </div>
+          </div>
+          {isRejectedApplicantsOpen && (
+            <div className="flex flex-wrap gap-8">
+              {offer.rejectedApplicants.map((applicant) => {
+                return (
+                  <div key={applicant.id} className="flex flex-col gap-4">
+                    <ProfileCard
+                      id={applicant.id}
+                      profilePicture={applicant.profilePicture}
+                      socialMedia={applicant.userSocialMedia.map(
+                        (socialMedia) => {
+                          return {
+                            followers: socialMedia.followers,
+                            handler: socialMedia.handler,
+                            id: socialMedia.id,
+                            socialMediaName:
+                              socialMedia.socialMedia?.name || "",
+                            url: socialMedia.url,
+                            valuePacks: [],
+                          };
+                        }
+                      )}
+                      name={applicant.name}
+                      about={applicant.about}
+                      city={applicant.city?.name || ""}
+                      country={applicant?.country?.name || ""}
+                      username={applicant.user.username || ""}
+                      type="Influencer"
+                    />
+
+                    <div className="flex justify-around gap-4">
+                      <Button
+                        title={t("pages.myOffer.removeButton")}
+                        level="secondary"
+                        size="large"
+                        onClick={() => onRemoveFromRejected(applicant.id)}
+                      />
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          )}
+        </div>
+      );
+    }
+  };
+
   if (isLoading) {
     return <LoadingSpinner />;
   } else {
@@ -538,6 +636,12 @@ const MyOfferDetailsPage = (params: { offerId: number }) => {
               <>
                 <div className="w-full border-[1px] border-white1" />
                 {renderApplicants()}
+              </>
+            )}
+            {offer.rejectedApplicants.length > 0 && (
+              <>
+                <div className="w-full border-[1px] border-white1" />
+                {renderRejectedApplicants()}
               </>
             )}
           </div>
