@@ -266,19 +266,18 @@ export const Navbar = (params: {
                     <div>{t("components.navbar.editMyPage")}</div>
                   </Link>
 
-                  {params.role?.id === 1 && (
-                    <Link
-                      href="/my-offers"
-                      className="group flex cursor-pointer items-center gap-4 py-2"
-                    >
-                      <FontAwesomeIcon icon={faBriefcase} className="fa-lg" />
+                  <Link
+                    href="/my-offers"
+                    className="group flex cursor-pointer items-center gap-4 py-2"
+                  >
+                    <FontAwesomeIcon icon={faBriefcase} className="fa-lg" />
 
-                      <div className="group-hover:underline">
-                        {" "}
-                        {t("components.navbar.myOffers")}
-                      </div>
-                    </Link>
-                  )}
+                    <div className="group-hover:underline">
+                      {" "}
+                      {t("components.navbar.myOffers")}
+                    </div>
+                  </Link>
+
                   <div className="border-[1px] border-white1" />
                 </>
               )}
@@ -348,18 +347,16 @@ export const Navbar = (params: {
                 </div>
               </Link>
 
-              {params.role?.id === 1 && (
-                <Link
-                  href="/my-offers"
-                  className="group flex cursor-pointer items-center gap-4 py-2"
-                >
-                  <FontAwesomeIcon icon={faBriefcase} className="fa-lg" />
+              <Link
+                href="/my-offers"
+                className="group flex cursor-pointer items-center gap-4 py-2"
+              >
+                <FontAwesomeIcon icon={faBriefcase} className="fa-lg" />
 
-                  <div className="group-hover:underline">
-                    {t("components.navbar.myOffers")}
-                  </div>
-                </Link>
-              )}
+                <div className="group-hover:underline">
+                  {t("components.navbar.myOffers")}
+                </div>
+              </Link>
 
               <div className="cursor-pointer border-[1px] border-white1" />
             </div>
