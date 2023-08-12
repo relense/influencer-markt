@@ -247,14 +247,20 @@ const OfferDetails = (params: {
   };
 
   const renderGender = () => {
-    return (
-      <div className="flex gap-2">
-        <div className="font-semibold text-influencer">
-          {t("pages.offers.gender")}
+    if (offer) {
+      return (
+        <div className="flex gap-2">
+          <div className="font-semibold text-influencer">
+            {t("pages.offers.gender")}
+          </div>
+          <div>
+            {offer?.gender && offer?.gender.name
+              ? t(`pages.offers.${offer.gender.name}`)
+              : t(`pages.offers.any`)}
+          </div>
         </div>
-        <div>{offer?.gender ? offer?.gender?.name : "Any"}</div>
-      </div>
-    );
+      );
+    }
   };
 
   const renderCategories = () => {

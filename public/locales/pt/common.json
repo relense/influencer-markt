@@ -520,6 +520,10 @@
     "offers": {
       "followers": "Seguidores",
       "gender": "Género",
+      "any": "Todos",
+      "Male": "Masculino",
+      "Female": "Feminino",
+      "Other": "Outro",
       "categories": "Categorias",
       "offerPay": "Valor da Oferta",
       "aboutOffer": "Sobre a oferta",
