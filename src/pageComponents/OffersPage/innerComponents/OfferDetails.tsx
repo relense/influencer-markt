@@ -14,6 +14,7 @@ import { helper } from "../../../utils/helper";
 import { Button } from "../../../components/Button";
 import { useSession } from "next-auth/react";
 import { toast } from "react-hot-toast";
+import Link from "next/link";
 
 const OfferDetails = (params: {
   selectedOffer: OfferIncludes | undefined;
@@ -135,12 +136,17 @@ const OfferDetails = (params: {
   const shareButton = () => {
     return (
       <div
-        className="flex cursor-pointer items-center gap-2"
+        className="flex items-center gap-2"
         onClick={() => params.openShareModal()}
       >
-        <FontAwesomeIcon icon={faShareFromSquare} className="fa-lg" />
+        <FontAwesomeIcon
+          icon={faShareFromSquare}
+          className="fa-lg cursor-pointer"
+        />
 
-        <div className="underline">{t("pages.publicProfilePage.share")}</div>
+        <div className="cursor-pointer underline">
+          {t("pages.publicProfilePage.share")}
+        </div>
       </div>
     );
   };
@@ -164,14 +170,19 @@ const OfferDetails = (params: {
   };
 
   const renderOfferHeader = () => {
-    return (
-      <div className="flex justify-between">
-        <div className="w-full text-2xl font-semibold lg:w-4/5">
-          {offer?.offerSummary}
+    if (offer) {
+      return (
+        <div className="flex justify-between">
+          <Link
+            href={`offers/${offer.id}`}
+            className="w-auto text-2xl font-semibold hover:underline lg:w-auto lg:max-w-[80%]"
+          >
+            {offer?.offerSummary}
+          </Link>
+          <div className="hidden lg:flex lg:items-start">{shareButton()}</div>
         </div>
-        <div className="hidden lg:flex">{shareButton()}</div>
-      </div>
-    );
+      );
+    }
   };
 
   const renderOfferSubHeader = () => {
