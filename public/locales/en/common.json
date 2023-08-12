@@ -508,6 +508,7 @@
       "categories": "Categories:",
       "price": "Offer Value",
       "acceptedAplicants": "Accepted Applicants",
+      "rejectedApplicants": "Rejected Applicants",
       "applicantsWithoutCount": "Applicants",
       "areYouSure": "Are You Sure?",
       "archiveWarning": "Are you sure you want to archive this offer? After the offer is archived nobody can apply.",

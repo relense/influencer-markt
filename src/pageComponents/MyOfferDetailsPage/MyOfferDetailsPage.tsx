@@ -552,7 +552,7 @@ const MyOfferDetailsPage = (params: { offerId: number }) => {
             }
           >
             <div className="text-2xl font-bold">
-              {t("pages.myOffer.acceptedAplicants")}
+              {t("pages.myOffer.rejectedApplicants")}
             </div>
             <div className="flex h-6 w-6 justify-center rounded-full border-[1px]">
               <div>

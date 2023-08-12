@@ -43,6 +43,7 @@ const OfferDetails = (params: {
     },
     {
       enabled: false,
+      cacheTime: 0,
     }
   );
 
@@ -77,7 +78,11 @@ const OfferDetails = (params: {
         (applicant) => applicant.userId === session.data?.user.id
       );
 
-      if (applied || isAccepted) {
+      const isRejected = !!offer.rejectedApplicants.find(
+        (applicant) => applicant.userId === session.data?.user.id
+      );
+
+      if (applied || isAccepted || isRejected) {
         hasApplied = true;
       }
 

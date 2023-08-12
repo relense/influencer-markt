@@ -508,6 +508,7 @@
       "categories": "Categorias:",
       "price": "Valor da Oferta",
       "acceptedAplicants": "Candidatos Aceites",
+      "rejectedApplicants": "Candidatos Rejeitados",
       "applicantsWithoutCount": "Candidatos",
       "areYouSure": "Tens a certeza?",
       "archiveWarning": "Tens a certeza de que queres arquivar esta oferta? Depois da oferta estar arquivada ninguém se pode candidatar.",

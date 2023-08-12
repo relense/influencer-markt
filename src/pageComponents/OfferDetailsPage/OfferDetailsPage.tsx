@@ -72,7 +72,11 @@ const OfferDetailsPage = (params: {
         (applicant) => applicant.userId === session.data?.user.id
       );
 
-      if (applied || isAccepted) {
+      const isRejected = !!offer.rejectedApplicants.find(
+        (applicant) => applicant.userId === session.data?.user.id
+      );
+
+      if (applied || isAccepted || isRejected) {
         hasApplied = true;
       }
 
