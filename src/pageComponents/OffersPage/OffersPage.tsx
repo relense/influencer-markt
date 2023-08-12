@@ -105,6 +105,9 @@ const OffersPage = (params: {
 
   const { data: countries } = api.allRoutes.getAllCountries.useQuery();
   const { data: genders } = api.allRoutes.getAllGenders.useQuery();
+  const { data: userRole } = api.users.getUserRole.useQuery(undefined, {
+    enabled: session.status === "authenticated",
+  });
 
   useEffect(() => {
     if (offersData && offersData[1].length > 0) {
@@ -348,6 +351,7 @@ const OffersPage = (params: {
               type="mobile"
               key={"offerDetailMobile"}
               openLoginModal={params.openLoginModal}
+              userRole={userRole?.role || undefined}
             />
           )}
         </div>
@@ -383,6 +387,7 @@ const OffersPage = (params: {
               type="desktop"
               key={"offerDetailDesktop"}
               openLoginModal={params.openLoginModal}
+              userRole={userRole?.role || undefined}
             />
           )}
         </div>

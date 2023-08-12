@@ -16,6 +16,15 @@ export const usersRouter = createTRPCRouter({
     });
   }),
 
+  getUserRole: protectedProcedure.query(async ({ ctx }) => {
+    return await ctx.prisma.user.findUnique({
+      where: { id: ctx.session.user.id },
+      select: {
+        role: true,
+      },
+    });
+  }),
+
   updateUserFirstSteps: protectedProcedure
     .input(z.object({ firstSteps: z.boolean() }))
     .mutation(async ({ ctx, input }) => {

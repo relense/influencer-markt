@@ -15,6 +15,7 @@ import { Button } from "../../../components/Button";
 import { useSession } from "next-auth/react";
 import { toast } from "react-hot-toast";
 import Link from "next/link";
+import { type Role } from "@prisma/client";
 
 const OfferDetails = (params: {
   selectedOffer: OfferIncludes | undefined;
@@ -23,6 +24,7 @@ const OfferDetails = (params: {
   openLoginModal: () => void;
   openShareModal: () => void;
   type: "mobile" | "desktop";
+  userRole: Role | undefined;
 }) => {
   const { t, i18n } = useTranslation();
   const session = useSession();
@@ -306,7 +308,7 @@ const OfferDetails = (params: {
   };
 
   const renderApplyButton = () => {
-    if (offer) {
+    if (offer && (!params.userRole || params.userRole.id !== 1)) {
       return (
         <div>
           <Button
