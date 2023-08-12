@@ -21,10 +21,10 @@ const OfferDetails: NextPage<OfferDetailsProps> = ({ id }) => {
       (offer) => offer.id === parseInt(id)
     );
 
-    if (!value) {
+    if (!value && isLoading === false) {
       void router.push("/");
     }
-  }, [id, profileOffers, router]);
+  }, [id, profileOffers, router, isLoading]);
 
   if (isLoading) {
     <ProtectedWrapper>
