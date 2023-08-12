@@ -16,10 +16,14 @@ import { MyOfferDropdown } from "../../components/MyOfferDropdown";
 import { ProfileCard } from "../../components/ProfileCard";
 import { MyOfferModal } from "../../components/MyOfferModal";
 import { MyOffersActionConfirmationModal } from "../../components/MyOffersActionConfirmationModal";
+import { Button } from "../../components/Button";
+import { toast } from "react-hot-toast";
 
 const MyOfferDetailsPage = (params: { offerId: number }) => {
   const { t, i18n } = useTranslation();
   const dropdownRef = useRef(null);
+  const ctx = api.useContext();
+
   const [isDropdownOpen, setIsDropdownOpen] = useState<boolean>(false);
   const [isDetailsOpen, setIsDetailsOpen] = useState<boolean>(true);
   const [openCreateModal, setOpenCreateModal] = useState<boolean>(false);
@@ -40,11 +44,70 @@ const MyOfferDetailsPage = (params: { offerId: number }) => {
     offerId: params.offerId,
   });
 
+  const { mutate: acceptedApplicant } =
+    api.offers.acceptedApplicant.useMutation({
+      onSuccess: () => {
+        void ctx.offers.getOffer.invalidate().then(() => {
+          void ctx.offers.getApplicants.invalidate().then(() => {
+            toast.success(t("pages.myOffer.acceptedApplicant"), {
+              position: "bottom-left",
+            });
+          });
+        });
+      },
+    });
+
+  const { mutate: rejectApplication } = api.offers.rejectApplicant.useMutation({
+    onSuccess: () => {
+      void ctx.offers.getOffer.invalidate().then(() => {
+        void ctx.offers.getApplicants.invalidate().then(() => {
+          toast.success(t("pages.myOffer.rejectedApplicant"), {
+            position: "bottom-left",
+          });
+        });
+      });
+    },
+  });
+
+  const { mutate: removeApplicantFromAccepted } =
+    api.offers.removeApplicantFromAccepted.useMutation({
+      onSuccess: () => {
+        void ctx.offers.getOffer.invalidate().then(() => {
+          void ctx.offers.getApplicants.invalidate().then(() => {
+            toast.success(t("pages.myOffer.removedApplicant"), {
+              position: "bottom-left",
+            });
+          });
+        });
+      },
+    });
+
   useOutsideClick(() => {
     if (isDropdownOpen === false) return;
 
     setIsDropdownOpen(!isDropdownOpen);
   }, dropdownRef);
+
+  const onAcceptedApplicant = (profileId: number) => {
+    acceptedApplicant({
+      offerId: params.offerId,
+      profileId: profileId,
+    });
+  };
+
+  const onRejectApplicant = (profileId: number) => {
+    rejectApplication({
+      offerId: params.offerId,
+      profileId: profileId,
+    });
+  };
+
+  const onRemoveFromAccepted = (profileId: number) => {
+    removeApplicantFromAccepted({
+      offerId: params.offerId,
+      profileId: profileId,
+    });
+  };
 
   const openWarningModal = (
     type: "archive" | "delete" | "publish",
@@ -91,7 +154,7 @@ const MyOfferDetailsPage = (params: { offerId: number }) => {
     }
   };
 
-  const offerDateDetails = () => {
+  const renderOfferHeader = () => {
     if (offer) {
       return (
         <>
@@ -254,7 +317,7 @@ const MyOfferDetailsPage = (params: { offerId: number }) => {
     }
   };
 
-  const offerDetails = () => {
+  const renderOfferDetails = () => {
     if (offer) {
       return (
         <div className="flex flex-col gap-4">
@@ -284,7 +347,7 @@ const MyOfferDetailsPage = (params: { offerId: number }) => {
           {isDetailsOpen && (
             <div className="relative">
               <div className="flex flex-col gap-4">
-                {offerDateDetails()}
+                {renderOfferHeader()}
                 {renderSearchRequirements()}
                 {renderCategories()}
                 {renderDescription()}
@@ -331,29 +394,40 @@ const MyOfferDetailsPage = (params: { offerId: number }) => {
             <div className="flex flex-wrap gap-8">
               {offer.acceptedApplicants.map((applicant) => {
                 return (
-                  <ProfileCard
-                    key={applicant.id}
-                    id={applicant.id}
-                    profilePicture={applicant.profilePicture}
-                    socialMedia={applicant.userSocialMedia.map(
-                      (socialMedia) => {
-                        return {
-                          followers: socialMedia.followers,
-                          handler: socialMedia.handler,
-                          id: socialMedia.id,
-                          socialMediaName: socialMedia.socialMedia?.name || "",
-                          url: socialMedia.url,
-                          valuePacks: [],
-                        };
-                      }
-                    )}
-                    name={applicant.name}
-                    about={applicant.about}
-                    city={applicant.city?.name || ""}
-                    country={applicant?.country?.name || ""}
-                    username={applicant.user.username || ""}
-                    type="Influencer"
-                  />
+                  <div key={applicant.id} className="flex flex-col gap-4">
+                    <ProfileCard
+                      id={applicant.id}
+                      profilePicture={applicant.profilePicture}
+                      socialMedia={applicant.userSocialMedia.map(
+                        (socialMedia) => {
+                          return {
+                            followers: socialMedia.followers,
+                            handler: socialMedia.handler,
+                            id: socialMedia.id,
+                            socialMediaName:
+                              socialMedia.socialMedia?.name || "",
+                            url: socialMedia.url,
+                            valuePacks: [],
+                          };
+                        }
+                      )}
+                      name={applicant.name}
+                      about={applicant.about}
+                      city={applicant.city?.name || ""}
+                      country={applicant?.country?.name || ""}
+                      username={applicant.user.username || ""}
+                      type="Influencer"
+                    />
+
+                    <div className="flex justify-around gap-4">
+                      <Button
+                        title={t("pages.myOffer.removeButton")}
+                        level="secondary"
+                        size="large"
+                        onClick={() => onRemoveFromAccepted(applicant.id)}
+                      />
+                    </div>
+                  </div>
                 );
               })}
             </div>
@@ -394,29 +468,48 @@ const MyOfferDetailsPage = (params: { offerId: number }) => {
             <div className="flex flex-wrap gap-8">
               {profiles.applicants.map((applicant) => {
                 return (
-                  <ProfileCard
-                    key={applicant.id}
-                    id={applicant.id}
-                    profilePicture={applicant.profilePicture}
-                    socialMedia={applicant.userSocialMedia.map(
-                      (socialMedia) => {
-                        return {
-                          followers: socialMedia.followers,
-                          handler: socialMedia.handler,
-                          id: socialMedia.id,
-                          socialMediaName: socialMedia.socialMedia?.name || "",
-                          url: socialMedia.url,
-                          valuePacks: [],
-                        };
-                      }
+                  <div key={applicant.id} className="flex flex-col gap-4">
+                    <ProfileCard
+                      id={applicant.id}
+                      profilePicture={applicant.profilePicture}
+                      socialMedia={applicant.userSocialMedia.map(
+                        (socialMedia) => {
+                          return {
+                            followers: socialMedia.followers,
+                            handler: socialMedia.handler,
+                            id: socialMedia.id,
+                            socialMediaName:
+                              socialMedia.socialMedia?.name || "",
+                            url: socialMedia.url,
+                            valuePacks: [],
+                          };
+                        }
+                      )}
+                      name={applicant.name}
+                      about={applicant.about}
+                      city={applicant.city?.name || ""}
+                      country={applicant?.country?.name || ""}
+                      username={applicant.user.username || ""}
+                      type="Influencer"
+                    />
+                    {offer.acceptedApplicants.length <
+                      offer.numberOfInfluencers && (
+                      <div className="flex justify-around gap-4">
+                        <Button
+                          title={t("pages.myOffer.acceptButton")}
+                          level="terciary"
+                          size="large"
+                          onClick={() => onAcceptedApplicant(applicant.id)}
+                        />
+                        <Button
+                          title={t("pages.myOffer.rejectButton")}
+                          level="secondary"
+                          size="large"
+                          onClick={() => onRejectApplicant(applicant.id)}
+                        />
+                      </div>
                     )}
-                    name={applicant.name}
-                    about={applicant.about}
-                    city={applicant.city?.name || ""}
-                    country={applicant?.country?.name || ""}
-                    username={applicant.user.username || ""}
-                    type="Influencer"
-                  />
+                  </div>
                 );
               })}
             </div>
@@ -433,7 +526,7 @@ const MyOfferDetailsPage = (params: { offerId: number }) => {
       return (
         <>
           <div className="flex w-full cursor-default flex-col gap-8 self-center px-4 pb-10 sm:px-12 xl:w-3/4 2xl:w-3/4 3xl:w-2/4">
-            {offerDetails()}
+            {renderOfferDetails()}
 
             {offer.acceptedApplicants.length > 0 && (
               <>

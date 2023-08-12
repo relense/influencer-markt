@@ -750,4 +750,54 @@ export const OffersRouter = createTRPCRouter({
         });
       }
     }),
+
+  acceptedApplicant: protectedProcedure
+    .input(
+      z.object({
+        offerId: z.number(),
+        profileId: z.number(),
+      })
+    )
+    .mutation(async ({ ctx, input }) => {
+      return await ctx.prisma.offer.update({
+        where: { id: input.offerId },
+        data: {
+          applicants: { disconnect: { id: input.profileId } },
+          acceptedApplicants: { connect: { id: input.profileId } },
+        },
+      });
+    }),
+
+  rejectApplicant: protectedProcedure
+    .input(
+      z.object({
+        offerId: z.number(),
+        profileId: z.number(),
+      })
+    )
+    .mutation(async ({ ctx, input }) => {
+      return await ctx.prisma.offer.update({
+        where: { id: input.offerId },
+        data: {
+          applicants: { disconnect: { id: input.profileId } },
+        },
+      });
+    }),
+
+  removeApplicantFromAccepted: protectedProcedure
+    .input(
+      z.object({
+        offerId: z.number(),
+        profileId: z.number(),
+      })
+    )
+    .mutation(async ({ ctx, input }) => {
+      return await ctx.prisma.offer.update({
+        where: { id: input.offerId },
+        data: {
+          applicants: { connect: { id: input.profileId } },
+          acceptedApplicants: { disconnect: { id: input.profileId } },
+        },
+      });
+    }),
 });

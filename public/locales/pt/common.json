@@ -519,7 +519,13 @@
       "noOffersArchived": "Não há ofertas arquivadas",
       "noOffersOpen": "Não há ofertas abertas",
       "noOffersProgress": "Não há ofertas em progresso",
-      "loadMore": "Carregar Mais"
+      "loadMore": "Carregar Mais",
+      "acceptedApplicant": "Candidato aceite com sucesso",
+      "rejectedApplicant": "Candidato rejeitado com sucesso",
+      "removedApplicant": "Candidato removido com sucesso",
+      "removeButton": "Remover",
+      "rejectButton": "Rejeitar",
+      "acceptButton": "Aceitar"
     },
 
     "offers": {

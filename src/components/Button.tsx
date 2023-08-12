@@ -7,7 +7,7 @@ type ReactButtonProps = React.DetailedHTMLProps<
 >;
 
 type NewButtonProps = {
-  level?: "primary" | "secondary";
+  level?: "primary" | "secondary" | "terciary";
   title: string;
   isLoading?: boolean;
   size?: "regular" | "large";
@@ -39,6 +39,11 @@ export const Button = ({
     bgColor = "bg-influencer";
     textColor = "text-white";
     borderColor = "";
+  } else if (level === "terciary") {
+    bgColor = "bg-influencer-green";
+    textColor = "text-white";
+    borderColor = "";
+    hover = "hover:bg-influencer-green-dark hover:text-white";
   } else {
     bgColor = "bg-white";
     textColor = "text-black";
