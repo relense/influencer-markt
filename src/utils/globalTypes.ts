@@ -85,6 +85,23 @@ export type UserProfiles = {
   favoritedBy?: number[];
 };
 
+export type ProfileOffers = Prisma.OfferGetPayload<{
+  select: {
+    offerSummary: true;
+    id: true;
+    contentTypeWithQuantity: {
+      select: {
+        amount: true;
+        contentType: true;
+        id: true;
+      };
+    };
+    country: true;
+    socialMedia: true;
+    state: true;
+  };
+}>;
+
 export type OfferWithAllData = Prisma.OfferGetPayload<{
   include: {
     id?: true;

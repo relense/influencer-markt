@@ -29,6 +29,7 @@ import type {
   ValuePack,
   Option,
   SocialMediaDetails,
+  ProfileOffers,
 } from "../../utils/globalTypes";
 import { ShareModal } from "../../components/ShareModal";
 
@@ -59,6 +60,8 @@ const PublicProfilePage = (params: {
   >([]);
   const [reviews, setReviews] = useState<Review[]>([]);
   const [reviewsCursor, setCursor] = useState<number>();
+  const [offers, setOffers] = useState<ProfileOffers[]>([]);
+  const [offersCursor, setOffersCursor] = useState<number>(-1);
   const [portfolio, setPortfolio] = useState<PreloadedImage[]>();
   const [isLoading, setIsLoading] = useState<boolean>(true);
 
@@ -84,6 +87,28 @@ const PublicProfilePage = (params: {
     }
   );
 
+  const {
+    data: offersData,
+    isLoading: isLoadingOffersData,
+    isFetching: isFetchingOffersData,
+  } = api.offers.getProfileOffers.useQuery({
+    profileId: profile?.id || -1,
+  });
+
+  const {
+    data: offersWithCursorData,
+    isFetching: isFetchingOffersWithCursor,
+    refetch: isRefetchingOffersWithCursor,
+  } = api.offers.getProfileOffersCursor.useQuery(
+    {
+      profileId: profile?.id || -1,
+      cursor: offersCursor,
+    },
+    {
+      enabled: false,
+    }
+  );
+
   const { mutate: updateFavorites } = api.profiles.updateFavorites.useMutation({
     onSuccess: (removed) => {
       void ctx.profiles.getProfileByUniqueUsername.invalidate().then(() => {
@@ -98,6 +123,31 @@ const PublicProfilePage = (params: {
       });
     },
   });
+
+  useEffect(() => {
+    if (offersData) {
+      setOffers(offersData[1]);
+
+      const lastReviewInArray = offersData[1][offersData[1].length - 1];
+      if (lastReviewInArray) {
+        setOffersCursor(lastReviewInArray.id);
+      }
+    }
+  }, [offersData]);
+
+  useEffect(() => {
+    if (offersWithCursorData) {
+      const newOffers = [...offers];
+      offersWithCursorData.forEach((offer) => newOffers.push(offer));
+      setOffers(newOffers);
+
+      const lastReviewInArray =
+        offersWithCursorData[offersWithCursorData.length - 1];
+      if (lastReviewInArray) {
+        setOffersCursor(lastReviewInArray.id);
+      }
+    }
+  }, [offers, offersWithCursorData]);
 
   useEffect(() => {
     if (profile?.portfolio) {
@@ -336,50 +386,70 @@ const PublicProfilePage = (params: {
     );
   };
 
+  const renderCategories = () => {
+    return (
+      <div className="flex flex-col gap-4">
+        <div className="text-2xl font-semibold">
+          {t("pages.publicProfilePage.categories")}
+        </div>
+        <div className="flex flex-wrap gap-4">
+          {profile?.categories.map((category) => {
+            return (
+              <div
+                key={category.id}
+                className="rounded-2xl border-[1px] border-gray2 px-4 py-1"
+              >
+                {t(`general.categories.${category.name}`)}
+              </div>
+            );
+          })}
+        </div>
+      </div>
+    );
+  };
+
+  const renderAboutSection = () => {
+    return (
+      <div className="flex flex-col gap-2">
+        <div className="text-2xl font-semibold">
+          {t("pages.publicProfilePage.about")}
+        </div>
+        <div className="text-gray2 [overflow-wrap:anywhere]">
+          {profile?.about}
+        </div>
+      </div>
+    );
+  };
+
+  const renderValuePackOrOffersSection = () => {
+    return (
+      <div className="flex w-full flex-col gap-6">
+        {profile?.user?.role?.name === "Influencer" && (
+          <div className="flex flex-col gap-4">
+            {renderValuePackChooser("requestDesktop")}
+          </div>
+        )}
+
+        {profile?.user?.role?.name === "Brand" && (
+          <div className="flex w-full">{renderOffers()}</div>
+        )}
+      </div>
+    );
+  };
+
   const renderMiddleContent = () => {
     return (
-      <div className="flex flex-col-reverse gap-6 lg:flex-row">
-        <div className="flex flex-col items-center gap-6">
-          <PictureCarrosel visual={true} portfolio={portfolio || []} />
-          <div className="flex flex-col gap-4">
-            <div className="text-2xl font-semibold">
-              {t("pages.publicProfilePage.categories")}
-            </div>
-            <div className="flex flex-wrap gap-4">
-              {profile?.categories.map((category) => {
-                return (
-                  <div
-                    key={category.id}
-                    className="rounded-2xl border-[1px] border-gray2 px-4 py-1"
-                  >
-                    {t(`general.categories.${category.name}`)}
-                  </div>
-                );
-              })}
-            </div>
+      <div className="flex flex-col gap-6">
+        <div className="flex flex-col gap-6 lg:flex-row">
+          <div className="flex items-start justify-center">
+            <PictureCarrosel visual={true} portfolio={portfolio || []} />
           </div>
-          <div className="flex flex-col gap-4 sm:hidden">
-            {profile?.user?.role?.name === "Influencer" &&
-              renderValuePackChooser("requestMobile")}
-            {profile?.user?.role?.name === "Brand" && renderCampaigns()}
+          <div className="flex flex-col gap-6">
+            {renderAboutSection()}
+            {renderValuePackOrOffersSection()}
           </div>
         </div>
-
-        <div className="flex w-full flex-col gap-6">
-          <div className="flex flex-col gap-2">
-            <div className="text-2xl font-semibold">
-              {t("pages.publicProfilePage.about")}
-            </div>
-            <div className="text-gray2 [overflow-wrap:anywhere]">
-              {profile?.about}
-            </div>
-          </div>
-          <div className="hidden flex-col gap-4 sm:flex">
-            {profile?.user?.role?.name === "Influencer" &&
-              renderValuePackChooser("requestDesktop")}
-            {profile?.user?.role?.name === "Brand" && renderCampaigns()}
-          </div>
-        </div>
+        {renderCategories()}
       </div>
     );
   };
@@ -537,15 +607,86 @@ const PublicProfilePage = (params: {
     );
   };
 
-  const renderCampaigns = () => {
+  const renderOffers = () => {
+    let offersContainerClasses =
+      "flex h-auto flex-1 flex-col gap-2 overflow-y-auto";
+
+    if (offers.length > 4) {
+      offersContainerClasses =
+        "flex h-[50vh] flex-1 flex-col gap-2 overflow-y-auto";
+    }
+
     return (
-      <div className="flex flex-col gap-6">
-        <div className="text-2xl font-semibold">
-          {t("pages.publicProfilePage.campaigns")}
-        </div>
-        <div className="flex justify-center">
-          {t("pages.publicProfilePage.noCampaignHistory")}
-        </div>
+      <div className={offersContainerClasses}>
+        {isLoadingOffersData || isFetchingOffersData ? (
+          <div className="relative flex flex-1">
+            <LoadingSpinner />
+          </div>
+        ) : (
+          <>
+            <div className="text-2xl font-semibold">
+              {t("pages.publicProfilePage.offers")}
+            </div>
+            {offersData &&
+            offersData?.[0] === 0 &&
+            isLoadingOffersData === false ? (
+              <div className="flex justify-center">
+                {t("pages.publicProfilePage.noActiveOffers")}
+              </div>
+            ) : (
+              <div className="flex flex-col gap-2">
+                {offers.map((offer) => {
+                  return (
+                    <Link
+                      href={`/offers/${offer.id}`}
+                      key={`offer${offer.id}`}
+                      className="flex w-full cursor-pointer flex-col rounded-lg border-[1px] p-4 hover:bg-influencer-green-light"
+                    >
+                      <div className="font-semibold text-influencer">
+                        {offer.offerSummary}
+                      </div>
+                      <div className="text-sm text-gray2">
+                        {offer.country.name}
+                        {offer?.state?.name ? `,${offer.state.name}` : ""}
+                      </div>
+                      <div className="flex gap-2 text-sm text-gray2">
+                        <div className="font-semibold text-influencer">
+                          {offer.socialMedia.name}
+                        </div>
+                        <div className="flex gap-2">
+                          {offer.contentTypeWithQuantity.map((contentType) => {
+                            return (
+                              <div
+                                key={`offersList${contentType.id}${offer.id}`}
+                                className="flex gap-1 font-semibold text-black"
+                              >
+                                <div>{contentType.amount}</div>
+                                <div>{contentType.contentType.name}</div>
+                              </div>
+                            );
+                          })}
+                        </div>
+                      </div>
+                    </Link>
+                  );
+                })}
+                {offersData &&
+                  offersData[0] > offers.length &&
+                  offersData[0] > 0 &&
+                  offers.length > 0 &&
+                  isLoadingOffersData === false && (
+                    <div className="flex items-center justify-center">
+                      <Button
+                        title={t("pages.publicProfilePage.loadMoreOffers")}
+                        onClick={() => isRefetchingOffersWithCursor()}
+                        isLoading={isFetchingOffersWithCursor}
+                      />
+                    </div>
+                  )}
+              </div>
+            )}
+          </>
+        )}
       </div>
     );
   };

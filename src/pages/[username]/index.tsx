@@ -6,7 +6,7 @@ import Head from "next/head";
 import { PublicProfilePage } from "../../pageComponents/PublicProfilePage/PublicProfilePage";
 import { api } from "~/utils/api";
 import { Layout } from "../../components/Layout";
-import { generateSSGHelper } from "../../server/helper/ssgHelper";
+import { LoadingSpinner } from "../../components/LoadingSpinner";
 
 interface PublicProfileProps {
   username: string;
@@ -15,24 +15,24 @@ interface PublicProfileProps {
 const PublicProfile: NextPage<PublicProfileProps> = ({ username }) => {
   const router = useRouter();
 
-  const { data: userExists } = api.users.usernameExists.useQuery(
-    {
+  const { data: userExists, isLoading: isLoadingUserExists } =
+    api.users.usernameExists.useQuery({
       username,
-    },
-    { enabled: false }
-  );
-  const { data: profile } = api.profiles.getProfileMinimumInfo.useQuery(
-    {
+    });
+  const { data: profile, isLoading: isLoadingProfile } =
+    api.profiles.getProfileMinimumInfo.useQuery({
       username,
-    },
-    { enabled: false }
-  );
+    });
 
   useEffect(() => {
-    if (!userExists) {
+    if (
+      !userExists &&
+      isLoadingProfile === false &&
+      isLoadingUserExists === false
+    ) {
       void router.push("/");
     }
-  }, [userExists, router]);
+  }, [userExists, router, isLoadingProfile, isLoadingUserExists]);
 
   return (
     <>
@@ -63,34 +63,32 @@ const PublicProfile: NextPage<PublicProfileProps> = ({ username }) => {
           content={profile?.profilePicture}
         />
       </Head>
-      <Layout>
-        {(params) => (
-          <PublicProfilePage
-            username={username}
-            openLoginModal={params.openLoginModal}
-            loggedInProfileId={params.loggedInProfileId}
-          />
-        )}
-      </Layout>
+      {isLoadingProfile || isLoadingUserExists ? (
+        <Layout>{() => <LoadingSpinner />}</Layout>
+      ) : (
+        <Layout>
+          {(params) => (
+            <PublicProfilePage
+              username={username}
+              openLoginModal={params.openLoginModal}
+              loggedInProfileId={params.loggedInProfileId}
+            />
+          )}
+        </Layout>
+      )}
     </>
   );
 };
 
 export default PublicProfile;
 
-export const getStaticProps: GetStaticProps = async (context) => {
-  const ssg = generateSSGHelper();
-
+export const getStaticProps: GetStaticProps = (context) => {
   const username = context.params?.username;
 
   if (typeof username !== "string") throw new Error("Invalid username");
 
-  await ssg.users.usernameExists.prefetch({ username });
-  await ssg.profiles.getProfileMinimumInfo.prefetch({ username });
-
   return {
     props: {
-      trpcState: ssg.dehydrate(),
       username,
     },
   };

@@ -884,4 +884,83 @@ export const OffersRouter = createTRPCRouter({
         },
       });
     }),
+
+  getProfileOffers: publicProcedure
+    .input(
+      z.object({
+        profileId: z.number(),
+      })
+    )
+    .query(async ({ ctx, input }) => {
+      return await ctx.prisma.$transaction([
+        ctx.prisma.offer.count({
+          where: {
+            profileId: input.profileId,
+            offerStatusId: 1,
+          },
+        }),
+        ctx.prisma.offer.findMany({
+          where: {
+            profileId: input.profileId,
+            offerStatusId: 1,
+          },
+          take: 10,
+          select: {
+            offerSummary: true,
+            id: true,
+            contentTypeWithQuantity: {
+              select: {
+                amount: true,
+                contentType: true,
+                id: true,
+              },
+            },
+            country: true,
+            socialMedia: true,
+            state: true,
+          },
+          orderBy: {
+            createdAt: "desc",
+          },
+        }),
+      ]);
+    }),
+
+  getProfileOffersCursor: publicProcedure
+    .input(
+      z.object({
+        profileId: z.number(),
+        cursor: z.number(),
+      })
+    )
+    .query(async ({ ctx, input }) => {
+      return await ctx.prisma.offer.findMany({
+        where: {
+          profileId: input.profileId,
+          offerStatusId: 10,
+        },
+        take: 1,
+        skip: 1,
+        cursor: {
+          id: input.cursor,
+        },
+        select: {
+          offerSummary: true,
+          id: true,
+          contentTypeWithQuantity: {
+            select: {
+              amount: true,
+              contentType: true,
+              id: true,
+            },
+          },
+          country: true,
+          socialMedia: true,
+          state: true,
+        },
+        orderBy: {
+          createdAt: "desc",
+        },
+      });
+    }),
 });
