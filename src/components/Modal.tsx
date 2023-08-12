@@ -1,4 +1,4 @@
-import { type ReactElement } from "react";
+import { useEffect, type ReactElement } from "react";
 import { faXmark } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
@@ -15,6 +15,19 @@ const Modal = ({
   title?: string;
   button?: ReactElement;
 }) => {
+  useEffect(() => {
+    const handleEsc = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        onCloseBackground ? onCloseBackground() : onClose();
+      }
+    };
+    window.addEventListener("keydown", handleEsc);
+
+    return () => {
+      window.removeEventListener("keydown", handleEsc);
+    };
+  }, [onClose, onCloseBackground]);
+
   return (
     <>
       <div
