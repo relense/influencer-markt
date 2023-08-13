@@ -201,12 +201,25 @@ export const Navbar = (params: {
 
   const renderHamburguerMenuAuthenticated = () => {
     return (
-      <div className="flex justify-end" ref={dropdownWrapperRef}>
+      <div className="flex justify-end p-2" ref={dropdownWrapperRef}>
         <FontAwesomeIcon
           icon={faBars}
-          className="fa-xl cursor-pointer"
+          className="fa-xl flex cursor-pointer lg:hidden"
           onClick={() => setToggleOptions(!toggleOptions)}
         />
+        {!toggleOptions ? (
+          <FontAwesomeIcon
+            icon={faChevronDown}
+            className="fa-xl hidden cursor-pointer lg:flex"
+            onClick={() => setToggleOptions(!toggleOptions)}
+          />
+        ) : (
+          <FontAwesomeIcon
+            icon={faChevronUp}
+            className="fa-xl hidden cursor-pointer lg:flex"
+            onClick={() => setToggleOptions(!toggleOptions)}
+          />
+        )}
         {toggleOptions && optionsDropdownAthenticated()}
       </div>
     );
