@@ -8,7 +8,6 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { type Session } from "next-auth";
 
 type linkItem = {
   pageUrl: string;
@@ -45,7 +44,7 @@ const BottomBar = (params: {
   const router = useRouter();
 
   return (
-    <div className="fixed bottom-0 z-50 flex w-full justify-between border-t-[1px] border-gray3 bg-white sm:hidden">
+    <div className="fixed bottom-0 z-40 flex w-full justify-between border-t-[1px] border-gray3 bg-white sm:hidden">
       {navigationLinks.map((navigationItem) => {
         const iconClass =
           router.pathname === navigationItem.pageUrl

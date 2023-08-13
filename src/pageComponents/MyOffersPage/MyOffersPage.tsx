@@ -114,8 +114,8 @@ const MyOffersPage = () => {
                 key={offerStatusElem.id}
                 className={
                   offerStatusElem.name === offerStatus.name
-                    ? "cursor-default text-xl font-semibold text-influencer"
-                    : "cursor-pointer text-xl font-semibold text-gray4"
+                    ? "cursor-default text-base font-semibold text-influencer lg:text-xl"
+                    : "cursor-pointer text-base font-semibold text-gray4 lg:text-xl"
                 }
                 onClick={() => changeOpenSelected(offerStatusElem)}
               >

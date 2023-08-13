@@ -12,6 +12,7 @@ import {
   faAddressCard,
   faEnvelope,
   faCircleQuestion,
+  faFolderOpen,
 } from "@fortawesome/free-regular-svg-icons";
 import {
   faArrowRightFromBracket,
@@ -172,7 +173,7 @@ export const Navbar = (params: {
           </>
         )}
         {params.sessionData && (
-          <div className="flex flex-row items-center justify-end gap-8">
+          <div className="flex flex-row items-center justify-end gap-6">
             <FontAwesomeIcon
               icon={faMessage}
               className="fa-xl cursor-pointer"
@@ -201,7 +202,7 @@ export const Navbar = (params: {
 
   const renderHamburguerMenuAuthenticated = () => {
     return (
-      <div className="flex justify-end p-2" ref={dropdownWrapperRef}>
+      <div className="flex justify-end" ref={dropdownWrapperRef}>
         <FontAwesomeIcon
           icon={faBars}
           className="fa-xl flex cursor-pointer lg:hidden"
@@ -220,7 +221,7 @@ export const Navbar = (params: {
             onClick={() => setToggleOptions(!toggleOptions)}
           />
         )}
-        {toggleOptions && optionsDropdownAthenticated()}
+        {toggleOptions && optionsDropdownAuthenticated()}
       </div>
     );
   };
@@ -233,12 +234,12 @@ export const Navbar = (params: {
           className="fa-xl cursor-pointer"
           onClick={() => setToggleOptions(!toggleOptions)}
         />
-        {toggleOptions && optionDropdownDataUnathenticated()}
+        {toggleOptions && optionDropdownDataUnauthenticated()}
       </div>
     );
   };
 
-  const optionDropdownDataUnathenticated = () => {
+  const optionDropdownDataUnauthenticated = () => {
     if (!params.sessionData) {
       return (
         <>
@@ -276,7 +277,7 @@ export const Navbar = (params: {
     }
   };
 
-  const optionsDropdownAthenticated = () => {
+  const optionsDropdownAuthenticated = () => {
     if (params.sessionData) {
       return (
         <>
@@ -285,12 +286,16 @@ export const Navbar = (params: {
             onClick={() => setToggleOptions(!toggleOptions)}
           />
           <div
-            className="absolute right-1 top-14 z-50 flex h-auto w-auto flex-col gap-2 rounded-2xl border-[1px] border-white1 bg-white p-8 shadow-lg sm:right-5 lg:top-20"
+            className="absolute right-0 top-14 z-50 flex w-screen flex-col gap-2 border-white1 bg-white px-8 pb-4 pt-2 text-sm shadow-lg sm:right-5 lg:top-20 lg:w-auto lg:rounded-2xl lg:border-[1px] lg:p-8 lg:text-base"
             onClick={() => setToggleOptions(!toggleOptions)}
           >
             <div className="flex items-center gap-4 py-2">
               <FontAwesomeIcon icon={faUserCircle} className="fa-xl" />
-              <div>{params.sessionData?.user.email}</div>
+              <div className="w-4/5 break-words">
+                {params.username
+                  ? params.username
+                  : params.sessionData?.user.email}
+              </div>
             </div>
 
             <div className="cursor-pointer border-[1px] border-white1" />
@@ -328,6 +333,19 @@ export const Navbar = (params: {
                 {t("components.navbar.myOffers")}
               </div>
             </Link>
+
+            {params.role && params.role.id !== 1 && (
+              <Link
+                href="/my-applicants"
+                className="group flex cursor-pointer items-center gap-4 py-2"
+              >
+                <FontAwesomeIcon icon={faFolderOpen} className="fa-lg" />
+
+                <div className="group-hover:underline">
+                  {t("components.navbar.applications")}
+                </div>
+              </Link>
+            )}
 
             <div className="cursor-pointer border-[1px] border-white1" />
 

@@ -148,7 +148,8 @@
       "faq": "Frequently Asked Questions",
       "sitemap": "Sitemap",
       "terms": "Terms and Conditions",
-      "privacy": "Privacy Policy"
+      "privacy": "Privacy Policy",
+      "applications": "Applications"
     },
 
     "footer": {
@@ -653,7 +654,7 @@
       "applicants_other": "{{count}} Applicants",
       "goBack": "Go Back",
       "appliedSuccess": "Application submit successfully",
-      "removedApplicationSuccess": "Withdrawn application successfully",
+      "removedApplicationSuccess": "Application withdrawn successfully",
       "shareModalTitle": "Share Offer",
       "offersAvailable": "There are {{ available }} offers available"
     }
