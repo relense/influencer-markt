@@ -75,20 +75,25 @@ const OffersList = (params: {
                       {offer?.state?.name ? `,${offer.state.name}` : ""}
                     </div>
                     <div className="flex gap-2 text-sm text-gray2">
-                      <div className="font-semibold text-influencer">
-                        {offer.socialMedia.name}
-                      </div>
-                      <div className="flex gap-2">
-                        {offer.contentTypeWithQuantity.map((contentType) => {
-                          return (
-                            <div
-                              key={`offersList${contentType.id}${offer.offerCreator.name}`}
-                              className="flex gap-1 font-semibold text-black"
-                            >
-                              <div>{t(`general.contentTypesPlural.${contentType.contentType.name}`, {count: contentType.amount})}</div>
-                            </div>
-                          );
-                        })}
+                      <div className="flex flex-wrap gap-2 font-semibold text-influencer">
+                        <div className="flex flex-wrap gap-2">
+                          {offer.socialMedia.name}{" "}
+                          {offer.contentTypeWithQuantity.map((contentType) => {
+                            return (
+                              <div
+                                key={`offersList${contentType.id}${offer.offerCreator.name}`}
+                                className="flex gap-1 font-semibold text-black"
+                              >
+                                <div>
+                                  {t(
+                                    `general.contentTypesPlural.${contentType.contentType.name}`,
+                                    { count: contentType.amount }
+                                  )}
+                                </div>
+                              </div>
+                            );
+                          })}
+                        </div>
                       </div>
                     </div>
                   </div>
