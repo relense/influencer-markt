@@ -132,7 +132,7 @@ const FAQPage = () => {
 
   const renderQuestionsHeader = () => {
     return (
-      <div className="flex justify-center gap-12">
+      <div className="flex justify-center gap-6 text-center lg:gap-12">
         <div
           className="flex flex-col gap-2"
           onClick={() => {
@@ -140,7 +140,13 @@ const FAQPage = () => {
             setShowInfluencerQuestions(true);
           }}
         >
-          <div className="cursor-pointer text-xl font-medium lg:text-2xl">
+          <div
+            className={
+              showInfluencerQuestions
+                ? "cursor-pointer text-xl font-medium lg:text-2xl"
+                : "cursor-pointer text-xl font-medium text-gray4 lg:text-2xl"
+            }
+          >
             {t("pages.faq.questions.influencers.title")}
           </div>
           {showInfluencerQuestions && (
@@ -155,7 +161,13 @@ const FAQPage = () => {
             setShowBrandQuestions(true);
           }}
         >
-          <div className="cursor-pointer text-xl font-medium lg:text-2xl">
+          <div
+            className={
+              showBrandQuestions
+                ? "cursor-pointer text-xl font-medium lg:text-2xl"
+                : "cursor-pointer text-xl font-medium text-gray4 lg:text-2xl"
+            }
+          >
             {t("pages.faq.questions.brands.title")}
           </div>
           {showBrandQuestions && (
@@ -183,7 +195,7 @@ const FAQPage = () => {
   };
 
   return (
-    <div className="flex flex-1 flex-col justify-center gap-24 px-4 pt-4 xl:w-3/4 xl:self-center 2xl:w-2/4">
+    <div className="flex flex-1 flex-col justify-center gap-16 px-4 pt-4 lg:gap-24 xl:w-3/4 xl:self-center 2xl:w-2/4">
       <div className="flex flex-col justify-center text-center font-playfair text-5xl font-semibold">
         <h1 className="text-2xl lg:text-5xl">{t("pages.faq.title")}</h1>
         <h2 className="p-2 text-xl  font-normal text-gray1 lg:p-7 lg:text-3xl">

@@ -75,6 +75,14 @@ async function main() {
     data: [{ name: "open" }, { name: "progress" }, { name: "closed" }],
   });
 
+  await prisma.reason.createMany({
+    data: [
+      { name: "Feedback" },
+      { name: "General Question" },
+      { name: "Other" },
+    ],
+  });
+
   await prisma.category.createMany({
     data: [
       { name: "Lifestyle" },

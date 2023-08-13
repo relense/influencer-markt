@@ -117,7 +117,7 @@ const HomePage = () => {
 
   const renderSectionOne = () => {
     return (
-      <div className="flex flex-col items-center py-16 sm:px-5 lg:px-0 lg:py-10">
+      <div className="flex flex-col items-center pb-16 pt-6 sm:px-5 lg:px-0 lg:py-10">
         <div className="pointer-events-none px-4 text-center font-playfair">
           <h1 className="text-2xl lg:text-5xl">
             {t("pages.home.section1.title")}

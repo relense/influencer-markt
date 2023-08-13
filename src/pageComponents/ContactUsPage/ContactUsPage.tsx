@@ -55,7 +55,7 @@ const ContactUsPage = () => {
       </div>
       <form
         id="form-contactUs"
-        className="flex h-full w-full flex-col gap-4 p-4 sm:w-full sm:px-8"
+        className="flex h-[70vh] w-full flex-col gap-4 p-4 sm:w-full sm:px-8"
         onSubmit={submitMessage}
       >
         <div className="flex flex-col gap-4">
@@ -106,11 +106,11 @@ const ContactUsPage = () => {
             />
           </div>
         </div>
-        <div className="flex w-full flex-1 flex-col">
+        <div className="flex h-[500px] w-full flex-1 flex-col">
           <textarea
             {...register("message", { maxLength: 446 })}
             required
-            className="flex flex-1 cursor-pointer rounded-lg border-[1px] border-gray3 bg-transparent p-4 placeholder-gray2 placeholder:w-11/12"
+            className="flex h-[1200px] flex-1 cursor-pointer rounded-lg border-[1px] border-gray3 bg-transparent p-4 placeholder-gray2 placeholder:w-11/12"
             placeholder={t("pages.contactUs.messageInputPlaceholder")}
             autoComplete="off"
           />
