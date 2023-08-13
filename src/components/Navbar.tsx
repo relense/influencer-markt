@@ -336,7 +336,7 @@ export const Navbar = (params: {
 
             {params.role && params.role.id !== 1 && (
               <Link
-                href="/my-applicants"
+                href="/my-applications"
                 className="group flex cursor-pointer items-center gap-4 py-2"
               >
                 <FontAwesomeIcon icon={faFolderOpen} className="fa-lg" />
