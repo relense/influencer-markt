@@ -613,7 +613,7 @@ const PublicProfilePage = (params: {
 
     if (offers.length > 4) {
       offersContainerClasses =
-        "flex h-[50vh] flex-1 flex-col gap-2 overflow-y-auto";
+        "flex max-h-96 flex-1 flex-col gap-2 overflow-y-auto";
     }
 
     return (
