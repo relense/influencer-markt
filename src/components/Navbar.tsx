@@ -34,7 +34,6 @@ export const Navbar = (params: {
   const dropdownWrapperRef = useRef(null);
   const { t } = useTranslation();
 
-  const [toggleHamburguer, setToggleHamburguer] = useState<boolean>(false);
   const [toggleOptions, setToggleOptions] = useState<boolean>(false);
 
   useOutsideClick(() => {
@@ -50,7 +49,7 @@ export const Navbar = (params: {
 
   const leftNavBar = () => {
     return (
-      <div className="flex flex-1 items-center justify-start">
+      <div className="hidden flex-1 items-center justify-start lg:flex">
         <Link href="/" className="cursor-pointer text-lg lg:px-2">
           {t("components.navbar.home")}
         </Link>
@@ -148,21 +147,26 @@ export const Navbar = (params: {
 
   const rightNavbar = () => {
     return (
-      <>
+      <div className="flex">
         {!params.sessionData && (
-          <div className="flex flex-row items-center justify-end">
-            <span
-              className="cursor-pointer text-lg lg:p-2"
-              onClick={() => params.openLoginModal()}
-            >
-              {t("components.navbar.signIn")}
-            </span>
-            <Button
-              title={t("components.navbar.joinMarketPlace")}
-              level="primary"
-              onClick={() => handleJoinMarketplace()}
-            />
-          </div>
+          <>
+            <div className="hidden flex-row items-center justify-end lg:flex">
+              <span
+                className="cursor-pointer text-lg lg:p-2"
+                onClick={() => params.openLoginModal()}
+              >
+                {t("components.navbar.signIn")}
+              </span>
+              <Button
+                title={t("components.navbar.joinMarketPlace")}
+                level="primary"
+                onClick={() => handleJoinMarketplace()}
+              />
+            </div>
+            <div className="flex lg:hidden">
+              {renderHamburguerMenuUnauthenticated()}
+            </div>
+          </>
         )}
         {params.sessionData && (
           <div className="flex flex-row items-center justify-end gap-8">
@@ -171,97 +175,132 @@ export const Navbar = (params: {
               className="fa-xl cursor-pointer"
             />
             <FontAwesomeIcon icon={faBell} className="fa-xl cursor-pointer" />
-            <div ref={dropdownWrapperRef}>
-              <FontAwesomeIcon
-                icon={!toggleOptions ? faChevronDown : faChevronUp}
-                className="fa-lg cursor-pointer"
-                onClick={() => setToggleOptions(!toggleOptions)}
-              />
-              {toggleOptions && optionsDropDownMenu()}
-            </div>
+
+            {renderHamburguerMenuAuthenticated()}
           </div>
         )}
-      </>
+      </div>
     );
   };
 
   const renderLogoTitle = () => {
     return (
       <Link href="/">
-        <h1 className="m-0 cursor-pointer text-left font-lobster text-2xl text-influencer lg:text-4xl">
+        <h1 className="m-0 hidden cursor-pointer text-left font-lobster text-2xl text-influencer xxs:flex lg:text-4xl">
           Influencer Markt
+        </h1>
+        <h1 className="m-0 flex cursor-pointer text-left font-lobster text-2xl text-influencer xxs:hidden lg:text-4xl">
+          IM
         </h1>
       </Link>
     );
   };
 
-  const renderHamburguerMenu = () => {
+  const renderHamburguerMenuAuthenticated = () => {
     return (
-      <div className="flex">
+      <div className="flex justify-end" ref={dropdownWrapperRef}>
         <FontAwesomeIcon
           icon={faBars}
           className="fa-xl cursor-pointer"
-          onClick={() => setToggleHamburguer(!toggleHamburguer)}
+          onClick={() => setToggleOptions(!toggleOptions)}
         />
-        {toggleHamburguer && hamburguerDropDownMenu()}
+        {toggleOptions && optionsDropdownAthenticated()}
       </div>
     );
   };
 
-  const hamburguerDropDownMenu = () => {
+  const renderHamburguerMenuUnauthenticated = () => {
     return (
-      <>
-        <div
-          className="absolute left-0 top-0 h-screen w-screen"
-          onClick={() => setToggleHamburguer(!toggleHamburguer)}
+      <div className="flex justify-end" ref={dropdownWrapperRef}>
+        <FontAwesomeIcon
+          icon={faBars}
+          className="fa-xl cursor-pointer"
+          onClick={() => setToggleOptions(!toggleOptions)}
         />
-        <div
-          className="absolute right-1 top-10 z-10 flex h-auto w-11/12 flex-col gap-4 rounded-2xl border-[1px] border-white1 bg-white p-8 shadow-lg sm:right-5 sm:w-72"
-          onClick={() => setToggleHamburguer(!toggleHamburguer)}
-        >
-          {!params.sessionData && (
-            <>
-              <div className="flex cursor-pointer items-center gap-6">
-                <Button
-                  title="Join Marketplace"
-                  level="primary"
-                  onClick={() => handleJoinMarketplace()}
-                />
-              </div>
-              <div className="border-[1px] border-white1" />
-              <div
-                className="flex items-center gap-4"
-                onClick={() => params.openLoginModal()}
-              >
-                <FontAwesomeIcon
-                  icon={faArrowRightToBracket}
-                  className="fa-xl cursor-pointer"
-                />
-                <span className="cursor-pointer text-lg lg:p-2">
-                  {t("components.navbar.signIn")}
-                </span>
-              </div>
-            </>
-          )}
-          {params.sessionData && (
-            <>
+        {toggleOptions && optionDropdownDataUnathenticated()}
+      </div>
+    );
+  };
+
+  const optionDropdownDataUnathenticated = () => {
+    if (!params.sessionData) {
+      return (
+        <>
+          <div
+            className="absolute left-0 top-0 h-screen w-screen"
+            onClick={() => setToggleOptions(!toggleOptions)}
+          />
+          <div
+            className="absolute right-1 top-14 z-50 flex h-auto w-11/12 flex-col gap-4 rounded-2xl border-[1px] border-white1 bg-white p-8 shadow-lg sm:right-5 sm:w-auto lg:top-20"
+            onClick={() => setToggleOptions(!toggleOptions)}
+          >
+            <div className="flex cursor-pointer items-center gap-6">
+              <Button
+                title="Join Marketplace"
+                level="primary"
+                onClick={() => handleJoinMarketplace()}
+              />
+            </div>
+            <div className="border-[1px] border-white1" />
+            <div
+              className="flex items-center gap-4"
+              onClick={() => params.openLoginModal()}
+            >
+              <FontAwesomeIcon
+                icon={faArrowRightToBracket}
+                className="fa-xl cursor-pointer"
+              />
+              <span className="cursor-pointer text-lg lg:p-2">
+                {t("components.navbar.signIn")}
+              </span>
+            </div>
+          </div>
+        </>
+      );
+    }
+  };
+
+  const optionsDropdownAthenticated = () => {
+    if (params.sessionData) {
+      return (
+        <>
+          <div
+            className="absolute left-0 top-0 h-screen w-screen"
+            onClick={() => setToggleOptions(!toggleOptions)}
+          />
+          <div
+            className="absolute right-1 top-14 z-50 flex h-auto w-11/12 flex-col gap-4 rounded-2xl border-[1px] border-white1 bg-white p-8 shadow-lg sm:right-5 sm:w-auto lg:top-20"
+            onClick={() => setToggleOptions(!toggleOptions)}
+          >
+            <div className="flex items-center gap-4">
+              <FontAwesomeIcon icon={faUserCircle} className="fa-xl" />
+              <div>{params.sessionData?.user.email}</div>
+            </div>
+
+            <div>
+              <div className="cursor-pointer border-[1px] border-white1" />
               <Link
                 href={params.username ? `/${params.username}` : "/"}
-                className="flex cursor-pointer gap-4"
+                className="group flex cursor-pointer gap-4 py-2"
               >
                 <FontAwesomeIcon
                   icon={faFileLines}
                   className="fa-xl cursor-pointer"
                 />
-                {t("components.navbar.myPage")}
+                <div className="group-hover:underline">
+                  {t("components.navbar.myPage")}
+                </div>
               </Link>
+
               <Link
                 href={`/${params.username}/edit`}
-                className="flex cursor-pointer items-center gap-4"
+                className="group flex cursor-pointer items-center gap-4 py-2"
               >
                 <FontAwesomeIcon icon={faPencil} className="fa-lg" />
 
-                <div>{t("components.navbar.editMyPage")}</div>
+                <div className="group-hover:underline">
+                  {t("components.navbar.editMyPage")}
+                </div>
               </Link>
 
               <Link
@@ -271,130 +310,41 @@ export const Navbar = (params: {
                 <FontAwesomeIcon icon={faBriefcase} className="fa-lg" />
 
                 <div className="group-hover:underline">
-                  {" "}
                   {t("components.navbar.myOffers")}
                 </div>
               </Link>
 
-              <div className="border-[1px] border-white1" />
+              <div className="cursor-pointer border-[1px] border-white1" />
+            </div>
 
-              <div
-                className="flex items-center gap-4"
-                onClick={() => void signOut()}
-              >
-                <FontAwesomeIcon
-                  icon={faArrowRightFromBracket}
-                  className="fa-xl cursor-pointer"
-                />
-                <span
-                  className="cursor-pointer text-lg"
-                  onClick={() => void signOut()}
-                >
-                  {t("components.navbar.signOut")}
-                </span>
-              </div>
-            </>
-          )}
-        </div>
-      </>
-    );
-  };
-
-  const optionsDropDownMenu = () => {
-    return (
-      <>
-        <div
-          className="absolute left-0 top-0 h-screen w-screen"
-          onClick={() => setToggleOptions(!toggleOptions)}
-        />
-        <div
-          className="absolute right-1 top-20 z-50 flex h-auto w-11/12 flex-col gap-4 rounded-2xl border-[1px] border-white1 bg-white p-8 shadow-lg sm:right-5 sm:w-auto"
-          onClick={() => setToggleOptions(!toggleOptions)}
-        >
-          <div className="flex items-center gap-4">
-            <FontAwesomeIcon icon={faUserCircle} className="fa-xl" />
-            <div>{params.sessionData?.user.email}</div>
-          </div>
-
-          <div>
-            <div className="cursor-pointer border-[1px] border-white1" />
-            <Link
-              href={params.username ? `/${params.username}` : "/"}
-              className="group flex cursor-pointer gap-4 py-2"
-            >
-              <FontAwesomeIcon
-                icon={faFileLines}
-                className="fa-xl cursor-pointer"
-              />
-              <div className="group-hover:underline">
-                {t("components.navbar.myPage")}
-              </div>
-            </Link>
-
-            <Link
-              href={`/${params.username}/edit`}
-              className="group flex cursor-pointer items-center gap-4 py-2"
-            >
-              <FontAwesomeIcon icon={faPencil} className="fa-lg" />
-
-              <div className="group-hover:underline">
-                {t("components.navbar.editMyPage")}
-              </div>
-            </Link>
-
-            <Link
-              href="/my-offers"
-              className="group flex cursor-pointer items-center gap-4 py-2"
-            >
-              <FontAwesomeIcon icon={faBriefcase} className="fa-lg" />
-
-              <div className="group-hover:underline">
-                {t("components.navbar.myOffers")}
-              </div>
-            </Link>
-
-            <div className="cursor-pointer border-[1px] border-white1" />
-          </div>
-
-          <div
-            className="group flex cursor-pointer items-center gap-4"
-            onClick={() => void signOut()}
-          >
-            <FontAwesomeIcon icon={faArrowRightFromBracket} className="fa-xl" />
-            <span
-              className="text-lg group-hover:underline"
+            <div
+              className="group flex cursor-pointer items-center gap-4"
               onClick={() => void signOut()}
             >
-              {t("components.navbar.signOut")}
-            </span>
+              <FontAwesomeIcon
+                icon={faArrowRightFromBracket}
+                className="fa-xl"
+              />
+              <span
+                className="text-lg group-hover:underline"
+                onClick={() => void signOut()}
+              >
+                {t("components.navbar.signOut")}
+              </span>
+            </div>
           </div>
-        </div>
-      </>
-    );
-  };
-
-  const renderDesktopMenu = () => {
-    return (
-      <div className="hidden h-16 w-full items-center px-6 py-12 lg:flex lg:gap-4 lg:px-12">
-        {renderLogoTitle()}
-        {leftNavBar()}
-        {rightNavbar()}
-      </div>
-    );
-  };
-
-  const renderMobileMenu = () => {
-    return (
-      <div className="flex items-center justify-between px-4 py-2 lg:hidden">
-        {renderLogoTitle()} {renderHamburguerMenu()}
-      </div>
-    );
+        </>
+      );
+    }
   };
 
   return (
     <nav>
-      {renderDesktopMenu()}
-      {renderMobileMenu()}
+      <div className="flex w-full items-center justify-between px-4 py-2 lg:h-16 lg:gap-4 lg:p-12">
+        {renderLogoTitle()}
+        {leftNavBar()}
+        {rightNavbar()}
+      </div>
     </nav>
   );
 };
