@@ -130,13 +130,13 @@ const OffersFilterModal = (params: {
           <div className="text-xl font-medium">
             {t("components.filter.genderInputLabel")}
           </div>
-          <div className="flex flex-wrap justify-center gap-4 lg:justify-start">
+          <div className="flex flex-wrap gap-4 justify-start text-sm sm:text-base">
             <div
               key={-1}
               className={
                 filterWatch("gender").id === -1
-                  ? "flex w-24 cursor-pointer justify-center rounded-2xl border-[1px] border-gray3 bg-influencer-green p-2 text-center text-white"
-                  : "flex w-24 cursor-pointer justify-center rounded-2xl border-[1px] border-gray3 p-2 text-center"
+                  ? "flex w-18 sm:w-24 cursor-pointer justify-center rounded-2xl border-[1px] border-gray3 bg-influencer-green p-2 text-center text-white"
+                  : "flex w-18 sm:w-24 cursor-pointer justify-center rounded-2xl border-[1px] border-gray3 p-2 text-center"
               }
               onClick={() => filterSetValue("gender", { id: -1, name: "" })}
             >
@@ -148,8 +148,8 @@ const OffersFilterModal = (params: {
                   key={gender.id}
                   className={
                     filterWatch("gender").id === gender.id
-                      ? "flex w-24 cursor-pointer justify-center rounded-2xl border-[1px] border-gray3 bg-influencer-green p-2 text-center text-white"
-                      : "flex w-24 cursor-pointer justify-center rounded-2xl border-[1px] border-gray3 p-2 text-center"
+                      ? "flex w-18 sm:w-24 cursor-pointer justify-center rounded-2xl border-[1px] border-gray3 bg-influencer-green p-2 text-center text-white"
+                      : "flex w-18 sm:w-24 cursor-pointer justify-center rounded-2xl border-[1px] border-gray3 p-2 text-center"
                   }
                   onClick={() => filterSetValue("gender", gender)}
                 >

@@ -232,8 +232,7 @@ const OfferDetails = (params: {
                 }`}
                 className="flex gap-1 text-black"
               >
-                <div>{contentType.amount}</div>
-                <div>{contentType.contentType.name}</div>
+                <div>{t(`general.contentTypesPlural.${contentType.contentType.name}`, {count: contentType.amount})}</div>
               </div>
             );
           })}

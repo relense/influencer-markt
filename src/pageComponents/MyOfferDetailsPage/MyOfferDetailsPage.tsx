@@ -232,9 +232,8 @@ const MyOfferDetailsPage = (params: { offerId: number }) => {
               {offer.contentTypeWithQuantity.map((contentType, index) => {
                 return (
                   <div key={contentType.id} className="flex items-center gap-2">
-                    <div>{contentType.amount}</div>
                     <div>
-                      {contentType.contentType.name}
+                    {t(`general.contentTypesPlural.${contentType.contentType.name}`, {count: contentType.amount})}
                       {offer.contentTypeWithQuantity.length - 1 !== index &&
                         ", "}
                     </div>

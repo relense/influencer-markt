@@ -444,7 +444,7 @@ const PublicProfilePage = (params: {
           <div className="flex items-start justify-center">
             <PictureCarrosel visual={true} portfolio={portfolio || []} />
           </div>
-          <div className="flex flex-col gap-6">
+          <div className="flex flex-1 flex-col gap-6">
             {renderAboutSection()}
             {renderValuePackOrOffersSection()}
           </div>
@@ -531,7 +531,9 @@ const PublicProfilePage = (params: {
                         >
                           <div className="flex w-full flex-1 justify-between ">
                             <div className="text-base font-medium text-black">
-                              {valuePack.contentType.name}
+                              {t(
+                                `general.contentTypes.${valuePack.contentType.name}`
+                              )}
                             </div>
                             <div className="text-base font-medium text-black">
                               {helper.formatNumber(
@@ -660,8 +662,12 @@ const PublicProfilePage = (params: {
                                 key={`offersList${contentType.id}${offer.id}`}
                                 className="flex gap-1 font-semibold text-black"
                               >
-                                <div>{contentType.amount}</div>
-                                <div>{contentType.contentType.name}</div>
+                                <div>
+                                  {t(
+                                    `general.contentTypesPlural.${contentType.contentType.name}`,
+                                    { count: contentType.amount }
+                                  )}
+                                </div>
                               </div>
                             );
                           })}

@@ -335,7 +335,9 @@ const MyOfferModal = (params: {
           <CustomSelect
             name="contentType"
             placeholder={t("pages.myOffer.contentTypePlaceholder")}
-            options={types}
+            options={types.map((type) => {
+              return { id: type.id, name: t(`general.contentTypes.${type.name}`)}
+            })}
             value={
               contentTypesList?.[index]?.contentType || { id: -1, name: "" }
             }

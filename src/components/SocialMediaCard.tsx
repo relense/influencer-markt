@@ -48,7 +48,7 @@ const SocialMediaCard = (params: {
                 >
                   <div className="flex flex-col items-start gap-2 text-sm font-medium text-gray2 lg:flex-row lg:items-center">
                     <div className="text-base font-semibold  text-influencer">
-                      {valuePack.contentType.name}
+                      {t(`general.contentTypes.${valuePack.contentType.name}`)}
                     </div>
                   </div>
                   <div className="self-end font-medium">

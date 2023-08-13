@@ -152,7 +152,7 @@ const AddSocialMediaModal = (params: {
 
       return (
         <div key={contentType.id} className="flex w-full flex-col gap-4">
-          <div className="text-xl font-medium">{contentType.name}</div>
+          <div className="text-xl font-medium">{t(`general.contentTypes.${contentType.name}`)}</div>
           <input
             name={`${contentType.name} price`}
             type="number"

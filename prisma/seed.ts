@@ -102,29 +102,168 @@ async function main() {
 
   await prisma.contentType.createMany({
     data: [
-      { name: "Post" },
-      { name: "Story" },
-      { name: "Reel" },
-      { name: "Video" },
-      { name: "Short" },
-      { name: "Tweet" },
-      { name: "Live" },
-      { name: "Article" },
-      { name: "Stream" },
+      { name: "post" }, //1
+      { name: "story" }, //2
+      { name: "reel" }, //3
+      { name: "igtv" }, //4
+      { name: "liveStream" }, //5
+      { name: "video" }, //6
+      { name: "sponsoredVideo" }, //7
+      { name: "productPlacement" }, //8
+      { name: "short" }, //9
+      { name: "challenge" }, //10
+      { name: "duets" }, //11
+      { name: "hashtagCampaigns" }, //12
+      { name: "brandedEffects" }, //13
+      { name: "shoutout" }, //14
+      { name: "sponsoredStream" }, //15
+      { name: "endorsement" }, //16
+      { name: "sponsoredGameplay" }, //17
+      { name: "paidProductUnboxing" }, //18
+      { name: "channelSponsorship" }, //19
+      { name: "brandedChannelPanels" }, //20
+      { name: "brandedLogoStreamOverlays" }, //21
+      { name: "tweet" }, //22
+      { name: "retweet" }, //23
+      { name: "thread" }, //24
+      { name: "repliesAndConversation" }, //25
+      { name: "sponsoredEpisode" }, //26
+      { name: "advertisement" }, //27
+      { name: "sponsoredPins" }, //28
+      { name: "diyTutorials" }, //29
+      { name: "live" }, //30
+      { name: "article" }, //31
     ],
   });
 
-  await prisma.socialMedia.createMany({
-    data: [
-      { name: "Instagram" },
-      { name: "Twitter" },
-      { name: "TikTok" },
-      { name: "YouTube" },
-      { name: "Facebook" },
-      { name: "Linkedin" },
-      { name: "Pinterest" },
-      { name: "Twitch" },
-    ],
+  // await prisma.socialMedia.createMany({
+  //   data: [
+  //     { name: "Instagram" },
+  //     { name: "YouTube" },
+  //     { name: "Facebook" },
+  //     { name: "TikTok" },
+  //     { name: "Linkedin" },
+  //     { name: "Twitch" },
+  //     { name: "Twitter" },
+  //     { name: "Podcast" },
+  //     { name: "Pinterest" },
+  //   ],
+  // });
+
+  //Instagram
+  await prisma.socialMedia.create({
+    data: {
+      name: "Instagram",
+      contentTypes: {
+        connect: [
+          { id: 1 },
+          { id: 2 },
+          { id: 3 },
+          { id: 4 },
+          { id: 5 },
+          { id: 14 },
+        ],
+      },
+    },
+  });
+
+  //YouTube
+  await prisma.socialMedia.create({
+    data: {
+      name: "Youtube",
+      contentTypes: {
+        connect: [{ id: 6 }, { id: 7 }, { id: 8 }, { id: 14 }, { id: 9 }],
+      },
+    },
+  });
+
+  //Facebook
+  await prisma.socialMedia.create({
+    data: {
+      name: "Facebook",
+      contentTypes: {
+        connect: [{ id: 1 }, { id: 5 }, { id: 2 }, { id: 14 }],
+      },
+    },
+  });
+
+  //TikTok
+  await prisma.socialMedia.create({
+    data: {
+      name: "TikTok",
+      contentTypes: {
+        connect: [
+          { id: 6 },
+          { id: 10 },
+          { id: 11 },
+          { id: 12 },
+          { id: 13 },
+          { id: 5 },
+          { id: 14 },
+        ],
+      },
+    },
+  });
+
+  //Linkedin
+  await prisma.socialMedia.create({
+    data: {
+      name: "Linkedin",
+      contentTypes: {
+        connect: [{ id: 31 }, { id: 1 }, { id: 5 }, { id: 2 }, { id: 14 }],
+      },
+    },
+  });
+
+  //Twitch
+  await prisma.socialMedia.create({
+    data: {
+      name: "Twitch",
+      contentTypes: {
+        connect: [
+          { id: 5 },
+          { id: 15 },
+          { id: 8 },
+          { id: 16 },
+          { id: 17 },
+          { id: 18 },
+          { id: 19 },
+          { id: 20 },
+          { id: 21 },
+          { id: 14 },
+        ],
+      },
+    },
+  });
+
+  //Twitter
+  await prisma.socialMedia.create({
+    data: {
+      name: "Twitter",
+      contentTypes: {
+        connect: [{ id: 22 }, { id: 23 }, { id: 24 }, { id: 25 }, { id: 14 }],
+      },
+    },
+  });
+
+  //Podcast
+  await prisma.socialMedia.create({
+    data: {
+      name: "Podcast",
+      contentTypes: {
+        connect: [{ id: 26 }, { id: 27 }, { id: 8 }, { id: 14 }],
+      },
+    },
+  });
+
+  //Pinterest
+  await prisma.socialMedia.create({
+    data: {
+      name: "Pinterest",
+      contentTypes: {
+        connect: [{ id: 28 }, { id: 29 }, { id: 14 }],
+      },
+    },
   });
 
   await prisma.user.createMany({
