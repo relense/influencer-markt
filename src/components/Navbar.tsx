@@ -9,6 +9,9 @@ import {
   faBell,
   faFileLines,
   faUserCircle,
+  faAddressCard,
+  faEnvelope,
+  faCircleQuestion,
 } from "@fortawesome/free-regular-svg-icons";
 import {
   faArrowRightFromBracket,
@@ -243,17 +246,17 @@ export const Navbar = (params: {
             </div>
             <div className="border-[1px] border-white1" />
             <div
-              className="flex items-center gap-4"
+              className="flex cursor-pointer items-center gap-4 hover:underline"
               onClick={() => params.openLoginModal()}
             >
-              <FontAwesomeIcon
-                icon={faArrowRightToBracket}
-                className="fa-xl cursor-pointer"
-              />
-              <span className="cursor-pointer text-lg lg:p-2">
+              <FontAwesomeIcon icon={faArrowRightToBracket} className="fa-lg" />
+              <span className="cursor-pointer lg:p-2">
                 {t("components.navbar.signIn")}
               </span>
             </div>
+            <div className="cursor-pointer border-[1px] border-white1" />
+
+            {navigationHelpers()}
           </div>
         </>
       );
@@ -269,73 +272,133 @@ export const Navbar = (params: {
             onClick={() => setToggleOptions(!toggleOptions)}
           />
           <div
-            className="absolute right-1 top-14 z-50 flex h-auto w-11/12 flex-col gap-4 rounded-2xl border-[1px] border-white1 bg-white p-8 shadow-lg sm:right-5 sm:w-auto lg:top-20"
+            className="absolute right-1 top-14 z-50 flex h-auto w-11/12 flex-col gap-2 rounded-2xl border-[1px] border-white1 bg-white p-8 shadow-lg sm:right-5 sm:w-auto lg:top-20"
             onClick={() => setToggleOptions(!toggleOptions)}
           >
-            <div className="flex items-center gap-4">
+            <div className="flex items-center gap-4 py-2">
               <FontAwesomeIcon icon={faUserCircle} className="fa-xl" />
               <div>{params.sessionData?.user.email}</div>
             </div>
 
-            <div>
-              <div className="cursor-pointer border-[1px] border-white1" />
-              <Link
-                href={params.username ? `/${params.username}` : "/"}
-                className="group flex cursor-pointer gap-4 py-2"
-              >
-                <FontAwesomeIcon
-                  icon={faFileLines}
-                  className="fa-xl cursor-pointer"
-                />
-                <div className="group-hover:underline">
-                  {t("components.navbar.myPage")}
-                </div>
-              </Link>
+            <div className="cursor-pointer border-[1px] border-white1" />
+            <Link
+              href={params.username ? `/${params.username}` : "/"}
+              className="group flex cursor-pointer gap-4 py-2"
+            >
+              <FontAwesomeIcon
+                icon={faFileLines}
+                className="fa-xl cursor-pointer"
+              />
+              <div className="group-hover:underline">
+                {t("components.navbar.myPage")}
+              </div>
+            </Link>
 
-              <Link
-                href={`/${params.username}/edit`}
-                className="group flex cursor-pointer items-center gap-4 py-2"
-              >
-                <FontAwesomeIcon icon={faPencil} className="fa-lg" />
+            <Link
+              href={`/${params.username}/edit`}
+              className="group flex cursor-pointer items-center gap-4 py-2"
+            >
+              <FontAwesomeIcon icon={faPencil} className="fa-lg" />
 
-                <div className="group-hover:underline">
-                  {t("components.navbar.editMyPage")}
-                </div>
-              </Link>
+              <div className="group-hover:underline">
+                {t("components.navbar.editMyPage")}
+              </div>
+            </Link>
 
-              <Link
-                href="/my-offers"
-                className="group flex cursor-pointer items-center gap-4 py-2"
-              >
-                <FontAwesomeIcon icon={faBriefcase} className="fa-lg" />
+            <Link
+              href="/my-offers"
+              className="group flex cursor-pointer items-center gap-4 py-2"
+            >
+              <FontAwesomeIcon icon={faBriefcase} className="fa-lg" />
 
-                <div className="group-hover:underline">
-                  {t("components.navbar.myOffers")}
-                </div>
-              </Link>
+              <div className="group-hover:underline">
+                {t("components.navbar.myOffers")}
+              </div>
+            </Link>
 
-              <div className="cursor-pointer border-[1px] border-white1" />
-            </div>
+            <div className="cursor-pointer border-[1px] border-white1" />
 
             <div
-              className="group flex cursor-pointer items-center gap-4"
+              className="group flex cursor-pointer items-center gap-4 py-2"
               onClick={() => void signOut()}
             >
               <FontAwesomeIcon
                 icon={faArrowRightFromBracket}
-                className="fa-xl"
+                className="fa-lg"
               />
               <span
-                className="text-lg group-hover:underline"
+                className="group-hover:underline"
                 onClick={() => void signOut()}
               >
                 {t("components.navbar.signOut")}
               </span>
             </div>
+            <div className="flex cursor-pointer border-[1px] border-white1 lg:hidden" />
+
+            {navigationHelpers()}
           </div>
         </>
       );
     }
+  };
+
+  const navigationHelpers = () => {
+    return (
+      <div className="flex flex-col gap-2 lg:hidden">
+        <Link
+          href="/about"
+          className="group flex cursor-pointer items-center gap-4 py-2"
+        >
+          <FontAwesomeIcon icon={faAddressCard} className="fa-lg" />
+
+          <div className="group-hover:underline">
+            {t("components.navbar.aboutUs")}
+          </div>
+        </Link>
+        <Link
+          href="/contact-us"
+          className="group flex cursor-pointer items-center gap-4 py-2"
+        >
+          <FontAwesomeIcon icon={faEnvelope} className="fa-lg" />
+
+          <div className="group-hover:underline">
+            {t("components.navbar.contactUs")}
+          </div>
+        </Link>
+        <Link
+          href="/faq"
+          className="group flex cursor-pointer items-center gap-4 py-2"
+        >
+          <FontAwesomeIcon icon={faCircleQuestion} className="fa-lg" />
+
+          <div className="group-hover:underline">
+            {t("components.navbar.faq")}
+          </div>
+        </Link>
+        <div className="cursor-pointer border-[1px] border-white1" />
+
+        <Link
+          href="/terms-conditions"
+          className="group flex cursor-pointer items-center gap-4 py-2"
+        >
+          <FontAwesomeIcon icon={faFileLines} className="fa-lg" />
+
+          <div className="group-hover:underline">
+            {t("components.navbar.terms")}
+          </div>
+        </Link>
+        <Link
+          href="/privacy-policy"
+          className="group flex cursor-pointer items-center gap-4 py-2"
+        >
+          <FontAwesomeIcon icon={faFileLines} className="fa-lg" />
+
+          <div className="group-hover:underline">
+            {t("components.navbar.privacy")}
+          </div>
+        </Link>
+      </div>
+    );
   };
 
   return (

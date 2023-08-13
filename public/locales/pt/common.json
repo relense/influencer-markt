@@ -142,7 +142,13 @@
       "brands": "Marcas",
       "campaigns": "Campanhas",
       "myOffers": "As Minhas Ofertas",
-      "offers": "Ofertas"
+      "offers": "Ofertas",
+      "aboutUs": "Sobre Nós",
+      "contactUs": "Contacta-nos",
+      "faq": "Perguntas Frequentes",
+      "sitemap": "Mapa do Site",
+      "terms": "Termos e Condições",
+      "privacy": "Política de Privacidade"
     },
 
     "footer": {

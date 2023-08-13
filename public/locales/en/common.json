@@ -142,7 +142,13 @@
       "brands": "Brands",
       "campaigns": "Campaigns",
       "myOffers": "My Offers",
-      "offers": "Offers"
+      "offers": "Offers",
+      "aboutUs": "About Us",
+      "contactUs": "Contact Us",
+      "faq": "Frequently Asked Questions",
+      "sitemap": "Sitemap",
+      "terms": "Terms and Conditions",
+      "privacy": "Privacy Policy"
     },
 
     "footer": {
