@@ -252,7 +252,7 @@ export const Navbar = (params: {
           >
             <div className="flex cursor-pointer items-center gap-6">
               <Button
-                title="Join Marketplace"
+                title={t("components.navbar.joinMarketPlace")}
                 level="primary"
                 onClick={() => handleJoinMarketplace()}
               />
