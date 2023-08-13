@@ -223,7 +223,7 @@ const OfferDetails = (params: {
         <div className="font-semibold text-influencer">
           {offer?.socialMedia?.name}
         </div>
-        <div className="flex gap-2">
+        <div className="flex flex-wrap gap-2">
           {offer?.contentTypeWithQuantity.map((contentType) => {
             return (
               <div
@@ -232,7 +232,12 @@ const OfferDetails = (params: {
                 }`}
                 className="flex gap-1 text-black"
               >
-                <div>{t(`general.contentTypesPlural.${contentType.contentType.name}`, {count: contentType.amount})}</div>
+                <div>
+                  {t(
+                    `general.contentTypesPlural.${contentType.contentType.name}`,
+                    { count: contentType.amount }
+                  )}
+                </div>
               </div>
             );
           })}
