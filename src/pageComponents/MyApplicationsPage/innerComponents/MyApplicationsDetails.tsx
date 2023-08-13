@@ -2,11 +2,7 @@ import { useTranslation } from "react-i18next";
 import { type OfferIncludes } from "../../../utils/globalTypes";
 import { useEffect, useRef, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faBriefcase,
-  faChevronLeft,
-  faShareFromSquare,
-} from "@fortawesome/free-solid-svg-icons";
+import { faBriefcase, faChevronLeft } from "@fortawesome/free-solid-svg-icons";
 import { api } from "~/utils/api";
 
 import { LoadingSpinner } from "../../../components/LoadingSpinner";
@@ -17,12 +13,10 @@ import { toast } from "react-hot-toast";
 import Link from "next/link";
 import { type Role } from "@prisma/client";
 
-const OfferDetails = (params: {
+const MyApplicationsDetails = (params: {
   selectedOffer: OfferIncludes | undefined;
   setSelectedOffer: (offer: OfferIncludes | undefined) => void;
   isLoading: boolean;
-  openLoginModal: () => void;
-  openShareModal: () => void;
   type: "mobile" | "desktop";
   userRole: Role | undefined;
 }) => {
@@ -51,7 +45,7 @@ const OfferDetails = (params: {
     api.offers.applyToOffer.useMutation({
       onSuccess: () => {
         void refetcheOffer();
-        toast.success(t("pages.offers.appliedSuccess"), {
+        toast.success(t("pages.applications.appliedSuccess"), {
           position: "bottom-left",
         });
       },
@@ -60,7 +54,7 @@ const OfferDetails = (params: {
     api.offers.removeOfferApplicantion.useMutation({
       onSuccess: () => {
         void refetcheOffer();
-        toast.success(t("pages.offers.removedApplicationSuccess"), {
+        toast.success(t("pages.applications.removedApplicationSuccess"), {
           position: "bottom-left",
         });
       },
@@ -129,33 +123,11 @@ const OfferDetails = (params: {
   }, [params, offer, params.type]);
 
   const onApply = (offer: OfferIncludes) => {
-    if (session.status === "authenticated") {
-      if (applied) {
-        removeApplication({ offerId: offer.id });
-      } else {
-        applyToOffer({ offerId: offer.id });
-      }
+    if (applied) {
+      removeApplication({ offerId: offer.id });
     } else {
-      params.openLoginModal();
+      applyToOffer({ offerId: offer.id });
     }
-  };
-
-  const shareButton = () => {
-    return (
-      <div
-        className="flex items-center gap-2"
-        onClick={() => params.openShareModal()}
-      >
-        <FontAwesomeIcon
-          icon={faShareFromSquare}
-          className="fa-lg cursor-pointer"
-        />
-
-        <div className="cursor-pointer underline">
-          {t("pages.publicProfilePage.share")}
-        </div>
-      </div>
-    );
   };
 
   const renderBackButton = () => {
@@ -169,9 +141,8 @@ const OfferDetails = (params: {
             icon={faChevronLeft}
             className="fa-sm text-gray2 hover:text-influencer "
           />
-          {t("pages.offers.goBack")}
+          {t("pages.applications.goBack")}
         </div>
-        {shareButton()}
       </div>
     );
   };
@@ -186,7 +157,6 @@ const OfferDetails = (params: {
           >
             {offer?.offerSummary}
           </Link>
-          <div className="hidden lg:flex lg:items-start">{shareButton()}</div>
         </div>
       );
     }
@@ -250,7 +220,7 @@ const OfferDetails = (params: {
     return (
       <div className="flex gap-2">
         <div className="font-semibold text-influencer">
-          {t("pages.offers.followers")}
+          {t("pages.applications.followers")}
         </div>
         <div>
           {helper.formatNumberWithKorM(offer?.minFollowers || 0)} -{" "}
@@ -265,12 +235,12 @@ const OfferDetails = (params: {
       return (
         <div className="flex gap-2">
           <div className="font-semibold text-influencer">
-            {t("pages.offers.gender")}
+            {t("pages.applications.gender")}
           </div>
           <div>
             {offer?.gender && offer?.gender.name
-              ? t(`pages.offers.${offer.gender.name}`)
-              : t(`pages.offers.any`)}
+              ? t(`pages.applications.${offer.gender.name}`)
+              : t(`pages.applications.any`)}
           </div>
         </div>
       );
@@ -281,7 +251,7 @@ const OfferDetails = (params: {
     return (
       <div className="flex flex-wrap items-center font-normal text-black">
         <span className="pr-2 font-semibold text-influencer">
-          {t("pages.offers.categories")}
+          {t("pages.applications.categories")}
         </span>
         {offer?.categories.map((category, index) => {
           return (
@@ -300,7 +270,7 @@ const OfferDetails = (params: {
     return (
       <div className="flex gap-2">
         <div className="font-semibold text-influencer">
-          {t("pages.offers.offerPay")}
+          {t("pages.applications.offerPay")}
         </div>
         <div>{helper.formatNumber(offer?.price || 0)}€</div>
       </div>
@@ -317,7 +287,7 @@ const OfferDetails = (params: {
               className="fa-xl cursor-pointer text-influencer"
             />
             <div className="font-semibold">
-              {t("pages.offers.applicants", {
+              {t("pages.applications.applicants", {
                 count: offer?.applicants.length,
               })}
             </div>
@@ -335,8 +305,8 @@ const OfferDetails = (params: {
             key={`ApplyButton${offer.id}`}
             title={
               applied
-                ? t("pages.offers.removeApplication")
-                : t("pages.offers.apply")
+                ? t("pages.applications.removeApplication")
+                : t("pages.applications.apply")
             }
             level={applied ? "secondary" : "primary"}
             size="large"
@@ -357,7 +327,7 @@ const OfferDetails = (params: {
     return (
       <div className="flex flex-col gap-2">
         <div className="text-lg font-semibold text-influencer">
-          {t("pages.offers.aboutOffer")}
+          {t("pages.applications.aboutOffer")}
         </div>
         <div className="whitespace-pre-line">{offer?.OfferDetails}</div>
       </div>
@@ -394,4 +364,4 @@ const OfferDetails = (params: {
   );
 };
 
-export { OfferDetails };
+export { MyApplicationsDetails };

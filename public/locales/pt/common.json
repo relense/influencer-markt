@@ -657,6 +657,28 @@
       "removedApplicationSuccess": "Candidatura removida com sucesso",
       "shareModalTitle": "Partilha A Oferta",
       "offersAvailable": "Há {{ available }} ofertas disponíveis"
+    },
+
+    "applications": {
+      "followers": "Seguidores",
+      "gender": "Género",
+      "any": "Todos",
+      "Male": "Masculino",
+      "Female": "Feminino",
+      "Other": "Outro",
+      "categories": "Categorias",
+      "offerPay": "Valor da Oferta",
+      "aboutOffer": "Sobre a oferta",
+      "apply": "Candidatar",
+      "removeApplication": "Remover Candidatura",
+      "loadMore": "Carregar Mais",
+      "applicants_zero": "{{count}} Candidatos",
+      "applicants_one": "{{count}} Candidato",
+      "applicants_other": "{{count}} Candidatos",
+      "goBack": "Voltar",
+      "appliedSuccess": "Candidatura submetida com sucesso",
+      "removedApplicationSuccess": "Candidatura removida com sucesso",
+      "offersAvailable": "Candidataste-te a {{ available }} ofertas"
     }
   }
 }

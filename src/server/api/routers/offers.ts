@@ -482,7 +482,7 @@ export const OffersRouter = createTRPCRouter({
     .query(async ({ ctx, input }) => {
       return await ctx.prisma.offer.findFirst({
         where: { id: input.offerId },
-        take: 1,
+        take: 10,
         select: {
           applicants: {
             select: {
@@ -939,7 +939,7 @@ export const OffersRouter = createTRPCRouter({
           profileId: input.profileId,
           offerStatusId: 10,
         },
-        take: 1,
+        take: 10,
         skip: 1,
         cursor: {
           id: input.cursor,
@@ -962,5 +962,192 @@ export const OffersRouter = createTRPCRouter({
           createdAt: "desc",
         },
       });
+    }),
+
+  getAppliedOffers: protectedProcedure.query(async ({ ctx }) => {
+    const profile = await ctx.prisma.profile.findFirst({
+      where: {
+        userId: ctx.session.user.id,
+      },
+    });
+
+    if (profile) {
+      return await ctx.prisma.$transaction([
+        ctx.prisma.offer.count({
+          where: {
+            offerStatus: {
+              id: {
+                in: [1, 2],
+              },
+            },
+
+            OR: [
+              {
+                applicants: {
+                  some: {
+                    id: profile.id,
+                  },
+                },
+              },
+              {
+                acceptedApplicants: {
+                  some: {
+                    id: profile.id,
+                  },
+                },
+              },
+              {
+                rejectedApplicants: {
+                  some: {
+                    id: profile.id,
+                  },
+                },
+              },
+            ],
+          },
+        }),
+        ctx.prisma.offer.findMany({
+          where: {
+            offerStatus: {
+              id: {
+                in: [1, 2],
+              },
+            },
+            OR: [
+              {
+                applicants: {
+                  some: {
+                    id: profile.id,
+                  },
+                },
+              },
+              {
+                acceptedApplicants: {
+                  some: {
+                    id: profile.id,
+                  },
+                },
+              },
+              {
+                rejectedApplicants: {
+                  some: {
+                    id: profile.id,
+                  },
+                },
+              },
+            ],
+          },
+          take: 10,
+          include: {
+            contentTypeWithQuantity: {
+              select: {
+                amount: true,
+                contentType: true,
+                id: true,
+              },
+            },
+            offerStatus: true,
+            country: true,
+            state: true,
+            gender: true,
+            socialMedia: true,
+            offerCreator: {
+              include: {
+                user: true,
+              },
+            },
+            categories: {
+              orderBy: {
+                name: "asc",
+              },
+            },
+            applicants: true,
+            acceptedApplicants: true,
+            rejectedApplicants: true,
+          },
+        }),
+      ]);
+    }
+  }),
+
+  getAppliedOffersWithCursor: protectedProcedure
+    .input(
+      z.object({
+        cursor: z.number(),
+      })
+    )
+    .query(async ({ ctx, input }) => {
+      const profile = await ctx.prisma.profile.findFirst({
+        where: {
+          userId: ctx.session.user.id,
+        },
+      });
+
+      if (profile) {
+        return await ctx.prisma.offer.findMany({
+          where: {
+            offerStatus: {
+              id: {
+                in: [1, 2],
+              },
+            },
+            OR: [
+              {
+                applicants: {
+                  some: {
+                    id: profile.id,
+                  },
+                },
+              },
+              {
+                acceptedApplicants: {
+                  some: {
+                    id: profile.id,
+                  },
+                },
+              },
+              {
+                rejectedApplicants: {
+                  some: {
+                    id: profile.id,
+                  },
+                },
+              },
+            ],
+          },
+          take: 10,
+          skip: 1,
+          cursor: {
+            id: input.cursor,
+          },
+          include: {
+            contentTypeWithQuantity: {
+              select: {
+                amount: true,
+                contentType: true,
+                id: true,
+              },
+            },
+            offerStatus: true,
+            country: true,
+            state: true,
+            gender: true,
+            socialMedia: true,
+            offerCreator: {
+              include: {
+                user: true,
+              },
+            },
+            categories: {
+              orderBy: {
+                name: "asc",
+              },
+            },
+            applicants: true,
+            acceptedApplicants: true,
+            rejectedApplicants: true,
+          },
+        });
+      }
     }),
 });

@@ -7,7 +7,14 @@ import { MyApplicationsPage } from "../../pageComponents/MyApplicationsPage/MyAp
 const MyApplication: NextPage = () => {
   return (
     <ProtectedWrapper>
-      <Layout>{() => <MyApplicationsPage />}</Layout>
+      <Layout>
+        {({ scrollLayoutToPreviousPosition, saveScrollPosition }) => (
+          <MyApplicationsPage
+            saveScrollPosition={saveScrollPosition}
+            scrollLayoutToPreviousPosition={scrollLayoutToPreviousPosition}
+          />
+        )}
+      </Layout>
     </ProtectedWrapper>
   );
 };

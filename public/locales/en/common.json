@@ -657,6 +657,28 @@
       "removedApplicationSuccess": "Application withdrawn successfully",
       "shareModalTitle": "Share Offer",
       "offersAvailable": "There are {{ available }} offers available"
+    },
+
+    "applications": {
+      "followers": "Followers",
+      "gender": "Gender",
+      "any": "Any",
+      "Male": "Male",
+      "Female": "Female",
+      "Other": "Other",
+      "categories": "Categories",
+      "offerPay": "Offer Pay",
+      "aboutOffer": "About the offer",
+      "apply": "Apply",
+      "removeApplication": "Withdraw Application",
+      "loadMore": "Load More",
+      "applicants_zero": "{{count}} Applicants",
+      "applicants_one": "{{count}} Applicant",
+      "applicants_other": "{{count}} Applicants",
+      "goBack": "Go Back",
+      "appliedSuccess": "Application submit successfully",
+      "removedApplicationSuccess": "Application withdrawn successfully",
+      "offersAvailable": "You have applied to {{ available }} offers"
     }
   }
 }

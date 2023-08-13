@@ -7,7 +7,7 @@ import { Button } from "../../../components/Button";
 import { useTranslation } from "react-i18next";
 import { helper } from "../../../utils/helper";
 
-const OffersList = (params: {
+const MyApplicationsList = (params: {
   offersCount: number;
   offers: OfferIncludes[];
   onChangeOffer: (offer: OfferIncludes) => void;
@@ -36,7 +36,7 @@ const OffersList = (params: {
       ) : (
         <>
           <div className="bg-influencer-green-dark p-4 text-center text-white">
-            {t("pages.offers.offersAvailable", {
+            {t("pages.applications.offersAvailable", {
               available: helper.formatNumberWithKorM(params.offersCount),
             })}
           </div>
@@ -58,7 +58,7 @@ const OffersList = (params: {
                   <div className="h-20 w-32">
                     <Image
                       src={offer?.offerCreator?.profilePicture || ""}
-                      alt={`${offer.offerCreator.name} profile picture`}
+                      alt={`${offer?.offerCreator?.name} profile picture`}
                       width={1000}
                       height={1000}
                       className="h-full w-full rounded-lg object-cover"
@@ -69,30 +69,33 @@ const OffersList = (params: {
                     <div className="font-semibold text-influencer">
                       {offer.offerSummary}
                     </div>
-                    <div className="text-sm">{offer.offerCreator.name}</div>
+                    <div className="text-sm">{offer?.offerCreator?.name}</div>
                     <div className="text-sm text-gray2">
-                      {offer.country.name}
+                      {offer?.country?.name || ""}
                       {offer?.state?.name ? `,${offer.state.name}` : ""}
                     </div>
                     <div className="flex gap-2 text-sm text-gray2">
                       <div className="flex flex-wrap gap-2 font-semibold text-influencer">
                         <div className="flex flex-wrap gap-2">
-                          {offer.socialMedia.name}{" "}
-                          {offer.contentTypeWithQuantity.map((contentType) => {
-                            return (
-                              <div
-                                key={`offersList${contentType.id}${offer.offerCreator.name}`}
-                                className="flex gap-1 font-semibold text-black"
-                              >
-                                <div>
-                                  {t(
-                                    `general.contentTypesPlural.${contentType.contentType.name}`,
-                                    { count: contentType.amount }
-                                  )}
+                          {offer?.socialMedia?.name || ""}{" "}
+                          {offer?.contentTypeWithQuantity &&
+                            offer.contentTypeWithQuantity.map((contentType) => {
+                              return (
+                                <div
+                                  key={`offersList${contentType.id}${
+                                    offer?.offerCreator?.name || ""
+                                  }`}
+                                  className="flex gap-1 font-semibold text-black"
+                                >
+                                  <div>
+                                    {t(
+                                      `general.contentTypesPlural.${contentType.contentType.name}`,
+                                      { count: contentType.amount }
+                                    )}
+                                  </div>
                                 </div>
-                              </div>
-                            );
-                          })}
+                              );
+                            })}
                         </div>
                       </div>
                     </div>
@@ -107,7 +110,7 @@ const OffersList = (params: {
           {params.offersCount > params.offers.length && (
             <div className="flex items-center justify-center p-2">
               <Button
-                title={t("pages.offers.loadMore")}
+                title={t("pages.applications.loadMore")}
                 onClick={() => params.fetchMoreOffers()}
                 isLoading={params.isRefetchingOffersWithCursor}
                 size="regular"
@@ -120,4 +123,4 @@ const OffersList = (params: {
   );
 };
 
-export { OffersList };
+export { MyApplicationsList };
