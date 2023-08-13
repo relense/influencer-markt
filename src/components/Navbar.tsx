@@ -234,7 +234,7 @@ export const Navbar = (params: {
             onClick={() => setToggleOptions(!toggleOptions)}
           />
           <div
-            className="absolute right-1 top-14 z-50 flex h-auto w-11/12 flex-col gap-4 rounded-2xl border-[1px] border-white1 bg-white p-8 shadow-lg sm:right-5 sm:w-auto lg:top-20"
+            className="absolute right-1 top-14 z-50 flex h-auto w-auto flex-col gap-4 rounded-2xl border-[1px] border-white1 bg-white p-8 shadow-lg sm:right-5 lg:top-20"
             onClick={() => setToggleOptions(!toggleOptions)}
           >
             <div className="flex cursor-pointer items-center gap-6">
@@ -272,7 +272,7 @@ export const Navbar = (params: {
             onClick={() => setToggleOptions(!toggleOptions)}
           />
           <div
-            className="absolute right-1 top-14 z-50 flex h-auto w-11/12 flex-col gap-2 rounded-2xl border-[1px] border-white1 bg-white p-8 shadow-lg sm:right-5 sm:w-auto lg:top-20"
+            className="absolute right-1 top-14 z-50 flex h-auto w-auto flex-col gap-2 rounded-2xl border-[1px] border-white1 bg-white p-8 shadow-lg sm:right-5 lg:top-20"
             onClick={() => setToggleOptions(!toggleOptions)}
           >
             <div className="flex items-center gap-4 py-2">
