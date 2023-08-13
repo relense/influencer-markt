@@ -326,7 +326,7 @@ const OfferDetailsPage = (params: {
             <LoadingSpinner />
           </div>
         ) : (
-          <div className="flex w-full flex-col gap-3">
+          <div className="flex w-full flex-col gap-3 p-4 sm:p-0">
             <div className="flex justify-between lg:hidden">
               {renderOfferCreatorPicture()}
               {shareButton()}

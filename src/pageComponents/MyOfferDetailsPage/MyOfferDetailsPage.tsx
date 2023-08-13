@@ -19,6 +19,7 @@ import { MyOffersActionConfirmationModal } from "../../components/MyOffersAction
 import { Button } from "../../components/Button";
 import { toast } from "react-hot-toast";
 import { useRouter } from "next/router";
+import Link from "next/link";
 
 const MyOfferDetailsPage = (params: { offerId: number }) => {
   const { t, i18n } = useTranslation();
@@ -189,9 +190,9 @@ const MyOfferDetailsPage = (params: { offerId: number }) => {
     if (offer) {
       return (
         <>
-          <div className="line-clamp-2 text-xl font-semibold xs:w-3/4">
+          <Link href={`/offers/${offer.id}`} className="line-clamp-2 text-xl font-semibold xs:w-3/4 hover:underline">
             {offer.offerSummary}
-          </div>
+          </Link>
           <div className="flex flex-col sm:flex-row sm:items-center sm:gap-6">
             <div className="flex items-center gap-2">
               <div className="text-gray2">{offer.country.name}</div>
@@ -297,7 +298,7 @@ const MyOfferDetailsPage = (params: { offerId: number }) => {
     if (offer) {
       return (
         <div>
-          <div className="flex flex-wrap">
+          <div className="flex flex-wrap items-center">
             <div className="pr-2 font-semibold text-influencer">
               {t("pages.myOffer.categories")}
             </div>
@@ -642,7 +643,7 @@ const MyOfferDetailsPage = (params: { offerId: number }) => {
     if (offer) {
       return (
         <>
-          <div className="flex w-full cursor-default flex-col gap-8 self-center px-4 pb-10 sm:px-12 xl:w-3/4 2xl:w-3/4 3xl:w-2/4">
+          <div className="flex w-full cursor-default flex-col gap-8 self-center p-8 sm:p-4 pb-10 sm:px-12 xl:w-3/4 2xl:w-3/4 3xl:w-2/4">
             {renderOfferDetails()}
 
             {offer.acceptedApplicants.length > 0 && (
