@@ -47,7 +47,7 @@ const OfferDetailsPage = (params: {
       },
     });
   const { mutate: removeApplication, isLoading: removingIsLoading } =
-    api.offers.removeOfferApplicantion.useMutation({
+    api.offers.removeOfferApplication.useMutation({
       onSuccess: () => {
         void refetcheOffer();
         toast.success(t("pages.offers.removedApplicationSuccess"), {
@@ -192,7 +192,12 @@ const OfferDetailsPage = (params: {
                 }`}
                 className="flex gap-1 text-black"
               >
-                <div>{t(`general.contentTypesPlural.${contentType.contentType.name}`, {count: contentType.amount})}</div>
+                <div>
+                  {t(
+                    `general.contentTypesPlural.${contentType.contentType.name}`,
+                    { count: contentType.amount }
+                  )}
+                </div>
               </div>
             );
           })}

@@ -6,6 +6,7 @@ import { useWindowWidth } from "../../utils/helper";
 import type { Option, OfferIncludes } from "../../utils/globalTypes";
 import { MyApplicationsList } from "./innerComponents/MyApplicationsList";
 import { MyApplicationsDetails } from "./innerComponents/MyApplicationsDetails";
+import { useTranslation } from "react-i18next";
 
 export type OffersFilterState = {
   platforms: Option[];
@@ -23,12 +24,13 @@ const MyApplicationsPage = (params: {
   scrollLayoutToPreviousPosition: () => void;
   saveScrollPosition: () => void;
 }) => {
+  const { t } = useTranslation();
   const session = useSession();
   const width = useWindowWidth();
 
   const [offers, setOffers] = useState<OfferIncludes[]>([]);
   const [offersCursor, setOffersCursor] = useState<number>(-1);
-  const [selectedOffer, setSelectedOffer] = useState<OfferIncludes>();
+  const [selectedOfferId, setSelectedOfferId] = useState<number>(-1);
 
   const {
     data: offersData,
@@ -61,16 +63,17 @@ const MyApplicationsPage = (params: {
       if (lastOfferInArray) {
         setOffersCursor(lastOfferInArray.id);
       }
-    } else {
-      setOffers([]);
     }
   }, [offersData]);
 
   useEffect(() => {
     if (offersWithCursorData) {
-      const newOffers = [...offers];
-      offersWithCursorData.forEach((offer) => newOffers.push(offer));
-      setOffers(newOffers);
+      setOffers((currentOffers) => {
+        const newOffers = [...currentOffers];
+        offersWithCursorData.forEach((offer) => newOffers.push(offer));
+
+        return newOffers;
+      });
 
       const lastOfferInArray =
         offersWithCursorData[offersWithCursorData.length - 1];
@@ -79,51 +82,56 @@ const MyApplicationsPage = (params: {
         setOffersCursor(lastOfferInArray.id);
       }
     }
-  }, [offers, offersWithCursorData]);
+  }, [offersWithCursorData]);
 
   useEffect(() => {
-    if (offersData && offersData[1][0] && width > 1024 && !selectedOffer) {
-      setSelectedOffer(offersData[1][0]);
+    if (
+      offersData &&
+      offersData[1][0] &&
+      width > 1024 &&
+      selectedOfferId === -1
+    ) {
+      setSelectedOfferId(offersData[1][0].id);
     }
-  }, [offersData, session.data?.user.id, width, selectedOffer]);
+  }, [offersData, selectedOfferId, width]);
+
+  useEffect(() => {
+    params.scrollLayoutToPreviousPosition();
+  }, [params, selectedOfferId]);
 
   const onChangeOffer = (offer: OfferIncludes) => {
     params.saveScrollPosition();
-    setSelectedOffer(offer);
+    setSelectedOfferId(offer.id);
+  };
+
+  const fetchMoreOffers = () => {
+    params.saveScrollPosition();
+    void refetchOffersWithCursor();
   };
 
   const renderMobile = () => {
     return (
       <>
         <div className="flex w-full pb-4 lg:hidden lg:h-[70vh] lg:p-0">
-          {!selectedOffer && (
+          {selectedOfferId === -1 && (
             <MyApplicationsList
               offersCount={offersData ? offersData[0] : 0}
               isRefetchingOffersWithCursor={isRefetchingOffersWithCursor}
-              fetchMoreOffers={refetchOffersWithCursor}
+              fetchMoreOffers={fetchMoreOffers}
               offers={offers}
-              isLoading={
-                isLoadingOffers || isRefetchingOffers || isFetchingOffers
-              }
+              isLoading={isLoadingOffers || isRefetchingOffers}
               onChangeOffer={onChangeOffer}
-              selectedOfferId={-1}
-              type="mobile"
-              scrollLayoutToPreviousPosition={
-                params.scrollLayoutToPreviousPosition
-              }
-              key={"MyApplicationsListMobile"}
+              selectedOfferId={selectedOfferId}
+              key={"offersListMobile"}
             />
           )}
-          {selectedOffer && (
+          {selectedOfferId !== -1 && (
             <MyApplicationsDetails
-              selectedOffer={selectedOffer || undefined}
-              setSelectedOffer={setSelectedOffer}
-              isLoading={
-                isLoadingOffers || isRefetchingOffers || isFetchingOffers
-              }
               type="mobile"
-              key={"offerDetailMobile"}
+              key={`offerDetailDesktop${selectedOfferId || ""}`}
               userRole={userRole?.role || undefined}
+              selectedOfferId={selectedOfferId}
+              setSelectedOfferId={() => setSelectedOfferId(-1)}
             />
           )}
         </div>
@@ -138,26 +146,20 @@ const MyApplicationsPage = (params: {
           <MyApplicationsList
             offersCount={offersData ? offersData[0] : 0}
             isRefetchingOffersWithCursor={isRefetchingOffersWithCursor}
-            fetchMoreOffers={refetchOffersWithCursor}
+            fetchMoreOffers={fetchMoreOffers}
             offers={offers}
-            isLoading={
-              isLoadingOffers || isRefetchingOffers || isFetchingOffers
-            }
+            isLoading={isLoadingOffers || isRefetchingOffers}
             onChangeOffer={onChangeOffer}
-            selectedOfferId={selectedOffer ? selectedOffer.id : -1}
-            type="desktop"
-            key={"MyApplicationsListDesktop"}
+            selectedOfferId={selectedOfferId}
+            key={"offersListDesktop"}
           />
           {offers.length > 0 && (
             <MyApplicationsDetails
-              selectedOffer={selectedOffer || undefined}
-              isLoading={
-                isLoadingOffers || isRefetchingOffers || isFetchingOffers
-              }
-              setSelectedOffer={setSelectedOffer}
               type="desktop"
-              key={"offerDetailDesktop"}
+              key={`offerDetailDesktop${selectedOfferId || ""}`}
               userRole={userRole?.role || undefined}
+              selectedOfferId={selectedOfferId}
+              setSelectedOfferId={() => setSelectedOfferId(-1)}
             />
           )}
         </div>
@@ -172,7 +174,9 @@ const MyApplicationsPage = (params: {
           !isLoadingOffers &&
           !isRefetchingOffers &&
           !isFetchingOffers && (
-            <div className="flex justify-center">There are no applications</div>
+            <div className="flex justify-center">
+              {t("pages.applications.noApplications")}
+            </div>
           )}
         {renderMobile()}
         {renderDesktop()}

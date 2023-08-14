@@ -678,7 +678,8 @@
       "goBack": "Voltar",
       "appliedSuccess": "Candidatura submetida com sucesso",
       "removedApplicationSuccess": "Candidatura removida com sucesso",
-      "offersAvailable": "Candidataste-te a {{ available }} ofertas"
+      "offersAvailable": "Candidataste-te a {{ available }} ofertas",
+      "noApplications": "Não há candidaturas"
     }
   }
 }

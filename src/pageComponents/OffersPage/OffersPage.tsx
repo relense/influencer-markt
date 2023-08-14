@@ -36,7 +36,7 @@ const OffersPage = (params: {
 
   const [offers, setOffers] = useState<OfferIncludes[]>([]);
   const [offersCursor, setOffersCursor] = useState<number>(-1);
-  const [selectedOffer, setSelectedOffer] = useState<OfferIncludes>();
+  const [selectedOfferId, setSelectedOfferId] = useState<number>(-1);
   const [isShareModalOpen, setIsShareModalOpen] = useState<boolean>();
   const [activeFiltersCount, setActiveFiltersCount] = useState<number>(0);
   const [isFilterModalOpen, setIsFilterModalOpen] = useState<boolean>(false);
@@ -60,30 +60,25 @@ const OffersPage = (params: {
     isRefetching: isRefetchingOffers,
     isFetching: isFetchingOffers,
     refetch: refetchOffers,
-  } = api.offers.getAllOffers.useQuery(
-    {
-      socialMedia: filterState.platforms.map((platform) => {
-        return platform.id;
-      }),
-      categories: filterState.categories.map((category) => {
-        return category.id;
-      }),
-      gender: filterState.gender.id,
-      minFollowers: filterState.minFollowers || -1,
-      maxFollowers: filterState.maxFollowers || -1,
-      minPrice: filterState.minPrice || -1,
-      maxPrice: filterState.maxPrice || -1,
-      country: filterState.country.id,
-    },
-    {
-      cacheTime: 0,
-    }
-  );
+  } = api.offers.getAllOffers.useQuery({
+    socialMedia: filterState.platforms.map((platform) => {
+      return platform.id;
+    }),
+    categories: filterState.categories.map((category) => {
+      return category.id;
+    }),
+    gender: filterState.gender.id,
+    minFollowers: filterState.minFollowers || -1,
+    maxFollowers: filterState.maxFollowers || -1,
+    minPrice: filterState.minPrice || -1,
+    maxPrice: filterState.maxPrice || -1,
+    country: filterState.country.id,
+  });
 
   const {
     data: offersWithCursorData,
     refetch: refetchOffersWithCursor,
-    isFetching: isRefetchingOffersWithCursor,
+    isFetching: isFetchingOffersWithCursor,
   } = api.offers.getAllOffersWithCursor.useQuery(
     {
       cursor: offersCursor,
@@ -118,16 +113,17 @@ const OffersPage = (params: {
       if (lastOfferInArray) {
         setOffersCursor(lastOfferInArray.id);
       }
-    } else {
-      setOffers([]);
     }
   }, [offersData]);
 
   useEffect(() => {
     if (offersWithCursorData) {
-      const newOffers = [...offers];
-      offersWithCursorData.forEach((offer) => newOffers.push(offer));
-      setOffers(newOffers);
+      setOffers((currentOffers) => {
+        const newOffers = [...currentOffers];
+        offersWithCursorData.forEach((offer) => newOffers.push(offer));
+
+        return newOffers;
+      });
 
       const lastOfferInArray =
         offersWithCursorData[offersWithCursorData.length - 1];
@@ -136,17 +132,31 @@ const OffersPage = (params: {
         setOffersCursor(lastOfferInArray.id);
       }
     }
-  }, [offers, offersWithCursorData]);
+  }, [offersWithCursorData]);
 
   useEffect(() => {
-    if (offersData && offersData[1][0] && width > 1024 && !selectedOffer) {
-      setSelectedOffer(offersData[1][0]);
+    if (
+      offersData &&
+      offersData[1][0] &&
+      width > 1024 &&
+      selectedOfferId === -1
+    ) {
+      setSelectedOfferId(offersData[1][0].id);
     }
-  }, [offersData, session.data?.user.id, width, selectedOffer]);
+  }, [offersData, selectedOfferId, width]);
+
+  useEffect(() => {
+    params.scrollLayoutToPreviousPosition();
+  }, [params, selectedOfferId]);
 
   const onChangeOffer = (offer: OfferIncludes) => {
     params.saveScrollPosition();
-    setSelectedOffer(offer);
+    setSelectedOfferId(offer.id);
+  };
+
+  const fetchMoreOffers = () => {
+    params.saveScrollPosition();
+    void refetchOffersWithCursor();
   };
 
   const countActiveFilters = (params: {
@@ -198,7 +208,7 @@ const OffersPage = (params: {
     countActiveFilters(params);
 
     if (activeFiltersCount > 0) {
-      setSelectedOffer(undefined);
+      setSelectedOfferId(-1);
       setOffers([]);
     }
 
@@ -236,7 +246,7 @@ const OffersPage = (params: {
     });
 
     if (activeFiltersCount > 0) {
-      setSelectedOffer(undefined);
+      setSelectedOfferId(-1);
       setOffers([]);
     }
 
@@ -322,36 +332,27 @@ const OffersPage = (params: {
     return (
       <>
         <div className="flex w-full pb-4 lg:hidden lg:h-[70vh] lg:p-0">
-          {!selectedOffer && (
+          {selectedOfferId === -1 && (
             <OffersList
               offersCount={offersData ? offersData[0] : 0}
-              isRefetchingOffersWithCursor={isRefetchingOffersWithCursor}
-              fetchMoreOffers={refetchOffersWithCursor}
+              isRefetchingOffersWithCursor={isFetchingOffersWithCursor}
+              fetchMoreOffers={fetchMoreOffers}
               offers={offers}
-              isLoading={
-                isLoadingOffers || isRefetchingOffers || isFetchingOffers
-              }
+              isLoading={isLoadingOffers || isRefetchingOffers}
               onChangeOffer={onChangeOffer}
               selectedOfferId={-1}
-              type="mobile"
-              scrollLayoutToPreviousPosition={
-                params.scrollLayoutToPreviousPosition
-              }
               key={"offersListMobile"}
             />
           )}
-          {selectedOffer && (
+          {selectedOfferId !== -1 && (
             <OfferDetails
-              selectedOffer={selectedOffer || undefined}
-              setSelectedOffer={setSelectedOffer}
-              isLoading={
-                isLoadingOffers || isRefetchingOffers || isFetchingOffers
-              }
               openShareModal={() => setIsShareModalOpen(true)}
               type="mobile"
-              key={"offerDetailMobile"}
+              key={`offerDetailMobile${selectedOfferId || ""}`}
               openLoginModal={params.openLoginModal}
               userRole={userRole?.role || undefined}
+              selectedOfferId={selectedOfferId}
+              setSelectedOfferId={() => setSelectedOfferId(-1)}
             />
           )}
         </div>
@@ -365,29 +366,23 @@ const OffersPage = (params: {
         <div className="hidden w-full pb-4 lg:flex lg:h-[70vh] lg:p-0">
           <OffersList
             offersCount={offersData ? offersData[0] : 0}
-            isRefetchingOffersWithCursor={isRefetchingOffersWithCursor}
-            fetchMoreOffers={refetchOffersWithCursor}
+            isRefetchingOffersWithCursor={isFetchingOffersWithCursor}
+            fetchMoreOffers={fetchMoreOffers}
             offers={offers}
-            isLoading={
-              isLoadingOffers || isRefetchingOffers || isFetchingOffers
-            }
+            isLoading={isLoadingOffers || isRefetchingOffers}
             onChangeOffer={onChangeOffer}
-            selectedOfferId={selectedOffer ? selectedOffer.id : -1}
-            type="desktop"
+            selectedOfferId={selectedOfferId}
             key={"offersListDesktop"}
           />
           {offers.length > 0 && (
             <OfferDetails
-              selectedOffer={selectedOffer || undefined}
-              isLoading={
-                isLoadingOffers || isRefetchingOffers || isFetchingOffers
-              }
-              setSelectedOffer={setSelectedOffer}
               openShareModal={() => setIsShareModalOpen(true)}
               type="desktop"
-              key={"offerDetailDesktop"}
+              key={`offerDetailDesktop${selectedOfferId || ""}`}
               openLoginModal={params.openLoginModal}
               userRole={userRole?.role || undefined}
+              selectedOfferId={selectedOfferId}
+              setSelectedOfferId={() => setSelectedOfferId(-1)}
             />
           )}
         </div>
@@ -398,7 +393,8 @@ const OffersPage = (params: {
   return (
     <>
       <div className="mt-5 flex w-full cursor-default flex-col gap-8 self-center px-4 sm:px-12 xl:w-3/4 2xl:w-3/4 3xl:w-2/4">
-        {(width > 1024 || (width < 1024 && !selectedOffer)) && filterBar()}
+        {(width > 1024 || (width < 1024 && selectedOfferId === -1)) &&
+          filterBar()}
         {offers.length === 0 &&
           !isLoadingOffers &&
           !isRefetchingOffers &&
@@ -411,11 +407,11 @@ const OffersPage = (params: {
         {renderDesktop()}
       </div>
       <div className="flex justify-center">
-        {isShareModalOpen && selectedOffer && (
+        {isShareModalOpen && selectedOfferId !== -1 && (
           <ShareModal
             modalTitle={t("pages.offers.shareModalTitle")}
             onClose={() => setIsShareModalOpen(false)}
-            url={`${window.location.origin}/offers/${selectedOffer.id}`}
+            url={`${window.location.origin}/offers/${selectedOfferId}`}
           />
         )}
       </div>

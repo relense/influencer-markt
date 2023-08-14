@@ -18,9 +18,8 @@ import Link from "next/link";
 import { type Role } from "@prisma/client";
 
 const OfferDetails = (params: {
-  selectedOffer: OfferIncludes | undefined;
-  setSelectedOffer: (offer: OfferIncludes | undefined) => void;
-  isLoading: boolean;
+  setSelectedOfferId: () => void;
+  selectedOfferId: number;
   openLoginModal: () => void;
   openShareModal: () => void;
   type: "mobile" | "desktop";
@@ -29,39 +28,34 @@ const OfferDetails = (params: {
   const { t, i18n } = useTranslation();
   const session = useSession();
   const detailsContainer = useRef<HTMLDivElement>(null);
+  const ctx = api.useContext();
+
   const [offer, setOffer] = useState<OfferIncludes>();
   const [applied, setApplied] = useState<boolean>();
 
-  const {
-    data: offerData,
-    refetch: refetcheOffer,
-    isRefetching,
-    isFetching,
-  } = api.offers.getSimpleOffer.useQuery(
-    {
-      offerId: params?.selectedOffer?.id || -1,
-    },
-    {
-      enabled: false,
-      cacheTime: 0,
-    }
-  );
+  const { data: offerData, isLoading } = api.offers.getSimpleOffer.useQuery({
+    offerId: params?.selectedOfferId || -1,
+  });
 
   const { mutate: applyToOffer, isLoading: applicationIsLoading } =
     api.offers.applyToOffer.useMutation({
       onSuccess: () => {
-        void refetcheOffer();
-        toast.success(t("pages.offers.appliedSuccess"), {
-          position: "bottom-left",
+        setApplied(true);
+        void ctx.offers.getSimpleOffer.invalidate().then(() => {
+          toast.success(t("pages.offers.appliedSuccess"), {
+            position: "bottom-left",
+          });
         });
       },
     });
   const { mutate: removeApplication, isLoading: removingIsLoading } =
-    api.offers.removeOfferApplicantion.useMutation({
+    api.offers.removeOfferApplication.useMutation({
       onSuccess: () => {
-        void refetcheOffer();
-        toast.success(t("pages.offers.removedApplicationSuccess"), {
-          position: "bottom-left",
+        setApplied(false);
+        void ctx.offers.getSimpleOffer.invalidate().then(() => {
+          toast.success(t("pages.offers.removedApplicationSuccess"), {
+            position: "bottom-left",
+          });
         });
       },
     });
@@ -89,34 +83,9 @@ const OfferDetails = (params: {
       return hasApplied;
     };
 
-    if (params.selectedOffer) {
-      setApplied(checkIfUserHasApplied(params.selectedOffer));
-      setOffer(params.selectedOffer);
-    }
-  }, [params.selectedOffer, session.data?.user.id]);
-
-  useEffect(() => {
-    const checkIfUserHasApplied = (offer: OfferIncludes) => {
-      let hasApplied = false;
-
-      const applied = !!offer.applicants.find(
-        (applicant) => applicant.userId === session.data?.user.id
-      );
-
-      const isAccepted = !!offer.acceptedApplicants.find(
-        (applicant) => applicant.userId === session.data?.user.id
-      );
-
-      if (applied || isAccepted) {
-        hasApplied = true;
-      }
-
-      return hasApplied;
-    };
-
     if (offerData) {
-      setOffer(offerData);
       setApplied(checkIfUserHasApplied(offerData));
+      setOffer(offerData);
     }
   }, [offerData, session.data?.user.id]);
 
@@ -163,7 +132,7 @@ const OfferDetails = (params: {
       <div className="flex items-center justify-between lg:hidden">
         <div
           className="flex cursor-pointer items-center gap-2 py-2 lg:hidden"
-          onClick={() => params.setSelectedOffer(undefined)}
+          onClick={() => params.setSelectedOfferId()}
         >
           <FontAwesomeIcon
             icon={faChevronLeft}
@@ -330,9 +299,8 @@ const OfferDetails = (params: {
   const renderApplyButton = () => {
     if (offer && (!params.userRole || params.userRole.id !== 1)) {
       return (
-        <div>
+        <div key={`ApplyButton${offer.id}`}>
           <Button
-            key={`ApplyButton${offer.id}`}
             title={
               applied
                 ? t("pages.offers.removeApplication")
@@ -340,12 +308,7 @@ const OfferDetails = (params: {
             }
             level={applied ? "secondary" : "primary"}
             size="large"
-            isLoading={
-              isRefetching ||
-              isFetching ||
-              applicationIsLoading ||
-              removingIsLoading
-            }
+            isLoading={applicationIsLoading || removingIsLoading}
             onClick={() => onApply(offer)}
           />
         </div>
@@ -369,7 +332,7 @@ const OfferDetails = (params: {
       className="flex flex-1 flex-col overflow-y-auto rounded-lg border-0 px-4 lg:rounded-none lg:border-0 lg:border-l-[1px]"
       ref={detailsContainer}
     >
-      {params.isLoading ? (
+      {isLoading ? (
         <div className="h-full w-full items-center justify-center lg:relative">
           <LoadingSpinner />
         </div>

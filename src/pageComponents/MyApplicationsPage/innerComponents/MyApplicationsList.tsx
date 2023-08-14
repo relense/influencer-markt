@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import { useRef } from "react";
 import Image from "next/image";
 
 import { LoadingSpinner } from "../../../components/LoadingSpinner";
@@ -15,17 +15,9 @@ const MyApplicationsList = (params: {
   fetchMoreOffers: () => void;
   isRefetchingOffersWithCursor: boolean;
   isLoading: boolean;
-  scrollLayoutToPreviousPosition?: () => void;
-  type: "mobile" | "desktop";
 }) => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const listContainer = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    if (params.type === "mobile" && params.scrollLayoutToPreviousPosition) {
-      params.scrollLayoutToPreviousPosition();
-    }
-  }, [params.type, params]);
 
   return (
     <div className="flex flex-1 flex-col overflow-y-auto" ref={listContainer}>
@@ -70,9 +62,15 @@ const MyApplicationsList = (params: {
                       {offer.offerSummary}
                     </div>
                     <div className="text-sm">{offer?.offerCreator?.name}</div>
-                    <div className="text-sm text-gray2">
-                      {offer?.country?.name || ""}
-                      {offer?.state?.name ? `,${offer.state.name}` : ""}
+                    <div className="flex flex-1 items-center gap-2 text-sm text-gray2">
+                      <div>
+                        {offer?.country?.name || ""}
+                        {offer?.state?.name ? `,${offer.state.name}` : ""}
+                      </div>
+                      <div className="h-1 w-1 rounded-full bg-black" />
+                      <div>
+                        {helper.formatDate(offer?.createdAt, i18n.language)}
+                      </div>
                     </div>
                     <div className="flex gap-2 text-sm text-gray2">
                       <div className="flex flex-wrap gap-2 font-semibold text-influencer">
@@ -97,6 +95,14 @@ const MyApplicationsList = (params: {
                               );
                             })}
                         </div>
+                      </div>
+                    </div>
+                    <div className="flex gap-2 text-sm">
+                      <div className="font-semibold text-influencer">
+                        {t("pages.offers.offerPay")}
+                      </div>
+                      <div className="font-semibold text-black">
+                        {helper.formatNumber(offer?.price || 0)}€
                       </div>
                     </div>
                   </div>

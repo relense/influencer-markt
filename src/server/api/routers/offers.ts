@@ -784,7 +784,7 @@ export const OffersRouter = createTRPCRouter({
 
       if (profile) {
         return await ctx.prisma.offer.update({
-          where: { id: input.offerId },
+          where: { id: input.offerId, offerStatusId: 1 },
           data: {
             applicants: { connect: { id: profile.id } },
           },
@@ -792,7 +792,7 @@ export const OffersRouter = createTRPCRouter({
       }
     }),
 
-  removeOfferApplicantion: protectedProcedure
+  removeOfferApplication: protectedProcedure
     .input(
       z.object({
         offerId: z.number(),
@@ -808,7 +808,7 @@ export const OffersRouter = createTRPCRouter({
 
       if (profile) {
         return await ctx.prisma.offer.update({
-          where: { id: input.offerId },
+          where: { id: input.offerId, offerStatusId: 1 },
           data: {
             applicants: { disconnect: { id: profile.id } },
             acceptedApplicants: { disconnect: { id: profile.id } },
@@ -826,7 +826,7 @@ export const OffersRouter = createTRPCRouter({
     )
     .mutation(async ({ ctx, input }) => {
       return await ctx.prisma.offer.update({
-        where: { id: input.offerId },
+        where: { id: input.offerId, offerStatusId: 1 },
         data: {
           applicants: { disconnect: { id: input.profileId } },
           acceptedApplicants: { connect: { id: input.profileId } },
@@ -843,7 +843,7 @@ export const OffersRouter = createTRPCRouter({
     )
     .mutation(async ({ ctx, input }) => {
       return await ctx.prisma.offer.update({
-        where: { id: input.offerId },
+        where: { id: input.offerId, offerStatusId: 1 },
         data: {
           applicants: { disconnect: { id: input.profileId } },
           rejectedApplicants: { connect: { id: input.profileId } },
@@ -860,7 +860,7 @@ export const OffersRouter = createTRPCRouter({
     )
     .mutation(async ({ ctx, input }) => {
       return await ctx.prisma.offer.update({
-        where: { id: input.offerId },
+        where: { id: input.offerId, offerStatusId: 1 },
         data: {
           applicants: { connect: { id: input.profileId } },
           acceptedApplicants: { disconnect: { id: input.profileId } },
@@ -877,7 +877,7 @@ export const OffersRouter = createTRPCRouter({
     )
     .mutation(async ({ ctx, input }) => {
       return await ctx.prisma.offer.update({
-        where: { id: input.offerId },
+        where: { id: input.offerId, offerStatusId: 1 },
         data: {
           applicants: { connect: { id: input.profileId } },
           rejectedApplicants: { disconnect: { id: input.profileId } },
@@ -976,9 +976,7 @@ export const OffersRouter = createTRPCRouter({
         ctx.prisma.offer.count({
           where: {
             offerStatus: {
-              id: {
-                in: [1, 2],
-              },
+              id: 1,
             },
 
             OR: [
@@ -1009,9 +1007,7 @@ export const OffersRouter = createTRPCRouter({
         ctx.prisma.offer.findMany({
           where: {
             offerStatus: {
-              id: {
-                in: [1, 2],
-              },
+              id: 1,
             },
             OR: [
               {
@@ -1065,6 +1061,9 @@ export const OffersRouter = createTRPCRouter({
             acceptedApplicants: true,
             rejectedApplicants: true,
           },
+          orderBy: {
+            createdAt: "desc",
+          },
         }),
       ]);
     }
@@ -1087,9 +1086,7 @@ export const OffersRouter = createTRPCRouter({
         return await ctx.prisma.offer.findMany({
           where: {
             offerStatus: {
-              id: {
-                in: [1, 2],
-              },
+              id: 1,
             },
             OR: [
               {
@@ -1146,6 +1143,9 @@ export const OffersRouter = createTRPCRouter({
             applicants: true,
             acceptedApplicants: true,
             rejectedApplicants: true,
+          },
+          orderBy: {
+            createdAt: "desc",
           },
         });
       }

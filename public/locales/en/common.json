@@ -678,7 +678,8 @@
       "goBack": "Go Back",
       "appliedSuccess": "Application submit successfully",
       "removedApplicationSuccess": "Application withdrawn successfully",
-      "offersAvailable": "You have applied to {{ available }} offers"
+      "offersAvailable": "You have applied to {{ available }} offers",
+      "noApplications": "There are no applications"
     }
   }
 }
