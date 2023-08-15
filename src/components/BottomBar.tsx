@@ -5,6 +5,7 @@ import {
   faBriefcase,
   faHome,
   faSearch,
+  faUserCircle,
 } from "@fortawesome/free-solid-svg-icons";
 import Link from "next/link";
 import { useRouter } from "next/router";
@@ -15,41 +16,49 @@ type linkItem = {
   loggedIn: boolean;
 };
 
-const navigationLinks: linkItem[] = [
-  {
-    pageUrl: "/",
-    icon: faHome,
-    loggedIn: false,
-  },
-  {
-    pageUrl: "/explore/influencers",
-    icon: faSearch,
-    loggedIn: false,
-  },
-  {
-    pageUrl: "/saved/influencers",
-    icon: faBookmark,
-    loggedIn: true,
-  },
-  {
-    pageUrl: "/offers",
-    icon: faBriefcase,
-    loggedIn: false,
-  },
-];
-
 const BottomBar = (params: {
+  username: string;
   status: "authenticated" | "loading" | "unauthenticated";
 }) => {
   const router = useRouter();
+
+  const navigationLinks: linkItem[] = [
+    {
+      pageUrl: "/",
+      icon: faHome,
+      loggedIn: false,
+    },
+    {
+      pageUrl: "/explore/influencers",
+      icon: faSearch,
+      loggedIn: false,
+    },
+    {
+      pageUrl: "/saved/influencers",
+      icon: faBookmark,
+      loggedIn: true,
+    },
+    {
+      pageUrl: "/offers",
+      icon: faBriefcase,
+      loggedIn: false,
+    },
+    {
+      pageUrl: `/${params.username}`,
+      icon: faUserCircle,
+      loggedIn: true,
+    },
+  ];
 
   return (
     <div className="fixed bottom-0 z-40 flex w-full justify-between border-t-[1px] border-gray3 bg-white sm:hidden">
       {navigationLinks.map((navigationItem) => {
         const iconClass =
-          router.pathname === navigationItem.pageUrl
-            ? "fa-lg"
-            : "fa-lg text-gray1";
+          router.pathname === navigationItem.pageUrl ||
+          (router.pathname === "/[username]" &&
+            navigationItem.pageUrl === `/${params.username}`)
+            ? "fa-md"
+            : "fa-md text-gray1";
 
         if (
           !navigationItem.loggedIn ||

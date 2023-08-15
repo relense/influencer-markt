@@ -4,6 +4,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faCamera,
   faGlobe,
+  faPencil,
   faShareFromSquare,
   faStar,
 } from "@fortawesome/free-solid-svg-icons";
@@ -32,6 +33,7 @@ import type {
   ProfileOffers,
 } from "../../utils/globalTypes";
 import { ShareModal } from "../../components/ShareModal";
+import { useSession } from "next-auth/react";
 
 const PublicProfilePage = (params: {
   username: string;
@@ -55,6 +57,7 @@ const PublicProfilePage = (params: {
     id: -1,
     name: "",
   });
+  const session = useSession();
   const [availableUserSocialMedia, setAvailableUserSocialMedia] = useState<
     SocialMediaDetails[]
   >([]);
@@ -348,12 +351,27 @@ const PublicProfilePage = (params: {
           </div>
         </div>
 
-        <div className="flex flex-1 flex-row items-start  justify-end gap-4 lg:flex-row">
+        <div className="flex flex-1 flex-row-reverse items-start justify-end gap-4 lg:flex-row">
+          {session.data?.user.id === profile?.userId && (
+            <Link
+              href={`/${params.username}/edit`}
+              className="flex cursor-pointer items-center gap-2"
+            >
+              <FontAwesomeIcon icon={faPencil} className="fa-sm sm:fa-lg" />
+
+              <div className="underline">
+                {t("pages.publicProfilePage.editMyPage")}
+              </div>
+            </Link>
+          )}
           <div
             className="flex cursor-pointer items-center gap-2"
             onClick={() => setIsShareModalOpen(true)}
           >
-            <FontAwesomeIcon icon={faShareFromSquare} className="fa-lg" />
+            <FontAwesomeIcon
+              icon={faShareFromSquare}
+              className="fa-sm sm:fa-lg"
+            />
 
             <div className="underline">
               {t("pages.publicProfilePage.share")}
@@ -366,14 +384,20 @@ const PublicProfilePage = (params: {
             >
               {isBookmarked ? (
                 <>
-                  <FontAwesomeIcon icon={faBookmarkSolid} className="fa-lg" />
+                  <FontAwesomeIcon
+                    icon={faBookmarkSolid}
+                    className="fa-sm sm:fa-lg"
+                  />
                   <div className="underline">
                     {t("pages.publicProfilePage.saved")}
                   </div>
                 </>
               ) : (
                 <>
-                  <FontAwesomeIcon icon={faBookmark} className="fa-lg " />
+                  <FontAwesomeIcon
+                    icon={faBookmark}
+                    className="fa-sm sm:fa-lg "
+                  />
                   <div className="underline">
                     {t("pages.publicProfilePage.save")}
                   </div>
@@ -766,7 +790,7 @@ const PublicProfilePage = (params: {
   } else {
     return (
       <div className="flex justify-center">
-        <div className="flex w-full cursor-default flex-col gap-6 self-center px-4 pb-10 sm:px-12 xl:w-3/4 2xl:w-3/4 3xl:w-2/4">
+        <div className="mt-2 flex w-full cursor-default flex-col gap-6 self-center px-4 pb-10 sm:px-12 xl:w-3/4 2xl:w-3/4 3xl:w-2/4">
           {renderHeader()}
           {renderMiddleContent()}
           {renderReviews()}

@@ -18,10 +18,11 @@ import {
   faArrowRightFromBracket,
   faArrowRightToBracket,
   faBars,
+  faBookmark,
   faBriefcase,
   faChevronDown,
   faChevronUp,
-  faPencil,
+  faSearch,
 } from "@fortawesome/free-solid-svg-icons";
 
 import { Button } from "./Button";
@@ -289,39 +290,19 @@ export const Navbar = (params: {
             className="absolute right-0 top-10 z-50 flex w-screen flex-col gap-2 border-white1 bg-white px-8 pb-4 pt-2 text-sm shadow-lg sm:right-5 lg:top-20 lg:w-auto lg:rounded-2xl lg:border-[1px] lg:p-8 lg:text-base"
             onClick={() => setToggleOptions(!toggleOptions)}
           >
-            <div className="flex items-center gap-4 py-2">
+            <Link
+              href={params.username ? `/${params.username}` : "/"}
+              className="group flex items-center gap-4 py-2"
+            >
               <FontAwesomeIcon icon={faUserCircle} className="fa-xl" />
-              <div className="w-4/5 break-words">
+              <div className="w-4/5 break-words group-hover:underline">
                 {params.username
                   ? params.username
                   : params.sessionData?.user.email}
               </div>
-            </div>
+            </Link>
 
             <div className="cursor-pointer border-[1px] border-white1" />
-            <Link
-              href={params.username ? `/${params.username}` : "/"}
-              className="group flex cursor-pointer gap-4 py-2"
-            >
-              <FontAwesomeIcon
-                icon={faFileLines}
-                className="fa-xl cursor-pointer"
-              />
-              <div className="group-hover:underline">
-                {t("components.navbar.myPage")}
-              </div>
-            </Link>
-
-            <Link
-              href={`/${params.username}/edit`}
-              className="group flex cursor-pointer items-center gap-4 py-2"
-            >
-              <FontAwesomeIcon icon={faPencil} className="fa-lg" />
-
-              <div className="group-hover:underline">
-                {t("components.navbar.editMyPage")}
-              </div>
-            </Link>
 
             <Link
               href="/manage-offers"
@@ -346,6 +327,29 @@ export const Navbar = (params: {
                 </div>
               </Link>
             )}
+            <div className="cursor-pointer border-[1px] border-white1 lg:hidden" />
+
+            <Link
+              href="/explore/brands"
+              className="group flex cursor-pointer items-center gap-4 py-2 lg:hidden"
+            >
+              <FontAwesomeIcon icon={faSearch} className="fa-lg" />
+
+              <div className="group-hover:underline">
+                {t("components.navbar.exploreBrands")}
+              </div>
+            </Link>
+
+            <Link
+              href="/saved/brands"
+              className="group flex cursor-pointer items-center gap-4 py-2 lg:hidden"
+            >
+              <FontAwesomeIcon icon={faBookmark} className="fa-lg pl-1" />
+
+              <div className="group-hover:underline">
+                {t("components.navbar.savedBrands")}
+              </div>
+            </Link>
 
             <div className="cursor-pointer border-[1px] border-white1" />
 
@@ -434,7 +438,7 @@ export const Navbar = (params: {
 
   return (
     <nav>
-      <div className="flex w-full items-center justify-between px-4 py-2 lg:h-16 lg:gap-4 lg:p-12">
+      <div className="flex w-full select-none items-center justify-between px-4 py-2 lg:h-16 lg:gap-4 lg:p-12">
         {renderLogoTitle()}
         {leftNavBar()}
         {rightNavbar()}

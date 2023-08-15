@@ -149,7 +149,9 @@
       "sitemap": "Sitemap",
       "terms": "Terms and Conditions",
       "privacy": "Privacy Policy",
-      "applications": "Applications"
+      "applications": "Applications",
+      "exploreBrands": "Explore Brands",
+      "savedBrands": "Saved Brands"
     },
 
     "footer": {
@@ -463,7 +465,8 @@
       "valuePackSubmitButton": "Start Order",
       "removedProfile": "Removed Profile Successfully",
       "savedProfile": "Saved Profile Successfully",
-      "shareModalTitle": "Share Influencer Page"
+      "shareModalTitle": "Share Influencer Page",
+      "editMyPage": "Edit"
     },
 
     "editPage": {

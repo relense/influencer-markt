@@ -149,7 +149,9 @@
       "sitemap": "Mapa do Site",
       "terms": "Termos e Condições",
       "privacy": "Política de Privacidade",
-      "applications": "Candidaturas"
+      "applications": "Candidaturas",
+      "exploreBrands": "Explora Marcas",
+      "savedBrands": "Marcas Favoritas"
     },
 
     "footer": {
@@ -463,7 +465,8 @@
       "valuePackSubmitButton": "Iniciar Pedido",
       "removedProfile": "Perfil Removido Com Sucesso",
       "savedProfile": "Perfil Guardado Com Sucesso",
-      "shareModalTitle": "Partilha a Página do Influencer"
+      "shareModalTitle": "Partilha a Página do Influencer",
+      "editMyPage": "Editar"
     },
 
     "editPage": {

@@ -339,7 +339,7 @@ const ExploreBrandsPage = () => {
             {t("components.filter.clearAllButton")}
           </div>
         )}
-        <div className="relative flex">
+        <div className="relative flex select-none">
           <div
             className={filterButtonClasses}
             onClick={() => setIsFilterModalOpen(!isFilterModalOpen)}
