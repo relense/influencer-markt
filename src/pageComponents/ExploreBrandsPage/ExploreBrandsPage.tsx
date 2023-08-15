@@ -348,7 +348,7 @@ const ExploreBrandsPage = () => {
         </div>
       </div>
       {isLoading ? (
-        <div className="relative h-screen lg:flex lg:flex-1">
+        <div className="relative h-[50vh] lg:flex lg:h-screen lg:flex-1">
           <LoadingSpinner />
         </div>
       ) : (

@@ -22,7 +22,7 @@ const OffersList = (params: {
   return (
     <div className="flex flex-1 flex-col overflow-y-auto" ref={listContainer}>
       {params.isLoading ? (
-        <div className="h-full w-full items-center justify-center lg:relative">
+        <div className="relative h-[50vh] w-full lg:h-screen">
           <LoadingSpinner />
         </div>
       ) : (

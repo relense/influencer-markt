@@ -392,7 +392,7 @@ const OffersPage = (params: {
 
   return (
     <>
-      <div className="mt-5 flex w-full cursor-default flex-col gap-8 self-center px-4 sm:px-12 xl:w-3/4 2xl:w-3/4 3xl:w-2/4">
+      <div className="mt-2 flex w-full cursor-default flex-col gap-8 self-center px-2 sm:px-12 xl:w-3/4 2xl:w-3/4 3xl:w-2/4">
         {(width > 1024 || (width < 1024 && selectedOfferId === -1)) &&
           filterBar()}
         {offers.length === 0 &&
@@ -400,7 +400,7 @@ const OffersPage = (params: {
           !isRefetchingOffers &&
           !isFetchingOffers && (
             <div className="flex justify-center">
-              There are no offers for your search requirements
+              {t("pages.offers.noOffers")}
             </div>
           )}
         {renderMobile()}

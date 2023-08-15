@@ -669,7 +669,8 @@
       "appliedSuccess": "Application submit successfully",
       "removedApplicationSuccess": "Application withdrawn successfully",
       "shareModalTitle": "Share Offer",
-      "offersAvailable": "There are {{ available }} offers available"
+      "offersAvailable": "There are {{ available }} offers available",
+      "noOffers": "There are no offers for your search requirements"
     },
 
     "applications": {

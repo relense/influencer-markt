@@ -669,7 +669,8 @@
       "appliedSuccess": "Candidatura submetida com sucesso",
       "removedApplicationSuccess": "Candidatura removida com sucesso",
       "shareModalTitle": "Partilha A Oferta",
-      "offersAvailable": "Há {{ available }} ofertas disponíveis"
+      "offersAvailable": "Há {{ available }} ofertas disponíveis",
+      "noOffers": "Não há ofertas com os requisitos que procuras"
     },
 
     "applications": {
