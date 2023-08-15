@@ -87,7 +87,7 @@ export const Layout = (props: {
           </div>
           <Footer />
         </div>
-        <BottomBar status={status} username={user?.username} />
+        <BottomBar status={status} username={user?.username || ""} />
         <div className="flex justify-center">
           {isModalOpen && (
             <LoginModal onClose={() => onCloseModal()} isSignUp={isSignUp} />
