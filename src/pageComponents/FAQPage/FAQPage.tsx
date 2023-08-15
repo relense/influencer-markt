@@ -89,7 +89,7 @@ const FAQPage = () => {
   const renderInfluencersQuestion = () => {
     if (showInfluencerQuestions) {
       return (
-        <div className="flex flex-1 flex-col gap-12">
+        <div className="flex flex-1 flex-col gap-6">
           {questionsInfluencers.map((question, index) => {
             return (
               <div key={question.question} className="flex flex-col gap-12">
