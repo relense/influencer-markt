@@ -16,9 +16,14 @@ const PublicProfile: NextPage<PublicProfileProps> = ({ username }) => {
   const router = useRouter();
 
   const { data: userExists, isLoading: isLoadingUserExists } =
-    api.users.usernameExists.useQuery({
-      username,
-    });
+    api.users.usernameExists.useQuery(
+      {
+        username,
+      },
+      {
+        cacheTime: 0,
+      }
+    );
   const { data: profile, isLoading: isLoadingProfile } =
     api.profiles.getProfileMinimumInfo.useQuery({
       username,
