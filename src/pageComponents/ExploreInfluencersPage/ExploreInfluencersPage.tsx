@@ -223,11 +223,13 @@ const ExploreInfluencersPage = (params: { choosenCategories: Option[] }) => {
         ...filterState,
         categories: [],
       });
+      setFilterCategories([]);
     } else if (type === "platforms") {
       setFilterState({
         ...filterState,
         platforms: [],
       });
+      setFilterPlatforms([]);
     }
 
     void profileRefetch();
@@ -325,6 +327,9 @@ const ExploreInfluencersPage = (params: { choosenCategories: Option[] }) => {
       maxPrice: 1000000000,
     });
 
+    setFilterCategories([]);
+    setFilterPlatforms([]);
+
     if (activeFiltersCount > 0) {
       setUserProfiles([]);
     }
@@ -375,13 +380,47 @@ const ExploreInfluencersPage = (params: { choosenCategories: Option[] }) => {
       "flex h-14 cursor-pointer items-center justify-center gap-2 rounded-2xl border-[1px] border-black p-4 shadow-lg hover:border-black";
   }
 
+  const calculateContentTypes = (): Option[] => {
+    if (contentTypes) {
+      if (filterPlatforms.length === 0) {
+        return contentTypes.map((contentType) => {
+          return { id: contentType.id, name: contentType.name };
+        });
+      } else {
+        const filteredContentTypes = [];
+
+        for (const contentType of contentTypes) {
+          const matchingSocialMedia = contentType.socialMedia.filter(
+            (socialMedia) => {
+              return filterPlatforms.some(
+                (filterPlatform) => filterPlatform.id === socialMedia.id
+              );
+            }
+          );
+
+          if (matchingSocialMedia.length > 0) {
+            filteredContentTypes.push({
+              id: contentType.id,
+              name: contentType.name,
+              socialMedia: matchingSocialMedia,
+            });
+          }
+        }
+
+        return filteredContentTypes;
+      }
+    } else {
+      return [];
+    }
+  };
+
   return (
     <div className="flex flex-1 flex-col justify-start gap-12 p-2 lg:w-full lg:gap-6 lg:p-12 xl:self-center xl:p-4 2xl:w-3/4">
       <div className="flex flex-col items-center justify-center gap-4 lg:flex-row">
         <ComplexSearchBar
           handleClick={onHandleSearch}
-          categories={filterState.categories}
-          platforms={filterState.platforms}
+          categories={filterCategories}
+          platforms={filterPlatforms}
           clearSearchBar={clearSearchBar}
           updateCategories={setFilterCategories}
           updatePlatforms={setFilterPlatforms}
@@ -445,9 +484,7 @@ const ExploreInfluencersPage = (params: { choosenCategories: Option[] }) => {
                 name: country.name,
               };
             })}
-            contentTypes={contentTypes.map((contentType) => {
-              return { id: contentType.id, name: contentType.name };
-            })}
+            contentTypes={calculateContentTypes()}
           />
         </div>
       )}

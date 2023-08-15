@@ -149,7 +149,7 @@ export const profilesRouter = createTRPCRouter({
             },
           },
           orderBy: {
-            name: "desc",
+            createdAt: "desc",
           },
         }),
       ]);
@@ -252,7 +252,7 @@ export const profilesRouter = createTRPCRouter({
           },
         },
         orderBy: {
-          name: "desc",
+          createdAt: "desc",
         },
       });
     }),

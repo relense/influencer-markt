@@ -245,6 +245,9 @@ const OffersPage = (params: {
       maxPrice: 1000000000,
     });
 
+    setFilterCategories([]);
+    setFilterPlatforms([]);
+
     if (activeFiltersCount > 0) {
       setSelectedOfferId(-1);
       setOffers([]);
@@ -272,11 +275,13 @@ const OffersPage = (params: {
         ...filterState,
         categories: [],
       });
+      setFilterCategories([]);
     } else if (type === "platforms") {
       setFilterState({
         ...filterState,
         platforms: [],
       });
+      setFilterPlatforms([]);
     }
 
     setOffers([]);
@@ -295,8 +300,8 @@ const OffersPage = (params: {
       <div className="flex flex-col items-center justify-center gap-4 lg:flex-row">
         <ComplexSearchBar
           handleClick={onHandleSearch}
-          categories={filterState.categories}
-          platforms={filterState.platforms}
+          categories={filterCategories}
+          platforms={filterPlatforms}
           clearSearchBar={clearSearchBar}
           updateCategories={setFilterCategories}
           updatePlatforms={setFilterPlatforms}

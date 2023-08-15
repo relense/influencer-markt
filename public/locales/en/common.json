@@ -557,7 +557,7 @@
       "noInfluencers": "No Influencers",
       "countInfluencers_one": "{{count, number}} Influencer",
       "countInfluencers_other": "{{count, number}} Influencers",
-      "noBrands": "noBrands",
+      "noBrands": "No Brands",
       "countBrands_one": "{{count, number}} Brand",
       "countBrands_other": "{{count, number}} Brands",
       "loadMore": "Load More"

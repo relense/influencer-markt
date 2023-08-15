@@ -94,6 +94,9 @@ model Profile {
   favoriteBy Profile[] @relation("profileFavorites")
   favorites  Profile[] @relation("profileFavorites")
 
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
   userId    String @unique
   genderId  Int?
   countryId Int?
