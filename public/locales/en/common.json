@@ -563,7 +563,7 @@
       "loadMore": "Load More"
     },
 
-    "myOffer": {
+    "manageOffers": {
       "errorWarning": "Max is {{count}} characters",
       "createOffer": "Create Offer",
       "updateOffer": "Update Offer",
