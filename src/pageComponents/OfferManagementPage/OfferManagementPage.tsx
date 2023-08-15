@@ -10,7 +10,7 @@ import { LoadingSpinner } from "../../components/LoadingSpinner";
 import type { OfferWithAllData, Option } from "../../utils/globalTypes";
 import { Button } from "../../components/Button";
 import { MyOffersActionConfirmationModal } from "../../components/MyOffersActionConfirmationModal";
-import { Modal } from "../../components/Modal";
+import { FirstTimeOfferManagementModal } from "./innerComponent/FirstTimeOfferManagementModal";
 
 const OfferManagementPage = () => {
   const { t } = useTranslation();
@@ -220,26 +220,7 @@ const OfferManagementPage = () => {
         )}
       </div>
       {showFirstTimeModal && (
-        <div className="flex justify-center">
-          <Modal onClose={() => setfirstVisitInfo()}>
-            <div className="flex h-full w-full flex-1 cursor-default flex-col items-center gap-6 px-12 py-4">
-              <div className="text-center font-playfair text-4xl font-semibold">
-                {t("pages.manageOffers.myOffersModalTitle")}
-              </div>
-              <div className="text-center font-playfair text-xl font-semibold">
-                {t("pages.manageOffers.myOffersModalSubTitle")}
-              </div>
-              <div className="flex w-full flex-1 justify-start">
-                <ul></ul>
-              </div>
-
-              <Button
-                title={t("pages.manageOffers.understandModalButton")}
-                level="primary"
-              />
-            </div>
-          </Modal>
-        </div>
+        <FirstTimeOfferManagementModal setfirstVisitInfo={setfirstVisitInfo} />
       )}
     </>
   );
