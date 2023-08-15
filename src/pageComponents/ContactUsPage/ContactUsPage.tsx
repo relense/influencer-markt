@@ -50,12 +50,12 @@ const ContactUsPage = () => {
 
   return (
     <div className="flex flex-1 flex-col justify-center gap-8 p-4 xl:w-3/4 xl:self-center 2xl:w-2/4">
-      <div className="flex flex-1 justify-center text-center font-playfair text-5xl font-semibold">
+      <div className="flex flex-1 justify-center text-center font-playfair text-4xl font-semibold sm:text-5xl">
         {t("pages.contactUs.title")}
       </div>
       <form
         id="form-contactUs"
-        className="flex h-[70vh] w-full flex-col gap-4 p-4 sm:w-full sm:px-8"
+        className="flex h-full w-full flex-col gap-4 p-4 sm:w-full sm:px-8"
         onSubmit={submitMessage}
       >
         <div className="flex flex-col gap-4">
