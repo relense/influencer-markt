@@ -42,7 +42,7 @@ const Modal = ({
         >
           <FontAwesomeIcon icon={faXmark} className="fa-lg text-white" />
         </div>
-        <div className="z-50 flex max-h-[300px] flex-col overflow-y-auto xxs:max-h-[450px] xs:max-h-[550px] 2xl:max-h-[800px] 3xl:max-h-[1000px]">
+        <div className="z-50 flex max-h-[55vh] flex-col overflow-y-auto xxs:max-h-[70vh] xs:max-h-[75vh] 2xl:max-h-[800px] 3xl:max-h-[1000px]">
           {title && (
             <div className="flex flex-1 flex-col items-center">
               <div className="py-2 text-center">{title}</div>

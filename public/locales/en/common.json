@@ -643,7 +643,7 @@
       "openOffersCanBe": "Open offers can be <1>published, updated, archived, duplicated</1>, or <3>deleted</3>.",
       "rememberOpenOffer": "Remember, only open offers can be <1>published,</1> or <3>updated</3>.",
       "anOfferIs": " When an offer is <1>open</1> and <3>published</3> is when influencers can apply and <5>you</5> can manage them.",
-      "understandModalButton": "I Understand",
+      "firstTimedModalButton": "Got It, Let's Create Offers!",
       "inProgress": "In Progress",
       "whenAnOfferIsInProgress": "When an offer is in progress it means an order was initiated and the influencers are working hard to deliver what you requested.",
       "archievdIsWhen": "Archived is when you save the offer for later or when the influencer has deliered what you need and the offer is completed."

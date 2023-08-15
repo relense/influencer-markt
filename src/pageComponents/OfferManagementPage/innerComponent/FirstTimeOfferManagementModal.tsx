@@ -9,7 +9,18 @@ const FirstTimeOfferManagementModal = (params: {
 
   return (
     <div className="flex justify-center">
-      <Modal onClose={() => params.setfirstVisitInfo()}>
+      <Modal
+        onClose={() => params.setfirstVisitInfo()}
+        button={
+          <div className="flex flex-col items-center justify-between gap-4 p-4 sm:px-8 lg:flex-row">
+            <Button
+              title={t("pages.manageOffers.firstTimedModalButton")}
+              level="primary"
+              onClick={() => params.setfirstVisitInfo()}
+            />
+          </div>
+        }
+      >
         <div className="flex h-full w-full flex-1 cursor-default flex-col items-center gap-6 p-6 py-6">
           <div className="text-center font-playfair text-3xl font-semibold">
             {t("pages.manageOffers.myOffersModalTitle")}
@@ -108,12 +119,6 @@ const FirstTimeOfferManagementModal = (params: {
               </div>
             </div>
           </div>
-
-          <Button
-            title={t("pages.manageOffers.understandModalButton")}
-            level="primary"
-            onClick={() => params.setfirstVisitInfo()}
-          />
         </div>
       </Modal>
     </div>
