@@ -287,12 +287,12 @@ export const Navbar = (params: {
             onClick={() => setToggleOptions(!toggleOptions)}
           />
           <div
-            className="absolute right-0 top-10 z-50 flex w-screen flex-col gap-2 border-white1 bg-white px-8 pb-4 pt-2 text-sm shadow-lg sm:right-5 lg:top-20 lg:w-auto lg:rounded-2xl lg:border-[1px] lg:p-8 lg:text-base"
+            className="absolute right-0 top-10 z-50 flex w-screen flex-col gap-2 border-white1 bg-white px-8 pb-4 pt-2 text-sm shadow-lg sm:right-5 sm:top-20 sm:w-auto sm:rounded-2xl sm:border-[1px] sm:p-8 sm:text-base"
             onClick={() => setToggleOptions(!toggleOptions)}
           >
             <Link
               href={params.username ? `/${params.username}` : "/"}
-              className="group flex items-center gap-4 py-2"
+              className="group hidden items-center gap-4 py-2 sm:flex"
             >
               <FontAwesomeIcon icon={faUserCircle} className="fa-xl" />
               <div className="w-4/5 break-words group-hover:underline">
@@ -302,7 +302,30 @@ export const Navbar = (params: {
               </div>
             </Link>
 
-            <div className="cursor-pointer border-[1px] border-white1" />
+            <div className="hidden cursor-pointer border-[1px] border-white1 sm:flex" />
+
+            <Link
+              href="/explore/brands"
+              className="group flex cursor-pointer items-center gap-4 py-2 lg:hidden"
+            >
+              <FontAwesomeIcon icon={faSearch} className="fa-lg" />
+
+              <div className="group-hover:underline">
+                {t("components.navbar.exploreBrands")}
+              </div>
+            </Link>
+
+            <Link
+              href="/saved/brands"
+              className="group flex cursor-pointer items-center gap-4 py-2 lg:hidden"
+            >
+              <FontAwesomeIcon icon={faBookmark} className="fa-lg pl-1" />
+
+              <div className="group-hover:underline">
+                {t("components.navbar.savedBrands")}
+              </div>
+            </Link>
+            <div className="cursor-pointer border-[1px] border-white1 lg:hidden" />
 
             <Link
               href="/manage-offers"
@@ -327,29 +350,6 @@ export const Navbar = (params: {
                 </div>
               </Link>
             )}
-            <div className="cursor-pointer border-[1px] border-white1 lg:hidden" />
-
-            <Link
-              href="/explore/brands"
-              className="group flex cursor-pointer items-center gap-4 py-2 lg:hidden"
-            >
-              <FontAwesomeIcon icon={faSearch} className="fa-lg" />
-
-              <div className="group-hover:underline">
-                {t("components.navbar.exploreBrands")}
-              </div>
-            </Link>
-
-            <Link
-              href="/saved/brands"
-              className="group flex cursor-pointer items-center gap-4 py-2 lg:hidden"
-            >
-              <FontAwesomeIcon icon={faBookmark} className="fa-lg pl-1" />
-
-              <div className="group-hover:underline">
-                {t("components.navbar.savedBrands")}
-              </div>
-            </Link>
 
             <div className="cursor-pointer border-[1px] border-white1" />
 
