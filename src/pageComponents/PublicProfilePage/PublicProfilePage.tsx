@@ -357,8 +357,11 @@ const PublicProfilePage = (params: {
               href={`/${params.username}/edit`}
               className="flex cursor-pointer items-center gap-2"
             >
-              <FontAwesomeIcon icon={faPencil} className="fa-sm sm:fa-lg" />
-
+              <FontAwesomeIcon
+                icon={faPencil}
+                className="fa-lg hidden lg:flex"
+              />
+              <FontAwesomeIcon icon={faPencil} className="fa-md lg:hidden" />
               <div className="underline">
                 {t("pages.publicProfilePage.editMyPage")}
               </div>
@@ -370,7 +373,11 @@ const PublicProfilePage = (params: {
           >
             <FontAwesomeIcon
               icon={faShareFromSquare}
-              className="fa-sm sm:fa-lg"
+              className="fa-lg hidden lg:flex"
+            />
+            <FontAwesomeIcon
+              icon={faShareFromSquare}
+              className="fa-md lg:hidden"
             />
 
             <div className="underline">
@@ -386,7 +393,11 @@ const PublicProfilePage = (params: {
                 <>
                   <FontAwesomeIcon
                     icon={faBookmarkSolid}
-                    className="fa-sm sm:fa-lg"
+                    className="fa-lg hidden lg:flex"
+                  />
+                  <FontAwesomeIcon
+                    icon={faBookmarkSolid}
+                    className="fa-md lg:hidden"
                   />
                   <div className="underline">
                     {t("pages.publicProfilePage.saved")}
@@ -396,7 +407,11 @@ const PublicProfilePage = (params: {
                 <>
                   <FontAwesomeIcon
                     icon={faBookmark}
-                    className="fa-sm sm:fa-lg "
+                    className="fa-lg hidden lg:flex "
+                  />
+                  <FontAwesomeIcon
+                    icon={faBookmark}
+                    className="fa-md lg:hidden "
                   />
                   <div className="underline">
                     {t("pages.publicProfilePage.save")}
