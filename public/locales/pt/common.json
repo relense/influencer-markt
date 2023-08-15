@@ -563,7 +563,7 @@
       "loadMore": "Mostrar Mais"
     },
 
-    "myOffer": {
+    "manageOffers": {
       "errorWarning": "Máximo de {{count}} caracteres",
       "createOffer": "Criar Oferta",
       "updateOffer": "Actualizar Oferta",

@@ -324,7 +324,7 @@ export const Navbar = (params: {
             </Link>
 
             <Link
-              href="/my-offers"
+              href="/manage-offers"
               className="group flex cursor-pointer items-center gap-4 py-2"
             >
               <FontAwesomeIcon icon={faBriefcase} className="fa-lg" />

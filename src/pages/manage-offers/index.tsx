@@ -2,14 +2,14 @@ import type { NextPage } from "next";
 
 import { ProtectedWrapper } from "../../components/ProtectedWrapper";
 import { Layout } from "../../components/Layout";
-import { MyOffersPage } from "../../pageComponents/MyOffersPage/MyOffersPage";
+import { OfferManagementPage } from "../../pageComponents/OfferManagementPage/OfferManagementPage";
 
-const MyOffers: NextPage = () => {
+const ManageOffers: NextPage = () => {
   return (
     <ProtectedWrapper>
-      <Layout>{() => <MyOffersPage />}</Layout>
+      <Layout>{() => <OfferManagementPage />}</Layout>
     </ProtectedWrapper>
   );
 };
 
-export default MyOffers;
+export default ManageOffers;

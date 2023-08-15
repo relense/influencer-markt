@@ -92,7 +92,7 @@ const MyOfferModal = (params: {
   const { mutate: offerCreation, isLoading: isLoadingCreate } =
     api.offers.createOffer.useMutation({
       onSuccess: (offer) => {
-        void router.push(`/my-offers/${offer.id}`);
+        void router.push(`/manage-offers/${offer.id}`);
         void ctx.offers.getAllUserOffers.invalidate().then(() => {
           toast.success(t("components.myOfferDropDown.offerCreated"), {
             position: "bottom-left",
@@ -160,7 +160,7 @@ const MyOfferModal = (params: {
       <>
         <div className="flex flex-col gap-4">
           <div className="text-xl font-medium">
-            {t("pages.myOffer.offerSummary")}
+            {t("pages.manageOffers.offerSummary")}
           </div>
           <div className="flex w-full flex-col">
             <input
@@ -168,13 +168,13 @@ const MyOfferModal = (params: {
               required
               type="text"
               className="flex h-14 flex-1 cursor-pointer rounded-lg border-[1px] border-gray3 bg-transparent p-4 placeholder-gray2 placeholder:w-11/12"
-              placeholder={t("pages.myOffer.offerSummaryPlaceholder")}
+              placeholder={t("pages.manageOffers.offerSummaryPlaceholder")}
               autoComplete="off"
             />
             {errors.offerSummary &&
               errors.offerSummary.type === "maxLength" && (
                 <div className="px-4 py-1 text-red-600">
-                  {t("pages.myOffer.errorWarning", { count: 50 })}
+                  {t("pages.manageOffers.errorWarning", { count: 50 })}
                 </div>
               )}
           </div>
@@ -189,20 +189,20 @@ const MyOfferModal = (params: {
       <>
         <div className="flex flex-col gap-4">
           <div className="text-xl font-medium">
-            {t("pages.myOffer.offerDetails")}
+            {t("pages.manageOffers.offerDetails")}
           </div>
           <div className="flex w-full flex-col">
             <textarea
               {...register("offerDetails", { maxLength: 2200 })}
               required
               className="flex flex-1 cursor-pointer rounded-lg border-[1px] border-gray3 bg-transparent p-4 placeholder-gray2 placeholder:w-11/12"
-              placeholder={t("pages.myOffer.detailsPlaceholder")}
+              placeholder={t("pages.manageOffers.detailsPlaceholder")}
               autoComplete="off"
             />
             {errors.offerDetails &&
               errors.offerDetails.type === "maxLength" && (
                 <div className="px-4 py-1 text-red-600">
-                  {t("pages.myOffer..errorWarning", {
+                  {t("pages.manageOffers..errorWarning", {
                     count: 2200,
                   })}
                 </div>
@@ -219,7 +219,7 @@ const MyOfferModal = (params: {
       <>
         <div className="flex flex-col gap-4">
           <div className="text-xl font-medium">
-            {t("pages.myOffer.platformTitle")}
+            {t("pages.manageOffers.platformTitle")}
           </div>
           <Controller
             name="platform"
@@ -230,7 +230,7 @@ const MyOfferModal = (params: {
                 <CustomSelect
                   register={register}
                   name="platform"
-                  placeholder={t("pages.myOffer.platformPlaceholder")}
+                  placeholder={t("pages.manageOffers.platformPlaceholder")}
                   options={platforms?.map((platform) => {
                     return { id: platform.id, name: platform.name };
                   })}
@@ -275,7 +275,7 @@ const MyOfferModal = (params: {
           <div className="flex flex-col gap-4">
             <div className="flex items-center gap-2">
               <div className="text-xl font-medium">
-                {t("pages.myOffer.contentTypesTitle")}
+                {t("pages.manageOffers.contentTypesTitle")}
               </div>
               {!allContentTypesSelected && (
                 <div className="flex h-6 w-6 items-center justify-center rounded-full bg-influencer text-white">
@@ -334,9 +334,12 @@ const MyOfferModal = (params: {
         <div className="flex flex-1 items-center gap-2">
           <CustomSelect
             name="contentType"
-            placeholder={t("pages.myOffer.contentTypePlaceholder")}
+            placeholder={t("pages.manageOffers.contentTypePlaceholder")}
             options={types.map((type) => {
-              return { id: type.id, name: t(`general.contentTypes.${type.name}`)}
+              return {
+                id: type.id,
+                name: t(`general.contentTypes.${type.name}`),
+              };
             })}
             value={
               contentTypesList?.[index]?.contentType || { id: -1, name: "" }
@@ -351,7 +354,7 @@ const MyOfferModal = (params: {
             type="number"
             required
             className="h-14 w-full rounded-lg border-[1px] border-gray3 p-4 placeholder-gray2 focus:border-black focus:outline-none"
-            placeholder={t("pages.myOffer.howMany")}
+            placeholder={t("pages.manageOffers.howMany")}
             max="1000000000"
             min="1"
             value={contentTypesList[index]?.amount || ""}
@@ -399,7 +402,7 @@ const MyOfferModal = (params: {
       <>
         <div className="flex flex-col gap-4">
           <div className="text-xl font-medium">
-            {t("pages.myOffer.offerCategories")}
+            {t("pages.manageOffers.offerCategories")}
           </div>
           <Controller
             name="categories"
@@ -409,7 +412,7 @@ const MyOfferModal = (params: {
               return (
                 <CustomMultiSelect
                   name="categories"
-                  placeholder={t("pages.myOffer.categoriesPlaceholder")}
+                  placeholder={t("pages.manageOffers.categoriesPlaceholder")}
                   options={categories?.map((category) => {
                     return {
                       id: category.id,
@@ -436,14 +439,14 @@ const MyOfferModal = (params: {
       <>
         <div className="flex flex-col gap-4">
           <div className="text-xl font-medium">
-            {t("pages.myOffer.offerPriceTitle")}
+            {t("pages.manageOffers.offerPriceTitle")}
           </div>
           <input
             {...register("offerPrice", { valueAsNumber: true })}
             required
             type="number"
             className="flex h-14 flex-1 cursor-pointer rounded-lg border-[1px] border-gray3 bg-transparent p-4 placeholder-gray2 placeholder:w-11/12"
-            placeholder={t("pages.myOffer.pricePlaceholder")}
+            placeholder={t("pages.manageOffers.pricePlaceholder")}
             autoComplete="off"
             min="0"
             max="1000000000"
@@ -460,14 +463,14 @@ const MyOfferModal = (params: {
       <>
         <div className="flex flex-col gap-4">
           <div className="text-xl font-medium">
-            {t("pages.myOffer.numberOfInfluencers")}
+            {t("pages.manageOffers.numberOfInfluencers")}
           </div>
           <input
             {...register("numberOfInfluencers", { valueAsNumber: true })}
             required
             type="number"
             className="flex h-14 flex-1 cursor-pointer rounded-lg border-[1px] border-gray3 bg-transparent p-4 placeholder-gray2 placeholder:w-11/12"
-            placeholder={t("pages.myOffer.numberOfInfluencersPlaceholder")}
+            placeholder={t("pages.manageOffers.numberOfInfluencersPlaceholder")}
             autoComplete="off"
             min="1"
             max="1000000"
@@ -484,7 +487,7 @@ const MyOfferModal = (params: {
       <>
         <div className="flex flex-col gap-4">
           <div className="text-xl font-medium">
-            {t("pages.myOffer.influencerLocation")}
+            {t("pages.manageOffers.influencerLocation")}
           </div>
           <div className="flex flex-col gap-6 lg:flex-row lg:gap-6">
             <Controller
@@ -496,7 +499,7 @@ const MyOfferModal = (params: {
                   <CustomSelect
                     register={register}
                     name="country"
-                    placeholder={t("pages.myOffer.country")}
+                    placeholder={t("pages.manageOffers.country")}
                     options={
                       countries && countries.length > 0
                         ? countries?.map((country) => {
@@ -526,17 +529,19 @@ const MyOfferModal = (params: {
       <>
         <div className="flex flex-col gap-4">
           <div className="text-xl font-medium">
-            {t("pages.myOffer.influencerFollowers")}
+            {t("pages.manageOffers.influencerFollowers")}
           </div>
           <div className="flex flex-col gap-6 lg:flex-row lg:items-center lg:gap-11">
             <div className="flex flex-1 flex-col gap-1">
-              <label className="text-gray2">{t("pages.myOffer.minimum")}</label>
+              <label className="text-gray2">
+                {t("pages.manageOffers.minimum")}
+              </label>
               <input
                 {...register("minFollowers", { valueAsNumber: true })}
                 type="number"
                 required
                 className="h-14 w-full rounded-lg border-[1px] border-gray3 p-4 placeholder-gray2 focus:border-black focus:outline-none"
-                placeholder={t("pages.myOffer.minFollowers")}
+                placeholder={t("pages.manageOffers.minFollowers")}
                 autoComplete="off"
                 max="1000000000"
                 min="0"
@@ -545,13 +550,15 @@ const MyOfferModal = (params: {
             </div>
 
             <div className="flex flex-1 flex-col gap-1">
-              <label className="text-gray2">{t("pages.myOffer.maximum")}</label>
+              <label className="text-gray2">
+                {t("pages.manageOffers.maximum")}
+              </label>
               <input
                 {...register("maxFollowers", { valueAsNumber: true })}
                 type="number"
                 required
                 className="h-14 w-full rounded-lg border-[1px] border-gray3 p-4 placeholder-gray2 focus:border-black focus:outline-none"
-                placeholder={t("pages.myOffer.maxFollowers")}
+                placeholder={t("pages.manageOffers.maxFollowers")}
                 autoComplete="off"
                 max="1000000000"
                 min="0"
@@ -569,19 +576,19 @@ const MyOfferModal = (params: {
     return (
       <div className="flex flex-col gap-4">
         <div className="text-xl font-medium">
-          {t("pages.myOffer.influencerGender")}
+          {t("pages.manageOffers.influencerGender")}
         </div>
-        <div className="flex flex-wrap gap-4 justify-start text-sm sm:text-base">
+        <div className="flex flex-wrap justify-start gap-4 text-sm sm:text-base">
           <div
             key={-1}
             className={
               watch("gender").id === -1
-                ? "flex w-18 sm:w-24 cursor-pointer justify-center rounded-2xl border-[1px] border-gray3 bg-influencer-green p-2 text-center text-white"
-                : "flex w-18 sm:w-24 cursor-pointer justify-center rounded-2xl border-[1px] border-gray3 p-2 text-center"
+                ? "w-18 flex cursor-pointer justify-center rounded-2xl border-[1px] border-gray3 bg-influencer-green p-2 text-center text-white sm:w-24"
+                : "w-18 flex cursor-pointer justify-center rounded-2xl border-[1px] border-gray3 p-2 text-center sm:w-24"
             }
             onClick={() => setValue("gender", { id: -1, name: "" })}
           >
-            {t(`pages.myOffer.any`)}
+            {t(`pages.manageOffers.any`)}
           </div>
           {genders?.map((gender) => {
             return (
@@ -589,12 +596,12 @@ const MyOfferModal = (params: {
                 key={gender.id}
                 className={
                   watch("gender").id === gender.id
-                    ? "flex w-18 sm:w-24 cursor-pointer justify-center rounded-2xl border-[1px] border-gray3 bg-influencer-green p-2 text-center text-white"
-                    : "flex w-18 sm:w-24 cursor-pointer justify-center rounded-2xl border-[1px] border-gray3 p-2 text-center"
+                    ? "w-18 flex cursor-pointer justify-center rounded-2xl border-[1px] border-gray3 bg-influencer-green p-2 text-center text-white sm:w-24"
+                    : "w-18 flex cursor-pointer justify-center rounded-2xl border-[1px] border-gray3 p-2 text-center sm:w-24"
                 }
                 onClick={() => setValue("gender", gender)}
               >
-                {t(`pages.myOffer.${gender.name}`)}
+                {t(`pages.manageOffers.${gender.name}`)}
               </div>
             );
           })}
@@ -607,8 +614,8 @@ const MyOfferModal = (params: {
     <Modal
       title={
         params.edit
-          ? t("pages.myOffer.updateOffer")
-          : t("pages.myOffer.createOffer")
+          ? t("pages.manageOffers.updateOffer")
+          : t("pages.manageOffers.createOffer")
       }
       onClose={() => {
         params.onClose();
@@ -618,7 +625,7 @@ const MyOfferModal = (params: {
         <div className="flex justify-center p-4">
           <Button
             type="submit"
-            title={t("pages.myOffer.saveOffer")}
+            title={t("pages.manageOffers.saveOffer")}
             level="primary"
             form="form-createModal"
             isLoading={isLoadingCreate || isLoadingUpdate}

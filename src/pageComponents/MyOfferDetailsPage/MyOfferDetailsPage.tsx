@@ -54,7 +54,7 @@ const MyOfferDetailsPage = (params: { offerId: number }) => {
       onSuccess: () => {
         void ctx.offers.getOffer.invalidate().then(() => {
           void ctx.offers.getApplicants.invalidate().then(() => {
-            toast.success(t("pages.myOffer.acceptedApplicant"), {
+            toast.success(t("pages.manageOffers.acceptedApplicant"), {
               position: "bottom-left",
             });
           });
@@ -66,7 +66,7 @@ const MyOfferDetailsPage = (params: { offerId: number }) => {
     onSuccess: () => {
       void ctx.offers.getOffer.invalidate().then(() => {
         void ctx.offers.getApplicants.invalidate().then(() => {
-          toast.success(t("pages.myOffer.rejectedApplicant"), {
+          toast.success(t("pages.manageOffers.rejectedApplicant"), {
             position: "bottom-left",
           });
         });
@@ -79,7 +79,7 @@ const MyOfferDetailsPage = (params: { offerId: number }) => {
       onSuccess: () => {
         void ctx.offers.getOffer.invalidate().then(() => {
           void ctx.offers.getApplicants.invalidate().then(() => {
-            toast.success(t("pages.myOffer.removedApplicant"), {
+            toast.success(t("pages.manageOffers.removedApplicant"), {
               position: "bottom-left",
             });
           });
@@ -92,7 +92,7 @@ const MyOfferDetailsPage = (params: { offerId: number }) => {
       onSuccess: () => {
         void ctx.offers.getOffer.invalidate().then(() => {
           void ctx.offers.getApplicants.invalidate().then(() => {
-            toast.success(t("pages.myOffer.removedApplicant"), {
+            toast.success(t("pages.manageOffers.removedApplicant"), {
               position: "bottom-left",
             });
           });
@@ -190,7 +190,10 @@ const MyOfferDetailsPage = (params: { offerId: number }) => {
     if (offer) {
       return (
         <>
-          <Link href={`/offers/${offer.id}`} className="line-clamp-2 text-xl font-semibold xs:w-3/4 hover:underline">
+          <Link
+            href={`/offers/${offer.id}`}
+            className="line-clamp-2 text-xl font-semibold hover:underline xs:w-3/4"
+          >
             {offer.offerSummary}
           </Link>
           <div className="flex flex-col sm:flex-row sm:items-center sm:gap-6">
@@ -204,14 +207,14 @@ const MyOfferDetailsPage = (params: { offerId: number }) => {
             <div className="flex items-center gap-2">
               <div className="font-semibold text-influencer">
                 {offer.published
-                  ? t("pages.myOffer.published")
-                  : t("pages.myOffer.unpublished")}
+                  ? t("pages.manageOffers.published")
+                  : t("pages.manageOffers.unpublished")}
               </div>
               <div className="h-1 w-1 rounded-full bg-black"></div>
               <div className="font-semibold text-influencer">
-                {offer.offerStatus.id === 1 && t("pages.myOffer.open")}
-                {offer.offerStatus.id === 2 && t("pages.myOffer.progress")}
-                {offer.offerStatus.id === 3 && t("pages.myOffer.archived")}
+                {offer.offerStatus.id === 1 && t("pages.manageOffers.open")}
+                {offer.offerStatus.id === 2 && t("pages.manageOffers.progress")}
+                {offer.offerStatus.id === 3 && t("pages.manageOffers.archived")}
               </div>
             </div>
           </div>
@@ -234,7 +237,10 @@ const MyOfferDetailsPage = (params: { offerId: number }) => {
                 return (
                   <div key={contentType.id} className="flex items-center gap-2">
                     <div>
-                    {t(`general.contentTypesPlural.${contentType.contentType.name}`, {count: contentType.amount})}
+                      {t(
+                        `general.contentTypesPlural.${contentType.contentType.name}`,
+                        { count: contentType.amount }
+                      )}
                       {offer.contentTypeWithQuantity.length - 1 !== index &&
                         ", "}
                     </div>
@@ -248,16 +254,16 @@ const MyOfferDetailsPage = (params: { offerId: number }) => {
             <div className="hidden h-1 w-1 rounded-full bg-black sm:flex"></div>
             <div className="flex items-center gap-2">
               <div className="font-semibold text-influencer">
-                {t("pages.myOffer.gender")}
+                {t("pages.manageOffers.gender")}
               </div>
-              <div>{offer.gender?.name || t("pages.myOffer.any")}</div>
+              <div>{offer.gender?.name || t("pages.manageOffers.any")}</div>
             </div>
           </>
           <>
             <div className="hidden h-1 w-1 rounded-full bg-black sm:flex"></div>
             <div className="flex items-center gap-2">
               <div className="font-semibold text-influencer">
-                {t("pages.myOffer.followers")}
+                {t("pages.manageOffers.followers")}
               </div>
               <div>
                 {helper.formatNumberWithKorM(offer.minFollowers)} -{" "}
@@ -269,7 +275,7 @@ const MyOfferDetailsPage = (params: { offerId: number }) => {
             <div className="hidden h-1 w-1 rounded-full bg-black sm:flex"></div>
             <div className="flex items-center gap-2">
               <div className="font-semibold text-influencer">
-                {t("pages.myOffer.price")}
+                {t("pages.manageOffers.price")}
               </div>
               <div>{helper.formatNumber(offer.price)}€</div>
             </div>
@@ -285,7 +291,7 @@ const MyOfferDetailsPage = (params: { offerId: number }) => {
         <div>
           <div>
             <span className="pr-2 font-semibold text-influencer">
-              {t("pages.myOffer.offerDescription")}
+              {t("pages.manageOffers.offerDescription")}
             </span>
             <div className="whitespace-pre-line">{offer.OfferDetails}</div>
           </div>
@@ -300,7 +306,7 @@ const MyOfferDetailsPage = (params: { offerId: number }) => {
         <div>
           <div className="flex flex-wrap items-center">
             <div className="pr-2 font-semibold text-influencer">
-              {t("pages.myOffer.categories")}
+              {t("pages.manageOffers.categories")}
             </div>
             {offer.categories.map((category, index) => {
               return (
@@ -326,7 +332,7 @@ const MyOfferDetailsPage = (params: { offerId: number }) => {
               className="fa-xl cursor-pointer text-influencer"
             />
             <div className="font-semibold">
-              {t("pages.myOffer.applicants", {
+              {t("pages.manageOffers.applicants", {
                 count: offer.applicants.length,
               })}
             </div>
@@ -337,7 +343,7 @@ const MyOfferDetailsPage = (params: { offerId: number }) => {
               className="fa-xl cursor-pointer text-influencer"
             />
             <div className="font-semibold">
-              {t("pages.myOffer.openings", {
+              {t("pages.manageOffers.openings", {
                 acceptedAplicants: offer.acceptedApplicants.length,
                 count: offer.numberOfInfluencers,
               })}
@@ -346,7 +352,7 @@ const MyOfferDetailsPage = (params: { offerId: number }) => {
           {offer.acceptedApplicants.length === offer.numberOfInfluencers &&
             offer.offerStatus.id === 1 && (
               <Button
-                title={t("pages.myOffer.initiateOffer")}
+                title={t("pages.manageOffers.initiateOffer")}
                 level="primary"
                 isLoading={isLoadingStartOffer}
                 onClick={() =>
@@ -370,7 +376,7 @@ const MyOfferDetailsPage = (params: { offerId: number }) => {
             onClick={() => setIsDetailsOpen(!isDetailsOpen)}
           >
             <div className="text-2xl font-bold">
-              {t("pages.myOffer.offerDetails")}
+              {t("pages.manageOffers.offerDetails")}
             </div>
             <div className="flex h-6 w-6 justify-center rounded-full border-[1px]">
               <div>
@@ -416,7 +422,7 @@ const MyOfferDetailsPage = (params: { offerId: number }) => {
             }
           >
             <div className="text-2xl font-bold">
-              {t("pages.myOffer.acceptedAplicants")}
+              {t("pages.manageOffers.acceptedAplicants")}
             </div>
             <div className="flex h-6 w-6 justify-center rounded-full border-[1px]">
               <div>
@@ -465,7 +471,7 @@ const MyOfferDetailsPage = (params: { offerId: number }) => {
 
                     {offer.offerStatus.id === 1 && (
                       <Button
-                        title={t("pages.myOffer.removeButton")}
+                        title={t("pages.manageOffers.removeButton")}
                         level="secondary"
                         size="large"
                         onClick={() => onRemoveFromAccepted(applicant.id)}
@@ -490,7 +496,7 @@ const MyOfferDetailsPage = (params: { offerId: number }) => {
             onClick={() => setIsApplicantsOpen(!isApplicantsOpen)}
           >
             <div className="text-2xl font-bold">
-              {t("pages.myOffer.applicantsWithoutCount")}
+              {t("pages.manageOffers.applicantsWithoutCount")}
             </div>
             <div className="flex h-6 w-6 justify-center rounded-full border-[1px]">
               <div>
@@ -540,13 +546,13 @@ const MyOfferDetailsPage = (params: { offerId: number }) => {
                       offer.numberOfInfluencers && (
                       <div className="flex justify-around gap-4">
                         <Button
-                          title={t("pages.myOffer.acceptButton")}
+                          title={t("pages.manageOffers.acceptButton")}
                           level="terciary"
                           size="large"
                           onClick={() => onAcceptedApplicant(applicant.id)}
                         />
                         <Button
-                          title={t("pages.myOffer.rejectButton")}
+                          title={t("pages.manageOffers.rejectButton")}
                           level="secondary"
                           size="large"
                           onClick={() => onRejectApplicant(applicant.id)}
@@ -574,7 +580,7 @@ const MyOfferDetailsPage = (params: { offerId: number }) => {
             }
           >
             <div className="text-2xl font-bold">
-              {t("pages.myOffer.rejectedApplicants")}
+              {t("pages.manageOffers.rejectedApplicants")}
             </div>
             <div className="flex h-6 w-6 justify-center rounded-full border-[1px]">
               <div>
@@ -622,7 +628,7 @@ const MyOfferDetailsPage = (params: { offerId: number }) => {
                     />
 
                     <Button
-                      title={t("pages.myOffer.removeButton")}
+                      title={t("pages.manageOffers.removeButton")}
                       level="secondary"
                       size="large"
                       onClick={() => onRemoveFromRejected(applicant.id)}
@@ -643,7 +649,7 @@ const MyOfferDetailsPage = (params: { offerId: number }) => {
     if (offer) {
       return (
         <>
-          <div className="flex w-full cursor-default flex-col gap-8 self-center p-8 sm:p-4 pb-10 sm:px-12 xl:w-3/4 2xl:w-3/4 3xl:w-2/4">
+          <div className="flex w-full cursor-default flex-col gap-8 self-center p-8 pb-10 sm:p-4 sm:px-12 xl:w-3/4 2xl:w-3/4 3xl:w-2/4">
             {renderOfferDetails()}
 
             {offer.acceptedApplicants.length > 0 && (

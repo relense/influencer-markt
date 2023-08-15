@@ -10,8 +10,9 @@ import { LoadingSpinner } from "../../components/LoadingSpinner";
 import type { OfferWithAllData, Option } from "../../utils/globalTypes";
 import { Button } from "../../components/Button";
 import { MyOffersActionConfirmationModal } from "../../components/MyOffersActionConfirmationModal";
+import { Modal } from "../../components/Modal";
 
-const MyOffersPage = () => {
+const OfferManagementPage = () => {
   const { t } = useTranslation();
   const [offerStatus, setOfferStatus] = useState<Option>({
     id: 1,
@@ -28,6 +29,7 @@ const MyOffersPage = () => {
     "archive" | "delete" | "publish"
   >("archive");
   const [warningModalOfferId, setWarningModalOfferId] = useState<number>(-1);
+  const [showFirstTimeModal, setShowFirstTimeModal] = useState<boolean>(false);
 
   const {
     data: offersData,
@@ -79,6 +81,17 @@ const MyOffersPage = () => {
     }
   }, [offers, offersWithCursorData]);
 
+  useEffect(() => {
+    if (!localStorage.getItem("isfirstVisitMyOffers")) {
+      setShowFirstTimeModal(true);
+    }
+  }, []);
+
+  const setfirstVisitInfo = () => {
+    setShowFirstTimeModal(false);
+    localStorage.setItem("isfirstVisitMyOffers", "false");
+  };
+
   const changeOpenSelected = (offerStatus: Option) => {
     setOfferStatus(offerStatus);
     setOffers([]);
@@ -119,7 +132,7 @@ const MyOffersPage = () => {
                 }
                 onClick={() => changeOpenSelected(offerStatusElem)}
               >
-                {t(`pages.myOffer.${offerStatusElem.name}Offers`)}
+                {t(`pages.manageOffers.${offerStatusElem.name}Offers`)}
               </div>
             );
           })}
@@ -150,9 +163,11 @@ const MyOffersPage = () => {
               })
             ) : (
               <div className="flex flex-1 items-center justify-center">
-                {offerStatus.id === 1 && t("pages.myOffer.noOffersOpen")}
-                {offerStatus.id === 2 && t("pages.myOffer.noOffersProgress")}
-                {offerStatus.id === 3 && t("pages.myOffer.noOffersArchived")}
+                {offerStatus.id === 1 && t("pages.manageOffers.noOffersOpen")}
+                {offerStatus.id === 2 &&
+                  t("pages.manageOffers.noOffersProgress")}
+                {offerStatus.id === 3 &&
+                  t("pages.manageOffers.noOffersArchived")}
               </div>
             )}
           </>
@@ -171,14 +186,14 @@ const MyOffersPage = () => {
           <div className="flex h-6 w-6 items-center justify-center rounded-full bg-influencer text-white">
             <FontAwesomeIcon icon={faPlus} className="fa-sm cursor-pointer" />
           </div>
-          <div>{t("pages.myOffer.createOffer")}</div>
+          <div>{t("pages.manageOffers.createOffer")}</div>
         </div>
         {renderOfferButtons()}
         {renderOffers()}
         {offersData && offersData[0] > offers.length && (
           <div className="flex items-center justify-center">
             <Button
-              title={t("pages.myOffer.loadMore")}
+              title={t("pages.manageOffers.loadMore")}
               onClick={() => refetchOffersWithCursor()}
               isLoading={isRefetchingOffersWithCursor}
             />
@@ -204,8 +219,30 @@ const MyOffersPage = () => {
           />
         )}
       </div>
+      {showFirstTimeModal && (
+        <div className="flex justify-center">
+          <Modal onClose={() => setfirstVisitInfo()}>
+            <div className="flex h-full w-full flex-1 cursor-default flex-col items-center gap-6 px-12 py-4">
+              <div className="text-center font-playfair text-4xl font-semibold">
+                {t("pages.manageOffers.myOffersModalTitle")}
+              </div>
+              <div className="text-center font-playfair text-xl font-semibold">
+                {t("pages.manageOffers.myOffersModalSubTitle")}
+              </div>
+              <div className="flex w-full flex-1 justify-start">
+                <ul></ul>
+              </div>
+
+              <Button
+                title={t("pages.manageOffers.understandModalButton")}
+                level="primary"
+              />
+            </div>
+          </Modal>
+        </div>
+      )}
     </>
   );
 };
 
-export { MyOffersPage };
+export { OfferManagementPage };

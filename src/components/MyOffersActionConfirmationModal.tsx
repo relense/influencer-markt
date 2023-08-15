@@ -42,7 +42,7 @@ const MyOffersActionConfirmationModal = (params: {
 
   const { mutate: deleteOffer } = api.offers.deleteOffer.useMutation({
     onSuccess: () => {
-      void router.push("/my-offers");
+      void router.push("/manage-offers");
       void ctx.offers.getAllUserOffers.invalidate().then(() => {
         void ctx.offers.getOffer.invalidate().then(() => {
           toast.success(t("components.myOfferDropDown.offerDeleted"), {
@@ -72,7 +72,7 @@ const MyOffersActionConfirmationModal = (params: {
         <div className="flex justify-center p-4">
           <Button
             type="submit"
-            title={t(`pages.myOffer.${params.type}Button`)}
+            title={t(`pages.manageOffers.${params.type}Button`)}
             level="primary"
             form="form-warningModal"
           />
@@ -85,10 +85,10 @@ const MyOffersActionConfirmationModal = (params: {
         className="flex flex-col gap-4 p-4"
       >
         <div className="text-center text-3xl font-semibold text-influencer">
-          {t("pages.myOffer.areYouSure")}
+          {t("pages.manageOffers.areYouSure")}
         </div>
         <div className="text-center text-lg">
-          {t(`pages.myOffer.${params.type}Warning`)}
+          {t(`pages.manageOffers.${params.type}Warning`)}
         </div>
       </form>
     </Modal>

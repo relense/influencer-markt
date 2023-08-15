@@ -141,7 +141,7 @@
       "influencers": "Influencers",
       "brands": "Brands",
       "campaigns": "Campaigns",
-      "myOffers": "My Offers",
+      "myOffers": "Manage Offers",
       "offers": "Offers",
       "aboutUs": "About Us",
       "contactUs": "Contact Us",
@@ -491,7 +491,7 @@
       "emailInputPlaceholder": "Email",
       "messageInputPlaceholder": "Tell us how we can assist you! Please provide as much detail as possible about your requirements, goals, and any specific inquiries you have. The more information you share, the better we can understand your needs and provide tailored support. We look forward to hearing from you!",
       "warningMessage": "Max is {{count}} characters",
-      "modalTitle": "Check our FAQ Before Contacting Us",
+      "modalTitle": "Check Our FAQ Before Contacting Us",
       "modalSubTitle": "Before contacting us, we kindly request that you check our FAQ page to see if your question has already been answered. We have compiled a list of frequently asked questions to provide you with quick and helpful information. You may find the answer you're looking for without the need to wait for a response. If you don't find what you need in the FAQ section, feel free to reach out to us using the contact form below. We'll be happy to assist you!",
       "modalButton": "Explore FAQs"
     },
@@ -633,7 +633,10 @@
       "removeButton": "Remove",
       "rejectButton": "Reject",
       "acceptButton": "Accept",
-      "initiateOffer": "Start Order"
+      "initiateOffer": "Start Order",
+      "myOffersModalTitle": "Welcome to the Offer Management Menu",
+      "myOffersModalSubTitle": "Hey there! We're excited to help you with offers. Here's a quick guide to get you started:",
+      "understandModalButton": "I Understand"
     },
 
     "offers": {
