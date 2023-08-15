@@ -74,7 +74,7 @@ const SavedPage = (params: { roleId: number }) => {
       </div>
     );
   } else {
-    if (profileFavorites && profileFavorites.favorites.length > 0) {
+    if (userProfiles && userProfiles.length > 0) {
       return (
         <div className="flex flex-1 flex-col justify-start gap-12 p-2 lg:w-full lg:gap-6 lg:p-12 xl:self-center xl:p-4 2xl:w-3/4">
           <div className="flex flex-1 flex-wrap justify-center gap-12">

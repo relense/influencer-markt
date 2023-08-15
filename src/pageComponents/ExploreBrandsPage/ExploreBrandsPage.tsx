@@ -42,19 +42,22 @@ const ExploreBrandsPage = () => {
     data: profiles,
     refetch: profileRefetch,
     isLoading,
-  } = api.profiles.getAllBrandsProfiles.useQuery({
-    socialMedia: filterState.platforms.map((platform) => {
-      return platform.id;
-    }),
-    categories: filterState.categories.map((category) => {
-      return category.id;
-    }),
-    minFollowers: filterState.minFollowers || -1,
-    maxFollowers: filterState.maxFollowers || -1,
+  } = api.profiles.getAllBrandsProfiles.useQuery(
+    {
+      socialMedia: filterState.platforms.map((platform) => {
+        return platform.id;
+      }),
+      categories: filterState.categories.map((category) => {
+        return category.id;
+      }),
+      minFollowers: filterState.minFollowers || -1,
+      maxFollowers: filterState.maxFollowers || -1,
 
-    country: filterState.country.id,
-    city: filterState.city.id,
-  });
+      country: filterState.country.id,
+      city: filterState.city.id,
+    },
+    { cacheTime: 0 }
+  );
 
   const {
     data: profilesWithCursor,
