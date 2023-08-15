@@ -12,7 +12,7 @@ const FirstTimeOfferManagementModal = (params: {
       <Modal
         onClose={() => params.setfirstVisitInfo()}
         button={
-          <div className="flex flex-col items-center justify-between gap-4 p-4 sm:px-8 lg:flex-row">
+          <div className="flex flex-col items-center justify-center gap-4 p-4 sm:px-8 lg:flex-row">
             <Button
               title={t("pages.manageOffers.firstTimedModalButton")}
               level="primary"

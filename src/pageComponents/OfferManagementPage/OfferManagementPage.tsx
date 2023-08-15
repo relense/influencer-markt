@@ -220,7 +220,11 @@ const OfferManagementPage = () => {
         )}
       </div>
       {showFirstTimeModal && (
-        <FirstTimeOfferManagementModal setfirstVisitInfo={setfirstVisitInfo} />
+        <div className="flex justify-center">
+          <FirstTimeOfferManagementModal
+            setfirstVisitInfo={setfirstVisitInfo}
+          />
+        </div>
       )}
     </>
   );
