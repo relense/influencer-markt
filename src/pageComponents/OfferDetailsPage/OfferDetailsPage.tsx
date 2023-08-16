@@ -26,6 +26,9 @@ const OfferDetailsPage = (params: {
   const [offer, setOffer] = useState<OfferIncludes>();
   const [applied, setApplied] = useState<boolean>();
   const [isShareModalOpen, setIsShareModalOpen] = useState<boolean>();
+  const [disableApply, setDisableApply] = useState<boolean>(false);
+
+  const { data: profile } = api.profiles.getProfile.useQuery();
 
   const {
     data: offerData,
@@ -83,11 +86,52 @@ const OfferDetailsPage = (params: {
       return hasApplied;
     };
 
+    const checkIfUserHasRequirements = (offer: OfferIncludes) => {
+      if (profile) {
+        const hasSocialMedia = profile?.userSocialMedia.find(
+          (userSocialMedia) =>
+            userSocialMedia.socialMedia?.id === offer?.socialMediaId
+        );
+
+        let hasFollowers = false;
+        if (hasSocialMedia) {
+          hasFollowers =
+            (hasSocialMedia.followers >= offer.minFollowers &&
+              hasSocialMedia.followers <= offer.maxFollowers) ||
+            hasSocialMedia.followers > offer.maxFollowers;
+        }
+
+        const hasOfferGender =
+          profile.genderId === offer.genderId || offer.gender === null;
+
+        const hasCountry = profile.countryId === offer.countryId;
+
+        const hasCategory = profile.categories.some((category) =>
+          offer.categories.some(
+            (offerCategory) => offerCategory.id === category.id
+          )
+        );
+
+        return (
+          !!hasSocialMedia &&
+          hasOfferGender &&
+          hasCountry &&
+          hasFollowers &&
+          hasCategory
+        );
+      }
+    };
+
     if (offerData) {
+      const hasRequirements = checkIfUserHasRequirements(offerData);
+
+      if (!hasRequirements) {
+        setDisableApply(true);
+      }
       setApplied(checkIfUserHasApplied(offerData));
       setOffer(offerData);
     }
-  }, [offerData, session.data?.user.id]);
+  }, [offerData, profile, profile?.userSocialMedia, session.data?.user.id]);
 
   const onApply = (offer: OfferIncludes) => {
     if (session.status === "authenticated") {
@@ -306,6 +350,7 @@ const OfferDetailsPage = (params: {
               removingIsLoading
             }
             onClick={() => onApply(offer)}
+            disabled={disableApply}
           />
         </div>
       );
