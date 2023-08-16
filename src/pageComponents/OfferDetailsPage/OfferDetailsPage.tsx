@@ -123,10 +123,12 @@ const OfferDetailsPage = (params: {
     };
 
     if (offerData) {
-      const hasRequirements = checkIfUserHasRequirements(offerData);
+      if (profile) {
+        const hasRequirements = checkIfUserHasRequirements(offerData);
 
-      if (!hasRequirements) {
-        setDisableApply(true);
+        if (!hasRequirements) {
+          setDisableApply(true);
+        }
       }
       setApplied(checkIfUserHasApplied(offerData));
       setOffer(offerData);
