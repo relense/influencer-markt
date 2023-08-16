@@ -10,7 +10,7 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { faBookmark } from "@fortawesome/free-regular-svg-icons";
 import { faBookmark as faBookmarkSolid } from "@fortawesome/free-solid-svg-icons";
-
+import { useSession } from "next-auth/react";
 import Image from "next/image";
 import { toast } from "react-hot-toast";
 import Link from "next/link";
@@ -33,7 +33,6 @@ import type {
   ProfileOffers,
 } from "../../utils/globalTypes";
 import { ShareModal } from "../../components/ShareModal";
-import { useSession } from "next-auth/react";
 
 const PublicProfilePage = (params: {
   username: string;

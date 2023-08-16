@@ -15,7 +15,21 @@ import { Button } from "../../../components/Button";
 import { useSession } from "next-auth/react";
 import { toast } from "react-hot-toast";
 import Link from "next/link";
-import { type Role } from "@prisma/client";
+import type { Prisma, Role } from "@prisma/client";
+
+export type ProfileIncludes = Prisma.ProfileGetPayload<{
+  include: {
+    categories: true;
+    userSocialMedia: {
+      select: {
+        followers: true;
+        handler: true;
+        id: true;
+        socialMedia: true;
+      };
+    };
+  };
+}>;
 
 const OfferDetails = (params: {
   setSelectedOfferId: () => void;
@@ -24,6 +38,7 @@ const OfferDetails = (params: {
   openShareModal: () => void;
   type: "mobile" | "desktop";
   userRole: Role | undefined;
+  profile: ProfileIncludes | undefined;
 }) => {
   const { t, i18n } = useTranslation();
   const session = useSession();
@@ -32,6 +47,7 @@ const OfferDetails = (params: {
 
   const [offer, setOffer] = useState<OfferIncludes>();
   const [applied, setApplied] = useState<boolean>();
+  const [disableApply, setDisableApply] = useState<boolean>(false);
 
   const { data: offerData, isLoading } = api.offers.getSimpleOffer.useQuery({
     offerId: params?.selectedOfferId || -1,
@@ -83,11 +99,64 @@ const OfferDetails = (params: {
       return hasApplied;
     };
 
+    const checkIfUserHasRequirements = (
+      offer: OfferIncludes,
+      profile: ProfileIncludes
+    ) => {
+      const hasSocialMedia = profile?.userSocialMedia.find(
+        (userSocialMedia) =>
+          userSocialMedia.socialMedia?.id === offer?.socialMediaId
+      );
+
+      let hasFollowers = false;
+      if (hasSocialMedia) {
+        hasFollowers =
+          (hasSocialMedia.followers >= offer.minFollowers &&
+            hasSocialMedia.followers <= offer.maxFollowers) ||
+          hasSocialMedia.followers > offer.maxFollowers;
+      }
+
+      const hasOfferGender =
+        profile.genderId === offer.genderId || offer.gender === null;
+
+      const hasCountry = profile.countryId === offer.countryId;
+
+      const hasCategory = profile.categories.some((category) =>
+        offer.categories.some(
+          (offerCategory) => offerCategory.id === category.id
+        )
+      );
+
+      return (
+        !!hasSocialMedia &&
+        hasOfferGender &&
+        hasCountry &&
+        hasFollowers &&
+        hasCategory
+      );
+    };
+
     if (offerData) {
+      if (params.profile) {
+        const hasRequirements = checkIfUserHasRequirements(
+          offerData,
+          params.profile
+        );
+
+        if (!hasRequirements) {
+          setDisableApply(true);
+        }
+      }
+
       setApplied(checkIfUserHasApplied(offerData));
       setOffer(offerData);
     }
-  }, [offerData, session.data?.user.id]);
+  }, [
+    offerData,
+    params.profile,
+    params.profile?.userSocialMedia,
+    session.data?.user.id,
+  ]);
 
   useEffect(() => {
     detailsContainer.current?.scrollTo(0, 0);
@@ -310,6 +379,7 @@ const OfferDetails = (params: {
             size="large"
             isLoading={applicationIsLoading || removingIsLoading}
             onClick={() => onApply(offer)}
+            disabled={disableApply}
           />
         </div>
       );

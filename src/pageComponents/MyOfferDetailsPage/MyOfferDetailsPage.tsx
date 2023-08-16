@@ -14,14 +14,17 @@ import { helper, useOutsideClick } from "../../utils/helper";
 import { LoadingSpinner } from "../../components/LoadingSpinner";
 import { MyOfferDropdown } from "../../components/MyOfferDropdown";
 import { ProfileCard } from "../../components/ProfileCard";
-import { MyOfferModal } from "../../components/MyOfferModal";
+import { CreateOfferModal } from "../../components/CreateOfferModal";
 import { MyOffersActionConfirmationModal } from "../../components/MyOffersActionConfirmationModal";
 import { Button } from "../../components/Button";
 import { toast } from "react-hot-toast";
 import { useRouter } from "next/router";
 import Link from "next/link";
 
-const MyOfferDetailsPage = (params: { offerId: number }) => {
+const MyOfferDetailsPage = (params: {
+  offerId: number;
+  loggedInProfileId: number;
+}) => {
   const { t, i18n } = useTranslation();
   const dropdownRef = useRef(null);
   const ctx = api.useContext();
@@ -41,13 +44,23 @@ const MyOfferDetailsPage = (params: { offerId: number }) => {
   >("archive");
   const [warningModalOfferId, setWarningModalOfferId] = useState<number>(-1);
 
-  const { data: offer, isLoading } = api.offers.getOffer.useQuery({
-    offerId: params.offerId,
-  });
+  const { data: offer, isLoading } = api.offers.getOffer.useQuery(
+    {
+      offerId: params.offerId,
+    },
+    {
+      cacheTime: 0,
+    }
+  );
 
-  const { data: profiles } = api.offers.getApplicants.useQuery({
-    offerId: params.offerId,
-  });
+  const { data: profiles } = api.offers.getApplicants.useQuery(
+    {
+      offerId: params.offerId,
+    },
+    {
+      cacheTime: 0,
+    }
+  );
 
   const { mutate: acceptedApplicant } =
     api.offers.acceptedApplicant.useMutation({
@@ -443,6 +456,14 @@ const MyOfferDetailsPage = (params: { offerId: number }) => {
           {isAcceptedApplicantsOpen && (
             <div className="flex flex-wrap gap-8">
               {offer.acceptedApplicants.map((applicant) => {
+                let isFavorited = false;
+
+                if (params.loggedInProfileId) {
+                  isFavorited = !!applicant.favoriteBy.find(
+                    (applicant) => params.loggedInProfileId === applicant.id
+                  );
+                }
+
                 return (
                   <div key={applicant.id} className="flex flex-col gap-4">
                     <ProfileCard
@@ -467,6 +488,7 @@ const MyOfferDetailsPage = (params: { offerId: number }) => {
                       country={applicant?.country?.name || ""}
                       username={applicant.user.username || ""}
                       type="Influencer"
+                      bookmarked={isFavorited}
                     />
 
                     {offer.offerStatus.id === 1 && (
@@ -517,6 +539,14 @@ const MyOfferDetailsPage = (params: { offerId: number }) => {
           {isApplicantsOpen && profiles && (
             <div className="flex flex-wrap gap-8">
               {profiles.applicants.map((applicant) => {
+                let isFavorited = false;
+
+                if (params.loggedInProfileId) {
+                  isFavorited = !!applicant.favoriteBy.find(
+                    (applicant) => params.loggedInProfileId === applicant.id
+                  );
+                }
+
                 return (
                   <div key={applicant.id} className="flex flex-col gap-4">
                     <ProfileCard
@@ -541,6 +571,7 @@ const MyOfferDetailsPage = (params: { offerId: number }) => {
                       country={applicant?.country?.name || ""}
                       username={applicant.user.username || ""}
                       type="Influencer"
+                      bookmarked={isFavorited}
                     />
                     {offer.acceptedApplicants.length <
                       offer.numberOfInfluencers && (
@@ -601,6 +632,14 @@ const MyOfferDetailsPage = (params: { offerId: number }) => {
           {isRejectedApplicantsOpen && (
             <div className="flex flex-wrap gap-8">
               {offer.rejectedApplicants.map((applicant) => {
+                let isFavorited = false;
+
+                if (params.loggedInProfileId) {
+                  isFavorited = !!applicant.favoriteBy.find(
+                    (applicant) => params.loggedInProfileId === applicant.id
+                  );
+                }
+
                 return (
                   <div key={applicant.id} className="flex flex-col gap-4">
                     <ProfileCard
@@ -625,6 +664,7 @@ const MyOfferDetailsPage = (params: { offerId: number }) => {
                       country={applicant?.country?.name || ""}
                       username={applicant.user.username || ""}
                       type="Influencer"
+                      bookmarked={isFavorited}
                     />
 
                     <Button
@@ -674,7 +714,7 @@ const MyOfferDetailsPage = (params: { offerId: number }) => {
           </div>
           <div className="flex justify-center">
             {openCreateModal && (
-              <MyOfferModal
+              <CreateOfferModal
                 onClose={() => setOpenCreateModal(false)}
                 edit={true}
                 offer={offer}

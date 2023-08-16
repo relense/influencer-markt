@@ -404,7 +404,7 @@
         "button": "Start Your Journey",
         "roleInputPLaceholder": "Choose Your Role: Influencer or Brand",
         "claimInputPlaceholder": "your-page-name",
-        "tootlip": "This input will define your unique username or handle for your profile URL. It's like your personal identity on the platform, allowing others to easily find and access your page using this custom name. Choose something catchy and easy to remember, as this username will be a permanent representation of you on the platform. Have fun picking the perfect one!",
+        "tooltip": "This input will define your unique username or handle for your profile URL. It's like your personal identity on the platform, allowing others to easily find and access your page using this custom name. Choose something catchy and easy to remember, as this username will be a permanent representation of you on the platform. Have fun picking the perfect one!",
         "disclaimer": "Please choose the options that best represent you or align with your preferences. Once selected, this information will be considered",
         "permanent": "permanent",
         "pageNameAvailable": "Page name is available",
@@ -649,7 +649,11 @@
       "firstTimedModalButton": "Got It, Let's Create Offers!",
       "inProgress": "In Progress",
       "whenAnOfferIsInProgress": "When an offer is in progress it means an order was initiated and the influencers are working hard to deliver what you requested.",
-      "archievdIsWhen": "Archived is when you save the offer for later or when the influencer has deliered what you need and the offer is completed."
+      "archievdIsWhen": "Archived is when you save the offer for later or when the influencer has deliered what you need and the offer is completed.",
+      "publishOffer": "Publish Offer",
+      "publishOfferToggleLabelNot": "Don't Publish",
+      "publishOfferToggleLabelPublish": "Publish",
+      "publishOfferToolTip": "By publishing the offer you won't be able to edit the details after creating it"
     },
 
     "offers": {

@@ -103,6 +103,7 @@ const OffersPage = (params: {
   const { data: userRole } = api.users.getUserRole.useQuery(undefined, {
     enabled: session.status === "authenticated",
   });
+  const { data: profile } = api.profiles.getProfile.useQuery();
 
   useEffect(() => {
     if (offersData && offersData[1].length > 0) {
@@ -324,7 +325,7 @@ const OffersPage = (params: {
             <div>{t("components.filter.filters")}</div>
           </div>
           {activeFiltersCount > 0 && (
-            <div className="absolute right-[-10px] top-[-10px] flex h-7 w-7 items-center justify-center rounded-full bg-influencer text-center text-white">
+            <div className="absolute right-[-10px] top-[-8px] flex h-7 w-7 items-center justify-center rounded-full bg-influencer text-center text-white">
               {activeFiltersCount}
             </div>
           )}
@@ -358,6 +359,7 @@ const OffersPage = (params: {
               userRole={userRole?.role || undefined}
               selectedOfferId={selectedOfferId}
               setSelectedOfferId={() => setSelectedOfferId(-1)}
+              profile={profile || undefined}
             />
           )}
         </div>
@@ -388,6 +390,7 @@ const OffersPage = (params: {
               userRole={userRole?.role || undefined}
               selectedOfferId={selectedOfferId}
               setSelectedOfferId={() => setSelectedOfferId(-1)}
+              profile={profile || undefined}
             />
           )}
         </div>

@@ -35,7 +35,7 @@ const ProfileCard = (params: {
   country: string;
   username: string;
   type: "Brand" | "Influencer";
-  bookmarked?: boolean;
+  bookmarked: boolean;
   onHandleBookmark?: () => void;
 }) => {
   const { t } = useTranslation();

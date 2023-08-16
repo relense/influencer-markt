@@ -33,7 +33,14 @@ const OfferDetails: NextPage<OfferDetailsProps> = ({ id }) => {
   } else {
     return (
       <ProtectedWrapper>
-        <Layout>{() => <MyOfferDetailsPage offerId={parseInt(id)} />}</Layout>
+        <Layout>
+          {({ loggedInProfileId }) => (
+            <MyOfferDetailsPage
+              offerId={parseInt(id)}
+              loggedInProfileId={loggedInProfileId}
+            />
+          )}
+        </Layout>
       </ProtectedWrapper>
     );
   }

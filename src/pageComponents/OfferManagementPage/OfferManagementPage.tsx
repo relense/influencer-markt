@@ -4,7 +4,7 @@ import { faPlus } from "@fortawesome/free-solid-svg-icons";
 import { useTranslation } from "react-i18next";
 import { api } from "~/utils/api";
 
-import { MyOfferModal } from "../../components/MyOfferModal";
+import { CreateOfferModal } from "../../components/CreateOfferModal";
 import { MyOffer } from "./innerComponent/MyOffer";
 import { LoadingSpinner } from "../../components/LoadingSpinner";
 import type { OfferWithAllData, Option } from "../../utils/globalTypes";
@@ -202,7 +202,7 @@ const OfferManagementPage = () => {
       </div>
       <div className="flex justify-center">
         {openCreateModal && (
-          <MyOfferModal
+          <CreateOfferModal
             onClose={() => closeMyOffersModal()}
             edit={offerToEdit !== undefined ? true : false}
             offer={offerToEdit || undefined}

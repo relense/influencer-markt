@@ -79,7 +79,9 @@ const MyOfferDropdown = (params: {
         <FontAwesomeIcon icon={faClone} className="fa-lg cursor-pointer" />
         {t("components.myOfferDropDown.duplicate")}
       </div>
-      {(!params.offer.published || params.offer.offerStatus.id === 3) && (
+      {(!params.offer.published ||
+        (params.offer.published && params.offer.offerStatus.id === 1) ||
+        params.offer.offerStatus.id === 3) && (
         <div
           className="flex cursor-pointer items-center gap-2 rounded-lg p-4 hover:bg-influencer-green-dark hover:text-white"
           onClick={() => params.openWarningModal("delete", params.offer.id)}

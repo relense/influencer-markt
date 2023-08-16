@@ -13,6 +13,7 @@ import { useEffect, useState } from "react";
 import { toast } from "react-hot-toast";
 import { usePrevious } from "../utils/helper";
 import { useRouter } from "next/router";
+import { ToolTip } from "./ToolTip";
 
 type OfferData = {
   offerSummary: string;
@@ -25,6 +26,7 @@ type OfferData = {
   minFollowers: number;
   maxFollowers: number;
   gender: Option;
+  published: boolean;
 };
 
 type ContentTypeWithQuantity = {
@@ -32,7 +34,7 @@ type ContentTypeWithQuantity = {
   amount: number;
 };
 
-const MyOfferModal = (params: {
+const CreateOfferModal = (params: {
   onClose: () => void;
   edit: boolean;
   offer: OfferWithAllData | undefined;
@@ -44,6 +46,7 @@ const MyOfferModal = (params: {
   const [contentTypesList, setContentTypesList] = useState<
     ContentTypeWithQuantity[]
   >([{ contentType: { id: -1, name: "" }, amount: 0 }]);
+  const [isPublished, setIsPublished] = useState<boolean>(false);
 
   const prevContentTypes = usePrevious(
     params?.offer?.contentTypeWithQuantity || null
@@ -80,6 +83,7 @@ const MyOfferModal = (params: {
       setValue("offerSummary", params.offer.offerSummary);
       setValue("offerPrice", params.offer.price);
       setValue("platform", params.offer.socialMedia);
+      setIsPublished(params.offer.published);
       setContentTypesList(params.offer.contentTypeWithQuantity);
     }
   }, [params.offer, setValue]);
@@ -142,6 +146,7 @@ const MyOfferModal = (params: {
         minFollowers: data.minFollowers,
         maxFollowers: data.maxFollowers,
         genderId: data.gender.id,
+        published: isPublished,
       };
 
       if (params.edit) {
@@ -610,6 +615,41 @@ const MyOfferModal = (params: {
     );
   };
 
+  const renderPublishedToggled = () => {
+    return (
+      <div className="flex flex-col gap-4">
+        <div className="flex gap-4">
+          <div className="text-xl font-medium">
+            {t(`pages.manageOffers.publishOffer`)}
+          </div>
+          <ToolTip content={t(`pages.manageOffers.publishOfferToolTip`)} />
+        </div>
+        <div>
+          <label className="relative mr-5 inline-flex cursor-pointer items-center">
+            <input
+              type="checkbox"
+              className="peer sr-only"
+              readOnly
+              defaultChecked={isPublished}
+            />
+            <div
+              onClick={() => {
+                setIsPublished(!isPublished);
+              }}
+              className="peer h-6 w-11 rounded-full bg-gray-200 after:absolute after:left-[2px] after:top-0.5 after:h-5 after:w-5 after:rounded-full after:border after:border-gray-300 after:bg-white after:transition-all after:content-[''] peer-checked:bg-influencer-green-dark peer-checked:after:translate-x-full peer-checked:after:border-white peer-focus:ring-influencer-green-light"
+            />
+            <span className="ml-2 font-medium text-gray-900">
+              {isPublished
+                ? t(`pages.manageOffers.publishOfferToggleLabelPublish`)
+                : t(`pages.manageOffers.publishOfferToggleLabelNot`)}
+            </span>
+          </label>
+        </div>
+        <div className="w-full border-[1px] border-white1" />
+      </div>
+    );
+  };
+
   return (
     <Modal
       title={
@@ -640,6 +680,7 @@ const MyOfferModal = (params: {
       >
         {renderOfferSummaryInput()}
         {renderOfferDetailsInput()}
+        {renderPublishedToggled()}
         {renderPlatformInput()}
         {renderContentTypeInput()}
         {renderCategoriesInput()}
@@ -653,4 +694,4 @@ const MyOfferModal = (params: {
   );
 };
 
-export { MyOfferModal };
+export { CreateOfferModal };

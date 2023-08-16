@@ -22,6 +22,7 @@ export const OffersRouter = createTRPCRouter({
         minFollowers: z.number(),
         maxFollowers: z.number(),
         genderId: z.number(),
+        published: z.boolean(),
       })
     )
     .mutation(async ({ ctx, input }) => {
@@ -49,6 +50,7 @@ export const OffersRouter = createTRPCRouter({
           offerCreator: { connect: { id: profile.id } },
           gender:
             input.genderId !== -1 ? { connect: { id: input.genderId } } : {},
+          published: input.published,
         },
       });
 
@@ -86,6 +88,7 @@ export const OffersRouter = createTRPCRouter({
         minFollowers: z.number(),
         maxFollowers: z.number(),
         genderId: z.number(),
+        published: z.boolean(),
       })
     )
     .mutation(async ({ ctx, input }) => {
@@ -110,6 +113,7 @@ export const OffersRouter = createTRPCRouter({
             input.genderId !== -1
               ? { connect: { id: input.genderId } }
               : { disconnect: true },
+          published: input.published,
         },
       });
 
@@ -436,6 +440,7 @@ export const OffersRouter = createTRPCRouter({
               city: true,
               country: true,
               user: { select: { username: true } },
+              favoriteBy: true,
             },
           },
           rejectedApplicants: {
@@ -452,6 +457,7 @@ export const OffersRouter = createTRPCRouter({
               city: true,
               country: true,
               user: { select: { username: true } },
+              favoriteBy: true,
             },
           },
           offerStatus: true,
@@ -498,6 +504,7 @@ export const OffersRouter = createTRPCRouter({
               city: { select: { name: true } },
               country: { select: { name: true } },
               user: { select: { username: true } },
+              favoriteBy: true,
             },
           },
         },

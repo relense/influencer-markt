@@ -404,7 +404,7 @@
         "button": "Começa a tua jornada",
         "roleInputPLaceholder": "Escolhe o teu papel: Influencer ou Marca",
         "claimInputPlaceholder": "nome-da-tua-página",
-        "tootlip": "Isto irá definir o teu nome de utilizador único ou identificador para o URL do teu perfil. É como a tua identidade pessoal na plataforma, permitindo que os outros te encontrem e acedam facilmente à tua página utilizando este nome personalizado. Escolhe algo cativante e fácil de lembrar, pois este nome de utilizador será uma representação permanente de si na plataforma. Divirte-te a escolher o perfeito!",
+        "tooltip": "Isto irá definir o teu nome de utilizador único ou identificador para o URL do teu perfil. É como a tua identidade pessoal na plataforma, permitindo que os outros te encontrem e acedam facilmente à tua página utilizando este nome personalizado. Escolhe algo cativante e fácil de lembrar, pois este nome de utilizador será uma representação permanente de si na plataforma. Divirte-te a escolher o perfeito!",
         "disclaimer": "Por favor, escolhe as opções que melhor te representam ou que estejam alinhadas com as tuas preferências. Uma vez selecionadas, essas informações serão consideradas",
         "permanent": "permanentes",
         "pageNameAvailable": "Nome para página está disponível",
@@ -649,7 +649,11 @@
       "firstTimedModalButton": "Entendi, Vamos Criar Ofertas!",
       "inProgress": "Em Progress",
       "whenAnOfferIsInProgress": "Quando uma oferta está em progresso, significa que uma oferta foi iniciada e os influencers estão a trabalhar para te entregar o que pediste.",
-      "archievdIsWhen": "Arquivada é quando guardas uma oferta para mais tarde ou quando um influencer entregou o pedido e a oferta está completa."
+      "archievdIsWhen": "Arquivada é quando guardas uma oferta para mais tarde ou quando um influencer entregou o pedido e a oferta está completa.",
+      "publishOffer": "Publicar Oferta",
+      "publishOfferToggleLabelNot": "Não Publicar",
+      "publishOfferToggleLabelPublish": "Publicar",
+      "publishOfferToolTip": "Ao publicar a oferta não vai poder editar detalhes depois de a criar"
     },
 
     "offers": {
