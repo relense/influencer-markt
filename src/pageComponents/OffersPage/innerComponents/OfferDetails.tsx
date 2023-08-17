@@ -367,14 +367,17 @@ const OfferDetails = (params: {
 
   const renderApplyButton = () => {
     if (offer && (!params.userRole || params.userRole.id !== 1)) {
+      let title = applied
+        ? t("pages.offers.removeApplication")
+        : t("pages.offers.apply");
+
+      if (disableApply) {
+        title = t("pages.offers.noRequirements");
+      }
       return (
         <div key={`ApplyButton${offer.id}`}>
           <Button
-            title={
-              applied
-                ? t("pages.offers.removeApplication")
-                : t("pages.offers.apply")
-            }
+            title={title}
             level={applied ? "secondary" : "primary"}
             size="large"
             isLoading={applicationIsLoading || removingIsLoading}

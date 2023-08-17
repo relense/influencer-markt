@@ -678,7 +678,8 @@
       "removedApplicationSuccess": "Application withdrawn successfully",
       "shareModalTitle": "Share Offer",
       "offersAvailable": "There are {{ available }} offers available",
-      "noOffers": "There are no offers for your search requirements"
+      "noOffers": "There are no offers for your search requirements",
+      "noRequirements": "You do not meet the requirements for this offer"
     },
 
     "applications": {
