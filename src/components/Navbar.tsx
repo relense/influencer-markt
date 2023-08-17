@@ -13,8 +13,10 @@ import {
   faEnvelope,
   faCircleQuestion,
   faFolderOpen,
+  faLifeRing,
 } from "@fortawesome/free-regular-svg-icons";
 import {
+  faArrowLeft,
   faArrowRightFromBracket,
   faArrowRightToBracket,
   faBars,
@@ -22,6 +24,7 @@ import {
   faBriefcase,
   faChevronDown,
   faChevronUp,
+  faGear,
   faSearch,
 } from "@fortawesome/free-solid-svg-icons";
 
@@ -40,6 +43,7 @@ export const Navbar = (params: {
   const { t } = useTranslation();
 
   const [toggleOptions, setToggleOptions] = useState<boolean>(false);
+  const [openHelpCenter, setOPenHelpCenter] = useState<boolean>(false);
 
   useOutsideClick(() => {
     if (toggleOptions === false) return;
@@ -223,6 +227,7 @@ export const Navbar = (params: {
           />
         )}
         {toggleOptions && optionsDropdownAuthenticated()}
+        {openHelpCenter && navigationHelpers()}
       </div>
     );
   };
@@ -236,6 +241,7 @@ export const Navbar = (params: {
           onClick={() => setToggleOptions(!toggleOptions)}
         />
         {toggleOptions && optionDropdownDataUnauthenticated()}
+        {openHelpCenter && navigationHelpers()}
       </div>
     );
   };
@@ -270,8 +276,16 @@ export const Navbar = (params: {
               </span>
             </div>
             <div className="cursor-pointer border-[1px] border-white1" />
+            <div
+              className="group flex cursor-pointer items-center gap-4 py-2 sm:hidden"
+              onClick={() => setOPenHelpCenter(true)}
+            >
+              <FontAwesomeIcon icon={faLifeRing} className="fa-lg" />
 
-            {navigationHelpers()}
+              <div className="group-hover:underline">
+                {t("components.navbar.helpCenter")}
+              </div>
+            </div>
           </div>
         </>
       );
@@ -279,17 +293,27 @@ export const Navbar = (params: {
   };
 
   const optionsDropdownAuthenticated = () => {
+    let dropdownMainClasses =
+      "absolute bottom-0 right-0 z-50 w-screen flex flex-col gap-2 rounded-t-lg border-white1 bg-white px-8 pb-4 text-sm shadow-lg sm:bottom-auto sm:right-5 sm:top-20 sm:w-auto sm:rounded-2xl sm:border-[1px] sm:p-8 sm:pt-2 sm:text-base";
+    if (toggleOptions) {
+      dropdownMainClasses =
+        "absolute bottom-0 right-0 z-50 w-screen flex flex-col gap-2 rounded-t-lg border-white1 bg-white px-8 pb-4 text-sm shadow-lg sm:bottom-auto sm:right-5 sm:top-20 sm:w-auto sm:rounded-2xl sm:border-[1px] sm:p-8 sm:pt-2 sm:text-base";
+    }
+
     if (params.sessionData) {
       return (
         <>
           <div
-            className="absolute left-0 top-0 h-screen w-screen"
+            className="absolute left-0 top-0 h-screen w-screen bg-black-transparent sm:bg-transparent"
             onClick={() => setToggleOptions(!toggleOptions)}
           />
           <div
-            className="absolute right-0 top-10 z-50 flex w-screen flex-col gap-2 border-white1 bg-white px-8 pb-4 pt-2 text-sm shadow-lg sm:right-5 sm:top-20 sm:w-auto sm:rounded-2xl sm:border-[1px] sm:p-8 sm:text-base"
+            className={dropdownMainClasses}
             onClick={() => setToggleOptions(!toggleOptions)}
           >
+            <div className="flex h-1 w-full flex-1 cursor-pointer justify-center pt-2 sm:hidden">
+              <div className="h-[2px] w-10 bg-black" />
+            </div>
             <Link
               href={params.username ? `/${params.username}` : "/"}
               className="group hidden items-center gap-4 py-2 sm:flex"
@@ -368,9 +392,27 @@ export const Navbar = (params: {
                 {t("components.navbar.signOut")}
               </span>
             </div>
-            <div className="flex cursor-pointer border-[1px] border-white1 lg:hidden" />
 
-            {navigationHelpers()}
+            <div className="flex cursor-pointer border-[1px] border-white1" />
+
+            <Link
+              href="/settings"
+              className="group flex cursor-pointer items-center gap-4 py-2"
+            >
+              <FontAwesomeIcon icon={faGear} className="fa-lg" />
+
+              <div className="group-hover:underline">Settings</div>
+            </Link>
+            <div
+              className="group flex cursor-pointer items-center gap-4 py-2 sm:hidden"
+              onClick={() => setOPenHelpCenter(true)}
+            >
+              <FontAwesomeIcon icon={faLifeRing} className="fa-lg" />
+
+              <div className="group-hover:underline">
+                {t("components.navbar.helpCenter")}
+              </div>
+            </div>
           </div>
         </>
       );
@@ -379,7 +421,17 @@ export const Navbar = (params: {
 
   const navigationHelpers = () => {
     return (
-      <div className="flex flex-col gap-2 lg:hidden">
+      <div className="absolute right-0 top-0 z-50 flex h-full w-full flex-col gap-2 bg-white p-4 lg:hidden">
+        <div
+          className="flex cursor-pointer items-center gap-4"
+          onClick={() => setOPenHelpCenter(false)}
+        >
+          <FontAwesomeIcon icon={faArrowLeft} />
+
+          <div className="font-semibold">
+            {t("components.navbar.helpCenter")}
+          </div>
+        </div>
         <Link
           href="/about"
           className="group flex cursor-pointer items-center gap-4 py-2"
