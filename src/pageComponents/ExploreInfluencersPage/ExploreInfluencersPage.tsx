@@ -1,7 +1,7 @@
 import { api } from "~/utils/api";
 import { useEffect, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faFilter } from "@fortawesome/free-solid-svg-icons";
+import { faFilter, faSearch } from "@fortawesome/free-solid-svg-icons";
 import { ProfileCard } from "../../components/ProfileCard";
 import { Button } from "../../components/Button";
 
@@ -341,12 +341,21 @@ const ExploreInfluencersPage = (params: { choosenCategories: Option[] }) => {
     return (
       <div className="flex flex-col justify-center gap-6">
         <div className="flex flex-1 justify-start text-xl font-medium lg:pl-6">
-          {profiles?.[0] && profiles?.[0] > 0
-            ? t("pages.explore.countInfluencers", {
-                count: profiles?.[0] || 0,
-              })
-            : t("pages.explore.noInfluencers")}
+          {profiles &&
+            profiles?.[0] > 0 &&
+            t("pages.explore.countInfluencers", {
+              count: profiles?.[0],
+            })}
         </div>
+        {profiles && profiles?.[0] === 0 && (
+          <div className="flex flex-col justify-center gap-4 text-center text-gray2">
+            <FontAwesomeIcon
+              icon={faSearch}
+              className="fa-2xl cursor-pointer "
+            />
+            <div>{t("pages.explore.noInfluencers")}</div>
+          </div>
+        )}
         <div className="flex flex-1">
           <div className="flex flex-1 flex-wrap justify-center gap-12">
             {userProfiles.map((profile) => {

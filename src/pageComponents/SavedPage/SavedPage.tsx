@@ -1,11 +1,17 @@
 import { useEffect, useState } from "react";
 import { api } from "~/utils/api";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 import { LoadingSpinner } from "../../components/LoadingSpinner";
 import { ProfileCard } from "../../components/ProfileCard";
 import { type UserProfiles } from "../../utils/globalTypes";
+import { faBookmark } from "@fortawesome/free-solid-svg-icons";
+import { useTranslation } from "react-i18next";
+import Link from "next/link";
+import { Button } from "../../components/Button";
 
 const SavedPage = (params: { roleId: number }) => {
+  const { t } = useTranslation();
   const [userProfiles, setUserProfiles] = useState<UserProfiles[]>([]);
 
   const { data: profileFavorites, isFetching } =
@@ -101,8 +107,28 @@ const SavedPage = (params: { roleId: number }) => {
       );
     } else {
       return (
-        <div className="flex flex-1 flex-col justify-start gap-12 p-2 lg:w-full lg:gap-6 lg:p-12 xl:self-center xl:p-4 2xl:w-3/4">
-          There arent any saved influencers
+        <div className="flex flex-1 flex-col items-center justify-center  gap-12 p-2 text-gray2 lg:w-full lg:gap-6 lg:p-12 xl:self-center xl:p-4 2xl:w-3/4">
+          <FontAwesomeIcon
+            icon={faBookmark}
+            className="fa-2xl cursor-pointer"
+          />
+          <div className="flex flex-col justify-center gap-4 text-center">
+            <div>
+              {params.roleId === 1
+                ? t("pages.saved.noBrands")
+                : t("pages.saved.noInfluencers")}
+            </div>
+            <div>
+              {params.roleId === 1
+                ? t("pages.saved.noBrandsSubtitle")
+                : t("pages.saved.noInfluencersSubtitle")}
+            </div>
+          </div>
+          <Link
+            href={`/explore/${params.roleId === 1 ? "brands" : "influencers"}`}
+          >
+            <Button level="primary" title={t("pages.saved.explore")} />
+          </Link>
         </div>
       );
     }

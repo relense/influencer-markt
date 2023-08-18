@@ -27,11 +27,13 @@ const OffersList = (params: {
         </div>
       ) : (
         <>
-          <div className="bg-influencer-green-dark p-4 text-center text-white">
-            {t("pages.offers.offersAvailable", {
-              available: helper.formatNumberWithKorM(params.offersCount),
-            })}
-          </div>
+          {params.offers.length > 0 && (
+            <div className="bg-influencer-green-dark p-4 text-center text-white">
+              {t("pages.offers.offersAvailable", {
+                available: helper.formatNumberWithKorM(params.offersCount),
+              })}
+            </div>
+          )}
           {params.offers?.map((offer, index) => {
             let offerClass =
               "flex cursor-pointer gap-4 p-4 hover:bg-influencer-green-light";

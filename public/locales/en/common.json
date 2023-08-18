@@ -155,6 +155,12 @@
       "helpCenter": "Help Center"
     },
 
+    "adminNavbar": {
+      "influencers": "Influencers",
+      "brands": "Brands",
+      "messages": "Messages"
+    },
+
     "footer": {
       "aboutUs": "About Us",
       "contactUs": "Contact Us",
@@ -558,10 +564,10 @@
     },
 
     "explore": {
-      "noInfluencers": "No Influencers",
+      "noInfluencers": "There aren't any influencers that meet your search requirements",
       "countInfluencers_one": "{{count, number}} Influencer",
       "countInfluencers_other": "{{count, number}} Influencers",
-      "noBrands": "No Brands",
+      "noBrands": "There aren't any brands that meet your search requirements",
       "countBrands_one": "{{count, number}} Brand",
       "countBrands_other": "{{count, number}} Brands",
       "loadMore": "Load More"
@@ -654,7 +660,9 @@
       "publishOffer": "Publish Offer",
       "publishOfferToggleLabelNot": "Don't Publish",
       "publishOfferToggleLabelPublish": "Publish",
-      "publishOfferToolTip": "By publishing the offer you won't be able to edit the details after creating it"
+      "publishOfferToolTip": "By publishing the offer you won't be able to edit the details after creating it",
+      "minFollowersError": "Minimum followers should be less than maximum followers",
+      "maxFollowersError": "Maximum followers should be greater than minimum followers"
     },
 
     "offers": {
@@ -703,6 +711,14 @@
       "removedApplicationSuccess": "Application withdrawn successfully",
       "offersAvailable": "You have applied to {{ available }} offers",
       "noApplications": "There are no applications"
+    },
+
+    "saved": {
+      "noInfluencers": "There aren't any saved influencers",
+      "noBrands": "There aren't any saved brands",
+      "explore": "Explore",
+      "noInfluencersSubtitle": "Go to the explore influencers menu to find influencers you want to save",
+      "noBrandsSubtitle": "Go to the explore brands menu to find brands you want to save"
     }
   }
 }

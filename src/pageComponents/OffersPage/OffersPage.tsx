@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useSession } from "next-auth/react";
 import { useTranslation } from "react-i18next";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faFilter } from "@fortawesome/free-solid-svg-icons";
+import { faFilter, faSearch } from "@fortawesome/free-solid-svg-icons";
 import { api } from "~/utils/api";
 
 import { useWindowWidth } from "../../utils/helper";
@@ -407,8 +407,12 @@ const OffersPage = (params: {
           !isLoadingOffers &&
           !isRefetchingOffers &&
           !isFetchingOffers && (
-            <div className="flex justify-center">
-              {t("pages.offers.noOffers")}
+            <div className="flex flex-col justify-center gap-4 text-gray2">
+              <FontAwesomeIcon icon={faSearch} className="fa-2xl" />
+
+              <div className="flex justify-center">
+                {t("pages.offers.noOffers")}
+              </div>
             </div>
           )}
         {renderMobile()}

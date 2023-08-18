@@ -61,6 +61,7 @@ const CreateOfferModal = (params: {
     setValue,
     watch,
     reset,
+    setError,
     formState: { errors, isDirty },
   } = useForm<OfferData>({
     defaultValues: {
@@ -126,33 +127,45 @@ const CreateOfferModal = (params: {
       prevContentTypes !== contentTypesList ||
       prevGender !== data.gender
     ) {
-      const payload = {
-        offerId: params.offer?.id || -1,
-        offerSummary: data.offerSummary,
-        offerDetails: data.offerDetails,
-        socialMediaId: data.platform.id,
-        contentTypes: contentTypesList.map((item) => {
-          return {
-            contentTypeId: item.contentType.id,
-            amount: item.amount,
-          };
-        }),
-        categories: data.categories.map((category) => {
-          return category.id;
-        }),
-        price: data.offerPrice,
-        numberOfInfluencers: data.numberOfInfluencers,
-        countryId: data.country.id,
-        minFollowers: data.minFollowers,
-        maxFollowers: data.maxFollowers,
-        genderId: data.gender.id,
-        published: isPublished,
-      };
-
-      if (params.edit) {
-        offerUpdate(payload);
+      if (data.minFollowers > data.maxFollowers) {
+        setError("minFollowers", {
+          type: "manual",
+          message: "Minimum followers should be less than maximum followers",
+        });
+      } else if (data.maxFollowers < data.minFollowers) {
+        setError("maxFollowers", {
+          type: "manual",
+          message: "Maximum followers should be greater than minimum followers",
+        });
       } else {
-        offerCreation(payload);
+        const payload = {
+          offerId: params.offer?.id || -1,
+          offerSummary: data.offerSummary,
+          offerDetails: data.offerDetails,
+          socialMediaId: data.platform.id,
+          contentTypes: contentTypesList.map((item) => {
+            return {
+              contentTypeId: item.contentType.id,
+              amount: item.amount,
+            };
+          }),
+          categories: data.categories.map((category) => {
+            return category.id;
+          }),
+          price: data.offerPrice,
+          numberOfInfluencers: data.numberOfInfluencers,
+          countryId: data.country.id,
+          minFollowers: data.minFollowers,
+          maxFollowers: data.maxFollowers,
+          genderId: data.gender.id,
+          published: isPublished,
+        };
+
+        if (params.edit) {
+          offerUpdate(payload);
+        } else {
+          offerCreation(payload);
+        }
       }
     } else {
       params.onClose();
@@ -536,7 +549,7 @@ const CreateOfferModal = (params: {
           <div className="text-xl font-medium">
             {t("pages.manageOffers.influencerFollowers")}
           </div>
-          <div className="flex flex-col gap-6 lg:flex-row lg:items-center lg:gap-11">
+          <div className="flex flex-col gap-6 lg:flex-row lg:gap-11">
             <div className="flex flex-1 flex-col gap-1">
               <label className="text-gray2">
                 {t("pages.manageOffers.minimum")}
@@ -552,6 +565,13 @@ const CreateOfferModal = (params: {
                 min="0"
                 onWheel={(e) => e.currentTarget.blur()}
               />
+              {errors.minFollowers ? (
+                <div className="text-sm text-influencer">
+                  {errors.minFollowers.message}
+                </div>
+              ) : (
+                <div></div>
+              )}
             </div>
 
             <div className="flex flex-1 flex-col gap-1">
@@ -569,6 +589,13 @@ const CreateOfferModal = (params: {
                 min="0"
                 onWheel={(e) => e.currentTarget.blur()}
               />
+              {errors.maxFollowers ? (
+                <div className="text-sm text-influencer">
+                  {errors.maxFollowers.message}
+                </div>
+              ) : (
+                <div></div>
+              )}
             </div>
           </div>
         </div>

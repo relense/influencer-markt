@@ -155,6 +155,12 @@
       "helpCenter": "Centro de Ajuda"
     },
 
+    "adminNavbar": {
+      "influencers": "Influencers",
+      "brands": "Marcas",
+      "messages": "Mensagens"
+    },
+
     "footer": {
       "aboutUs": "Sobre Nós",
       "contactUs": "Contacta-nos",
@@ -558,10 +564,10 @@
     },
 
     "explore": {
-      "noInfluencers": "Não há Influencers",
+      "noInfluencers": "Não há Influencers que cumpram os teus requisitos de pesquisa",
       "countInfluencers_one": "{{count}} Influencer",
       "countInfluencers_other": "{{count}} Influencers",
-      "noBrands": "Não há Marcas",
+      "noBrands": "Não há Marcas que cumpram os teus requisitos de pesquisa",
       "countBrands_one": "{{count, number}} Marca",
       "countBrands_other": "{{count, number}} Marcas",
       "loadMore": "Mostrar Mais"
@@ -654,7 +660,9 @@
       "publishOffer": "Publicar Oferta",
       "publishOfferToggleLabelNot": "Não Publicar",
       "publishOfferToggleLabelPublish": "Publicar",
-      "publishOfferToolTip": "Ao publicar a oferta não vai poder editar detalhes depois de a criar"
+      "publishOfferToolTip": "Ao publicar a oferta não vai poder editar detalhes depois de a criar",
+      "minFollowersError": "Mínimo de seguidoress deve ser menor que o máximo de seguidores",
+      "maxFollowersError": "Máximo de seguidores deve ser maior que o mínimo de seguidores"
     },
 
     "offers": {
@@ -703,6 +711,14 @@
       "removedApplicationSuccess": "Candidatura removida com sucesso",
       "offersAvailable": "Candidataste-te a {{ available }} ofertas",
       "noApplications": "Não há candidaturas"
+    },
+
+    "saved": {
+      "noInfluencers": "Não há Influencers nos favoritos",
+      "noBrands": "Não há Marcas nos favorites",
+      "explore": "Explora",
+      "noInfluencersSubtitle": "Vai ao menu menu the Explorar Influencers para encontrares os teus Influencers favoritos",
+      "noBrandsSubtitle": "Vai ao menu menu the Explorar Marcas para encontrares as tuas Marcas favoritas"
     }
   }
 }
