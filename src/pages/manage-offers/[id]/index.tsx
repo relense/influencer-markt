@@ -3,10 +3,10 @@ import { api } from "~/utils/api";
 
 import { ProtectedWrapper } from "../../../components/ProtectedWrapper";
 import { Layout } from "../../../components/Layout";
-import { MyOfferDetailsPage } from "../../../pageComponents/MyOfferDetailsPage/MyOfferDetailsPage";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
 import { LoadingSpinner } from "../../../components/LoadingSpinner";
+import { ManageOfferDetailsPage } from "../../../pageComponents/ManageOfferDetailsPage/MyOfferDetailsPage";
 interface OfferDetailsProps {
   id: string;
 }
@@ -35,7 +35,7 @@ const OfferDetails: NextPage<OfferDetailsProps> = ({ id }) => {
       <ProtectedWrapper>
         <Layout>
           {({ loggedInProfileId }) => (
-            <MyOfferDetailsPage
+            <ManageOfferDetailsPage
               offerId={parseInt(id)}
               loggedInProfileId={loggedInProfileId}
             />

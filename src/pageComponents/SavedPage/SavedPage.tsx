@@ -37,6 +37,7 @@ const SavedPage = (params: { roleId: number }) => {
                 followers: socialMedia.followers,
                 url: socialMedia.url,
                 socialMediaName: socialMedia.socialMedia?.name || "",
+                socialMediaId: socialMedia.socialMedia?.id || -1,
                 valuePacks: socialMedia.valuePacks.map((valuePack) => {
                   return {
                     id: valuePack.id,

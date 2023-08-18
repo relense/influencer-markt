@@ -27,6 +27,7 @@ export type UserSocialMedia = {
   followers: number;
   url: string;
   socialMediaName: string;
+  socialMediaId: number;
   valuePacks: ValuePack[];
 };
 

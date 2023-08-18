@@ -109,6 +109,7 @@ const ExploreBrandsPage = () => {
                 handler: socialMedia.handler,
                 followers: socialMedia.followers,
                 url: socialMedia.url,
+                socialMediaId: socialMedia.socialMedia?.id || -1,
                 socialMediaName: socialMedia.socialMedia?.name || "",
                 valuePacks: [],
               };
@@ -152,6 +153,7 @@ const ExploreBrandsPage = () => {
               handler: socialMedia.handler,
               followers: socialMedia.followers,
               url: socialMedia.url,
+              socialMediaId: socialMedia.socialMediaId || -1,
               socialMediaName: socialMedia.socialMedia?.name || "",
               valuePacks: [],
             };

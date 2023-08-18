@@ -36,6 +36,7 @@ const ProfileCard = (params: {
   username: string;
   type: "Brand" | "Influencer";
   bookmarked: boolean;
+  highlightSocialMediaId?: number;
   onHandleBookmark?: () => void;
 }) => {
   const { t } = useTranslation();
@@ -48,6 +49,7 @@ const ProfileCard = (params: {
       handler: "",
       id: -1,
       socialMediaName: "",
+      socialMediaId: -1,
       url: "",
       valuePacks: [],
     }
@@ -84,8 +86,30 @@ const ProfileCard = (params: {
       });
     };
 
-    socialMediaWithMostFollowers();
-  }, [params.socialMedia, usefullSocialMedia.followers]);
+    const selectSocialMediaById = () => {
+      const foundSocialMedia = params.socialMedia.find(
+        (socialMedia) =>
+          socialMedia.socialMediaId === params.highlightSocialMediaId
+      );
+
+      if (!!foundSocialMedia) {
+        setUsefullSocialMedia(foundSocialMedia);
+      } else {
+        socialMediaWithMostFollowers();
+      }
+    };
+
+    if (params.highlightSocialMediaId) {
+      selectSocialMediaById();
+    } else {
+      socialMediaWithMostFollowers();
+    }
+  }, [
+    params.highlightSocialMediaId,
+    params.socialMedia,
+    usefullSocialMedia.followers,
+    usefullSocialMedia.id,
+  ]);
 
   const socialMediaIcon = (socialMediaName: string): IconDefinition => {
     if (socialMediaName === "Instagram") {

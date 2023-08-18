@@ -21,7 +21,7 @@ import { toast } from "react-hot-toast";
 import { useRouter } from "next/router";
 import Link from "next/link";
 
-const MyOfferDetailsPage = (params: {
+const ManageOfferDetailsPage = (params: {
   offerId: number;
   loggedInProfileId: number;
 }) => {
@@ -475,6 +475,7 @@ const MyOfferDetailsPage = (params: {
                             followers: socialMedia.followers,
                             handler: socialMedia.handler,
                             id: socialMedia.id,
+                            socialMediaId: socialMedia.socialMedia?.id || -1,
                             socialMediaName:
                               socialMedia.socialMedia?.name || "",
                             url: socialMedia.url,
@@ -489,6 +490,7 @@ const MyOfferDetailsPage = (params: {
                       username={applicant.user.username || ""}
                       type="Influencer"
                       bookmarked={isFavorited}
+                      highlightSocialMediaId={offer?.socialMedia.id}
                     />
 
                     {offer.offerStatus.id === 1 && (
@@ -558,6 +560,7 @@ const MyOfferDetailsPage = (params: {
                             followers: socialMedia.followers,
                             handler: socialMedia.handler,
                             id: socialMedia.id,
+                            socialMediaId: socialMedia.socialMedia?.id || -1,
                             socialMediaName:
                               socialMedia.socialMedia?.name || "",
                             url: socialMedia.url,
@@ -572,6 +575,7 @@ const MyOfferDetailsPage = (params: {
                       username={applicant.user.username || ""}
                       type="Influencer"
                       bookmarked={isFavorited}
+                      highlightSocialMediaId={offer.socialMediaId}
                     />
                     {offer.acceptedApplicants.length <
                       offer.numberOfInfluencers && (
@@ -651,6 +655,7 @@ const MyOfferDetailsPage = (params: {
                             followers: socialMedia.followers,
                             handler: socialMedia.handler,
                             id: socialMedia.id,
+                            socialMediaId: socialMedia.socialMedia?.id || -1,
                             socialMediaName:
                               socialMedia.socialMedia?.name || "",
                             url: socialMedia.url,
@@ -665,6 +670,7 @@ const MyOfferDetailsPage = (params: {
                       username={applicant.user.username || ""}
                       type="Influencer"
                       bookmarked={isFavorited}
+                      highlightSocialMediaId={offer.socialMediaId}
                     />
 
                     <Button
@@ -737,4 +743,4 @@ const MyOfferDetailsPage = (params: {
   }
 };
 
-export { MyOfferDetailsPage };
+export { ManageOfferDetailsPage };
