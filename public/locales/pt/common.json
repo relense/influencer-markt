@@ -719,6 +719,11 @@
       "explore": "Explora",
       "noInfluencersSubtitle": "Vai ao menu menu the Explorar Influencers para encontrares os teus Influencers favoritos",
       "noBrandsSubtitle": "Vai ao menu menu the Explorar Marcas para encontrares as tuas Marcas favoritas"
+    },
+
+    "404": {
+      "title": "Pedimos desculpa!",
+      "subtitle": "Não conseguimos encontrar a página que estás há procura"
     }
   }
 }

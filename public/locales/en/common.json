@@ -719,6 +719,11 @@
       "explore": "Explore",
       "noInfluencersSubtitle": "Go to the explore influencers menu to find influencers you want to save",
       "noBrandsSubtitle": "Go to the explore brands menu to find brands you want to save"
+    },
+
+    "404": {
+      "title": "We are sorry!",
+      "subtitle": "We couldn't find the page you are looking for"
     }
   }
 }
