@@ -31,12 +31,17 @@ const EditPage = (params: { role: Option | undefined }) => {
     useState<boolean>(false);
   const [portfolio, setPortfolio] = useState<PreloadedImage[]>([]);
   const [socialMediaEditing, setSocialMediaEditing] = useState<boolean>(false);
+  const [currentSocialMediaIndex, setCurrentSocialMediaIndex] =
+    useState<number>(-1);
+  const [userSocialMediaList, setUserSocialMediaList] = useState<
+    SocialMediaDetails[]
+  >([]);
 
   const { data: profile, isLoading: isLoadingProfile } =
     api.profiles.getProfileWithoutIncludes.useQuery();
 
   const { data: platforms } = api.allRoutes.getAllSocialMedia.useQuery();
-  const { data: profileSocialMedia } =
+  const { data: profileSocialMedia, isLoading: isLoadingProfileSocialMedia } =
     api.userSocialMedias.getUserSocialMediaByProfileId.useQuery({
       profileId: profile?.id || -1,
     });
@@ -86,59 +91,16 @@ const EditPage = (params: { role: Option | undefined }) => {
   const { mutate: createUserSocialMedia } =
     api.userSocialMedias.createUserSocialMedia.useMutation({
       onSuccess: () => {
-        void ctx.userSocialMedias.getUserSocialMediaByProfileId
-          .invalidate()
-          .then(() => {
-            setIsLoading(false);
-            toast.success(
-              t("pages.editPage.toasterCreatedSocialMediaSuccess"),
-              {
-                position: "bottom-left",
-              }
-            );
-          });
-      },
-      onError: () => {
         setIsLoading(false);
+        void ctx.userSocialMedias.getUserSocialMediaByProfileId.invalidate();
       },
     });
 
   const { mutate: deleteUserSocialMedia } =
-    api.userSocialMedias.deleteUserSocialMedia.useMutation({
-      onSuccess: () => {
-        void ctx.userSocialMedias.getUserSocialMediaByProfileId
-          .invalidate()
-          .then(() => {
-            setIsLoading(false);
-            toast.success(
-              t("pages.editPage.toasterDeletedSocialMediaSuccess"),
-              {
-                position: "bottom-left",
-              }
-            );
-          });
-      },
-      onError: () => {
-        setIsLoading(false);
-      },
-    });
+    api.userSocialMedias.deleteUserSocialMedia.useMutation();
 
   const { mutate: updateUserSocialMedia } =
-    api.userSocialMedias.updateUserSocialMedia.useMutation({
-      onSuccess: () => {
-        void ctx.userSocialMedias.getUserSocialMediaByProfileId
-          .invalidate()
-          .then(() => {
-            setIsLoading(false);
-            toast.success(t("pages.editPage.toasterUpdateSuccessfully"), {
-              position: "bottom-left",
-            });
-          });
-      },
-      onError: () => {
-        setIsLoading(false);
-      },
-    });
+    api.userSocialMedias.updateUserSocialMedia.useMutation();
 
   //FORMS FROM REACT HOOK
 
@@ -174,6 +136,38 @@ const EditPage = (params: { role: Option | undefined }) => {
       valuePacks: [],
     },
   });
+
+  useEffect(() => {
+    if (profileSocialMedia) {
+      setUserSocialMediaList(
+        profileSocialMedia.map((item) => {
+          return {
+            id: item.id,
+            platform: {
+              id: item.socialMediaId,
+              name: item.socialMedia?.name || "",
+            },
+            socialMediaFollowers: item.followers,
+            socialMediaHandler: item.handler,
+            valuePacks: item.valuePacks.map((valuePack) => {
+              return {
+                id: valuePack.id,
+                platform: {
+                  id: item.socialMediaId,
+                  name: item.socialMedia?.name || "",
+                },
+                valuePackPrice: valuePack.valuePackPrice.toString(),
+                contentType: {
+                  id: valuePack.contentType?.id || -1,
+                  name: valuePack.contentType?.name || "",
+                },
+              };
+            }),
+          };
+        })
+      );
+    }
+  }, [profileSocialMedia]);
 
   useEffect(() => {
     profileSetValue("about", profile?.about || "");
@@ -255,10 +249,14 @@ const EditPage = (params: { role: Option | undefined }) => {
 
   //SOCIAL MEDIA FUNCTIONS
   const onDeleteSocialMedia = (socialMedia: SocialMediaDetails) => {
-    setIsLoading(true);
+    if (socialMedia && socialMedia.id && currentSocialMediaIndex) {
+      const newUserSocialMediaList = [...userSocialMediaList];
+      newUserSocialMediaList.splice(currentSocialMediaIndex, 1);
+      setUserSocialMediaList(newUserSocialMediaList);
 
-    if (socialMedia && socialMedia.id) {
       deleteUserSocialMedia({ id: socialMedia.id });
+
+      setCurrentSocialMediaIndex(-1);
     }
   };
 
@@ -292,6 +290,22 @@ const EditPage = (params: { role: Option | undefined }) => {
       return;
     }
 
+    const newUserSocialMediaList = [...userSocialMediaList];
+    newUserSocialMediaList.push({
+      socialMediaFollowers: data.socialMediaFollowers,
+      socialMediaHandler: data.socialMediaHandler,
+      platform: data.platform,
+      valuePacks: data.valuePacks.map((valuePack) => {
+        return {
+          contentType: valuePack.contentType,
+          platform: data.platform,
+          valuePackPrice: valuePack.valuePackPrice,
+        };
+      }),
+    });
+
+    setUserSocialMediaList(newUserSocialMediaList);
+
     createUserSocialMedia({
       followers: data.socialMediaFollowers,
       handler: data.socialMediaHandler,
@@ -305,13 +319,37 @@ const EditPage = (params: { role: Option | undefined }) => {
       }),
     });
 
+    setIsLoading(true);
     setIsSocialMediaModalOpen(false);
     socialMediaReset();
-    setIsLoading(true);
   });
 
   const onEditSocialMedia = handleSubmitSocialMedia((data) => {
     if (data.id) {
+      const newUserSocialMediaList = [...userSocialMediaList];
+      const editedSocialMedia = {
+        id: data.id,
+        socialMediaFollowers: data.socialMediaFollowers,
+        socialMediaHandler: data.socialMediaHandler,
+        platform: data.platform,
+        valuePacks: data.valuePacks.map((valuePack) => {
+          return {
+            id: valuePack.id || -1,
+            contentType: valuePack.contentType,
+            platform: valuePack.platform,
+            valuePackPrice: valuePack.valuePackPrice,
+          };
+        }),
+      };
+
+      newUserSocialMediaList.splice(
+        currentSocialMediaIndex,
+        1,
+        editedSocialMedia
+      );
+
+      setUserSocialMediaList(newUserSocialMediaList);
+
       updateUserSocialMedia({
         id: data.id,
         followers: data.socialMediaFollowers,
@@ -326,12 +364,11 @@ const EditPage = (params: { role: Option | undefined }) => {
           };
         }),
       });
-
-      setIsLoading(true);
     }
 
     setIsSocialMediaModalOpen(false);
     setSocialMediaEditing(false);
+    setCurrentSocialMediaIndex(-1);
     socialMediaReset();
   });
 
@@ -438,7 +475,7 @@ const EditPage = (params: { role: Option | undefined }) => {
           <div className="text-2xl font-semibold">
             {t("pages.editPage.socialMedia")}
           </div>
-          {platforms?.length !== profileSocialMedia?.length && (
+          {platforms?.length !== userSocialMediaList?.length && (
             <div
               className="flex h-6 w-6 items-center justify-center rounded-full bg-influencer text-white"
               onClick={() => setIsSocialMediaModalOpen(true)}
@@ -451,13 +488,19 @@ const EditPage = (params: { role: Option | undefined }) => {
           )}
         </div>
         <div className="flex flex-col gap-4 lg:flex-row lg:flex-wrap">
-          {profileSocialMedia && profileSocialMedia.length > 0 ? (
-            profileSocialMedia.map((socialMedia) => {
+          {isLoadingProfileSocialMedia && (
+            <div className="relative w-full">
+              <LoadingSpinner />
+            </div>
+          )}
+          {userSocialMediaList &&
+            userSocialMediaList.length > 0 &&
+            userSocialMediaList.map((socialMedia, index) => {
               const parsedSocialMedia: SocialMediaDetails = {
                 id: socialMedia.id,
-                platform: socialMedia.socialMedia || { id: -1, name: "" },
-                socialMediaFollowers: socialMedia.followers,
-                socialMediaHandler: socialMedia.handler,
+                platform: socialMedia.platform,
+                socialMediaFollowers: socialMedia.socialMediaFollowers,
+                socialMediaHandler: socialMedia.socialMediaHandler,
                 valuePacks: socialMedia.valuePacks.map((valuePack) => {
                   return {
                     id: valuePack.id,
@@ -467,8 +510,8 @@ const EditPage = (params: { role: Option | undefined }) => {
                     },
                     valuePackPrice: valuePack.valuePackPrice.toString(),
                     platform: {
-                      id: socialMedia.socialMedia?.id || -1,
-                      name: socialMedia.socialMedia?.name || "",
+                      id: socialMedia.platform.id,
+                      name: socialMedia.platform.name,
                     },
                   };
                 }),
@@ -476,16 +519,20 @@ const EditPage = (params: { role: Option | undefined }) => {
 
               return (
                 <SocialMediaCard
-                  key={socialMedia.id}
-                  onClick={() =>
-                    handleOnclickSocialMediaCard(parsedSocialMedia)
-                  }
-                  onDelete={() => onDeleteSocialMedia(parsedSocialMedia)}
+                  key={`${socialMedia.id || -1}  ${index}`}
+                  onClick={() => {
+                    setCurrentSocialMediaIndex(index);
+                    handleOnclickSocialMediaCard(parsedSocialMedia);
+                  }}
+                  onDelete={() => {
+                    setCurrentSocialMediaIndex(index);
+                    onDeleteSocialMedia(parsedSocialMedia);
+                  }}
                   socialMedia={parsedSocialMedia}
                 />
               );
-            })
-          ) : (
+            })}
+          {!isLoadingProfileSocialMedia && userSocialMediaList.length === 0 && (
             <div>{t("pages.editPage.noSocialMedia")}</div>
           )}
         </div>
@@ -522,18 +569,18 @@ const EditPage = (params: { role: Option | undefined }) => {
             </div>
             {renderSocialMedia()}
           </div>
-          {isSocialMediaModalOpen && profileSocialMedia && (
+          {isSocialMediaModalOpen && userSocialMediaList && (
             <AddSocialMediaModal
               addSocialMedia={
                 socialMediaEditing ? onEditSocialMedia : onAddSocialMedia
               }
               platforms={platforms}
               errors={socialMediaErrors}
-              socialMediaList={profileSocialMedia.map((item) => {
+              socialMediaList={userSocialMediaList.map((item) => {
                 return {
-                  platform: item.socialMedia || { id: -1, name: "" },
-                  socialMediaHandler: item.handler,
-                  socialMediaFollowers: item.followers,
+                  platform: item.platform,
+                  socialMediaHandler: item.socialMediaHandler,
+                  socialMediaFollowers: item.socialMediaFollowers,
                   valuePacks: [],
                 };
               })}
