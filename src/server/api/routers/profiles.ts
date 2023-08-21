@@ -819,7 +819,6 @@ export const profilesRouter = createTRPCRouter({
       return await ctx.prisma.profile.findMany({
         where: {
           user: { roleId: input.roleId },
-          OR: [{ verifiedStatusId: 1 }, { verifiedStatusId: 3 }],
         },
         include: {
           acceptedOffers: {

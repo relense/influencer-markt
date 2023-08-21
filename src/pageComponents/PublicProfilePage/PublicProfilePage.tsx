@@ -630,7 +630,7 @@ const PublicProfilePage = (params: {
             <div className="w-full border-[1px] border-white1" />
             <div className="flex flex-1 justify-between font-semibold">
               <div>{t("pages.publicProfilePage.total")}</div>
-              {selectedValuePack.id !== -1 ? (
+              {selectedValuePack.id !== -1 && profile?.country?.countryTax ? (
                 <div>
                   {helper.formatNumber(
                     parseInt(selectedValuePack.valuePackPrice) +
