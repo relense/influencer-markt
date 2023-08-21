@@ -54,6 +54,15 @@ export const userSocialMediasRouter = createTRPCRouter({
             }),
           });
         }
+
+        if (profile.verifiedStatusId === 2) {
+          await ctx.prisma.profile.update({
+            where: { id: profile.id },
+            data: {
+              verifiedStatusId: 3,
+            },
+          });
+        }
       }
     }),
 
@@ -167,6 +176,17 @@ export const userSocialMediasRouter = createTRPCRouter({
       })
     )
     .mutation(async ({ ctx, input }) => {
+      const profile = await ctx.prisma.profile.findUnique({
+        where: { userId: ctx.session.user.id },
+        include: {
+          userSocialMedia: {
+            include: {
+              valuePacks: true,
+            },
+          },
+        },
+      });
+
       await ctx.prisma.userSocialMedia.update({
         where: {
           id: input.id,
@@ -193,6 +213,15 @@ export const userSocialMediasRouter = createTRPCRouter({
               valuePackPrice: valuePack.valuePackPrice,
             },
           });
+        });
+      }
+
+      if (profile && profile.verifiedStatusId === 2) {
+        await ctx.prisma.profile.update({
+          where: { id: profile.id },
+          data: {
+            verifiedStatusId: 3,
+          },
         });
       }
     }),

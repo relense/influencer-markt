@@ -83,6 +83,18 @@ async function main() {
     ],
   });
 
+  await prisma.contactMessageState.createMany({
+    data: [{ name: "open" }, { name: "progress" }, { name: "closed" }],
+  });
+
+  await prisma.verifiedStatus.createMany({
+    data: [
+      { name: "notVerified" },
+      { name: "verified" },
+      { name: "needsReverification" },
+    ],
+  });
+
   await prisma.category.createMany({
     data: [
       { name: "Lifestyle" },

@@ -13,7 +13,7 @@ const AdminNavbar = () => {
         >
           {t("components.adminNavbar.influencers")}
         </Link>
-        <Link href="/admin/breands" className="cursor-pointer px-2 text-lg">
+        <Link href="/admin/brands" className="cursor-pointer px-2 text-lg">
           {t("components.adminNavbar.brands")}
         </Link>
         <Link href="/admin/messages" className="cursor-pointer px-2 text-lg">

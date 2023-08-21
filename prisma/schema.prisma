@@ -59,6 +59,7 @@ model User {
   firstSteps    Boolean?  @default(false)
   username      String?   @unique
   role          Role?     @relation(fields: [roleId], references: [id])
+  userType      String    @default("user")
   accounts      Account[]
   sessions      Session[]
   profile       Profile?
@@ -85,6 +86,7 @@ model Profile {
   profileReviews  Review[]          @relation("profileReviewd")
   submitedReviews Review[]          @relation("author")
   portfolio       Portfolio[]
+  verifiedStatus  VerifiedStatus?   @relation(fields: [verifiedStatusId], references: [id])
 
   createdOffers      Offer[] @relation("offerCreator")
   appliedOffers      Offer[] @relation("offerApplicants")
@@ -97,15 +99,17 @@ model Profile {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  userId    String @unique
-  genderId  Int?
-  countryId Int?
-  cityId    Int?
+  userId           String @unique
+  genderId         Int?
+  countryId        Int?
+  cityId           Int?
+  verifiedStatusId Int?
 
   @@index([userId])
   @@index([genderId])
   @@index([countryId])
   @@index([cityId])
+  @@index([verifiedStatusId])
 }
 
 model Category {
@@ -314,4 +318,11 @@ model OfferStatus {
   name String
 
   offer Offer[]
+}
+
+model VerifiedStatus {
+  id   Int    @id @default(autoincrement())
+  name String
+
+  profile Profile[]
 }

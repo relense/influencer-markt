@@ -517,6 +517,7 @@ export const profilesRouter = createTRPCRouter({
           cityId: input.city.id === -1 ? undefined : input.city.id,
           userId: ctx.session.user.id,
           website: input.website,
+          verifiedStatusId: 1,
         },
         include: {
           categories: true,
@@ -794,7 +795,10 @@ export const profilesRouter = createTRPCRouter({
 
   getProfileOffers: protectedProcedure.query(async ({ ctx }) => {
     return await ctx.prisma.profile.findFirst({
-      where: { userId: ctx.session.user.id },
+      where: {
+        userId: ctx.session.user.id,
+        OR: [{ verifiedStatusId: 1 }, { verifiedStatusId: 3 }],
+      },
       select: {
         createdOffers: {
           select: {
@@ -804,4 +808,163 @@ export const profilesRouter = createTRPCRouter({
       },
     });
   }),
+
+  getAllProfileForAdminDashboard: protectedProcedure
+    .input(
+      z.object({
+        roleId: z.number(),
+      })
+    )
+    .query(async ({ ctx, input }) => {
+      return await ctx.prisma.profile.findMany({
+        where: {
+          user: { roleId: input.roleId },
+          OR: [{ verifiedStatusId: 1 }, { verifiedStatusId: 3 }],
+        },
+        include: {
+          acceptedOffers: {
+            select: {
+              id: true,
+            },
+          },
+          appliedOffers: {
+            select: {
+              id: true,
+            },
+          },
+          categories: true,
+          city: true,
+          country: true,
+          createdOffers: {
+            select: {
+              id: true,
+            },
+          },
+          favoriteBy: {
+            select: {
+              id: true,
+            },
+          },
+          favorites: {
+            select: {
+              id: true,
+            },
+          },
+          gender: true,
+          portfolio: {
+            select: {
+              id: true,
+            },
+          },
+          profileReviews: {
+            select: {
+              id: true,
+            },
+          },
+          rejectedApplicants: {
+            select: {
+              id: true,
+            },
+          },
+          submitedReviews: {
+            select: {
+              id: true,
+            },
+          },
+          user: true,
+          userSocialMedia: {
+            include: {
+              socialMedia: true,
+            },
+          },
+          verifiedStatus: true,
+        },
+        orderBy: [{ verifiedStatusId: "asc" }],
+      });
+    }),
+
+  getSingleProfileForAdmin: protectedProcedure
+    .input(
+      z.object({
+        profileId: z.number(),
+      })
+    )
+    .query(async ({ ctx, input }) => {
+      return await ctx.prisma.profile.findFirst({
+        where: { id: input.profileId },
+        include: {
+          acceptedOffers: {
+            select: {
+              id: true,
+            },
+          },
+          appliedOffers: {
+            select: {
+              id: true,
+            },
+          },
+          categories: true,
+          city: true,
+          country: true,
+          createdOffers: {
+            select: {
+              id: true,
+            },
+          },
+          favoriteBy: {
+            select: {
+              id: true,
+            },
+          },
+          favorites: {
+            select: {
+              id: true,
+            },
+          },
+          gender: true,
+          portfolio: {
+            select: {
+              id: true,
+            },
+          },
+          profileReviews: {
+            select: {
+              id: true,
+            },
+          },
+          rejectedApplicants: {
+            select: {
+              id: true,
+            },
+          },
+          submitedReviews: {
+            select: {
+              id: true,
+            },
+          },
+          user: true,
+          userSocialMedia: {
+            include: {
+              socialMedia: true,
+            },
+          },
+          verifiedStatus: true,
+        },
+      });
+    }),
+
+  verifyProfile: protectedProcedure
+    .input(
+      z.object({
+        profileId: z.number(),
+      })
+    )
+    .mutation(async ({ ctx, input }) => {
+      return await ctx.prisma.profile.update({
+        where: { id: input.profileId },
+        data: {
+          verifiedStatusId: 2,
+        },
+      });
+    }),
 });
