@@ -614,10 +614,11 @@ const PublicProfilePage = (params: {
               </div>
               <div className="flex flex-1 justify-between">
                 <div>{t("pages.publicProfilePage.fee")}</div>
-                {selectedValuePack.id !== -1 ? (
+                {selectedValuePack.id !== -1 && profile?.country?.countryTax ? (
                   <div>
                     {helper.formatNumber(
-                      parseInt(selectedValuePack.valuePackPrice) * 0.1
+                      parseInt(selectedValuePack.valuePackPrice) *
+                        (profile?.country?.countryTax / 100 || 1)
                     )}
                     €
                   </div>
@@ -633,7 +634,8 @@ const PublicProfilePage = (params: {
                 <div>
                   {helper.formatNumber(
                     parseInt(selectedValuePack.valuePackPrice) +
-                      parseInt(selectedValuePack.valuePackPrice) * 0.1
+                      parseInt(selectedValuePack.valuePackPrice) *
+                        (profile?.country?.countryTax / 100 || 1)
                   )}
                   €
                 </div>
