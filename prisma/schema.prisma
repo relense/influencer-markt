@@ -232,7 +232,7 @@ model ContentType {
 model Country {
   id         Int       @id @default(autoincrement())
   name       String
-  countryTax Int
+  countryTax Int?
   profile    Profile[]
   state      State[]
   Offer      Offer[]
