@@ -82,6 +82,8 @@ const ProfileData = (params: { profile: ProfileAdminIncludes }) => {
     data: updatedProfile,
     refetch,
     isRefetching,
+    isLoading: isLoadingUpdatedProfile,
+    isFetching,
   } = api.profiles.getSingleProfileForAdmin.useQuery(
     {
       profileId: params.profile.id,
@@ -149,7 +151,7 @@ const ProfileData = (params: { profile: ProfileAdminIncludes }) => {
               }
               level="primary"
               onClick={() => void verify({ profileId: params.profile.id })}
-              isLoading={isLoading || isRefetching}
+              isLoading={isLoading || isRefetching || isFetching}
             />
           )}
         </div>
