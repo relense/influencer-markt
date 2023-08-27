@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -17,9 +17,9 @@ import { ProfileCard } from "../../components/ProfileCard";
 import { CreateOfferModal } from "../../components/CreateOfferModal";
 import { MyOffersActionConfirmationModal } from "../../components/MyOffersActionConfirmationModal";
 import { Button } from "../../components/Button";
-import { toast } from "react-hot-toast";
 import { useRouter } from "next/router";
 import Link from "next/link";
+import { type UserProfiles } from "../../utils/globalTypes";
 
 const ManageOfferDetailsPage = (params: {
   offerId: number;
@@ -27,7 +27,6 @@ const ManageOfferDetailsPage = (params: {
 }) => {
   const { t, i18n } = useTranslation();
   const dropdownRef = useRef(null);
-  const ctx = api.useContext();
   const router = useRouter();
 
   const [isDropdownOpen, setIsDropdownOpen] = useState<boolean>(false);
@@ -43,6 +42,13 @@ const ManageOfferDetailsPage = (params: {
     "archive" | "delete" | "publish"
   >("archive");
   const [warningModalOfferId, setWarningModalOfferId] = useState<number>(-1);
+  const [applicants, setApplicants] = useState<UserProfiles[]>([]);
+  const [acceptedApplicants, setAcceptedApplicants] = useState<UserProfiles[]>(
+    []
+  );
+  const [rejectedApplicants, setRejectedApplicants] = useState<UserProfiles[]>(
+    []
+  );
 
   const { data: offer, isLoading } = api.offers.getOffer.useQuery(
     {
@@ -53,7 +59,7 @@ const ManageOfferDetailsPage = (params: {
     }
   );
 
-  const { data: profiles } = api.offers.getApplicants.useQuery(
+  const { data: offerApplicants } = api.offers.getApplicants.useQuery(
     {
       offerId: params.offerId,
     },
@@ -62,56 +68,37 @@ const ManageOfferDetailsPage = (params: {
     }
   );
 
-  const { mutate: acceptedApplicant } =
-    api.offers.acceptedApplicant.useMutation({
-      onSuccess: () => {
-        void ctx.offers.getOffer.invalidate().then(() => {
-          void ctx.offers.getApplicants.invalidate().then(() => {
-            toast.success(t("pages.manageOffers.acceptedApplicant"), {
-              position: "bottom-left",
-            });
-          });
-        });
+  const { data: offerAcceptedApplicants } =
+    api.offers.getAcceptedApplicants.useQuery(
+      {
+        offerId: params.offerId,
       },
-    });
+      {
+        cacheTime: 0,
+      }
+    );
 
-  const { mutate: rejectApplication } = api.offers.rejectApplicant.useMutation({
-    onSuccess: () => {
-      void ctx.offers.getOffer.invalidate().then(() => {
-        void ctx.offers.getApplicants.invalidate().then(() => {
-          toast.success(t("pages.manageOffers.rejectedApplicant"), {
-            position: "bottom-left",
-          });
-        });
-      });
-    },
-  });
+  const { data: offerRejectedApplicants } =
+    api.offers.getRejectedApplicants.useQuery(
+      {
+        offerId: params.offerId,
+      },
+      {
+        cacheTime: 0,
+      }
+    );
+
+  const { mutate: acceptedApplicant } =
+    api.offers.acceptedApplicant.useMutation();
+
+  const { mutate: rejectApplication } =
+    api.offers.rejectApplicant.useMutation();
 
   const { mutate: removeApplicantFromAccepted } =
-    api.offers.removeApplicantFromAccepted.useMutation({
-      onSuccess: () => {
-        void ctx.offers.getOffer.invalidate().then(() => {
-          void ctx.offers.getApplicants.invalidate().then(() => {
-            toast.success(t("pages.manageOffers.removedApplicant"), {
-              position: "bottom-left",
-            });
-          });
-        });
-      },
-    });
+    api.offers.removeApplicantFromAccepted.useMutation();
 
   const { mutate: removeApplicantFromRejected } =
-    api.offers.removeApplicantFromRejected.useMutation({
-      onSuccess: () => {
-        void ctx.offers.getOffer.invalidate().then(() => {
-          void ctx.offers.getApplicants.invalidate().then(() => {
-            toast.success(t("pages.manageOffers.removedApplicant"), {
-              position: "bottom-left",
-            });
-          });
-        });
-      },
-    });
+    api.offers.removeApplicantFromRejected.useMutation();
 
   const { mutate: startOffer, isLoading: isLoadingStartOffer } =
     api.offers.startOffer.useMutation({
@@ -120,6 +107,148 @@ const ManageOfferDetailsPage = (params: {
       },
     });
 
+  useEffect(() => {
+    if (offerApplicants) {
+      const newApplicants = offerApplicants.applicants.map((applicant) => {
+        let isFavorited = false;
+
+        if (params.loggedInProfileId) {
+          isFavorited = !!applicant.favoriteBy.find(
+            (applicant) => params.loggedInProfileId === applicant.id
+          );
+        }
+
+        return {
+          id: applicant.id,
+          profilePicture: applicant.profilePicture,
+          socialMedia: applicant.userSocialMedia.map((userSocialMedia) => {
+            return {
+              id: userSocialMedia.id,
+              handler: userSocialMedia.handler,
+              followers: userSocialMedia.followers,
+              url: userSocialMedia.url,
+              socialMediaName: userSocialMedia.socialMedia?.name || "",
+              socialMediaId: userSocialMedia.socialMedia?.id || -1,
+            };
+          }),
+          name: applicant.name,
+          about: applicant.about,
+          city: {
+            id: applicant.city?.id || -1,
+            name: applicant.city?.name || "",
+          },
+          country: {
+            id: applicant.country?.id || -1,
+            name: applicant.country?.name || "",
+          },
+          username: applicant.user?.username || "",
+          bookmarked: isFavorited,
+          favoritedBy: applicant.favoriteBy.map((favorite) => {
+            return favorite.id;
+          }),
+        };
+      });
+
+      setApplicants(newApplicants);
+    }
+  }, [offerApplicants, params.loggedInProfileId]);
+
+  useEffect(() => {
+    if (offerAcceptedApplicants) {
+      const newApplicants = offerAcceptedApplicants.acceptedApplicants.map(
+        (applicant) => {
+          let isFavorited = false;
+
+          if (params.loggedInProfileId) {
+            isFavorited = !!applicant.favoriteBy.find(
+              (applicant) => params.loggedInProfileId === applicant.id
+            );
+          }
+
+          return {
+            id: applicant.id,
+            profilePicture: applicant.profilePicture,
+            socialMedia: applicant.userSocialMedia.map((userSocialMedia) => {
+              return {
+                id: userSocialMedia.id,
+                handler: userSocialMedia.handler,
+                followers: userSocialMedia.followers,
+                url: userSocialMedia.url,
+                socialMediaName: userSocialMedia.socialMedia?.name || "",
+                socialMediaId: userSocialMedia.socialMedia?.id || -1,
+              };
+            }),
+            name: applicant.name,
+            about: applicant.about,
+            city: {
+              id: applicant.city?.id || -1,
+              name: applicant.city?.name || "",
+            },
+            country: {
+              id: applicant.country?.id || -1,
+              name: applicant.country?.name || "",
+            },
+            username: applicant.user?.username || "",
+            bookmarked: isFavorited,
+            favoritedBy: applicant.favoriteBy.map((favorite) => {
+              return favorite.id;
+            }),
+          };
+        }
+      );
+
+      setAcceptedApplicants(newApplicants);
+    }
+  }, [offerAcceptedApplicants, params.loggedInProfileId]);
+
+  useEffect(() => {
+    if (offerRejectedApplicants) {
+      const newApplicants = offerRejectedApplicants.rejectedApplicants.map(
+        (applicant) => {
+          let isFavorited = false;
+
+          if (params.loggedInProfileId) {
+            isFavorited = !!applicant.favoriteBy.find(
+              (applicant) => params.loggedInProfileId === applicant.id
+            );
+          }
+
+          return {
+            id: applicant.id,
+            profilePicture: applicant.profilePicture,
+            socialMedia: applicant.userSocialMedia.map((userSocialMedia) => {
+              return {
+                id: userSocialMedia.id,
+                handler: userSocialMedia.handler,
+                followers: userSocialMedia.followers,
+                url: userSocialMedia.url,
+                socialMediaName: userSocialMedia.socialMedia?.name || "",
+                socialMediaId: userSocialMedia.socialMedia?.id || -1,
+              };
+            }),
+            name: applicant.name,
+            about: applicant.about,
+            city: {
+              id: applicant.city?.id || -1,
+              name: applicant.city?.name || "",
+            },
+            country: {
+              id: applicant.country?.id || -1,
+              name: applicant.country?.name || "",
+            },
+            username: applicant.user?.username || "",
+            bookmarked: isFavorited,
+            favoritedBy: applicant.favoriteBy.map((favorite) => {
+              return favorite.id;
+            }),
+          };
+        }
+      );
+
+      setRejectedApplicants(newApplicants);
+    }
+  }, [offerRejectedApplicants, params.loggedInProfileId]);
+
   useOutsideClick(() => {
     if (isDropdownOpen === false) return;
 
@@ -127,31 +256,110 @@ const ManageOfferDetailsPage = (params: {
   }, dropdownRef);
 
   const onAcceptedApplicant = (profileId: number) => {
-    acceptedApplicant({
-      offerId: params.offerId,
-      profileId: profileId,
-    });
+    const newApplicantsArray = [...applicants];
+    const newAcceptedApplicantsArray = [...acceptedApplicants];
+
+    const savedProfileIndex = newApplicantsArray.findIndex(
+      (applicant) => applicant.id === profileId
+    );
+
+    if (savedProfileIndex !== -1) {
+      const savedProfile = newApplicantsArray.splice(savedProfileIndex, 1)[0];
+      if (savedProfile) {
+        newAcceptedApplicantsArray.push(savedProfile);
+      }
+
+      setApplicants(newApplicantsArray);
+      setAcceptedApplicants(newAcceptedApplicantsArray);
+
+      acceptedApplicant({
+        offerId: params.offerId,
+        profileId: profileId,
+      });
+    }
   };
 
   const onRejectApplicant = (profileId: number) => {
-    rejectApplication({
-      offerId: params.offerId,
-      profileId: profileId,
-    });
+    const newApplicantsArray = [...applicants];
+    const newRejectApplicantsArray = [...rejectedApplicants];
+
+    const rejectedProfileIndex = newApplicantsArray.findIndex(
+      (applicant) => applicant.id === profileId
+    );
+
+    if (rejectedProfileIndex !== -1) {
+      const rejectedProfile = newApplicantsArray.splice(
+        rejectedProfileIndex,
+        1
+      )[0];
+
+      if (rejectedProfile) {
+        newRejectApplicantsArray.push(rejectedProfile);
+      }
+
+      setApplicants(newApplicantsArray);
+      setRejectedApplicants(newRejectApplicantsArray);
+
+      rejectApplication({
+        offerId: params.offerId,
+        profileId: profileId,
+      });
+    }
   };
 
   const onRemoveFromAccepted = (profileId: number) => {
-    removeApplicantFromAccepted({
-      offerId: params.offerId,
-      profileId: profileId,
-    });
+    const newApplicantsArray = [...applicants];
+    const newAcceptedApplicantsArray = [...acceptedApplicants];
+
+    const savedProfileIndex = newAcceptedApplicantsArray.findIndex(
+      (applicant) => applicant.id === profileId
+    );
+
+    if (savedProfileIndex !== -1) {
+      const savedProfile = newAcceptedApplicantsArray.splice(
+        savedProfileIndex,
+        1
+      )[0];
+      if (savedProfile) {
+        newApplicantsArray.push(savedProfile);
+      }
+
+      setApplicants(newApplicantsArray);
+      setAcceptedApplicants(newAcceptedApplicantsArray);
+
+      removeApplicantFromAccepted({
+        offerId: params.offerId,
+        profileId: profileId,
+      });
+    }
   };
 
   const onRemoveFromRejected = (profileId: number) => {
-    removeApplicantFromRejected({
-      offerId: params.offerId,
-      profileId: profileId,
-    });
+    const newApplicantsArray = [...applicants];
+    const newRejectApplicantsArray = [...rejectedApplicants];
+
+    const profileIndex = newRejectApplicantsArray.findIndex(
+      (applicant) => applicant.id === profileId
+    );
+
+    if (profileIndex !== -1) {
+      const rejectedProfile = newRejectApplicantsArray.splice(
+        profileIndex,
+        1
+      )[0];
+
+      if (rejectedProfile) {
+        newApplicantsArray.push(rejectedProfile);
+      }
+
+      setApplicants(newApplicantsArray);
+      setRejectedApplicants(newRejectApplicantsArray);
+
+      removeApplicantFromRejected({
+        offerId: params.offerId,
+        profileId: profileId,
+      });
+    }
   };
 
   const openWarningModal = (
@@ -336,7 +544,7 @@ const ManageOfferDetailsPage = (params: {
   };
 
   const renderInterestedProfiles = () => {
-    if (offer) {
+    if (offer && offerApplicants && offerAcceptedApplicants) {
       return (
         <div className="flex flex-col gap-4 sm:flex-row sm:gap-6">
           <div className="flex items-center gap-2">
@@ -346,7 +554,7 @@ const ManageOfferDetailsPage = (params: {
             />
             <div className="font-semibold">
               {t("pages.manageOffers.applicants", {
-                count: offer.applicants.length,
+                count: applicants.length,
               })}
             </div>
           </div>
@@ -357,12 +565,13 @@ const ManageOfferDetailsPage = (params: {
             />
             <div className="font-semibold">
               {t("pages.manageOffers.openings", {
-                acceptedAplicants: offer.acceptedApplicants.length,
+                acceptedAplicants:
+                  offerAcceptedApplicants?.acceptedApplicants.length,
                 count: offer.numberOfInfluencers,
               })}
             </div>
           </div>
-          {offer.acceptedApplicants.length === offer.numberOfInfluencers &&
+          {acceptedApplicants.length === offer.numberOfInfluencers &&
             offer.offerStatus.id === 1 && (
               <Button
                 title={t("pages.manageOffers.initiateOffer")}
@@ -453,44 +662,33 @@ const ManageOfferDetailsPage = (params: {
               </div>
             </div>
           </div>
-          {isAcceptedApplicantsOpen && (
+          {isAcceptedApplicantsOpen && offerAcceptedApplicants && (
             <div className="flex flex-wrap gap-8">
-              {offer.acceptedApplicants.map((applicant) => {
-                let isFavorited = false;
-
-                if (params.loggedInProfileId) {
-                  isFavorited = !!applicant.favoriteBy.find(
-                    (applicant) => params.loggedInProfileId === applicant.id
-                  );
-                }
-
+              {acceptedApplicants.map((applicant) => {
                 return (
                   <div key={applicant.id} className="flex flex-col gap-4">
                     <ProfileCard
                       id={applicant.id}
                       profilePicture={applicant.profilePicture}
-                      socialMedia={applicant.userSocialMedia.map(
-                        (socialMedia) => {
-                          return {
-                            followers: socialMedia.followers,
-                            handler: socialMedia.handler,
-                            id: socialMedia.id,
-                            socialMediaId: socialMedia.socialMedia?.id || -1,
-                            socialMediaName:
-                              socialMedia.socialMedia?.name || "",
-                            url: socialMedia.url,
-                            valuePacks: [],
-                          };
-                        }
-                      )}
+                      socialMedia={applicant.socialMedia.map((socialMedia) => {
+                        return {
+                          followers: socialMedia.followers,
+                          handler: socialMedia.handler,
+                          id: socialMedia.id,
+                          socialMediaId: socialMedia.socialMediaId,
+                          socialMediaName: socialMedia.socialMediaName,
+                          url: socialMedia.url,
+                          valuePacks: [],
+                        };
+                      })}
                       name={applicant.name}
                       about={applicant.about}
                       city={applicant.city?.name || ""}
                       country={applicant?.country?.name || ""}
-                      username={applicant.user.username || ""}
+                      username={applicant?.username || ""}
                       type="Influencer"
-                      bookmarked={isFavorited}
-                      highlightSocialMediaId={offer?.socialMedia.id}
+                      bookmarked={applicant?.bookmarked || false}
+                      highlightSocialMediaId={offer.socialMediaId}
                     />
 
                     {offer.offerStatus.id === 1 && (
@@ -538,47 +736,35 @@ const ManageOfferDetailsPage = (params: {
               </div>
             </div>
           </div>
-          {isApplicantsOpen && profiles && (
+          {isApplicantsOpen && offerApplicants && offerAcceptedApplicants && (
             <div className="flex flex-wrap gap-8">
-              {profiles.applicants.map((applicant) => {
-                let isFavorited = false;
-
-                if (params.loggedInProfileId) {
-                  isFavorited = !!applicant.favoriteBy.find(
-                    (applicant) => params.loggedInProfileId === applicant.id
-                  );
-                }
-
+              {applicants.map((applicant) => {
                 return (
                   <div key={applicant.id} className="flex flex-col gap-4">
                     <ProfileCard
                       id={applicant.id}
                       profilePicture={applicant.profilePicture}
-                      socialMedia={applicant.userSocialMedia.map(
-                        (socialMedia) => {
-                          return {
-                            followers: socialMedia.followers,
-                            handler: socialMedia.handler,
-                            id: socialMedia.id,
-                            socialMediaId: socialMedia.socialMedia?.id || -1,
-                            socialMediaName:
-                              socialMedia.socialMedia?.name || "",
-                            url: socialMedia.url,
-                            valuePacks: [],
-                          };
-                        }
-                      )}
+                      socialMedia={applicant.socialMedia.map((socialMedia) => {
+                        return {
+                          followers: socialMedia.followers,
+                          handler: socialMedia.handler,
+                          id: socialMedia.id,
+                          socialMediaId: socialMedia.socialMediaId,
+                          socialMediaName: socialMedia.socialMediaName,
+                          url: socialMedia.url,
+                          valuePacks: [],
+                        };
+                      })}
                       name={applicant.name}
                       about={applicant.about}
                       city={applicant.city?.name || ""}
                       country={applicant?.country?.name || ""}
-                      username={applicant.user.username || ""}
+                      username={applicant?.username || ""}
                       type="Influencer"
-                      bookmarked={isFavorited}
+                      bookmarked={applicant?.bookmarked || false}
                       highlightSocialMediaId={offer.socialMediaId}
                     />
-                    {offer.acceptedApplicants.length <
-                      offer.numberOfInfluencers && (
+                    {acceptedApplicants.length < offer.numberOfInfluencers && (
                       <div className="flex justify-around gap-4">
                         <Button
                           title={t("pages.manageOffers.acceptButton")}
@@ -633,43 +819,32 @@ const ManageOfferDetailsPage = (params: {
               </div>
             </div>
           </div>
-          {isRejectedApplicantsOpen && (
+          {isRejectedApplicantsOpen && rejectedApplicants && (
             <div className="flex flex-wrap gap-8">
-              {offer.rejectedApplicants.map((applicant) => {
-                let isFavorited = false;
-
-                if (params.loggedInProfileId) {
-                  isFavorited = !!applicant.favoriteBy.find(
-                    (applicant) => params.loggedInProfileId === applicant.id
-                  );
-                }
-
+              {rejectedApplicants.map((applicant) => {
                 return (
                   <div key={applicant.id} className="flex flex-col gap-4">
                     <ProfileCard
                       id={applicant.id}
                       profilePicture={applicant.profilePicture}
-                      socialMedia={applicant.userSocialMedia.map(
-                        (socialMedia) => {
-                          return {
-                            followers: socialMedia.followers,
-                            handler: socialMedia.handler,
-                            id: socialMedia.id,
-                            socialMediaId: socialMedia.socialMedia?.id || -1,
-                            socialMediaName:
-                              socialMedia.socialMedia?.name || "",
-                            url: socialMedia.url,
-                            valuePacks: [],
-                          };
-                        }
-                      )}
+                      socialMedia={applicant.socialMedia.map((socialMedia) => {
+                        return {
+                          followers: socialMedia.followers,
+                          handler: socialMedia.handler,
+                          id: socialMedia.id,
+                          socialMediaId: socialMedia.socialMediaId,
+                          socialMediaName: socialMedia.socialMediaName,
+                          url: socialMedia.url,
+                          valuePacks: [],
+                        };
+                      })}
                       name={applicant.name}
                       about={applicant.about}
                       city={applicant.city?.name || ""}
                       country={applicant?.country?.name || ""}
-                      username={applicant.user.username || ""}
+                      username={applicant?.username || ""}
                       type="Influencer"
-                      bookmarked={isFavorited}
+                      bookmarked={applicant?.bookmarked || false}
                       highlightSocialMediaId={offer.socialMediaId}
                     />
 
@@ -698,25 +873,24 @@ const ManageOfferDetailsPage = (params: {
           <div className="flex w-full cursor-default flex-col gap-8 self-center p-8 pb-10 sm:p-4 sm:px-12 xl:w-3/4 2xl:w-3/4 3xl:w-2/4">
             {renderOfferDetails()}
 
-            {offer.acceptedApplicants.length > 0 && (
+            {acceptedApplicants.length > 0 && (
               <>
                 <div className="w-full border-[1px] border-white1" />
                 {renderAcceptedApplicants()}
               </>
             )}
-            {offer.applicants.length > 0 && offer.offerStatus.id === 1 && (
+            {applicants.length > 0 && offer.offerStatus.id === 1 && (
               <>
                 <div className="w-full border-[1px] border-white1" />
                 {renderApplicants()}
               </>
             )}
-            {offer.rejectedApplicants.length > 0 &&
-              offer.offerStatus.id === 1 && (
-                <>
-                  <div className="w-full border-[1px] border-white1" />
-                  {renderRejectedApplicants()}
-                </>
-              )}
+            {rejectedApplicants.length > 0 && offer.offerStatus.id === 1 && (
+              <>
+                <div className="w-full border-[1px] border-white1" />
+                {renderRejectedApplicants()}
+              </>
+            )}
           </div>
           <div className="flex justify-center">
             {openCreateModal && (

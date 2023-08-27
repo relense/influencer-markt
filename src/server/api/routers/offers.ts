@@ -426,6 +426,36 @@ export const OffersRouter = createTRPCRouter({
       return await ctx.prisma.offer.findFirst({
         where: { id: input.offerId },
         include: {
+          offerStatus: true,
+          categories: true,
+          applicants: { select: { id: true } },
+          acceptedApplicants: { select: { id: true } },
+          contentTypeWithQuantity: {
+            select: {
+              amount: true,
+              contentType: true,
+              id: true,
+            },
+          },
+          offerCreator: true,
+          country: true,
+          gender: true,
+          socialMedia: true,
+          state: true,
+        },
+      });
+    }),
+
+  getAcceptedApplicants: protectedProcedure
+    .input(
+      z.object({
+        offerId: z.number(),
+      })
+    )
+    .query(async ({ ctx, input }) => {
+      return await ctx.prisma.offer.findFirst({
+        where: { id: input.offerId },
+        select: {
           acceptedApplicants: {
             select: {
               id: true,
@@ -440,9 +470,23 @@ export const OffersRouter = createTRPCRouter({
               city: true,
               country: true,
               user: { select: { username: true } },
-              favoriteBy: true,
+              favoriteBy: { select: { id: true } },
             },
           },
+        },
+      });
+    }),
+
+  getRejectedApplicants: protectedProcedure
+    .input(
+      z.object({
+        offerId: z.number(),
+      })
+    )
+    .query(async ({ ctx, input }) => {
+      return await ctx.prisma.offer.findFirst({
+        where: { id: input.offerId },
+        select: {
           rejectedApplicants: {
             select: {
               id: true,
@@ -457,24 +501,9 @@ export const OffersRouter = createTRPCRouter({
               city: true,
               country: true,
               user: { select: { username: true } },
-              favoriteBy: true,
+              favoriteBy: { select: { id: true } },
             },
           },
-          offerStatus: true,
-          categories: true,
-          applicants: { select: { id: true } },
-          contentTypeWithQuantity: {
-            select: {
-              amount: true,
-              contentType: true,
-              id: true,
-            },
-          },
-          offerCreator: true,
-          country: true,
-          gender: true,
-          socialMedia: true,
-          state: true,
         },
       });
     }),
@@ -501,10 +530,10 @@ export const OffersRouter = createTRPCRouter({
               },
               name: true,
               about: true,
-              city: { select: { name: true } },
-              country: { select: { name: true } },
+              city: true,
+              country: true,
               user: { select: { username: true } },
-              favoriteBy: true,
+              favoriteBy: { select: { id: true } },
             },
           },
         },

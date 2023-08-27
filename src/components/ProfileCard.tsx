@@ -200,14 +200,18 @@ const ProfileCard = (params: {
               );
             })}
           </div>
-          {params.type === "Influencer" && usefullSocialMedia.valuePacks[0] && (
-            <div className="text-lg font-semibold">
-              {helper.formatNumber(
-                parseInt(usefullSocialMedia.valuePacks[0]?.valuePackPrice || "")
-              )}
-              €
-            </div>
-          )}
+          {params.type === "Influencer" &&
+            usefullSocialMedia.valuePacks &&
+            usefullSocialMedia.valuePacks[0] && (
+              <div className="text-lg font-semibold">
+                {helper.formatNumber(
+                  parseInt(
+                    usefullSocialMedia.valuePacks[0]?.valuePackPrice || ""
+                  )
+                )}
+                €
+              </div>
+            )}
         </div>
       </div>
       <div className="flex flex-col">

@@ -28,7 +28,7 @@ export type UserSocialMedia = {
   url: string;
   socialMediaName: string;
   socialMediaId: number;
-  valuePacks: ValuePack[];
+  valuePacks?: ValuePack[];
 };
 
 export type Review = {
@@ -106,41 +106,10 @@ export type ProfileOffers = Prisma.OfferGetPayload<{
 export type OfferWithAllData = Prisma.OfferGetPayload<{
   include: {
     id?: true;
-    acceptedApplicants: {
-      select: {
-        id: true;
-        profilePicture: true;
-        userSocialMedia: {
-          include: {
-            socialMedia: true;
-          };
-        };
-        name: true;
-        about: true;
-        city: true;
-        country: true;
-        user: { select: { username: true } };
-      };
-    };
-    rejectedApplicants: {
-      select: {
-        id: true;
-        profilePicture: true;
-        userSocialMedia: {
-          include: {
-            socialMedia: true;
-          };
-        };
-        name: true;
-        about: true;
-        city: true;
-        country: true;
-        user: { select: { username: true } };
-      };
-    };
     offerStatus: true;
     categories: true;
     applicants: { select: { id: true } };
+    acceptedApplicants: { select: { id: true } };
     contentTypeWithQuantity: {
       select: {
         amount: true;
