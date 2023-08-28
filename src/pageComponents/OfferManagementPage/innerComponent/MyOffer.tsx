@@ -1,6 +1,5 @@
 import { useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useRouter } from "next/router";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faBriefcase,
@@ -11,6 +10,7 @@ import {
 import { helper, useOutsideClick } from "../../../utils/helper";
 import { type OfferWithAllData } from "../../../utils/globalTypes";
 import { MyOfferDropdown } from "../../../components/MyOfferDropdown";
+import Link from "next/link";
 
 const MyOffer = (params: {
   offer: OfferWithAllData;
@@ -19,10 +19,10 @@ const MyOffer = (params: {
     type: "archive" | "delete" | "publish",
     offerId: number
   ) => void;
+  duplicateOffer: () => void;
 }) => {
   const { t, i18n } = useTranslation();
   const dropdownRef = useRef(null);
-  const router = useRouter();
 
   const [isDropdownOpen, setIsDropdownOpen] = useState<boolean>(false);
 
@@ -34,10 +34,10 @@ const MyOffer = (params: {
 
   return (
     <div className="relative flex-1 lg:flex-[0_1_49%]">
-      <div
+      <Link
+        href={`/manage-offers/${params.offer.id}`}
         key={params.offer.id}
         className="flex h-full cursor-pointer flex-col justify-between gap-4 rounded-xl border-[1px] p-4"
-        onClick={() => void router.push(`/manage-offers/${params.offer.id}`)}
       >
         <div className="flex flex-col gap-2">
           <div className="line-clamp-2 font-semibold xs:w-3/4">
@@ -82,7 +82,7 @@ const MyOffer = (params: {
             </div>
           </div>
         </div>
-      </div>
+      </Link>
       <div className="z-5 group absolute right-0 top-0 p-4" ref={dropdownRef}>
         <FontAwesomeIcon
           icon={faEllipsis}
@@ -97,6 +97,7 @@ const MyOffer = (params: {
                 closeDropDown={() => setIsDropdownOpen(false)}
                 openEditOfferModal={() => params.openOfferModal()}
                 openWarningModal={params.openWarningModal}
+                duplicateOffer={params.duplicateOffer}
               />
             }
           </div>
@@ -108,6 +109,7 @@ const MyOffer = (params: {
               closeDropDown={() => setIsDropdownOpen(false)}
               openEditOfferModal={() => params.openOfferModal()}
               openWarningModal={params.openWarningModal}
+              duplicateOffer={params.duplicateOffer}
             />
           }
         </div>

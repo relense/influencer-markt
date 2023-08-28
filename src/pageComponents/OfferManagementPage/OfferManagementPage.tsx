@@ -11,9 +11,12 @@ import type { OfferWithAllData, Option } from "../../utils/globalTypes";
 import { Button } from "../../components/Button";
 import { MyOffersActionConfirmationModal } from "../../components/MyOffersActionConfirmationModal";
 import { FirstTimeOfferManagementModal } from "./innerComponent/FirstTimeOfferManagementModal";
+import { toast } from "react-hot-toast";
 
 const OfferManagementPage = () => {
   const { t } = useTranslation();
+  const ctx = api.useContext();
+
   const [offerStatus, setOfferStatus] = useState<Option>({
     id: 1,
     name: "open",
@@ -25,6 +28,7 @@ const OfferManagementPage = () => {
   const [offerToEdit, setOfferToEdit] = useState<OfferWithAllData | undefined>(
     undefined
   );
+  const [offersCount, setOffersCount] = useState<number>(0);
   const [warningModalType, setWarningModalType] = useState<
     "archive" | "delete" | "publish"
   >("archive");
@@ -54,8 +58,29 @@ const OfferManagementPage = () => {
 
   const { data: offerStatusData } = api.allRoutes.getAllOfferStatus.useQuery();
 
+  const { mutate: publishOfferMutation } =
+    api.offers.publishOffer.useMutation();
+
+  const { mutate: archiveOfferMutation } =
+    api.offers.archiveOffer.useMutation();
+
+  const { mutate: deleteOfferMutation } = api.offers.deleteOffer.useMutation();
+
+  const {
+    mutate: duplicateOfferMutation,
+    isLoading: isLoadingDuplicatingOffer,
+  } = api.offers.duplicateOffer.useMutation({
+    onSuccess: () => {
+      void ctx.offers.getAllUserOffers.invalidate();
+      toast.success(t("components.myOfferDropDown.offerDuplicated"), {
+        position: "bottom-left",
+      });
+    },
+  });
+
   useEffect(() => {
     if (offersData) {
+      setOffersCount(offersData[0]);
       setOffers(offersData[1]);
 
       const lastOfferInArray = offersData[1][offersData[1].length - 1];
@@ -86,6 +111,47 @@ const OfferManagementPage = () => {
       setShowFirstTimeModal(true);
     }
   }, []);
+
+  const publishOffer = (offerId: number) => {
+    const newOffers = [...offers];
+
+    for (const offer of newOffers) {
+      if (offerId === offer.id) {
+        offer.published = true;
+        break;
+      }
+    }
+
+    void publishOfferMutation({ offerId });
+  };
+
+  const archiveOffer = (offerId: number) => {
+    const newOffers = [...offers];
+
+    const index = newOffers.findIndex((offer) => offer.id === offerId);
+    newOffers.splice(index, 1);
+
+    setOffers(newOffers);
+    setOffersCount(offersCount - 1);
+
+    void archiveOfferMutation({ offerId });
+  };
+
+  const deleteOffer = (offerId: number) => {
+    const newOffers = [...offers];
+
+    const index = newOffers.findIndex((offer) => offer.id === offerId);
+    newOffers.splice(index, 1);
+
+    setOffers(newOffers);
+    setOffersCount(offersCount - 1);
+
+    void deleteOfferMutation({ offerId });
+  };
+
+  const duplicateOffer = (offer: OfferWithAllData) => {
+    void duplicateOfferMutation({ offerId: offer.id });
+  };
 
   const setfirstVisitInfo = () => {
     setShowFirstTimeModal(false);
@@ -144,7 +210,7 @@ const OfferManagementPage = () => {
   const renderOffers = () => {
     return (
       <div className="flex flex-col gap-4 lg:flex-row lg:flex-wrap">
-        {isLoadingOffers || isRefetchingOffers ? (
+        {isLoadingOffers ? (
           <div className="relative h-[80vh] lg:flex lg:h-[70vh] lg:flex-1">
             <LoadingSpinner />
           </div>
@@ -158,6 +224,7 @@ const OfferManagementPage = () => {
                     key={offer.id}
                     openOfferModal={() => openModalToEdit(offer)}
                     openWarningModal={openWarningModal}
+                    duplicateOffer={() => duplicateOffer(offer)}
                   />
                 );
               })
@@ -188,9 +255,14 @@ const OfferManagementPage = () => {
           </div>
           <div>{t("pages.manageOffers.createOffer")}</div>
         </div>
+        {(isLoadingDuplicatingOffer || isRefetchingOffers) && (
+          <div className="flex flex-1 justify-center">
+            <LoadingSpinner />
+          </div>
+        )}
         {renderOfferButtons()}
         {renderOffers()}
-        {offersData && offersData[0] > offers.length && (
+        {offersCount > offers.length && (
           <div className="flex items-center justify-center">
             <Button
               title={t("pages.manageOffers.loadMore")}
@@ -216,6 +288,9 @@ const OfferManagementPage = () => {
             type={warningModalType}
             offerId={warningModalOfferId}
             isOfferDetails={false}
+            archiveOffer={archiveOffer}
+            deleteOffer={deleteOffer}
+            publishOffer={publishOffer}
           />
         )}
       </div>

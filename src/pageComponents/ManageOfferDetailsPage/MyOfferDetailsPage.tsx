@@ -19,7 +19,8 @@ import { MyOffersActionConfirmationModal } from "../../components/MyOffersAction
 import { Button } from "../../components/Button";
 import { useRouter } from "next/router";
 import Link from "next/link";
-import { type UserProfiles } from "../../utils/globalTypes";
+import type { OfferWithAllData, UserProfiles } from "../../utils/globalTypes";
+import { toast } from "react-hot-toast";
 
 const ManageOfferDetailsPage = (params: {
   offerId: number;
@@ -49,8 +50,9 @@ const ManageOfferDetailsPage = (params: {
   const [rejectedApplicants, setRejectedApplicants] = useState<UserProfiles[]>(
     []
   );
+  const [offer, setOffer] = useState<OfferWithAllData | undefined>(undefined);
 
-  const { data: offer, isLoading } = api.offers.getOffer.useQuery(
+  const { data: offerData, isLoading } = api.offers.getOffer.useQuery(
     {
       offerId: params.offerId,
     },
@@ -104,6 +106,29 @@ const ManageOfferDetailsPage = (params: {
     api.offers.startOffer.useMutation({
       onSuccess: () => {
         // void router.push("/");
+      },
+    });
+
+  const { mutate: publishOfferMutation } =
+    api.offers.publishOffer.useMutation();
+
+  const { mutate: archiveOfferMutation } =
+    api.offers.archiveOffer.useMutation();
+
+  const { mutate: deleteOfferMutation } = api.offers.deleteOffer.useMutation({
+    onSuccess: () => {
+      toast.success(t("components.myOfferDropDown.offerDeleted"), {
+        position: "bottom-left",
+      });
+    },
+  });
+
+  const { mutate: duplicateOfferMutation } =
+    api.offers.duplicateOffer.useMutation({
+      onSuccess: () => {
+        toast.success(t("components.myOfferDropDown.offerDuplicated"), {
+          position: "bottom-left",
+        });
       },
     });
 
@@ -249,11 +274,43 @@ const ManageOfferDetailsPage = (params: {
     }
   }, [offerRejectedApplicants, params.loggedInProfileId]);
 
+  useEffect(() => {
+    if (offerData) {
+      setOffer(offerData);
+    }
+  }, [offerData]);
+
   useOutsideClick(() => {
     if (isDropdownOpen === false) return;
 
     setIsDropdownOpen(!isDropdownOpen);
   }, dropdownRef);
+
+  const publishOffer = (offerId: number) => {
+    if (offer) {
+      const newOffer = offer;
+      newOffer.published = true;
+
+      setOffer(newOffer);
+
+      void publishOfferMutation({ offerId });
+    }
+  };
+
+  const archiveOffer = (offerId: number) => {
+    if (offer) {
+      const newOffer = offer;
+      newOffer.offerStatus = { id: 3, name: "closed" };
+
+      setOffer(newOffer);
+      void archiveOfferMutation({ offerId });
+    }
+  };
+
+  const deleteOffer = (offerId: number) => {
+    void router.push("/manage-offers");
+    void deleteOfferMutation({ offerId });
+  };
 
   const onAcceptedApplicant = (profileId: number) => {
     const newApplicantsArray = [...applicants];
@@ -388,6 +445,9 @@ const ManageOfferDetailsPage = (params: {
                   closeDropDown={() => setIsDropdownOpen(false)}
                   openEditOfferModal={() => setOpenCreateModal(true)}
                   openWarningModal={openWarningModal}
+                  duplicateOffer={() =>
+                    duplicateOfferMutation({ offerId: offer.id })
+                  }
                 />
               }
             </div>
@@ -399,6 +459,9 @@ const ManageOfferDetailsPage = (params: {
                 closeDropDown={() => setIsDropdownOpen(false)}
                 openEditOfferModal={() => setOpenCreateModal(true)}
                 openWarningModal={openWarningModal}
+                duplicateOffer={() =>
+                  duplicateOfferMutation({ offerId: offer.id })
+                }
               />
             }
           </div>
@@ -908,6 +971,9 @@ const ManageOfferDetailsPage = (params: {
                 type={warningModalType}
                 offerId={warningModalOfferId}
                 isOfferDetails={true}
+                archiveOffer={archiveOffer}
+                deleteOffer={deleteOffer}
+                publishOffer={publishOffer}
               />
             )}
           </div>

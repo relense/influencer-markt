@@ -6,7 +6,6 @@ import {
   faPencil,
   faTrash,
 } from "@fortawesome/free-solid-svg-icons";
-import { toast } from "react-hot-toast";
 import { api } from "~/utils/api";
 
 import type { OfferWithAllData } from "../utils/globalTypes";
@@ -20,19 +19,9 @@ const MyOfferDropdown = (params: {
     type: "archive" | "delete" | "publish",
     offerId: number
   ) => void;
+  duplicateOffer: () => void;
 }) => {
   const { t } = useTranslation();
-  const ctx = api.useContext();
-
-  const { mutate: duplicateOffer } = api.offers.duplicateOffer.useMutation({
-    onSuccess: () => {
-      void ctx.offers.getAllUserOffers.invalidate().then(() => {
-        toast.success(t("components.myOfferDropDown.offerDuplicated"), {
-          position: "bottom-left",
-        });
-      });
-    },
-  });
 
   return (
     <div
@@ -74,7 +63,7 @@ const MyOfferDropdown = (params: {
       )}
       <div
         className="flex cursor-pointer items-center gap-2 rounded-lg p-4 hover:bg-influencer-green-dark hover:text-white"
-        onClick={() => duplicateOffer({ offerId: params.offer.id })}
+        onClick={() => params.duplicateOffer()}
       >
         <FontAwesomeIcon icon={faClone} className="fa-lg cursor-pointer" />
         {t("components.myOfferDropDown.duplicate")}
