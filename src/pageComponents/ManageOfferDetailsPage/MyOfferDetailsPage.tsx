@@ -5,8 +5,10 @@ import {
   faBriefcase,
   faCircleCheck,
   faEllipsis,
+  faList,
   faPlus,
   faSubtract,
+  faTableCellsLarge,
 } from "@fortawesome/free-solid-svg-icons";
 import { api } from "~/utils/api";
 
@@ -51,6 +53,7 @@ const ManageOfferDetailsPage = (params: {
     []
   );
   const [offer, setOffer] = useState<OfferWithAllData | undefined>(undefined);
+  const [listView, setListView] = useState<boolean>(false);
 
   const { data: offerData, isLoading } = api.offers.getOffer.useQuery(
     {
@@ -931,29 +934,33 @@ const ManageOfferDetailsPage = (params: {
     return <LoadingSpinner />;
   } else {
     if (offer) {
+      const listIconClass = "fa-xl cursor-pointer text-gray2";
+      const listIconSelectedClass = "fa-xl cursor-pointer text-influencer";
+
       return (
         <>
           <div className="flex w-full cursor-default flex-col gap-8 self-center p-8 pb-10 sm:p-4 sm:px-12 xl:w-3/4 2xl:w-3/4 3xl:w-2/4">
             {renderOfferDetails()}
-
-            {acceptedApplicants.length > 0 && (
-              <>
-                <div className="w-full border-[1px] border-white1" />
-                {renderAcceptedApplicants()}
-              </>
-            )}
-            {applicants.length > 0 && offer.offerStatus.id === 1 && (
-              <>
-                <div className="w-full border-[1px] border-white1" />
-                {renderApplicants()}
-              </>
-            )}
-            {rejectedApplicants.length > 0 && offer.offerStatus.id === 1 && (
-              <>
-                <div className="w-full border-[1px] border-white1" />
-                {renderRejectedApplicants()}
-              </>
-            )}
+            <div className="w-full border-[1px] border-white1" />
+            <div className="flex flex-1 justify-end gap-4">
+              <FontAwesomeIcon
+                icon={faList}
+                className={listView ? listIconSelectedClass : listIconClass}
+                onClick={() => setListView(!listView)}
+              />
+              <FontAwesomeIcon
+                icon={faTableCellsLarge}
+                className={!listView ? listIconSelectedClass : listIconClass}
+                onClick={() => setListView(!listView)}
+              />
+            </div>
+            {acceptedApplicants.length > 0 && renderAcceptedApplicants()}
+            {applicants.length > 0 &&
+              offer.offerStatus.id === 1 &&
+              renderApplicants()}
+            {rejectedApplicants.length > 0 &&
+              offer.offerStatus.id === 1 &&
+              renderRejectedApplicants()}
           </div>
           <div className="flex justify-center">
             {openCreateModal && (

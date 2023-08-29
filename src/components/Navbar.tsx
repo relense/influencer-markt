@@ -365,22 +365,22 @@ export const Navbar = (params: {
 
               <Link
                 href="/explore/brands"
-                className="need-interaction group flex cursor-pointer items-center gap-4 py-2 lg:hidden"
+                className=" group flex cursor-pointer items-center gap-4 py-2 lg:hidden"
               >
                 <FontAwesomeIcon icon={faSearch} className="fa-lg" />
 
-                <div className="group-hover:underline">
+                <div className="need-interaction group-hover:underline">
                   {t("components.navbar.exploreBrands")}
                 </div>
               </Link>
 
               <Link
                 href="/saved/brands"
-                className="need-interaction group flex cursor-pointer items-center gap-4 py-2 lg:hidden"
+                className="group flex cursor-pointer items-center gap-4 py-2 lg:hidden"
               >
                 <FontAwesomeIcon icon={faBookmark} className="fa-lg pl-1" />
 
-                <div className="group-hover:underline">
+                <div className="need-interaction group-hover:underline ">
                   {t("components.navbar.savedBrands")}
                 </div>
               </Link>
@@ -388,11 +388,11 @@ export const Navbar = (params: {
 
               <Link
                 href="/manage-offers"
-                className="need-interaction group flex cursor-pointer items-center gap-4 py-2"
+                className=" group flex cursor-pointer items-center gap-4 py-2"
               >
                 <FontAwesomeIcon icon={faBriefcase} className="fa-lg" />
 
-                <div className="group-hover:underline">
+                <div className="need-interaction group-hover:underline">
                   {t("components.navbar.myOffers")}
                 </div>
               </Link>
@@ -400,11 +400,11 @@ export const Navbar = (params: {
               {params.role && params.role.id !== 1 && (
                 <Link
                   href="/my-applications"
-                  className="need-interaction group flex cursor-pointer items-center gap-4 py-2"
+                  className="group flex cursor-pointer items-center gap-4 py-2"
                 >
                   <FontAwesomeIcon icon={faFolderOpen} className="fa-lg" />
 
-                  <div className="group-hover:underline">
+                  <div className="need-interaction group-hover:underline">
                     {t("components.navbar.applications")}
                   </div>
                 </Link>
@@ -432,21 +432,21 @@ export const Navbar = (params: {
 
               <Link
                 href="/settings"
-                className="need-interaction group flex cursor-pointer items-center gap-4 py-2"
+                className=" group flex cursor-pointer items-center gap-4 py-2"
               >
                 <FontAwesomeIcon icon={faGear} className="fa-lg" />
 
-                <div className="group-hover:underline">
+                <div className="need-interaction group-hover:underline">
                   {t("components.navbar.settings")}
                 </div>
               </Link>
               <div
-                className="need-interaction group flex cursor-pointer items-center gap-4 py-2 sm:hidden"
+                className="group flex cursor-pointer items-center gap-4 py-2 sm:hidden"
                 onClick={() => setOPenHelpCenter(true)}
               >
                 <FontAwesomeIcon icon={faLifeRing} className="fa-lg" />
 
-                <div className="group-hover:underline">
+                <div className="need-interaction group-hover:underline">
                   {t("components.navbar.helpCenter")}
                 </div>
               </div>
