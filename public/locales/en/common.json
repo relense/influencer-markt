@@ -152,7 +152,8 @@
       "applications": "Applications",
       "exploreBrands": "Explore Brands",
       "savedBrands": "Saved Brands",
-      "helpCenter": "Help Center"
+      "helpCenter": "Help Center",
+      "settings": "Settings"
     },
 
     "adminNavbar": {
@@ -724,6 +725,11 @@
     "404": {
       "title": "We are sorry!",
       "subtitle": "We couldn't find the page you are looking for"
+    },
+
+    "500": {
+      "title": "We are sorry! Something went wrong and we are trying hard to fix it",
+      "subtitle": "Contact us or try again later."
     }
   }
 }

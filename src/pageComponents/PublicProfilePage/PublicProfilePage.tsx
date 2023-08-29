@@ -46,12 +46,7 @@ const PublicProfilePage = (params: {
   const [isShareModalOpen, setIsShareModalOpen] = useState<boolean>(false);
   const [selectedReview, setSelectedReview] = useState<Review>();
   const [isBookmarked, setIsBookmarked] = useState<boolean>(false);
-  const [selectedValuePack, setSelectedValuePack] = useState<ValuePack>({
-    id: -1,
-    platform: { id: -1, name: "" },
-    valuePackPrice: "",
-    contentType: { id: -1, name: "" },
-  });
+  const [selectedValuePacks, setSelectedValuePacks] = useState<ValuePack[]>([]);
   const [platform, setPlatform] = useState<Option>({
     id: -1,
     name: "",
@@ -256,14 +251,34 @@ const PublicProfilePage = (params: {
     setAvailableUserSocialMedia(uniqueOptions);
   }, [profile?.userSocialMedia]);
 
+  const onSelecteValuePack = (valuePack: ValuePack) => {
+    const newSelectedValuePacks = [...selectedValuePacks];
+    const valuePackIndex = newSelectedValuePacks.findIndex(
+      (item) => item.id === valuePack.id
+    );
+
+    if (valuePackIndex === -1) {
+      newSelectedValuePacks.push(valuePack);
+    } else {
+      newSelectedValuePacks.splice(valuePackIndex, 1);
+    }
+
+    setSelectedValuePacks(newSelectedValuePacks);
+  };
+
+  const sumValuePacks = () => {
+    let totalSum = 0;
+
+    selectedValuePacks.forEach((valuePack) => {
+      totalSum += parseFloat(valuePack.valuePackPrice);
+    });
+
+    return totalSum;
+  };
+
   const onChangePlatform = (platform: Option) => {
     setPlatform(platform);
-    setSelectedValuePack({
-      id: -1,
-      platform: { id: -1, name: "" },
-      valuePackPrice: "",
-      contentType: { id: -1, name: "" },
-    });
+    setSelectedValuePacks([]);
   };
 
   const openReviewModal = (review: Review) => {
@@ -503,10 +518,8 @@ const PublicProfilePage = (params: {
         <div className="flex flex-col gap-4 rounded-2xl border-[1px] border-white1 p-4 shadow-xl">
           <div className="flex flex-1 justify-between">
             <div className="flex items-center gap-1">
-              {selectedValuePack.id !== -1 && (
-                <div className="text-xl font-medium">
-                  {selectedValuePack.valuePackPrice}€
-                </div>
+              {selectedValuePacks.length > 0 && (
+                <div className="text-xl font-medium">{sumValuePacks()}€</div>
               )}
             </div>
             {profileReviews && profileReviews[0] > 0 && (
@@ -554,27 +567,34 @@ const PublicProfilePage = (params: {
                 <div className="flex flex-wrap justify-start gap-2 p-2">
                   {selectedUserSocialMedia &&
                     selectedUserSocialMedia.valuePacks.map((valuePack) => {
-                      const selectedContainer =
-                        selectedValuePack.id === valuePack.id
-                          ? "bg-influencer-green"
-                          : "";
+                      let selectedContainer = "text-black";
 
-                      const containerClass = `group flex w-full flex-[0_1_48%] cursor-pointer flex-col items-start gap-2 rounded-lg border p-2 text-sm font-medium text-gray2 hover:bg-influencer-green ${selectedContainer}`;
+                      if (selectedValuePacks.length > 0) {
+                        for (const selected of selectedValuePacks) {
+                          if (selected.id === valuePack.id) {
+                            selectedContainer =
+                              "bg-influencer-green text-white";
+                            break;
+                          }
+                        }
+                      }
+
+                      const containerClass = `group flex w-full flex-[0_1_48%] cursor-pointer flex-col items-start gap-2 rounded-lg border p-2 text-sm font-medium hover:bg-influencer-green ${selectedContainer}`;
 
                       return (
                         <div
                           key={valuePack.id}
                           className={containerClass}
-                          onClick={() => setSelectedValuePack(valuePack)}
+                          onClick={() => onSelecteValuePack(valuePack)}
                         >
                           <div className="flex w-full flex-1 justify-between ">
-                            <div className="text-base font-medium text-black">
+                            <div className="text-base font-medium ">
                               {t(
                                 `general.contentTypes.${valuePack.contentType.name}`
                               )}
                             </div>
-                            <div className="text-base font-medium text-black">
-                              {helper.formatNumber(
+                            <div className="text-base font-medium ">
+                              {helper.formatNumberWithDecimalValue(
                                 parseInt(valuePack.valuePackPrice)
                               )}
                               €
@@ -591,7 +611,7 @@ const PublicProfilePage = (params: {
             title={t("pages.publicProfilePage.valuePackSubmitButton")}
             level="primary"
             size="large"
-            disabled={platform.id === -1 || selectedValuePack.id === -1}
+            disabled={platform.id === -1 || selectedValuePacks.length === 0}
           />
           <div className="flex items-center justify-center gap-2 text-center text-gray2">
             <ToolTip content={t("pages.publicProfilePage.tootlip")} />
@@ -601,12 +621,9 @@ const PublicProfilePage = (params: {
             <div className="flex flex-col gap-2">
               <div className="flex flex-1 justify-between">
                 <div>{t("pages.publicProfilePage.subtotal")}</div>
-                {selectedValuePack.id !== -1 ? (
+                {selectedValuePacks.length > 0 ? (
                   <div>
-                    {helper.formatNumber(
-                      parseInt(selectedValuePack.valuePackPrice)
-                    )}
-                    €
+                    {helper.formatNumberWithDecimalValue(sumValuePacks())}€
                   </div>
                 ) : (
                   "-"
@@ -614,10 +631,11 @@ const PublicProfilePage = (params: {
               </div>
               <div className="flex flex-1 justify-between">
                 <div>{t("pages.publicProfilePage.fee")}</div>
-                {selectedValuePack.id !== -1 && profile?.country?.countryTax ? (
+                {selectedValuePacks.length > 0 &&
+                profile?.country?.countryTax ? (
                   <div>
-                    {helper.formatNumber(
-                      parseInt(selectedValuePack.valuePackPrice) *
+                    {helper.formatNumberWithDecimalValue(
+                      sumValuePacks() *
                         (profile?.country?.countryTax / 100 || 1)
                     )}
                     €
@@ -630,11 +648,11 @@ const PublicProfilePage = (params: {
             <div className="w-full border-[1px] border-white1" />
             <div className="flex flex-1 justify-between font-semibold">
               <div>{t("pages.publicProfilePage.total")}</div>
-              {selectedValuePack.id !== -1 && profile?.country?.countryTax ? (
+              {selectedValuePacks.length > 0 && profile?.country?.countryTax ? (
                 <div>
-                  {helper.formatNumber(
-                    parseInt(selectedValuePack.valuePackPrice) +
-                      parseInt(selectedValuePack.valuePackPrice) *
+                  {helper.formatNumberWithDecimalValue(
+                    sumValuePacks() +
+                      sumValuePacks() *
                         (profile?.country?.countryTax / 100 || 1)
                   )}
                   €

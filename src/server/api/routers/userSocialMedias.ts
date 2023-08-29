@@ -187,6 +187,10 @@ export const userSocialMediasRouter = createTRPCRouter({
         },
       });
 
+      const currentSocialMedia = await ctx.prisma.userSocialMedia.findFirst({
+        where: { id: input.id },
+      });
+
       await ctx.prisma.userSocialMedia.update({
         where: {
           id: input.id,
@@ -216,7 +220,12 @@ export const userSocialMediasRouter = createTRPCRouter({
         });
       }
 
-      if (profile && profile.verifiedStatusId === 2) {
+      if (
+        profile &&
+        profile.verifiedStatusId === 2 &&
+        (currentSocialMedia?.handler !== input.handler ||
+          currentSocialMedia?.followers !== input.followers)
+      ) {
         await ctx.prisma.profile.update({
           where: { id: profile.id },
           data: {

@@ -35,7 +35,7 @@ const Modal = ({
         onClick={() => (onCloseBackground ? onCloseBackground() : onClose())}
       />
 
-      <div className="absolute top-10 z-40 w-11/12 rounded-lg bg-white sm:h-auto md:top-10 md:w-2/4 lg:w-2/4 2xl:w-2/4">
+      <div className="absolute top-10 z-50 w-11/12 rounded-lg bg-white sm:h-auto md:top-10 md:w-2/4 lg:w-2/4 2xl:w-2/4 3xl:w-1/4">
         <div
           className="absolute right-[-5px] top-[-18px] flex h-10  w-10 cursor-pointer items-center justify-center self-end rounded-full bg-influencer-green xs:right-[-15px] xs:top-[-25px] sm:right-[-10px] sm:h-12 sm:w-12"
           onClick={() => onClose()}

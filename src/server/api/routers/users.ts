@@ -69,7 +69,22 @@ export const usersRouter = createTRPCRouter({
   usernameExists: publicProcedure
     .input(z.object({ username: z.string() }))
     .query(async ({ ctx, input }) => {
-      if (input.username === "" || input.username === "explore") {
+      if (
+        input.username === "" ||
+        input.username === "explore" ||
+        input.username === "admin" ||
+        input.username === "influencer" ||
+        input.username === "offers" ||
+        input.username === "settings" ||
+        input.username === "manage-offers" ||
+        input.username === "my-applications" ||
+        input.username === "saved" ||
+        input.username === "brands" ||
+        input.username === "home" ||
+        input.username === "orders" ||
+        input.username === "notifications" ||
+        input.username === "messages"
+      ) {
         return false;
       }
 

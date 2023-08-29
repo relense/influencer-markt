@@ -24,7 +24,7 @@ const AboutPage = () => {
               height={880}
               width={1173}
               alt="Photo by Jeremy Bishop on Unsplash"
-              className="hidden object-contain lg:block"
+              className="hidden w-full object-contain lg:block"
             />
             <Image
               src={
@@ -33,7 +33,7 @@ const AboutPage = () => {
               height={880}
               width={1173}
               alt="Photo by Jeremy Bishop on Unsplash"
-              className="block object-contain lg:hidden"
+              className="block w-full object-contain lg:hidden"
             />
             <div className="flex flex-1 justify-center text-center font-playfair text-3xl lg:text-4xl">
               {t("pages.about.photoSubTitle")}

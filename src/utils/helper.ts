@@ -57,6 +57,17 @@ const formatNumber = (value: number) => {
   }
 };
 
+const formatNumberWithDecimalValue = (value: number) => {
+  if (value) {
+    return value.toLocaleString(undefined, {
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2,
+    });
+  } else {
+    return "";
+  }
+};
+
 const formatDate = (date: Date | number, locale: string): string => {
   dayjs.extend(relativeTime);
 
@@ -114,6 +125,7 @@ const preloadImages = async (
 
 export const helper = {
   formatNumber,
+  formatNumberWithDecimalValue,
   formatDate,
   formatNumberWithKorM,
   preloadImages,

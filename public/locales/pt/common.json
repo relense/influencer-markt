@@ -152,7 +152,8 @@
       "applications": "Candidaturas",
       "exploreBrands": "Explora Marcas",
       "savedBrands": "Marcas Favoritas",
-      "helpCenter": "Centro de Ajuda"
+      "helpCenter": "Centro de Ajuda",
+      "settings": "Definições"
     },
 
     "adminNavbar": {
@@ -724,6 +725,11 @@
     "404": {
       "title": "Pedimos desculpa!",
       "subtitle": "Não conseguimos encontrar a página que estás há procura"
+    },
+
+    "500": {
+      "title": "Pedimos desculpa! Aconteceu algo inesperado e estamos a trabalhar para resolver",
+      "subtitle": "Entra em contacto connosco ou tenta outra vez mais tarde"
     }
   }
 }

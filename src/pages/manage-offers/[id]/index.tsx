@@ -14,7 +14,9 @@ interface OfferDetailsProps {
 const OfferDetails: NextPage<OfferDetailsProps> = ({ id }) => {
   const router = useRouter();
   const { data: profileOffers, isLoading } =
-    api.profiles.getProfileOffers.useQuery();
+    api.profiles.getProfileOffers.useQuery(undefined, {
+      cacheTime: 0,
+    });
 
   useEffect(() => {
     const value = !!profileOffers?.createdOffers.find(

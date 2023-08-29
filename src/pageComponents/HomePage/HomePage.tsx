@@ -13,6 +13,8 @@ import { useTranslation } from "react-i18next";
 
 import { SimpleSearchBar } from "./innerComponents/SimpleSearchBar";
 import { Button } from "../../components/Button";
+import { useSession } from "next-auth/react";
+import Link from "next/link";
 
 type Offer = {
   icon: IconDefinition;
@@ -32,8 +34,9 @@ const brands = [
   "twitch",
 ];
 
-const HomePage = () => {
+const HomePage = (params: { openLoginModal: () => void }) => {
   const { t } = useTranslation();
+  const session = useSession();
 
   const offers: Offer[] = [
     {
@@ -169,10 +172,20 @@ const HomePage = () => {
           <h2 className="pointer-events-none p-7 font-playfair text-xl text-white lg:text-3xl">
             {t("pages.home.section2.subTitle")}
           </h2>
-          <Button
-            title={t("pages.home.section2.buttonTitle")}
-            level="primary"
-          />
+          {session.status === "authenticated" ? (
+            <Link href="/manage-offers">
+              <Button
+                title={t("pages.home.section2.buttonTitle")}
+                level="primary"
+              />
+            </Link>
+          ) : (
+            <Button
+              title={t("pages.home.section2.buttonTitle")}
+              level="primary"
+              onClick={() => params.openLoginModal()}
+            />
+          )}
         </div>
       </div>
     );
@@ -218,10 +231,20 @@ const HomePage = () => {
           )}
         </div>
         <div className="flex w-full flex-1 justify-center px-4">
-          <Button
-            title={t("pages.home.section3.buttonTitle")}
-            level="primary"
-          />
+          {session.status === "authenticated" ? (
+            <Link href="/explore/influencers">
+              <Button
+                title={t("pages.home.section3.buttonTitle")}
+                level="primary"
+              />
+            </Link>
+          ) : (
+            <Button
+              title={t("pages.home.section3.buttonTitle")}
+              level="primary"
+              onClick={() => params.openLoginModal()}
+            />
+          )}
         </div>
       </div>
     );
