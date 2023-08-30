@@ -23,6 +23,7 @@ import { useRouter } from "next/router";
 import Link from "next/link";
 import type { OfferWithAllData, UserProfiles } from "../../utils/globalTypes";
 import { toast } from "react-hot-toast";
+import { ProfileRow } from "../../components/ProfileRow";
 
 const ManageOfferDetailsPage = (params: {
   offerId: number;
@@ -53,7 +54,7 @@ const ManageOfferDetailsPage = (params: {
     []
   );
   const [offer, setOffer] = useState<OfferWithAllData | undefined>(undefined);
-  const [listView, setListView] = useState<boolean>(false);
+  const [listView, setListView] = useState<boolean>(true);
 
   const { data: offerData, isLoading } = api.offers.getOffer.useQuery(
     {
@@ -699,7 +700,95 @@ const ManageOfferDetailsPage = (params: {
     }
   };
 
+  const renderAcceptedApplicantCard = (applicant: UserProfiles) => {
+    if (offer) {
+      return (
+        <div key={applicant.id} className="flex flex-col gap-4">
+          <ProfileCard
+            id={applicant.id}
+            profilePicture={applicant.profilePicture}
+            socialMedia={applicant.socialMedia.map((socialMedia) => {
+              return {
+                followers: socialMedia.followers,
+                handler: socialMedia.handler,
+                id: socialMedia.id,
+                socialMediaId: socialMedia.socialMediaId,
+                socialMediaName: socialMedia.socialMediaName,
+                url: socialMedia.url,
+                valuePacks: [],
+              };
+            })}
+            name={applicant.name}
+            about={applicant.about}
+            city={applicant.city?.name || ""}
+            country={applicant?.country?.name || ""}
+            username={applicant?.username || ""}
+            type="Influencer"
+            bookmarked={applicant?.bookmarked || false}
+            highlightSocialMediaId={offer.socialMediaId}
+          />
+
+          {offer.offerStatus.id === 1 && (
+            <Button
+              title={t("pages.manageOffers.removeButton")}
+              level="secondary"
+              size="large"
+              onClick={() => onRemoveFromAccepted(applicant.id)}
+            />
+          )}
+        </div>
+      );
+    }
+  };
+
+  const renderAcceptedApplicantRow = (applicant: UserProfiles) => {
+    if (offer) {
+      return (
+        <div key={applicant.id} className="flex flex-col gap-4 lg:flex-row">
+          <ProfileRow
+            id={applicant.id}
+            profilePicture={applicant.profilePicture}
+            socialMedia={applicant.socialMedia.map((socialMedia) => {
+              return {
+                followers: socialMedia.followers,
+                handler: socialMedia.handler,
+                id: socialMedia.id,
+                socialMediaId: socialMedia.socialMediaId,
+                socialMediaName: socialMedia.socialMediaName,
+                url: socialMedia.url,
+                valuePacks: [],
+              };
+            })}
+            name={applicant.name}
+            about={applicant.about}
+            city={applicant.city?.name || ""}
+            country={applicant?.country?.name || ""}
+            username={applicant?.username || ""}
+            type="Influencer"
+            bookmarked={applicant?.bookmarked || false}
+            highlightSocialMediaId={offer.socialMediaId}
+          />
+          {offer.offerStatus.id === 1 && (
+            <div className="flex justify-around gap-4 lg:flex-col lg:justify-center">
+              <Button
+                title={t("pages.manageOffers.removeButton")}
+                level="secondary"
+                size="large"
+                onClick={() => onRemoveFromAccepted(applicant.id)}
+              />
+            </div>
+          )}
+        </div>
+      );
+    }
+  };
+
   const renderAcceptedApplicants = () => {
+    let applicantsContainerClass = "flex flex-wrap gap-8";
+    if (listView) {
+      applicantsContainerClass = "flex flex-1 flex-col gap-8";
+    }
+
     if (offer) {
       return (
         <div className="flex flex-col gap-4">
@@ -729,44 +818,11 @@ const ManageOfferDetailsPage = (params: {
             </div>
           </div>
           {isAcceptedApplicantsOpen && offerAcceptedApplicants && (
-            <div className="flex flex-wrap gap-8">
+            <div className={applicantsContainerClass}>
               {acceptedApplicants.map((applicant) => {
-                return (
-                  <div key={applicant.id} className="flex flex-col gap-4">
-                    <ProfileCard
-                      id={applicant.id}
-                      profilePicture={applicant.profilePicture}
-                      socialMedia={applicant.socialMedia.map((socialMedia) => {
-                        return {
-                          followers: socialMedia.followers,
-                          handler: socialMedia.handler,
-                          id: socialMedia.id,
-                          socialMediaId: socialMedia.socialMediaId,
-                          socialMediaName: socialMedia.socialMediaName,
-                          url: socialMedia.url,
-                          valuePacks: [],
-                        };
-                      })}
-                      name={applicant.name}
-                      about={applicant.about}
-                      city={applicant.city?.name || ""}
-                      country={applicant?.country?.name || ""}
-                      username={applicant?.username || ""}
-                      type="Influencer"
-                      bookmarked={applicant?.bookmarked || false}
-                      highlightSocialMediaId={offer.socialMediaId}
-                    />
-
-                    {offer.offerStatus.id === 1 && (
-                      <Button
-                        title={t("pages.manageOffers.removeButton")}
-                        level="secondary"
-                        size="large"
-                        onClick={() => onRemoveFromAccepted(applicant.id)}
-                      />
-                    )}
-                  </div>
-                );
+                return listView
+                  ? renderAcceptedApplicantRow(applicant)
+                  : renderAcceptedApplicantCard(applicant);
               })}
             </div>
           )}
@@ -775,7 +831,108 @@ const ManageOfferDetailsPage = (params: {
     }
   };
 
+  const renderApplicantCard = (applicant: UserProfiles) => {
+    if (offer) {
+      return (
+        <div key={applicant.id} className="flex flex-col gap-4">
+          <ProfileCard
+            id={applicant.id}
+            profilePicture={applicant.profilePicture}
+            socialMedia={applicant.socialMedia.map((socialMedia) => {
+              return {
+                followers: socialMedia.followers,
+                handler: socialMedia.handler,
+                id: socialMedia.id,
+                socialMediaId: socialMedia.socialMediaId,
+                socialMediaName: socialMedia.socialMediaName,
+                url: socialMedia.url,
+                valuePacks: [],
+              };
+            })}
+            name={applicant.name}
+            about={applicant.about}
+            city={applicant.city?.name || ""}
+            country={applicant?.country?.name || ""}
+            username={applicant?.username || ""}
+            type="Influencer"
+            bookmarked={applicant?.bookmarked || false}
+            highlightSocialMediaId={offer.socialMediaId}
+          />
+          {acceptedApplicants.length < offer.numberOfInfluencers && (
+            <div className="flex justify-around gap-4">
+              <Button
+                title={t("pages.manageOffers.acceptButton")}
+                level="terciary"
+                size="large"
+                onClick={() => onAcceptedApplicant(applicant.id)}
+              />
+              <Button
+                title={t("pages.manageOffers.rejectButton")}
+                level="secondary"
+                size="large"
+                onClick={() => onRejectApplicant(applicant.id)}
+              />
+            </div>
+          )}
+        </div>
+      );
+    }
+  };
+
+  const renderApplicantRow = (applicant: UserProfiles) => {
+    if (offer) {
+      return (
+        <div key={applicant.id} className="flex flex-col gap-4 lg:flex-row">
+          <ProfileRow
+            id={applicant.id}
+            profilePicture={applicant.profilePicture}
+            socialMedia={applicant.socialMedia.map((socialMedia) => {
+              return {
+                followers: socialMedia.followers,
+                handler: socialMedia.handler,
+                id: socialMedia.id,
+                socialMediaId: socialMedia.socialMediaId,
+                socialMediaName: socialMedia.socialMediaName,
+                url: socialMedia.url,
+                valuePacks: [],
+              };
+            })}
+            name={applicant.name}
+            about={applicant.about}
+            city={applicant.city?.name || ""}
+            country={applicant?.country?.name || ""}
+            username={applicant?.username || ""}
+            type="Influencer"
+            bookmarked={applicant?.bookmarked || false}
+            highlightSocialMediaId={offer.socialMediaId}
+          />
+          {acceptedApplicants.length < offer.numberOfInfluencers && (
+            <div className="flex justify-around gap-4 lg:flex-col lg:justify-center">
+              <Button
+                title={t("pages.manageOffers.acceptButton")}
+                level="terciary"
+                size="large"
+                onClick={() => onAcceptedApplicant(applicant.id)}
+              />
+              <Button
+                title={t("pages.manageOffers.rejectButton")}
+                level="secondary"
+                size="large"
+                onClick={() => onRejectApplicant(applicant.id)}
+              />
+            </div>
+          )}
+        </div>
+      );
+    }
+  };
+
   const renderApplicants = () => {
+    let applicantsContainerClass = "flex flex-wrap gap-8";
+    if (listView) {
+      applicantsContainerClass = "flex flex-1 flex-col gap-8";
+    }
+
     if (offer) {
       return (
         <div className="flex flex-col gap-4">
@@ -803,51 +960,11 @@ const ManageOfferDetailsPage = (params: {
             </div>
           </div>
           {isApplicantsOpen && offerApplicants && offerAcceptedApplicants && (
-            <div className="flex flex-wrap gap-8">
+            <div className={applicantsContainerClass}>
               {applicants.map((applicant) => {
-                return (
-                  <div key={applicant.id} className="flex flex-col gap-4">
-                    <ProfileCard
-                      id={applicant.id}
-                      profilePicture={applicant.profilePicture}
-                      socialMedia={applicant.socialMedia.map((socialMedia) => {
-                        return {
-                          followers: socialMedia.followers,
-                          handler: socialMedia.handler,
-                          id: socialMedia.id,
-                          socialMediaId: socialMedia.socialMediaId,
-                          socialMediaName: socialMedia.socialMediaName,
-                          url: socialMedia.url,
-                          valuePacks: [],
-                        };
-                      })}
-                      name={applicant.name}
-                      about={applicant.about}
-                      city={applicant.city?.name || ""}
-                      country={applicant?.country?.name || ""}
-                      username={applicant?.username || ""}
-                      type="Influencer"
-                      bookmarked={applicant?.bookmarked || false}
-                      highlightSocialMediaId={offer.socialMediaId}
-                    />
-                    {acceptedApplicants.length < offer.numberOfInfluencers && (
-                      <div className="flex justify-around gap-4">
-                        <Button
-                          title={t("pages.manageOffers.acceptButton")}
-                          level="terciary"
-                          size="large"
-                          onClick={() => onAcceptedApplicant(applicant.id)}
-                        />
-                        <Button
-                          title={t("pages.manageOffers.rejectButton")}
-                          level="secondary"
-                          size="large"
-                          onClick={() => onRejectApplicant(applicant.id)}
-                        />
-                      </div>
-                    )}
-                  </div>
-                );
+                return listView
+                  ? renderApplicantRow(applicant)
+                  : renderApplicantCard(applicant);
               })}
             </div>
           )}
@@ -856,7 +973,91 @@ const ManageOfferDetailsPage = (params: {
     }
   };
 
+  const renderRejectApplicantCard = (applicant: UserProfiles) => {
+    if (offer) {
+      return (
+        <div key={applicant.id} className="flex flex-col gap-4">
+          <ProfileCard
+            id={applicant.id}
+            profilePicture={applicant.profilePicture}
+            socialMedia={applicant.socialMedia.map((socialMedia) => {
+              return {
+                followers: socialMedia.followers,
+                handler: socialMedia.handler,
+                id: socialMedia.id,
+                socialMediaId: socialMedia.socialMediaId,
+                socialMediaName: socialMedia.socialMediaName,
+                url: socialMedia.url,
+                valuePacks: [],
+              };
+            })}
+            name={applicant.name}
+            about={applicant.about}
+            city={applicant.city?.name || ""}
+            country={applicant?.country?.name || ""}
+            username={applicant?.username || ""}
+            type="Influencer"
+            bookmarked={applicant?.bookmarked || false}
+            highlightSocialMediaId={offer.socialMediaId}
+          />
+
+          <Button
+            title={t("pages.manageOffers.removeButton")}
+            level="secondary"
+            size="large"
+            onClick={() => onRemoveFromRejected(applicant.id)}
+          />
+        </div>
+      );
+    }
+  };
+
+  const renderRejectApplicantRow = (applicant: UserProfiles) => {
+    if (offer) {
+      return (
+        <div key={applicant.id} className="flex flex-col gap-4 lg:flex-row">
+          <ProfileRow
+            id={applicant.id}
+            profilePicture={applicant.profilePicture}
+            socialMedia={applicant.socialMedia.map((socialMedia) => {
+              return {
+                followers: socialMedia.followers,
+                handler: socialMedia.handler,
+                id: socialMedia.id,
+                socialMediaId: socialMedia.socialMediaId,
+                socialMediaName: socialMedia.socialMediaName,
+                url: socialMedia.url,
+                valuePacks: [],
+              };
+            })}
+            name={applicant.name}
+            about={applicant.about}
+            city={applicant.city?.name || ""}
+            country={applicant?.country?.name || ""}
+            username={applicant?.username || ""}
+            type="Influencer"
+            bookmarked={applicant?.bookmarked || false}
+            highlightSocialMediaId={offer.socialMediaId}
+          />
+          <div className="flex justify-around gap-4 lg:flex-col lg:justify-center">
+            <Button
+              title={t("pages.manageOffers.removeButton")}
+              level="secondary"
+              size="large"
+              onClick={() => onRemoveFromRejected(applicant.id)}
+            />
+          </div>
+        </div>
+      );
+    }
+  };
+
   const renderRejectedApplicants = () => {
+    let applicantsContainerClass = "flex flex-wrap gap-8";
+    if (listView) {
+      applicantsContainerClass = "flex flex-1 flex-col gap-8";
+    }
+
     if (offer) {
       return (
         <div className="flex flex-col gap-4">
@@ -886,42 +1087,11 @@ const ManageOfferDetailsPage = (params: {
             </div>
           </div>
           {isRejectedApplicantsOpen && rejectedApplicants && (
-            <div className="flex flex-wrap gap-8">
+            <div className={applicantsContainerClass}>
               {rejectedApplicants.map((applicant) => {
-                return (
-                  <div key={applicant.id} className="flex flex-col gap-4">
-                    <ProfileCard
-                      id={applicant.id}
-                      profilePicture={applicant.profilePicture}
-                      socialMedia={applicant.socialMedia.map((socialMedia) => {
-                        return {
-                          followers: socialMedia.followers,
-                          handler: socialMedia.handler,
-                          id: socialMedia.id,
-                          socialMediaId: socialMedia.socialMediaId,
-                          socialMediaName: socialMedia.socialMediaName,
-                          url: socialMedia.url,
-                          valuePacks: [],
-                        };
-                      })}
-                      name={applicant.name}
-                      about={applicant.about}
-                      city={applicant.city?.name || ""}
-                      country={applicant?.country?.name || ""}
-                      username={applicant?.username || ""}
-                      type="Influencer"
-                      bookmarked={applicant?.bookmarked || false}
-                      highlightSocialMediaId={offer.socialMediaId}
-                    />
-
-                    <Button
-                      title={t("pages.manageOffers.removeButton")}
-                      level="secondary"
-                      size="large"
-                      onClick={() => onRemoveFromRejected(applicant.id)}
-                    />
-                  </div>
-                );
+                return listView
+                  ? renderRejectApplicantRow(applicant)
+                  : renderRejectApplicantCard(applicant);
               })}
             </div>
           )}
@@ -939,7 +1109,7 @@ const ManageOfferDetailsPage = (params: {
 
       return (
         <>
-          <div className="flex w-full cursor-default flex-col gap-8 self-center p-8 pb-10 sm:p-4 sm:px-12 xl:w-3/4 2xl:w-3/4 3xl:w-2/4">
+          <div className="flex w-full cursor-default flex-col gap-8 self-center p-8 pb-10 sm:p-4 sm:px-8 xl:w-3/4 xl:px-2 2xl:w-3/4 3xl:w-2/4">
             {renderOfferDetails()}
             <div className="w-full border-[1px] border-white1" />
             <div className="flex flex-1 justify-end gap-4">
@@ -955,12 +1125,22 @@ const ManageOfferDetailsPage = (params: {
               />
             </div>
             {acceptedApplicants.length > 0 && renderAcceptedApplicants()}
-            {applicants.length > 0 &&
-              offer.offerStatus.id === 1 &&
-              renderApplicants()}
-            {rejectedApplicants.length > 0 &&
-              offer.offerStatus.id === 1 &&
-              renderRejectedApplicants()}
+            {applicants.length > 0 && offer.offerStatus.id === 1 && (
+              <>
+                {acceptedApplicants.length > 0 && (
+                  <div className="w-full border-[1px] border-white1" />
+                )}
+                {renderApplicants()}
+              </>
+            )}
+            {rejectedApplicants.length > 0 && offer.offerStatus.id === 1 && (
+              <>
+                {(applicants.length > 0 || acceptedApplicants.length > 0) && (
+                  <div className="w-full border-[1px] border-white1" />
+                )}
+                {renderRejectedApplicants()}
+              </>
+            )}
           </div>
           <div className="flex justify-center">
             {openCreateModal && (

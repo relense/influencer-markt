@@ -26,7 +26,7 @@ type Offer = {
 
 const brands = [
   "instagram",
-  "twitter",
+  "x",
   "facebook",
   "linkedin",
   "pinterest",

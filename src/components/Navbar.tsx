@@ -347,7 +347,7 @@ export const Navbar = (params: {
               ref={drawerRef}
             >
               <div className="flex h-1 w-full flex-1 cursor-pointer justify-center pt-2 sm:hidden">
-                <div className="h-[2px] w-10 bg-black" />
+                <div className="h-[2px] w-10" />
               </div>
               <Link
                 href={params.username ? `/${params.username}` : "/"}

@@ -25,7 +25,7 @@ import {
   faYoutube,
 } from "@fortawesome/free-brands-svg-icons";
 
-const ProfileCard = (params: {
+const ProfileRow = (params: {
   id: number;
   profilePicture: string;
   socialMedia: UserSocialMedia[];
@@ -134,55 +134,55 @@ const ProfileCard = (params: {
   };
 
   return (
-    <div className="flex w-full  flex-col gap-2 lg:w-80">
-      <div className="relative h-80 w-full self-center overflow-hidden rounded-xl shadow-xl lg:w-80">
-        <Link href={`/${params.username}`}>
-          <Image
-            src={params.profilePicture}
-            height={1000}
-            width={1000}
-            quality={100}
-            alt={params.name}
-            className="flex h-80 w-full cursor-pointer rounded-xl object-cover transition-all duration-1000 hover:scale-125 lg:w-80"
-            priority
-          />
-        </Link>
-
-        <Link
-          href={usefullSocialMedia.url}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="absolute left-2 top-2 flex cursor-pointer gap-1 rounded-3xl border-[1px] border-transparent bg-black-transparent px-2 text-white"
-        >
-          <div className="flex items-center gap-2">
-            <FontAwesomeIcon
-              icon={socialMediaIcon(usefullSocialMedia.socialMediaName)}
-              className="fa-base text-white hover:text-white1 "
+    <div className="flex w-full flex-1 gap-4 lg:w-80 lg:gap-8">
+      <div className="flex flex-col gap-2">
+        <div className="relative h-44 w-56 self-start overflow-hidden rounded-xl shadow-xl">
+          <Link href={`/${params.username}`}>
+            <Image
+              src={params.profilePicture}
+              height={1000}
+              width={1000}
+              quality={100}
+              alt={params.name}
+              className="flex h-44 w-56 cursor-pointer rounded-xl object-cover transition-all duration-1000 hover:scale-125"
+              priority
             />
-            {helper.formatNumberWithKorM(usefullSocialMedia.followers)}
-          </div>
-        </Link>
+          </Link>
 
-        {params.bookmarked !== undefined && (
-          <div
-            className="absolute right-2 top-2 cursor-pointer"
-            onClick={() => onClickBookmark(params.id)}
+          <Link
+            href={usefullSocialMedia.url}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="absolute left-2 top-2 flex cursor-pointer gap-1 rounded-3xl border-[1px] border-transparent bg-black-transparent px-2 text-white"
           >
-            {isBookmarked ? (
+            <div className="flex items-center gap-2">
               <FontAwesomeIcon
-                icon={faBookmarkSolid}
-                className="fa-xl text-white hover:text-white1 "
+                icon={socialMediaIcon(usefullSocialMedia.socialMediaName)}
+                className="fa-base text-white hover:text-white1 "
               />
-            ) : (
-              <FontAwesomeIcon
-                icon={faBookmark}
-                className="fa-xl text-white hover:text-white"
-              />
-            )}
-          </div>
-        )}
-      </div>
-      <div>
+              {helper.formatNumberWithKorM(usefullSocialMedia.followers)}
+            </div>
+          </Link>
+
+          {params.bookmarked !== undefined && (
+            <div
+              className="absolute right-2 top-2 cursor-pointer"
+              onClick={() => onClickBookmark(params.id)}
+            >
+              {isBookmarked ? (
+                <FontAwesomeIcon
+                  icon={faBookmarkSolid}
+                  className="fa-xl text-white hover:text-white1 "
+                />
+              ) : (
+                <FontAwesomeIcon
+                  icon={faBookmark}
+                  className="fa-xl text-white hover:text-white"
+                />
+              )}
+            </div>
+          )}
+        </div>
         <div className="flex justify-between">
           <div className="flex flex-wrap gap-2">
             {params.socialMedia.map((socialMedia, index) => {
@@ -200,37 +200,27 @@ const ProfileCard = (params: {
               );
             })}
           </div>
-          {params.type === "Influencer" &&
-            usefullSocialMedia.valuePacks &&
-            usefullSocialMedia.valuePacks[0] && (
-              <div className="text-lg font-semibold">
-                {helper.formatNumber(
-                  parseInt(
-                    usefullSocialMedia.valuePacks[0]?.valuePackPrice || ""
-                  )
-                )}
-                €
-              </div>
-            )}
         </div>
       </div>
-      <div className="flex flex-col">
-        <div className="text-xl font-bold">{params.name}</div>
-        <div className="text-sm text-gray2">
-          {params.country}, {params.city}
+      <div className="flex flex-1 flex-col gap-2">
+        <div className="flex flex-col">
+          <div className="text-xl font-bold">{params.name}</div>
+          <div className="text-sm text-gray2">
+            {params.country}, {params.city}
+          </div>
         </div>
-      </div>
-      <div>
-        <div className="line-clamp-4 text-gray2">{params.about}</div>
-        <Link
-          href={`/${params.username}`}
-          className="font-bold text-influencer"
-        >
-          {t("components.profileCard.readMore")}
-        </Link>
+        <div>
+          <div className="line-clamp-4 text-gray2">{params.about}</div>
+          <Link
+            href={`/${params.username}`}
+            className="font-bold text-influencer"
+          >
+            {t("components.profileCard.readMore")}
+          </Link>
+        </div>
       </div>
     </div>
   );
 };
 
-export { ProfileCard };
+export { ProfileRow };

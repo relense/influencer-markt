@@ -245,7 +245,7 @@ async function main() {
   //Twitter
   await prisma.socialMedia.create({
     data: {
-      name: "Twitter",
+      name: "X",
       contentTypes: {
         connect: [{ id: 22 }, { id: 23 }, { id: 24 }, { id: 25 }, { id: 14 }],
       },

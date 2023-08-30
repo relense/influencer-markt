@@ -6,7 +6,7 @@ const AdminNavbar = () => {
 
   const leftNavBar = () => {
     return (
-      <div className="hidden flex-1 items-center justify-start lg:flex">
+      <div className="flex flex-1 items-center justify-start">
         <Link
           href="/admin/influencers"
           className="cursor-pointer text-lg lg:px-2"
@@ -37,7 +37,7 @@ const AdminNavbar = () => {
   };
   return (
     <nav>
-      <div className="flex w-full select-none items-center justify-between px-4 py-2 lg:h-16 lg:gap-4 lg:p-12">
+      <div className="flex w-full select-none items-center justify-between gap-4 px-4 py-2 lg:h-16 lg:gap-4 lg:p-12">
         {renderLogoTitle()}
         {leftNavBar()}
       </div>

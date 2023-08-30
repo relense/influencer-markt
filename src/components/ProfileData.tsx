@@ -4,8 +4,8 @@ import Link from "next/link";
 import { useTranslation } from "react-i18next";
 import { api } from "~/utils/api";
 
-import { helper } from "../../../utils/helper";
-import { Button } from "../../../components/Button";
+import { helper } from "../utils/helper";
+import { Button } from "../components/Button";
 
 export type ProfileAdminIncludes = Prisma.ProfileGetPayload<{
   include: {

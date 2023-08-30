@@ -2,7 +2,9 @@ import { useEffect, useState } from "react";
 import { api } from "~/utils/api";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
+  type IconDefinition,
   faCamera,
+  faCheck,
   faGlobe,
   faPencil,
   faShareFromSquare,
@@ -33,6 +35,16 @@ import type {
   ProfileOffers,
 } from "../../utils/globalTypes";
 import { ShareModal } from "../../components/ShareModal";
+import {
+  faFacebook,
+  faInstagram,
+  faLinkedin,
+  faPinterest,
+  faTiktok,
+  faTwitch,
+  faXTwitter,
+  faYoutube,
+} from "@fortawesome/free-brands-svg-icons";
 
 const PublicProfilePage = (params: {
   username: string;
@@ -300,6 +312,52 @@ const PublicProfilePage = (params: {
     }
   };
 
+  const socialMediaIcon = (socialMediaName: string): IconDefinition => {
+    if (socialMediaName === "Instagram") {
+      return faInstagram;
+    } else if (socialMediaName === "X") {
+      return faXTwitter;
+    } else if (socialMediaName === "TikTok") {
+      return faTiktok;
+    } else if (socialMediaName === "YouTube") {
+      return faYoutube;
+    } else if (socialMediaName === "Facebook") {
+      return faFacebook;
+    } else if (socialMediaName === "Linkedin") {
+      return faLinkedin;
+    } else if (socialMediaName === "Pinterest") {
+      return faPinterest;
+    } else if (socialMediaName === "Twitch") {
+      return faTwitch;
+    } else {
+      return faGlobe;
+    }
+  };
+
+  const renderCheckMark = () => {
+    let tooltip = "Verified";
+    let iconClass =
+      "flex h-7 w-7 items-center justify-center rounded-full bg-influencer-green-dark p-2 text-white";
+    if (profile?.verifiedStatusId === 3) {
+      tooltip = "Needs New Verification";
+      iconClass =
+        "flex h-7 w-7 items-center justify-center rounded-full bg-yellow-400 p-2 text-white";
+    }
+
+    if (profile?.verifiedStatusId === 3 || profile?.verifiedStatusId === 2) {
+      return (
+        <div className="group relative">
+          <div className={iconClass}>
+            <FontAwesomeIcon icon={faCheck} className="fa-sm" />
+          </div>
+          <div className="absolute top-8 z-10 hidden rounded-lg border-[1px] bg-gray4 p-4 text-white opacity-90 group-hover:flex group-hover:flex-1">
+            <div className="w-full">{tooltip}</div>
+          </div>
+        </div>
+      );
+    }
+  };
+
   const renderHeader = () => {
     return (
       <div className="flex flex-1 cursor-default flex-col-reverse gap-4 lg:flex-row">
@@ -322,14 +380,26 @@ const PublicProfilePage = (params: {
             <div className="flex flex-col items-center justify-center gap-2 xs:flex-row xs:flex-wrap lg:justify-start">
               {profile?.userSocialMedia?.map((socialMedia, index) => {
                 return (
-                  <div className="flex items-center gap-2" key={socialMedia.id}>
+                  <div
+                    className="flex items-start gap-2 lg:items-center"
+                    key={socialMedia.id}
+                  >
                     <Link
                       href={socialMedia.url}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="cursor-pointer font-semibold text-influencer"
+                      className="flex cursor-pointer items-center gap-2 font-semibold text-influencer"
                     >
-                      {socialMedia.socialMedia?.name}
+                      <FontAwesomeIcon
+                        icon={socialMediaIcon(
+                          socialMedia.socialMedia?.name || ""
+                        )}
+                        className="fa-lg"
+                      />
+
+                      <div className="hidden lg:flex">
+                        {socialMedia.socialMedia?.name}
+                      </div>
                     </Link>
                     <div>
                       {helper.formatNumberWithKorM(socialMedia.followers)}
@@ -337,7 +407,7 @@ const PublicProfilePage = (params: {
                     {profile?.userSocialMedia.length - 1 !== index && (
                       <div
                         key={`${socialMedia.id} + dot`}
-                        className="hidden h-1 w-1 rounded-full bg-black sm:block"
+                        className="hidden h-1 w-1 rounded-full bg-black lg:block"
                       />
                     )}
                   </div>
@@ -358,6 +428,7 @@ const PublicProfilePage = (params: {
                   <FontAwesomeIcon icon={faGlobe} className="fa-lg" />
                 </Link>
               )}
+              {renderCheckMark()}
             </div>
             <div className="text-lg text-gray2">
               {profile?.country?.name}, {profile?.city?.name}

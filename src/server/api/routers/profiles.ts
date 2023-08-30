@@ -646,6 +646,7 @@ export const profilesRouter = createTRPCRouter({
           },
           cityId: true,
           countryId: true,
+          verifiedStatusId: true,
         },
       });
     }),
@@ -813,12 +814,37 @@ export const profilesRouter = createTRPCRouter({
     .input(
       z.object({
         roleId: z.number(),
+        searchId: z.string(),
+        searchUsername: z.string(),
+        searchEmail: z.string(),
+        toVerify: z.boolean(),
+        toReverify: z.boolean(),
       })
     )
     .query(async ({ ctx, input }) => {
+      let verifyId = [
+        { verifiedStatusId: 1 },
+        { verifiedStatusId: 2 },
+        { verifiedStatusId: 3 },
+      ];
+
+      if (input.toVerify && !input.toReverify) {
+        verifyId = [{ verifiedStatusId: 1 }];
+      } else if (!input.toVerify && input.toReverify) {
+        verifyId = [{ verifiedStatusId: 3 }];
+      } else if (input.toVerify && input.toReverify) {
+        verifyId = [{ verifiedStatusId: 1 }, { verifiedStatusId: 3 }];
+      }
+
       return await ctx.prisma.profile.findMany({
         where: {
-          user: { roleId: input.roleId },
+          id: input.searchId ? parseInt(input.searchId) : undefined,
+          OR: verifyId,
+          user: {
+            roleId: input.roleId,
+            username: { contains: input.searchUsername },
+            email: { contains: input.searchEmail },
+          },
         },
         include: {
           acceptedOffers: {
