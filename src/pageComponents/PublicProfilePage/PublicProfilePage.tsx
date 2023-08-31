@@ -680,26 +680,32 @@ const PublicProfilePage = (params: {
               </>
             )}
           </div>
-          <Button
-            title={t("pages.publicProfilePage.valuePackSubmitButton")}
-            level="primary"
-            size="large"
-            disabled={platform.id === -1 || selectedValuePacks.length === 0}
-            onClick={() =>
-              params.loggedInProfileId === -1
-                ? params.openLoginModal()
-                : void router.push(
-                    {
-                      pathname: "/start-order",
-                      query: {
-                        valuePacks: JSON.stringify(selectedValuePacks),
-                        profileId: JSON.stringify(profile?.id || ""),
-                      },
-                    },
-                    "/start-order"
-                  )
-            }
-          />
+          {params.loggedInProfileId !== -1 ? (
+            <Link
+              href={{
+                pathname: "/start-order",
+                query: {
+                  valuePacks: JSON.stringify(selectedValuePacks),
+                  profileId: JSON.stringify(profile?.id || ""),
+                },
+              }}
+            >
+              <Button
+                title={t("pages.publicProfilePage.valuePackSubmitButton")}
+                level="primary"
+                size="large"
+                disabled={platform.id === -1 || selectedValuePacks.length === 0}
+              />
+            </Link>
+          ) : (
+            <Button
+              title={t("pages.publicProfilePage.valuePackSubmitButton")}
+              level="primary"
+              size="large"
+              disabled={platform.id === -1 || selectedValuePacks.length === 0}
+              onClick={() => params.openLoginModal()}
+            />
+          )}
           <div className="flex items-center justify-center gap-2 text-center text-gray2">
             <ToolTip content={t("pages.publicProfilePage.tootlip")} />
             <div>{t("pages.publicProfilePage.disclaimer")}</div>

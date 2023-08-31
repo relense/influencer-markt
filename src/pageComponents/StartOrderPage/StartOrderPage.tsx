@@ -1,7 +1,7 @@
 import { useTranslation } from "react-i18next";
 import type { Option, ValuePack } from "../../utils/globalTypes";
-import { Controller, useForm } from "react-hook-form";
-import { CustomSelect } from "../../components/CustomSelect";
+import { useForm } from "react-hook-form";
+import { helper } from "../../utils/helper";
 
 type OrderData = {
   orderDetails: string;
@@ -53,17 +53,29 @@ const StartOrderPage = (params: {
     },
   });
 
+  const renderInfluencerDetails = () => {
+    return (
+      <div className="flex flex-col gap-4">
+        <div className="text-xl font-medium">Influencer Details</div>
+        <div className="flex flex-1 gap-4">
+          <div className="flex flex-col gap-2">
+            <div className="font-semibold text-influencer">Name</div>
+            <div>BLABLA</div>
+          </div>
+        </div>
+      </div>
+    );
+  };
+
   const renderOfferDetails = () => {
     return (
-      <div className="flex flex-1 flex-col gap-4">
-        <div className="text-xl font-medium">
-          {t("pages.manageOffers.offerDetails")}
-        </div>
-        <div className="flex w-full flex-1 flex-col">
+      <div className="flex flex-col gap-4">
+        <div className="text-xl font-medium">Order Details</div>
+        <div className="flex w-full flex-col">
           <textarea
             {...register("orderDetails", { maxLength: 2200 })}
             required
-            className="flex h-full cursor-pointer rounded-lg border-[1px] border-gray3 bg-transparent p-4 placeholder-gray2 placeholder:w-11/12"
+            className="flex h-48 cursor-pointer rounded-lg border-[1px] border-gray3 bg-transparent p-4 placeholder-gray2 placeholder:w-11/12"
             placeholder={t("pages.manageOffers.detailsPlaceholder")}
             autoComplete="off"
           />
@@ -81,20 +93,54 @@ const StartOrderPage = (params: {
 
   const renderPlatform = () => {
     return (
-      <div className="flex flex-1 flex-col gap-4">
-        <div className="text-xl font-medium">
-          {t("pages.manageOffers.platformTitle")}
+      <div className="flex flex-col gap-2">
+        <div className="text-xl font-medium">Order Platform</div>
+        <div className="font-semibold text-influencer">
+          {params.valuePacks[0]?.platform.name}
         </div>
-        <div>{params.valuePacks[0]?.platform.name}</div>
+      </div>
+    );
+  };
+
+  const renderValuePacks = () => {
+    return (
+      <div className="flex flex-col gap-2">
+        <div className="text-xl font-medium">Value Packs</div>
+        <div className="flex flex-col gap-4 lg:flex-row">
+          {params.valuePacks.map((valuePack) => {
+            return (
+              <div key={valuePack.id} className="flex items-center gap-4">
+                <input
+                  value={1}
+                  type="number"
+                  className="w-12 border-[1px] p-1 text-center"
+                />
+                <div className="flex w-40 gap-2">
+                  <div className="text-base font-semibold text-influencer">
+                    {t(`general.contentTypes.${valuePack.contentType.name}`)}
+                  </div>
+                  <div className="text-base font-medium">
+                    {helper.formatNumberWithDecimalValue(
+                      parseInt(valuePack.valuePackPrice)
+                    )}
+                    €
+                  </div>
+                </div>
+              </div>
+            );
+          })}
+        </div>
       </div>
     );
   };
 
   return (
-    <div className="flex w-full flex-1 cursor-default flex-col gap-8 self-center px-2 sm:px-12 xl:w-3/4 2xl:w-3/4 3xl:w-2/4">
+    <div className="flex w-full flex-1 cursor-default flex-col gap-8 self-center px-8 py-8 sm:px-12 xl:w-3/4 2xl:w-3/4 3xl:w-2/4">
       <div className="text-4xl font-semibold">Initiate Order</div>
-      {renderOfferDetails()}
+      {renderInfluencerDetails()}
       {renderPlatform()}
+      {renderValuePacks()}
+      {renderOfferDetails()}
     </div>
   );
 };
