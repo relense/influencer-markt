@@ -836,6 +836,119 @@ export const profilesRouter = createTRPCRouter({
         verifyId = [{ verifiedStatusId: 1 }, { verifiedStatusId: 3 }];
       }
 
+      return await ctx.prisma.$transaction([
+        ctx.prisma.profile.count({
+          where: {
+            id: input.searchId ? parseInt(input.searchId) : undefined,
+            OR: verifyId,
+            user: {
+              roleId: input.roleId,
+              username: { contains: input.searchUsername },
+              email: { contains: input.searchEmail },
+            },
+          },
+        }),
+        ctx.prisma.profile.findMany({
+          where: {
+            id: input.searchId ? parseInt(input.searchId) : undefined,
+            OR: verifyId,
+            user: {
+              roleId: input.roleId,
+              username: { contains: input.searchUsername },
+              email: { contains: input.searchEmail },
+            },
+          },
+          take: 10,
+          include: {
+            acceptedOffers: {
+              select: {
+                id: true,
+              },
+            },
+            appliedOffers: {
+              select: {
+                id: true,
+              },
+            },
+            categories: true,
+            city: true,
+            country: true,
+            createdOffers: {
+              select: {
+                id: true,
+              },
+            },
+            favoriteBy: {
+              select: {
+                id: true,
+              },
+            },
+            favorites: {
+              select: {
+                id: true,
+              },
+            },
+            gender: true,
+            portfolio: {
+              select: {
+                id: true,
+              },
+            },
+            profileReviews: {
+              select: {
+                id: true,
+              },
+            },
+            rejectedApplicants: {
+              select: {
+                id: true,
+              },
+            },
+            submitedReviews: {
+              select: {
+                id: true,
+              },
+            },
+            user: true,
+            userSocialMedia: {
+              include: {
+                socialMedia: true,
+              },
+            },
+            verifiedStatus: true,
+          },
+          orderBy: [{ verifiedStatusId: "asc" }],
+        }),
+      ]);
+    }),
+
+  getAllProfileForAdminDashboardCursor: protectedProcedure
+    .input(
+      z.object({
+        cursor: z.number(),
+        roleId: z.number(),
+        searchId: z.string(),
+        searchUsername: z.string(),
+        searchEmail: z.string(),
+        toVerify: z.boolean(),
+        toReverify: z.boolean(),
+      })
+    )
+    .query(async ({ ctx, input }) => {
+      let verifyId = [
+        { verifiedStatusId: 1 },
+        { verifiedStatusId: 2 },
+        { verifiedStatusId: 3 },
+      ];
+
+      if (input.toVerify && !input.toReverify) {
+        verifyId = [{ verifiedStatusId: 1 }];
+      } else if (!input.toVerify && input.toReverify) {
+        verifyId = [{ verifiedStatusId: 3 }];
+      } else if (input.toVerify && input.toReverify) {
+        verifyId = [{ verifiedStatusId: 1 }, { verifiedStatusId: 3 }];
+      }
+
       return await ctx.prisma.profile.findMany({
         where: {
           id: input.searchId ? parseInt(input.searchId) : undefined,
@@ -845,6 +958,11 @@ export const profilesRouter = createTRPCRouter({
             username: { contains: input.searchUsername },
             email: { contains: input.searchEmail },
           },
+        },
+        take: 10,
+        skip: 1,
+        cursor: {
+          id: input.cursor,
         },
         include: {
           acceptedOffers: {

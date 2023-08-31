@@ -60,6 +60,7 @@ export const Button = ({
 
   if (disabled) {
     bgColor = "bg-influencer-light";
+    textColor = "text-white";
     cursor = "cursor-not-allowed";
     hover = "";
   }

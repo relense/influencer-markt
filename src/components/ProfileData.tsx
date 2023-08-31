@@ -82,7 +82,6 @@ const ProfileData = (params: { profile: ProfileAdminIncludes }) => {
     data: updatedProfile,
     refetch,
     isRefetching,
-    isLoading: isLoadingUpdatedProfile,
     isFetching,
   } = api.profiles.getSingleProfileForAdmin.useQuery(
     {

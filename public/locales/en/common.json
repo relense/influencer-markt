@@ -504,7 +504,8 @@
       "warningMessage": "Max is {{count}} characters",
       "modalTitle": "Check Our FAQ Before Contacting Us",
       "modalSubTitle": "Before contacting us, we kindly request that you check our FAQ page to see if your question has already been answered. We have compiled a list of frequently asked questions to provide you with quick and helpful information. You may find the answer you're looking for without the need to wait for a response. If you don't find what you need in the FAQ section, feel free to reach out to us using the contact form below. We'll be happy to assist you!",
-      "modalButton": "Explore FAQs"
+      "modalButton": "Explore FAQs",
+      "messageSuccess": "Message was sent successfully"
     },
 
     "about": {

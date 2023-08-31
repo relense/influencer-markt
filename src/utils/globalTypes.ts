@@ -150,3 +150,10 @@ export type OfferIncludes = Prisma.OfferGetPayload<{
     rejectedApplicants: true;
   };
 }>;
+
+export type TicketType = Prisma.ContactMessageGetPayload<{
+  include: {
+    contactMessageState: true;
+    reason: true;
+  };
+}>;

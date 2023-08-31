@@ -9,6 +9,7 @@ import { useEffect, useState } from "react";
 import { Modal } from "../../components/Modal";
 import Link from "next/link";
 import type { Option } from "../../utils/globalTypes";
+import { toast } from "react-hot-toast";
 
 type ContactUsData = {
   reason: Option;
@@ -20,6 +21,15 @@ type ContactUsData = {
 const ContactUsPage = () => {
   const { t } = useTranslation();
   const { data: reasons } = api.allRoutes.getAllMessageReasons.useQuery();
+  const { mutate: createMessage, isLoading } =
+    api.contactMessage.createContactMessage.useMutation({
+      onSuccess: () => {
+        toast.success(t("pages.contactUs.messageSuccess"), {
+          position: "bottom-left",
+        });
+        reset();
+      },
+    });
   const [showFirstTimeModal, setShowFirstTimeModal] = useState<boolean>(false);
 
   const setfirstVisitInfo = () => {
@@ -37,6 +47,7 @@ const ContactUsPage = () => {
     control,
     register,
     handleSubmit,
+    reset,
     formState: { errors },
   } = useForm<ContactUsData>({
     defaultValues: {
@@ -45,7 +56,12 @@ const ContactUsPage = () => {
   });
 
   const submitMessage = handleSubmit((data) => {
-    console.log(JSON.stringify(data));
+    createMessage({
+      email: data.email,
+      message: data.message,
+      name: data.name,
+      reason: data.reason.id,
+    });
   });
 
   return (
@@ -69,6 +85,7 @@ const ContactUsPage = () => {
                   register={register}
                   name="reason"
                   placeholder={t("pages.contactUs.reasonPlaceholder")}
+                  required
                   options={
                     reasons?.map((reason) => {
                       return {
@@ -127,6 +144,7 @@ const ContactUsPage = () => {
             title="Send Message"
             level="primary"
             form="form-contactUs"
+            isLoading={isLoading}
           />
         </div>
       </form>

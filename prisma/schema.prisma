@@ -214,6 +214,10 @@ model ContactMessage {
   contactMessageState ContactMessageState? @relation(fields: [contactMessageStateId], references: [id])
   reason              Reason?              @relation(fields: [reasonId], references: [id])
 
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  closedAt  DateTime?
+
   contactMessageStateId Int
   reasonId              Int
 

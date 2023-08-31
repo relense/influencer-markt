@@ -349,12 +349,7 @@ const OfferDetailsPage = (params: {
             title={title}
             level={applied ? "secondary" : "primary"}
             size="large"
-            isLoading={
-              isRefetching ||
-              isFetching ||
-              applicationIsLoading ||
-              removingIsLoading
-            }
+            isLoading={isLoading || applicationIsLoading || removingIsLoading}
             onClick={() => onApply(offer)}
             disabled={disableApply}
           />

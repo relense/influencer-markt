@@ -45,6 +45,7 @@ import {
   faXTwitter,
   faYoutube,
 } from "@fortawesome/free-brands-svg-icons";
+import { useRouter } from "next/router";
 
 const PublicProfilePage = (params: {
   username: string;
@@ -53,6 +54,7 @@ const PublicProfilePage = (params: {
 }) => {
   const ctx = api.useContext();
   const { t, i18n } = useTranslation();
+  const router = useRouter();
 
   const [isReviewModalOpen, setIsReviewModalOpen] = useState<boolean>(false);
   const [isShareModalOpen, setIsShareModalOpen] = useState<boolean>(false);
@@ -538,7 +540,7 @@ const PublicProfilePage = (params: {
         <div className="text-2xl font-semibold">
           {t("pages.publicProfilePage.about")}
         </div>
-        <div className="text-gray2 [overflow-wrap:anywhere]">
+        <div className="whitespace-pre-line text-gray2 [overflow-wrap:anywhere]">
           {profile?.about}
         </div>
       </div>
@@ -683,6 +685,20 @@ const PublicProfilePage = (params: {
             level="primary"
             size="large"
             disabled={platform.id === -1 || selectedValuePacks.length === 0}
+            onClick={() =>
+              params.loggedInProfileId === -1
+                ? params.openLoginModal()
+                : void router.push(
+                    {
+                      pathname: "/start-order",
+                      query: {
+                        valuePacks: JSON.stringify(selectedValuePacks),
+                        profileId: JSON.stringify(profile?.id || ""),
+                      },
+                    },
+                    "/start-order"
+                  )
+            }
           />
           <div className="flex items-center justify-center gap-2 text-center text-gray2">
             <ToolTip content={t("pages.publicProfilePage.tootlip")} />

@@ -38,6 +38,14 @@ export const allRouter = createTRPCRouter({
     });
   }),
 
+  getAllReasons: publicProcedure.query(async ({ ctx }) => {
+    return await ctx.prisma.reason.findMany();
+  }),
+
+  getAllContactMessageStatus: publicProcedure.query(async ({ ctx }) => {
+    return await ctx.prisma.contactMessageState.findMany();
+  }),
+
   getAllGenders: publicProcedure.query(async ({ ctx }) => {
     return await ctx.prisma.gender.findMany();
   }),
