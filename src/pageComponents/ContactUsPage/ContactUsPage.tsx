@@ -163,6 +163,7 @@ const ContactUsPage = () => {
                 <Button
                   title={t("pages.contactUs.modalButton")}
                   level="primary"
+                  onClick={() => setfirstVisitInfo()}
                 />
               </Link>
             </div>
