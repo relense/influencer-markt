@@ -731,6 +731,11 @@
     "500": {
       "title": "We are sorry! Something went wrong and we are trying hard to fix it",
       "subtitle": "Contact us or try again later."
+    },
+
+    "verify": {
+      "title": "Check Your Email",
+      "subtitle": "A magical login link has been sent to your email address"
     }
   }
 }

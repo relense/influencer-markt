@@ -49,6 +49,7 @@ export const authOptions: NextAuthOptions = {
   },
   pages: {
     signIn: "/login-callback",
+    verifyRequest: "/verify",
   },
   adapter: PrismaAdapter(prisma),
   providers: [
@@ -63,6 +64,8 @@ export const authOptions: NextAuthOptions = {
     EmailProvider({
       server: env.EMAIL_SERVER,
       from: env.EMAIL_FROM,
+      type: "email",
+      maxAge: 300,
     }),
     /**
      * ...add more providers here.

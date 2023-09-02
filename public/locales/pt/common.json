@@ -730,6 +730,11 @@
     "500": {
       "title": "Pedimos desculpa! Aconteceu algo inesperado e estamos a trabalhar para resolver",
       "subtitle": "Entra em contacto connosco ou tenta outra vez mais tarde"
+    },
+
+    "verify": {
+      "title": "Verifica o teu email",
+      "subtitle": "Um link mágico para fazer o login foi enviado para o teu endereço de email"
     }
   }
 }

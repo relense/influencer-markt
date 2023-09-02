@@ -1,14 +1,11 @@
+import { useState } from "react";
 import { signIn } from "next-auth/react";
-import { Modal } from "./Modal";
-import { Button } from "./Button";
-import { useForm } from "react-hook-form";
 import Image from "next/image";
 import Link from "next/link";
 import { useTranslation } from "react-i18next";
 
-type EmailForm = {
-  email: string;
-};
+import { Modal } from "./Modal";
+import { Button } from "./Button";
 
 const LoginModal = ({
   onClose,
@@ -17,13 +14,12 @@ const LoginModal = ({
   onClose: () => void;
   isSignUp: boolean;
 }) => {
+  const [userEmail, setUserEmail] = useState<string>("");
   const { t } = useTranslation();
-  const { getValues, register } = useForm<EmailForm>();
 
-  const emailSign = async () => {
-    const email = getValues("email");
-    await signIn("email", { email });
-  };
+  const title = isSignUp
+    ? t("components.loginModal.signupButton")
+    : t("components.loginModal.signinButton");
 
   return (
     <Modal onClose={onClose}>
@@ -34,21 +30,27 @@ const LoginModal = ({
 
         <form className="flex w-full flex-col gap-4">
           <input
-            {...register("email")}
             type="text"
             className="h-14 rounded-lg border-[1px] border-gray3 p-4 placeholder-gray2"
             placeholder="Email"
             autoComplete="off"
+            value={userEmail}
+            onChange={(e) => setUserEmail(e.target.value)}
           />
           <Button
-            title={
-              isSignUp
-                ? t("components.loginModal.signupButton")
-                : t("components.loginModal.signinButton")
-            }
+            title={title}
             level="primary"
             size="large"
-            onClick={() => emailSign()}
+            onClick={(e) => {
+              e.preventDefault();
+
+              void signIn("email", {
+                email: userEmail,
+                callbackUrl: `${
+                  process.env.NEXTAUTH_URL || ""
+                }/login-callback?returnTo=${window.location.pathname}`,
+              });
+            }}
           />
         </form>
         <div className="flex w-full flex-1 items-center gap-6">

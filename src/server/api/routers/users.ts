@@ -83,7 +83,8 @@ export const usersRouter = createTRPCRouter({
         input.username === "home" ||
         input.username === "orders" ||
         input.username === "notifications" ||
-        input.username === "messages"
+        input.username === "messages" ||
+        input.username === "verify"
       ) {
         return false;
       }
