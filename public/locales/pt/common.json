@@ -380,7 +380,7 @@
         "brands.positive5": "Influencers ilimitados podem candidatar-se à tua campanha",
         "brands.positive6": "Avalia Influencers",
         "brands.positive7": "Conversa com influencers antes de trabalharem juntos",
-        "brands.positive8": "Influeners recomendados para as tuas necessidades",
+        "brands.positive8": "Influencers recomendados para as tuas necessidades",
 
         "influencers.title": "Para Influencers",
         "influencers.positive1": "Faz parte de uma comunidade",
@@ -514,12 +514,12 @@
     },
 
     "about": {
-      "title": "Qualquer coisa sobre a nossa missão e o que queremos fazer.",
-      "subTitle": "Qualquer coisa para reforçar a nossa missão orem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.",
+      "title": "Conectamos marcas com criadores de conteúdo influentes",
+      "subTitle": "Ser o destino preferencial para marcas que procuram vozes influentes, oferecendo uma rede diversificada de criadores de conteúdo que interagem com o seu público-alvo específico.",
       "photoSubTitle": "Uma frase que dá ênfase à fotografia.",
-      "selfPromoTitle": "Pequena frase curta que gera confiança ao utilizador perante a nossa marca.",
-      "selfPromoSubTitle": "Legenda que apresenta a nossa história orem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-      "selfPromoText": "Aqui é onde descrevemos a nossa história orem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.",
+      "selfPromoTitle": "Estamos dedicados a construir parcerias sólidas",
+      "selfPromoSubTitle": "Na Influencer Markt ligamos criadores de conteúdo a marcas de forma confiável, rápida, segura e transparente – para que juntos possamos potenciar a comunicação em diferentes canais digitais e atingir novos patamares de sucesso.",
+      "selfPromoText": "A ideia para a Influencer Markt surgiu quando um dos co-fundadores se deparou com o desafio de tentar expandir uma marca internacional para o mercado português. A dificuldade residia em encontrar criadores de conteúdo a um nível regional que interagissem com o público-alvo e encaixassem no orçamento restrito da marca para o lançamento no mercado nacional.",
       "meetTeamTitle": "Conhece a equipa",
       "coFounder": "Co-Fundador"
     },
