@@ -153,7 +153,9 @@
       "exploreBrands": "Explore Brands",
       "savedBrands": "Saved Brands",
       "helpCenter": "Help Center",
-      "settings": "Settings"
+      "settings": "Settings",
+      "completeProfile": "Complete Your Profile",
+      "completeMessage": "Complete your profile to unlock all funcionalities"
     },
 
     "adminNavbar": {

@@ -36,6 +36,7 @@ import Draggable, {
   type DraggableData,
   type DraggableEvent,
 } from "react-draggable";
+import { useRouter } from "next/router";
 
 export const Navbar = (params: {
   username: string;
@@ -43,8 +44,10 @@ export const Navbar = (params: {
   sessionData: Session | null;
   openLoginModal: () => void;
   setIsSignUp: (isSignUp: boolean) => void;
+  loggedInProfileId: number;
 }) => {
   const { t } = useTranslation();
+  const router = useRouter();
 
   const dropdownWrapperRef = useRef(null);
   const drawerRef = useRef<HTMLDivElement>(null);
@@ -100,7 +103,7 @@ export const Navbar = (params: {
             >
               {t("components.navbar.explore")}
             </Link>
-            {params.sessionData && (
+            {params.sessionData && params.loggedInProfileId !== -1 && (
               <>
                 <FontAwesomeIcon
                   icon={faChevronDown}
@@ -113,7 +116,7 @@ export const Navbar = (params: {
               </>
             )}
           </div>
-          {params.sessionData && (
+          {params.sessionData && params.loggedInProfileId !== -1 && (
             <div className="absolute left-[-13px] top-7 z-50 hidden flex-col justify-center rounded-lg bg-white shadow-md group-hover:flex">
               <Link
                 href="/explore/influencers"
@@ -133,7 +136,7 @@ export const Navbar = (params: {
             </div>
           )}
         </div>
-        {params.sessionData && (
+        {params.sessionData && params.loggedInProfileId !== -1 && (
           <>
             <div className="group relative flex px-2">
               <div className="flex items-center gap-2">
@@ -208,12 +211,18 @@ export const Navbar = (params: {
         )}
         {params.sessionData && (
           <div className="flex flex-row items-center justify-end gap-6">
-            <FontAwesomeIcon
-              icon={faMessage}
-              className="fa-xl cursor-pointer"
-            />
-            <FontAwesomeIcon icon={faBell} className="fa-xl cursor-pointer" />
-
+            {params.loggedInProfileId !== -1 && (
+              <>
+                <FontAwesomeIcon
+                  icon={faMessage}
+                  className="fa-xl cursor-pointer"
+                />
+                <FontAwesomeIcon
+                  icon={faBell}
+                  className="fa-xl cursor-pointer"
+                />
+              </>
+            )}
             {renderHamburguerMenuAuthenticated()}
           </div>
         )}
@@ -255,7 +264,12 @@ export const Navbar = (params: {
             onClick={() => setToggleOptions(!toggleOptions)}
           />
         )}
-        {toggleOptions && optionsDropdownAuthenticated()}
+        {toggleOptions &&
+          params.loggedInProfileId !== -1 &&
+          optionsDropdownAuthenticated()}
+        {toggleOptions &&
+          params.loggedInProfileId === -1 &&
+          optionsDropdownAuthenticatedWithoutProfile()}
         {openHelpCenter && navigationHelpers()}
       </div>
     );
@@ -458,6 +472,80 @@ export const Navbar = (params: {
     }
   };
 
+  const optionsDropdownAuthenticatedWithoutProfile = () => {
+    if (params.sessionData) {
+      return (
+        <>
+          <div
+            className="absolute left-0 top-0 z-40 h-screen w-screen bg-black-transparent sm:bg-transparent"
+            onClick={() => setToggleOptions(!toggleOptions)}
+          />
+          <Draggable
+            axis="y"
+            handle=".handle"
+            onStop={handleStop}
+            onDrag={handleDrag}
+            defaultPosition={{
+              x: 0,
+              y: 0,
+            }}
+            cancel={".need-interaction"}
+            bounds={{ top: 0, right: 0, left: 0 }}
+            position={{ x: draggablePositionY, y: draggablePositionY }}
+            nodeRef={drawerRef}
+          >
+            <div
+              className="handle absolute bottom-0 left-0 right-0 z-50 flex w-screen cursor-grab flex-col gap-2 rounded-t-lg border-white1 bg-white px-8 pb-4 text-sm shadow-lg sm:bottom-auto sm:left-auto sm:right-5 sm:top-20 sm:w-auto sm:cursor-pointer sm:rounded-2xl sm:border-[1px] sm:p-8 sm:pt-2 sm:text-base"
+              ref={drawerRef}
+            >
+              <div className="flex h-1 w-full flex-1 cursor-pointer justify-center pt-2 sm:hidden">
+                <div className="h-[2px] w-10" />
+              </div>
+
+              <div className="flex cursor-pointer items-center gap-6">
+                <Button
+                  title={t("components.navbar.completeProfile")}
+                  level="primary"
+                  onClick={() => void router.push("/first-steps")}
+                />
+              </div>
+
+              <div className="flex cursor-pointer border-[1px] border-white1" />
+
+              <div
+                className="group flex cursor-pointer items-center gap-4 py-2"
+                onClick={() => void signOut()}
+              >
+                <FontAwesomeIcon
+                  icon={faArrowRightFromBracket}
+                  className="fa-lg"
+                />
+                <span
+                  className="need-interaction group-hover:underline"
+                  onClick={() => void signOut()}
+                >
+                  {t("components.navbar.signOut")}
+                </span>
+              </div>
+
+              <div className="flex cursor-pointer border-[1px] border-white1 sm:hidden" />
+              <div
+                className="group flex cursor-pointer items-center gap-4 py-2 sm:hidden"
+                onClick={() => setOPenHelpCenter(true)}
+              >
+                <FontAwesomeIcon icon={faLifeRing} className="fa-lg" />
+
+                <div className="need-interaction group-hover:underline">
+                  {t("components.navbar.helpCenter")}
+                </div>
+              </div>
+            </div>
+          </Draggable>
+        </>
+      );
+    }
+  };
+
   const navigationHelpers = () => {
     return (
       <div className="absolute right-0 top-0 z-50 flex h-full w-full flex-col gap-2 bg-white p-4 lg:hidden">
@@ -534,6 +622,14 @@ export const Navbar = (params: {
         {leftNavBar()}
         {rightNavbar()}
       </div>
+      {params.sessionData && params.loggedInProfileId === -1 && (
+        <Link
+          href="/first-steps"
+          className="flex flex-1 cursor-pointer justify-center bg-influencer p-4 text-center text-xl text-white"
+        >
+          {t("components.navbar.completeMessage")}
+        </Link>
+      )}
     </nav>
   );
 };

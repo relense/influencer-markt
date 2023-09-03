@@ -71,6 +71,7 @@ export const Layout = (props: {
           sessionData={sessionData}
           openLoginModal={() => setIsModalOpen(true)}
           setIsSignUp={setIsSignUp}
+          loggedInProfileId={user?.profile?.id ? user.profile.id : -1}
         />
         <div
           className="mb-12 flex w-full flex-1 flex-col overflow-y-auto sm:mb-0"
@@ -87,7 +88,11 @@ export const Layout = (props: {
           </div>
           <Footer />
         </div>
-        <BottomBar status={status} username={user?.username || ""} />
+        <BottomBar
+          status={status}
+          username={user?.username || ""}
+          loggedInProfileId={user?.profile?.id ? user.profile.id : -1}
+        />
         <div className="flex justify-center">
           {isModalOpen && (
             <LoginModal onClose={() => onCloseModal()} isSignUp={isSignUp} />

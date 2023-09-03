@@ -14,11 +14,13 @@ type linkItem = {
   pageUrl: string;
   icon: IconDefinition;
   loggedIn: boolean;
+  profileSetup: boolean;
 };
 
 const BottomBar = (params: {
   username: string;
   status: "authenticated" | "loading" | "unauthenticated";
+  loggedInProfileId: number;
 }) => {
   const router = useRouter();
 
@@ -27,26 +29,31 @@ const BottomBar = (params: {
       pageUrl: "/",
       icon: faHome,
       loggedIn: false,
+      profileSetup: false,
     },
     {
       pageUrl: "/explore/influencers",
       icon: faSearch,
       loggedIn: false,
+      profileSetup: false,
     },
     {
       pageUrl: "/saved/influencers",
       icon: faBookmark,
       loggedIn: true,
+      profileSetup: true,
     },
     {
       pageUrl: "/offers",
       icon: faBriefcase,
       loggedIn: false,
+      profileSetup: false,
     },
     {
       pageUrl: `/${params.username}`,
       icon: faUserCircle,
       loggedIn: true,
+      profileSetup: true,
     },
   ];
 
@@ -62,7 +69,10 @@ const BottomBar = (params: {
 
         if (
           !navigationItem.loggedIn ||
-          (params.status === "authenticated" && navigationItem.loggedIn)
+          (params.status === "authenticated" &&
+            navigationItem.loggedIn &&
+            navigationItem.profileSetup === true &&
+            params.loggedInProfileId !== -1)
         ) {
           return (
             <Link
