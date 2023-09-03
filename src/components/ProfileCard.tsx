@@ -24,6 +24,7 @@ import {
   faXTwitter,
   faYoutube,
 } from "@fortawesome/free-brands-svg-icons";
+import { useSession } from "next-auth/react";
 
 const ProfileCard = (params: {
   id: number;
@@ -38,8 +39,10 @@ const ProfileCard = (params: {
   bookmarked: boolean;
   highlightSocialMediaId?: number;
   onHandleBookmark?: () => void;
+  openLoginModal?: () => void;
 }) => {
   const { t } = useTranslation();
+  const { status } = useSession();
   const [isBookmarked, setIsBookmarked] = useState<boolean>(
     params.bookmarked ? params.bookmarked : false
   );
@@ -133,6 +136,14 @@ const ProfileCard = (params: {
     }
   };
 
+  const handleClickBookmark = () => {
+    if (status === "unauthenticated" && params.openLoginModal) {
+      params.openLoginModal();
+    } else if (status === "authenticated") {
+      onClickBookmark(params.id);
+    }
+  };
+
   return (
     <div className="flex w-full  flex-col gap-2 lg:w-80">
       <div className="relative h-80 w-full self-center overflow-hidden rounded-xl shadow-xl lg:w-80">
@@ -166,7 +177,7 @@ const ProfileCard = (params: {
         {params.bookmarked !== undefined && (
           <div
             className="absolute right-2 top-2 cursor-pointer"
-            onClick={() => onClickBookmark(params.id)}
+            onClick={() => handleClickBookmark()}
           >
             {isBookmarked ? (
               <FontAwesomeIcon

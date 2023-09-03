@@ -24,7 +24,10 @@ export type InfluencersFilterState = {
   maxPrice: number;
 };
 
-const ExploreInfluencersPage = (params: { choosenCategories: Option[] }) => {
+const ExploreInfluencersPage = (params: {
+  choosenCategories: Option[];
+  openLoginModal: () => void;
+}) => {
   const { t } = useTranslation();
   const [influencersCursor, setInfluencersCursor] = useState<number>(-1);
   const [userProfiles, setUserProfiles] = useState<UserProfiles[]>([]);
@@ -374,6 +377,7 @@ const ExploreInfluencersPage = (params: { choosenCategories: Option[] }) => {
                   username={profile.username}
                   type="Influencer"
                   bookmarked={profile.bookmarked || false}
+                  openLoginModal={params.openLoginModal}
                 />
               );
             })}

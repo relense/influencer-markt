@@ -54,6 +54,7 @@ const PublicProfilePage = (params: {
 }) => {
   const ctx = api.useContext();
   const { t, i18n } = useTranslation();
+  const { status } = useSession();
   const router = useRouter();
 
   const [isReviewModalOpen, setIsReviewModalOpen] = useState<boolean>(false);
@@ -306,9 +307,13 @@ const PublicProfilePage = (params: {
   };
 
   const handleBookmark = (profileId: number) => {
-    if (params.loggedInProfileId === -1) {
+    if (status === "unauthenticated") {
       params.openLoginModal();
-    } else {
+    } else if (status === "authenticated" && params.loggedInProfileId === -1) {
+      toast.error("Finish profile to save influencers", {
+        position: "bottom-left",
+      });
+    } else if (status === "authenticated" && params.loggedInProfileId !== -1) {
       updateFavorites({ profileId });
       setIsBookmarked(!isBookmarked);
     }

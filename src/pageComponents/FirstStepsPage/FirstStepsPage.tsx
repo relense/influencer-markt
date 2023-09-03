@@ -332,25 +332,6 @@ const FirstStepsPage = () => {
                 : ""}
             </div>
           </div>
-          {/* <div className="hidden flex-wrap justify-center gap-3 py-2 sm:flex sm:justify-normal lg:pt-4">
-            {steps.map((step, index) => {
-              if (index <= stepsCount) {
-                return (
-                  <div
-                    key={step.step}
-                    className="h-2 w-11 rounded-2xl bg-influencer-green"
-                  />
-                );
-              } else {
-                return (
-                  <div
-                    key={step.step}
-                    className="h-2 w-11 rounded-2xl bg-white"
-                  />
-                );
-              }
-            })}
-          </div> */}
         </div>
       </div>
     );
