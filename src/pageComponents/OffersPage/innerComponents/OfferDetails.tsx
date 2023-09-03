@@ -167,12 +167,16 @@ const OfferDetails = (params: {
   }, [params, offer, params.type]);
 
   const onApply = (offer: OfferIncludes) => {
-    if (session.status === "authenticated") {
+    if (session.status === "authenticated" && params.profile) {
       if (applied) {
         removeApplication({ offerId: offer.id });
       } else {
         applyToOffer({ offerId: offer.id });
       }
+    } else if (session.status === "authenticated" && !params.profile) {
+      toast.error(t("pages.offers.toastWarning"), {
+        position: "bottom-left",
+      });
     } else {
       params.openLoginModal();
     }
@@ -190,7 +194,7 @@ const OfferDetails = (params: {
         />
 
         <div className="cursor-pointer underline">
-          {t("pages.publicProfilePage.share")}
+          {t("pages.offers.share")}
         </div>
       </div>
     );

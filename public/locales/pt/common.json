@@ -694,7 +694,9 @@
       "shareModalTitle": "Partilha A Oferta",
       "offersAvailable": "Há {{ available }} ofertas disponíveis",
       "noOffers": "Não há ofertas com os requisitos que procuras",
-      "noRequirements": "Não preenches os requisitos desta oferta"
+      "noRequirements": "Não preenches os requisitos desta oferta",
+      "share": "Partilha",
+      "toastWarning": "Completa o teu perfil para te poderes candidatar"
     },
 
     "applications": {

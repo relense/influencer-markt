@@ -695,7 +695,9 @@
       "shareModalTitle": "Share Offer",
       "offersAvailable": "There are {{ available }} offers available",
       "noOffers": "There are no offers for your search requirements",
-      "noRequirements": "You do not meet the requirements for this offer"
+      "noRequirements": "You do not meet the requirements for this offer",
+      "share": "Share",
+      "toastWarning": "Complete your profile to be able to apply"
     },
 
     "applications": {

@@ -33,8 +33,6 @@ const OfferDetailsPage = (params: {
   const {
     data: offerData,
     refetch: refetcheOffer,
-    isRefetching,
-    isFetching,
     isLoading,
   } = api.offers.getSimpleOffer.useQuery({
     offerId: params.offerId || -1,
@@ -130,18 +128,23 @@ const OfferDetailsPage = (params: {
           setDisableApply(true);
         }
       }
+
       setApplied(checkIfUserHasApplied(offerData));
       setOffer(offerData);
     }
   }, [offerData, profile, profile?.userSocialMedia, session.data?.user.id]);
 
   const onApply = (offer: OfferIncludes) => {
-    if (session.status === "authenticated") {
+    if (session.status === "authenticated" && profile) {
       if (applied) {
         removeApplication({ offerId: offer.id });
       } else {
         applyToOffer({ offerId: offer.id });
       }
+    } else if (session.status === "authenticated" && !profile) {
+      toast.error(t("pages.offers.toastWarning"), {
+        position: "bottom-left",
+      });
     } else {
       params.openLoginModal();
     }
@@ -159,7 +162,7 @@ const OfferDetailsPage = (params: {
         />
 
         <div className="cursor-pointer underline">
-          {t("pages.publicProfilePage.share")}
+          {t("pages.offers.share")}
         </div>
       </div>
     );
