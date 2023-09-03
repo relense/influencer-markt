@@ -1,27 +1,31 @@
 import { type NextPage } from "next";
 import { FirstStepsPage } from "../../pageComponents/FirstStepsPage/FirstStepsPage";
-import { ProtectedWrapper } from "../../components/ProtectedWrapper";
 import { useEffect } from "react";
 import { api } from "../../utils/api";
 import { useRouter } from "next/router";
 import { LoadingSpinner } from "../../components/LoadingSpinner";
+import { useSession } from "next-auth/react";
 
 const FirstSteps: NextPage = () => {
+  const { status } = useSession();
   const { data: userData, isLoading } = api.users.getUser.useQuery();
   const router = useRouter();
 
   useEffect(() => {
-    if (isLoading === false && userData?.firstSteps) {
+    if (
+      (isLoading === false && userData?.firstSteps) ||
+      status === "unauthenticated"
+    ) {
       void router.push("/");
     }
-  }, [isLoading, router, userData?.firstSteps]);
+  }, [isLoading, router, status, userData?.firstSteps]);
 
-  if (isLoading === false && !userData?.firstSteps) {
-    return (
-      <ProtectedWrapper>
-        <FirstStepsPage />
-      </ProtectedWrapper>
-    );
+  if (
+    isLoading === false &&
+    !userData?.firstSteps &&
+    status === "authenticated"
+  ) {
+    return <FirstStepsPage />;
   } else {
     return <LoadingSpinner />;
   }

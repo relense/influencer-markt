@@ -20,6 +20,7 @@ import type {
   UserIdentityData,
 } from "../../utils/globalTypes";
 import { type PreloadedImage } from "../../utils/helper";
+import { useRouter } from "next/router";
 
 enum StepsEnum {
   OnlinePresence,
@@ -39,6 +40,7 @@ type Step = {
 
 const FirstStepsPage = () => {
   const { t } = useTranslation();
+  const router = useRouter();
 
   const generalSteps: Step[] = [
     {
@@ -276,14 +278,15 @@ const FirstStepsPage = () => {
 
   const renderCloseButton = () => {
     return (
-      <Link href="/">
-        <div className="absolute right-1 top-1 flex h-14 w-14 cursor-pointer items-center justify-center rounded-full bg-influencer-green lg:right-2 lg:top-2">
-          <FontAwesomeIcon
-            icon={faXmark}
-            className="fa-2x cursor-pointer text-white"
-          />
-        </div>
-      </Link>
+      <div
+        className="absolute right-1 top-1 flex h-14 w-14 cursor-pointer items-center justify-center rounded-full bg-influencer-green lg:right-2 lg:top-2"
+        onClick={() => void router.push("/")}
+      >
+        <FontAwesomeIcon
+          icon={faXmark}
+          className="fa-2x cursor-pointer text-white"
+        />
+      </div>
     );
   };
 

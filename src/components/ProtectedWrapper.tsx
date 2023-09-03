@@ -31,7 +31,7 @@ export const ProtectedWrapper = ({ children }: Props) => {
     }
   }, [sessionStatus, router, user, isLoading]);
 
-  if (sessionStatus === "authenticated") {
+  if (sessionStatus === "authenticated" && user?.profile?.id) {
     return children;
   }
 };
