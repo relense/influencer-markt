@@ -7,7 +7,11 @@ import { ProtectedWrapper } from "../../../components/ProtectedWrapper";
 const SavedInfluencers: NextPage = () => {
   return (
     <ProtectedWrapper>
-      <Layout>{() => <SavedPage roleId={2} />}</Layout>
+      <Layout>
+        {({ loggedInProfileId }) => (
+          <SavedPage roleId={2} loggedInProfileId={loggedInProfileId} />
+        )}
+      </Layout>
     </ProtectedWrapper>
   );
 };

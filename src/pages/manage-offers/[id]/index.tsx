@@ -6,7 +6,7 @@ import { Layout } from "../../../components/Layout";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
 import { LoadingSpinner } from "../../../components/LoadingSpinner";
-import { ManageOfferDetailsPage } from "../../../pageComponents/ManageOfferDetailsPage/MyOfferDetailsPage";
+import { ManageOfferDetailsPage } from "../../../pageComponents/ManageOfferDetailsPage/ManageOfferDetailsPage";
 interface OfferDetailsProps {
   id: string;
 }

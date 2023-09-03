@@ -726,6 +726,7 @@ const ManageOfferDetailsPage = (params: {
             type="Influencer"
             bookmarked={applicant?.bookmarked || false}
             highlightSocialMediaId={offer.socialMediaId}
+            loggedInProfileId={params.loggedInProfileId}
           />
 
           {offer.offerStatus.id === 1 && (
@@ -857,6 +858,7 @@ const ManageOfferDetailsPage = (params: {
             type="Influencer"
             bookmarked={applicant?.bookmarked || false}
             highlightSocialMediaId={offer.socialMediaId}
+            loggedInProfileId={params.loggedInProfileId}
           />
           {acceptedApplicants.length < offer.numberOfInfluencers && (
             <div className="flex justify-around gap-4">
@@ -999,6 +1001,7 @@ const ManageOfferDetailsPage = (params: {
             type="Influencer"
             bookmarked={applicant?.bookmarked || false}
             highlightSocialMediaId={offer.socialMediaId}
+            loggedInProfileId={params.loggedInProfileId}
           />
 
           <Button

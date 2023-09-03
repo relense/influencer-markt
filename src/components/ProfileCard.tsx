@@ -40,6 +40,7 @@ const ProfileCard = (params: {
   highlightSocialMediaId?: number;
   onHandleBookmark?: () => void;
   openLoginModal?: () => void;
+  loggedInProfileId: number;
 }) => {
   const { t } = useTranslation();
   const { status } = useSession();
@@ -139,7 +140,11 @@ const ProfileCard = (params: {
   const handleClickBookmark = () => {
     if (status === "unauthenticated" && params.openLoginModal) {
       params.openLoginModal();
-    } else if (status === "authenticated") {
+    } else if (status === "authenticated" && params.loggedInProfileId === -1) {
+      toast.error(t("components.profileCard.toastWarning"), {
+        position: "bottom-left",
+      });
+    } else if (status === "authenticated" && params.loggedInProfileId !== -1) {
       onClickBookmark(params.id);
     }
   };

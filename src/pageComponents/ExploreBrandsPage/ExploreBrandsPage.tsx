@@ -20,7 +20,7 @@ export type BrandsFilterState = {
   maxFollowers: number;
 };
 
-const ExploreBrandsPage = () => {
+const ExploreBrandsPage = (params: { loggedInProfileId: number }) => {
   const { t } = useTranslation();
   const [influencersCursor, setInfluencersCursor] = useState<number>(-1);
   const [userProfiles, setUserProfiles] = useState<UserProfiles[]>([]);
@@ -305,6 +305,7 @@ const ExploreBrandsPage = () => {
                   username={profile.username}
                   type="Brand"
                   bookmarked={profile.bookmarked || false}
+                  loggedInProfileId={params.loggedInProfileId}
                 />
               );
             })}

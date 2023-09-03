@@ -310,7 +310,7 @@ const PublicProfilePage = (params: {
     if (status === "unauthenticated") {
       params.openLoginModal();
     } else if (status === "authenticated" && params.loggedInProfileId === -1) {
-      toast.error("Finish profile to save influencers", {
+      toast.error(t("pages.publicProfilePage.bookmarkWarning"), {
         position: "bottom-left",
       });
     } else if (status === "authenticated" && params.loggedInProfileId !== -1) {
@@ -342,11 +342,11 @@ const PublicProfilePage = (params: {
   };
 
   const renderCheckMark = () => {
-    let tooltip = "Verified";
+    let tooltip = t("pages.publicProfilePage.verified");
     let iconClass =
       "flex h-7 w-7 items-center justify-center rounded-full bg-influencer-green-dark p-2 text-white";
     if (profile?.verifiedStatusId === 3) {
-      tooltip = "Needs New Verification";
+      tooltip = t("pages.publicProfilePage.needsVerification");
       iconClass =
         "flex h-7 w-7 items-center justify-center rounded-full bg-yellow-400 p-2 text-white";
     }
@@ -685,7 +685,7 @@ const PublicProfilePage = (params: {
               </>
             )}
           </div>
-          {params.loggedInProfileId !== -1 ? (
+          {status === "authenticated" ? (
             <Link
               href={{
                 pathname: "/start-order",

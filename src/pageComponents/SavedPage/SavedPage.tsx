@@ -10,7 +10,7 @@ import { useTranslation } from "react-i18next";
 import Link from "next/link";
 import { Button } from "../../components/Button";
 
-const SavedPage = (params: { roleId: number }) => {
+const SavedPage = (params: { roleId: number; loggedInProfileId: number }) => {
   const { t } = useTranslation();
   const [userProfiles, setUserProfiles] = useState<UserProfiles[]>([]);
 
@@ -100,6 +100,7 @@ const SavedPage = (params: { roleId: number }) => {
                   type={params.roleId === 2 ? "Influencer" : "Brand"}
                   bookmarked={true}
                   onHandleBookmark={() => onHandleBookmark(profile.id)}
+                  loggedInProfileId={params.loggedInProfileId}
                 />
               );
             })}

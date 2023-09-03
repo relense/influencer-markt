@@ -291,7 +291,8 @@
       "numberOfFollowers": "{{count, number}}",
       "readMore": "Lê Mais",
       "removedProfile": "Perfil Removido Com Sucesso",
-      "savedProfile": "Perfil Guardado Com Sucesso"
+      "savedProfile": "Perfil Guardado Com Sucesso",
+      "toastWarning": "Completa o teu perfil para poderes guardar"
     },
 
     "myOfferDropdown": {
@@ -476,7 +477,10 @@
       "removedProfile": "Perfil Removido Com Sucesso",
       "savedProfile": "Perfil Guardado Com Sucesso",
       "shareModalTitle": "Partilha a Página do Influencer",
-      "editMyPage": "Editar"
+      "editMyPage": "Editar",
+      "bookmarkWarning": "Completa o teu perfil para poderes guardar",
+      "verified": "Verificado",
+      "needsVerification": "Precisa de nova verificação"
     },
 
     "editPage": {

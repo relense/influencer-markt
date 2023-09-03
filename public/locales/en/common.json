@@ -291,7 +291,8 @@
       "numberOfFollowers": "{{count, number}}",
       "readMore": "Read More",
       "removedProfile": "Removed Profile Successfully",
-      "savedProfile": "Saved Profile Successfully"
+      "savedProfile": "Saved Profile Successfully",
+      "toastWarning": "Complete your profile to be able to save"
     },
 
     "myOfferDropDown": {
@@ -476,7 +477,10 @@
       "removedProfile": "Removed Profile Successfully",
       "savedProfile": "Saved Profile Successfully",
       "shareModalTitle": "Share Influencer Page",
-      "editMyPage": "Edit"
+      "editMyPage": "Edit",
+      "bookmarkWarning": "Complete your profile to be able to save",
+      "verified": "Verified",
+      "needsVerification": "Needs New Verification"
     },
 
     "editPage": {

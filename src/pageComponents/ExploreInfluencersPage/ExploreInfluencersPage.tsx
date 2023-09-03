@@ -27,6 +27,7 @@ export type InfluencersFilterState = {
 const ExploreInfluencersPage = (params: {
   choosenCategories: Option[];
   openLoginModal: () => void;
+  loggedInProfileId: number;
 }) => {
   const { t } = useTranslation();
   const [influencersCursor, setInfluencersCursor] = useState<number>(-1);
@@ -378,6 +379,7 @@ const ExploreInfluencersPage = (params: {
                   type="Influencer"
                   bookmarked={profile.bookmarked || false}
                   openLoginModal={params.openLoginModal}
+                  loggedInProfileId={params.loggedInProfileId}
                 />
               );
             })}
