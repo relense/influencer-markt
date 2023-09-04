@@ -34,7 +34,9 @@ const ExploreInfluencersPage = (params: {
   const [userProfiles, setUserProfiles] = useState<UserProfiles[]>([]);
   const [isFilterModalOpen, setIsFilterModalOpen] = useState<boolean>(false);
   const [activeFiltersCount, setActiveFiltersCount] = useState<number>(0);
-  const [filterCategories, setFilterCategories] = useState<Option[]>([]);
+  const [filterCategories, setFilterCategories] = useState<Option[]>(
+    params.choosenCategories.length > 0 ? params.choosenCategories : []
+  );
   const [filterPlatforms, setFilterPlatforms] = useState<Option[]>([]);
 
   const [filterState, setFilterState] = useState<InfluencersFilterState>({
