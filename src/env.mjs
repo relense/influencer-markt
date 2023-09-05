@@ -28,6 +28,7 @@ export const env = createEnv({
     GOOGLE_CLIENT_SECRET: z.string(),
 
     EMAIL_SERVER: z.string(),
+    EMAIL_SMTP_KEY: z.string(),
     EMAIL_FROM: z.string(),
   },
 
@@ -56,6 +57,7 @@ export const env = createEnv({
     GOOGLE_CLIENT_SECRET: process.env.GOOGLE_CLIENT_SECRET,
 
     EMAIL_SERVER: process.env.EMAIL_SERVER,
+    EMAIL_SMTP_KEY: process.env.EMAIL_SMTP_KEY,
     EMAIL_FROM: process.env.EMAIL_FROM,
   },
   /**

@@ -1,5 +1,9 @@
 import { z } from "zod";
 import { createTRPCRouter, protectedProcedure, publicProcedure } from "../trpc";
+import { transporter } from "../../../utils/nodemailer";
+import { env } from "process";
+import { contactUsEmail } from "../../../emailTemplates/contactUsEmail";
+import { weReceivedContactEmail } from "../../../emailTemplates/weReceivedContactEmail";
 
 export const ContactMessagesRouter = createTRPCRouter({
   createContactMessage: publicProcedure
@@ -12,7 +16,14 @@ export const ContactMessagesRouter = createTRPCRouter({
       })
     )
     .mutation(async ({ ctx, input }) => {
-      return await ctx.prisma.contactMessage.create({
+      let reasonText = "Feedback";
+      if (input.reason === 2) {
+        reasonText = "General Question";
+      } else if (input.reason === 3) {
+        reasonText = "Other";
+      }
+
+      const message = await ctx.prisma.contactMessage.create({
         data: {
           email: input.email,
           reasonId: input.reason,
@@ -20,6 +31,33 @@ export const ContactMessagesRouter = createTRPCRouter({
           message: input.message,
           contactMessageStateId: 1,
         },
+      });
+
+      //Mail sent to user confirming we received the issue request
+      await transporter.sendMail({
+        from: env.EMAIL_FROM,
+        to: input.email,
+        subject: "Thank You for Your Contact",
+        html: weReceivedContactEmail({
+          email: input.email,
+          message: input.message,
+          name: input.name,
+          reason: reasonText,
+        }),
+      });
+
+      //Email to our inbox
+      await transporter.sendMail({
+        from: env.EMAIL_FROM,
+        to: env.EMAIL_FROM,
+        subject: `${message.id} - ${reasonText}`,
+        text: `New issue from ${input.name} with email ${input.email}`,
+        html: contactUsEmail({
+          email: input.email,
+          message: input.message,
+          name: input.name,
+          reason: reasonText,
+        }),
       });
     }),
 

@@ -8,11 +8,11 @@ const AboutPage = () => {
     return (
       <>
         <div className="flex flex-1 flex-col gap-2">
-          <div className="flex h-auto flex-col gap-12 text-center lg:h-80 lg:flex-row">
-            <div className="flex flex-1 text-center font-playfair text-5xl font-semibold lg:text-left">
+          <div className="mb-10 flex flex-col gap-12 text-center">
+            <div className="flex text-center font-playfair text-5xl font-semibold lg:text-left">
               {t("pages.about.title")}
             </div>
-            <div className="flex flex-1 flex-col justify-center text-center lg:text-left">
+            <div className="flex flex-col text-center text-lg font-medium lg:text-left">
               {t("pages.about.subTitle")}
             </div>
           </div>
@@ -53,12 +53,9 @@ const AboutPage = () => {
             <div className="flex flex-1 text-center font-playfair text-5xl font-semibold lg:text-left">
               {t("pages.about.selfPromoTitle")}
             </div>
-            <div className="flex flex-1 flex-col justify-around gap-6 lg:gap-0">
+            <div className="flex flex-1 flex-col gap-6 lg:gap-0">
               <div className="text-center text-lg font-medium lg:text-left">
                 {t("pages.about.selfPromoSubTitle")}
-              </div>
-              <div className="text-center lg:text-left">
-                {t("pages.about.selfPromoText")}
               </div>
             </div>
           </div>
@@ -117,6 +114,7 @@ const AboutPage = () => {
     <div className="flex flex-1 flex-col justify-center gap-16 p-4 xl:w-3/4 xl:self-center 2xl:w-2/4">
       {renderMission()}
       {renderSelfPromo()}
+      {renderMeetOurTeam()}
     </div>
   );
 };

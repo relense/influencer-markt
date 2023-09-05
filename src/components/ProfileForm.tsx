@@ -211,7 +211,7 @@ const ProfileForm = (params: {
                 <CustomSelect
                   register={params.register}
                   name="nationOfBirth"
-                  placeholder="Country"
+                  placeholder={t("components.profileForm.countryPlaceholder")}
                   options={
                     countries && countries.length > 0
                       ? countries?.map((country) => {
