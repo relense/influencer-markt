@@ -1,6 +1,6 @@
 import { type Theme } from "next-auth";
 import { type SendVerificationRequestParams } from "next-auth/providers";
-import { createTransport } from "nodemailer";
+import { transporter } from "./nodemailer";
 
 async function customSendVerificationRequest(
   params: SendVerificationRequestParams
@@ -8,7 +8,7 @@ async function customSendVerificationRequest(
   const { identifier, url, provider, theme } = params;
   const { host } = new URL(url);
   // NOTE: You are not required to use `nodemailer`, use whatever you want.
-  const transport = createTransport(provider.server);
+  const transport = transporter;
   const result = await transport.sendMail({
     to: identifier,
     from: provider.from,
