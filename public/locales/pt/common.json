@@ -266,7 +266,7 @@
       "summaryTitle": "Sumário do Pedido",
       "requestPlaceholder": "E.g 1 Reel do Instagram",
       "detailsTitle": "Detalhes do Pedido",
-      "detailsPlaceholder": "Especifique os seus requisitos para o influenciador escolhido. Partilhe o número desejado de publicações ou fotografias e os resultados específicos que espera. Por exemplo, se precisar de um vídeo TikTok a promover o seu produto, forneça as orientações necessárias. Instruções claras ajudam o influenciador a compreender as suas expectativas e a envolver eficazmente o seu público-alvo.",
+      "detailsPlaceholder": "Especifique os seus requisitos para o influencer escolhido. Partilhe o número desejado de publicações ou fotografias e os resultados específicos que espera. Por exemplo, se precisar de um vídeo TikTok a promover o seu produto, forneça as orientações necessárias. Instruções claras ajudam o influencer a compreender as suas expectativas e a envolver eficazmente o seu público-alvo.",
       "priceTitle": "Preço",
       "pricePlaceholder": "Preço do pack de valor",
       "deliveryTitle": "Data de Entrega",
@@ -743,6 +743,24 @@
     "verify": {
       "title": "Verifica o teu email",
       "subtitle": "Um link mágico para fazer o login foi enviado para o teu endereço de email"
+    },
+
+    "startOrder": {
+      "initiateOrder": "Iniciar Ordem",
+      "paymentDetails": "Detalhes de Pagamento",
+      "confirmation": "Confirmação",
+      "orderDetails": "Detalhes da Ordem",
+      "orderPlatform": "Plataforma da Ordem",
+      "valuePacks": "Packs de Valor",
+      "influencerDetails": "Detalhes do Influencer",
+      "name": "Nome",
+      "gender": "Género",
+      "location": "Localização",
+      "detailsPlaceholder": "Especifique os seus requisitos para o influencer escolhido. Partilhe os resultados específicos que espera e forneça as orientações necessárias. Instruções claras ajudam o influencer a compreender as suas expectativas e a envolver eficazmente o seu público-alvo.",
+      "errorWarning": "Máximo de {{count}} caracteres",
+      "fee": "Iva",
+      "total": "Total",
+      "price": "Preço"
     }
   }
 }

@@ -744,6 +744,24 @@
     "verify": {
       "title": "Check Your Email",
       "subtitle": "A magical login link has been sent to your email address"
+    },
+
+    "startOrder": {
+      "initiateOrder": "Initiate Order",
+      "paymentDetails": "Payment Details",
+      "confirmation": "Confirmation",
+      "orderDetails": "Order Details",
+      "orderPlatform": "Order Platform",
+      "valuePacks": "Value Packs",
+      "influencerDetails": "Influencer Details",
+      "name": "Name",
+      "gender": "Gender",
+      "location": "Location",
+      "detailsPlaceholder": "Specify your requirements for the chosen influencer. Share the specific deliverables you expect and provide the necessary guidelines for each value pack. Clear instructions help the influencer understand your expectations and engage your target audience effectively.",
+      "errorWarning": "Max is {{count}} characters",
+      "fee": "Tax",
+      "total": "Total",
+      "price": "Price"
     }
   }
 }

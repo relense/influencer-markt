@@ -1110,4 +1110,21 @@ export const profilesRouter = createTRPCRouter({
         },
       });
     }),
+
+  getProfileById: protectedProcedure
+    .input(
+      z.object({
+        profileId: z.number(),
+      })
+    )
+    .query(async ({ ctx, input }) => {
+      return await ctx.prisma.profile.findFirst({
+        where: { id: input.profileId },
+        include: {
+          gender: true,
+          country: true,
+          city: true,
+        },
+      });
+    }),
 });

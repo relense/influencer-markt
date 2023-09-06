@@ -220,7 +220,7 @@ const CreateOfferModal = (params: {
             {errors.offerDetails &&
               errors.offerDetails.type === "maxLength" && (
                 <div className="px-4 py-1 text-red-600">
-                  {t("pages.manageOffers..errorWarning", {
+                  {t("pages.manageOffers.errorWarning", {
                     count: 2200,
                   })}
                 </div>

@@ -93,6 +93,9 @@ model Profile {
   acceptedOffers     Offer[] @relation("offerAcceptedApplicants")
   rejectedApplicants Offer[] @relation("offerRejectedApplicants")
 
+  influencer Order[] @relation("influencer")
+  buyer      Order[] @relation("buyer")
+
   favoriteBy Profile[] @relation("profileFavorites")
   favorites  Profile[] @relation("profileFavorites")
 
@@ -231,6 +234,7 @@ model ContentType {
   valuePacks              ValuePack[]
   socialMedia             SocialMedia[]
   ContentTypeWithQuantity ContentTypeWithQuantity[]
+  orderValuePacks         OrderValuePack[]
 }
 
 model Country {
@@ -240,6 +244,7 @@ model Country {
   profile    Profile[]
   state      State[]
   Offer      Offer[]
+  order      Order[]
 }
 
 model State {
@@ -330,4 +335,41 @@ model VerifiedStatus {
   name String
 
   profile Profile[]
+}
+
+model Order {
+  id                     Int              @id @default(autoincrement())
+  influencer             Profile?         @relation("influencer", fields: [influencerId], references: [id])
+  buyer                  Profile?         @relation("buyer", fields: [buyerId], references: [id])
+  orderDetails           String           @db.Text
+  orderValuePacks        OrderValuePack[]
+  orderInfluencerCountry Country?         @relation(fields: [countryId], references: [id])
+  orderPrice             String
+
+  cardReferenceStripe String?
+
+  influencerId Int?
+  buyerId      Int?
+  countryId    Int?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([countryId])
+  @@index([influencerId])
+  @@index([buyerId])
+}
+
+model OrderValuePack {
+  id          Int         @id @default(autoincrement())
+  contentType ContentType @relation(fields: [contentTypeId], references: [id])
+  amount      Int
+  price       String
+  Order       Order?      @relation(fields: [orderId], references: [id])
+
+  contentTypeId Int
+  orderId       Int?
+
+  @@index([contentTypeId])
+  @@index([orderId])
 }
