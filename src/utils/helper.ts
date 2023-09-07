@@ -78,6 +78,13 @@ const formatDate = (date: Date | number, locale: string): string => {
   }
 };
 
+const formatFullDateWithTime = (
+  date: Date | number,
+  locale: string
+): string => {
+  return dayjs(date).locale(locale).format("DD MMMM YYYY - HH:MM ");
+};
+
 const formatNumberWithKorM = (number: number) => {
   if (Math.abs(number) >= 1e6) {
     return (number / 1e6).toFixed(1) + "M";
@@ -127,6 +134,7 @@ export const helper = {
   formatNumber,
   formatNumberWithDecimalValue,
   formatDate,
+  formatFullDateWithTime,
   formatNumberWithKorM,
   preloadImages,
 };

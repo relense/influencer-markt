@@ -87,7 +87,11 @@ export const OrdersRouter = createTRPCRouter({
           influencer: true,
           orderInfluencerCountry: true,
           orderStatus: true,
-          orderValuePacks: true,
+          orderValuePacks: {
+            include: {
+              contentType: true,
+            },
+          },
           socialMedia: true,
         },
         orderBy: {
