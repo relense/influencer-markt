@@ -84,6 +84,7 @@ async function main() {
       { name: "delivered" },
       { name: "confirmed" },
       { name: "closed" },
+      { name: "canceled" },
     ],
   });
 
