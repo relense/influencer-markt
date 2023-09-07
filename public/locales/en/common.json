@@ -155,7 +155,8 @@
       "helpCenter": "Help Center",
       "settings": "Settings",
       "completeProfile": "Complete Your Profile",
-      "completeMessage": "Complete your profile to unlock all funcionalities"
+      "completeMessage": "Complete your profile to unlock all funcionalities",
+      "orders": "Orders"
     },
 
     "adminNavbar": {
@@ -749,9 +750,9 @@
     "startOrder": {
       "initiateOrder": "Initiate Order",
       "paymentDetails": "Payment Details",
-      "confirmation": "Confirmation",
+      "summary": "Order Summary",
       "orderDetails": "Order Details",
-      "orderPlatform": "Order Platform",
+      "orderPlatform": "Platform",
       "valuePacks": "Value Packs",
       "influencerDetails": "Influencer Details",
       "name": "Name",
@@ -761,7 +762,9 @@
       "errorWarning": "Max is {{count}} characters",
       "fee": "Tax",
       "total": "Total",
-      "price": "Price"
+      "price": "Price",
+      "continuePayments": "Continue Payment Details",
+      "exploreMore": "Explore More Influencers"
     }
   }
 }

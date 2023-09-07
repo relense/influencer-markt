@@ -15,6 +15,7 @@ export const OrdersRouter = createTRPCRouter({
             price: z.string(),
           })
         ),
+        platformId: z.number(),
       })
     )
     .mutation(async ({ ctx, input }) => {
@@ -34,6 +35,8 @@ export const OrdersRouter = createTRPCRouter({
             orderDetails: input.orderDetails,
             orderPrice: input.orderPrice,
             countryId: influencerProfile?.countryId,
+            orderStatusId: 1,
+            socialMediaId: input.platformId,
           },
         });
 
@@ -51,4 +54,46 @@ export const OrdersRouter = createTRPCRouter({
         return order;
       }
     }),
+
+  getOrder: protectedProcedure
+    .input(
+      z.object({
+        orderId: z.number(),
+      })
+    )
+    .query(async ({ ctx, input }) => {
+      return await ctx.prisma.order.findFirst({
+        where: { id: input.orderId },
+        include: {
+          orderValuePacks: {
+            include: {
+              contentType: true,
+            },
+          },
+          socialMedia: true,
+        },
+      });
+    }),
+
+  getAllUserOrders: protectedProcedure.query(async ({ ctx }) => {
+    const profile = await ctx.prisma.profile.findFirst({
+      where: { user: { id: ctx.session.user.id } },
+    });
+
+    if (profile) {
+      return await ctx.prisma.order.findMany({
+        where: { buyerId: profile.id },
+        include: {
+          influencer: true,
+          orderInfluencerCountry: true,
+          orderStatus: true,
+          orderValuePacks: true,
+          socialMedia: true,
+        },
+        orderBy: {
+          createdAt: "desc",
+        },
+      });
+    }
+  }),
 });

@@ -154,6 +154,7 @@ model SocialMedia {
   UserSocialMedia UserSocialMedia[]
   contentTypes    ContentType[]
   Offer           Offer[]
+  order           Order[]
 }
 
 model Portfolio {
@@ -345,16 +346,22 @@ model Order {
   orderValuePacks        OrderValuePack[]
   orderInfluencerCountry Country?         @relation(fields: [countryId], references: [id])
   orderPrice             String
+  orderStatus            OrderStatus?     @relation(fields: [orderStatusId], references: [id])
+  socialMedia            SocialMedia?     @relation(fields: [socialMediaId], references: [id])
 
   cardReferenceStripe String?
 
-  influencerId Int?
-  buyerId      Int?
-  countryId    Int?
+  influencerId  Int?
+  buyerId       Int?
+  countryId     Int?
+  orderStatusId Int?
+  socialMediaId Int?
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
+  @@index([socialMediaId])
+  @@index([orderStatusId])
   @@index([countryId])
   @@index([influencerId])
   @@index([buyerId])
@@ -372,4 +379,11 @@ model OrderValuePack {
 
   @@index([contentTypeId])
   @@index([orderId])
+}
+
+model OrderStatus {
+  id   Int    @id @default(autoincrement())
+  name String
+
+  order Order[]
 }

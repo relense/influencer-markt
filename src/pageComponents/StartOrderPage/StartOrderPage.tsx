@@ -6,9 +6,13 @@ import { api } from "~/utils/api";
 
 import type { Option, ValuePack } from "../../utils/globalTypes";
 import { helper } from "../../utils/helper";
-import { faChevronDown, faChevronUp } from "@fortawesome/free-solid-svg-icons";
+import {
+  faChevronDown,
+  faChevronLeft,
+  faChevronUp,
+} from "@fortawesome/free-solid-svg-icons";
 import { Button } from "../../components/Button";
-import { useRouter } from "next/router";
+import Link from "next/link";
 
 type OrderData = {
   orderDetails: string;
@@ -18,20 +22,25 @@ type ContentTypeWithQuantityAndValue = {
   contentType: Option;
   amount: number;
   price: number;
+  platform: Option;
 };
 
 const StartOrderPage = (params: {
   valuePacks: ValuePack[];
   orderProfileId: number;
 }) => {
-  const router = useRouter();
   const { t } = useTranslation();
+
+  const [step, setStep] = useState<number>(0);
+  const [stripeRef, setStripRef] = useState<string>("");
+  const [orderCreated, setOrderCreated] = useState<boolean>(false);
 
   const [contentTypesList, setContentTypesList] = useState<
     ContentTypeWithQuantityAndValue[]
   >(
     params.valuePacks.map((valuePack) => {
       return {
+        platform: valuePack.platform,
         contentType: valuePack.contentType,
         amount: 1,
         price: parseFloat(valuePack.valuePackPrice),
@@ -45,15 +54,9 @@ const StartOrderPage = (params: {
 
   const { mutate: createOrder, isLoading } = api.orders.createOrder.useMutation(
     {
-      onSuccess: (orderData) => {
-        if (orderData) {
-          void router.push({
-            pathname: "/order-payment-details",
-            query: {
-              order: orderData.id,
-            },
-          });
-        }
+      onSuccess: () => {
+        setStep(1);
+        setOrderCreated(true);
       },
     }
   );
@@ -61,6 +64,7 @@ const StartOrderPage = (params: {
   const {
     register,
     handleSubmit,
+    watch,
     formState: { errors },
   } = useForm<OrderData>();
 
@@ -94,49 +98,101 @@ const StartOrderPage = (params: {
   };
 
   const submitOrder = handleSubmit((data) => {
-    let valuePacksSum = 0;
+    if (!orderCreated) {
+      let valuePacksSum = 0;
 
-    contentTypesList.forEach((contentType) => {
-      valuePacksSum += contentType.amount * contentType.price;
-    });
+      contentTypesList.forEach((contentType) => {
+        valuePacksSum += contentType.amount * contentType.price;
+      });
 
-    const tax = valuePacksSum * ((profile?.country?.countryTax || 0) / 100);
-    const total = valuePacksSum + tax;
+      const tax = valuePacksSum * ((profile?.country?.countryTax || 0) / 100);
+      const total = valuePacksSum + tax;
 
-    createOrder({
-      influencerId: params.orderProfileId,
-      orderDetails: data.orderDetails,
-      orderPrice: total.toString(),
-      orderValuePacks: contentTypesList.map((valuePack) => {
-        return {
-          amount: valuePack.amount,
-          price: valuePack.price.toString(),
-          contentTypeId: valuePack.contentType.id,
-        };
-      }),
-    });
+      createOrder({
+        influencerId: params.orderProfileId,
+        orderDetails: data.orderDetails,
+        orderPrice: total.toString(),
+        orderValuePacks: contentTypesList.map((valuePack) => {
+          return {
+            amount: valuePack.amount,
+            price: valuePack.price.toString(),
+            contentTypeId: valuePack.contentType.id,
+          };
+        }),
+        platformId: params.valuePacks[0]?.platform?.id || -1,
+      });
+    } else {
+      setStep(1);
+    }
   });
 
-  const stepperTitle = () => {
+  const stepperTitleStep0 = () => {
     return (
       <div className="flex items-center gap-4">
         <div className="flex items-center gap-2 font-semibold">
-          <div className="flex h-10 w-10 items-center justify-center rounded-full border-[1px] text-2xl">
+          <div className="text-1xl flex h-10 w-10 items-center justify-center rounded-full border-[1px]">
             1
           </div>
-          <div className="text-4xl">{t("pages.startOrder.initiateOrder")}</div>
+          <div className="text-3xl">{t("pages.startOrder.initiateOrder")}</div>
         </div>
-        <div className="flex items-center gap-2">
+        <div
+          className="hidden items-center gap-2 lg:flex"
+          onClick={() => orderCreated && setStep(1)}
+        >
           <div className="flex h-6 w-6 items-center justify-center rounded-full border-[1px] text-base">
             2
           </div>
           <div className="text-lg">{t("pages.startOrder.paymentDetails")}</div>
         </div>
-        <div className="flex items-center gap-2">
+        <div className="hidden items-center gap-2 lg:flex">
           <div className="flex h-6 w-6 items-center justify-center rounded-full border-[1px] text-base">
             3
           </div>
-          <div className="text-lg">{t("pages.startOrder.confirmation")}</div>
+          <div className="text-lg">{t("pages.startOrder.summary")}</div>
+        </div>
+      </div>
+    );
+  };
+
+  const stepperTitleStep1 = () => {
+    return (
+      <div className="flex items-center gap-4">
+        <FontAwesomeIcon
+          icon={faChevronLeft}
+          className="fa-lg cursor-pointer"
+          onClick={() => setStep(0)}
+        />
+        <div
+          className="hidden cursor-pointer items-center gap-2 lg:flex"
+          onClick={() => setStep(0)}
+        >
+          <div className="flex h-6 w-6 items-center justify-center rounded-full border-[1px] text-base">
+            1
+          </div>
+          <div className="text-lg">{t("pages.startOrder.initiateOrder")}</div>
+        </div>
+        <div className="flex items-center gap-2 font-semibold">
+          <div className="flex h-10 w-10 items-center justify-center rounded-full border-[1px] text-xl">
+            2
+          </div>
+          <div className="text-3xl">{t("pages.startOrder.paymentDetails")}</div>
+        </div>
+
+        <div className="hidden items-center gap-2 lg:flex">
+          <div className="flex h-6 w-6 items-center justify-center rounded-full border-[1px] text-base">
+            3
+          </div>
+          <div className="text-lg">{t("pages.startOrder.summary")}</div>
+        </div>
+      </div>
+    );
+  };
+
+  const stepperTitleStep2 = () => {
+    return (
+      <div className="flex items-center gap-4">
+        <div className="flex items-center gap-2 font-semibold">
+          <div className="text-3xl">{t("pages.startOrder.summary")}</div>
         </div>
       </div>
     );
@@ -199,6 +255,19 @@ const StartOrderPage = (params: {
               })}
             </div>
           )}
+        </div>
+      </div>
+    );
+  };
+
+  const renderFinalOfferDetails = () => {
+    return (
+      <div className="flex flex-col gap-4">
+        <div className="text-xl font-medium">
+          {t("pages.startOrder.orderDetails")}
+        </div>
+        <div className="flex w-full flex-col whitespace-pre-line">
+          {watch("orderDetails")}
         </div>
       </div>
     );
@@ -275,6 +344,41 @@ const StartOrderPage = (params: {
     );
   };
 
+  const renderFinalValuePacks = () => {
+    return (
+      <div className="flex flex-col gap-2">
+        <div className="text-xl font-medium">
+          {t("pages.startOrder.valuePacks")}
+        </div>
+        <div className="flex flex-col gap-4 lg:flex-row">
+          {contentTypesList.map((valuePack) => {
+            return (
+              <div
+                key={valuePack.contentType.id}
+                className="flex items-center gap-2"
+              >
+                <div className="flex items-center gap-1">
+                  {valuePack.amount}x
+                </div>
+                <div className="flex select-none gap-2">
+                  <div className="text-base font-semibold text-influencer">
+                    {t(`general.contentTypes.${valuePack.contentType.name}`)}
+                  </div>
+                  <div className="text-base font-medium">
+                    {helper.formatNumberWithDecimalValue(
+                      valuePack.price * valuePack.amount
+                    ) || 0}
+                    €
+                  </div>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      </div>
+    );
+  };
+
   const renderTotalPay = () => {
     if (profile) {
       let valuePacksSum = 0;
@@ -291,52 +395,113 @@ const StartOrderPage = (params: {
           <div className="text-xl font-medium">
             {t("pages.startOrder.price")}
           </div>
-          <div className="flex gap-2">
-            <div className="font-semibold text-influencer">
-              {t("pages.startOrder.valuePacks")}:
+          <div className="flex flex-col gap-4 lg:flex-row">
+            <div className="flex gap-2">
+              <div className="font-semibold text-influencer">
+                {t("pages.startOrder.valuePacks")}:
+              </div>
+              <div>{helper.formatNumberWithDecimalValue(valuePacksSum)}€</div>
             </div>
-            <div>{helper.formatNumberWithDecimalValue(valuePacksSum)}€</div>
-          </div>
-          <div className="flex gap-2">
-            <div className="font-semibold text-influencer">
-              {t("pages.startOrder.fee")}:
+            <div className="flex gap-2">
+              <div className="font-semibold text-influencer">
+                {t("pages.startOrder.fee")}:
+              </div>
+              <div>{helper.formatNumberWithDecimalValue(tax)}€</div>
             </div>
-            <div>{helper.formatNumberWithDecimalValue(tax)}€</div>
-          </div>
-          <div className="flex gap-2">
-            <div className="font-semibold text-influencer">
-              {t("pages.startOrder.total")}:
+            <div className="flex gap-2">
+              <div className="font-semibold text-influencer">
+                {t("pages.startOrder.total")}:
+              </div>
+              <div>{helper.formatNumberWithDecimalValue(total)}€</div>
             </div>
-            <div>{helper.formatNumberWithDecimalValue(total)}€</div>
           </div>
         </div>
       );
     }
   };
 
-  return (
-    <div className="flex w-full flex-1 cursor-default flex-col gap-8 self-center px-8 py-8 sm:px-12 xl:w-3/4 2xl:w-3/4 3xl:w-2/4">
-      {stepperTitle()}
-      {renderInfluencerDetails()}
-      <div className="w-full border-[1px] border-white1" />
-      {renderPlatform()}
-      {renderValuePacks()}
-      {renderTotalPay()}
-      <div className="w-full border-[1px] border-white1" />
-      <form id="form-order" onSubmit={submitOrder}>
-        {renderOfferDetails()}
-      </form>
-      <div className="flex justify-center">
-        <Button
-          title={t("pages.startOrder.paymentDetails")}
-          level="primary"
-          size="regular"
-          form="form-order"
-          isLoading={isLoading}
-        />
+  const renderPaymentDetails = () => {
+    return (
+      <div className="flex flex-col gap-2">
+        <div className="text-xl font-medium">
+          {t("pages.startOrder.paymentDetails")}
+        </div>
       </div>
-    </div>
-  );
+    );
+  };
+
+  if (step === 0) {
+    return (
+      <div className="flex w-full flex-1 cursor-default flex-col gap-8 self-center px-8 py-8 sm:px-12 xl:w-3/4 2xl:w-3/4 3xl:w-2/4">
+        {stepperTitleStep0()}
+        {renderInfluencerDetails()}
+        <div className="w-full border-[1px] border-white1" />
+        {renderPlatform()}
+        {renderValuePacks()}
+        {renderTotalPay()}
+        <div className="w-full border-[1px] border-white1" />
+        <form id="form-order" onSubmit={submitOrder}>
+          {renderOfferDetails()}
+        </form>
+        <div className="flex justify-center">
+          <Button
+            title={
+              orderCreated
+                ? t("pages.startOrder.continuePayments")
+                : t("pages.startOrder.paymentDetails")
+            }
+            level="primary"
+            size="regular"
+            form="form-order"
+            isLoading={isLoading}
+          />
+        </div>
+      </div>
+    );
+  } else if (step === 1) {
+    return (
+      <div className="flex w-full flex-1 cursor-default flex-col gap-8 self-center px-8 py-8 sm:px-12 xl:w-3/4 2xl:w-3/4 3xl:w-2/4">
+        {stepperTitleStep1()}
+        <input
+          className="rounded-lg border-[1px]"
+          type="text"
+          value={stripeRef}
+          onChange={(e) => setStripRef(e.target.value)}
+        />
+        <div className="flex justify-center">
+          <Button
+            title={t("pages.startOrder.summary")}
+            level="primary"
+            size="regular"
+            onClick={() => setStep(2)}
+          />
+        </div>
+      </div>
+    );
+  } else if (step === 2) {
+    return (
+      <div className="flex w-full flex-1 cursor-default flex-col gap-8 self-center px-8 py-8 sm:px-12 xl:w-3/4 2xl:w-3/4 3xl:w-2/4">
+        {stepperTitleStep2()}
+        {renderPaymentDetails()}
+        <div className="w-full border-[1px] border-white1" />
+        {renderInfluencerDetails()}
+        <div className="w-full border-[1px] border-white1" />
+        {renderPlatform()}
+        {renderFinalValuePacks()}
+        {renderTotalPay()}
+        <div className="w-full border-[1px] border-white1" />
+        {renderFinalOfferDetails()}
+        <Link href="/explore/influencers" className="flex justify-center">
+          <Button
+            title={t("pages.startOrder.exploreMore")}
+            level="primary"
+            size="regular"
+            isLoading={isLoading}
+          />
+        </Link>
+      </div>
+    );
+  }
 };
 
 export { StartOrderPage };

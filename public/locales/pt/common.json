@@ -155,7 +155,8 @@
       "helpCenter": "Centro de Ajuda",
       "settings": "Definições",
       "completeProfile": "Completa o teu Perfil",
-      "completeMessage": "Completa o teu perfil para desbloqueares todas as funcionalidades"
+      "completeMessage": "Completa o teu perfil para desbloqueares todas as funcionalidades",
+      "orders": "Ordens"
     },
 
     "adminNavbar": {
@@ -748,9 +749,9 @@
     "startOrder": {
       "initiateOrder": "Iniciar Ordem",
       "paymentDetails": "Detalhes de Pagamento",
-      "confirmation": "Confirmação",
+      "summary": "Resumo da ordem",
       "orderDetails": "Detalhes da Ordem",
-      "orderPlatform": "Plataforma da Ordem",
+      "orderPlatform": "Plataforma",
       "valuePacks": "Packs de Valor",
       "influencerDetails": "Detalhes do Influencer",
       "name": "Nome",
@@ -760,7 +761,9 @@
       "errorWarning": "Máximo de {{count}} caracteres",
       "fee": "Iva",
       "total": "Total",
-      "price": "Preço"
+      "price": "Preço",
+      "continuePayments": "Continuar os Detalhes de Pagamento",
+      "exploreMore": "Explora Mais Influencers"
     }
   }
 }

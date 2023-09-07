@@ -75,6 +75,18 @@ async function main() {
     data: [{ name: "open" }, { name: "progress" }, { name: "closed" }],
   });
 
+  await prisma.orderStatus.createMany({
+    data: [
+      { name: "started" },
+      { name: "awating" },
+      { name: "rejected" },
+      { name: "progress" },
+      { name: "delivered" },
+      { name: "confirmed" },
+      { name: "closed" },
+    ],
+  });
+
   await prisma.reason.createMany({
     data: [
       { name: "Feedback" },

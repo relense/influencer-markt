@@ -20,6 +20,7 @@ import {
   faArrowLeft,
   faArrowRightFromBracket,
   faArrowRightToBracket,
+  faBagShopping,
   faBars,
   faBookmark,
   faBriefcase,
@@ -424,6 +425,17 @@ export const Navbar = (params: {
                   </div>
                 </Link>
               )}
+
+              <Link
+                href="/orders"
+                className="group flex cursor-pointer items-center gap-4 py-2"
+              >
+                <FontAwesomeIcon icon={faBagShopping} className="fa-lg" />
+
+                <div className="need-interaction group-hover:underline">
+                  {t("components.navbar.orders")}
+                </div>
+              </Link>
 
               <div className="cursor-pointer border-[1px] border-white1" />
 
