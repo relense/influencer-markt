@@ -2,6 +2,7 @@ import Image from "next/image";
 import { api } from "~/utils/api";
 import { helper } from "../../utils/helper";
 import { useTranslation } from "react-i18next";
+import Link from "next/link";
 
 const OrdersPage = () => {
   const { t, i18n } = useTranslation();
@@ -46,22 +47,27 @@ const OrdersPage = () => {
                 </div>
               </div>
               <div className="flex flex-1 items-center gap-4 rounded-b-lg border-[1px] p-4">
-                <Image
-                  src={order.influencer?.profilePicture || ""}
-                  alt="profile picture"
-                  width={1000}
-                  height={1000}
-                  quality={100}
-                  className="h-24 w-24 rounded-full object-cover"
-                />
+                <Link href={`/${order.influencer?.user?.username || ""}`}>
+                  <Image
+                    src={order.influencer?.profilePicture || ""}
+                    alt="profile picture"
+                    width={1000}
+                    height={1000}
+                    quality={100}
+                    className="h-24 w-24 rounded-full object-cover"
+                  />
+                </Link>
                 <div className="flex flex-col">
                   <div className="flex items-center gap-2 text-center">
                     <div className="font-semibold text-influencer">
                       Influencer
                     </div>
-                    <div className="w-36 truncate text-ellipsis text-left">
+                    <Link
+                      href={`/${order.influencer?.user?.username || ""}`}
+                      className="w-36 truncate text-ellipsis text-left hover:underline"
+                    >
                       {order?.influencer?.name || ""}
-                    </div>
+                    </Link>
                   </div>
                   <div className="flex items-center gap-2 text-center">
                     <div className="font-semibold text-influencer">

@@ -33,7 +33,7 @@ const StartOrderPage = (params: {
 
   const [step, setStep] = useState<number>(0);
   const [stripeRef, setStripRef] = useState<string>("");
-  const [orderCreated, setOrderCreated] = useState<boolean>(false);
+  const [orderId, setOrderId] = useState<number>(-1);
 
   const [contentTypesList, setContentTypesList] = useState<
     ContentTypeWithQuantityAndValue[]
@@ -54,12 +54,20 @@ const StartOrderPage = (params: {
 
   const { mutate: createOrder, isLoading } = api.orders.createOrder.useMutation(
     {
-      onSuccess: () => {
-        setStep(1);
-        setOrderCreated(true);
+      onSuccess: (order) => {
+        if (order) {
+          setStep(1);
+          setOrderId(order.id);
+        }
       },
     }
   );
+
+  const { mutate: updateOrder, isLoading: isLoadingUpdateOrder } =
+    api.orders.updateOrder.useMutation();
+
+  const { mutate: createNotification } =
+    api.notifications.createNotification.useMutation();
 
   const {
     register,
@@ -98,7 +106,7 @@ const StartOrderPage = (params: {
   };
 
   const submitOrder = handleSubmit((data) => {
-    if (!orderCreated) {
+    if (orderId === -1) {
       let valuePacksSum = 0;
 
       contentTypesList.forEach((contentType) => {
@@ -126,6 +134,21 @@ const StartOrderPage = (params: {
     }
   });
 
+  const savePaymentDetails = () => {
+    setStep(2);
+    updateOrder({
+      orderId: orderId,
+      statusId: 2,
+    });
+
+    createNotification({
+      entityId: orderId,
+      notificationType: "order",
+      notificationTypeAction: "awaitingReply",
+      notifierId: params.orderProfileId,
+    });
+  };
+
   const stepperTitleStep0 = () => {
     return (
       <div className="flex items-center gap-4">
@@ -137,7 +160,7 @@ const StartOrderPage = (params: {
         </div>
         <div
           className="hidden items-center gap-2 lg:flex"
-          onClick={() => orderCreated && setStep(1)}
+          onClick={() => orderId !== -1 && setStep(1)}
         >
           <div className="flex h-6 w-6 items-center justify-center rounded-full border-[1px] text-base">
             2
@@ -446,7 +469,7 @@ const StartOrderPage = (params: {
         <div className="flex justify-center">
           <Button
             title={
-              orderCreated
+              orderId !== -1
                 ? t("pages.startOrder.continuePayments")
                 : t("pages.startOrder.paymentDetails")
             }
@@ -473,7 +496,8 @@ const StartOrderPage = (params: {
             title={t("pages.startOrder.summary")}
             level="primary"
             size="regular"
-            onClick={() => setStep(2)}
+            onClick={() => savePaymentDetails()}
+            isLoading={isLoadingUpdateOrder}
           />
         </div>
       </div>
@@ -496,7 +520,6 @@ const StartOrderPage = (params: {
             title={t("pages.startOrder.exploreMore")}
             level="primary"
             size="regular"
-            isLoading={isLoading}
           />
         </Link>
       </div>

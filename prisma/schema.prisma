@@ -99,6 +99,9 @@ model Profile {
   favoriteBy Profile[] @relation("profileFavorites")
   favorites  Profile[] @relation("profileFavorites")
 
+  actor    Notification[] @relation("actor")
+  notifier Notification[] @relation("notifier")
+
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
@@ -386,4 +389,41 @@ model OrderStatus {
   name String
 
   order Order[]
+}
+
+model NotificationType {
+  id           Int    @id @default(autoincrement())
+  entityType   String
+  entityAction String
+
+  notifications Notification[]
+}
+
+model NotificationStatus {
+  id   Int    @id @default(autoincrement())
+  name String
+
+  notification Notification[]
+}
+
+model Notification {
+  id                 Int                @id @default(autoincrement())
+  actor              Profile            @relation("actor", fields: [actorId], references: [id])
+  notifier           Profile            @relation("notifier", fields: [notifierId], references: [id])
+  notificationType   NotificationType   @relation(fields: [notificationTypeId], references: [id])
+  notificationStatus NotificationStatus @relation(fields: [notificationStatusId], references: [id])
+  entityId           Int
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  actorId              Int
+  notifierId           Int
+  notificationTypeId   Int
+  notificationStatusId Int
+
+  @@index([actorId])
+  @@index([notifierId])
+  @@index([notificationTypeId])
+  @@index([notificationStatusId])
 }

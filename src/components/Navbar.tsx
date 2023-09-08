@@ -28,16 +28,20 @@ import {
   faChevronUp,
   faGear,
   faSearch,
+  faBell as faBellSolid,
+  faReceipt,
 } from "@fortawesome/free-solid-svg-icons";
-
-import { Button } from "./Button";
-import type { Option } from "../utils/globalTypes";
-import { useOutsideClick } from "../utils/helper";
+import { api } from "~/utils/api";
+import { useRouter } from "next/router";
 import Draggable, {
   type DraggableData,
   type DraggableEvent,
 } from "react-draggable";
-import { useRouter } from "next/router";
+
+import { Button } from "./Button";
+import type { Option } from "../utils/globalTypes";
+import { useOutsideClick } from "../utils/helper";
+import { Notifications } from "./Notifications";
 
 export const Navbar = (params: {
   username: string;
@@ -57,6 +61,15 @@ export const Navbar = (params: {
   const [openHelpCenter, setOPenHelpCenter] = useState<boolean>(false);
   const [dropdownHeight, setDropdownHeight] = useState<number>(0);
   const [draggablePositionY, setDraggablePositionY] = useState<number>(0);
+  const [notificationsOpen, setNotificationsOpen] = useState<boolean>(false);
+
+  const {
+    data: notificationsToBeReadCount,
+    refetch: refetchNotificationsOpenCount,
+  } = api.notifications.getUserToBeReadNotifications.useQuery();
+
+  const { mutate: notificationUpdate } =
+    api.notifications.updateNotificationsToRead.useMutation();
 
   useOutsideClick(() => {
     if (toggleOptions === false) return;
@@ -86,6 +99,17 @@ export const Navbar = (params: {
   const handleDrag = (e: DraggableEvent, data: DraggableData) => {
     if (data.y < 0) {
       setDraggablePositionY(0);
+    }
+  };
+
+  const handleOpenNotificationsMenu = () => {
+    setNotificationsOpen(!notificationsOpen);
+    if (
+      notificationsToBeReadCount !== undefined &&
+      notificationsToBeReadCount > 0
+    ) {
+      notificationUpdate();
+      void refetchNotificationsOpenCount();
     }
   };
 
@@ -211,19 +235,35 @@ export const Navbar = (params: {
           </>
         )}
         {params.sessionData && (
-          <div className="flex flex-row items-center justify-end gap-6">
+          <div className="flex flex-row items-center justify-end gap-2">
             {params.loggedInProfileId !== -1 && (
               <>
-                <FontAwesomeIcon
-                  icon={faMessage}
-                  className="fa-xl cursor-pointer"
-                />
-                <FontAwesomeIcon
-                  icon={faBell}
-                  className="fa-xl cursor-pointer"
-                />
+                <div className="flex h-10 w-10 items-center justify-center rounded-full hover:bg-white1">
+                  <FontAwesomeIcon
+                    icon={faMessage}
+                    className="fa-xl cursor-pointer"
+                  />
+                </div>
+                <div className="relative">
+                  {notificationsToBeReadCount !== undefined &&
+                    notificationsToBeReadCount > 0 && (
+                      <div className="absolute right-[-6px] top-[-6px] flex h-7 w-7 items-center justify-center rounded-full bg-influencer text-center text-white">
+                        {notificationsToBeReadCount}
+                      </div>
+                    )}
+                  <div
+                    className="flex h-10 w-10 items-center justify-center rounded-full hover:bg-white1"
+                    onClick={() => handleOpenNotificationsMenu()}
+                  >
+                    <FontAwesomeIcon
+                      icon={!notificationsOpen ? faBell : faBellSolid}
+                      className="fa-xl cursor-pointer"
+                    />
+                  </div>
+                </div>
               </>
             )}
+            {renderNotificationsMenu()}
             {renderHamburguerMenuAuthenticated()}
           </div>
         )}
@@ -252,19 +292,13 @@ export const Navbar = (params: {
           className="fa-xl flex cursor-pointer lg:hidden"
           onClick={() => setToggleOptions(!toggleOptions)}
         />
-        {!toggleOptions ? (
+        <div className="hidden h-10 w-10 items-center justify-center rounded-full hover:bg-white1 lg:flex">
           <FontAwesomeIcon
-            icon={faChevronDown}
+            icon={!toggleOptions ? faChevronDown : faChevronUp}
             className="fa-xl hidden cursor-pointer lg:flex"
             onClick={() => setToggleOptions(!toggleOptions)}
           />
-        ) : (
-          <FontAwesomeIcon
-            icon={faChevronUp}
-            className="fa-xl hidden cursor-pointer lg:flex"
-            onClick={() => setToggleOptions(!toggleOptions)}
-          />
-        )}
+        </div>
         {toggleOptions &&
           params.loggedInProfileId !== -1 &&
           optionsDropdownAuthenticated()}
@@ -437,6 +471,19 @@ export const Navbar = (params: {
                 </div>
               </Link>
 
+              {params.role && params.role.id !== 1 && (
+                <Link
+                  href="/sales"
+                  className="group flex cursor-pointer items-center gap-4 py-2"
+                >
+                  <FontAwesomeIcon icon={faReceipt} className="fa-lg" />
+
+                  <div className="need-interaction group-hover:underline">
+                    {t("components.navbar.sales")}
+                  </div>
+                </Link>
+              )}
+
               <div className="cursor-pointer border-[1px] border-white1" />
 
               <div
@@ -553,6 +600,20 @@ export const Navbar = (params: {
               </div>
             </div>
           </Draggable>
+        </>
+      );
+    }
+  };
+
+  const renderNotificationsMenu = () => {
+    if (notificationsOpen) {
+      return (
+        <>
+          <div
+            className="absolute left-0 top-0 z-40 h-screen w-screen"
+            onClick={() => setNotificationsOpen(!notificationsOpen)}
+          />
+          <Notifications />
         </>
       );
     }

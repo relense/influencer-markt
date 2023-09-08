@@ -84,7 +84,15 @@ export const OrdersRouter = createTRPCRouter({
       return await ctx.prisma.order.findMany({
         where: { buyerId: profile.id },
         include: {
-          influencer: true,
+          influencer: {
+            include: {
+              user: {
+                select: {
+                  username: true,
+                },
+              },
+            },
+          },
           orderInfluencerCountry: true,
           orderStatus: true,
           orderValuePacks: {
@@ -100,4 +108,20 @@ export const OrdersRouter = createTRPCRouter({
       });
     }
   }),
+
+  updateOrder: protectedProcedure
+    .input(
+      z.object({
+        orderId: z.number(),
+        statusId: z.number(),
+      })
+    )
+    .mutation(async ({ ctx, input }) => {
+      return await ctx.prisma.order.update({
+        where: { id: input.orderId },
+        data: {
+          orderStatusId: input.statusId,
+        },
+      });
+    }),
 });

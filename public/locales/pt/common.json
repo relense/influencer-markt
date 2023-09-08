@@ -126,6 +126,14 @@
       "live_other": "{{count}} Lives",
       "article_one": "{{count}} Artigo",
       "article_other": "{{count}} Artigos"
+    },
+
+    "notificationsMessages": {
+      "orderAwaitingReply": "{{actor}} fez um pedido que precisa da tua revisão",
+      "orderRejected": "{{actor}} rejeitou a tua oferta",
+      "orderAccepted": "{{actor}} aceitou a tua oferta",
+      "orderDelivered": "O pedido foi entregue",
+      "orderCanceled": "O pedido foi cancelado"
     }
   },
   "components": {
@@ -156,7 +164,8 @@
       "settings": "Definições",
       "completeProfile": "Completa o teu Perfil",
       "completeMessage": "Completa o teu perfil para desbloqueares todas as funcionalidades",
-      "orders": "Ordens"
+      "orders": "Pedidos",
+      "sales": "Vendas"
     },
 
     "adminNavbar": {
@@ -342,6 +351,11 @@
       "maxPricePlaceholder": "Preço Max",
       "showBrandsButton": "Mostrar Marcas",
       "showOffers": "Mostrar Ofertas"
+    },
+
+    "notification": {
+      "notifications": "Notificações",
+      "noNotifications": "Não há notificações"
     }
   },
 

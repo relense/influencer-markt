@@ -88,6 +88,20 @@ async function main() {
     ],
   });
 
+  await prisma.notificationStatus.createMany({
+    data: [{ name: "toRead" }, { name: "read" }, { name: "hidden" }],
+  });
+
+  await prisma.notificationType.createMany({
+    data: [
+      { entityType: "order", entityAction: "awaitingReply" },
+      { entityType: "order", entityAction: "rejected" },
+      { entityType: "order", entityAction: "accepted" },
+      { entityType: "order", entityAction: "delivered" },
+      { entityType: "order", entityAction: "canceled" },
+    ],
+  });
+
   await prisma.reason.createMany({
     data: [
       { name: "Feedback" },

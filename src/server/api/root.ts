@@ -8,6 +8,7 @@ import { portfoliosRouter } from "./routers/portfolios";
 import { OffersRouter } from "./routers/offers";
 import { ContactMessagesRouter } from "./routers/contactMessages";
 import { OrdersRouter } from "./routers/orders";
+import { NotificationsRouter } from "./routers/notifications";
 
 /**
  * This is the primary router for your server.
@@ -24,6 +25,7 @@ export const appRouter = createTRPCRouter({
   offers: OffersRouter,
   contactMessage: ContactMessagesRouter,
   orders: OrdersRouter,
+  notifications: NotificationsRouter,
 });
 
 // export type definition of API

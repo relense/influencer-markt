@@ -126,6 +126,14 @@
       "live_other": "{{count}} Lives",
       "article_one": "{{count}} Article",
       "article_other": "{{count}} Articles"
+    },
+
+    "notificationsMessages": {
+      "orderAwaitingReply": "{{actor}} made a new order that needs your review",
+      "orderRejected": "{{actor}} rejected your offer",
+      "orderAccepted": "{{actor}} accepted your offer",
+      "orderDelivered": "The order was delivered",
+      "orderCanceled": "The order has been canceled"
     }
   },
   "components": {
@@ -156,7 +164,8 @@
       "settings": "Settings",
       "completeProfile": "Complete Your Profile",
       "completeMessage": "Complete your profile to unlock all funcionalities",
-      "orders": "Orders"
+      "orders": "Orders",
+      "sales": "Sales"
     },
 
     "adminNavbar": {
@@ -342,6 +351,11 @@
       "maxPricePlaceholder": "Max Price Value",
       "showBrandsButton": "Show Brands",
       "showOffers": "Show Offers"
+    },
+
+    "notification": {
+      "notifications": "Notifications",
+      "noNotifications": "There aren't any notifications"
     }
   },
 
