@@ -798,6 +798,7 @@
       "platform": "Platforma",
       "valuePacks": "Packs de Valor",
       "saleTotal": "Total do pedido",
+      "saleTotalTaxes": "Total do pedido com iva",
       "saleStatus": "Estado do pedido",
       "saleDetails": "Detalhes do pedido",
       "saleRequirements": "Requerimentos do pedido",

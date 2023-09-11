@@ -139,7 +139,7 @@ const SalesDetailsPage = (params: { orderId: number }) => {
     return (
       <div className="flex flex-col gap-2">
         <div className="text-xl font-medium">{t("pages.sales.valuePacks")}</div>
-        <div className="flex flex-col gap-4 lg:flex-row">
+        <div className="flex flex-col items-center justify-center gap-4 lg:flex-row">
           {sale?.orderValuePacks.map((valuePack) => {
             return (
               <div
@@ -151,12 +151,6 @@ const SalesDetailsPage = (params: { orderId: number }) => {
                     {valuePack.amount}x{" "}
                     {t(`general.contentTypes.${valuePack.contentType.name}`)}
                   </div>
-                  <div className="text-base font-medium">
-                    {helper.formatNumberWithDecimalValue(
-                      parseFloat(sale.orderPrice)
-                    ) || 0}
-                    €
-                  </div>
                 </div>
               </div>
             );
@@ -164,6 +158,23 @@ const SalesDetailsPage = (params: { orderId: number }) => {
         </div>
       </div>
     );
+  };
+
+  const renderTotalPrice = () => {
+    if (sale) {
+      return (
+        <div className="flex flex-col gap-2">
+          <div className="text-xl font-medium">
+            {t("pages.sales.saleTotalTaxes")}
+          </div>
+          <div className="text-base font-semibold text-influencer">
+            {helper.formatNumberWithDecimalValue(parseFloat(sale.orderPrice)) ||
+              0}
+            €
+          </div>
+        </div>
+      );
+    }
   };
 
   const renderFinalOfferDetails = () => {
@@ -195,6 +206,7 @@ const SalesDetailsPage = (params: { orderId: number }) => {
           <div className="flex flex-col items-center gap-4 rounded-xl border-[1px] p-8 text-center">
             {renderSaleDetails()}
             {renderValuePacks()}
+            {renderTotalPrice()}
             {renderFinalOfferDetails()}
           </div>
         </div>

@@ -799,6 +799,7 @@
       "platform": "Platform",
       "valuePacks": "Value packs",
       "saleTotal": "Order total",
+      "saleTotalTaxes": "Order total with taxes",
       "saleStatus": "Order status",
       "saleDetails": "Order details",
       "saleRequirements": "Order requirements",
