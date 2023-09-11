@@ -816,6 +816,34 @@
       "progress": "Em progresso",
       "deliver": "Entregar pedido",
       "rejected": "Rejeitado"
+    },
+
+    "orders": {
+      "orderReference": "Referência do pedido",
+      "orderMade": "Data do pedido",
+      "viewDetails": "Ver detalhes do pedido",
+      "influencer": "Influencer",
+      "platform": "Platforma",
+      "valuePacks": "Packs de Valor",
+      "orderTotal": "Total do pedido",
+      "orderTotalTaxes": "Total do pedido com iva",
+      "orderStatus": "Estado do pedido",
+      "orderDetails": "Detalhes do pedido",
+      "orderRequirements": "Requerimentos do pedido",
+      "status": "Estado",
+      "orders": "Pedidos",
+      "noOrders": "Não há pedidos",
+      "orderId": "ID do pedido",
+      "clearFilters": "Limpar Filtros",
+      "search": "Pesquisar",
+      "loadMore": "Mostrar Mais",
+      "accept": "Aceitar pedido",
+      "reject": "Rejeitar pedido",
+      "orderAnswerAccept": "Ordem foi aceite com sucesso",
+      "awaiting": "À espera da decisão do influencer",
+      "progress": "Em progresso",
+      "deliver": "Entregar pedido",
+      "rejected": "Rejeitado"
     }
   }
 }

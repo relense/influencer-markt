@@ -1,11 +1,7 @@
 import Image from "next/image";
 import { api } from "~/utils/api";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faChevronRight,
-  faReceipt,
-  faXmark,
-} from "@fortawesome/free-solid-svg-icons";
+import { faReceipt, faXmark } from "@fortawesome/free-solid-svg-icons";
 import { useTranslation } from "react-i18next";
 import Link from "next/link";
 
@@ -266,7 +262,7 @@ const SalesPage = () => {
       );
     } else {
       return (
-        <div className="flex flex-1 flex-col items-center justify-center  gap-12 p-2 text-gray2 lg:w-full lg:gap-6 lg:p-12 xl:self-center xl:p-4 2xl:w-3/4">
+        <div className="flex flex-1 flex-col items-center gap-4 p-2 text-gray2 lg:w-full lg:gap-6 lg:p-12 xl:self-center xl:p-4 2xl:w-3/4">
           <FontAwesomeIcon icon={faReceipt} className="fa-2xl cursor-pointer" />
           <div className="flex flex-col justify-center gap-4 text-center">
             {t("pages.sales.noSales")}

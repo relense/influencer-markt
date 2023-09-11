@@ -127,39 +127,115 @@ export const OrdersRouter = createTRPCRouter({
       });
     }),
 
-  getAllUserOrders: protectedProcedure.query(async ({ ctx }) => {
-    const profile = await ctx.prisma.profile.findFirst({
-      where: { user: { id: ctx.session.user.id } },
-    });
+  getAllUserOrders: protectedProcedure
+    .input(
+      z.object({
+        orderId: z.number(),
+        orderStatusId: z.number(),
+      })
+    )
+    .query(async ({ ctx, input }) => {
+      const profile = await ctx.prisma.profile.findFirst({
+        where: { user: { id: ctx.session.user.id } },
+      });
 
-    if (profile) {
-      return await ctx.prisma.order.findMany({
-        where: { buyerId: profile.id },
-        include: {
-          influencer: {
+      if (profile) {
+        return await ctx.prisma.$transaction([
+          ctx.prisma.order.count({
+            where: {
+              buyerId: profile.id,
+              NOT: [{ orderStatusId: 1 }, { orderStatusId: 7 }],
+              orderStatusId:
+                input.orderStatusId !== -1 ? input.orderStatusId : undefined,
+              id: input.orderId !== -1 ? input.orderId : undefined,
+            },
+          }),
+          ctx.prisma.order.findMany({
+            where: {
+              buyerId: profile.id,
+              NOT: [{ orderStatusId: 1 }, { orderStatusId: 7 }],
+              orderStatusId:
+                input.orderStatusId !== -1 ? input.orderStatusId : undefined,
+              id: input.orderId !== -1 ? input.orderId : undefined,
+            },
+            take: 10,
             include: {
-              user: {
-                select: {
-                  username: true,
+              influencer: {
+                include: {
+                  user: {
+                    select: {
+                      username: true,
+                    },
+                  },
+                },
+              },
+              orderInfluencerCountry: true,
+              orderStatus: true,
+              orderValuePacks: {
+                include: {
+                  contentType: true,
+                },
+              },
+              socialMedia: true,
+            },
+            orderBy: {
+              createdAt: "desc",
+            },
+          }),
+        ]);
+      }
+    }),
+
+  getAllUserOrdersCursor: protectedProcedure
+    .input(
+      z.object({
+        orderId: z.number(),
+        orderStatusId: z.number(),
+        cursor: z.number(),
+      })
+    )
+    .query(async ({ ctx, input }) => {
+      const profile = await ctx.prisma.profile.findFirst({
+        where: { user: { id: ctx.session.user.id } },
+      });
+
+      if (profile) {
+        return await ctx.prisma.order.findMany({
+          where: {
+            buyerId: profile.id,
+            NOT: [{ orderStatusId: 1 }, { orderStatusId: 7 }],
+            orderStatusId:
+              input.orderStatusId !== -1 ? input.orderStatusId : undefined,
+            id: input.orderId !== -1 ? input.orderId : undefined,
+          },
+          take: 10,
+          skip: 1,
+          cursor: { id: input.cursor },
+          include: {
+            influencer: {
+              include: {
+                user: {
+                  select: {
+                    username: true,
+                  },
                 },
               },
             },
-          },
-          orderInfluencerCountry: true,
-          orderStatus: true,
-          orderValuePacks: {
-            include: {
-              contentType: true,
+            orderInfluencerCountry: true,
+            orderStatus: true,
+            orderValuePacks: {
+              include: {
+                contentType: true,
+              },
             },
+            socialMedia: true,
           },
-          socialMedia: true,
-        },
-        orderBy: {
-          createdAt: "desc",
-        },
-      });
-    }
-  }),
+          orderBy: {
+            createdAt: "desc",
+          },
+        });
+      }
+    }),
 
   getAllInfluencerSales: protectedProcedure
     .input(

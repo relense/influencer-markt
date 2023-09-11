@@ -817,6 +817,34 @@
       "progress": "In progress",
       "deliver": "Deliver order",
       "rejected": "Rejected"
+    },
+
+    "orders": {
+      "orderReference": "Order reference",
+      "orderMade": "Order made",
+      "viewDetails": "View order details",
+      "influencer": "Influencer",
+      "platform": "Platform",
+      "valuePacks": "Value packs",
+      "orderTotal": "Order total",
+      "orderTotalTaxes": "Order total with taxes",
+      "orderStatus": "Order status",
+      "orderDetails": "Order details",
+      "orderRequirements": "Order requirements",
+      "status": "Status",
+      "orders": "Orders",
+      "noOrders": "There are no orders",
+      "orderId": "Order ID",
+      "clearFilters": "Clear Filters",
+      "search": "Search",
+      "loadMore": "Load More",
+      "accept": "Accept order",
+      "reject": "Reject order",
+      "orderAnswerAccept": "Order accepted successfully",
+      "awaiting": "Waiting for influencer's decision",
+      "progress": "In progress",
+      "deliver": "Deliver order",
+      "rejected": "Rejected"
     }
   }
 }
