@@ -14,7 +14,11 @@ interface OrderDetailsProps {
 
 const OrderDetails: NextPage<OrderDetailsProps> = ({ id }) => {
   const router = useRouter();
-  const { data: order, isLoading } = api.orders.getBuyerOrder.useQuery({
+  const {
+    data: order,
+    isLoading,
+    isFetching,
+  } = api.orders.getBuyerOrder.useQuery({
     orderId: parseInt(id),
   });
 
@@ -26,7 +30,7 @@ const OrderDetails: NextPage<OrderDetailsProps> = ({ id }) => {
     }
   }, [isLoading, order, router]);
 
-  if (isLoading) {
+  if (isLoading || isFetching) {
     <ProtectedWrapper>
       <LoadingSpinner />
     </ProtectedWrapper>;

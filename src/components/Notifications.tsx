@@ -7,11 +7,14 @@ import { api } from "~/utils/api";
 
 import { LoadingSpinner } from "./LoadingSpinner";
 import { helper } from "../utils/helper";
+import Link from "next/link";
 
 type Notification = {
   id: number;
   actorProfilePicture: string;
   notificationTypeId: number;
+  entityId: number;
+  notificationEntity: string;
   actorName: string;
   notificationCreatedAt: Date;
 };
@@ -54,6 +57,8 @@ const Notifications = () => {
             id: notification.id,
             notificationCreatedAt: notification.createdAt,
             notificationTypeId: notification.notificationTypeId,
+            entityId: notification.entityId,
+            notificationEntity: notification.notificationType.entityType,
           };
         })
       );
@@ -78,6 +83,8 @@ const Notifications = () => {
           id: notification.id,
           notificationCreatedAt: notification.createdAt,
           notificationTypeId: notification.notificationTypeId,
+          entityId: notification.entityId,
+          notificationEntity: notification.notificationType.entityType,
         });
       });
 
@@ -132,7 +139,8 @@ const Notifications = () => {
           <div className="flex flex-col">
             {notifications?.map((notification) => {
               return (
-                <div
+                <Link
+                  href={`/${notification.notificationEntity}/${notification.entityId}`}
                   key={notification.id}
                   className="flex cursor-pointer items-center gap-4 px-4 py-6 hover:bg-white1"
                 >
@@ -160,7 +168,7 @@ const Notifications = () => {
                       )}
                     </div>
                   </div>
-                </div>
+                </Link>
               );
             })}
             {isRefetchingNotificationsDataCursor && (
@@ -213,15 +221,15 @@ export { Notifications };
 
 const getNotificationMessageKey = (notificationsTypeId: number) => {
   if (notificationsTypeId === 1) {
-    return "orderAwaitingReply";
+    return "salesAwaitingReply";
   } else if (notificationsTypeId === 2) {
-    return "orderRejected";
+    return "ordersRejected";
   } else if (notificationsTypeId === 3) {
-    return "orderAccepted";
+    return "ordersAccepted";
   } else if (notificationsTypeId === 4) {
-    return "orderDelivered";
+    return "ordersDelivered";
   } else if (notificationsTypeId === 5) {
-    return "orderCanceled";
+    return "salesCanceled";
   } else {
     return "";
   }

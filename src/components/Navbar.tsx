@@ -62,11 +62,10 @@ export const Navbar = (params: {
   const [dropdownHeight, setDropdownHeight] = useState<number>(0);
   const [draggablePositionY, setDraggablePositionY] = useState<number>(0);
   const [notificationsOpen, setNotificationsOpen] = useState<boolean>(false);
+  const [notificationsCount, setNotificationsCount] = useState<number>(0);
 
-  const {
-    data: notificationsToBeReadCount,
-    refetch: refetchNotificationsOpenCount,
-  } = api.notifications.getUserToBeReadNotifications.useQuery();
+  const { data: notificationsToBeReadCount } =
+    api.notifications.getUserToBeReadNotifications.useQuery();
 
   const { mutate: notificationUpdate } =
     api.notifications.updateNotificationsToRead.useMutation();
@@ -81,6 +80,12 @@ export const Navbar = (params: {
     if (!drawerRef.current) return;
     setDropdownHeight(drawerRef.current.clientHeight);
   }, [toggleOptions]);
+
+  useEffect(() => {
+    if (notificationsToBeReadCount && notificationsToBeReadCount > 0) {
+      setNotificationsCount(notificationsToBeReadCount);
+    }
+  }, [notificationsToBeReadCount]);
 
   const handleJoinMarketplace = () => {
     params.setIsSignUp(true);
@@ -104,12 +109,9 @@ export const Navbar = (params: {
 
   const handleOpenNotificationsMenu = () => {
     setNotificationsOpen(!notificationsOpen);
-    if (
-      notificationsToBeReadCount !== undefined &&
-      notificationsToBeReadCount > 0
-    ) {
+    if (notificationsCount) {
       notificationUpdate();
-      void refetchNotificationsOpenCount();
+      setNotificationsCount(0);
     }
   };
 
@@ -244,17 +246,16 @@ export const Navbar = (params: {
                     className="fa-xl cursor-pointer"
                   />
                 </div>
-                <div className="relative">
-                  {notificationsToBeReadCount !== undefined &&
-                    notificationsToBeReadCount > 0 && (
-                      <div className="absolute right-[-6px] top-[-6px] flex h-7 w-7 items-center justify-center rounded-full bg-influencer text-center text-white">
-                        {notificationsToBeReadCount}
-                      </div>
-                    )}
-                  <div
-                    className="flex h-10 w-10 items-center justify-center rounded-full hover:bg-white1"
-                    onClick={() => handleOpenNotificationsMenu()}
-                  >
+                <div
+                  className="relative"
+                  onClick={() => handleOpenNotificationsMenu()}
+                >
+                  {notificationsCount > 0 && (
+                    <div className="absolute right-[-6px] top-[-6px] flex h-7 w-7 items-center justify-center rounded-full bg-influencer text-center text-white">
+                      {notificationsCount}
+                    </div>
+                  )}
+                  <div className="flex h-10 w-10 items-center justify-center rounded-full hover:bg-white1">
                     <FontAwesomeIcon
                       icon={!notificationsOpen ? faBell : faBellSolid}
                       className="fa-xl cursor-pointer"

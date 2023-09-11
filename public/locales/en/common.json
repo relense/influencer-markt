@@ -129,11 +129,21 @@
     },
 
     "notificationsMessages": {
-      "orderAwaitingReply": "{{actor}} made a new order that needs your review",
-      "orderRejected": "{{actor}} rejected your offer",
-      "orderAccepted": "{{actor}} accepted your offer",
-      "orderDelivered": "The order was delivered",
-      "orderCanceled": "The order has been canceled"
+      "salesAwaitingReply": "{{actor}} made a new order that needs your review",
+      "ordersRejected": "{{actor}} rejected your offer",
+      "ordersAccepted": "{{actor}} accepted your offer",
+      "ordersDelivered": "The order was delivered",
+      "salesCanceled": "The order has been canceled"
+    },
+
+    "orderStatus": {
+      "started": "Started",
+      "awaiting": "Awaiting Answer",
+      "rejected": "Rejected",
+      "progress": "In Progress",
+      "delivered": "Delivered",
+      "canceled": "Canceled",
+      "completed": "Completed"
     }
   },
   "components": {
@@ -779,6 +789,33 @@
       "price": "Price",
       "continuePayments": "Continue Payment Details",
       "exploreMore": "Explore More Influencers"
+    },
+
+    "sales": {
+      "saleReference": "Order reference",
+      "saleMade": "Order made",
+      "viewDetails": "View order details",
+      "buyer": "Buyer",
+      "platform": "Platform",
+      "valuePacks": "Value packs",
+      "saleTotal": "Order total",
+      "saleStatus": "Order status",
+      "saleDetails": "Order details",
+      "saleRequirements": "Order requirements",
+      "status": "Status",
+      "sales": "Sales",
+      "noSales": "There are no orders",
+      "saleId": "Order ID",
+      "clearFilters": "Clear Filters",
+      "search": "Search",
+      "loadMore": "Load More",
+      "accept": "Accept order",
+      "reject": "Reject order",
+      "saleAnswerAccept": "Order accepted successfully",
+      "awaiting": "The buyer is waiting for your decision",
+      "progress": "In progress",
+      "deliver": "Deliver order",
+      "rejected": "Rejected"
     }
   }
 }

@@ -129,11 +129,21 @@
     },
 
     "notificationsMessages": {
-      "orderAwaitingReply": "{{actor}} fez um pedido que precisa da tua revisão",
-      "orderRejected": "{{actor}} rejeitou a tua oferta",
-      "orderAccepted": "{{actor}} aceitou a tua oferta",
-      "orderDelivered": "O pedido foi entregue",
-      "orderCanceled": "O pedido foi cancelado"
+      "salesAwaitingReply": "{{actor}} fez um pedido que precisa da tua revisão",
+      "ordersRejected": "{{actor}} rejeitou a tua oferta",
+      "ordersAccepted": "{{actor}} aceitou a tua oferta",
+      "ordersDelivered": "O pedido foi entregue",
+      "salesCanceled": "O pedido foi cancelado"
+    },
+
+    "orderStatus": {
+      "started": "Iniciado",
+      "awaiting": "A Aguardar Resposta",
+      "rejected": "Rejeitado",
+      "progress": "Em Progresso",
+      "delivered": "Entregue",
+      "canceled": "Cancelado",
+      "completed": "Completada"
     }
   },
   "components": {
@@ -778,6 +788,33 @@
       "price": "Preço",
       "continuePayments": "Continuar os Detalhes de Pagamento",
       "exploreMore": "Explora Mais Influencers"
+    },
+
+    "sales": {
+      "saleReference": "Referência do pedido",
+      "saleMade": "Data do pedido",
+      "viewDetails": "Ver detalhes do pedido",
+      "buyer": "Comprador",
+      "platform": "Platforma",
+      "valuePacks": "Packs de Valor",
+      "saleTotal": "Total do pedido",
+      "saleStatus": "Estado do pedido",
+      "saleDetails": "Detalhes do pedido",
+      "saleRequirements": "Requerimentos do pedido",
+      "status": "Estado",
+      "sales": "Vendas",
+      "noSales": "Não há pedidos",
+      "saleId": "ID do pedido",
+      "clearFilters": "Limpar Filtros",
+      "search": "Pesquisar",
+      "loadMore": "Mostrar Mais",
+      "accept": "Aceitar pedido",
+      "reject": "Rejeitar pedido",
+      "saleAnswerAccept": "Ordem foi aceite com sucesso",
+      "awaiting": "O comprador está à espera da tua decisão",
+      "progress": "Em progresso",
+      "deliver": "Entregar pedido",
+      "rejected": "Rejeitado"
     }
   }
 }

@@ -33,7 +33,7 @@ const SalesDetails: NextPage<SalesDetailsProps> = ({ id }) => {
   } else {
     return (
       <ProtectedWrapper>
-        <Layout>{() => <SalesDetailsPage />}</Layout>
+        <Layout>{() => <SalesDetailsPage orderId={parseInt(id)} />}</Layout>
       </ProtectedWrapper>
     );
   }

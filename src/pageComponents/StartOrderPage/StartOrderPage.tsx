@@ -67,7 +67,7 @@ const StartOrderPage = (params: {
     api.orders.updateOrder.useMutation();
 
   const { mutate: createNotification } =
-    api.notifications.createNotification.useMutation();
+    api.notifications.createSalesNotification.useMutation();
 
   const {
     register,
@@ -143,7 +143,6 @@ const StartOrderPage = (params: {
 
     createNotification({
       entityId: orderId,
-      notificationType: "order",
       notificationTypeAction: "awaitingReply",
       notifierId: params.orderProfileId,
     });

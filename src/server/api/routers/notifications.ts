@@ -2,12 +2,11 @@ import { z } from "zod";
 import { createTRPCRouter, protectedProcedure } from "../trpc";
 
 export const NotificationsRouter = createTRPCRouter({
-  createNotification: protectedProcedure
+  createOrdersNotification: protectedProcedure
     .input(
       z.object({
         notifierId: z.number(),
         entityId: z.number(),
-        notificationType: z.literal("order"),
         notificationTypeAction: z.union([
           z.literal("awaitingReply"),
           z.literal("rejected"),
@@ -23,7 +22,44 @@ export const NotificationsRouter = createTRPCRouter({
       });
 
       const notificationTypeId = getNotificationTypeActionId(
-        input.notificationType,
+        "orders",
+        input.notificationTypeAction
+      );
+
+      if (actor && notificationTypeId) {
+        return await ctx.prisma.notification.create({
+          data: {
+            actorId: actor?.id,
+            notifierId: input.notifierId,
+            entityId: input.entityId,
+            notificationTypeId: notificationTypeId,
+            notificationStatusId: 1,
+          },
+        });
+      }
+    }),
+
+  createSalesNotification: protectedProcedure
+    .input(
+      z.object({
+        notifierId: z.number(),
+        entityId: z.number(),
+        notificationTypeAction: z.union([
+          z.literal("awaitingReply"),
+          z.literal("rejected"),
+          z.literal("accepted"),
+          z.literal("delivered"),
+          z.literal("canceled"),
+        ]),
+      })
+    )
+    .mutation(async ({ ctx, input }) => {
+      const actor = await ctx.prisma.profile.findUnique({
+        where: { userId: ctx.session.user.id },
+      });
+
+      const notificationTypeId = getNotificationTypeActionId(
+        "sales",
         input.notificationTypeAction
       );
 
@@ -64,6 +100,7 @@ export const NotificationsRouter = createTRPCRouter({
               profilePicture: true,
             },
           },
+          notificationType: true,
         },
         orderBy: {
           createdAt: "desc",
@@ -91,6 +128,7 @@ export const NotificationsRouter = createTRPCRouter({
               profilePicture: true,
             },
           },
+          notificationType: true,
         },
         orderBy: {
           createdAt: "desc",
@@ -109,18 +147,20 @@ export const NotificationsRouter = createTRPCRouter({
 });
 
 const getNotificationTypeActionId = (
-  notificationType: string,
+  notificationType: "orders" | "sales",
   notificationAction: string
 ) => {
-  if (notificationType === "order") {
-    if (notificationAction === "awaitingReply") {
-      return 1;
-    } else if (notificationAction === "rejected") {
+  if (notificationType === "orders") {
+    if (notificationAction === "rejected") {
       return 2;
     } else if (notificationAction === "accepted") {
       return 3;
     } else if (notificationAction === "delivered") {
       return 4;
+    }
+  } else if (notificationType === "sales") {
+    if (notificationAction === "awaitingReply") {
+      return 1;
     } else if (notificationAction === "canceled") {
       return 5;
     }
