@@ -185,33 +185,30 @@ const SalesPage = () => {
             <span>{t(`pages.sales.${sale?.orderStatusName}`)}</span>
           </div>
         </div>
-        <div className="flex flex-1 items-center gap-2 rounded-b-lg border-[1px] px-2">
-          <Link
-            href={`/${sale.buyerUsername || ""}`}
-            className="flex-2 hidden lg:flex"
-          >
+        <div className="flex flex-1 flex-col items-center gap-4 rounded-b-lg border-[1px] p-4 lg:flex-row">
+          <Link href={`/${sale.buyerUsername || ""}`} className="flex-2 flex">
             <Image
               src={sale.buyerProfile || ""}
               alt="profile picture"
               width={1000}
               height={1000}
               quality={100}
-              className="h-16 w-16 rounded-full object-cover"
+              className="h-24 w-24 rounded-full object-cover"
             />
           </Link>
-          <div className="flex-2 flex flex-col p-2 text-sm">
-            <div className="flex items-center gap-2 text-center">
+          <div className="flex-2 flex flex-col items-center p-2 text-base lg:items-start">
+            <div className="flex flex-col gap-2 text-center placeholder:items-center lg:flex-row">
               <div className="font-semibold text-influencer">
                 {t("pages.sales.buyer")}
               </div>
               <Link
                 href={`/${sale.buyerUsername || ""}`}
-                className="lg:w-54 truncate text-ellipsis text-left hover:underline"
+                className="w-60 truncate text-ellipsis text-center hover:underline lg:w-full"
               >
                 {sale?.buyerName || ""}
               </Link>
             </div>
-            <div className="flex items-center gap-2 text-center">
+            <div className="flex flex-col items-center gap-2 text-center lg:flex-row">
               <div className="font-semibold text-influencer">
                 {t("pages.sales.platform")}
               </div>
@@ -219,11 +216,11 @@ const SalesPage = () => {
                 {sale?.socialMediaName || ""}
               </div>
             </div>
-            <div className="flex items-center gap-2 text-center">
-              <div className="font-semibold text-influencer">
+            <div className="flex flex-col items-center gap-2 text-center lg:flex-row">
+              <span className="font-semibold text-influencer">
                 {t("pages.sales.valuePacks")}
-              </div>
-              <div className="flex gap-2">
+              </span>
+              <div className="flex flex-wrap justify-center gap-2">
                 {sale.orderValuePacks.map((valuePack) => {
                   return (
                     <div key={valuePack.id}>
@@ -234,7 +231,7 @@ const SalesPage = () => {
                 })}
               </div>
             </div>
-            <div className="flex items-center gap-2 text-center">
+            <div className="flex flex-col items-center gap-2 text-center lg:flex-row">
               <div className="font-semibold text-influencer">
                 {t("pages.sales.saleTotal")}
               </div>
@@ -246,13 +243,7 @@ const SalesPage = () => {
               </div>
             </div>
           </div>
-          <div
-            className="flex h-full flex-1 cursor-pointer justify-end p-2 lg:hidden"
-            onClick={() => void router.push(`/sales/${sale.id}`)}
-          >
-            <FontAwesomeIcon icon={faChevronRight} className="fa-lg" />
-          </div>
-          <div className="hidden flex-1 justify-end p-4 lg:flex">
+          <div className="flex flex-1 justify-end p-4">
             <Button
               level="primary"
               title={t("pages.sales.viewDetails")}
@@ -361,7 +352,7 @@ const SalesPage = () => {
           <LoadingSpinner />
         </div>
       ) : (
-        <div className="flex h-[70vh] flex-col gap-4 overflow-y-auto">
+        <div className="flex h-[70vh] flex-col gap-4 lg:overflow-y-auto">
           {renderSales()}
           {sales && salesCount > sales.length && (
             <div className="flex items-center justify-center">
