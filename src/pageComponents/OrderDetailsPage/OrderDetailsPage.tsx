@@ -29,7 +29,7 @@ const OrderDetailsPage = (params: { orderId: number }) => {
     });
 
   const { mutate: createNotification } =
-    api.notifications.createOrdersNotification.useMutation();
+    api.notifications.createSalesNotification.useMutation();
 
   const renderInfluencerDetails = () => {
     if (order) {

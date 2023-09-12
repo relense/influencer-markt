@@ -51,6 +51,18 @@ const SalesDetailsPage = (params: { orderId: number }) => {
       },
     });
 
+  const { mutate: updateOrderDeliver, isLoading: updateOrderDeliverIsLoading } =
+    api.orders.updateOrder.useMutation({
+      onSuccess: () => {
+        void createNotification({
+          entityId: params.orderId,
+          notifierId: sale?.buyerId || -1,
+          notificationTypeAction: "delivered",
+        });
+        void ctx.orders.getSaleOrder.invalidate();
+      },
+    });
+
   const { mutate: createNotification } =
     api.notifications.createOrdersNotification.useMutation();
 
@@ -248,7 +260,17 @@ const SalesDetailsPage = (params: { orderId: number }) => {
             onClose={() => setShowDeliverModal(false)}
             button={
               <div className="flex justify-center p-4">
-                <Button title="Deliver Order" level="primary" />
+                <Button
+                  title="Deliver Order"
+                  level="primary"
+                  onClick={() =>
+                    updateOrderDeliver({
+                      orderId: params.orderId,
+                      statusId: 5,
+                    })
+                  }
+                  isLoading={updateOrderDeliverIsLoading}
+                />
               </div>
             }
           >

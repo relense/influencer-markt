@@ -8,12 +8,9 @@ export const NotificationsRouter = createTRPCRouter({
         notifierId: z.number(),
         entityId: z.number(),
         notificationTypeAction: z.union([
-          z.literal("awaitingReply"),
           z.literal("rejected"),
           z.literal("accepted"),
           z.literal("delivered"),
-          z.literal("paymentAdded"),
-          z.literal("canceled"),
         ]),
       })
     )
@@ -47,9 +44,7 @@ export const NotificationsRouter = createTRPCRouter({
         entityId: z.number(),
         notificationTypeAction: z.union([
           z.literal("awaitingReply"),
-          z.literal("rejected"),
-          z.literal("accepted"),
-          z.literal("delivered"),
+          z.literal("paymentAdded"),
           z.literal("canceled"),
         ]),
       })
