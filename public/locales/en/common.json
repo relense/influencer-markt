@@ -367,6 +367,24 @@
     "notification": {
       "notifications": "Notifications",
       "noNotifications": "There aren't any notifications"
+    },
+
+    "whathappensNext": {
+      "buyerOrderStatusStart": "What happens after I send my order request?",
+      "buyerOrderStatusInProgress": "What is the progress on my order?",
+      "orderSent": "Order Sent",
+      "ordersAccepted": "Order Accepted",
+      "paymentDetails": "Payment Details",
+      "inProgress": "In Progress",
+      "delivered": "Delivered",
+      "buyerOrderSent": "The influencer has 24h to give an answer to your order request. You can talk to him through the messages field",
+      "buyerOrderAccepted": "The influencer accepted your order. Now you have 48h to add your payment details",
+      "buyerPaymentDetails": "The order is now in progress and when the influencer has meet the requirements he will deliver",
+      "buyerInProgress": "The order has been delivered. Now you just need to confirm if everything is in how you expected and give your review.",
+      "influencerOrderSent": "The buyer has made an order. You have 24h to give your answer.",
+      "influencerOrderAccepted": "The buyer has 48 to add his payment details. Afterwards you can work on the request. We will let you know when you can start.",
+      "influencerPaymentDetails": "The order is now in progress and it is your turn to shine. Do what you need to meet the order requirements.",
+      "influencerInProgress": "The order has been delivered"
     }
   },
 
@@ -690,7 +708,7 @@
       "firstTimedModalButton": "Got It, Let's Create Offers!",
       "inProgress": "In Progress",
       "whenAnOfferIsInProgress": "When an offer is in progress it means an order was initiated and the influencers are working hard to deliver what you requested.",
-      "archievdIsWhen": "Archived is when you save the offer for later or when the influencer has deliered what you need and the offer is completed.",
+      "archievdIsWhen": "Archived is when you save the offer for later or when the influencer has delivered what you need and the offer is completed.",
       "publishOffer": "Publish Offer",
       "publishOfferToggleLabelNot": "Don't Publish",
       "publishOfferToggleLabelPublish": "Publish",
@@ -789,7 +807,7 @@
       "total": "Total",
       "price": "Price",
       "continuePayments": "Continue Payment Details",
-      "exploreMore": "Explore More Influencers"
+      "viewOrder": "View Order Details"
     },
 
     "sales": {
@@ -844,10 +862,12 @@
       "reject": "Reject order",
       "orderAnswerAccept": "Order accepted successfully",
       "awaiting": "Waiting for influencer's decision",
+      "accepted": "The influencer accepted your order",
       "progress": "In progress",
       "deliver": "Deliver order",
       "rejected": "Rejected",
-      "started": "Missing payment details"
+      "started": "Missing payment details",
+      "addPayment": "Add Payment Details"
     }
   }
 }

@@ -227,8 +227,10 @@ const getNotificationMessageKey = (notificationsTypeId: number) => {
   } else if (notificationsTypeId === 3) {
     return "ordersAccepted";
   } else if (notificationsTypeId === 4) {
-    return "ordersDelivered";
+    return "orderInProgress";
   } else if (notificationsTypeId === 5) {
+    return "ordersDelivered";
+  } else if (notificationsTypeId === 7) {
     return "salesCanceled";
   } else {
     return "";

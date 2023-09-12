@@ -78,8 +78,7 @@ const OrdersPage = () => {
     }
   );
 
-  //This will need to be updated to be for the order. Currently has the ones for the sale
-  const { data: orderStatus } = api.orders.getAllSaleOrderStatus.useQuery();
+  const { data: orderStatus } = api.orders.getAllOrdersStatus.useQuery();
 
   useEffect(() => {
     setOrders([]);

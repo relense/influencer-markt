@@ -59,37 +59,28 @@ export const OrdersRouter = createTRPCRouter({
     .input(
       z.object({
         orderId: z.number(),
-        willInclude: z
-          .array(
-            z.union([z.literal("orderValuePacks"), z.literal("socialMedia")])
-          )
-          .optional(),
       })
     )
     .query(async ({ ctx, input }) => {
-      let buildIncludes = undefined;
-
-      if (input.willInclude) {
-        buildIncludes = {
-          orderValuePacks: input.willInclude.includes("orderValuePacks")
-            ? {
-                include: {
-                  contentType: true,
-                },
-              }
-            : undefined,
-          socialMedia: input.willInclude.includes("socialMedia")
-            ? true
-            : undefined,
-        };
-      }
-
       return await ctx.prisma.order.findFirst({
         where: {
           id: input.orderId,
           buyer: { userId: ctx.session.user.id },
         },
-        include: buildIncludes,
+        include: {
+          orderValuePacks: {
+            include: {
+              contentType: true,
+            },
+          },
+          socialMedia: true,
+          orderStatus: true,
+          influencer: {
+            include: {
+              user: true,
+            },
+          },
+        },
       });
     }),
 
@@ -144,7 +135,6 @@ export const OrdersRouter = createTRPCRouter({
           ctx.prisma.order.count({
             where: {
               buyerId: profile.id,
-              NOT: [{ orderStatusId: 7 }],
               orderStatusId:
                 input.orderStatusId !== -1 ? input.orderStatusId : undefined,
               id: input.orderId !== -1 ? input.orderId : undefined,
@@ -153,7 +143,6 @@ export const OrdersRouter = createTRPCRouter({
           ctx.prisma.order.findMany({
             where: {
               buyerId: profile.id,
-              NOT: [{ orderStatusId: 7 }],
               orderStatusId:
                 input.orderStatusId !== -1 ? input.orderStatusId : undefined,
               id: input.orderId !== -1 ? input.orderId : undefined,
@@ -203,7 +192,6 @@ export const OrdersRouter = createTRPCRouter({
         return await ctx.prisma.order.findMany({
           where: {
             buyerId: profile.id,
-            NOT: [{ orderStatusId: 7 }],
             orderStatusId:
               input.orderStatusId !== -1 ? input.orderStatusId : undefined,
             id: input.orderId !== -1 ? input.orderId : undefined,
@@ -254,7 +242,7 @@ export const OrdersRouter = createTRPCRouter({
           ctx.prisma.order.count({
             where: {
               influencerId: profile.id,
-              NOT: [{ orderStatusId: 1 }, { orderStatusId: 7 }],
+              NOT: [{ orderStatusId: 7 }],
               orderStatusId:
                 input.saleStatusId !== -1 ? input.saleStatusId : undefined,
               id: input.saleId !== -1 ? input.saleId : undefined,
@@ -263,7 +251,7 @@ export const OrdersRouter = createTRPCRouter({
           ctx.prisma.order.findMany({
             where: {
               influencerId: profile.id,
-              NOT: [{ orderStatusId: 1 }, { orderStatusId: 7 }],
+              NOT: [{ orderStatusId: 7 }],
               orderStatusId:
                 input.saleStatusId !== -1 ? input.saleStatusId : undefined,
               id: input.saleId !== -1 ? input.saleId : undefined,
@@ -313,7 +301,7 @@ export const OrdersRouter = createTRPCRouter({
         return await ctx.prisma.order.findMany({
           where: {
             influencerId: profile.id,
-            NOT: [{ orderStatusId: 1 }, { orderStatusId: 7 }],
+            NOT: [{ orderStatusId: 7 }],
             orderStatusId:
               input.saleStatusId !== -1 ? input.saleStatusId : undefined,
             id: input.saleId !== -1 ? input.saleId : undefined,
@@ -349,7 +337,15 @@ export const OrdersRouter = createTRPCRouter({
 
   getAllSaleOrderStatus: publicProcedure.query(async ({ ctx }) => {
     return await ctx.prisma.orderStatus.findMany({
-      where: { NOT: [{ id: 1 }, { id: 7 }, { id: 6 }] },
+      where: { NOT: [{ id: 7 }] },
+      orderBy: {
+        name: "asc",
+      },
+    });
+  }),
+
+  getAllOrdersStatus: publicProcedure.query(async ({ ctx }) => {
+    return await ctx.prisma.orderStatus.findMany({
       orderBy: {
         name: "asc",
       },

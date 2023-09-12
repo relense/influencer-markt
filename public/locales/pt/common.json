@@ -367,6 +367,24 @@
     "notification": {
       "notifications": "Notificações",
       "noNotifications": "Não há notificações"
+    },
+
+    "whathappensNext": {
+      "buyerOrderStatusStart": "O que acontece depois de enviar o pedido?",
+      "buyerOrderStatusInProgress": "Qual é o progresso do meu pedido?",
+      "orderSent": "Pedido Enviado",
+      "ordersAccepted": "Pedido Aceite",
+      "paymentDetails": "Detalhes de Pagamento",
+      "inProgress": "Em Progresso",
+      "delivered": "Entregue",
+      "buyerOrderSent": "O influencer tem 24 horas para responder ao seu pedido. Pode conversar com ele através do campo de mensagens",
+      "buyerOrderAccepted": "O influencer aceitou o seu pedido. Agora tem 48 horas para adicionar os seus detalhes de pagamento",
+      "buyerPaymentDetails": "A encomenda está agora em progresso e, quando o influencer cumprir os requisitos, será entregue",
+      "buyerInProgress": "A encomenda foi entregue. Agora só precisa confirmar se tudo está como esperava e dar a sua opinião",
+      "influencerOrderSent": "O comprador fez um pedido. Tem 24 horas para dar a sua resposta",
+      "influencerOrderAccepted": "O comprador tem 48 horas para adicionar os seus detalhes de pagamento. Depois disso, pode trabalhar no pedido. Informaremos quando poderá começar",
+      "influencerPaymentDetails": "A encomenda está agora em progresso e é a sua vez de brilhar. Faça o que for necessário para cumprir os requisitos do pedido",
+      "influencerInProgress": "A encomenda foi entregue"
     }
   },
 
@@ -491,7 +509,7 @@
       "reviews_other": "{{count}} Comentários",
       "platform": "Plataforma",
       "platformPlaceholder": "Seleciona a platforma da rede social",
-      "tootlip": "Guardamos o pagamento durante 72 horas. Se o influenciador não aceitar o pedido, este será automaticamente cancelado e o seu pagamento será reembolsado.",
+      "tootlip": "Guardamos o pagamento durante 72 horas. Se o influencer não aceitar o pedido, este será automaticamente cancelado e o seu pagamento será reembolsado.",
       "disclaimer": "Só cobramos quando o pedido estiver completo",
       "subtotal": "Subtotal",
       "fee": "IVA",
@@ -579,9 +597,9 @@
       "questions.brands.question2": "O que é a Influencer Markt?",
       "answer.brands.answer2": "Servimos como um mercado onde pode descobrir e contratar influenciadores em plataformas populares, tais como o Instagram, TikTok, YouTube, Twitter, Twitch, Meta, Pinterest e LinkedIn. Pode pesquisar facilmente entre vários criadores de conteúdos e realizar pagamentos diretamente no website.",
       "questions.brands.question3": "Como é que os Influencers são verificados antes de aderirem à Influencer Markt?",
-      "answer.brands.answer3": "Asseguramos a autenticidade de cada influenciador presente na nossa plataforma, verificando a sua identidade. Além disso, realizamos auditorias exaustivas às suas contas nas redes sociais para detetar quaisquer sinais de “engagement” ou de seguidores falsos. Os negócios anteriores com outras marcas também são tidos em consideração.",
+      "answer.brands.answer3": "Asseguramos a autenticidade de cada influencer presente na nossa plataforma, verificando a sua identidade. Além disso, realizamos auditorias exaustivas às suas contas nas redes sociais para detetar quaisquer sinais de “engagement” ou de seguidores falsos. Os negócios anteriores com outras marcas também são tidos em consideração.",
       "questions.brands.question4": "Como é que posso efetuar pedidos personalizados?",
-      "answer.brands.answer4": "Se tiver um pedido específico que não se enquadre nos pacotes existentes de um influenciador, pode enviar-lhe uma oferta personalizada. Basta visitar o perfil do influenciador e clicar no botão ''Solicitar um pacote de valor personalizado'' e, em seguida, seguir os passos facultados. Além disso, pode abrir uma oferta pública, permitindo que os influenciadores lhe apresentem propostas para adjudicação.",
+      "answer.brands.answer4": "Se tiver um pedido específico que não se enquadre nos pacotes existentes de um influencer, pode enviar-lhe uma oferta personalizada. Basta visitar o perfil do influencer e clicar no botão ''Solicitar um pacote de valor personalizado'' e, em seguida, seguir os passos facultados. Além disso, pode abrir uma oferta pública, permitindo que os influenciadores lhe apresentem propostas para adjudicação.",
       "questions.brands.question5": "Quanto tempo é que os Influencers têm para aceitar o meu pedido?",
       "answer.brands.answer5": "Os Influencers têm um prazo de 72 horas para aceitar novos pedidos/ encomendas antes destes expirarem automaticamente.",
       "questions.brands.question6": "O que acontece se um Influencer rejeitar o meu pedido?",
@@ -614,7 +632,7 @@
       "offerSummary": "Sumário da Oferta",
       "offerSummaryPlaceholder": "Fornece um título cativante e descritivo para a tua oferta",
       "offerDetails": "Detalhes da Oferta",
-      "detailsPlaceholder": "Especifique os seus requisitos para esta oferta. Partilhe o número desejado de publicações ou fotografias e os resultados específicos que espera. Por exemplo, se precisar de um vídeo a promover o seu produto, forneça as orientações necessárias. Instruções claras ajudam o influenciador a compreender as suas expectativas e a envolver eficazmente o seu público-alvo.",
+      "detailsPlaceholder": "Especifique os seus requisitos para esta oferta. Partilhe o número desejado de publicações ou fotografias e os resultados específicos que espera. Por exemplo, se precisar de um vídeo a promover o seu produto, forneça as orientações necessárias. Instruções claras ajudam o influencer a compreender as suas expectativas e a envolver eficazmente o seu público-alvo.",
       "platformTitle": "Platforma da Oferta",
       "platformPlaceholder": "Seleciona a rede social para a tua oferta",
       "offerCategories": "Categorias da Oferta",
@@ -687,7 +705,7 @@
       "rememberOpenOffer": "Lembra-te, só ofertas abertas podem ser <1>publicadas,</1> ou <3>editadas</3>.",
       "anOfferIs": "Quando uma oferta é <1>aberta</1> e <3>publicada</3> é quando os influencer se podem candidatar e <5>tu</5> os podes gerir.",
       "firstTimedModalButton": "Entendi, Vamos Criar Ofertas!",
-      "inProgress": "Em Progress",
+      "inProgress": "Em Progresso",
       "whenAnOfferIsInProgress": "Quando uma oferta está em progresso, significa que uma oferta foi iniciada e os influencers estão a trabalhar para te entregar o que pediste.",
       "archievdIsWhen": "Arquivada é quando guardas uma oferta para mais tarde ou quando um influencer entregou o pedido e a oferta está completa.",
       "publishOffer": "Publicar Oferta",
@@ -788,7 +806,7 @@
       "total": "Total",
       "price": "Preço",
       "continuePayments": "Continuar os Detalhes de Pagamento",
-      "exploreMore": "Explora Mais Influencers"
+      "viewOrder": "Ver Detalhes do Pedido"
     },
 
     "sales": {
@@ -843,9 +861,11 @@
       "reject": "Rejeitar pedido",
       "orderAnswerAccept": "Ordem foi aceite com sucesso",
       "awaiting": "À espera da decisão do influencer",
+      "accepted": "O Influencer aceitou o teu pedido",
       "progress": "Em progresso",
       "deliver": "Entregar pedido",
-      "rejected": "Rejeitado"
+      "rejected": "Rejeitado",
+      "addPayment": "Adiona Detalhes de Pagamento"
     }
   }
 }

@@ -8,6 +8,7 @@ import { helper } from "../../utils/helper";
 import { Button } from "../../components/Button";
 import toast from "react-hot-toast";
 import { useState } from "react";
+import { WhatHappensNext } from "../../components/WhatHappensNext";
 
 const SalesDetailsPage = (params: { orderId: number }) => {
   const { t, i18n } = useTranslation();
@@ -55,12 +56,12 @@ const SalesDetailsPage = (params: { orderId: number }) => {
     if (type === "accept") {
       updateOrderAccept({
         orderId: params.orderId,
-        statusId: 4,
+        statusId: 3,
       });
     } else {
       updateOrderReject({
         orderId: params.orderId,
-        statusId: 3,
+        statusId: 2,
       });
     }
 
@@ -69,6 +70,23 @@ const SalesDetailsPage = (params: { orderId: number }) => {
 
   const renderBuyerDetails = () => {
     if (sale) {
+      let whatHappensNext:
+        | ""
+        | "awaiting"
+        | "accepted"
+        | "progress"
+        | "delivered"
+        | "completed" = "";
+      if (
+        sale.orderStatus?.name === "awaiting" ||
+        sale.orderStatus?.name === "accepted" ||
+        sale.orderStatus?.name === "progress" ||
+        sale.orderStatus?.name === "delivered" ||
+        sale.orderStatus?.name === "completed"
+      ) {
+        whatHappensNext = sale.orderStatus?.name;
+      }
+
       return (
         <div className="flex flex-1 flex-col items-center gap-4 rounded-xl border-[1px] p-8 lg:gap-4">
           <Link
@@ -98,7 +116,7 @@ const SalesDetailsPage = (params: { orderId: number }) => {
           <div className="font-semibold ">
             {t(`pages.sales.${sale?.orderStatus?.name || ""}`)}
           </div>
-          {sale.orderStatusId === 2 && (
+          {sale.orderStatusId === 1 && (
             <div className="flex gap-12">
               <Button
                 title={t("pages.sales.accept")}
@@ -118,6 +136,13 @@ const SalesDetailsPage = (params: { orderId: number }) => {
             <div className="flex gap-12">
               <Button title={t("pages.sales.deliver")} level="primary" />
             </div>
+          )}
+          {whatHappensNext && (
+            <WhatHappensNext
+              stage={whatHappensNext}
+              view="seller"
+              startedOrder={false}
+            />
           )}
         </div>
       );
@@ -177,7 +202,7 @@ const SalesDetailsPage = (params: { orderId: number }) => {
     }
   };
 
-  const renderFinalOfferDetails = () => {
+  const renderFinalOrderDetails = () => {
     return (
       <div className="flex flex-col gap-4">
         <div className="text-xl font-medium">
@@ -207,7 +232,7 @@ const SalesDetailsPage = (params: { orderId: number }) => {
             {renderSaleDetails()}
             {renderValuePacks()}
             {renderTotalPrice()}
-            {renderFinalOfferDetails()}
+            {renderFinalOrderDetails()}
           </div>
         </div>
       )}

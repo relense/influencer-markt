@@ -29,6 +29,7 @@ const StartOrderPage = (params: {
   const { t } = useTranslation();
 
   const [step, setStep] = useState<number>(0);
+  const [orderId, setOrderId] = useState<number>(-1);
 
   const [contentTypesList, setContentTypesList] = useState<
     ContentTypeWithQuantityAndValue[]
@@ -52,6 +53,7 @@ const StartOrderPage = (params: {
       onSuccess: (order) => {
         if (order) {
           setStep(1);
+          setOrderId(order.id);
 
           createNotification({
             entityId: order.id,
@@ -401,7 +403,9 @@ const StartOrderPage = (params: {
     return (
       <div className="flex w-full flex-1 cursor-default flex-col gap-8 self-center px-8 py-8 sm:px-12 xl:w-3/4 2xl:w-3/4 3xl:w-2/4">
         {stepperTitleStep1()}
-        <WhatHappensNext stage="orderSent" />
+        <div className="rounded-xl border-[1px]">
+          <WhatHappensNext stage="awaiting" view="buyer" startedOrder={true} />
+        </div>
         <div className="flex flex-col gap-4 rounded-xl border-[1px] p-4 lg:p-8">
           {renderInfluencerDetails()}
           <div className="w-full border-[1px] border-white1" />
@@ -411,9 +415,9 @@ const StartOrderPage = (params: {
           <div className="w-full border-[1px] border-white1" />
           {renderFinalOfferDetails()}
         </div>
-        <Link href="/explore/influencers" className="flex justify-center">
+        <Link href={`/orders/${orderId}`} className="flex justify-center">
           <Button
-            title={t("pages.startOrder.exploreMore")}
+            title={t("pages.startOrder.viewOrder")}
             level="primary"
             size="regular"
           />
