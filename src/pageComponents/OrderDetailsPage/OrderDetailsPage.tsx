@@ -69,7 +69,7 @@ const OrderDetailsPage = (params: { orderId: number }) => {
             href={`/${order.influencer?.user.username || ""}`}
             className="flex flex-1 flex-col gap-2"
           >
-            <div className="font-medium text-influencer underline">
+            <div className="font-medium text-influencer">
               {order.influencer?.name || ""}
             </div>
           </Link>

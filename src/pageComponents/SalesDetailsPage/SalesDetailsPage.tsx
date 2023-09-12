@@ -120,7 +120,7 @@ const SalesDetailsPage = (params: { orderId: number }) => {
             href={`/${sale.buyer?.user.username || ""}`}
             className="flex flex-1 flex-col gap-2"
           >
-            <div className="font-medium text-influencer underline">
+            <div className="font-medium text-influencer">
               {sale.buyer?.name || ""}
             </div>
           </Link>

@@ -836,6 +836,7 @@
       "awaiting": "The buyer is waiting for your decision",
       "progress": "In progress",
       "deliver": "Deliver order",
+      "delivered": "Order delivered",
       "rejected": "Rejected",
       "deliveryModalTitle": "Are all the requirements met?",
       "deliveryModalText": "Before delivering the order, please ensure that you have fulfilled all of the buyer's requests. If there is anything missing or if you need to discuss any aspect of the order, please feel free to use the messaging platform to communicate with them. Your attention to detail and communication are essential to providing a great experience for the buyer."
