@@ -140,6 +140,7 @@
       "started": "Iniciado",
       "awaiting": "A Aguardar Resposta",
       "rejected": "Rejeitado",
+      "accepted": "Aceite",
       "progress": "Em Progresso",
       "delivered": "Entregue",
       "canceled": "Cancelado",
@@ -771,8 +772,8 @@
     },
 
     "startOrder": {
-      "initiateOrder": "Iniciar Ordem",
-      "paymentDetails": "Detalhes de Pagamento",
+      "initiateOrder": "Informação do Pedido",
+      "orderSummary": "Fazer Pedido",
       "summary": "Resumo da ordem",
       "orderDetails": "Detalhes da Ordem",
       "orderPlatform": "Plataforma",
@@ -811,6 +812,7 @@
       "loadMore": "Mostrar Mais",
       "accept": "Aceitar pedido",
       "reject": "Rejeitar pedido",
+      "accepted": "Aceite",
       "saleAnswerAccept": "Ordem foi aceite com sucesso",
       "awaiting": "O comprador está à espera da tua decisão",
       "progress": "Em progresso",

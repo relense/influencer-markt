@@ -6,13 +6,10 @@ import { api } from "~/utils/api";
 
 import type { Option, ValuePack } from "../../utils/globalTypes";
 import { helper } from "../../utils/helper";
-import {
-  faChevronDown,
-  faChevronLeft,
-  faChevronUp,
-} from "@fortawesome/free-solid-svg-icons";
+import { faChevronDown, faChevronUp } from "@fortawesome/free-solid-svg-icons";
 import { Button } from "../../components/Button";
 import Link from "next/link";
+import { WhatHappensNext } from "../../components/WhatHappensNext";
 
 type OrderData = {
   orderDetails: string;
@@ -32,8 +29,6 @@ const StartOrderPage = (params: {
   const { t } = useTranslation();
 
   const [step, setStep] = useState<number>(0);
-  const [stripeRef, setStripRef] = useState<string>("");
-  const [orderId, setOrderId] = useState<number>(-1);
 
   const [contentTypesList, setContentTypesList] = useState<
     ContentTypeWithQuantityAndValue[]
@@ -57,14 +52,16 @@ const StartOrderPage = (params: {
       onSuccess: (order) => {
         if (order) {
           setStep(1);
-          setOrderId(order.id);
+
+          createNotification({
+            entityId: order.id,
+            notificationTypeAction: "awaitingReply",
+            notifierId: params.orderProfileId,
+          });
         }
       },
     }
   );
-
-  const { mutate: updateOrder, isLoading: isLoadingUpdateOrder } =
-    api.orders.updateOrder.useMutation();
 
   const { mutate: createNotification } =
     api.notifications.createSalesNotification.useMutation();
@@ -106,71 +103,35 @@ const StartOrderPage = (params: {
   };
 
   const submitOrder = handleSubmit((data) => {
-    if (orderId === -1) {
-      let valuePacksSum = 0;
+    let valuePacksSum = 0;
 
-      contentTypesList.forEach((contentType) => {
-        valuePacksSum += contentType.amount * contentType.price;
-      });
+    contentTypesList.forEach((contentType) => {
+      valuePacksSum += contentType.amount * contentType.price;
+    });
 
-      const tax = valuePacksSum * ((profile?.country?.countryTax || 0) / 100);
-      const total = valuePacksSum + tax;
+    const tax = valuePacksSum * ((profile?.country?.countryTax || 0) / 100);
+    const total = valuePacksSum + tax;
 
-      createOrder({
-        influencerId: params.orderProfileId,
-        orderDetails: data.orderDetails,
-        orderPrice: total.toString(),
-        orderValuePacks: contentTypesList.map((valuePack) => {
-          return {
-            amount: valuePack.amount,
-            price: valuePack.price.toString(),
-            contentTypeId: valuePack.contentType.id,
-          };
-        }),
-        platformId: params.valuePacks[0]?.platform?.id || -1,
-      });
-    } else {
-      setStep(1);
-    }
+    createOrder({
+      influencerId: params.orderProfileId,
+      orderDetails: data.orderDetails,
+      orderPrice: total.toString(),
+      orderValuePacks: contentTypesList.map((valuePack) => {
+        return {
+          amount: valuePack.amount,
+          price: valuePack.price.toString(),
+          contentTypeId: valuePack.contentType.id,
+        };
+      }),
+      platformId: params.valuePacks[0]?.platform?.id || -1,
+    });
   });
-
-  const savePaymentDetails = () => {
-    setStep(2);
-    updateOrder({
-      orderId: orderId,
-      statusId: 2,
-    });
-
-    createNotification({
-      entityId: orderId,
-      notificationTypeAction: "awaitingReply",
-      notifierId: params.orderProfileId,
-    });
-  };
 
   const stepperTitleStep0 = () => {
     return (
       <div className="flex items-center gap-4">
         <div className="flex items-center gap-2 font-semibold">
-          <div className="text-1xl flex h-10 w-10 items-center justify-center rounded-full border-[1px]">
-            1
-          </div>
           <div className="text-3xl">{t("pages.startOrder.initiateOrder")}</div>
-        </div>
-        <div
-          className="hidden items-center gap-2 lg:flex"
-          onClick={() => orderId !== -1 && setStep(1)}
-        >
-          <div className="flex h-6 w-6 items-center justify-center rounded-full border-[1px] text-base">
-            2
-          </div>
-          <div className="text-lg">{t("pages.startOrder.paymentDetails")}</div>
-        </div>
-        <div className="hidden items-center gap-2 lg:flex">
-          <div className="flex h-6 w-6 items-center justify-center rounded-full border-[1px] text-base">
-            3
-          </div>
-          <div className="text-lg">{t("pages.startOrder.summary")}</div>
         </div>
       </div>
     );
@@ -179,42 +140,12 @@ const StartOrderPage = (params: {
   const stepperTitleStep1 = () => {
     return (
       <div className="flex items-center gap-4">
-        <FontAwesomeIcon
-          icon={faChevronLeft}
-          className="fa-lg cursor-pointer"
-          onClick={() => setStep(0)}
-        />
-        <div
-          className="hidden cursor-pointer items-center gap-2 lg:flex"
-          onClick={() => setStep(0)}
-        >
-          <div className="flex h-6 w-6 items-center justify-center rounded-full border-[1px] text-base">
-            1
+        <div className="cursor-pointer flex-col items-center gap-2">
+          <div className="text-3xl">Your order request was sent</div>
+          <div>
+            The influencer has 24h to answer. We will keep you up to date by
+            e-mail.
           </div>
-          <div className="text-lg">{t("pages.startOrder.initiateOrder")}</div>
-        </div>
-        <div className="flex items-center gap-2 font-semibold">
-          <div className="flex h-10 w-10 items-center justify-center rounded-full border-[1px] text-xl">
-            2
-          </div>
-          <div className="text-3xl">{t("pages.startOrder.paymentDetails")}</div>
-        </div>
-
-        <div className="hidden items-center gap-2 lg:flex">
-          <div className="flex h-6 w-6 items-center justify-center rounded-full border-[1px] text-base">
-            3
-          </div>
-          <div className="text-lg">{t("pages.startOrder.summary")}</div>
-        </div>
-      </div>
-    );
-  };
-
-  const stepperTitleStep2 = () => {
-    return (
-      <div className="flex items-center gap-4">
-        <div className="flex items-center gap-2 font-semibold">
-          <div className="text-3xl">{t("pages.startOrder.summary")}</div>
         </div>
       </div>
     );
@@ -442,16 +373,6 @@ const StartOrderPage = (params: {
     }
   };
 
-  const renderPaymentDetails = () => {
-    return (
-      <div className="flex flex-col gap-2">
-        <div className="text-xl font-medium">
-          {t("pages.startOrder.paymentDetails")}
-        </div>
-      </div>
-    );
-  };
-
   if (step === 0) {
     return (
       <div className="flex w-full flex-1 cursor-default flex-col gap-8 self-center px-8 py-8 sm:px-12 xl:w-3/4 2xl:w-3/4 3xl:w-2/4">
@@ -467,11 +388,7 @@ const StartOrderPage = (params: {
         </form>
         <div className="flex justify-center">
           <Button
-            title={
-              orderId !== -1
-                ? t("pages.startOrder.continuePayments")
-                : t("pages.startOrder.paymentDetails")
-            }
+            title={t("pages.startOrder.orderSummary")}
             level="primary"
             size="regular"
             form="form-order"
@@ -484,36 +401,16 @@ const StartOrderPage = (params: {
     return (
       <div className="flex w-full flex-1 cursor-default flex-col gap-8 self-center px-8 py-8 sm:px-12 xl:w-3/4 2xl:w-3/4 3xl:w-2/4">
         {stepperTitleStep1()}
-        <input
-          className="rounded-lg border-[1px]"
-          type="text"
-          value={stripeRef}
-          onChange={(e) => setStripRef(e.target.value)}
-        />
-        <div className="flex justify-center">
-          <Button
-            title={t("pages.startOrder.summary")}
-            level="primary"
-            size="regular"
-            onClick={() => savePaymentDetails()}
-            isLoading={isLoadingUpdateOrder}
-          />
+        <WhatHappensNext stage="orderSent" />
+        <div className="flex flex-col gap-4 rounded-xl border-[1px] p-4 lg:p-8">
+          {renderInfluencerDetails()}
+          <div className="w-full border-[1px] border-white1" />
+          {renderPlatform()}
+          {renderFinalValuePacks()}
+          {renderTotalPay()}
+          <div className="w-full border-[1px] border-white1" />
+          {renderFinalOfferDetails()}
         </div>
-      </div>
-    );
-  } else if (step === 2) {
-    return (
-      <div className="flex w-full flex-1 cursor-default flex-col gap-8 self-center px-8 py-8 sm:px-12 xl:w-3/4 2xl:w-3/4 3xl:w-2/4">
-        {stepperTitleStep2()}
-        {renderPaymentDetails()}
-        <div className="w-full border-[1px] border-white1" />
-        {renderInfluencerDetails()}
-        <div className="w-full border-[1px] border-white1" />
-        {renderPlatform()}
-        {renderFinalValuePacks()}
-        {renderTotalPay()}
-        <div className="w-full border-[1px] border-white1" />
-        {renderFinalOfferDetails()}
         <Link href="/explore/influencers" className="flex justify-center">
           <Button
             title={t("pages.startOrder.exploreMore")}

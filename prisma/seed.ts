@@ -77,9 +77,9 @@ async function main() {
 
   await prisma.orderStatus.createMany({
     data: [
-      { name: "started" },
       { name: "awating" },
       { name: "rejected" },
+      { name: "accepted" },
       { name: "progress" },
       { name: "delivered" },
       { name: "completed" },

@@ -140,6 +140,7 @@
       "started": "Started",
       "awaiting": "Awaiting Answer",
       "rejected": "Rejected",
+      "accepted": "Accepted",
       "progress": "In Progress",
       "delivered": "Delivered",
       "canceled": "Canceled",
@@ -772,8 +773,8 @@
     },
 
     "startOrder": {
-      "initiateOrder": "Initiate Order",
-      "paymentDetails": "Payment Details",
+      "initiateOrder": "Order Information",
+      "orderSummary": "Make Order",
       "summary": "Order Summary",
       "orderDetails": "Order Details",
       "orderPlatform": "Platform",
@@ -812,6 +813,7 @@
       "loadMore": "Load More",
       "accept": "Accept order",
       "reject": "Reject order",
+      "accepted": "Accepted",
       "saleAnswerAccept": "Order accepted successfully",
       "awaiting": "The buyer is waiting for your decision",
       "progress": "In progress",
@@ -844,7 +846,8 @@
       "awaiting": "Waiting for influencer's decision",
       "progress": "In progress",
       "deliver": "Deliver order",
-      "rejected": "Rejected"
+      "rejected": "Rejected",
+      "started": "Missing payment details"
     }
   }
 }

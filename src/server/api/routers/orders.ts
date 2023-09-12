@@ -144,7 +144,7 @@ export const OrdersRouter = createTRPCRouter({
           ctx.prisma.order.count({
             where: {
               buyerId: profile.id,
-              NOT: [{ orderStatusId: 1 }, { orderStatusId: 7 }],
+              NOT: [{ orderStatusId: 7 }],
               orderStatusId:
                 input.orderStatusId !== -1 ? input.orderStatusId : undefined,
               id: input.orderId !== -1 ? input.orderId : undefined,
@@ -153,7 +153,7 @@ export const OrdersRouter = createTRPCRouter({
           ctx.prisma.order.findMany({
             where: {
               buyerId: profile.id,
-              NOT: [{ orderStatusId: 1 }, { orderStatusId: 7 }],
+              NOT: [{ orderStatusId: 7 }],
               orderStatusId:
                 input.orderStatusId !== -1 ? input.orderStatusId : undefined,
               id: input.orderId !== -1 ? input.orderId : undefined,
@@ -203,7 +203,7 @@ export const OrdersRouter = createTRPCRouter({
         return await ctx.prisma.order.findMany({
           where: {
             buyerId: profile.id,
-            NOT: [{ orderStatusId: 1 }, { orderStatusId: 7 }],
+            NOT: [{ orderStatusId: 7 }],
             orderStatusId:
               input.orderStatusId !== -1 ? input.orderStatusId : undefined,
             id: input.orderId !== -1 ? input.orderId : undefined,
