@@ -9,12 +9,14 @@ import { Button } from "../../components/Button";
 import toast from "react-hot-toast";
 import { useState } from "react";
 import { WhatHappensNext } from "../../components/WhatHappensNext";
+import { Modal } from "../../components/Modal";
 
 const SalesDetailsPage = (params: { orderId: number }) => {
   const { t, i18n } = useTranslation();
   const ctx = api.useContext();
 
   const [saleAnswer, setSaleAnswer] = useState<number>(-1);
+  const [showDeliverModal, setShowDeliverModal] = useState<boolean>(false);
 
   const { data: sale, isLoading } = api.orders.getSaleOrder.useQuery({
     orderId: params.orderId,
@@ -134,7 +136,11 @@ const SalesDetailsPage = (params: { orderId: number }) => {
           )}
           {sale.orderStatusId === 4 && (
             <div className="flex gap-12">
-              <Button title={t("pages.sales.deliver")} level="primary" />
+              <Button
+                title={t("pages.sales.deliver")}
+                level="primary"
+                onClick={() => setShowDeliverModal(true)}
+              />
             </div>
           )}
           {whatHappensNext && (
@@ -234,6 +240,25 @@ const SalesDetailsPage = (params: { orderId: number }) => {
             {renderTotalPrice()}
             {renderFinalOrderDetails()}
           </div>
+        </div>
+      )}
+      {showDeliverModal && (
+        <div className="flex justify-center">
+          <Modal
+            onClose={() => setShowDeliverModal(false)}
+            button={
+              <div className="flex justify-center p-4">
+                <Button title="Deliver Order" level="primary" />
+              </div>
+            }
+          >
+            <div className="flex flex-col items-center justify-center gap-4 p-4">
+              <div className="font-playfair text-3xl">
+                {t("pages.sales.deliveryModalTitle")}
+              </div>
+              <div className="px-12">{t("pages.sales.deliveryModalText")}</div>
+            </div>
+          </Modal>
         </div>
       )}
     </div>

@@ -380,11 +380,11 @@
       "buyerOrderSent": "O influencer tem 24 horas para responder ao seu pedido. Pode conversar com ele através do campo de mensagens",
       "buyerOrderAccepted": "O influencer aceitou o seu pedido. Agora tem 48 horas para adicionar os seus detalhes de pagamento",
       "buyerPaymentDetails": "A encomenda está agora em progresso e, quando o influencer cumprir os requisitos, será entregue",
-      "buyerInProgress": "A encomenda foi entregue. Agora só precisa confirmar se tudo está como esperava e dar a sua opinião",
+      "buyerInProgress": "O pedido foi entregue. Agora só precisa confirmar se tudo está como esperava e dar a sua opinião",
       "influencerOrderSent": "O comprador fez um pedido. Tem 24 horas para dar a sua resposta",
       "influencerOrderAccepted": "O comprador tem 48 horas para adicionar os seus detalhes de pagamento. Depois disso, pode trabalhar no pedido. Informaremos quando poderá começar",
-      "influencerPaymentDetails": "A encomenda está agora em progresso e é a sua vez de brilhar. Faça o que for necessário para cumprir os requisitos do pedido",
-      "influencerInProgress": "A encomenda foi entregue"
+      "influencerPaymentDetails": "O pedido está agora em progresso e é a sua vez de brilhar. Faça o que for necessário para cumprir os requisitos do pedido",
+      "influencerInProgress": "O pedido foi entregue"
     }
   },
 
@@ -835,7 +835,9 @@
       "awaiting": "O comprador está à espera da tua decisão",
       "progress": "Em progresso",
       "deliver": "Entregar pedido",
-      "rejected": "Rejeitado"
+      "rejected": "Rejeitado",
+      "deliveryModalTitle": "Estão todos os requisitos cumpridos?",
+      "deliveryModalText": "Antes de entregar, certifica-te de que cumpriste todos os pedidos do comprador. Se algo estiver em falta ou precisares de discutir algum aspecto do pedido, não hesites em utilizar a plataforma de mensagens para comunicar com o comprador. A tua atenção aos detalhes e comunicação são essenciais para proporcionar uma ótima experiência ao comprador."
     },
 
     "orders": {
