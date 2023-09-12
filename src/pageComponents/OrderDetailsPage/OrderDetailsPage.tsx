@@ -51,7 +51,7 @@ const OrderDetailsPage = (params: { orderId: number }) => {
       }
 
       return (
-        <div className="flex flex-1 flex-col items-center gap-4 rounded-xl border-[1px] p-8 lg:gap-4">
+        <div className="flex flex-1 flex-col items-center gap-4 rounded-xl border-[1px] px-4 py-8 lg:gap-4">
           <Link
             href={`/${order.influencer?.user.username || ""}`}
             className="flex-2 flex"
@@ -174,7 +174,7 @@ const OrderDetailsPage = (params: { orderId: number }) => {
   };
 
   return (
-    <div className="flex w-full cursor-default flex-col gap-6 self-center px-4 pb-10 sm:px-12 xl:w-3/4 2xl:w-3/4 3xl:w-2/4">
+    <div className="flex w-full cursor-default flex-col gap-6 self-center px-4 pb-10 sm:px-12 lg:w-full 2xl:w-3/4 3xl:w-2/4">
       <div className="text-2xl font-semibold">
         {t("pages.orders.orderDetails")}
       </div>

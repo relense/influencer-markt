@@ -30,14 +30,14 @@ const WhatHappensNext = (params: {
             }`}
           />
           <div
-            className={`m-[-2px] h-1 w-36 xl:w-40 2xl:w-48 5xl:w-52 6xl:w-64 ${
+            className={`m-[-2px] h-1 w-40 lg:w-48 xl:w-52 6xl:w-64 ${
               highlight ? "bg-influencer" : "bg-influencer-light"
             }`}
           />
         </div>
         <div className="flex pl-[7px]">
           <div className="h-full w-1 border-l-[3px] border-dashed border-gray3" />
-          <div className="w-36 px-4 py-2 text-sm xl:w-40 2xl:w-48 5xl:w-52 6xl:w-64">
+          <div className="w-40 px-4 py-2 text-sm lg:w-48 xl:w-52 6xl:w-64">
             {subtitle}
           </div>
         </div>
