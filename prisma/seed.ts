@@ -93,11 +93,12 @@ async function main() {
 
   await prisma.notificationType.createMany({
     data: [
-      { entityType: "orders", entityAction: "awaitingReply" },
-      { entityType: "sales", entityAction: "rejected" },
-      { entityType: "sales", entityAction: "accepted" },
-      { entityType: "sales", entityAction: "delivered" },
-      { entityType: "orders", entityAction: "canceled" },
+      { entityType: "sales", entityAction: "awaitingReply" },
+      { entityType: "orders", entityAction: "rejected" },
+      { entityType: "orders", entityAction: "accepted" },
+      { entityType: "orders", entityAction: "delivered" },
+      { entityType: "sales", entityAction: "canceled" },
+      { entityType: "sales", entityAction: "paymentAdded" },
     ],
   });
 

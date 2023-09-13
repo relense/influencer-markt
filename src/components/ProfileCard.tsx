@@ -231,7 +231,9 @@ const ProfileCard = (params: {
         </div>
       </div>
       <div className="flex flex-col">
-        <div className="text-xl font-bold">{params.name}</div>
+        <Link href={`/${params.username}`} className="text-xl font-bold">
+          {params.name}
+        </Link>
         <div className="text-sm text-gray2">
           {params.country}, {params.city}
         </div>

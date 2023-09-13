@@ -87,21 +87,23 @@ const StartOrderPage = (params: {
     index: number,
     type: "increase" | "decrease"
   ) => {
-    setContentTypesList((prevContentTypes) =>
-      prevContentTypes.map((contentType, i) =>
-        i === index
-          ? {
-              ...contentType,
-              amount:
-                type === "increase"
-                  ? contentType.amount++
-                  : contentType.amount > 0
-                  ? contentType.amount--
-                  : 1,
-            }
-          : contentType
-      )
+    const newContentTypesList = [...contentTypesList];
+
+    newContentTypesList.map((contentType, i) =>
+      i === index
+        ? {
+            ...contentType,
+            amount:
+              type === "increase"
+                ? contentType.amount++
+                : contentType.amount > 0
+                ? contentType.amount--
+                : 1,
+          }
+        : contentType
     );
+
+    setContentTypesList(newContentTypesList);
   };
 
   const submitOrder = handleSubmit((data) => {
@@ -143,11 +145,8 @@ const StartOrderPage = (params: {
     return (
       <div className="flex items-center gap-4">
         <div className="cursor-pointer flex-col items-center gap-2">
-          <div className="text-3xl">Your order request was sent</div>
-          <div>
-            The influencer has 24h to answer. We will keep you up to date by
-            e-mail.
-          </div>
+          <div className="text-3xl">{t("pages.startOrder.step1Title")}</div>
+          <div>{t("pages.startOrder.step1Subtitle")}</div>
         </div>
       </div>
     );
@@ -231,7 +230,7 @@ const StartOrderPage = (params: {
   const renderPlatform = () => {
     return (
       <div className="flex flex-col gap-2">
-        <div className="text-xl font-medium">
+        <div className="select-none text-xl font-medium">
           {t("pages.startOrder.orderPlatform")}
         </div>
         <div className="font-semibold text-influencer">
@@ -244,7 +243,7 @@ const StartOrderPage = (params: {
   const renderValuePacks = () => {
     return (
       <div className="flex flex-col gap-2">
-        <div className="text-xl font-medium">
+        <div className="select-none text-xl font-medium">
           {t("pages.startOrder.valuePacks")}
         </div>
         <div className="flex flex-col gap-4 lg:flex-row">
@@ -347,7 +346,7 @@ const StartOrderPage = (params: {
 
       return (
         <div className="flex flex-col gap-2">
-          <div className="text-xl font-medium">
+          <div className="select-none text-xl font-medium">
             {t("pages.startOrder.price")}
           </div>
           <div className="flex flex-col gap-4 lg:flex-row">
@@ -401,11 +400,9 @@ const StartOrderPage = (params: {
     );
   } else if (step === 1) {
     return (
-      <div className="flex w-full flex-1 cursor-default flex-col gap-8 self-center px-8 py-8 sm:px-12 xl:w-3/4 2xl:w-3/4 3xl:w-3/4 4xl:w-2/4 5xl:w-2/4">
+      <div className="flex w-full flex-1 cursor-default flex-col gap-8 self-center px-8 py-8 sm:px-12 2xl:w-3/4 3xl:w-3/4 4xl:w-2/4 5xl:w-2/4">
         {stepperTitleStep1()}
-        <div className="rounded-xl border-[1px]">
-          <WhatHappensNext stage="awaiting" view="buyer" startedOrder={true} />
-        </div>
+        <WhatHappensNext stage="awaiting" view="buyer" startedOrder={true} />
         <div className="flex flex-col gap-4 rounded-xl border-[1px] p-4 lg:p-8">
           {renderInfluencerDetails()}
           <div className="w-full border-[1px] border-white1" />

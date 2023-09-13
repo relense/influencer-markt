@@ -45,7 +45,6 @@ import {
   faXTwitter,
   faYoutube,
 } from "@fortawesome/free-brands-svg-icons";
-import { useRouter } from "next/router";
 
 const PublicProfilePage = (params: {
   username: string;
@@ -55,7 +54,6 @@ const PublicProfilePage = (params: {
   const ctx = api.useContext();
   const { t, i18n } = useTranslation();
   const { status } = useSession();
-  const router = useRouter();
 
   const [isReviewModalOpen, setIsReviewModalOpen] = useState<boolean>(false);
   const [isShareModalOpen, setIsShareModalOpen] = useState<boolean>(false);
@@ -657,7 +655,7 @@ const PublicProfilePage = (params: {
                         }
                       }
 
-                      const containerClass = `group flex w-full flex-[0_1_48%] cursor-pointer flex-col items-start gap-2 rounded-lg border p-2 text-sm font-medium hover:bg-influencer-green ${selectedContainer}`;
+                      const containerClass = `group flex w-full flex-[1_1_48%] cursor-pointer flex-col items-start gap-2 rounded-lg border p-2 text-sm font-medium hover:bg-influencer-green ${selectedContainer}`;
 
                       return (
                         <div
@@ -699,7 +697,11 @@ const PublicProfilePage = (params: {
                 title={t("pages.publicProfilePage.valuePackSubmitButton")}
                 level="primary"
                 size="large"
-                disabled={platform.id === -1 || selectedValuePacks.length === 0}
+                disabled={
+                  platform.id === -1 ||
+                  selectedValuePacks.length === 0 ||
+                  params.loggedInProfileId === profile?.id
+                }
               />
             </Link>
           ) : (
@@ -712,7 +714,6 @@ const PublicProfilePage = (params: {
             />
           )}
           <div className="flex items-center justify-center gap-2 text-center text-gray2">
-            <ToolTip content={t("pages.publicProfilePage.tootlip")} />
             <div>{t("pages.publicProfilePage.disclaimer")}</div>
           </div>
           <div className="flex flex-col gap-4 text-lg">
@@ -922,7 +923,7 @@ const PublicProfilePage = (params: {
   } else {
     return (
       <div className="flex justify-center">
-        <div className="mt-2 flex w-full cursor-default flex-col gap-6 self-center px-4 pb-10 sm:px-12 lg:w-full 2xl:w-3/4 3xl:w-3/4 4xl:w-2/4 5xl:w-2/4">
+        <div className="mt-2 flex w-full cursor-default flex-col gap-6 self-center px-4 pb-10 sm:px-12 lg:w-full 2xl:w-3/4 3xl:w-3/4 4xl:w-7/12 5xl:w-2/4">
           {renderHeader()}
           {renderMiddleContent()}
           {renderReviews()}

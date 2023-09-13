@@ -47,7 +47,7 @@ const WhatHappensNext = (params: {
 
   const renderDesktopView = () => {
     return (
-      <div className="hidden flex-col gap-6 p-8 lg:flex">
+      <div className="hidden flex-col gap-6 lg:flex">
         <div className="font-medium">{renderTitle()}</div>
         <div className="flex">
           {renderItemDesktop(

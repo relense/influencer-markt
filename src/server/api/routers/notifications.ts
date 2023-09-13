@@ -152,15 +152,15 @@ const getNotificationTypeActionId = (
     } else if (notificationAction === "accepted") {
       return 3;
     } else if (notificationAction === "delivered") {
-      return 5;
+      return 4;
     }
   } else if (notificationType === "sales") {
     if (notificationAction === "awaitingReply") {
       return 1;
     } else if (notificationAction === "canceled") {
-      return 7;
+      return 5;
     } else if (notificationAction === "paymentAdded") {
-      return 4;
+      return 6;
     }
   }
 };

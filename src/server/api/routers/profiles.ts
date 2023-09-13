@@ -798,7 +798,6 @@ export const profilesRouter = createTRPCRouter({
     return await ctx.prisma.profile.findFirst({
       where: {
         userId: ctx.session.user.id,
-        OR: [{ verifiedStatusId: 1 }, { verifiedStatusId: 3 }],
       },
       select: {
         createdOffers: {

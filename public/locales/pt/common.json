@@ -132,8 +132,9 @@
       "salesAwaitingReply": "{{actor}} fez um pedido que precisa da tua revisão",
       "ordersRejected": "{{actor}} rejeitou a tua oferta",
       "ordersAccepted": "{{actor}} aceitou a tua oferta",
-      "ordersDelivered": "O pedido foi entregue",
-      "salesCanceled": "O pedido foi cancelado"
+      "ordersDelivered": "{{actor}} entregou o pedido",
+      "salesCanceled": "O pedido foi cancelado",
+      "salesPaymentsAdded": "{{actor}} adicionou os detalhes de pagamento. Podes trabalhar no pedido"
     },
 
     "orderStatus": {
@@ -380,9 +381,9 @@
       "buyerOrderSent": "O influencer tem 24 horas para responder ao seu pedido. Pode conversar com ele através do campo de mensagens",
       "buyerOrderAccepted": "O influencer aceitou o seu pedido. Agora tem 48 horas para adicionar os seus detalhes de pagamento",
       "buyerPaymentDetails": "A encomenda está agora em progresso e, quando o influencer cumprir os requisitos, será entregue",
-      "buyerInProgress": "O pedido foi entregue. Agora só precisa confirmar se tudo está como esperava e dar a sua opinião",
-      "influencerOrderSent": "O comprador fez um pedido. Tem 24 horas para dar a sua resposta",
-      "influencerOrderAccepted": "O comprador tem 48 horas para adicionar os seus detalhes de pagamento. Depois disso, pode trabalhar no pedido. Informaremos quando poderá começar",
+      "buyerInProgress": "O pedido foi entregue. Agora só precisas de confirmar se tudo está como esperavas e de dar a tua opinião",
+      "influencerOrderSent": "O comprador fez um pedido. Tem 24 horas para dar uma resposta",
+      "influencerOrderAccepted": "O comprador tem 48 horas para adicionar os seus detalhes de pagamento. Depois disso, podes trabalhar no pedido. Informaremos quando podes começar",
       "influencerPaymentDetails": "O pedido está agora em progresso e é a sua vez de brilhar. Faça o que for necessário para cumprir os requisitos do pedido",
       "influencerInProgress": "O pedido foi entregue"
     }
@@ -509,8 +510,7 @@
       "reviews_other": "{{count}} Comentários",
       "platform": "Plataforma",
       "platformPlaceholder": "Seleciona a platforma da rede social",
-      "tootlip": "Guardamos o pagamento durante 72 horas. Se o influencer não aceitar o pedido, este será automaticamente cancelado e o seu pagamento será reembolsado.",
-      "disclaimer": "Só cobramos quando o pedido estiver completo",
+      "disclaimer": "Os detalhes de pagamento só são necessários quando o influencer aceitar o pedido",
       "subtotal": "Subtotal",
       "fee": "IVA",
       "total": "Total",
@@ -806,7 +806,9 @@
       "total": "Total",
       "price": "Preço",
       "continuePayments": "Continuar os Detalhes de Pagamento",
-      "viewOrder": "Ver Detalhes do Pedido"
+      "viewOrder": "Ver Detalhes do Pedido",
+      "step1Title": "O teu pedido foi enviado",
+      "step1Subtitle": "O influencer tem 24h para responder. Manteremos-te informado por e-mail."
     },
 
     "sales": {
@@ -868,7 +870,7 @@
       "progress": "Em progresso",
       "deliver": "Entregar pedido",
       "rejected": "Rejeitado",
-      "addPayment": "Adiona Detalhes de Pagamento"
+      "addPayment": "Adiciona Detalhes de Pagamento"
     }
   }
 }

@@ -53,6 +53,7 @@ export const Navbar = (params: {
 }) => {
   const { t } = useTranslation();
   const router = useRouter();
+  const ctx = api.useContext();
 
   const dropdownWrapperRef = useRef(null);
   const drawerRef = useRef<HTMLDivElement>(null);
@@ -68,7 +69,11 @@ export const Navbar = (params: {
     api.notifications.getUserToBeReadNotifications.useQuery();
 
   const { mutate: notificationUpdate } =
-    api.notifications.updateNotificationsToRead.useMutation();
+    api.notifications.updateNotificationsToRead.useMutation({
+      onSuccess: () => {
+        void ctx.notifications.getUserToBeReadNotifications.invalidate();
+      },
+    });
 
   useOutsideClick(() => {
     if (toggleOptions === false) return;
@@ -394,15 +399,15 @@ export const Navbar = (params: {
             nodeRef={drawerRef}
           >
             <div
-              className="handle absolute bottom-0 left-0 right-0 z-50 flex w-screen cursor-grab flex-col gap-2 rounded-t-lg border-white1 bg-white px-8 pb-4 text-sm shadow-lg sm:bottom-auto sm:left-auto sm:right-5 sm:top-20 sm:w-auto sm:cursor-pointer sm:rounded-2xl sm:border-[1px] sm:p-8 sm:pt-2 sm:text-base"
+              className="absolute bottom-0 left-0 right-0 z-50 flex w-screen cursor-grab flex-col gap-2 rounded-t-lg border-white1 bg-white px-8 pb-4 text-sm shadow-lg sm:bottom-auto sm:left-auto sm:right-5 sm:top-20 sm:w-auto sm:cursor-pointer sm:rounded-2xl sm:border-[1px] sm:p-8 sm:pt-2 sm:text-base"
               ref={drawerRef}
             >
-              <div className="flex h-1 w-full flex-1 cursor-pointer justify-center pt-2 sm:hidden">
+              <div className="flex h-1 w-full flex-1 cursor-pointer justify-center sm:hidden">
                 <div className="h-[2px] w-10" />
               </div>
               <Link
                 href={params.username ? `/${params.username}` : "/"}
-                className="group hidden items-center gap-4 py-2 sm:flex"
+                className="group hidden cursor-pointer items-center gap-4 py-2 sm:flex"
               >
                 <FontAwesomeIcon icon={faUserCircle} className="fa-xl" />
                 <div className="w-4/5 break-words group-hover:underline">

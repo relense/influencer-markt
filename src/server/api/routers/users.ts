@@ -71,20 +71,33 @@ export const usersRouter = createTRPCRouter({
     .query(async ({ ctx, input }) => {
       if (
         input.username === "" ||
-        input.username === "explore" ||
-        input.username === "admin" ||
-        input.username === "influencer" ||
-        input.username === "offers" ||
-        input.username === "settings" ||
-        input.username === "manage-offers" ||
-        input.username === "my-applications" ||
-        input.username === "saved" ||
-        input.username === "brands" ||
-        input.username === "home" ||
-        input.username === "orders" ||
-        input.username === "notifications" ||
-        input.username === "messages" ||
-        input.username === "verify"
+        input.username.toUpperCase() === "explore".toUpperCase() ||
+        input.username.toUpperCase() === "admin".toUpperCase() ||
+        input.username.toUpperCase() === "influencer".toUpperCase() ||
+        input.username.toUpperCase() === "offers".toUpperCase() ||
+        input.username.toUpperCase() === "settings".toUpperCase() ||
+        input.username.toUpperCase() === "manage-offers".toUpperCase() ||
+        input.username.toUpperCase() === "my-applications".toUpperCase() ||
+        input.username.toUpperCase() === "saved".toUpperCase() ||
+        input.username.toUpperCase() === "brands".toUpperCase() ||
+        input.username.toUpperCase() === "home".toUpperCase() ||
+        input.username.toUpperCase() === "orders".toUpperCase() ||
+        input.username.toUpperCase() === "notifications".toUpperCase() ||
+        input.username.toUpperCase() === "messages".toUpperCase() ||
+        input.username.toUpperCase() === "verify".toUpperCase() ||
+        input.username.toUpperCase() === "influencer".toUpperCase() ||
+        input.username.toUpperCase() === "market".toUpperCase() ||
+        input.username.toUpperCase() === "markt".toUpperCase() ||
+        input.username.toUpperCase() === "influencerMarkt".toUpperCase() ||
+        input.username.toUpperCase() === "marketInfluencer".toUpperCase() ||
+        input.username.toUpperCase() ===
+          "https://www.influencerMartk.com".toUpperCase() ||
+        input.username.toUpperCase() ===
+          "https://www.influencermartk.com".toUpperCase() ||
+        input.username.toUpperCase() ===
+          "http://www.influencermartk.com".toUpperCase() ||
+        input.username.toUpperCase() === "influencermartk.com".toUpperCase() ||
+        input.username.toUpperCase() === "influencerMartk.com".toUpperCase()
       ) {
         return false;
       }

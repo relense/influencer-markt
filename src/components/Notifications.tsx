@@ -227,11 +227,11 @@ const getNotificationMessageKey = (notificationsTypeId: number) => {
   } else if (notificationsTypeId === 3) {
     return "ordersAccepted";
   } else if (notificationsTypeId === 4) {
-    return "orderInProgress";
-  } else if (notificationsTypeId === 5) {
     return "ordersDelivered";
-  } else if (notificationsTypeId === 7) {
+  } else if (notificationsTypeId === 5) {
     return "salesCanceled";
+  } else if (notificationsTypeId === 6) {
+    return "salesPaymentsAdded";
   } else {
     return "";
   }

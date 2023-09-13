@@ -130,10 +130,11 @@
 
     "notificationsMessages": {
       "salesAwaitingReply": "{{actor}} made a new order that needs your review",
-      "ordersRejected": "{{actor}} rejected your offer",
-      "ordersAccepted": "{{actor}} accepted your offer",
-      "ordersDelivered": "The order was delivered",
-      "salesCanceled": "The order has been canceled"
+      "ordersRejected": "{{actor}} rejected your order",
+      "ordersAccepted": "{{actor}} accepted your order",
+      "ordersDelivered": "{{actor }} devilered your order",
+      "salesCanceled": "The order has been canceled",
+      "salesPaymentsAdded": "{{actor}} added payment details. You can now work on your order"
     },
 
     "orderStatus": {
@@ -509,8 +510,7 @@
       "reviews_other": "{{count}} Reviews",
       "platform": "Platform",
       "platformPlaceholder": "Select the social media platform",
-      "tootlip": "We hold the payment for 72 hours. If the influencer doesn’t accept the order it will automatically be cancelled and your payments refunded",
-      "disclaimer": "We only charge when the order is complete",
+      "disclaimer": "We only ask for your payment details if the influencer accepts the order",
       "subtotal": "Subtotal",
       "fee": "Tax",
       "total": "Total",
@@ -807,7 +807,9 @@
       "total": "Total",
       "price": "Price",
       "continuePayments": "Continue Payment Details",
-      "viewOrder": "View Order Details"
+      "viewOrder": "View Order Details",
+      "step1Title": "Your order request was sent",
+      "step1Subtitle": "The influencer has 24h to answer. We will keep you up to date by e-mail."
     },
 
     "sales": {
