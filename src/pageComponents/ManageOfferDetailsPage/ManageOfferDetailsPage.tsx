@@ -1112,7 +1112,7 @@ const ManageOfferDetailsPage = (params: {
 
       return (
         <>
-          <div className="flex w-full cursor-default flex-col gap-8 self-center p-8 pb-10 sm:p-4 sm:px-8 xl:w-3/4 xl:px-2 2xl:w-3/4 3xl:w-2/4">
+          <div className="flex w-full cursor-default flex-col gap-8 self-center p-8 pb-10 sm:p-4 sm:px-8 xl:w-3/4 xl:px-2 2xl:w-3/4 3xl:w-3/4 4xl:w-2/4 5xl:w-2/4">
             {renderOfferDetails()}
             <div className="w-full border-[1px] border-white1" />
             <div className="flex flex-1 justify-end gap-4">

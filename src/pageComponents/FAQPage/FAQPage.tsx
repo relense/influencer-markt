@@ -195,7 +195,7 @@ const FAQPage = () => {
   };
 
   return (
-    <div className="flex flex-1 flex-col justify-center gap-16 px-4 pt-4 lg:gap-24 xl:w-3/4 xl:self-center 2xl:w-2/4">
+    <div className="flex flex-1 flex-col justify-center gap-16 px-4 pt-4 lg:gap-24 xl:w-3/4 xl:self-center 2xl:w-3/4 3xl:w-3/4 4xl:w-2/4 5xl:w-2/4">
       <div className="flex flex-col justify-center text-center font-playfair text-5xl font-semibold">
         <h1 className="text-2xl lg:text-5xl">{t("pages.faq.title")}</h1>
         <h2 className="p-2 text-xl  font-normal text-gray1 lg:p-7 lg:text-3xl">

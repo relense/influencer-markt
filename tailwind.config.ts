@@ -32,7 +32,7 @@ export default {
         xxs: "360px",
         xs: "380px",
         "3xl": "1750px",
-        "4xl": "200px",
+        "4xl": "2000px",
         "5xl": "2300px",
         "6xl": "2600px",
         ...defaultTheme.screens,

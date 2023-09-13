@@ -169,7 +169,7 @@ const MyApplicationsPage = (params: {
 
   return (
     <>
-      <div className="mt-5 flex w-full cursor-default flex-col gap-8 self-center px-4 sm:px-12 xl:w-3/4 2xl:w-3/4 3xl:w-2/4">
+      <div className="mt-5 flex w-full cursor-default flex-col gap-8 self-center px-4 sm:px-12 xl:w-3/4 2xl:w-3/4 3xl:w-3/4 4xl:w-2/4 5xl:w-2/4">
         {offers.length === 0 &&
           !isLoadingOffers &&
           !isRefetchingOffers &&

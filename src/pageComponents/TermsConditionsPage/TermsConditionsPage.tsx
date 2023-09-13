@@ -1428,7 +1428,7 @@ const TermsConditionsPage = () => {
   };
 
   return (
-    <div className="flex flex-1 flex-col justify-center gap-8 p-4 xl:w-3/4 xl:self-center 2xl:w-2/4">
+    <div className="flex flex-1 flex-col justify-center gap-8 p-4 xl:w-3/4 xl:self-center 2xl:w-3/4 3xl:w-3/4 4xl:w-2/4 5xl:w-2/4">
       <div className="text-center font-playfair text-4xl font-semibold">
         Terms And Conditions
       </div>

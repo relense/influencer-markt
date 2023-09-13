@@ -111,7 +111,7 @@ const AboutPage = () => {
   };
 
   return (
-    <div className="flex flex-1 flex-col justify-center gap-16 p-4 xl:w-3/4 xl:self-center 2xl:w-2/4">
+    <div className="flex flex-1 flex-col justify-center gap-16 p-4 xl:w-3/4 xl:self-center 2xl:w-3/4 3xl:w-3/4 4xl:w-2/4 5xl:w-2/4">
       {renderMission()}
       {renderSelfPromo()}
       {renderMeetOurTeam()}

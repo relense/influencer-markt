@@ -339,7 +339,7 @@ const SalesPage = () => {
   };
 
   return (
-    <div className="flex w-full cursor-default flex-col gap-6 self-center px-4 pb-10 sm:px-12 xl:w-3/4 2xl:w-3/4 3xl:w-2/4">
+    <div className="flex w-full cursor-default flex-col gap-6 self-center px-4 pb-10 sm:px-12 lg:w-full 2xl:w-3/4 3xl:w-3/4 4xl:w-2/4 5xl:w-2/4">
       <div className="text-2xl font-semibold">{t("pages.sales.sales")}</div>
       {renderFilters()}
 

@@ -401,7 +401,7 @@ const StartOrderPage = (params: {
     );
   } else if (step === 1) {
     return (
-      <div className="flex w-full flex-1 cursor-default flex-col gap-8 self-center px-8 py-8 sm:px-12 xl:w-3/4 2xl:w-3/4 3xl:w-2/4">
+      <div className="flex w-full flex-1 cursor-default flex-col gap-8 self-center px-8 py-8 sm:px-12 xl:w-3/4 2xl:w-3/4 3xl:w-3/4 4xl:w-2/4 5xl:w-2/4">
         {stepperTitleStep1()}
         <div className="rounded-xl border-[1px]">
           <WhatHappensNext stage="awaiting" view="buyer" startedOrder={true} />

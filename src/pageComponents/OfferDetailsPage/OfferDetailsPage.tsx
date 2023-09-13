@@ -374,7 +374,7 @@ const OfferDetailsPage = (params: {
 
   return (
     <>
-      <div className="mb-5 mt-5 flex w-full cursor-default flex-col gap-8 self-center px-4 sm:px-12 xl:w-2/4">
+      <div className="mb-5 mt-5 flex w-full cursor-default flex-col gap-8 self-center px-4 sm:px-12 xl:w-2/4 2xl:w-3/4 3xl:w-3/4 4xl:w-2/4 5xl:w-2/4">
         {isLoading ? (
           <div className="flex h-full w-full items-center justify-center">
             <LoadingSpinner />

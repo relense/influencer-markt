@@ -109,7 +109,7 @@ const SavedPage = (params: { roleId: number; loggedInProfileId: number }) => {
       );
     } else {
       return (
-        <div className="flex flex-1 flex-col items-center justify-center  gap-12 p-2 text-gray2 lg:w-full lg:gap-6 lg:p-12 xl:self-center xl:p-4 2xl:w-3/4">
+        <div className="flex flex-1 flex-col items-center justify-center  gap-12 p-2 text-gray2 lg:w-full lg:gap-6 lg:p-12 xl:self-center xl:p-4 2xl:w-3/4 3xl:w-3/4 4xl:w-2/4 5xl:w-2/4">
           <FontAwesomeIcon
             icon={faBookmark}
             className="fa-2xl cursor-pointer"
