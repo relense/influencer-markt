@@ -54,6 +54,7 @@ const SalesDetailsPage = (params: { orderId: number }) => {
   const { mutate: updateOrderDeliver, isLoading: updateOrderDeliverIsLoading } =
     api.orders.updateOrder.useMutation({
       onSuccess: () => {
+        setShowDeliverModal(false);
         void createNotification({
           entityId: params.orderId,
           notifierId: sale?.buyerId || -1,
@@ -261,7 +262,7 @@ const SalesDetailsPage = (params: { orderId: number }) => {
             button={
               <div className="flex justify-center p-4">
                 <Button
-                  title="Deliver Order"
+                  title={t("pages.sales.deliver")}
                   level="primary"
                   onClick={() =>
                     updateOrderDeliver({

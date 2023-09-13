@@ -64,6 +64,9 @@ export const Navbar = (params: {
   const [draggablePositionY, setDraggablePositionY] = useState<number>(0);
   const [notificationsOpen, setNotificationsOpen] = useState<boolean>(false);
   const [notificationsCount, setNotificationsCount] = useState<number>(0);
+  const [openExploreDropdown, setOpenExploreDropdown] =
+    useState<boolean>(false);
+  const [openSavedDropdown, setOpenSavedDropdown] = useState<boolean>(false);
 
   const { data: notificationsToBeReadCount } =
     api.notifications.getUserToBeReadNotifications.useQuery();
@@ -128,72 +131,37 @@ export const Navbar = (params: {
         </Link>
 
         <div className="group relative flex px-2">
-          <div className="flex items-center gap-2">
-            <Link
-              href="/explore/influencers"
-              className="cursor-pointer text-lg"
-            >
-              {t("components.navbar.explore")}
-            </Link>
-            {params.sessionData && params.loggedInProfileId !== -1 && (
-              <>
-                <FontAwesomeIcon
-                  icon={faChevronDown}
-                  className="fa-sm flex cursor-pointer group-hover:hidden"
-                />
-                <FontAwesomeIcon
-                  icon={faChevronUp}
-                  className="fa-sm group hidden cursor-pointer group-hover:flex"
-                />
-              </>
-            )}
-          </div>
-          {params.sessionData && params.loggedInProfileId !== -1 && (
-            <div className="absolute left-[-13px] top-7 z-50 hidden flex-col justify-center rounded-lg bg-white shadow-md group-hover:flex">
+          {!params.sessionData && params.loggedInProfileId === -1 && (
+            <div className="flex items-center gap-2">
               <Link
                 href="/explore/influencers"
                 className="cursor-pointer text-lg"
               >
-                <div className="cursor-pointer rounded-t-lg px-8 py-4 hover:bg-influencer-green hover:text-white">
-                  {t("components.navbar.influencers")}
-                </div>
-              </Link>
-
-              <Link
-                href="/explore/brands"
-                className="hover: cursor-pointer rounded-b-lg px-8 py-4 text-lg hover:bg-influencer-green hover:text-white"
-              >
-                {t("components.navbar.brands")}
+                {t("components.navbar.explore")}
               </Link>
             </div>
           )}
-        </div>
-        {params.sessionData && params.loggedInProfileId !== -1 && (
-          <>
-            <div className="group relative flex px-2">
-              <div className="flex items-center gap-2">
-                <Link
-                  href="/saved/influencers"
-                  className="cursor-pointer text-lg"
-                >
-                  {t("components.navbar.saved")}
-                </Link>
-                {params.sessionData && (
-                  <>
-                    <FontAwesomeIcon
-                      icon={faChevronDown}
-                      className="fa-sm flex cursor-pointer group-hover:hidden"
-                    />
-                    <FontAwesomeIcon
-                      icon={faChevronUp}
-                      className="fa-sm group hidden cursor-pointer group-hover:flex"
-                    />
-                  </>
-                )}
+          {params.sessionData && params.loggedInProfileId !== -1 && (
+            <div
+              className="flex items-center gap-2"
+              onClick={() => setOpenExploreDropdown(!openExploreDropdown)}
+            >
+              <div className="cursor-pointer text-lg">
+                {t("components.navbar.explore")}
               </div>
-              <div className="absolute left-[-13px] top-7 z-50 hidden flex-col justify-center rounded-lg bg-white shadow-md group-hover:flex">
+
+              <FontAwesomeIcon
+                icon={openExploreDropdown ? faChevronUp : faChevronDown}
+                className="fa-sm flex cursor-pointer"
+              />
+            </div>
+          )}
+          {params.sessionData &&
+            params.loggedInProfileId !== -1 &&
+            openExploreDropdown && (
+              <div className="absolute left-[-13px] top-7 z-50 flex flex-col justify-center rounded-lg bg-white shadow-md">
                 <Link
-                  href="/saved/influencers"
+                  href="/explore/influencers"
                   className="cursor-pointer text-lg"
                 >
                   <div className="cursor-pointer rounded-t-lg px-8 py-4 hover:bg-influencer-green hover:text-white">
@@ -202,12 +170,50 @@ export const Navbar = (params: {
                 </Link>
 
                 <Link
-                  href="/saved/brands"
-                  className="hover: cursor-pointer px-8 py-4 text-lg hover:bg-influencer-green hover:text-white"
+                  href="/explore/brands"
+                  className="hover: cursor-pointer rounded-b-lg px-8 py-4 text-lg hover:bg-influencer-green hover:text-white"
                 >
                   {t("components.navbar.brands")}
                 </Link>
               </div>
+            )}
+        </div>
+        {params.sessionData && params.loggedInProfileId !== -1 && (
+          <>
+            <div className="group relative flex px-2">
+              <div
+                className="flex items-center gap-2"
+                onClick={() => setOpenSavedDropdown(!openSavedDropdown)}
+              >
+                <div className="cursor-pointer text-lg">
+                  {t("components.navbar.saved")}
+                </div>
+                {params.sessionData && (
+                  <FontAwesomeIcon
+                    icon={openSavedDropdown ? faChevronUp : faChevronDown}
+                    className="fa-sm flex cursor-pointer"
+                  />
+                )}
+              </div>
+              {openSavedDropdown && (
+                <div className="absolute left-[-13px] top-7 z-50 flex flex-col justify-center rounded-lg bg-white shadow-md">
+                  <Link
+                    href="/saved/influencers"
+                    className="cursor-pointer text-lg"
+                  >
+                    <div className="cursor-pointer rounded-t-lg px-8 py-4 hover:bg-influencer-green hover:text-white">
+                      {t("components.navbar.influencers")}
+                    </div>
+                  </Link>
+
+                  <Link
+                    href="/saved/brands"
+                    className="hover: cursor-pointer px-8 py-4 text-lg hover:bg-influencer-green hover:text-white"
+                  >
+                    {t("components.navbar.brands")}
+                  </Link>
+                </div>
+              )}
             </div>
           </>
         )}
@@ -697,6 +703,18 @@ export const Navbar = (params: {
   return (
     <nav>
       <div className="flex w-full select-none items-center justify-between px-4 py-2 lg:h-16 lg:gap-4 lg:p-12">
+        {openExploreDropdown && (
+          <div
+            className="absolute left-0 top-0 z-40 h-screen w-screen"
+            onClick={() => setOpenExploreDropdown(!openExploreDropdown)}
+          />
+        )}
+        {openSavedDropdown && (
+          <div
+            className="absolute left-0 top-0 z-40 h-screen w-screen"
+            onClick={() => setOpenSavedDropdown(!openSavedDropdown)}
+          />
+        )}
         {renderLogoTitle()}
         {leftNavBar()}
         {rightNavbar()}

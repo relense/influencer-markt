@@ -76,9 +76,16 @@ const StartOrderPage = (params: {
   } = useForm<OrderData>();
 
   const handleAmountChange = (index: number, value: number) => {
+    let newValue = 0;
+    if (value >= 1 && value <= 10) {
+      newValue = value;
+    } else {
+      newValue = 1;
+    }
+
     setContentTypesList((prevContentTypes) =>
       prevContentTypes.map((contentType, i) =>
-        i === index ? { ...contentType, amount: value } : contentType
+        i === index ? { ...contentType, amount: newValue } : contentType
       )
     );
   };
@@ -87,23 +94,34 @@ const StartOrderPage = (params: {
     index: number,
     type: "increase" | "decrease"
   ) => {
-    const newContentTypesList = [...contentTypesList];
+    const updatedContentTypesList = contentTypesList.map((contentType, i) => {
+      if (i === index) {
+        let newAmount = contentType.amount;
 
-    newContentTypesList.map((contentType, i) =>
-      i === index
-        ? {
-            ...contentType,
-            amount:
-              type === "increase"
-                ? contentType.amount++
-                : contentType.amount > 0
-                ? contentType.amount--
-                : 1,
+        if (type === "increase") {
+          if (contentType.amount + 1 > 10) {
+            newAmount = 10;
+          } else {
+            newAmount = contentType.amount + 1;
           }
-        : contentType
-    );
+        } else if (type === "decrease") {
+          if (contentType.amount - 1 < 1) {
+            newAmount = 1;
+          } else {
+            newAmount = contentType.amount - 1;
+          }
+        }
 
-    setContentTypesList(newContentTypesList);
+        return {
+          ...contentType,
+          amount: newAmount,
+        };
+      } else {
+        return contentType;
+      }
+    });
+
+    setContentTypesList(updatedContentTypesList);
   };
 
   const submitOrder = handleSubmit((data) => {
@@ -257,6 +275,8 @@ const StartOrderPage = (params: {
                   <input
                     value={valuePack.amount}
                     type="number"
+                    max={10}
+                    min={1}
                     className="w-12 rounded-lg border-[1px] p-1 text-center"
                     onChange={(e) =>
                       handleAmountChange(index, parseInt(e.target.value))
@@ -351,19 +371,19 @@ const StartOrderPage = (params: {
           </div>
           <div className="flex flex-col gap-4 lg:flex-row">
             <div className="flex gap-2">
-              <div className="font-semibold text-influencer">
+              <div className="select-none font-semibold text-influencer">
                 {t("pages.startOrder.valuePacks")}:
               </div>
               <div>{helper.formatNumberWithDecimalValue(valuePacksSum)}€</div>
             </div>
             <div className="flex gap-2">
-              <div className="font-semibold text-influencer">
+              <div className="select-none font-semibold text-influencer">
                 {t("pages.startOrder.fee")}:
               </div>
               <div>{helper.formatNumberWithDecimalValue(tax)}€</div>
             </div>
             <div className="flex gap-2">
-              <div className="font-semibold text-influencer">
+              <div className="select-none font-semibold text-influencer">
                 {t("pages.startOrder.total")}:
               </div>
               <div>{helper.formatNumberWithDecimalValue(total)}€</div>

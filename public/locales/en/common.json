@@ -869,7 +869,7 @@
       "awaiting": "Waiting for influencer's decision",
       "accepted": "The influencer accepted your order",
       "progress": "In progress",
-      "deliver": "Deliver order",
+      "delivered": "Order delivered",
       "rejected": "Rejected",
       "started": "Missing payment details",
       "addPayment": "Add Payment Details"

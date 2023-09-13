@@ -71,7 +71,7 @@ export const DefineUserStep = (params: {
               />
               <div className="flex h-16 w-full items-center rounded-lg border-[1px] border-gray3 p-4 placeholder-gray2 ">
                 <div className="hidden h-16 items-center xs:flex">
-                  {process.env.NEXT_PUBLIC_BASE_URL}/
+                  {process.env.NEXT_PUBLIC_BASE_URL}
                 </div>
                 <input
                   {...params.register("username")}
