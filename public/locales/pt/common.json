@@ -670,7 +670,7 @@
       "archived": "Arquivada",
       "progress": "Em Progresso",
       "gender": "Género",
-      "followers": "Seguidores",
+      "followers": "Mínimo de Seguidores",
       "offerDescription": "Descrição da Oferta",
       "categories": "Categorias:",
       "price": "Valor da Oferta",
@@ -717,7 +717,7 @@
     },
 
     "offers": {
-      "followers": "Seguidores",
+      "followers": "Mínimo de Seguidores",
       "gender": "Género",
       "any": "Todos",
       "Male": "Masculino",

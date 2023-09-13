@@ -24,7 +24,6 @@ type OfferData = {
   numberOfInfluencers: number;
   country: Option;
   minFollowers: number;
-  maxFollowers: number;
   gender: Option;
   published: boolean;
 };
@@ -77,7 +76,6 @@ const CreateOfferModal = (params: {
       setValue("country", params.offer.country);
       setValue("categories", params.offer.categories);
       setValue("gender", params.offer.gender || { id: -1, name: "" });
-      setValue("maxFollowers", params.offer.maxFollowers);
       setValue("minFollowers", params.offer.minFollowers);
       setValue("numberOfInfluencers", params.offer.numberOfInfluencers);
       setValue("offerDetails", params.offer.OfferDetails);
@@ -127,45 +125,32 @@ const CreateOfferModal = (params: {
       prevContentTypes !== contentTypesList ||
       prevGender !== data.gender
     ) {
-      if (data.minFollowers > data.maxFollowers) {
-        setError("minFollowers", {
-          type: "manual",
-          message: "Minimum followers should be less than maximum followers",
-        });
-      } else if (data.maxFollowers < data.minFollowers) {
-        setError("maxFollowers", {
-          type: "manual",
-          message: "Maximum followers should be greater than minimum followers",
-        });
-      } else {
-        const payload = {
-          offerId: params.offer?.id || -1,
-          offerSummary: data.offerSummary,
-          offerDetails: data.offerDetails,
-          socialMediaId: data.platform.id,
-          contentTypes: contentTypesList.map((item) => {
-            return {
-              contentTypeId: item.contentType.id,
-              amount: item.amount,
-            };
-          }),
-          categories: data.categories.map((category) => {
-            return category.id;
-          }),
-          price: data.offerPrice,
-          numberOfInfluencers: data.numberOfInfluencers,
-          countryId: data.country.id,
-          minFollowers: data.minFollowers,
-          maxFollowers: data.maxFollowers,
-          genderId: data.gender.id,
-          published: isPublished,
-        };
+      const payload = {
+        offerId: params.offer?.id || -1,
+        offerSummary: data.offerSummary,
+        offerDetails: data.offerDetails,
+        socialMediaId: data.platform.id,
+        contentTypes: contentTypesList.map((item) => {
+          return {
+            contentTypeId: item.contentType.id,
+            amount: item.amount,
+          };
+        }),
+        categories: data.categories.map((category) => {
+          return category.id;
+        }),
+        price: data.offerPrice,
+        numberOfInfluencers: data.numberOfInfluencers,
+        countryId: data.country.id,
+        minFollowers: data.minFollowers,
+        genderId: data.gender.id,
+        published: isPublished,
+      };
 
-        if (params.edit) {
-          offerUpdate(payload);
-        } else {
-          offerCreation(payload);
-        }
+      if (params.edit) {
+        offerUpdate(payload);
+      } else {
+        offerCreation(payload);
       }
     } else {
       params.onClose();
@@ -573,30 +558,6 @@ const CreateOfferModal = (params: {
                 <div></div>
               )}
             </div>
-
-            <div className="flex flex-1 flex-col gap-1">
-              <label className="text-gray2">
-                {t("pages.manageOffers.maximum")}
-              </label>
-              <input
-                {...register("maxFollowers", { valueAsNumber: true })}
-                type="number"
-                required
-                className="h-14 w-full rounded-lg border-[1px] border-gray3 p-4 placeholder-gray2 focus:border-black focus:outline-none"
-                placeholder={t("pages.manageOffers.maxFollowers")}
-                autoComplete="off"
-                max="1000000000"
-                min="0"
-                onWheel={(e) => e.currentTarget.blur()}
-              />
-              {errors.maxFollowers ? (
-                <div className="text-sm text-influencer">
-                  {errors.maxFollowers.message}
-                </div>
-              ) : (
-                <div></div>
-              )}
-            </div>
           </div>
         </div>
         <div className="w-full border-[1px] border-white1" />
@@ -638,6 +599,7 @@ const CreateOfferModal = (params: {
             );
           })}
         </div>
+        <div className="w-full border-[1px] border-white1" />
       </div>
     );
   };
@@ -672,7 +634,6 @@ const CreateOfferModal = (params: {
             </span>
           </label>
         </div>
-        <div className="w-full border-[1px] border-white1" />
       </div>
     );
   };
@@ -707,7 +668,6 @@ const CreateOfferModal = (params: {
       >
         {renderOfferSummaryInput()}
         {renderOfferDetailsInput()}
-        {renderPublishedToggled()}
         {renderPlatformInput()}
         {renderContentTypeInput()}
         {renderCategoriesInput()}
@@ -716,6 +676,7 @@ const CreateOfferModal = (params: {
         {renderLocationInputs()}
         {renderFollowersInput()}
         {renderGenderInput()}
+        {renderPublishedToggled()}
       </form>
     </Modal>
   );

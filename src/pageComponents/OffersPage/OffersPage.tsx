@@ -20,7 +20,6 @@ export type OffersFilterState = {
   country: Option;
   city: Option;
   minFollowers: number;
-  maxFollowers: number;
   minPrice: number;
   maxPrice: number;
 };
@@ -49,7 +48,6 @@ const OffersPage = (params: {
     country: { id: -1, name: "" },
     city: { id: -1, name: "" },
     minFollowers: 0,
-    maxFollowers: 1000000000,
     minPrice: 0,
     maxPrice: 1000000000,
   });
@@ -69,7 +67,6 @@ const OffersPage = (params: {
     }),
     gender: filterState.gender.id,
     minFollowers: filterState.minFollowers || -1,
-    maxFollowers: filterState.maxFollowers || -1,
     minPrice: filterState.minPrice || -1,
     maxPrice: filterState.maxPrice || -1,
     country: filterState.country.id,
@@ -90,7 +87,6 @@ const OffersPage = (params: {
       }),
       gender: filterState.gender.id,
       minFollowers: filterState.minFollowers || -1,
-      maxFollowers: filterState.maxFollowers || -1,
       minPrice: filterState.minPrice || -1,
       maxPrice: filterState.maxPrice || -1,
       country: filterState.country.id,
@@ -163,7 +159,6 @@ const OffersPage = (params: {
   const countActiveFilters = (params: {
     gender: Option;
     minFollowers: number;
-    maxFollowers: number;
     minPrice: number;
     maxPrice: number;
     country: Option;
@@ -172,9 +167,6 @@ const OffersPage = (params: {
     let count = 0;
 
     if (params.minFollowers !== 0) {
-      count++;
-    }
-    if (params.maxFollowers !== 1000000000) {
       count++;
     }
     if (params.gender.id > -1) {
@@ -199,7 +191,6 @@ const OffersPage = (params: {
   const onFilterSubmit = (params: {
     gender: Option;
     minFollowers: number;
-    maxFollowers: number;
     minPrice: number;
     maxPrice: number;
     country: Option;
@@ -219,7 +210,6 @@ const OffersPage = (params: {
       platforms: filterPlatforms,
       gender: params.gender,
       minFollowers: params.minFollowers,
-      maxFollowers: params.maxFollowers,
       minPrice: params.minPrice,
       maxPrice: params.maxPrice,
       country: params.country,
@@ -241,7 +231,6 @@ const OffersPage = (params: {
       country: { id: -1, name: "" },
       city: { id: -1, name: "" },
       minFollowers: 0,
-      maxFollowers: 1000000000,
       minPrice: 0,
       maxPrice: 1000000000,
     });

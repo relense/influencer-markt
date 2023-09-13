@@ -20,7 +20,6 @@ export const OffersRouter = createTRPCRouter({
         countryId: z.number(),
         stateId: z.number().optional(),
         minFollowers: z.number(),
-        maxFollowers: z.number(),
         genderId: z.number(),
         published: z.boolean(),
       })
@@ -46,7 +45,6 @@ export const OffersRouter = createTRPCRouter({
           numberOfInfluencers: input.numberOfInfluencers,
           country: { connect: { id: input.countryId } },
           minFollowers: input.minFollowers,
-          maxFollowers: input.maxFollowers,
           offerCreator: { connect: { id: profile.id } },
           gender:
             input.genderId !== -1 ? { connect: { id: input.genderId } } : {},
@@ -86,7 +84,6 @@ export const OffersRouter = createTRPCRouter({
         countryId: z.number(),
         stateId: z.number().optional(),
         minFollowers: z.number(),
-        maxFollowers: z.number(),
         genderId: z.number(),
         published: z.boolean(),
       })
@@ -108,7 +105,6 @@ export const OffersRouter = createTRPCRouter({
           numberOfInfluencers: input.numberOfInfluencers,
           country: { connect: { id: input.countryId } },
           minFollowers: input.minFollowers,
-          maxFollowers: input.maxFollowers,
           gender:
             input.genderId !== -1
               ? { connect: { id: input.genderId } }
@@ -587,7 +583,6 @@ export const OffersRouter = createTRPCRouter({
         country: z.number(),
         gender: z.number(),
         minFollowers: z.number(),
-        maxFollowers: z.number(),
         minPrice: z.number(),
         maxPrice: z.number(),
       })
@@ -614,9 +609,6 @@ export const OffersRouter = createTRPCRouter({
             },
             minFollowers: {
               gte: input.minFollowers !== -1 ? input.minFollowers : undefined,
-            },
-            maxFollowers: {
-              lte: input.maxFollowers !== -1 ? input.maxFollowers : undefined,
             },
             price: {
               gte: input.minPrice !== -1 ? input.minPrice : undefined,
@@ -656,9 +648,6 @@ export const OffersRouter = createTRPCRouter({
             },
             minFollowers: {
               gte: input.minFollowers !== -1 ? input.minFollowers : undefined,
-            },
-            maxFollowers: {
-              lte: input.maxFollowers !== -1 ? input.maxFollowers : undefined,
             },
             price: {
               gte: input.minPrice !== -1 ? input.minPrice : undefined,
@@ -721,7 +710,6 @@ export const OffersRouter = createTRPCRouter({
         country: z.number(),
         gender: z.number(),
         minFollowers: z.number(),
-        maxFollowers: z.number(),
         minPrice: z.number(),
         maxPrice: z.number(),
       })
@@ -745,9 +733,6 @@ export const OffersRouter = createTRPCRouter({
           },
           minFollowers: {
             gte: input.minFollowers !== -1 ? input.minFollowers : undefined,
-          },
-          maxFollowers: {
-            lte: input.maxFollowers !== -1 ? input.maxFollowers : undefined,
           },
           price: {
             gte: input.minPrice !== -1 ? input.minPrice : undefined,

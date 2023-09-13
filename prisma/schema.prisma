@@ -286,7 +286,7 @@ model Offer {
   country                 Country                   @relation(fields: [countryId], references: [id])
   state                   State?                    @relation(fields: [stateId], references: [id])
   minFollowers            Int
-  maxFollowers            Int
+  maxFollowers            Int?
   gender                  Gender?                   @relation(fields: [genderId], references: [id])
   offerStatus             OfferStatus               @relation(fields: [offerStatusId], references: [id])
   offerCreator            Profile                   @relation("offerCreator", fields: [profileId], references: [id])

@@ -110,10 +110,7 @@ const OfferDetails = (params: {
 
       let hasFollowers = false;
       if (hasSocialMedia) {
-        hasFollowers =
-          (hasSocialMedia.followers >= offer.minFollowers &&
-            hasSocialMedia.followers <= offer.maxFollowers) ||
-          hasSocialMedia.followers > offer.maxFollowers;
+        hasFollowers = hasSocialMedia.followers >= offer.minFollowers;
       }
 
       const hasOfferGender =
@@ -294,10 +291,7 @@ const OfferDetails = (params: {
         <div className="font-semibold text-influencer">
           {t("pages.offers.followers")}
         </div>
-        <div>
-          {helper.formatNumberWithKorM(offer?.minFollowers || 0)} -{" "}
-          {helper.formatNumberWithKorM(offer?.maxFollowers || 0)}
-        </div>
+        <div>{helper.formatNumberWithKorM(offer?.minFollowers || 0)}</div>
       </div>
     );
   };

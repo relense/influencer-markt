@@ -553,10 +553,7 @@ const ManageOfferDetailsPage = (params: {
               <div className="font-semibold text-influencer">
                 {t("pages.manageOffers.followers")}
               </div>
-              <div>
-                {helper.formatNumberWithKorM(offer.minFollowers)} -{" "}
-                {helper.formatNumberWithKorM(offer.maxFollowers)}
-              </div>
+              <div>{helper.formatNumberWithKorM(offer.minFollowers)} </div>
             </div>
           </>
           <>

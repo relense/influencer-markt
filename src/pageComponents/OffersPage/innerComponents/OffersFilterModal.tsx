@@ -16,7 +16,6 @@ const OffersFilterModal = (params: {
   handleFilterSubmit: (params: {
     gender: Option;
     minFollowers: number;
-    maxFollowers: number;
     minPrice: number;
     maxPrice: number;
     country: Option;
@@ -42,7 +41,6 @@ const OffersFilterModal = (params: {
     defaultValues: {
       gender: params.filterState.gender,
       minFollowers: params.filterState.minFollowers,
-      maxFollowers: params.filterState.maxFollowers,
       minPrice: params.filterState.minPrice,
       maxPrice: params.filterState.maxPrice,
       country: params.filterState.country,
@@ -59,7 +57,6 @@ const OffersFilterModal = (params: {
     params.handleFilterSubmit({
       gender: data.gender,
       minFollowers: data.minFollowers,
-      maxFollowers: data.maxFollowers,
       minPrice: data.minPrice,
       maxPrice: data.maxPrice,
       country: data.country,
@@ -74,7 +71,6 @@ const OffersFilterModal = (params: {
     filterSetValue("minPrice", 0);
     filterSetValue("maxPrice", 1000000000);
     filterSetValue("minFollowers", 0);
-    filterSetValue("maxFollowers", 1000000000);
 
     params.handleClearFilter();
   });
@@ -101,21 +97,6 @@ const OffersFilterModal = (params: {
                 min="0"
               />
             </div>
-
-            <div className="flex flex-1 flex-col gap-1">
-              <label className="text-gray2">
-                {t("components.filter.Maximum")}
-              </label>
-              <input
-                {...filterRegister("maxFollowers", { valueAsNumber: true })}
-                type="number"
-                className="h-14 w-full rounded-lg border-[1px] border-gray3 p-4 placeholder-gray2 focus:border-black focus:outline-none"
-                placeholder={t("components.filter.MaximumPlaceholder")}
-                autoComplete="off"
-                max="1000000000"
-                min="0"
-              />
-            </div>
           </div>
         </div>
         <div className="w-full border-[1px] border-white1" />
@@ -130,13 +111,13 @@ const OffersFilterModal = (params: {
           <div className="text-xl font-medium">
             {t("components.filter.genderInputLabel")}
           </div>
-          <div className="flex flex-wrap gap-4 justify-start text-sm sm:text-base">
+          <div className="flex flex-wrap justify-start gap-4 text-sm sm:text-base">
             <div
               key={-1}
               className={
                 filterWatch("gender").id === -1
-                  ? "flex w-18 sm:w-24 cursor-pointer justify-center rounded-2xl border-[1px] border-gray3 bg-influencer-green p-2 text-center text-white"
-                  : "flex w-18 sm:w-24 cursor-pointer justify-center rounded-2xl border-[1px] border-gray3 p-2 text-center"
+                  ? "w-18 flex cursor-pointer justify-center rounded-2xl border-[1px] border-gray3 bg-influencer-green p-2 text-center text-white sm:w-24"
+                  : "w-18 flex cursor-pointer justify-center rounded-2xl border-[1px] border-gray3 p-2 text-center sm:w-24"
               }
               onClick={() => filterSetValue("gender", { id: -1, name: "" })}
             >
@@ -148,8 +129,8 @@ const OffersFilterModal = (params: {
                   key={gender.id}
                   className={
                     filterWatch("gender").id === gender.id
-                      ? "flex w-18 sm:w-24 cursor-pointer justify-center rounded-2xl border-[1px] border-gray3 bg-influencer-green p-2 text-center text-white"
-                      : "flex w-18 sm:w-24 cursor-pointer justify-center rounded-2xl border-[1px] border-gray3 p-2 text-center"
+                      ? "w-18 flex cursor-pointer justify-center rounded-2xl border-[1px] border-gray3 bg-influencer-green p-2 text-center text-white sm:w-24"
+                      : "w-18 flex cursor-pointer justify-center rounded-2xl border-[1px] border-gray3 p-2 text-center sm:w-24"
                   }
                   onClick={() => filterSetValue("gender", gender)}
                 >
