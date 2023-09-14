@@ -134,7 +134,8 @@
       "ordersAccepted": "{{actor}} aceitou a tua oferta",
       "ordersDelivered": "{{actor}} entregou o pedido",
       "salesCanceled": "O pedido foi cancelado",
-      "salesPaymentsAdded": "{{actor}} adicionou os detalhes de pagamento. Podes trabalhar no pedido"
+      "salesPaymentsAdded": "{{actor}} adicionou os detalhes de pagamento. Podes trabalhar no pedido",
+      "salesConfirmed": "{{actor}} confirmou o pedido. O teu pagamento está disponível no menu de facturação"
     },
 
     "orderStatus": {
@@ -145,7 +146,7 @@
       "progress": "Em Progresso",
       "delivered": "Entregue",
       "canceled": "Cancelado",
-      "completed": "Completada"
+      "confirmed": "Confirmada"
     }
   },
   "components": {
@@ -249,7 +250,9 @@
       "deliveryTime": "Tempo de Entrega",
       "revisionTime": "Número de Revisões",
       "price": "Preço",
-      "button": "Guarda Rede Social"
+      "button": "Guarda Rede Social",
+      "contentTypesTitle": "Tipos de Conteúdo da Plataforma",
+      "contentTypePlaceholder": "Tipo de conteúdo"
     },
 
     "addValuePackModal": {
@@ -314,7 +317,9 @@
       "readMore": "Lê Mais",
       "removedProfile": "Perfil Removido Com Sucesso",
       "savedProfile": "Perfil Guardado Com Sucesso",
-      "toastWarning": "Completa o teu perfil para poderes guardar"
+      "toastWarning": "Completa o teu perfil para poderes guardar",
+      "offers_one": "{{count}} Oferta",
+      "offers_other": "{{count}} Ofertas"
     },
 
     "myOfferDropdown": {
@@ -378,14 +383,17 @@
       "paymentDetails": "Detalhes de Pagamento",
       "inProgress": "Em Progresso",
       "delivered": "Entregue",
+      "confirmed": "Confirmada",
       "buyerOrderSent": "O influencer tem 24 horas para responder ao seu pedido. Pode conversar com ele através do campo de mensagens",
       "buyerOrderAccepted": "O influencer aceitou o seu pedido. Agora tem 48 horas para adicionar os seus detalhes de pagamento",
       "buyerPaymentDetails": "A encomenda está agora em progresso e, quando o influencer cumprir os requisitos, será entregue",
-      "buyerInProgress": "O pedido foi entregue. Agora só precisas de confirmar se tudo está como esperavas e de dar a tua opinião",
+      "buyerInProgress": "O pedido foi entregue pelo influencer.",
+      "buyerConfirmed": "Confirma o pedido, verifica se tudo está como esperado e dá uma avaliação.",
       "influencerOrderSent": "O comprador fez um pedido. Tem 24 horas para dar uma resposta",
       "influencerOrderAccepted": "O comprador tem 48 horas para adicionar os seus detalhes de pagamento. Depois disso, podes trabalhar no pedido. Informaremos quando podes começar",
-      "influencerPaymentDetails": "O pedido está agora em progresso e é a sua vez de brilhar. Faça o que for necessário para cumprir os requisitos do pedido",
-      "influencerInProgress": "O pedido foi entregue"
+      "influencerPaymentDetails": "O pedido está agora em progresso e é a tua vez de brilhar. Faz o que for necessário para cumprir os requisitos do pedido",
+      "influencerInProgress": "O pedido foi entregue",
+      "influencerConfirmed": "O comprador vai confirmar se tudo está como esperado e dar uma avaliação."
     }
   },
 
@@ -740,7 +748,8 @@
       "noOffers": "Não há ofertas com os requisitos que procuras",
       "noRequirements": "Não preenches os requisitos desta oferta",
       "share": "Partilha",
-      "toastWarning": "Completa o teu perfil para te poderes candidatar"
+      "toastWarning": "Completa o teu perfil para te poderes candidatar",
+      "matchsProfile": "Corresponde ao teu perfil"
     },
 
     "applications": {

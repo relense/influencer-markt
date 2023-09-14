@@ -6,12 +6,14 @@ import {
   type UseFormWatch,
   type UseFormSetValue,
 } from "react-hook-form";
+import { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faPlus, faSubtract } from "@fortawesome/free-solid-svg-icons";
+
 import { Modal } from "./Modal";
 import { CustomSelect } from "./CustomSelect";
 import { Button } from "./Button";
-import { useEffect, useState } from "react";
-import { useTranslation } from "react-i18next";
-
 import type {
   Option,
   SocialMediaDetails,
@@ -19,13 +21,10 @@ import type {
   ValuePack,
 } from "../utils/globalTypes";
 
-type ValuePacks = Array<
-  ValuePack & {
-    platform?: Option | undefined;
-    contentType?: Option | undefined;
-    valuePackPrice?: string | undefined;
-  }
->;
+type ContentTypeWithPrice = {
+  contentType: Option;
+  price: number;
+};
 
 const AddSocialMediaModal = (params: {
   onCloseModal: () => void;
@@ -41,12 +40,24 @@ const AddSocialMediaModal = (params: {
 }) => {
   const { t } = useTranslation();
   const [availablePlatforms, setAvailablePlatforms] = useState<Option[]>();
-  const [valuePacks, setValuePacks] = useState<ValuePacks>([]);
   const [isMyInputFocused, setIsMyInputFocused] = useState(false);
+  const [contentTypesList, setContentTypesList] = useState<
+    ContentTypeWithPrice[]
+  >([{ contentType: { id: -1, name: "" }, price: 0 }]);
 
   useEffect(() => {
     if (params.watch("valuePacks")) {
-      setValuePacks(params.watch("valuePacks"));
+      setContentTypesList(
+        params.watch("valuePacks").map((valuePacks) => {
+          return {
+            contentType: {
+              id: valuePacks.contentType.id || -1,
+              name: valuePacks.contentType.name || "",
+            },
+            price: parseFloat(valuePacks.valuePackPrice),
+          };
+        })
+      );
     }
   }, [params]);
 
@@ -81,60 +92,51 @@ const AddSocialMediaModal = (params: {
     return linkMappings[socialMedia] || "";
   };
 
-  const handleValuePackChange = (
-    contentType: Option,
-    field: Exclude<keyof ValuePack, "id" | "platform" | "contentType">,
-    value: string
-  ) => {
-    setValuePacks((prevValuePacks) => {
-      const existingValuePack = prevValuePacks.find(
-        (valuePack) => valuePack.contentType.id === contentType.id
-      );
-
-      if (!existingValuePack) {
-        // Handle the case when there is no existing value pack for the contentType
-        const newValuePack: ValuePack = {
-          platform: params.watch("platform"),
-          contentType: contentType,
-          valuePackPrice: "",
-        };
-
-        // Update the field value of the new value pack
-        newValuePack[field] = value.toString();
-
-        return [...prevValuePacks, newValuePack];
-      }
-
-      const updatedValuePacks = prevValuePacks.map((valuePack) => {
-        if (valuePack.contentType.id === contentType.id) {
-          const updatedValuePack = { ...valuePack };
-
-          updatedValuePack[field] = value.toString();
-
-          return updatedValuePack;
-        }
-
-        return valuePack;
-      });
-
-      return updatedValuePacks;
-    });
-  };
-
   const handleSubmit = () => {
     const newArrayList: ValuePack[] = [];
 
-    valuePacks.forEach((valuePack) => {
-      if (valuePack.valuePackPrice) {
-        newArrayList.push(valuePack);
-      }
+    contentTypesList.forEach((contentType) => {
+      newArrayList.push({
+        contentType: contentType.contentType,
+        valuePackPrice: contentType.price.toString(),
+        platform: params.watch("platform"),
+      });
     });
 
     params.setValue("valuePacks", newArrayList);
     params.addSocialMedia();
   };
 
-  const renderValuePacks = () => {
+  const addContentTypeInput = () => {
+    setContentTypesList((prevContentTypes) => [
+      ...prevContentTypes,
+      { contentType: { id: -1, name: "" }, price: 0 },
+    ]);
+  };
+
+  const removeContentTypeInput = (index: number) => {
+    setContentTypesList((prevContentTypes) =>
+      prevContentTypes.filter((_, i) => i !== index)
+    );
+  };
+
+  const handleContentTypeChange = (index: number, value: Option) => {
+    setContentTypesList((prevContentTypes) =>
+      prevContentTypes.map((contentType, i) =>
+        i === index ? { ...contentType, contentType: value } : contentType
+      )
+    );
+  };
+
+  const handleQuantityChange = (index: number, value: number) => {
+    setContentTypesList((prevContentTypes) =>
+      prevContentTypes.map((contentType, i) =>
+        i === index ? { ...contentType, price: value } : contentType
+      )
+    );
+  };
+
+  const renderContentTypeInput = () => {
     const platform = params.watch("platform");
 
     if (!platform || platform.id === -1) {
@@ -145,39 +147,111 @@ const AddSocialMediaModal = (params: {
       (platform) => platform.id === params.watch("platform").id
     );
 
-    return selectPlatform?.[0]?.contentTypes.map((contentType) => {
-      const contentTypeValuePack = valuePacks.find((valuePack) => {
-        return valuePack.contentType.id === contentType.id;
-      });
+    const allContentTypesSelected =
+      selectPlatform?.[0]?.contentTypes.length === contentTypesList.length;
 
+    if (selectPlatform?.[0]) {
       return (
-        <div key={contentType.id} className="flex w-full flex-col gap-4">
-          <div className="text-xl font-medium">{t(`general.contentTypes.${contentType.name}`)}</div>
+        <div className="flex w-full flex-col gap-4">
+          <div className="flex items-center gap-2">
+            <div className="text-xl font-medium">
+              {t("components.addSocialMediaModal.contentTypesTitle")}
+            </div>
+            {!allContentTypesSelected && (
+              <div className="flex h-6 w-6 items-center justify-center rounded-full bg-influencer text-white">
+                <FontAwesomeIcon
+                  icon={faPlus}
+                  className="fa-sm cursor-pointer"
+                  onClick={() => addContentTypeInput()}
+                />
+              </div>
+            )}
+          </div>
+          {contentTypesList.map((contentType, index) => {
+            // Create a Set to store selected content IDs, excluding the current one
+            const selectedContentIds = new Set(
+              contentTypesList.map((contentType, i) => {
+                // If the current content type is not the one being processed, store its ID
+                if (i !== index) return contentType.contentType.id;
+              })
+            );
+
+            // Filter available content types based on selected content IDs
+            const availableTypes: Option[] =
+              selectPlatform?.[0]?.contentTypes.filter(
+                (contentType) => !selectedContentIds.has(contentType.id)
+              ) ?? [];
+
+            // Render the content type with a quantity input field
+            return renderContentTypeWithPriceInput(index, availableTypes || []);
+          })}
+        </div>
+      );
+    } else {
+      return null;
+    }
+  };
+
+  const renderContentTypeWithPriceInput = (index: number, types: Option[]) => {
+    return (
+      <div
+        className="flex w-full flex-1 items-center gap-2"
+        key={`contentTypeWithQuantity${index}`}
+      >
+        {contentTypesList.length > 1 && (
+          <div className="flex h-6 w-6 items-center justify-center rounded-full bg-influencer text-white">
+            <FontAwesomeIcon
+              icon={faSubtract}
+              className="fa-sm cursor-pointer"
+              onClick={() => removeContentTypeInput(index)}
+            />
+          </div>
+        )}
+        <div className="flex flex-1 items-center gap-2">
+          <CustomSelect
+            name={`contentType${index}`}
+            placeholder={t(
+              "components.addSocialMediaModal.contentTypePlaceholder"
+            )}
+            options={types.map((type) => {
+              return {
+                id: type.id,
+                name: t(`general.contentTypes.${type.name}`),
+              };
+            })}
+            value={
+              {
+                id: contentTypesList?.[index]?.contentType.id || -1,
+                name: t(
+                  `general.contentTypes.${
+                    contentTypesList?.[index]?.contentType.name.toLowerCase() ||
+                    ""
+                  }`
+                ),
+              } || { id: -1, name: "" }
+            }
+            handleOptionSelect={(value: Option) => {
+              handleContentTypeChange(index, value);
+            }}
+            required={true}
+          />
+
           <input
-            name={`${contentType.name} price`}
             type="number"
+            required
             className="h-14 w-full rounded-lg border-[1px] border-gray3 p-4 placeholder-gray2 focus:border-black focus:outline-none"
             placeholder={t("components.addSocialMediaModal.price")}
-            autoComplete="one-time-code"
             max="1000000000"
-            min="0"
-            value={
-              contentTypeValuePack && contentTypeValuePack.valuePackPrice
-                ? contentTypeValuePack.valuePackPrice
-                : ""
-            }
+            min="1"
+            value={contentTypesList[index]?.price || ""}
             onWheel={(e) => e.currentTarget.blur()}
             onChange={(e) =>
-              handleValuePackChange(
-                contentType,
-                "valuePackPrice",
-                e.target.value.toString()
-              )
+              handleQuantityChange(index, e.target.valueAsNumber)
             }
           />
         </div>
-      );
-    });
+      </div>
+    );
   };
 
   let handleInputContainerClasses =
@@ -193,7 +267,7 @@ const AddSocialMediaModal = (params: {
       onClose={params.onCloseModal}
       title={t("components.addSocialMediaModal.modalTitle")}
       button={
-        <div className="flex w-full justify-center p-4  sm:px-8">
+        <div className="flex w-full justify-center p-4 sm:px-8">
           <Button
             title={t("components.addSocialMediaModal.button")}
             level="primary"
@@ -204,7 +278,7 @@ const AddSocialMediaModal = (params: {
     >
       <form
         id="form-socialMedia"
-        className="flex h-full w-full flex-col items-center gap-4 p-4 sm:w-full sm:px-8"
+        className="flex h-full min-h-[70vh] w-full flex-col items-center gap-4 p-4 sm:w-full sm:px-8 lg:min-h-[50vh]"
         onSubmit={handleSubmit}
       >
         {params.watch("valuePacks").length === 0 ? (
@@ -276,7 +350,7 @@ const AddSocialMediaModal = (params: {
           min="0"
           max="1000000000"
         />
-        {!params.isBrand && renderValuePacks()}
+        {!params.isBrand && renderContentTypeInput()}
       </form>
     </Modal>
   );

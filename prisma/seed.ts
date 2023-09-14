@@ -82,7 +82,7 @@ async function main() {
       { name: "accepted" },
       { name: "progress" },
       { name: "delivered" },
-      { name: "completed" },
+      { name: "confirmed" },
       { name: "canceled" },
     ],
   });
@@ -99,6 +99,7 @@ async function main() {
       { entityType: "orders", entityAction: "delivered" },
       { entityType: "sales", entityAction: "canceled" },
       { entityType: "sales", entityAction: "paymentAdded" },
+      { entityType: "sales", entityAction: "confirmed" },
     ],
   });
 

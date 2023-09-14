@@ -116,6 +116,7 @@ const ExploreBrandsPage = (params: { loggedInProfileId: number }) => {
             }),
             username: profile.user.username || "",
             bookmarked: isFavorited,
+            activeOffers: profile.createdOffers.length,
           };
         })
       );
@@ -160,6 +161,7 @@ const ExploreBrandsPage = (params: { loggedInProfileId: number }) => {
           }),
           username: profile.user.username || "",
           bookmarked: isFavorited,
+          activeOffers: profile.createdOffers.length,
         });
       });
 
@@ -306,6 +308,7 @@ const ExploreBrandsPage = (params: { loggedInProfileId: number }) => {
                   type="Brand"
                   bookmarked={profile.bookmarked || false}
                   loggedInProfileId={params.loggedInProfileId}
+                  activeOffers={profile.activeOffers}
                 />
               );
             })}

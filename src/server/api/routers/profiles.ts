@@ -367,6 +367,11 @@ export const profilesRouter = createTRPCRouter({
                 id: true,
               },
             },
+            createdOffers: {
+              where: {
+                offerStatusId: 1,
+              },
+            },
           },
           orderBy: {
             name: "desc",
@@ -446,6 +451,11 @@ export const profilesRouter = createTRPCRouter({
           favoriteBy: {
             select: {
               id: true,
+            },
+          },
+          createdOffers: {
+            where: {
+              offerStatusId: 1,
             },
           },
         },
@@ -728,6 +738,11 @@ export const profilesRouter = createTRPCRouter({
                 },
               },
               user: true,
+              createdOffers: {
+                where: {
+                  offerStatusId: 1,
+                },
+              },
             },
           },
         },

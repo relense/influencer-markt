@@ -41,6 +41,7 @@ const ProfileCard = (params: {
   onHandleBookmark?: () => void;
   openLoginModal?: () => void;
   loggedInProfileId: number;
+  activeOffers?: number;
 }) => {
   const { t } = useTranslation();
   const { status } = useSession();
@@ -226,6 +227,15 @@ const ProfileCard = (params: {
                   )
                 )}
                 €
+              </div>
+            )}
+          {params.type === "Brand" &&
+            params.activeOffers !== undefined &&
+            params.activeOffers > 0 && (
+              <div className="text-lg font-semibold">
+                {t("components.profileCard.offers", {
+                  count: params.activeOffers,
+                })}
               </div>
             )}
         </div>

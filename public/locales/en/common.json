@@ -134,7 +134,8 @@
       "ordersAccepted": "{{actor}} accepted your order",
       "ordersDelivered": "{{actor }} devilered your order",
       "salesCanceled": "The order has been canceled",
-      "salesPaymentsAdded": "{{actor}} added payment details. You can now work on your order"
+      "salesPaymentsAdded": "{{actor}} added payment details. You can now work on your order",
+      "salesConfirmed": "{{actor}} confirmed the order. Your payment is available in the billing menu"
     },
 
     "orderStatus": {
@@ -145,7 +146,7 @@
       "progress": "In Progress",
       "delivered": "Delivered",
       "canceled": "Canceled",
-      "completed": "Completed"
+      "confirmed": "Confirmed"
     }
   },
   "components": {
@@ -249,7 +250,9 @@
       "deliveryTime": "Delivery Time",
       "revisionTime": "Number of Revisions",
       "price": "Price",
-      "button": "Save Social Media"
+      "button": "Save Social Media",
+      "contentTypesTitle": "Platform Content Types",
+      "contentTypePlaceholder": "Content Type"
     },
 
     "addValuePackModal": {
@@ -314,7 +317,9 @@
       "readMore": "Read More",
       "removedProfile": "Removed Profile Successfully",
       "savedProfile": "Saved Profile Successfully",
-      "toastWarning": "Complete your profile to be able to save"
+      "toastWarning": "Complete your profile to be able to save",
+      "offers_one": "{{count}} Offer",
+      "offers_other": "{{count}} Offers"
     },
 
     "myOfferDropDown": {
@@ -378,14 +383,17 @@
       "paymentDetails": "Payment Details",
       "inProgress": "In Progress",
       "delivered": "Delivered",
+      "confirmed": "Confirmed",
       "buyerOrderSent": "The influencer has 24h to give an answer to your order request. You can talk to him through the messages field",
       "buyerOrderAccepted": "The influencer accepted your order. Now you have 48h to add your payment details",
       "buyerPaymentDetails": "The order is now in progress and when the influencer has meet the requirements he will deliver",
-      "buyerInProgress": "The order has been delivered. Now you just need to confirm if everything is in how you expected and give your review.",
+      "buyerInProgress": "The order has been delivered by the influencer.",
+      "buyerConfirmed": "You need to confirm the order. Make sure everything is how you expect and then give a review.",
       "influencerOrderSent": "The buyer has made an order. You have 24h to give your answer.",
       "influencerOrderAccepted": "The buyer has 48 to add his payment details. Afterwards you can work on the request. We will let you know when you can start.",
       "influencerPaymentDetails": "The order is now in progress and it is your turn to shine. Do what you need to meet the order requirements.",
-      "influencerInProgress": "The order has been delivered"
+      "influencerInProgress": "The order has been delivered",
+      "influencerConfirmed": "The buyer will confirm if everything is has expected and review your order."
     }
   },
 
@@ -741,7 +749,8 @@
       "noOffers": "There are no offers for your search requirements",
       "noRequirements": "You do not meet the requirements for this offer",
       "share": "Share",
-      "toastWarning": "Complete your profile to be able to apply"
+      "toastWarning": "Complete your profile to be able to apply",
+      "matchsProfile": "Matchs your profile"
     },
 
     "applications": {

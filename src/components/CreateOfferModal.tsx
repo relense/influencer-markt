@@ -291,17 +291,21 @@ const CreateOfferModal = (params: {
               )}
             </div>
             {contentTypesList.map((contentType, index) => {
+              // Create a Set to store selected content IDs, excluding the current one
               const selectedContentIds = new Set(
                 contentTypesList.map((contentType, i) => {
+                  // If the current content type is not the one being processed, store its ID
                   if (i !== index) return contentType.contentType.id;
                 })
               );
 
+              // Filter available content types based on selected content IDs
               const availableTypes: Option[] =
                 selectPlatform?.[0]?.contentTypes.filter(
                   (contentType) => !selectedContentIds.has(contentType.id)
                 ) ?? [];
 
+              // Render the content type with a quantity input field
               return renderContentTypeWithQuantityInput(
                 index,
                 availableTypes || []

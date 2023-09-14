@@ -84,6 +84,7 @@ export type UserProfiles = {
   username: string;
   bookmarked?: boolean;
   favoritedBy?: number[];
+  activeOffers?: number;
 };
 
 export type ProfileOffers = Prisma.OfferGetPayload<{

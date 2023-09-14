@@ -1,11 +1,28 @@
 import { useRef } from "react";
 import Image from "next/image";
+import { type Prisma } from "@prisma/client";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { useTranslation } from "react-i18next";
 
 import { LoadingSpinner } from "../../../components/LoadingSpinner";
 import { type OfferIncludes } from "../../../utils/globalTypes";
 import { Button } from "../../../components/Button";
-import { useTranslation } from "react-i18next";
 import { helper } from "../../../utils/helper";
+import { faCheckCircle } from "@fortawesome/free-solid-svg-icons";
+
+type ProfileIncludes = Prisma.ProfileGetPayload<{
+  include: {
+    categories: true;
+    userSocialMedia: {
+      select: {
+        followers: true;
+        handler: true;
+        id: true;
+        socialMedia: true;
+      };
+    };
+  };
+}>;
 
 const OffersList = (params: {
   offersCount: number;
@@ -15,9 +32,42 @@ const OffersList = (params: {
   fetchMoreOffers: () => void;
   isRefetchingOffersWithCursor: boolean;
   isLoading: boolean;
+  profile: ProfileIncludes | undefined;
 }) => {
   const { t, i18n } = useTranslation();
   const listContainer = useRef<HTMLDivElement>(null);
+
+  const checkIfUserHasRequirements = (
+    offer: OfferIncludes,
+    profile: ProfileIncludes
+  ) => {
+    const hasSocialMedia = profile?.userSocialMedia.find(
+      (userSocialMedia) =>
+        userSocialMedia.socialMedia?.id === offer?.socialMediaId
+    );
+
+    let hasFollowers = false;
+    if (hasSocialMedia) {
+      hasFollowers = hasSocialMedia.followers >= offer.minFollowers;
+    }
+
+    const hasOfferGender =
+      profile.genderId === offer.genderId || offer.gender === null;
+
+    const hasCountry = profile.countryId === offer.countryId;
+
+    const hasCategory = profile.categories.some((category) =>
+      offer.categories.some((offerCategory) => offerCategory.id === category.id)
+    );
+
+    return (
+      !!hasSocialMedia &&
+      hasOfferGender &&
+      hasCountry &&
+      hasFollowers &&
+      hasCategory
+    );
+  };
 
   return (
     <div className="flex flex-1 flex-col overflow-y-auto" ref={listContainer}>
@@ -105,6 +155,18 @@ const OffersList = (params: {
                         {helper.formatNumber(offer?.price || 0)}€
                       </div>
                     </div>
+                    {params.profile &&
+                      checkIfUserHasRequirements(offer, params.profile) && (
+                        <div className="flex gap-1 text-sm">
+                          <FontAwesomeIcon
+                            icon={faCheckCircle}
+                            className="fa-lg text-influencer"
+                          />
+                          <div className="font-semibold ">
+                            {t("pages.offers.matchsProfile")}
+                          </div>
+                        </div>
+                      )}
                   </div>
                 </div>
                 {index !== params.offers.length - 1 && (

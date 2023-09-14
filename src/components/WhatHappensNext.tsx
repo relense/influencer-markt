@@ -21,8 +21,10 @@ const WhatHappensNext = (params: {
     highlight: boolean
   ) => {
     return (
-      <div className="flex flex-col">
-        <div className="font-semibold">{title}</div>
+      <div className="flex flex-col text-sm">
+        <div className="flex h-10 items-center">
+          <div className="flex w-32 font-semibold">{title}</div>
+        </div>
         <div className="flex items-center">
           <div
             className={`h-4 w-4 rounded-full ${
@@ -30,14 +32,14 @@ const WhatHappensNext = (params: {
             }`}
           />
           <div
-            className={`m-[-2px] h-1 w-40 lg:w-48 xl:w-52 6xl:w-64 ${
+            className={`m-[-2px] h-1 w-40 lg:w-40 xl:w-48 6xl:w-64 ${
               highlight ? "bg-influencer" : "bg-influencer-light"
             }`}
           />
         </div>
         <div className="flex pl-[7px]">
           <div className="h-full w-1 border-l-[3px] border-dashed border-gray3" />
-          <div className="w-40 px-4 py-2 text-sm lg:w-48 xl:w-52 6xl:w-64">
+          <div className="w-40 px-4 py-2 text-sm lg:w-40 xl:w-48 6xl:w-64">
             {subtitle}
           </div>
         </div>
@@ -84,10 +86,23 @@ const WhatHappensNext = (params: {
               ? false
               : true
           )}
-
-          <div className="flex flex-col">
-            <div className="font-semibold">
-              {t("components.whathappensNext.delivered")}
+          {renderItemDesktop(
+            t("components.whathappensNext.delivered"),
+            params.view === "buyer"
+              ? t("components.whathappensNext.buyerConfirmed")
+              : t("components.whathappensNext.influencerConfirmed"),
+            params.stage === "awaiting" ||
+              params.stage === "accepted" ||
+              params.stage === "progress" ||
+              params.stage === "delivered"
+              ? false
+              : true
+          )}
+          <div className="flex flex-col text-sm">
+            <div className="flex h-10 items-center">
+              <div className="font-semibold">
+                {t("components.whathappensNext.confirmed")}
+              </div>
             </div>
             <div className="flex items-center">
               <div className="h-4 w-4 rounded-full bg-influencer" />
@@ -130,7 +145,7 @@ const WhatHappensNext = (params: {
 
   const renderMobileView = () => {
     return (
-      <div className="flex flex-col gap-6 p-4 lg:hidden lg:p-8">
+      <div className="flex flex-col gap-6 p-4 text-sm lg:hidden lg:p-8">
         <div className="font-medium">{renderTitle()}</div>
         <div className="flex flex-col">
           {renderItemMobile(
@@ -167,6 +182,18 @@ const WhatHappensNext = (params: {
               ? false
               : true
           )}
+          {renderItemMobile(
+            t("components.whathappensNext.delivered"),
+            params.view === "buyer"
+              ? t("components.whathappensNext.buyerConfirmed")
+              : t("components.whathappensNext.influencerConfirmed"),
+            params.stage === "awaiting" ||
+              params.stage === "accepted" ||
+              params.stage === "progress" ||
+              params.stage === "delivered"
+              ? false
+              : true
+          )}
           <div className="flex">
             <div className="flex">
               <div className="flex h-full flex-1 flex-col items-center self-start">
@@ -175,7 +202,7 @@ const WhatHappensNext = (params: {
               <div className="flex flex-col py-[6px]">
                 <div className="h-1 w-full border-t-[3px] border-dashed border-gray3" />
                 <div className="px-4 py-2 font-semibold">
-                  {t("components.whathappensNext.delivered")}
+                  {t("components.whathappensNext.confirmed")}
                 </div>
               </div>
             </div>

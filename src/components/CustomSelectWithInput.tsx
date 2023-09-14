@@ -41,43 +41,53 @@ export const CustomSelectWithInput = (params: {
     if (customSelectWrapperRef.current) {
       if (params.searchKeys.length >= 3) {
         return (
-          <div className="relative z-10 h-auto max-h-52 overflow-y-auto rounded-2xl border-[1px] border-gray3 bg-white shadow-xl">
-            {params.options &&
-              params.options.map((option, index) => {
-                let classes = "";
-                if (params.value === option) {
-                  classes =
-                    "cursor-pointer bg-influencer-green p-4 text-white hover:bg-influencer-green hover:text-white";
-                } else {
-                  classes =
-                    "cursor-pointer p-4 hover:bg-influencer-green hover:text-white";
-                }
-                return (
-                  <div
-                    key={`${option.name} ${index}`}
-                    onClick={() => {
-                      params.onChangeSearchKeys(option.name);
-                      params.handleOptionSelect(option);
-                    }}
-                    className={classes}
-                  >
-                    <div className="flex items-center justify-between">
-                      <div className={`w-3/4`}>{option.name}</div>
-                      <div>
-                        {params.value === option ? (
-                          <FontAwesomeIcon
-                            icon={faCircleCheck}
-                            className="fa-xl"
-                          />
-                        ) : (
-                          <FontAwesomeIcon icon={faCircle} className="fa-xl" />
-                        )}
+          <>
+            <div className="relative z-10 h-auto max-h-52 overflow-y-auto rounded-2xl border-[1px] border-gray3 bg-white shadow-xl">
+              {params.options &&
+                params.options.map((option, index) => {
+                  let classes = "";
+                  if (params.value === option) {
+                    classes =
+                      "cursor-pointer bg-influencer-green p-4 text-white hover:bg-influencer-green hover:text-white";
+                  } else {
+                    classes =
+                      "cursor-pointer p-4 hover:bg-influencer-green hover:text-white";
+                  }
+                  return (
+                    <div
+                      key={`${option.name} ${index}`}
+                      onClick={() => {
+                        params.onChangeSearchKeys(option.name);
+                        params.handleOptionSelect(option);
+                      }}
+                      className={classes}
+                    >
+                      <div className="flex items-center justify-between">
+                        <div className={`w-3/4`}>{option.name}</div>
+                        <div>
+                          {params.value === option ? (
+                            <FontAwesomeIcon
+                              icon={faCircleCheck}
+                              className="fa-xl"
+                            />
+                          ) : (
+                            <FontAwesomeIcon
+                              icon={faCircle}
+                              className="fa-xl"
+                            />
+                          )}
+                        </div>
                       </div>
                     </div>
-                  </div>
-                );
-              })}
-          </div>
+                  );
+                })}
+            </div>
+            {params.error && (
+              <div className="w-58 flex px-2 text-xs text-red-500">
+                {params.errorMessage}
+              </div>
+            )}
+          </>
         );
       } else if (params.searchKeys.length < 3) {
         return (
@@ -128,11 +138,6 @@ export const CustomSelectWithInput = (params: {
           />
         )}
       </div>
-      {params.error && (
-        <div className="w-58 absolute hidden px-2 text-red-500 xs:flex">
-          {params.errorMessage}
-        </div>
-      )}
       {(selectStatus || params.error) && renderDropdown()}
     </div>
   );

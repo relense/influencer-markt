@@ -337,6 +337,7 @@ const OffersPage = (params: {
               onChangeOffer={onChangeOffer}
               selectedOfferId={-1}
               key={"offersListMobile"}
+              profile={profile || undefined}
             />
           )}
           {selectedOfferId !== -1 && (
@@ -369,6 +370,7 @@ const OffersPage = (params: {
             onChangeOffer={onChangeOffer}
             selectedOfferId={selectedOfferId}
             key={"offersListDesktop"}
+            profile={profile || undefined}
           />
           {offers.length > 0 && (
             <OfferDetails
@@ -389,7 +391,7 @@ const OffersPage = (params: {
 
   return (
     <>
-      <div className="mt-2 flex w-full cursor-default flex-col gap-8 self-center px-2 sm:px-12 xl:w-3/4 2xl:w-3/4 3xl:w-3/4 4xl:w-2/4 5xl:w-2/4">
+      <div className="mt-2 flex w-full cursor-default flex-col gap-8 self-center px-2 sm:px-12 xl:w-3/4 2xl:w-3/4 3xl:w-3/4 4xl:w-3/4 5xl:w-2/4">
         {(width > 1024 || (width < 1024 && selectedOfferId === -1)) &&
           filterBar()}
         {offers.length === 0 &&
