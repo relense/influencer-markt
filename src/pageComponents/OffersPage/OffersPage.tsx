@@ -338,6 +338,7 @@ const OffersPage = (params: {
               selectedOfferId={-1}
               key={"offersListMobile"}
               profile={profile || undefined}
+              userRole={userRole?.role || undefined}
             />
           )}
           {selectedOfferId !== -1 && (
@@ -371,6 +372,7 @@ const OffersPage = (params: {
             selectedOfferId={selectedOfferId}
             key={"offersListDesktop"}
             profile={profile || undefined}
+            userRole={userRole?.role || undefined}
           />
           {offers.length > 0 && (
             <OfferDetails

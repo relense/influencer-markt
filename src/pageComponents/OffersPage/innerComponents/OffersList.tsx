@@ -1,6 +1,6 @@
 import { useRef } from "react";
 import Image from "next/image";
-import { type Prisma } from "@prisma/client";
+import type { Role, Prisma } from "@prisma/client";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useTranslation } from "react-i18next";
 
@@ -33,6 +33,7 @@ const OffersList = (params: {
   isRefetchingOffersWithCursor: boolean;
   isLoading: boolean;
   profile: ProfileIncludes | undefined;
+  userRole: Role | undefined;
 }) => {
   const { t, i18n } = useTranslation();
   const listContainer = useRef<HTMLDivElement>(null);
@@ -156,6 +157,8 @@ const OffersList = (params: {
                       </div>
                     </div>
                     {params.profile &&
+                      params.userRole &&
+                      params.userRole.id === 2 &&
                       checkIfUserHasRequirements(offer, params.profile) && (
                         <div className="flex gap-1 text-sm">
                           <FontAwesomeIcon
