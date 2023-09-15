@@ -222,12 +222,15 @@ const AddSocialMediaModal = (params: {
             value={
               {
                 id: contentTypesList?.[index]?.contentType.id || -1,
-                name: t(
-                  `general.contentTypes.${
-                    contentTypesList?.[index]?.contentType.name.toLowerCase() ||
-                    ""
-                  }`
-                ),
+                name: contentTypesList?.[index]?.contentType.name
+                  ? t(
+                      `general.contentTypes.${
+                        contentTypesList?.[
+                          index
+                        ]?.contentType.name.toLowerCase() || ""
+                      }`
+                    )
+                  : "",
               } || { id: -1, name: "" }
             }
             handleOptionSelect={(value: Option) => {

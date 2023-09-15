@@ -22,7 +22,11 @@ export const reviewsRouter = createTRPCRouter({
             rating: input.rating,
             userReview: input.review,
             authorId: profile.id,
-            orderId: input.orderId,
+            order: {
+              connect: {
+                id: input.orderId,
+              },
+            },
             profileReviewdId: input.profileReviewdId,
           },
         });

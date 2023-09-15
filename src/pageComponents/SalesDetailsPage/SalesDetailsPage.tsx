@@ -1,13 +1,16 @@
-import { api } from "~/utils/api";
-
-import { LoadingSpinner } from "../../components/LoadingSpinner";
 import { useTranslation } from "react-i18next";
 import Link from "next/link";
 import Image from "next/image";
-import { helper } from "../../utils/helper";
-import { Button } from "../../components/Button";
 import toast from "react-hot-toast";
 import { useState } from "react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faStar } from "@fortawesome/free-solid-svg-icons";
+import { faStar as faStarRegular } from "@fortawesome/free-regular-svg-icons";
+import { api } from "~/utils/api";
+
+import { LoadingSpinner } from "../../components/LoadingSpinner";
+import { helper } from "../../utils/helper";
+import { Button } from "../../components/Button";
 import { WhatHappensNext } from "../../components/WhatHappensNext";
 import { Modal } from "../../components/Modal";
 
@@ -171,7 +174,7 @@ const SalesDetailsPage = (params: { orderId: number }) => {
   const renderSaleDetails = () => {
     return (
       <div className="flex flex-col gap-2">
-        <div className="text-xl font-medium">{t("pages.sales.platform")}</div>
+        <div className="text-lg font-medium">{t("pages.sales.platform")}</div>
         <div className="font-semibold text-influencer">
           {sale?.socialMedia?.name || ""}
         </div>
@@ -182,7 +185,7 @@ const SalesDetailsPage = (params: { orderId: number }) => {
   const renderValuePacks = () => {
     return (
       <div className="flex flex-col gap-2">
-        <div className="text-xl font-medium">{t("pages.sales.valuePacks")}</div>
+        <div className="text-lg font-medium">{t("pages.sales.valuePacks")}</div>
         <div className="flex flex-col items-center justify-center gap-4 lg:flex-row">
           {sale?.orderValuePacks.map((valuePack) => {
             return (
@@ -208,7 +211,7 @@ const SalesDetailsPage = (params: { orderId: number }) => {
     if (sale) {
       return (
         <div className="flex flex-col gap-2">
-          <div className="text-xl font-medium">
+          <div className="text-lg font-medium">
             {t("pages.sales.saleTotalTaxes")}
           </div>
           <div className="text-base font-semibold text-influencer">
@@ -224,7 +227,7 @@ const SalesDetailsPage = (params: { orderId: number }) => {
   const renderFinalOrderDetails = () => {
     return (
       <div className="flex flex-col gap-4">
-        <div className="text-xl font-medium">
+        <div className="text-lg font-medium">
           {t("pages.sales.saleRequirements")}
         </div>
         <div className="flex w-full flex-col whitespace-pre-line text-justify">
@@ -234,10 +237,44 @@ const SalesDetailsPage = (params: { orderId: number }) => {
     );
   };
 
+  const renderOrderReview = () => {
+    if (sale?.review) {
+      return (
+        <div className="flex flex-col items-center gap-6">
+          <div className="text-lg font-medium">Review</div>
+          <div className="flex gap-2">
+            <FontAwesomeIcon
+              icon={sale?.review?.rating >= 1 ? faStar : faStarRegular}
+              className=" fa-2xl"
+            />
+            <FontAwesomeIcon
+              icon={sale?.review?.rating >= 2 ? faStar : faStarRegular}
+              className=" fa-2xl"
+            />
+            <FontAwesomeIcon
+              icon={sale?.review?.rating >= 3 ? faStar : faStarRegular}
+              className=" fa-2xl"
+            />
+            <FontAwesomeIcon
+              icon={sale?.review?.rating >= 4 ? faStar : faStarRegular}
+              className=" fa-2xl"
+            />
+            <FontAwesomeIcon
+              icon={sale?.review?.rating >= 5 ? faStar : faStarRegular}
+              className=" fa-2xl"
+            />
+          </div>
+          <div className="">{sale.review.userReview}</div>
+        </div>
+      );
+    }
+  };
+
   return (
     <div className="flex w-full cursor-default flex-col gap-6 self-center px-4 pb-10 sm:px-12 lg:w-full 2xl:w-10/12 3xl:w-3/4 4xl:w-8/12">
       <div className="text-2xl font-semibold">
         {t("pages.sales.saleDetails")}
+        {sale?.id && `: ${sale?.id}`}
       </div>
 
       {isLoading ? (
@@ -247,6 +284,11 @@ const SalesDetailsPage = (params: { orderId: number }) => {
       ) : (
         <div className="flex flex-col gap-4">
           {renderBuyerDetails()}
+          {sale?.reviewId && (
+            <div className="flex flex-col items-center gap-4 rounded-xl border-[1px] p-8 text-center">
+              {renderOrderReview()}
+            </div>
+          )}
           <div className="flex flex-col items-center gap-4 rounded-xl border-[1px] p-8 text-center">
             {renderSaleDetails()}
             {renderValuePacks()}

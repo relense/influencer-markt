@@ -80,6 +80,7 @@ export const OrdersRouter = createTRPCRouter({
               user: true,
             },
           },
+          review: true,
         },
       });
     }),
@@ -114,6 +115,7 @@ export const OrdersRouter = createTRPCRouter({
             },
           },
           orderStatus: true,
+          review: true,
         },
       });
     }),

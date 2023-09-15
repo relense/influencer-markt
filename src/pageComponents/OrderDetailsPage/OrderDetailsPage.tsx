@@ -63,7 +63,7 @@ const OrderDetailsPage = (params: { orderId: number }) => {
   const { mutate: createNotification } =
     api.notifications.createSalesNotification.useMutation();
 
-  const { mutate: createReview, isLoading: isLoadingCreatereview } =
+  const { mutate: createReview, isLoading: isLoadingCreateReview } =
     api.reviews.createReview.useMutation({
       onSuccess: () => {
         updateOrderConfirmed({
@@ -174,7 +174,7 @@ const OrderDetailsPage = (params: { orderId: number }) => {
   const renderOrderDetails = () => {
     return (
       <div className="flex flex-col gap-2">
-        <div className="text-xl font-medium">{t("pages.sales.platform")}</div>
+        <div className="text-lg font-medium">{t("pages.sales.platform")}</div>
         <div className="font-semibold text-influencer">
           {order?.socialMedia?.name || ""}
         </div>
@@ -185,7 +185,7 @@ const OrderDetailsPage = (params: { orderId: number }) => {
   const renderValuePacks = () => {
     return (
       <div className="flex flex-col gap-2">
-        <div className="text-xl font-medium">{t("pages.sales.valuePacks")}</div>
+        <div className="text-lg font-medium">{t("pages.sales.valuePacks")}</div>
         <div className="flex flex-col items-center justify-center gap-4 lg:flex-row">
           {order?.orderValuePacks.map((valuePack) => {
             return (
@@ -211,7 +211,7 @@ const OrderDetailsPage = (params: { orderId: number }) => {
     if (order) {
       return (
         <div className="flex flex-col gap-2">
-          <div className="text-xl font-medium">
+          <div className="text-lg font-medium">
             {t("pages.sales.saleTotalTaxes")}
           </div>
           <div className="text-base font-semibold text-influencer">
@@ -228,7 +228,7 @@ const OrderDetailsPage = (params: { orderId: number }) => {
   const renderFinalOrderDetails = () => {
     return (
       <div className="flex flex-col gap-4">
-        <div className="text-xl font-medium">
+        <div className="text-lg font-medium">
           {t("pages.sales.saleRequirements")}
         </div>
         <div className="flex w-full flex-col whitespace-pre-line text-justify">
@@ -285,7 +285,7 @@ const OrderDetailsPage = (params: { orderId: number }) => {
                     watch("review") === undefined ||
                     watch("review").length === 0
                   }
-                  isLoading={isLoadingCreatereview}
+                  isLoading={isLoadingCreateReview}
                 />
               </div>
             }
@@ -319,11 +319,45 @@ const OrderDetailsPage = (params: { orderId: number }) => {
     }
   };
 
+  const renderOrderReview = () => {
+    if (order?.review) {
+      return (
+        <div className="flex flex-col items-center gap-6">
+          <div className="text-lg font-medium">Review</div>
+          <div className="flex gap-2">
+            <FontAwesomeIcon
+              icon={order?.review?.rating >= 1 ? faStar : faStarRegular}
+              className=" fa-2xl"
+            />
+            <FontAwesomeIcon
+              icon={order?.review?.rating >= 2 ? faStar : faStarRegular}
+              className=" fa-2xl"
+            />
+            <FontAwesomeIcon
+              icon={order?.review?.rating >= 3 ? faStar : faStarRegular}
+              className=" fa-2xl"
+            />
+            <FontAwesomeIcon
+              icon={order?.review?.rating >= 4 ? faStar : faStarRegular}
+              className=" fa-2xl"
+            />
+            <FontAwesomeIcon
+              icon={order?.review?.rating >= 5 ? faStar : faStarRegular}
+              className=" fa-2xl"
+            />
+          </div>
+          <div className="">{order.review.userReview}</div>
+        </div>
+      );
+    }
+  };
+
   return (
     <>
       <div className="flex w-full cursor-default flex-col gap-6 self-center px-4 pb-10 sm:px-12 lg:w-full 2xl:w-10/12 3xl:w-3/4 4xl:w-8/12">
         <div className="text-2xl font-semibold">
           {t("pages.orders.orderDetails")}
+          {order?.id && `: ${order?.id}`}
         </div>
 
         {isLoading ? (
@@ -333,6 +367,11 @@ const OrderDetailsPage = (params: { orderId: number }) => {
         ) : (
           <div className="flex flex-col gap-4">
             {renderInfluencerDetails()}
+            {order?.reviewId && (
+              <div className="flex flex-col items-center gap-4 rounded-xl border-[1px] p-8 text-center">
+                {renderOrderReview()}
+              </div>
+            )}
             <div className="flex flex-col items-center gap-4 rounded-xl border-[1px] p-8 text-center">
               {renderOrderDetails()}
               {renderValuePacks()}

@@ -41,6 +41,7 @@ type Step = {
 const FirstStepsPage = () => {
   const { t } = useTranslation();
   const router = useRouter();
+  const ctx = api.useContext();
 
   const generalSteps: Step[] = [
     {
@@ -135,7 +136,9 @@ const FirstStepsPage = () => {
 
   const { mutate } = api.users.updateUserFirstSteps.useMutation();
   const { mutateAsync: profileMutation } =
-    api.profiles.createProfile.useMutation();
+    api.profiles.createProfile.useMutation({
+      onSuccess: () => void void ctx.users.getUser.invalidate(),
+    });
   const { mutate: userSocialMediaMutation } =
     api.userSocialMedias.createUserSocialMedias.useMutation();
 
