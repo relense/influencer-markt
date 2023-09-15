@@ -849,6 +849,7 @@
       "delivered": "Entregue",
       "rejected": "Rejeitado",
       "confirmed": "Confirmado",
+      "canceled": "Cancelado",
       "deliveryModalTitle": "Estão todos os requisitos cumpridos?",
       "deliveryModalText": "Antes de entregar, certifica-te de que cumpriste todos os pedidos do comprador. Se algo estiver em falta ou precisares de discutir algum aspecto do pedido, não hesites em utilizar a plataforma de mensagens para comunicar com o comprador. A tua atenção aos detalhes e comunicação são essenciais para proporcionar uma ótima experiência ao comprador."
     },
