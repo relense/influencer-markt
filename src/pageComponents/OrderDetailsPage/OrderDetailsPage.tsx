@@ -49,6 +49,18 @@ const OrderDetailsPage = (params: { orderId: number }) => {
       },
     });
 
+  const { mutate: updateCancelOrder, isLoading: isLoadingUpdateCancelOrder } =
+    api.orders.updateOrder.useMutation({
+      onSuccess: () => {
+        void createNotification({
+          entityId: params.orderId,
+          notifierId: order?.influencerId || -1,
+          notificationTypeAction: "canceled",
+        });
+        void ctx.orders.getBuyerOrder.invalidate();
+      },
+    });
+
   const { mutate: updateOrderConfirmed } = api.orders.updateOrder.useMutation({
     onSuccess: () => {
       void createNotification({
@@ -135,6 +147,21 @@ const OrderDetailsPage = (params: { orderId: number }) => {
           <div className="font-semibold ">
             {t(`pages.orders.${order?.orderStatus?.name || ""}`)}
           </div>
+          {order.orderStatusId === 1 && (
+            <div className="flex gap-12">
+              <Button
+                title={t("pages.orders.cancel")}
+                level="primary"
+                onClick={() =>
+                  updateCancelOrder({
+                    orderId: order.id,
+                    statusId: 7,
+                  })
+                }
+                isLoading={isLoadingUpdateCancelOrder}
+              />
+            </div>
+          )}
           {order.orderStatusId === 3 && (
             <div className="flex gap-12">
               <Button
