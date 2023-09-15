@@ -235,7 +235,7 @@ const SalesDetailsPage = (params: { orderId: number }) => {
   };
 
   return (
-    <div className="flex w-full cursor-default flex-col gap-6 self-center px-4 pb-10 sm:px-12 lg:w-full 2xl:w-3/4 3xl:w-3/4 4xl:w-7/12 5xl:w-2/4">
+    <div className="flex w-full cursor-default flex-col gap-6 self-center px-4 pb-10 sm:px-12 lg:w-full 2xl:w-10/12 3xl:w-3/4 4xl:w-8/12">
       <div className="text-2xl font-semibold">
         {t("pages.sales.saleDetails")}
       </div>
