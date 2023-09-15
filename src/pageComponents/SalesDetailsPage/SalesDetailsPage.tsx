@@ -91,13 +91,13 @@ const SalesDetailsPage = (params: { orderId: number }) => {
         | "accepted"
         | "progress"
         | "delivered"
-        | "completed" = "";
+        | "confirmed" = "";
       if (
         sale.orderStatus?.name === "awaiting" ||
         sale.orderStatus?.name === "accepted" ||
         sale.orderStatus?.name === "progress" ||
         sale.orderStatus?.name === "delivered" ||
-        sale.orderStatus?.name === "completed"
+        sale.orderStatus?.name === "confirmed"
       ) {
         whatHappensNext = sale.orderStatus?.name;
       }

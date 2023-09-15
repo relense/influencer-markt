@@ -1,7 +1,7 @@
 import { useTranslation } from "react-i18next";
 
 const WhatHappensNext = (params: {
-  stage: "awaiting" | "accepted" | "progress" | "delivered" | "completed";
+  stage: "awaiting" | "accepted" | "progress" | "delivered" | "confirmed";
   view: "buyer" | "seller";
   startedOrder: boolean;
 }) => {
@@ -49,7 +49,7 @@ const WhatHappensNext = (params: {
 
   const renderDesktopView = () => {
     return (
-      <div className="hidden flex-col gap-6 lg:flex">
+      <div className="hidden flex-col gap-6 xl:flex">
         <div className="font-medium">{renderTitle()}</div>
         <div className="flex">
           {renderItemDesktop(
@@ -145,7 +145,7 @@ const WhatHappensNext = (params: {
 
   const renderMobileView = () => {
     return (
-      <div className="flex flex-col gap-6 p-4 text-sm lg:hidden lg:p-8">
+      <div className="flex flex-col gap-6 p-4 text-sm xl:hidden xl:p-8">
         <div className="font-medium">{renderTitle()}</div>
         <div className="flex flex-col">
           {renderItemMobile(

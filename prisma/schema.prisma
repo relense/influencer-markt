@@ -190,15 +190,18 @@ model Review {
   id             Int      @id @default(autoincrement())
   userReview     String   @db.Text
   date           DateTime
-  rating         Decimal
+  rating         Int
   profileReviewd Profile? @relation("profileReviewd", fields: [profileReviewdId], references: [id])
   author         Profile? @relation("author", fields: [authorId], references: [id])
+  order          Order?
 
   profileReviewdId Int?
   authorId         Int?
+  orderId          Int?
 
   @@index([profileReviewdId])
   @@index([authorId])
+  @@index([orderId])
 }
 
 model Reason {
@@ -351,6 +354,7 @@ model Order {
   orderPrice             String
   orderStatus            OrderStatus?     @relation(fields: [orderStatusId], references: [id])
   socialMedia            SocialMedia?     @relation(fields: [socialMediaId], references: [id])
+  review                 Review?          @relation(fields: [reviewId], references: [id])
 
   cardReferenceStripe String?
 
@@ -359,6 +363,7 @@ model Order {
   countryId     Int?
   orderStatusId Int?
   socialMediaId Int?
+  reviewId      Int? @unique
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -368,6 +373,7 @@ model Order {
   @@index([countryId])
   @@index([influencerId])
   @@index([buyerId])
+  @@index([reviewId])
 }
 
 model OrderValuePack {

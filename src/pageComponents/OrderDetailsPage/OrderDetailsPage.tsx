@@ -7,10 +7,30 @@ import Image from "next/image";
 import { helper } from "../../utils/helper";
 import { WhatHappensNext } from "../../components/WhatHappensNext";
 import { Button } from "../../components/Button";
+import { useState } from "react";
+import { Modal } from "../../components/Modal";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faStar } from "@fortawesome/free-solid-svg-icons";
+import { faStar as faStarRegular } from "@fortawesome/free-regular-svg-icons";
+import { useForm } from "react-hook-form";
+
+type ReviewForm = {
+  review: string;
+};
 
 const OrderDetailsPage = (params: { orderId: number }) => {
   const { t, i18n } = useTranslation();
   const ctx = api.useContext();
+
+  const [openReviewModal, setOpenReviewModal] = useState<boolean>(false);
+  const [startReviewsCount, setStartReviewsCount] = useState<number>(1);
+
+  const {
+    register,
+    watch,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<ReviewForm>();
 
   const { data: order, isLoading } = api.orders.getBuyerOrder.useQuery({
     orderId: params.orderId,
@@ -39,13 +59,13 @@ const OrderDetailsPage = (params: { orderId: number }) => {
         | "accepted"
         | "progress"
         | "delivered"
-        | "completed" = "";
+        | "confirmed" = "";
       if (
         order.orderStatus?.name === "awaiting" ||
         order.orderStatus?.name === "accepted" ||
         order.orderStatus?.name === "progress" ||
         order.orderStatus?.name === "delivered" ||
-        order.orderStatus?.name === "completed"
+        order.orderStatus?.name === "confirmed"
       ) {
         whatHappensNext = order.orderStatus?.name;
       }
@@ -91,6 +111,15 @@ const OrderDetailsPage = (params: { orderId: number }) => {
                   })
                 }
                 isLoading={updateAcceptIsLoading}
+              />
+            </div>
+          )}
+          {order.orderStatusId === 5 && (
+            <div className="flex gap-12">
+              <Button
+                title={t("pages.orders.review")}
+                level="primary"
+                onClick={() => setOpenReviewModal(true)}
               />
             </div>
           )}
@@ -173,28 +202,110 @@ const OrderDetailsPage = (params: { orderId: number }) => {
     );
   };
 
-  return (
-    <div className="flex w-full cursor-default flex-col gap-6 self-center px-4 pb-10 sm:px-12 lg:w-full 2xl:w-10/12 3xl:w-3/4 4xl:w-8/12">
-      <div className="text-2xl font-semibold">
-        {t("pages.orders.orderDetails")}
+  const renderStarSelection = () => {
+    return (
+      <div className="flex gap-2">
+        <FontAwesomeIcon
+          icon={startReviewsCount >= 1 ? faStar : faStarRegular}
+          className=" fa-2xl cursor-pointer"
+          onClick={() => setStartReviewsCount(1)}
+        />
+        <FontAwesomeIcon
+          icon={startReviewsCount >= 2 ? faStar : faStarRegular}
+          className=" fa-2xl cursor-pointer"
+          onClick={() => setStartReviewsCount(2)}
+        />
+        <FontAwesomeIcon
+          icon={startReviewsCount >= 3 ? faStar : faStarRegular}
+          className=" fa-2xl cursor-pointer"
+          onClick={() => setStartReviewsCount(3)}
+        />
+        <FontAwesomeIcon
+          icon={startReviewsCount >= 4 ? faStar : faStarRegular}
+          className=" fa-2xl cursor-pointer"
+          onClick={() => setStartReviewsCount(4)}
+        />
+        <FontAwesomeIcon
+          icon={startReviewsCount >= 5 ? faStar : faStarRegular}
+          className=" fa-2xl cursor-pointer"
+          onClick={() => setStartReviewsCount(5)}
+        />
       </div>
+    );
+  };
 
-      {isLoading ? (
-        <div className="flex justify-center">
-          <LoadingSpinner />
+  const renderReviewModal = () => {
+    if (openReviewModal) {
+      return (
+        <div className="flex justify-center ">
+          <Modal
+            button={
+              <div className="flex justify-center p-4">
+                <Button
+                  title={t("pages.orders.review")}
+                  level="primary"
+                  form="form-review"
+                  disabled={
+                    watch("review") === undefined ||
+                    watch("review").length === 0
+                  }
+                />
+              </div>
+            }
+            onClose={() => setOpenReviewModal(false)}
+          >
+            <form
+              id="form-review"
+              className="flex flex-col items-center justify-center gap-6 px-8 py-4"
+            >
+              <div className="text-xl font-semibold">
+                {t("pages.orders.modalReviewTitle")}
+              </div>
+              {renderStarSelection()}
+              <textarea
+                {...register("review", { maxLength: 446 })}
+                required
+                className="flex min-h-[20vh] w-full cursor-pointer rounded-lg border-[1px] border-gray3 bg-transparent p-4 placeholder-gray2 placeholder:w-11/12"
+                placeholder={t("pages.orders.messageInputPlaceholder")}
+                autoComplete="off"
+              />
+              {errors.review && errors.review.type === "maxLength" && (
+                <div className="px-4 py-1 text-red-600">
+                  {t("pages.orders.warningMessage", { count: 446 })}
+                </div>
+              )}
+            </form>
+          </Modal>
         </div>
-      ) : (
-        <div className="flex flex-col gap-4">
-          {renderInfluencerDetails()}
-          <div className="flex flex-col items-center gap-4 rounded-xl border-[1px] p-8 text-center">
-            {renderOrderDetails()}
-            {renderValuePacks()}
-            {renderTotalPrice()}
-            {renderFinalOrderDetails()}
+      );
+    }
+  };
+
+  return (
+    <>
+      <div className="flex w-full cursor-default flex-col gap-6 self-center px-4 pb-10 sm:px-12 lg:w-full 2xl:w-10/12 3xl:w-3/4 4xl:w-8/12">
+        <div className="text-2xl font-semibold">
+          {t("pages.orders.orderDetails")}
+        </div>
+
+        {isLoading ? (
+          <div className="flex justify-center">
+            <LoadingSpinner />
           </div>
-        </div>
-      )}
-    </div>
+        ) : (
+          <div className="flex flex-col gap-4">
+            {renderInfluencerDetails()}
+            <div className="flex flex-col items-center gap-4 rounded-xl border-[1px] p-8 text-center">
+              {renderOrderDetails()}
+              {renderValuePacks()}
+              {renderTotalPrice()}
+              {renderFinalOrderDetails()}
+            </div>
+          </div>
+        )}
+      </div>
+      {renderReviewModal()}
+    </>
   );
 };
 

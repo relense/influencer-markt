@@ -849,6 +849,7 @@
       "deliver": "Deliver order",
       "delivered": "Delivered",
       "rejected": "Rejected",
+      "confirmed": "Confirmed",
       "deliveryModalTitle": "Are all the requirements met?",
       "deliveryModalText": "Before delivering the order, please ensure that you have fulfilled all of the buyer's requests. If there is anything missing or if you need to discuss any aspect of the order, please feel free to use the messaging platform to communicate with them. Your attention to detail and communication are essential to providing a great experience for the buyer."
     },
@@ -880,8 +881,13 @@
       "progress": "In progress",
       "delivered": "Delivered",
       "rejected": "Rejected",
+      "confirmed": "Confirmed",
       "started": "Missing payment details",
-      "addPayment": "Add Payment Details"
+      "addPayment": "Add Payment Details",
+      "review": "Review",
+      "modalReviewTitle": "What is your review?",
+      "warningMessage": "Max is {{count}} characters",
+      "messageInputPlaceholder": "Share your thoughts on the influencer's performance and the content delivered for your order. Your feedback helps them improve and future clients make informed decisions. Remember, this will appear in the influencer's page."
     }
   }
 }
