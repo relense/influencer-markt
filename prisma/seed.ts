@@ -670,14 +670,12 @@ async function main() {
   await prisma.review.createMany({
     data: [
       {
-        date: new Date(),
         rating: 4,
         authorId: 1,
         userReview: "Really awesome job and I am very happy",
         profileReviewdId: 5,
       },
       {
-        date: new Date(),
         rating: 5,
         authorId: 2,
         userReview:
@@ -685,35 +683,30 @@ async function main() {
         profileReviewdId: 5,
       },
       {
-        date: new Date(),
         rating: 5,
         authorId: 3,
         userReview: "Vwey cool and I am really happy with the result.",
         profileReviewdId: 5,
       },
       {
-        date: new Date(),
         rating: 5,
         authorId: 3,
         userReview: "I will send double the review because I am really happy",
         profileReviewdId: 5,
       },
       {
-        date: new Date(),
         rating: 4,
         authorId: 4,
         userReview: "It was a nice job done by this person",
         profileReviewdId: 5,
       },
       {
-        date: new Date(),
         rating: 4,
         authorId: 1,
         userReview: "Really awesome job and I am very happy",
         profileReviewdId: 6,
       },
       {
-        date: new Date(),
         rating: 5,
         authorId: 2,
         userReview:
@@ -721,35 +714,30 @@ async function main() {
         profileReviewdId: 6,
       },
       {
-        date: new Date(),
         rating: 5,
         authorId: 3,
         userReview: "Vwey cool and I am really happy with the result.",
         profileReviewdId: 6,
       },
       {
-        date: new Date(),
         rating: 5,
         authorId: 3,
         userReview: "I will send double the review because I am really happy",
         profileReviewdId: 6,
       },
       {
-        date: new Date(),
         rating: 4,
         authorId: 4,
         userReview: "It was a nice job done by this person",
         profileReviewdId: 6,
       },
       {
-        date: new Date(),
         rating: 4,
         authorId: 1,
         userReview: "Really awesome job and I am very happy",
         profileReviewdId: 7,
       },
       {
-        date: new Date(),
         rating: 5,
         authorId: 2,
         userReview:
@@ -757,35 +745,30 @@ async function main() {
         profileReviewdId: 7,
       },
       {
-        date: new Date(),
         rating: 5,
         authorId: 3,
         userReview: "Vwey cool and I am really happy with the result.",
         profileReviewdId: 7,
       },
       {
-        date: new Date(),
         rating: 5,
         authorId: 3,
         userReview: "I will send double the review because I am really happy",
         profileReviewdId: 7,
       },
       {
-        date: new Date(),
         rating: 4,
         authorId: 4,
         userReview: "It was a nice job done by this person",
         profileReviewdId: 7,
       },
       {
-        date: new Date(),
         rating: 4,
         authorId: 1,
         userReview: "Really awesome job and I am very happy",
         profileReviewdId: 8,
       },
       {
-        date: new Date(),
         rating: 5,
         authorId: 2,
         userReview:
@@ -793,21 +776,18 @@ async function main() {
         profileReviewdId: 8,
       },
       {
-        date: new Date(),
         rating: 5,
         authorId: 3,
         userReview: "Vwey cool and I am really happy with the result.",
         profileReviewdId: 8,
       },
       {
-        date: new Date(),
         rating: 5,
         authorId: 3,
         userReview: "I will send double the review because I am really happy",
         profileReviewdId: 8,
       },
       {
-        date: new Date(),
         rating: 4,
         authorId: 4,
         userReview: "It was a nice job done by this person",

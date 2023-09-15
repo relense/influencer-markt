@@ -189,11 +189,13 @@ model UserSocialMedia {
 model Review {
   id             Int      @id @default(autoincrement())
   userReview     String   @db.Text
-  date           DateTime
   rating         Int
   profileReviewd Profile? @relation("profileReviewd", fields: [profileReviewdId], references: [id])
   author         Profile? @relation("author", fields: [authorId], references: [id])
   order          Order?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   profileReviewdId Int?
   authorId         Int?

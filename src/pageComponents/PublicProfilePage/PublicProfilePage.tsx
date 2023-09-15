@@ -191,7 +191,7 @@ const PublicProfilePage = (params: {
             authorName: review.author?.name || "",
             profilePicture: review.author?.profilePicture || "",
             review: review.userReview || "",
-            reviewDate: helper.formatDate(review.date, i18n.language),
+            reviewDate: helper.formatDate(review.createdAt, i18n.language),
             username: review.author?.user.username || "",
           };
         })
@@ -215,7 +215,7 @@ const PublicProfilePage = (params: {
           authorName: review.author?.name || "",
           profilePicture: review.author?.profilePicture || "",
           review: review.userReview || "",
-          reviewDate: helper.formatDate(review.date, i18n.language),
+          reviewDate: helper.formatDate(review.createdAt, i18n.language),
           username: review.author?.user.username || "",
         });
       });

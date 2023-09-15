@@ -45,6 +45,7 @@ export const NotificationsRouter = createTRPCRouter({
         notificationTypeAction: z.union([
           z.literal("awaitingReply"),
           z.literal("paymentAdded"),
+          z.literal("confirmed"),
           z.literal("canceled"),
         ]),
       })
@@ -161,6 +162,8 @@ const getNotificationTypeActionId = (
       return 5;
     } else if (notificationAction === "paymentAdded") {
       return 6;
+    } else if (notificationAction === "confirmed") {
+      return 7;
     }
   }
 };

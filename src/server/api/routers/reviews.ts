@@ -1,7 +1,34 @@
 import { z } from "zod";
-import { createTRPCRouter, publicProcedure } from "../trpc";
+import { createTRPCRouter, protectedProcedure, publicProcedure } from "../trpc";
 
 export const reviewsRouter = createTRPCRouter({
+  createReview: protectedProcedure
+    .input(
+      z.object({
+        profileReviewdId: z.number(),
+        rating: z.number(),
+        review: z.string(),
+        orderId: z.number(),
+      })
+    )
+    .mutation(async ({ ctx, input }) => {
+      const profile = await ctx.prisma.profile.findFirst({
+        where: { userId: ctx.session.user.id },
+      });
+
+      if (profile) {
+        return await ctx.prisma.review.create({
+          data: {
+            rating: input.rating,
+            userReview: input.review,
+            authorId: profile.id,
+            orderId: input.orderId,
+            profileReviewdId: input.profileReviewdId,
+          },
+        });
+      }
+    }),
+
   getProfileReviews: publicProcedure
     .input(
       z.object({
@@ -34,13 +61,13 @@ export const reviewsRouter = createTRPCRouter({
                 id: false,
               },
             },
-            date: true,
+            createdAt: true,
             id: true,
             rating: true,
             userReview: true,
           },
           orderBy: {
-            date: "desc",
+            createdAt: "desc",
           },
         }),
       ]);
@@ -77,13 +104,13 @@ export const reviewsRouter = createTRPCRouter({
               id: false,
             },
           },
-          date: true,
+          createdAt: true,
           id: true,
           rating: true,
           userReview: true,
         },
         orderBy: {
-          date: "desc",
+          createdAt: "desc",
         },
       });
     }),

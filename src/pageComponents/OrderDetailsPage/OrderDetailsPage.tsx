@@ -23,11 +23,12 @@ const OrderDetailsPage = (params: { orderId: number }) => {
   const ctx = api.useContext();
 
   const [openReviewModal, setOpenReviewModal] = useState<boolean>(false);
-  const [startReviewsCount, setStartReviewsCount] = useState<number>(1);
+  const [starReviewsCount, setStarReviewsCount] = useState<number>(1);
 
   const {
     register,
     watch,
+    reset,
     handleSubmit,
     formState: { errors },
   } = useForm<ReviewForm>();
@@ -48,8 +49,43 @@ const OrderDetailsPage = (params: { orderId: number }) => {
       },
     });
 
+  const { mutate: updateOrderConfirmed } = api.orders.updateOrder.useMutation({
+    onSuccess: () => {
+      void createNotification({
+        entityId: params.orderId,
+        notifierId: order?.influencerId || -1,
+        notificationTypeAction: "confirmed",
+      });
+      void ctx.orders.getBuyerOrder.invalidate();
+    },
+  });
+
   const { mutate: createNotification } =
     api.notifications.createSalesNotification.useMutation();
+
+  const { mutate: createReview, isLoading: isLoadingCreatereview } =
+    api.reviews.createReview.useMutation({
+      onSuccess: () => {
+        updateOrderConfirmed({
+          orderId: params.orderId,
+          statusId: 6,
+        });
+        reset();
+        setOpenReviewModal(false);
+        setStarReviewsCount(1);
+      },
+    });
+
+  const submit = handleSubmit((data) => {
+    if (order?.influencerId) {
+      createReview({
+        orderId: params.orderId,
+        profileReviewdId: order?.influencerId,
+        rating: starReviewsCount,
+        review: data.review,
+      });
+    }
+  });
 
   const renderInfluencerDetails = () => {
     if (order) {
@@ -206,29 +242,29 @@ const OrderDetailsPage = (params: { orderId: number }) => {
     return (
       <div className="flex gap-2">
         <FontAwesomeIcon
-          icon={startReviewsCount >= 1 ? faStar : faStarRegular}
+          icon={starReviewsCount >= 1 ? faStar : faStarRegular}
           className=" fa-2xl cursor-pointer"
-          onClick={() => setStartReviewsCount(1)}
+          onClick={() => setStarReviewsCount(1)}
         />
         <FontAwesomeIcon
-          icon={startReviewsCount >= 2 ? faStar : faStarRegular}
+          icon={starReviewsCount >= 2 ? faStar : faStarRegular}
           className=" fa-2xl cursor-pointer"
-          onClick={() => setStartReviewsCount(2)}
+          onClick={() => setStarReviewsCount(2)}
         />
         <FontAwesomeIcon
-          icon={startReviewsCount >= 3 ? faStar : faStarRegular}
+          icon={starReviewsCount >= 3 ? faStar : faStarRegular}
           className=" fa-2xl cursor-pointer"
-          onClick={() => setStartReviewsCount(3)}
+          onClick={() => setStarReviewsCount(3)}
         />
         <FontAwesomeIcon
-          icon={startReviewsCount >= 4 ? faStar : faStarRegular}
+          icon={starReviewsCount >= 4 ? faStar : faStarRegular}
           className=" fa-2xl cursor-pointer"
-          onClick={() => setStartReviewsCount(4)}
+          onClick={() => setStarReviewsCount(4)}
         />
         <FontAwesomeIcon
-          icon={startReviewsCount >= 5 ? faStar : faStarRegular}
+          icon={starReviewsCount >= 5 ? faStar : faStarRegular}
           className=" fa-2xl cursor-pointer"
-          onClick={() => setStartReviewsCount(5)}
+          onClick={() => setStarReviewsCount(5)}
         />
       </div>
     );
@@ -249,6 +285,7 @@ const OrderDetailsPage = (params: { orderId: number }) => {
                     watch("review") === undefined ||
                     watch("review").length === 0
                   }
+                  isLoading={isLoadingCreatereview}
                 />
               </div>
             }
@@ -257,6 +294,7 @@ const OrderDetailsPage = (params: { orderId: number }) => {
             <form
               id="form-review"
               className="flex flex-col items-center justify-center gap-6 px-8 py-4"
+              onSubmit={submit}
             >
               <div className="text-xl font-semibold">
                 {t("pages.orders.modalReviewTitle")}
