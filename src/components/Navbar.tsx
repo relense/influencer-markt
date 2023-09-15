@@ -719,14 +719,6 @@ export const Navbar = (params: {
         {leftNavBar()}
         {rightNavbar()}
       </div>
-      {params.sessionData && params.loggedInProfileId === -1 && (
-        <Link
-          href="/first-steps"
-          className="flex flex-1 cursor-pointer justify-center bg-influencer p-4 text-center text-xl text-white"
-        >
-          {t("components.navbar.completeMessage")}
-        </Link>
-      )}
     </nav>
   );
 };
