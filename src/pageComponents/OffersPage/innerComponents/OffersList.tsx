@@ -163,7 +163,7 @@ const OffersList = (params: {
                         <div className="flex gap-1 text-sm">
                           <FontAwesomeIcon
                             icon={faCheckCircle}
-                            className="fa-lg text-influencer"
+                            className="fa-lg text-influencer-green"
                           />
                           <div className="font-semibold ">
                             {t("pages.offers.matchsProfile")}
