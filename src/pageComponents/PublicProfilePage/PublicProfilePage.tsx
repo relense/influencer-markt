@@ -185,7 +185,7 @@ const PublicProfilePage = (params: {
   useEffect(() => {
     if (profileReviews) {
       setReviews(
-        profileReviews[1].map((review) => {
+        profileReviews[2].map((review) => {
           return {
             id: review.id,
             authorName: review.author?.name || "",
@@ -197,7 +197,7 @@ const PublicProfilePage = (params: {
         })
       );
 
-      const lastReviewInArray = profileReviews[1][profileReviews[1].length - 1];
+      const lastReviewInArray = profileReviews[2][profileReviews[1].length - 1];
 
       if (lastReviewInArray) {
         setCursor(lastReviewInArray.id);
@@ -589,6 +589,11 @@ const PublicProfilePage = (params: {
         return userSocialMedia.platform.id === platform.id;
       });
 
+    const sumOfRatings =
+      profileReviews &&
+      profileReviews[1].reduce((total, review) => total + review.rating, 0) /
+        profileReviews[1].length;
+
     return (
       <>
         <div className="flex flex-col gap-4 rounded-2xl border-[1px] border-white1 p-4 shadow-xl">
@@ -605,7 +610,7 @@ const PublicProfilePage = (params: {
                     icon={faStar}
                     className="fa-lg cursor-pointer pb-1"
                   />
-                  <div>{profile?.rating}</div>
+                  <div>{sumOfRatings}</div>
                 </div>
                 <div className="hidden h-2 w-2 rounded-full bg-black xs:block" />
                 <div className="text-gray2">
@@ -856,6 +861,10 @@ const PublicProfilePage = (params: {
 
   const renderReviews = () => {
     if (profileReviews && profileReviews[0] > 0) {
+      const sumOfRatings =
+        profileReviews[1].reduce((total, review) => total + review.rating, 0) /
+        profileReviews[1].length;
+
       return (
         <>
           <div className="w-full border-[1px] border-gray3" />
@@ -866,10 +875,10 @@ const PublicProfilePage = (params: {
                   icon={faStar}
                   className="fa-lg cursor-pointer pb-1"
                 />
-                <div>{profile?.rating ? profile?.rating : ""}</div>
+                <div className="text-xl font-semibold">{sumOfRatings}</div>
               </div>
               <div className="h-2 w-2 rounded-full bg-black" />
-              <div className="text-gray2">
+              <div className="text-xl font-semibold">
                 {profileReviews && profileReviews[0] > 0 ? (
                   <div>
                     {t("pages.publicProfilePage.reviews", {

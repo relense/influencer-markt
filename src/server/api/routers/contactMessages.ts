@@ -34,31 +34,33 @@ export const ContactMessagesRouter = createTRPCRouter({
       });
 
       //Mail sent to user confirming we received the issue request
-      await transporter.sendMail({
-        from: env.EMAIL_FROM,
-        to: input.email,
-        subject: "Thank You for Your Contact",
-        html: weReceivedContactEmail({
-          email: input.email,
-          message: input.message,
-          name: input.name,
-          reason: reasonText,
-        }),
-      });
+      if (env.EMAIL_FROM) {
+        await transporter.sendMail({
+          from: { address: env.EMAIL_FROM, name: "Influencer Markt" },
+          to: input.email,
+          subject: "Thank You for Your Contact",
+          html: weReceivedContactEmail({
+            email: input.email,
+            message: input.message,
+            name: input.name,
+            reason: reasonText,
+          }),
+        });
 
-      //Email to our inbox
-      await transporter.sendMail({
-        from: env.EMAIL_FROM,
-        to: env.EMAIL_FROM,
-        subject: `${message.id} - ${reasonText}`,
-        text: `New issue from ${input.name} with email ${input.email}`,
-        html: contactUsEmail({
-          email: input.email,
-          message: input.message,
-          name: input.name,
-          reason: reasonText,
-        }),
-      });
+        //Email to our inbox
+        await transporter.sendMail({
+          from: { address: env.EMAIL_FROM, name: "Influencer Markt" },
+          to: env.EMAIL_FROM,
+          subject: `${message.id} - ${reasonText}`,
+          text: `New issue from ${input.name} with email ${input.email}`,
+          html: contactUsEmail({
+            email: input.email,
+            message: input.message,
+            name: input.name,
+            reason: reasonText,
+          }),
+        });
+      }
     }),
 
   getMessages: protectedProcedure

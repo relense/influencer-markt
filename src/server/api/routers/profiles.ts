@@ -638,6 +638,11 @@ export const profilesRouter = createTRPCRouter({
               id: false,
             },
           },
+          profileReviews: {
+            select: {
+              rating: true,
+            },
+          },
           website: true,
           about: true,
           city: true,

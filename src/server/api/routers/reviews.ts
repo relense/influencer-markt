@@ -47,7 +47,13 @@ export const reviewsRouter = createTRPCRouter({
           },
         }),
         ctx.prisma.review.findMany({
-          take: 4,
+          where: { profileReviewdId: input.profileId },
+          select: {
+            rating: true,
+          },
+        }),
+        ctx.prisma.review.findMany({
+          take: 8,
           where: { profileReviewdId: input.profileId },
           select: {
             author: {
@@ -86,7 +92,7 @@ export const reviewsRouter = createTRPCRouter({
     )
     .query(async ({ ctx, input }) => {
       return await ctx.prisma.review.findMany({
-        take: 4,
+        take: 8,
         skip: 1,
         cursor: {
           id: input.cursor,

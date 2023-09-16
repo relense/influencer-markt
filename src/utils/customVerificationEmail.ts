@@ -11,7 +11,7 @@ async function customSendVerificationRequest(
   const transport = transporter;
   const result = await transport.sendMail({
     to: identifier,
-    from: provider.from,
+    from: { address: provider.from, name: "Influencer Markt" },
     subject: `Sign in to ${host}`,
     text: text({ url, host }),
     html: html({ url, host, theme }),
