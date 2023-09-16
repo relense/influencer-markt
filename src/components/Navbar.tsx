@@ -405,101 +405,104 @@ export const Navbar = (params: {
             nodeRef={drawerRef}
           >
             <div
-              className="absolute bottom-0 left-0 right-0 z-50 flex w-screen cursor-grab flex-col gap-2 rounded-t-lg border-white1 bg-white px-8 pb-4 text-sm shadow-lg sm:bottom-auto sm:left-auto sm:right-5 sm:top-20 sm:w-auto sm:cursor-pointer sm:rounded-2xl sm:border-[1px] sm:p-8 sm:pt-2 sm:text-base"
+              className="absolute bottom-0 left-0 right-0 z-50 flex w-screen cursor-grab flex-col gap-2 rounded-t-lg border-white1 bg-white pb-4 text-sm shadow-lg sm:bottom-auto sm:left-auto sm:right-5 sm:top-20 sm:w-auto sm:cursor-pointer sm:rounded-2xl sm:border-[1px] sm:pt-2 sm:text-base"
               ref={drawerRef}
             >
               <div className="flex h-1 w-full flex-1 cursor-pointer justify-center sm:hidden">
                 <div className="h-[2px] w-10" />
               </div>
-              <Link
-                href={params.username ? `/${params.username}` : "/"}
-                className="group hidden cursor-pointer items-center gap-4 py-2 sm:flex"
-              >
-                <FontAwesomeIcon icon={faUserCircle} className="fa-xl" />
-                <div className="w-4/5 break-words group-hover:underline">
-                  {params.username
-                    ? params.username
-                    : params.sessionData?.user.email}
-                </div>
-              </Link>
+              <div className="px-8">
+                <Link
+                  href={params.username ? `/${params.username}` : "/"}
+                  className="group hidden cursor-pointer items-center gap-4  py-2 sm:flex"
+                >
+                  <FontAwesomeIcon icon={faUserCircle} className="fa-xl" />
+                  <div className="w-4/5 break-words group-hover:underline">
+                    {params.username
+                      ? params.username
+                      : params.sessionData?.user.email}
+                  </div>
+                </Link>
+              </div>
 
               <div className="hidden cursor-pointer border-[1px] border-white1 sm:flex" />
+              <div className="px-8">
+                <Link
+                  href="/explore/brands"
+                  className=" group flex cursor-pointer items-center gap-4 py-2 lg:hidden"
+                >
+                  <FontAwesomeIcon icon={faSearch} className="fa-lg" />
 
-              <Link
-                href="/explore/brands"
-                className=" group flex cursor-pointer items-center gap-4 py-2 lg:hidden"
-              >
-                <FontAwesomeIcon icon={faSearch} className="fa-lg" />
+                  <div className="need-interaction group-hover:underline">
+                    {t("components.navbar.exploreBrands")}
+                  </div>
+                </Link>
 
-                <div className="need-interaction group-hover:underline">
-                  {t("components.navbar.exploreBrands")}
-                </div>
-              </Link>
+                <Link
+                  href="/saved/brands"
+                  className="group flex cursor-pointer items-center gap-4 py-2 lg:hidden"
+                >
+                  <FontAwesomeIcon icon={faBookmark} className="fa-lg pl-1" />
 
-              <Link
-                href="/saved/brands"
-                className="group flex cursor-pointer items-center gap-4 py-2 lg:hidden"
-              >
-                <FontAwesomeIcon icon={faBookmark} className="fa-lg pl-1" />
-
-                <div className="need-interaction group-hover:underline ">
-                  {t("components.navbar.savedBrands")}
-                </div>
-              </Link>
+                  <div className="need-interaction group-hover:underline ">
+                    {t("components.navbar.savedBrands")}
+                  </div>
+                </Link>
+              </div>
               <div className="cursor-pointer border-[1px] border-white1 lg:hidden" />
-
-              <Link
-                href="/manage-offers"
-                className=" group flex cursor-pointer items-center gap-4 py-2"
-              >
-                <FontAwesomeIcon icon={faBriefcase} className="fa-lg" />
-
-                <div className="need-interaction group-hover:underline">
-                  {t("components.navbar.myOffers")}
-                </div>
-              </Link>
-
-              {params.role && params.role.id !== 1 && (
+              <div className="px-8">
                 <Link
-                  href="/my-applications"
-                  className="group flex cursor-pointer items-center gap-4 py-2"
+                  href="/manage-offers"
+                  className=" group flex cursor-pointer items-center gap-4 py-2"
                 >
-                  <FontAwesomeIcon icon={faFolderOpen} className="fa-lg" />
+                  <FontAwesomeIcon icon={faBriefcase} className="fa-lg" />
 
                   <div className="need-interaction group-hover:underline">
-                    {t("components.navbar.applications")}
+                    {t("components.navbar.myOffers")}
                   </div>
                 </Link>
-              )}
 
-              <Link
-                href="/orders"
-                className="group flex cursor-pointer items-center gap-4 py-2"
-              >
-                <FontAwesomeIcon icon={faBagShopping} className="fa-lg" />
+                {params.role && params.role.id !== 1 && (
+                  <Link
+                    href="/my-applications"
+                    className="group flex cursor-pointer items-center gap-4 py-2"
+                  >
+                    <FontAwesomeIcon icon={faFolderOpen} className="fa-lg" />
 
-                <div className="need-interaction group-hover:underline">
-                  {t("components.navbar.orders")}
-                </div>
-              </Link>
+                    <div className="need-interaction group-hover:underline">
+                      {t("components.navbar.applications")}
+                    </div>
+                  </Link>
+                )}
 
-              {params.role && params.role.id !== 1 && (
                 <Link
-                  href="/sales"
+                  href="/orders"
                   className="group flex cursor-pointer items-center gap-4 py-2"
                 >
-                  <FontAwesomeIcon icon={faReceipt} className="fa-lg" />
+                  <FontAwesomeIcon icon={faBagShopping} className="fa-lg" />
 
                   <div className="need-interaction group-hover:underline">
-                    {t("components.navbar.sales")}
+                    {t("components.navbar.orders")}
                   </div>
                 </Link>
-              )}
 
+                {params.role && params.role.id !== 1 && (
+                  <Link
+                    href="/sales"
+                    className="group flex cursor-pointer items-center gap-4 py-2"
+                  >
+                    <FontAwesomeIcon icon={faReceipt} className="fa-lg" />
+
+                    <div className="need-interaction group-hover:underline">
+                      {t("components.navbar.sales")}
+                    </div>
+                  </Link>
+                )}
+              </div>
               <div className="cursor-pointer border-[1px] border-white1" />
 
               <div
-                className="group flex cursor-pointer items-center gap-4 py-2"
+                className="group flex cursor-pointer items-center gap-4 px-8 py-2"
                 onClick={() => void signOut()}
               >
                 <FontAwesomeIcon
@@ -515,19 +518,20 @@ export const Navbar = (params: {
               </div>
 
               <div className="flex cursor-pointer border-[1px] border-white1" />
+              <div className="px-8">
+                <Link
+                  href="/settings"
+                  className=" group flex cursor-pointer items-center gap-4 py-2"
+                >
+                  <FontAwesomeIcon icon={faGear} className="fa-lg" />
 
-              <Link
-                href="/settings"
-                className=" group flex cursor-pointer items-center gap-4 py-2"
-              >
-                <FontAwesomeIcon icon={faGear} className="fa-lg" />
-
-                <div className="need-interaction group-hover:underline">
-                  {t("components.navbar.settings")}
-                </div>
-              </Link>
+                  <div className="need-interaction group-hover:underline">
+                    {t("components.navbar.settings")}
+                  </div>
+                </Link>
+              </div>
               <div
-                className="group flex cursor-pointer items-center gap-4 py-2 sm:hidden"
+                className="group flex cursor-pointer items-center gap-4 p-8 py-2 sm:hidden"
                 onClick={() => setOPenHelpCenter(true)}
               >
                 <FontAwesomeIcon icon={faLifeRing} className="fa-lg" />
