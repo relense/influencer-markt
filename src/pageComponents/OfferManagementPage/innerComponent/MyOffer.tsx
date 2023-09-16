@@ -58,29 +58,33 @@ const MyOffer = (params: {
           </div>
         </div>
         <div className="flex flex-col gap-4 sm:flex-row sm:gap-6">
-          <div className="flex items-center gap-2">
-            <FontAwesomeIcon
-              icon={faBriefcase}
-              className="fa-xl cursor-pointer text-influencer"
-            />
-            <div className="font-semibold">
-              {t("pages.manageOffers.applicants", {
-                count: params.offer.applicants.length,
-              })}
+          {params.offer.offerStatusId === 1 && (
+            <div className="flex items-center gap-2">
+              <FontAwesomeIcon
+                icon={faBriefcase}
+                className="fa-xl cursor-pointer text-influencer"
+              />
+              <div className="font-semibold">
+                {t("pages.manageOffers.applicants", {
+                  count: params.offer.applicants.length,
+                })}
+              </div>
             </div>
-          </div>
-          <div className="flex items-center gap-2">
-            <FontAwesomeIcon
-              icon={faCircleCheck}
-              className="fa-xl cursor-pointer text-influencer"
-            />
-            <div className="font-semibold">
-              {t("pages.manageOffers.openings", {
-                acceptedAplicants: params.offer.acceptedApplicants.length,
-                count: params.offer.numberOfInfluencers,
-              })}
+          )}
+          {params.offer.offerStatusId !== 3 && (
+            <div className="flex items-center gap-2">
+              <FontAwesomeIcon
+                icon={faCircleCheck}
+                className="fa-xl cursor-pointer text-influencer"
+              />
+              <div className="font-semibold">
+                {t("pages.manageOffers.openings", {
+                  acceptedAplicants: params.offer.acceptedApplicants.length,
+                  count: params.offer.numberOfInfluencers,
+                })}
+              </div>
             </div>
-          </div>
+          )}
         </div>
       </Link>
       <div className="z-5 group absolute right-0 top-0 p-4" ref={dropdownRef}>

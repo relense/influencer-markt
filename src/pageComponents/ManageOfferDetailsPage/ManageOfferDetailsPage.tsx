@@ -184,7 +184,7 @@ const ManageOfferDetailsPage = (params: {
     });
 
   const { mutate: createOrder, isLoading: isLoadingCreateOrder } =
-    api.orders.createOrder.useMutation({
+    api.orders.createOrderWithOffer.useMutation({
       onSuccess: (order) => {
         if (order && order.influencerId) {
           createNotification({
@@ -427,6 +427,7 @@ const ManageOfferDetailsPage = (params: {
           };
         }),
         platformId: offer.socialMediaId,
+        offerId: offer.id,
       });
     }
   };
@@ -752,30 +753,34 @@ const ManageOfferDetailsPage = (params: {
     if (offer && offerApplicants && offerAcceptedApplicants) {
       return (
         <div className="flex flex-col gap-4 sm:flex-row sm:gap-6">
-          <div className="flex items-center gap-2">
-            <FontAwesomeIcon
-              icon={faBriefcase}
-              className="fa-xl cursor-pointer text-influencer"
-            />
-            <div className="font-semibold">
-              {t("pages.manageOffers.applicants", {
-                count: applicants.length,
-              })}
+          {offer.offerStatusId === 1 && (
+            <div className="flex items-center gap-2">
+              <FontAwesomeIcon
+                icon={faBriefcase}
+                className="fa-xl cursor-pointer text-influencer"
+              />
+              <div className="font-semibold">
+                {t("pages.manageOffers.applicants", {
+                  count: applicants.length,
+                })}
+              </div>
             </div>
-          </div>
-          <div className="flex items-center gap-2">
-            <FontAwesomeIcon
-              icon={faCircleCheck}
-              className="fa-xl cursor-pointer text-influencer"
-            />
-            <div className="font-semibold">
-              {t("pages.manageOffers.openings", {
-                acceptedAplicants:
-                  offerAcceptedApplicants?.acceptedApplicants.length,
-                count: offer.numberOfInfluencers,
-              })}
+          )}
+          {offer.offerStatusId !== 3 && (
+            <div className="flex items-center gap-2">
+              <FontAwesomeIcon
+                icon={faCircleCheck}
+                className="fa-xl cursor-pointer text-influencer"
+              />
+              <div className="font-semibold">
+                {t("pages.manageOffers.openings", {
+                  acceptedAplicants:
+                    offerAcceptedApplicants?.acceptedApplicants.length,
+                  count: offer.numberOfInfluencers,
+                })}
+              </div>
             </div>
-          </div>
+          )}
           {acceptedApplicants.length === offer.numberOfInfluencers &&
             offer.offerStatus.id === 1 && (
               <Button

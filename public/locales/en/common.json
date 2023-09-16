@@ -760,7 +760,7 @@
       "share": "Share",
       "toastWarning": "Complete your profile to be able to apply",
       "matchsProfile": "Matchs your profile",
-      "noLongerAvailable": "Offer no longer available"
+      "noLongerAvailable": "Offer no longer accepting applicants"
     },
 
     "applications": {
@@ -862,7 +862,9 @@
       "confirmed": "Confirmed",
       "canceled": "Canceled",
       "deliveryModalTitle": "Are all the requirements met?",
-      "deliveryModalText": "Before delivering the order, please ensure that you have fulfilled all of the buyer's requests. If there is anything missing or if you need to discuss any aspect of the order, please feel free to use the messaging platform to communicate with them. Your attention to detail and communication are essential to providing a great experience for the buyer."
+      "deliveryModalText": "Before delivering the order, please ensure that you have fulfilled all of the buyer's requests. If there is anything missing or if you need to discuss any aspect of the order, please feel free to use the messaging platform to communicate with them. Your attention to detail and communication are essential to providing a great experience for the buyer.",
+      "congratulations": "Congratulations! An application you submitted led to this order!",
+      "visit": "Visit offer"
     },
 
     "orders": {

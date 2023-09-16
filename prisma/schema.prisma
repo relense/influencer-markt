@@ -297,6 +297,7 @@ model Offer {
   offerStatus             OfferStatus               @relation(fields: [offerStatusId], references: [id])
   offerCreator            Profile                   @relation("offerCreator", fields: [profileId], references: [id])
   published               Boolean                   @default(false)
+  order                   Order[]
 
   applicants         Profile[] @relation("offerApplicants")
   acceptedApplicants Profile[] @relation("offerAcceptedApplicants")
@@ -359,6 +360,7 @@ model Order {
   orderStatus            OrderStatus?     @relation(fields: [orderStatusId], references: [id])
   socialMedia            SocialMedia?     @relation(fields: [socialMediaId], references: [id])
   review                 Review?          @relation(fields: [reviewId], references: [id])
+  offer                  Offer?           @relation(fields: [offerId], references: [id])
 
   cardReferenceStripe String?
 
@@ -368,6 +370,7 @@ model Order {
   orderStatusId Int?
   socialMediaId Int?
   reviewId      Int? @unique
+  offerId       Int?
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -378,6 +381,7 @@ model Order {
   @@index([influencerId])
   @@index([buyerId])
   @@index([reviewId])
+  @@index([offerId])
 }
 
 model OrderValuePack {

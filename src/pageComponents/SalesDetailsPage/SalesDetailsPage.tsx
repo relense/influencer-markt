@@ -270,6 +270,18 @@ const SalesDetailsPage = (params: { orderId: number }) => {
     }
   };
 
+  const renderOfferDisclaimer = () => {
+    return (
+      <Link
+        href={`/offers/${sale?.offerId || -1}`}
+        className="flex cursor-pointer justify-center gap-2 rounded-xl border-[1px] bg-influencer p-4 text-center text-white"
+      >
+        {t("pages.sales.congratulations")}
+        <span className="underline">{t("pages.sales.visit")}</span>
+      </Link>
+    );
+  };
+
   return (
     <div className="flex w-full cursor-default flex-col gap-6 self-center px-4 pb-10 sm:px-12 lg:w-full 2xl:w-10/12 3xl:w-3/4 4xl:w-8/12">
       <div className="text-2xl font-semibold">
@@ -283,6 +295,7 @@ const SalesDetailsPage = (params: { orderId: number }) => {
         </div>
       ) : (
         <div className="flex flex-col gap-4">
+          {sale?.offerId && sale.orderStatusId === 1 && renderOfferDisclaimer()}
           {renderBuyerDetails()}
           {sale?.reviewId && (
             <div className="flex flex-col items-center gap-4 rounded-xl border-[1px] p-8 text-center">
