@@ -314,6 +314,14 @@ const SalesPage = () => {
                 type="number"
                 className="h-full w-full rounded-lg border-[1px] p-4"
                 placeholder="id"
+                onKeyDown={(e) => {
+                  if (
+                    e.key === "Backspace" &&
+                    e.currentTarget.value.length === 1
+                  ) {
+                    setSaleId(-1);
+                  }
+                }}
               />
             </div>
 
