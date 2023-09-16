@@ -686,7 +686,7 @@
       "rejectedApplicants": "Candidatos Rejeitados",
       "applicantsWithoutCount": "Candidatos",
       "areYouSure": "Tens a certeza?",
-      "archiveWarning": "Tens a certeza de que queres arquivar esta oferta? Depois da oferta estar arquivada ninguém se pode candidatar.",
+      "archiveWarning": "Tens a certeza de que queres arquivar esta oferta? Depois de arquivada só podes apagar ou duplicar a oferta",
       "deleteWarning": "Tens a certeza que queres apagar esta oferta? Esta acção é permanente.",
       "publishWarning": "Tens a certeza de que queres publicar esta oferta? Depois desta accção não podes voltar a editar esta oferta.",
       "archiveButton": "Arquivar Oferta",
@@ -721,7 +721,9 @@
       "publishOfferToggleLabelPublish": "Publicar",
       "publishOfferToolTip": "Ao publicar a oferta não vai poder editar detalhes depois de a criar",
       "minFollowersError": "Mínimo de seguidoress deve ser menor que o máximo de seguidores",
-      "maxFollowersError": "Máximo de seguidores deve ser maior que o mínimo de seguidores"
+      "maxFollowersError": "Máximo de seguidores deve ser maior que o mínimo de seguidores",
+      "sendOrderRequest": "Enviar Pedido",
+      "archiveOffer": "Arquivar Oferta"
     },
 
     "offers": {
@@ -749,7 +751,8 @@
       "noRequirements": "Não preenches os requisitos desta oferta",
       "share": "Partilha",
       "toastWarning": "Completa o teu perfil para te poderes candidatar",
-      "matchsProfile": "Corresponde ao teu perfil"
+      "matchsProfile": "Corresponde ao teu perfil",
+      "noLongerAvailable": "Oferta já não está disponível"
     },
 
     "applications": {

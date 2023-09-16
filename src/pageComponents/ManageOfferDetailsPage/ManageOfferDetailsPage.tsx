@@ -32,6 +32,7 @@ const ManageOfferDetailsPage = (params: {
   const { t, i18n } = useTranslation();
   const dropdownRef = useRef(null);
   const router = useRouter();
+  const ctx = api.useContext();
 
   const [isDropdownOpen, setIsDropdownOpen] = useState<boolean>(false);
   const [isDetailsOpen, setIsDetailsOpen] = useState<boolean>(true);
@@ -56,7 +57,11 @@ const ManageOfferDetailsPage = (params: {
   const [offer, setOffer] = useState<OfferWithAllData | undefined>(undefined);
   const [listView, setListView] = useState<boolean>(true);
 
-  const { data: offerData, isLoading } = api.offers.getOffer.useQuery(
+  const {
+    data: offerData,
+    isLoading,
+    isRefetching: isRefetchingOffer,
+  } = api.offers.getOffer.useQuery(
     {
       offerId: params.offerId,
     },
@@ -109,7 +114,7 @@ const ManageOfferDetailsPage = (params: {
   const { mutate: startOffer, isLoading: isLoadingStartOffer } =
     api.offers.startOffer.useMutation({
       onSuccess: () => {
-        // void router.push("/");
+        void ctx.offers.getOffer.invalidate();
       },
     });
 
@@ -640,7 +645,7 @@ const ManageOfferDetailsPage = (params: {
               <Button
                 title={t("pages.manageOffers.initiateOffer")}
                 level="primary"
-                isLoading={isLoadingStartOffer}
+                isLoading={isLoadingStartOffer || isRefetchingOffer}
                 onClick={() =>
                   startOffer({
                     offerId: offer.id,
@@ -648,6 +653,13 @@ const ManageOfferDetailsPage = (params: {
                 }
               />
             )}
+          {offer.offerStatus.id === 2 && (
+            <Button
+              title={t("pages.manageOffers.archiveOffer")}
+              level="primary"
+              onClick={() => openWarningModal("archive", offer.id)}
+            />
+          )}
         </div>
       );
     }
@@ -734,6 +746,16 @@ const ManageOfferDetailsPage = (params: {
               onClick={() => onRemoveFromAccepted(applicant.id)}
             />
           )}
+          {offer.offerStatus.id === 2 && (
+            <div className="flex justify-around gap-4 lg:flex-col lg:justify-center">
+              <Button
+                title={t("pages.manageOffers.sendOrderRequest")}
+                level="primary"
+                size="large"
+                onClick={() => onRemoveFromAccepted(applicant.id)}
+              />
+            </div>
+          )}
         </div>
       );
     }
@@ -771,6 +793,16 @@ const ManageOfferDetailsPage = (params: {
               <Button
                 title={t("pages.manageOffers.removeButton")}
                 level="secondary"
+                size="large"
+                onClick={() => onRemoveFromAccepted(applicant.id)}
+              />
+            </div>
+          )}
+          {offer.offerStatus.id === 2 && (
+            <div className="flex justify-around gap-4 lg:flex-col lg:justify-center">
+              <Button
+                title={t("pages.manageOffers.sendOrderRequest")}
+                level="primary"
                 size="large"
                 onClick={() => onRemoveFromAccepted(applicant.id)}
               />

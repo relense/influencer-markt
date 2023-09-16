@@ -340,18 +340,26 @@ const OfferDetailsPage = (params: {
         title = t("pages.offers.noRequirements");
       }
 
-      return (
-        <div>
-          <Button
-            title={title}
-            level={applied ? "secondary" : "primary"}
-            size="large"
-            isLoading={isLoading || applicationIsLoading || removingIsLoading}
-            onClick={() => onApply(offer)}
-            disabled={disableApply}
-          />
-        </div>
-      );
+      if (offer.offerStatusId === 1) {
+        return (
+          <div>
+            <Button
+              title={title}
+              level={applied ? "secondary" : "primary"}
+              size="large"
+              isLoading={isLoading || applicationIsLoading || removingIsLoading}
+              onClick={() => onApply(offer)}
+              disabled={disableApply}
+            />
+          </div>
+        );
+      } else {
+        return (
+          <div className="rounded-xl bg-influencer-light p-4 text-center font-semibold text-white">
+            {t("pages.offers.noLongerAvailable")}
+          </div>
+        );
+      }
     }
   };
 

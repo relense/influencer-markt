@@ -687,7 +687,7 @@
       "rejectedApplicants": "Rejected Applicants",
       "applicantsWithoutCount": "Applicants",
       "areYouSure": "Are You Sure?",
-      "archiveWarning": "Are you sure you want to archive this offer? After the offer is archived nobody can apply.",
+      "archiveWarning": "Are you sure you want to archive this offer? After the offer is archived you can only delete or duplicate it.",
       "deleteWarning": "Are you sure you want to delete the offer? This action is permanent",
       "publishWarning": "Are you sure you want to publish the offer? Afer this action you can't edit the offer anymore.",
       "archiveButton": "Archive Offer",
@@ -722,7 +722,9 @@
       "publishOfferToggleLabelPublish": "Publish",
       "publishOfferToolTip": "By publishing the offer you won't be able to edit the details after creating it",
       "minFollowersError": "Minimum followers should be less than maximum followers",
-      "maxFollowersError": "Maximum followers should be greater than minimum followers"
+      "maxFollowersError": "Maximum followers should be greater than minimum followers",
+      "sendOrderRequest": "Send Order",
+      "archiveOffer": "Archive Offer"
     },
 
     "offers": {
@@ -750,7 +752,8 @@
       "noRequirements": "You do not meet the requirements for this offer",
       "share": "Share",
       "toastWarning": "Complete your profile to be able to apply",
-      "matchsProfile": "Matchs your profile"
+      "matchsProfile": "Matchs your profile",
+      "noLongerAvailable": "Offer no longer available"
     },
 
     "applications": {

@@ -140,7 +140,7 @@ const OfferDetails = (params: {
           params.profile
         );
 
-        if (!hasRequirements) {
+        if (!hasRequirements || offerData.offerStatusId !== 1) {
           setDisableApply(true);
         }
       }
