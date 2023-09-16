@@ -138,7 +138,7 @@ const SalesDetailsPage = (params: { orderId: number }) => {
             <div className="flex gap-12">
               <Button
                 title={t("pages.sales.accept")}
-                level="primary"
+                level="terciary"
                 onClick={() => answerOrderRequest("accept")}
                 isLoading={updateAcceptIsLoading}
               />
@@ -154,7 +154,7 @@ const SalesDetailsPage = (params: { orderId: number }) => {
             <div className="flex gap-12">
               <Button
                 title={t("pages.sales.deliver")}
-                level="primary"
+                level="terciary"
                 onClick={() => setShowDeliverModal(true)}
               />
             </div>
@@ -318,7 +318,7 @@ const SalesDetailsPage = (params: { orderId: number }) => {
               <div className="flex justify-center p-4">
                 <Button
                   title={t("pages.sales.deliver")}
-                  level="primary"
+                  level="terciary"
                   onClick={() =>
                     updateOrderDeliver({
                       orderId: params.orderId,

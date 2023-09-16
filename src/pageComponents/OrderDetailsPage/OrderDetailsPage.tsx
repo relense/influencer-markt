@@ -151,7 +151,7 @@ const OrderDetailsPage = (params: { orderId: number }) => {
             <div className="flex gap-12">
               <Button
                 title={t("pages.orders.cancel")}
-                level="primary"
+                level="terciary"
                 onClick={() =>
                   updateCancelOrder({
                     orderId: order.id,
@@ -166,7 +166,7 @@ const OrderDetailsPage = (params: { orderId: number }) => {
             <div className="flex gap-12">
               <Button
                 title={t("pages.orders.addPayment")}
-                level="primary"
+                level="terciary"
                 onClick={() =>
                   updateOrderPayment({
                     orderId: order.id,
@@ -181,7 +181,7 @@ const OrderDetailsPage = (params: { orderId: number }) => {
             <div className="flex gap-12">
               <Button
                 title={t("pages.orders.review")}
-                level="primary"
+                level="terciary"
                 onClick={() => setOpenReviewModal(true)}
               />
             </div>
@@ -306,7 +306,7 @@ const OrderDetailsPage = (params: { orderId: number }) => {
               <div className="flex justify-center p-4">
                 <Button
                   title={t("pages.orders.review")}
-                  level="primary"
+                  level="terciary"
                   form="form-review"
                   disabled={
                     watch("review") === undefined ||
