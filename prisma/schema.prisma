@@ -60,6 +60,7 @@ model User {
   username      String?   @unique
   role          Role?     @relation(fields: [roleId], references: [id])
   userType      String    @default("user")
+  isOver18      Boolean   @default(false)
   accounts      Account[]
   sessions      Session[]
   profile       Profile?

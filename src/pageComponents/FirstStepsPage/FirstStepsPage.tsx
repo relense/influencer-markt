@@ -91,6 +91,7 @@ const FirstStepsPage = () => {
     control: userIdentityControl,
     register: userIdentityRegister,
     watch: userIdentityWatch,
+    setValue: userIdentifySetValue,
     handleSubmit: handleSubmitUserIdentityData,
   } = useForm<UserIdentityData>({
     defaultValues: {
@@ -452,6 +453,17 @@ const FirstStepsPage = () => {
   };
 
   const renderUserTypeForm = () => {
+    let isDisabled = true;
+
+    if (
+      userIdentityWatch("role")?.name !== "" &&
+      userIdentityWatch("is18") === true &&
+      userIdentityWatch("username") !== "" &&
+      usernameVerification === false
+    ) {
+      isDisabled = false;
+    }
+
     return (
       <main className="h-full w-full bg-shadow-gray p-6 lg:p-8">
         <div className="flex h-full w-full flex-col rounded-2xl bg-white lg:flex-row lg:overscroll-none">
@@ -473,6 +485,7 @@ const FirstStepsPage = () => {
               watch={userIdentityWatch}
               submit={submitStep0}
               refetch={usernameVerificationRefetch}
+              setValue={userIdentifySetValue}
               usernameVerification={!usernameVerification}
             />
             <div className="flex-2 flex w-full flex-col justify-center gap-4 p-4 py-4 sm:flex-row sm:items-end sm:gap-0">
@@ -481,13 +494,7 @@ const FirstStepsPage = () => {
                 level="primary"
                 form="form-user"
                 size="regular"
-                disabled={
-                  (userIdentityWatch("role")?.id === RoleEnum.Brand &&
-                    usernameVerification) ||
-                  (userIdentityWatch("role")?.id === RoleEnum.Influencer &&
-                    usernameVerification) ||
-                  userIdentityWatch("role")?.name === ""
-                }
+                disabled={isDisabled}
                 isLoading={usernameVeritifcationLoading}
               />
             </div>

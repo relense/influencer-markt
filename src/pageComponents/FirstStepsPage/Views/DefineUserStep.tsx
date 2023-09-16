@@ -3,7 +3,11 @@ import {
   type Control,
   type UseFormRegister,
   type UseFormWatch,
+  type UseFormSetValue,
 } from "react-hook-form";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faSquareCheck as faSquareCheckSolid } from "@fortawesome/free-solid-svg-icons";
+import { faSquare } from "@fortawesome/free-regular-svg-icons";
 
 import { api } from "~/utils/api";
 
@@ -22,6 +26,7 @@ export const DefineUserStep = (params: {
   register: UseFormRegister<UserIdentityData>;
   watch: UseFormWatch<UserIdentityData>;
   refetch: () => void;
+  setValue: UseFormSetValue<UserIdentityData>;
   usernameVerification: boolean | undefined;
   submit: () => void;
 }) => {
@@ -107,6 +112,18 @@ export const DefineUserStep = (params: {
               )}
           </div>
         )}
+        <div
+          className="flex items-center gap-2"
+          onClick={() => params.setValue("is18", !params.watch("is18"))}
+        >
+          <FontAwesomeIcon
+            icon={params.watch("is18") ? faSquareCheckSolid : faSquare}
+            className={`fa-xl cursor-pointer ${
+              params.watch("is18") ? "text-influencer-green" : "text-gray3"
+            }`}
+          />
+          {t("pages.firstSteps.defineUserStep.ageConfirmation")}
+        </div>
       </form>
       <div className="px-4 text-center text-sm">
         <span>{t("pages.firstSteps.defineUserStep.disclaimer")}</span>{" "}

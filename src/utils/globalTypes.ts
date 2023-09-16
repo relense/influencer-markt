@@ -48,6 +48,7 @@ export type QuestionType = {
 export type UserIdentityData = {
   username: string;
   role: Option;
+  is18: boolean;
 };
 
 export type SocialMediaData = {

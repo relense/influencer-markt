@@ -472,7 +472,8 @@
         "disclaimer": "Please choose the options that best represent you or align with your preferences. Once selected, this information will be considered",
         "permanent": "permanent",
         "pageNameAvailable": "Page name is available",
-        "pageNameUnavailable": "Page name is unavailable"
+        "pageNameUnavailable": "Page name is unavailable",
+        "ageConfirmation": "I confirm that I am 18 years old or older."
       },
 
       "setupProfileStep": {
