@@ -442,6 +442,37 @@ export const OffersRouter = createTRPCRouter({
       });
     }),
 
+  getSentOrderApplicants: protectedProcedure
+    .input(
+      z.object({
+        offerId: z.number(),
+      })
+    )
+    .query(async ({ ctx, input }) => {
+      return await ctx.prisma.offer.findFirst({
+        where: { id: input.offerId },
+        select: {
+          sentApplicants: {
+            select: {
+              id: true,
+              profilePicture: true,
+              userSocialMedia: {
+                include: {
+                  socialMedia: true,
+                },
+              },
+              name: true,
+              about: true,
+              city: true,
+              country: true,
+              user: { select: { username: true } },
+              favoriteBy: { select: { id: true } },
+            },
+          },
+        },
+      });
+    }),
+
   getAcceptedApplicants: protectedProcedure
     .input(
       z.object({
@@ -904,6 +935,35 @@ export const OffersRouter = createTRPCRouter({
           rejectedApplicants: { disconnect: { id: input.profileId } },
         },
       });
+    }),
+
+  updateApplicantToSentList: protectedProcedure
+    .input(
+      z.object({
+        offerId: z.number(),
+        profileId: z.number(),
+      })
+    )
+    .mutation(async ({ ctx, input }) => {
+      const offerUpdated = await ctx.prisma.offer.update({
+        where: { id: input.offerId, offerStatusId: 2 },
+        data: {
+          sentApplicants: { connect: { id: input.profileId } },
+          acceptedApplicants: { disconnect: { id: input.profileId } },
+        },
+        select: {
+          acceptedApplicants: true,
+        },
+      });
+
+      if (offerUpdated && offerUpdated.acceptedApplicants.length === 0) {
+        return await ctx.prisma.offer.update({
+          where: { id: input.offerId, offerStatusId: 2 },
+          data: {
+            offerStatusId: 3,
+          },
+        });
+      }
     }),
 
   getProfileOffers: publicProcedure

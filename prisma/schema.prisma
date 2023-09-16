@@ -88,11 +88,11 @@ model Profile {
   portfolio       Portfolio[]
   verifiedStatus  VerifiedStatus?   @relation(fields: [verifiedStatusId], references: [id])
 
-  createdOffers       Offer[] @relation("offerCreator")
-  appliedOffers       Offer[] @relation("offerApplicants")
-  acceptedOffers      Offer[] @relation("offerAcceptedApplicants")
-  rejectedApplicants  Offer[] @relation("offerRejectedApplicants")
-  offerSentApplicants Offer[] @relation("offerSentApplicants")
+  createdOffers      Offer[] @relation("offerCreator")
+  appliedOffers      Offer[] @relation("offerApplicants")
+  acceptedOffers     Offer[] @relation("offerAcceptedApplicants")
+  rejectedApplicants Offer[] @relation("offerRejectedApplicants")
+  sentApplicants     Offer[] @relation("offerSentApplicants")
 
   influencer Order[] @relation("influencer")
   buyer      Order[] @relation("buyer")
@@ -298,10 +298,10 @@ model Offer {
   offerCreator            Profile                   @relation("offerCreator", fields: [profileId], references: [id])
   published               Boolean                   @default(false)
 
-  applicants          Profile[] @relation("offerApplicants")
-  acceptedApplicants  Profile[] @relation("offerAcceptedApplicants")
-  rejectedApplicants  Profile[] @relation("offerRejectedApplicants")
-  offerSentApplicants Profile[] @relation("offerSentApplicants")
+  applicants         Profile[] @relation("offerApplicants")
+  acceptedApplicants Profile[] @relation("offerAcceptedApplicants")
+  rejectedApplicants Profile[] @relation("offerRejectedApplicants")
+  sentApplicants     Profile[] @relation("offerSentApplicants")
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt

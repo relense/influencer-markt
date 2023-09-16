@@ -21,9 +21,27 @@ import { MyOffersActionConfirmationModal } from "../../components/MyOffersAction
 import { Button } from "../../components/Button";
 import { useRouter } from "next/router";
 import Link from "next/link";
-import type { OfferWithAllData, UserProfiles } from "../../utils/globalTypes";
+import type {
+  OfferWithAllData,
+  Option,
+  UserSocialMedia,
+} from "../../utils/globalTypes";
 import { toast } from "react-hot-toast";
 import { ProfileRow } from "../../components/ProfileRow";
+
+type ApplicantsProfile = {
+  id: number;
+  profilePicture: string;
+  socialMedia: UserSocialMedia[];
+  name: string;
+  about: string;
+  city: Option;
+  country: { id: number; name: string; countryTax: number };
+  username: string;
+  bookmarked?: boolean;
+  favoritedBy?: number[];
+  activeOffers?: number;
+};
 
 const ManageOfferDetailsPage = (params: {
   offerId: number;
@@ -41,19 +59,22 @@ const ManageOfferDetailsPage = (params: {
     useState<boolean>(true);
   const [isRejectedApplicantsOpen, setIsRejectedApplicantsOpen] =
     useState<boolean>(false);
+  const [isSentOfferApplicantsOpen, setIsSentOfferApplicantsOpen] =
+    useState<boolean>(true);
   const [isWarningModalOpen, setIsWarningModalOpen] = useState<boolean>(false);
   const [isApplicantsOpen, setIsApplicantsOpen] = useState<boolean>(true);
   const [warningModalType, setWarningModalType] = useState<
     "archive" | "delete" | "publish"
   >("archive");
   const [warningModalOfferId, setWarningModalOfferId] = useState<number>(-1);
-  const [applicants, setApplicants] = useState<UserProfiles[]>([]);
-  const [acceptedApplicants, setAcceptedApplicants] = useState<UserProfiles[]>(
-    []
-  );
-  const [rejectedApplicants, setRejectedApplicants] = useState<UserProfiles[]>(
-    []
-  );
+  const [applicants, setApplicants] = useState<ApplicantsProfile[]>([]);
+  const [acceptedApplicants, setAcceptedApplicants] = useState<
+    ApplicantsProfile[]
+  >([]);
+  const [rejectedApplicants, setRejectedApplicants] = useState<
+    ApplicantsProfile[]
+  >([]);
+  const [sentApplicants, setSentApplicants] = useState<ApplicantsProfile[]>([]);
   const [offer, setOffer] = useState<OfferWithAllData | undefined>(undefined);
   const [listView, setListView] = useState<boolean>(true);
 
@@ -99,6 +120,16 @@ const ManageOfferDetailsPage = (params: {
       }
     );
 
+  const { data: offerSentApplicants } =
+    api.offers.getSentOrderApplicants.useQuery(
+      {
+        offerId: params.offerId,
+      },
+      {
+        cacheTime: 0,
+      }
+    );
+
   const { mutate: acceptedApplicant } =
     api.offers.acceptedApplicant.useMutation();
 
@@ -110,6 +141,17 @@ const ManageOfferDetailsPage = (params: {
 
   const { mutate: removeApplicantFromRejected } =
     api.offers.removeApplicantFromRejected.useMutation();
+
+  const {
+    mutate: updateApplicantToSentList,
+    isLoading: isLoadingUpdateApplicantToSentList,
+  } = api.offers.updateApplicantToSentList.useMutation({
+    onSuccess: () => {
+      void ctx.offers.getOffer.invalidate();
+      void ctx.offers.getAcceptedApplicants.invalidate();
+      void ctx.offers.getSentOrderApplicants.invalidate();
+    },
+  });
 
   const { mutate: startOffer, isLoading: isLoadingStartOffer } =
     api.offers.startOffer.useMutation({
@@ -140,6 +182,27 @@ const ManageOfferDetailsPage = (params: {
         });
       },
     });
+
+  const { mutate: createOrder, isLoading: isLoadingCreateOrder } =
+    api.orders.createOrder.useMutation({
+      onSuccess: (order) => {
+        if (order && order.influencerId) {
+          createNotification({
+            entityId: order.id,
+            notificationTypeAction: "awaitingReply",
+            notifierId: order.influencerId,
+          });
+
+          updateApplicantToSentList({
+            offerId: params.offerId,
+            profileId: order?.influencerId,
+          });
+        }
+      },
+    });
+
+  const { mutate: createNotification } =
+    api.notifications.createSalesNotification.useMutation();
 
   useEffect(() => {
     if (offerApplicants) {
@@ -174,6 +237,7 @@ const ManageOfferDetailsPage = (params: {
           country: {
             id: applicant.country?.id || -1,
             name: applicant.country?.name || "",
+            countryTax: applicant.country?.countryTax || -1,
           },
           username: applicant.user?.username || "",
           bookmarked: isFavorited,
@@ -221,6 +285,7 @@ const ManageOfferDetailsPage = (params: {
             country: {
               id: applicant.country?.id || -1,
               name: applicant.country?.name || "",
+              countryTax: applicant.country?.countryTax || -1,
             },
             username: applicant.user?.username || "",
             bookmarked: isFavorited,
@@ -269,6 +334,7 @@ const ManageOfferDetailsPage = (params: {
             country: {
               id: applicant.country?.id || -1,
               name: applicant.country?.name || "",
+              countryTax: applicant.country?.countryTax || -1,
             },
             username: applicant.user?.username || "",
             bookmarked: isFavorited,
@@ -284,6 +350,55 @@ const ManageOfferDetailsPage = (params: {
   }, [offerRejectedApplicants, params.loggedInProfileId]);
 
   useEffect(() => {
+    if (offerSentApplicants) {
+      const newApplicants = offerSentApplicants.sentApplicants.map(
+        (applicant) => {
+          let isFavorited = false;
+
+          if (params.loggedInProfileId) {
+            isFavorited = !!applicant.favoriteBy.find(
+              (applicant) => params.loggedInProfileId === applicant.id
+            );
+          }
+
+          return {
+            id: applicant.id,
+            profilePicture: applicant.profilePicture,
+            socialMedia: applicant.userSocialMedia.map((userSocialMedia) => {
+              return {
+                id: userSocialMedia.id,
+                handler: userSocialMedia.handler,
+                followers: userSocialMedia.followers,
+                url: userSocialMedia.url,
+                socialMediaName: userSocialMedia.socialMedia?.name || "",
+                socialMediaId: userSocialMedia.socialMedia?.id || -1,
+              };
+            }),
+            name: applicant.name,
+            about: applicant.about,
+            city: {
+              id: applicant.city?.id || -1,
+              name: applicant.city?.name || "",
+            },
+            country: {
+              id: applicant.country?.id || -1,
+              name: applicant.country?.name || "",
+              countryTax: applicant.country?.countryTax || -1,
+            },
+            username: applicant.user?.username || "",
+            bookmarked: isFavorited,
+            favoritedBy: applicant.favoriteBy.map((favorite) => {
+              return favorite.id;
+            }),
+          };
+        }
+      );
+
+      setSentApplicants(newApplicants);
+    }
+  }, [offerSentApplicants, params.loggedInProfileId]);
+
+  useEffect(() => {
     if (offerData) {
       setOffer(offerData);
     }
@@ -294,6 +409,27 @@ const ManageOfferDetailsPage = (params: {
 
     setIsDropdownOpen(!isDropdownOpen);
   }, dropdownRef);
+
+  const submitOrder = (applicant: ApplicantsProfile) => {
+    if (offer) {
+      const tax = offer.price * ((applicant?.country?.countryTax || 0) / 100);
+      const total = offer.price + tax;
+
+      createOrder({
+        influencerId: applicant.id,
+        orderDetails: offer.OfferDetails,
+        orderPrice: total.toString(),
+        orderValuePacks: offer.contentTypeWithQuantity.map((valuePack) => {
+          return {
+            amount: valuePack.amount,
+            price: "0",
+            contentTypeId: valuePack.contentType.id,
+          };
+        }),
+        platformId: offer.socialMediaId,
+      });
+    }
+  };
 
   const publishOffer = (offerId: number) => {
     if (offer) {
@@ -709,7 +845,7 @@ const ManageOfferDetailsPage = (params: {
     }
   };
 
-  const renderAcceptedApplicantCard = (applicant: UserProfiles) => {
+  const renderAcceptedApplicantCard = (applicant: ApplicantsProfile) => {
     if (offer) {
       return (
         <div key={applicant.id} className="flex flex-col gap-4">
@@ -752,7 +888,10 @@ const ManageOfferDetailsPage = (params: {
                 title={t("pages.manageOffers.sendOrderRequest")}
                 level="primary"
                 size="large"
-                onClick={() => onRemoveFromAccepted(applicant.id)}
+                onClick={() => submitOrder(applicant)}
+                isLoading={
+                  isLoadingCreateOrder || isLoadingUpdateApplicantToSentList
+                }
               />
             </div>
           )}
@@ -761,7 +900,7 @@ const ManageOfferDetailsPage = (params: {
     }
   };
 
-  const renderAcceptedApplicantRow = (applicant: UserProfiles) => {
+  const renderAcceptedApplicantRow = (applicant: ApplicantsProfile) => {
     if (offer) {
       return (
         <div key={applicant.id} className="flex flex-col gap-4 lg:flex-row">
@@ -804,7 +943,10 @@ const ManageOfferDetailsPage = (params: {
                 title={t("pages.manageOffers.sendOrderRequest")}
                 level="primary"
                 size="large"
-                onClick={() => onRemoveFromAccepted(applicant.id)}
+                onClick={() => submitOrder(applicant)}
+                isLoading={
+                  isLoadingCreateOrder || isLoadingUpdateApplicantToSentList
+                }
               />
             </div>
           )}
@@ -829,7 +971,9 @@ const ManageOfferDetailsPage = (params: {
             }
           >
             <div className="text-2xl font-bold">
-              {t("pages.manageOffers.acceptedAplicants")}
+              {t("pages.manageOffers.acceptedAplicants", {
+                count: acceptedApplicants.length,
+              })}
             </div>
             <div className="flex h-6 w-6 justify-center rounded-full border-[1px]">
               <div>
@@ -861,7 +1005,7 @@ const ManageOfferDetailsPage = (params: {
     }
   };
 
-  const renderApplicantCard = (applicant: UserProfiles) => {
+  const renderApplicantCard = (applicant: ApplicantsProfile) => {
     if (offer) {
       return (
         <div key={applicant.id} className="flex flex-col gap-4">
@@ -910,7 +1054,7 @@ const ManageOfferDetailsPage = (params: {
     }
   };
 
-  const renderApplicantRow = (applicant: UserProfiles) => {
+  const renderApplicantRow = (applicant: ApplicantsProfile) => {
     if (offer) {
       return (
         <div key={applicant.id} className="flex flex-col gap-4 lg:flex-row">
@@ -972,7 +1116,7 @@ const ManageOfferDetailsPage = (params: {
             onClick={() => setIsApplicantsOpen(!isApplicantsOpen)}
           >
             <div className="text-2xl font-bold">
-              {t("pages.manageOffers.applicantsWithoutCount")}
+              {t("pages.manageOffers.applicants", { count: applicants.length })}
             </div>
             <div className="flex h-6 w-6 justify-center rounded-full border-[1px]">
               <div>
@@ -1004,7 +1148,7 @@ const ManageOfferDetailsPage = (params: {
     }
   };
 
-  const renderRejectApplicantCard = (applicant: UserProfiles) => {
+  const renderRejectApplicantCard = (applicant: ApplicantsProfile) => {
     if (offer) {
       return (
         <div key={applicant.id} className="flex flex-col gap-4">
@@ -1044,7 +1188,7 @@ const ManageOfferDetailsPage = (params: {
     }
   };
 
-  const renderRejectApplicantRow = (applicant: UserProfiles) => {
+  const renderRejectApplicantRow = (applicant: ApplicantsProfile) => {
     if (offer) {
       return (
         <div key={applicant.id} className="flex flex-col gap-4 lg:flex-row">
@@ -1100,7 +1244,9 @@ const ManageOfferDetailsPage = (params: {
             }
           >
             <div className="text-2xl font-bold">
-              {t("pages.manageOffers.rejectedApplicants")}
+              {t("pages.manageOffers.rejectedApplicants", {
+                count: rejectedApplicants.length,
+              })}
             </div>
             <div className="flex h-6 w-6 justify-center rounded-full border-[1px]">
               <div>
@@ -1124,6 +1270,121 @@ const ManageOfferDetailsPage = (params: {
                 return listView
                   ? renderRejectApplicantRow(applicant)
                   : renderRejectApplicantCard(applicant);
+              })}
+            </div>
+          )}
+        </div>
+      );
+    }
+  };
+
+  const renderSentOfferApplicantCard = (applicant: ApplicantsProfile) => {
+    if (offer) {
+      return (
+        <div key={applicant.id} className="flex flex-col gap-4">
+          <ProfileCard
+            id={applicant.id}
+            profilePicture={applicant.profilePicture}
+            socialMedia={applicant.socialMedia.map((socialMedia) => {
+              return {
+                followers: socialMedia.followers,
+                handler: socialMedia.handler,
+                id: socialMedia.id,
+                socialMediaId: socialMedia.socialMediaId,
+                socialMediaName: socialMedia.socialMediaName,
+                url: socialMedia.url,
+                valuePacks: [],
+              };
+            })}
+            name={applicant.name}
+            about={applicant.about}
+            city={applicant.city?.name || ""}
+            country={applicant?.country?.name || ""}
+            username={applicant?.username || ""}
+            type="Influencer"
+            bookmarked={applicant?.bookmarked || false}
+            highlightSocialMediaId={offer.socialMediaId}
+            loggedInProfileId={params.loggedInProfileId}
+          />
+        </div>
+      );
+    }
+  };
+
+  const renderSentOfferApplicantRow = (applicant: ApplicantsProfile) => {
+    if (offer) {
+      return (
+        <div key={applicant.id} className="flex flex-col gap-4 lg:flex-row">
+          <ProfileRow
+            id={applicant.id}
+            profilePicture={applicant.profilePicture}
+            socialMedia={applicant.socialMedia.map((socialMedia) => {
+              return {
+                followers: socialMedia.followers,
+                handler: socialMedia.handler,
+                id: socialMedia.id,
+                socialMediaId: socialMedia.socialMediaId,
+                socialMediaName: socialMedia.socialMediaName,
+                url: socialMedia.url,
+                valuePacks: [],
+              };
+            })}
+            name={applicant.name}
+            about={applicant.about}
+            city={applicant.city?.name || ""}
+            country={applicant?.country?.name || ""}
+            username={applicant?.username || ""}
+            type="Influencer"
+            bookmarked={applicant?.bookmarked || false}
+            highlightSocialMediaId={offer.socialMediaId}
+          />
+        </div>
+      );
+    }
+  };
+
+  const renderSentOfferApplicants = () => {
+    let applicantsContainerClass = "flex flex-wrap gap-8";
+    if (listView) {
+      applicantsContainerClass = "flex flex-1 flex-col gap-8";
+    }
+
+    if (offer) {
+      return (
+        <div className="flex flex-col gap-4">
+          <div
+            className="flex cursor-pointer items-center gap-2"
+            onClick={() =>
+              setIsSentOfferApplicantsOpen(!isSentOfferApplicantsOpen)
+            }
+          >
+            <div className="text-2xl font-bold">
+              {t("pages.manageOffers.sentOfferApplicants", {
+                count: sentApplicants.length,
+              })}
+            </div>
+            <div className="flex h-6 w-6 justify-center rounded-full border-[1px]">
+              <div>
+                {isAcceptedApplicantsOpen ? (
+                  <FontAwesomeIcon
+                    icon={faSubtract}
+                    className="fa-2xs cursor-pointer text-gray2"
+                  />
+                ) : (
+                  <FontAwesomeIcon
+                    icon={faPlus}
+                    className="fa-2xs cursor-pointer text-gray2"
+                  />
+                )}
+              </div>
+            </div>
+          </div>
+          {isSentOfferApplicantsOpen && sentApplicants && (
+            <div className={applicantsContainerClass}>
+              {sentApplicants.map((applicant) => {
+                return listView
+                  ? renderSentOfferApplicantRow(applicant)
+                  : renderSentOfferApplicantCard(applicant);
               })}
             </div>
           )}
@@ -1165,6 +1426,7 @@ const ManageOfferDetailsPage = (params: {
                 {renderApplicants()}
               </>
             )}
+            {sentApplicants.length > 0 && renderSentOfferApplicants()}
             {rejectedApplicants.length > 0 && offer.offerStatus.id === 1 && (
               <>
                 {(applicants.length > 0 || acceptedApplicants.length > 0) && (
