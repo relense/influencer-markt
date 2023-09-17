@@ -11,7 +11,10 @@ import { useState } from "react";
 import { Modal } from "../../components/Modal";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faStar } from "@fortawesome/free-solid-svg-icons";
-import { faStar as faStarRegular } from "@fortawesome/free-regular-svg-icons";
+import {
+  faStar as faStarRegular,
+  faPaperPlane,
+} from "@fortawesome/free-regular-svg-icons";
 import { useForm } from "react-hook-form";
 
 type ReviewForm = {
@@ -119,89 +122,96 @@ const OrderDetailsPage = (params: { orderId: number }) => {
       }
 
       return (
-        <div className="flex flex-1 flex-col items-center gap-4 rounded-xl border-[1px] px-4 py-8 lg:gap-4">
-          <Link
-            href={`/${order.influencer?.user.username || ""}`}
-            className="flex-2 flex"
-          >
-            <Image
-              src={order.influencer?.profilePicture || ""}
-              alt="profile picture"
-              width={1000}
-              height={1000}
-              quality={100}
-              className="h-24 w-24 rounded-full object-cover"
-            />
-          </Link>
-          <Link
-            href={`/${order.influencer?.user.username || ""}`}
-            className="flex flex-1 flex-col gap-2"
-          >
-            <div className="font-medium text-influencer">
-              {order.influencer?.name || ""}
+        <div className="flex flex-1 flex-col rounded-xl border-[1px] lg:gap-4">
+          <div className="flex w-full border-b-[1px] p-4">
+            <div className="text-xl font-semibold ">
+              {t("pages.orders.progressInformation")}
             </div>
-          </Link>
-          <div className="font-medium">
-            {helper.formatFullDateWithTime(order.createdAt, i18n.language)}
           </div>
-          <div className="font-semibold ">
-            {t(`pages.orders.${order?.orderStatus?.name || ""}`)}
+          <div className="flex flex-1 flex-col items-center gap-4 px-4 py-8">
+            <Link
+              href={`/${order.influencer?.user.username || ""}`}
+              className="flex"
+            >
+              <Image
+                src={order.influencer?.profilePicture || ""}
+                alt="profile picture"
+                width={1000}
+                height={1000}
+                quality={100}
+                className="h-24 w-24 rounded-full object-cover"
+              />
+            </Link>
+            <Link
+              href={`/${order.influencer?.user.username || ""}`}
+              className="flex flex-col gap-2"
+            >
+              <div className="font-medium text-influencer">
+                {order.influencer?.name || ""}
+              </div>
+            </Link>
+            <div className="font-medium">
+              {helper.formatFullDateWithTime(order.createdAt, i18n.language)}
+            </div>
+            <div className="font-semibold ">
+              {t(`pages.orders.${order?.orderStatus?.name || ""}`)}
+            </div>
+            {order.orderStatusId === 1 && (
+              <div className="flex gap-12">
+                <Button
+                  title={t("pages.orders.cancel")}
+                  level="terciary"
+                  onClick={() =>
+                    updateCancelOrder({
+                      orderId: order.id,
+                      statusId: 7,
+                    })
+                  }
+                  isLoading={isLoadingUpdateCancelOrder}
+                />
+              </div>
+            )}
+            {order.orderStatusId === 3 && (
+              <div className="flex gap-12">
+                <Button
+                  title={t("pages.orders.addPayment")}
+                  level="terciary"
+                  onClick={() =>
+                    updateOrderPayment({
+                      orderId: order.id,
+                      statusId: 4,
+                    })
+                  }
+                  isLoading={updateAcceptIsLoading}
+                />
+              </div>
+            )}
+            {order.orderStatusId === 5 && (
+              <div className="flex gap-12">
+                <Button
+                  title={t("pages.orders.review")}
+                  level="terciary"
+                  onClick={() => setOpenReviewModal(true)}
+                />
+              </div>
+            )}
+            {whatHappensNext && (
+              <WhatHappensNext
+                stage={whatHappensNext}
+                view="buyer"
+                startedOrder={false}
+              />
+            )}
           </div>
-          {order.orderStatusId === 1 && (
-            <div className="flex gap-12">
-              <Button
-                title={t("pages.orders.cancel")}
-                level="terciary"
-                onClick={() =>
-                  updateCancelOrder({
-                    orderId: order.id,
-                    statusId: 7,
-                  })
-                }
-                isLoading={isLoadingUpdateCancelOrder}
-              />
-            </div>
-          )}
-          {order.orderStatusId === 3 && (
-            <div className="flex gap-12">
-              <Button
-                title={t("pages.orders.addPayment")}
-                level="terciary"
-                onClick={() =>
-                  updateOrderPayment({
-                    orderId: order.id,
-                    statusId: 4,
-                  })
-                }
-                isLoading={updateAcceptIsLoading}
-              />
-            </div>
-          )}
-          {order.orderStatusId === 5 && (
-            <div className="flex gap-12">
-              <Button
-                title={t("pages.orders.review")}
-                level="terciary"
-                onClick={() => setOpenReviewModal(true)}
-              />
-            </div>
-          )}
-          {whatHappensNext && (
-            <WhatHappensNext
-              stage={whatHappensNext}
-              view="buyer"
-              startedOrder={false}
-            />
-          )}
         </div>
       );
     }
   };
 
-  const renderOrderDetails = () => {
+  const renderOrderPlatform = () => {
     return (
       <div className="flex flex-col gap-2">
-        <div className="text-lg font-medium">{t("pages.sales.platform")}</div>
+        <div className="text-lg font-medium">{t("pages.orders.platform")}</div>
         <div className="font-semibold text-influencer">
           {order?.socialMedia?.name || ""}
         </div>
@@ -212,7 +222,9 @@ const OrderDetailsPage = (params: { orderId: number }) => {
   const renderValuePacks = () => {
     return (
       <div className="flex flex-col gap-2">
-        <div className="text-lg font-medium">{t("pages.sales.valuePacks")}</div>
+        <div className="text-lg font-medium">
+          {t("pages.orders.valuePacks")}
+        </div>
         <div className="flex flex-col items-center justify-center gap-4 lg:flex-row">
           {order?.orderValuePacks.map((valuePack) => {
             return (
@@ -239,7 +251,7 @@ const OrderDetailsPage = (params: { orderId: number }) => {
       return (
         <div className="flex flex-col gap-2">
           <div className="text-lg font-medium">
-            {t("pages.sales.saleTotalTaxes")}
+            {t("pages.orders.orderTotalTaxes")}
           </div>
           <div className="text-base font-semibold text-influencer">
             {helper.formatNumberWithDecimalValue(
@@ -256,7 +268,7 @@ const OrderDetailsPage = (params: { orderId: number }) => {
     return (
       <div className="flex flex-col gap-4">
         <div className="text-lg font-medium">
-          {t("pages.sales.saleRequirements")}
+          {t("pages.orders.orderRequirements")}
         </div>
         <div className="flex w-full flex-col whitespace-pre-line text-justify">
           {order?.orderDetails}
@@ -349,41 +361,89 @@ const OrderDetailsPage = (params: { orderId: number }) => {
   const renderOrderReview = () => {
     if (order?.review) {
       return (
-        <div className="flex flex-col items-center gap-6">
-          <div className="text-lg font-medium">Review</div>
-          <div className="flex gap-2">
-            <FontAwesomeIcon
-              icon={order?.review?.rating >= 1 ? faStar : faStarRegular}
-              className=" fa-2xl"
-            />
-            <FontAwesomeIcon
-              icon={order?.review?.rating >= 2 ? faStar : faStarRegular}
-              className=" fa-2xl"
-            />
-            <FontAwesomeIcon
-              icon={order?.review?.rating >= 3 ? faStar : faStarRegular}
-              className=" fa-2xl"
-            />
-            <FontAwesomeIcon
-              icon={order?.review?.rating >= 4 ? faStar : faStarRegular}
-              className=" fa-2xl"
-            />
-            <FontAwesomeIcon
-              icon={order?.review?.rating >= 5 ? faStar : faStarRegular}
-              className=" fa-2xl"
-            />
+        <div className="flex w-full  flex-col rounded-xl border-[1px]">
+          <div className="flex w-full border-b-[1px] p-4">
+            <div className="text-xl font-semibold">
+              {t("pages.orders.reviewTitle")}
+            </div>
           </div>
-          <div className="">{order.review.userReview}</div>
+          <div className="flex flex-col items-center gap-6 p-8">
+            <div className="flex gap-2">
+              <FontAwesomeIcon
+                icon={order?.review?.rating >= 1 ? faStar : faStarRegular}
+                className=" fa-2xl"
+              />
+              <FontAwesomeIcon
+                icon={order?.review?.rating >= 2 ? faStar : faStarRegular}
+                className=" fa-2xl"
+              />
+              <FontAwesomeIcon
+                icon={order?.review?.rating >= 3 ? faStar : faStarRegular}
+                className=" fa-2xl"
+              />
+              <FontAwesomeIcon
+                icon={order?.review?.rating >= 4 ? faStar : faStarRegular}
+                className=" fa-2xl"
+              />
+              <FontAwesomeIcon
+                icon={order?.review?.rating >= 5 ? faStar : faStarRegular}
+                className=" fa-2xl"
+              />
+            </div>
+            <div>{order.review.userReview}</div>
+          </div>
         </div>
       );
     }
+  };
+
+  const renderMessagesBoard = () => {
+    return (
+      <div className="flex flex-1 flex-col items-center rounded-xl border-[1px] text-center">
+        <div className="flex w-full border-b-[1px] p-4">
+          <div className="text-xl font-semibold ">
+            {t("pages.orders.messages")}
+          </div>
+        </div>
+        <div className="flex w-full flex-1 p-4">doako</div>
+        <div className="flex max-h-96 w-full items-center gap-2 border-t-[1px] p-4">
+          <span
+            className="textarea flex max-h-36 min-h-[50px] flex-1 resize-none overflow-y-auto rounded-xl border-[1px] p-2 text-left"
+            role="textbox"
+            contentEditable
+          />
+          <FontAwesomeIcon
+            icon={faPaperPlane}
+            className="fa-xl cursor-pointer"
+          />
+        </div>
+      </div>
+    );
+  };
+
+  const renderOrderDetails = () => {
+    return (
+      <div className="flex flex-1 flex-col items-center gap-4 rounded-xl border-[1px] text-center lg:overflow-y-hidden">
+        <div className="flex w-full border-b-[1px] p-4">
+          <div className="text-xl font-semibold ">
+            {t("pages.orders.orderDetails")}
+          </div>
+        </div>
+        <div className="overflow-y-auto p-8">
+          {renderOrderPlatform()}
+          {renderValuePacks()}
+          {renderTotalPrice()}
+          {renderFinalOrderDetails()}
+        </div>
+      </div>
+    );
   };
 
   return (
     <>
       <div className="flex w-full cursor-default flex-col gap-6 self-center px-4 pb-10 sm:px-12 lg:w-full 2xl:w-10/12 3xl:w-3/4 4xl:w-8/12">
         <div className="text-2xl font-semibold">
-          {t("pages.orders.orderDetails")}
+          {t("pages.orders.order")}
           {order?.id && `: ${order?.id}`}
         </div>
 
@@ -392,18 +452,16 @@ const OrderDetailsPage = (params: { orderId: number }) => {
             <LoadingSpinner />
           </div>
         ) : (
-          <div className="flex flex-col gap-4">
-            {renderInfluencerDetails()}
-            {order?.reviewId && (
-              <div className="flex flex-col items-center gap-4 rounded-xl border-[1px] p-8 text-center">
-                {renderOrderReview()}
+          <div className="flex flex-col">
+            <div className="flex flex-col gap-4 lg:flex-row">
+              <div className="flex flex-1 flex-col gap-4">
+                {order?.reviewId && renderOrderReview()}
+                {renderInfluencerDetails()}
               </div>
-            )}
-            <div className="flex flex-col items-center gap-4 rounded-xl border-[1px] p-8 text-center">
-              {renderOrderDetails()}
-              {renderValuePacks()}
-              {renderTotalPrice()}
-              {renderFinalOrderDetails()}
+              <div className="flex flex-1 flex-col gap-4">
+                {renderOrderDetails()}
+                {renderMessagesBoard()}
+              </div>
             </div>
           </div>
         )}

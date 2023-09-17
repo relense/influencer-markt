@@ -251,12 +251,6 @@ export const Navbar = (params: {
           <div className="flex flex-row items-center justify-end gap-2">
             {params.loggedInProfileId !== -1 && (
               <>
-                <div className="flex h-10 w-10 items-center justify-center rounded-full hover:bg-white1">
-                  <FontAwesomeIcon
-                    icon={faMessage}
-                    className="fa-xl cursor-pointer"
-                  />
-                </div>
                 <div
                   className="relative"
                   onClick={() => handleOpenNotificationsMenu()}

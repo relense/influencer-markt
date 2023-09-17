@@ -134,7 +134,7 @@ const WhatHappensNext = (params: {
             />
           </div>
           <div className="flex flex-col py-[6px]">
-            <div className="h-1 w-full border-t-[3px] border-dashed border-gray3" />
+            <div className="h-1 border-t-[3px] border-dashed border-gray3" />
             <div className="px-4 py-2 font-semibold">{title}</div>
             <div className="px-4 py-2 text-sm">{subtitle}</div>
           </div>
@@ -145,7 +145,7 @@ const WhatHappensNext = (params: {
 
   const renderMobileView = () => {
     return (
-      <div className="flex flex-col gap-6 p-4 text-sm xl:hidden xl:p-8">
+      <div className="flex flex-col gap-6 p-4 text-sm xl:p-8">
         <div className="font-medium">{renderTitle()}</div>
         <div className="flex flex-col">
           {renderItemMobile(
@@ -194,16 +194,14 @@ const WhatHappensNext = (params: {
               ? false
               : true
           )}
-          <div className="flex">
-            <div className="flex">
-              <div className="flex h-full flex-1 flex-col items-center self-start">
-                <div className={"h-4 w-4 rounded-full bg-influencer"} />
-              </div>
-              <div className="flex flex-col py-[6px]">
-                <div className="h-1 w-full border-t-[3px] border-dashed border-gray3" />
-                <div className="px-4 py-2 font-semibold">
-                  {t("components.whathappensNext.confirmed")}
-                </div>
+          <div className="flex self-start">
+            <div className="flex h-full flex-1 flex-col items-center self-start">
+              <div className={"h-4 w-4 rounded-full bg-influencer"} />
+            </div>
+            <div className="flex flex-col py-[6px]">
+              <div className="h-1 w-full border-t-[3px] border-dashed border-gray3" />
+              <div className="px-4 py-2 font-semibold">
+                {t("components.whathappensNext.confirmed")}
               </div>
             </div>
           </div>
@@ -212,12 +210,7 @@ const WhatHappensNext = (params: {
     );
   };
 
-  return (
-    <>
-      {renderDesktopView()}
-      {renderMobileView()}
-    </>
-  );
+  return <>{renderMobileView()}</>;
 };
 
 export { WhatHappensNext };

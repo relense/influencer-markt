@@ -104,6 +104,9 @@ model Profile {
   actor    Notification[] @relation("actor")
   notifier Notification[] @relation("notifier")
 
+  sender   Message[] @relation("sender")
+  receiver Message[] @relation("receiver")
+
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
@@ -362,6 +365,7 @@ model Order {
   socialMedia            SocialMedia?     @relation(fields: [socialMediaId], references: [id])
   review                 Review?          @relation(fields: [reviewId], references: [id])
   offer                  Offer?           @relation(fields: [offerId], references: [id])
+  messages               Message[]
 
   cardReferenceStripe String?
 
@@ -441,4 +445,23 @@ model Notification {
   @@index([notifierId])
   @@index([notificationTypeId])
   @@index([notificationStatusId])
+}
+
+model Message {
+  id       Int     @id @default(autoincrement())
+  sender   Profile @relation("sender", fields: [senderId], references: [id])
+  receiver Profile @relation("receiver", fields: [receiverId], references: [id])
+  order    Order   @relation(fields: [orderId], references: [id])
+  message  String  @db.Text
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  senderId   Int
+  receiverId Int
+  orderId    Int
+
+  @@index([senderId])
+  @@index([receiverId])
+  @@index([orderId])
 }

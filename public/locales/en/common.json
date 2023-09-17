@@ -842,7 +842,7 @@
       "saleTotal": "Order total",
       "saleTotalTaxes": "Order total with taxes",
       "saleStatus": "Order status",
-      "saleDetails": "Order details",
+      "sale": "Sale",
       "saleRequirements": "Order requirements",
       "status": "Status",
       "sales": "Sales",
@@ -865,7 +865,11 @@
       "deliveryModalTitle": "Are all the requirements met?",
       "deliveryModalText": "Before delivering the order, please ensure that you have fulfilled all of the buyer's requests. If there is anything missing or if you need to discuss any aspect of the order, please feel free to use the messaging platform to communicate with them. Your attention to detail and communication are essential to providing a great experience for the buyer.",
       "congratulations": "Congratulations! An application you submitted led to this order!",
-      "visit": "Visit offer"
+      "visit": "Visit offer",
+      "progressInformation": "Progress Information",
+      "reviewTitle": "Buyer Review",
+      "messages": "Messages",
+      "orderDetails": "Order Details"
     },
 
     "orders": {
@@ -878,7 +882,7 @@
       "orderTotal": "Order total",
       "orderTotalTaxes": "Order total with taxes",
       "orderStatus": "Order status",
-      "orderDetails": "Order details",
+      "order": "Order",
       "orderRequirements": "Order requirements",
       "status": "Status",
       "orders": "Orders",
@@ -901,7 +905,11 @@
       "review": "Review Order",
       "modalReviewTitle": "What is your review?",
       "warningMessage": "Max is {{count}} characters",
-      "messageInputPlaceholder": "Share your thoughts on the influencer's performance and the content delivered for your order. Your feedback helps them improve and future clients make informed decisions. Remember, this will appear in the influencer's page."
+      "messageInputPlaceholder": "Share your thoughts on the influencer's performance and the content delivered for your order. Your feedback helps them improve and future clients make informed decisions. Remember, this will appear in the influencer's page.",
+      "progressInformation": "Progress Information",
+      "reviewTitle": "Review",
+      "messages": "Messages",
+      "orderDetails": "Order Details"
     }
   }
 }

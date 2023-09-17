@@ -710,7 +710,7 @@
       "removeButton": "Remover",
       "rejectButton": "Rejeitar",
       "acceptButton": "Aceitar",
-      "initiateOffer": "Iniciar Ordem",
+      "initiateOffer": "Iniciar Pedido",
       "myOffersModalTitle": "Bem-vindo ao Menu Gerir Ofertas",
       "myOffersModalSubTitle": "Este é um guia rápido para começares",
       "creatingOffers": "Criar Ofertas",
@@ -812,8 +812,8 @@
     "startOrder": {
       "initiateOrder": "Informação do Pedido",
       "orderSummary": "Fazer Pedido",
-      "summary": "Resumo da ordem",
-      "orderDetails": "Detalhes da Ordem",
+      "summary": "Resumo do pedido",
+      "orderDetails": "Detalhes do Pedido",
       "orderPlatform": "Plataforma",
       "valuePacks": "Packs de Valor",
       "influencerDetails": "Detalhes do Influencer",
@@ -841,7 +841,7 @@
       "saleTotal": "Total do pedido",
       "saleTotalTaxes": "Total do pedido com IVA",
       "saleStatus": "Estado do pedido",
-      "saleDetails": "Detalhes do pedido",
+      "sale": "Venda",
       "saleRequirements": "Requerimentos do pedido",
       "status": "Estado",
       "sales": "Vendas",
@@ -853,7 +853,7 @@
       "accept": "Aceitar Pedido",
       "reject": "Rejeitar Pedido",
       "accepted": "Aceite",
-      "saleAnswerAccept": "Ordem foi aceite com sucesso",
+      "saleAnswerAccept": "Pedido foi aceite com sucesso",
       "awaiting": "O comprador está à espera da tua decisão",
       "progress": "Em progresso",
       "deliver": "Entregar Pedido",
@@ -864,7 +864,11 @@
       "deliveryModalTitle": "Estão todos os requisitos cumpridos?",
       "deliveryModalText": "Antes de entregar, certifica-te de que cumpriste todos os pedidos do comprador. Se algo estiver em falta ou precisares de discutir algum aspecto do pedido, não hesites em utilizar a plataforma de mensagens para comunicar com o comprador. A tua atenção aos detalhes e comunicação são essenciais para proporcionar uma ótima experiência ao comprador.",
       "congratulations": "Parabéns! A tua candidatura resultou numa oferta!",
-      "visit": "Visitar oferta"
+      "visit": "Visitar oferta",
+      "progressInformation": "Informação do Progresso",
+      "reviewTitle": "Avaliação do Comprador",
+      "messages": "Mensagens",
+      "orderDetails": "Detalhes do Pedido"
     },
 
     "orders": {
@@ -877,7 +881,7 @@
       "orderTotal": "Total do pedido",
       "orderTotalTaxes": "Total do pedido com IVA",
       "orderStatus": "Estado do pedido",
-      "orderDetails": "Detalhes do pedido",
+      "order": "Pedido",
       "orderRequirements": "Requerimentos do pedido",
       "status": "Estado",
       "orders": "Pedidos",
@@ -887,7 +891,7 @@
       "search": "Pesquisar",
       "loadMore": "Mostrar Mais",
       "cancel": "Cancelar Pedido",
-      "orderAnswerAccept": "Ordem foi aceite com sucesso",
+      "orderAnswerAccept": "Pedido foi aceite com sucesso",
       "awaiting": "À espera da decisão do influencer",
       "accepted": "O Influencer aceitou o teu pedido",
       "progress": "Em progresso",
@@ -899,7 +903,11 @@
       "review": "Avaliar Pedido",
       "modalReviewTitle": "Qual é a tua avaliação?",
       "warningMessage": "Máximo de {{count}} caracteres",
-      "messageInputPlaceholder": "Partilhe as suas opiniões sobre o desempenho do influencer e o conteúdo entregue para o seu pedido. O seu feedback ajuda-os a melhorar e permite que futuros clientes tomem decisões informadas. Lembra-te, isto vai aparecer na página do influencer."
+      "messageInputPlaceholder": "Partilhe as suas opiniões sobre o desempenho do influencer e o conteúdo entregue para o seu pedido. O seu feedback ajuda-os a melhorar e permite que futuros clientes tomem decisões informadas. Lembra-te, isto vai aparecer na página do influencer.",
+      "progressInformation": "Informação do Progresso",
+      "reviewTitle": "Avaliação",
+      "messages": "Mensagens",
+      "orderDetails": "Detalhes do Pedido"
     }
   }
 }

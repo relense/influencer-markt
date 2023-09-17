@@ -5,7 +5,10 @@ import toast from "react-hot-toast";
 import { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faStar } from "@fortawesome/free-solid-svg-icons";
-import { faStar as faStarRegular } from "@fortawesome/free-regular-svg-icons";
+import {
+  faPaperPlane,
+  faStar as faStarRegular,
+} from "@fortawesome/free-regular-svg-icons";
 import { api } from "~/utils/api";
 
 import { LoadingSpinner } from "../../components/LoadingSpinner";
@@ -106,66 +109,70 @@ const SalesDetailsPage = (params: { orderId: number }) => {
       }
 
       return (
-        <div className="flex flex-1 flex-col items-center gap-4 rounded-xl border-[1px] px-4 py-8 lg:gap-4">
-          <Link
-            href={`/${sale.buyer?.user.username || ""}`}
-            className="flex-2 flex"
-          >
-            <Image
-              src={sale.buyer?.profilePicture || ""}
-              alt="profile picture"
-              width={1000}
-              height={1000}
-              quality={100}
-              className="h-24 w-24 rounded-full object-cover"
-            />
-          </Link>
-          <Link
-            href={`/${sale.buyer?.user.username || ""}`}
-            className="flex flex-1 flex-col gap-2"
-          >
-            <div className="font-medium text-influencer">
-              {sale.buyer?.name || ""}
+        <div className="flex flex-1 flex-col rounded-xl border-[1px] lg:gap-4">
+          <div className="flex w-full border-b-[1px] p-4">
+            <div className="text-xl font-semibold ">
+              {t("pages.sales.progressInformation")}
             </div>
-          </Link>
-          <div className="font-medium">
-            {helper.formatFullDateWithTime(sale.createdAt, i18n.language)}
           </div>
-          <div className="font-semibold ">
-            {t(`pages.sales.${sale?.orderStatus?.name || ""}`)}
+          <div className="flex flex-1 flex-col items-center gap-4 px-4 py-8">
+            <Link href={`/${sale.buyer?.user.username || ""}`} className="flex">
+              <Image
+                src={sale.buyer?.profilePicture || ""}
+                alt="profile picture"
+                width={1000}
+                height={1000}
+                quality={100}
+                className="h-24 w-24 rounded-full object-cover"
+              />
+            </Link>
+            <Link
+              href={`/${sale.buyer?.user.username || ""}`}
+              className="flex flex-col gap-2"
+            >
+              <div className="font-medium text-influencer">
+                {sale.buyer?.name || ""}
+              </div>
+            </Link>
+            <div className="font-medium">
+              {helper.formatFullDateWithTime(sale.createdAt, i18n.language)}
+            </div>
+            <div className="font-semibold ">
+              {t(`pages.sales.${sale?.orderStatus?.name || ""}`)}
+            </div>
+            {sale.orderStatusId === 1 && (
+              <div className="flex gap-12">
+                <Button
+                  title={t("pages.sales.accept")}
+                  level="terciary"
+                  onClick={() => answerOrderRequest("accept")}
+                  isLoading={updateAcceptIsLoading}
+                />
+                <Button
+                  title={t("pages.sales.reject")}
+                  level="secondary"
+                  onClick={() => answerOrderRequest("reject")}
+                  isLoading={updateRejectIsLoading}
+                />
+              </div>
+            )}
+            {sale.orderStatusId === 4 && (
+              <div className="flex gap-12">
+                <Button
+                  title={t("pages.sales.deliver")}
+                  level="terciary"
+                  onClick={() => setShowDeliverModal(true)}
+                />
+              </div>
+            )}
+            {whatHappensNext && (
+              <WhatHappensNext
+                stage={whatHappensNext}
+                view="seller"
+                startedOrder={false}
+              />
+            )}
           </div>
-          {sale.orderStatusId === 1 && (
-            <div className="flex gap-12">
-              <Button
-                title={t("pages.sales.accept")}
-                level="terciary"
-                onClick={() => answerOrderRequest("accept")}
-                isLoading={updateAcceptIsLoading}
-              />
-              <Button
-                title={t("pages.sales.reject")}
-                level="secondary"
-                onClick={() => answerOrderRequest("reject")}
-                isLoading={updateRejectIsLoading}
-              />
-            </div>
-          )}
-          {sale.orderStatusId === 4 && (
-            <div className="flex gap-12">
-              <Button
-                title={t("pages.sales.deliver")}
-                level="terciary"
-                onClick={() => setShowDeliverModal(true)}
-              />
-            </div>
-          )}
-          {whatHappensNext && (
-            <WhatHappensNext
-              stage={whatHappensNext}
-              view="seller"
-              startedOrder={false}
-            />
-          )}
         </div>
       );
     }
@@ -240,31 +247,37 @@ const SalesDetailsPage = (params: { orderId: number }) => {
   const renderOrderReview = () => {
     if (sale?.review) {
       return (
-        <div className="flex flex-col items-center gap-6">
-          <div className="text-lg font-medium">Review</div>
-          <div className="flex gap-2">
-            <FontAwesomeIcon
-              icon={sale?.review?.rating >= 1 ? faStar : faStarRegular}
-              className=" fa-2xl"
-            />
-            <FontAwesomeIcon
-              icon={sale?.review?.rating >= 2 ? faStar : faStarRegular}
-              className=" fa-2xl"
-            />
-            <FontAwesomeIcon
-              icon={sale?.review?.rating >= 3 ? faStar : faStarRegular}
-              className=" fa-2xl"
-            />
-            <FontAwesomeIcon
-              icon={sale?.review?.rating >= 4 ? faStar : faStarRegular}
-              className=" fa-2xl"
-            />
-            <FontAwesomeIcon
-              icon={sale?.review?.rating >= 5 ? faStar : faStarRegular}
-              className=" fa-2xl"
-            />
+        <div className="flex w-full flex-col rounded-xl border-[1px]">
+          <div className="flex w-full border-b-[1px] p-4">
+            <div className="text-xl font-semibold">
+              {t("pages.sales.reviewTitle")}
+            </div>
           </div>
-          <div className="">{sale.review.userReview}</div>
+          <div className="flex flex-col items-center gap-6 p-8">
+            <div className="flex gap-2">
+              <FontAwesomeIcon
+                icon={sale?.review?.rating >= 1 ? faStar : faStarRegular}
+                className=" fa-2xl"
+              />
+              <FontAwesomeIcon
+                icon={sale?.review?.rating >= 2 ? faStar : faStarRegular}
+                className=" fa-2xl"
+              />
+              <FontAwesomeIcon
+                icon={sale?.review?.rating >= 3 ? faStar : faStarRegular}
+                className=" fa-2xl"
+              />
+              <FontAwesomeIcon
+                icon={sale?.review?.rating >= 4 ? faStar : faStarRegular}
+                className=" fa-2xl"
+              />
+              <FontAwesomeIcon
+                icon={sale?.review?.rating >= 5 ? faStar : faStarRegular}
+                className=" fa-2xl"
+              />
+            </div>
+            <div className="">{sale.review.userReview}</div>
+          </div>
         </div>
       );
     }
@@ -282,10 +295,52 @@ const SalesDetailsPage = (params: { orderId: number }) => {
     );
   };
 
+  const renderMessagesBoard = () => {
+    return (
+      <div className="flex flex-1 flex-col items-center rounded-xl border-[1px] text-center">
+        <div className="flex w-full border-b-[1px] p-4">
+          <div className="text-xl font-semibold ">
+            {t("pages.sales.messages")}
+          </div>
+        </div>
+        <div className="flex w-full flex-1 p-4">doako</div>
+        <div className="flex max-h-96 w-full items-center gap-2 border-t-[1px] p-4">
+          <span
+            className="textarea flex max-h-36 min-h-[50px] flex-1 resize-none overflow-y-auto rounded-xl border-[1px] p-2 text-left"
+            role="textbox"
+            contentEditable
+          />
+          <FontAwesomeIcon
+            icon={faPaperPlane}
+            className="fa-xl cursor-pointer"
+          />
+        </div>
+      </div>
+    );
+  };
+
+  const renderSalesDetails = () => {
+    return (
+      <div className="flex flex-1 flex-col items-center gap-4 rounded-xl border-[1px] text-center lg:overflow-y-hidden">
+        <div className="flex w-full border-b-[1px] p-4">
+          <div className="text-xl font-semibold ">
+            {t("pages.sales.orderDetails")}
+          </div>
+        </div>
+        <div className="overflow-y-auto p-8">
+          {renderSaleDetails()}
+          {renderValuePacks()}
+          {renderTotalPrice()}
+          {renderFinalOrderDetails()}
+        </div>
+      </div>
+    );
+  };
+
   return (
     <div className="flex w-full cursor-default flex-col gap-6 self-center px-4 pb-10 sm:px-12 lg:w-full 2xl:w-10/12 3xl:w-3/4 4xl:w-8/12">
       <div className="text-2xl font-semibold">
-        {t("pages.sales.saleDetails")}
+        {t("pages.sales.sale")}
         {sale?.id && `: ${sale?.id}`}
       </div>
 
@@ -294,19 +349,17 @@ const SalesDetailsPage = (params: { orderId: number }) => {
           <LoadingSpinner />
         </div>
       ) : (
-        <div className="flex flex-col gap-4">
+        <div className="flex flex-1 flex-col gap-4">
           {sale?.offerId && sale.orderStatusId === 1 && renderOfferDisclaimer()}
-          {renderBuyerDetails()}
-          {sale?.reviewId && (
-            <div className="flex flex-col items-center gap-4 rounded-xl border-[1px] p-8 text-center">
-              {renderOrderReview()}
+          <div className="flex flex-1 flex-col gap-4 lg:flex-row">
+            <div className="flex flex-1 flex-col gap-4">
+              {sale?.reviewId && renderOrderReview()}
+              {renderBuyerDetails()}
             </div>
-          )}
-          <div className="flex flex-col items-center gap-4 rounded-xl border-[1px] p-8 text-center">
-            {renderSaleDetails()}
-            {renderValuePacks()}
-            {renderTotalPrice()}
-            {renderFinalOrderDetails()}
+            <div className="flex flex-1 flex-col gap-4">
+              {renderSalesDetails()}
+              {renderMessagesBoard()}
+            </div>
           </div>
         </div>
       )}
