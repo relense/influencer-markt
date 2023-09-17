@@ -7,7 +7,7 @@ import Image from "next/image";
 import { helper } from "../../utils/helper";
 import { WhatHappensNext } from "../../components/WhatHappensNext";
 import { Button } from "../../components/Button";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Modal } from "../../components/Modal";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faStar } from "@fortawesome/free-solid-svg-icons";
@@ -24,9 +24,11 @@ type ReviewForm = {
 const OrderDetailsPage = (params: { orderId: number }) => {
   const { t, i18n } = useTranslation();
   const ctx = api.useContext();
+  const textareaRef = useRef<HTMLTextAreaElement>(null);
 
   const [openReviewModal, setOpenReviewModal] = useState<boolean>(false);
   const [starReviewsCount, setStarReviewsCount] = useState<number>(1);
+  const [message, setMessage] = useState("");
 
   const {
     register,
@@ -90,6 +92,23 @@ const OrderDetailsPage = (params: { orderId: number }) => {
         setStarReviewsCount(1);
       },
     });
+
+  useEffect(() => {
+    adjustTextareaHeight();
+  }, [message]);
+
+  const adjustTextareaHeight = () => {
+    if (textareaRef.current) {
+      textareaRef.current.style.height = "59px";
+      textareaRef.current.style.height = `${textareaRef.current.scrollHeight}px`;
+    }
+  };
+
+  const handleMessageChange = (
+    event: React.ChangeEvent<HTMLTextAreaElement>
+  ) => {
+    setMessage(event.target.value);
+  };
 
   const submit = handleSubmit((data) => {
     if (order?.influencerId) {
@@ -405,12 +424,13 @@ const OrderDetailsPage = (params: { orderId: number }) => {
             {t("pages.orders.messages")}
           </div>
         </div>
-        <div className="flex w-full flex-1 p-4">doako</div>
-        <div className="flex max-h-96 w-full items-center gap-2 border-t-[1px] p-4">
-          <span
-            className="textarea flex max-h-36 min-h-[50px] flex-1 resize-none overflow-y-auto rounded-xl border-[1px] p-2 text-left"
-            role="textbox"
-            contentEditable
+        <div className="flex min-h-[500px] w-full flex-1 p-4 lg:min-h-[300px]"></div>
+        <div className="flex w-full items-center gap-2 border-t-[1px] p-4">
+          <textarea
+            ref={textareaRef}
+            className="flex h-[59px] max-h-56 flex-1 resize-none overflow-y-auto rounded-xl border-[1px] p-2 pt-4 text-left text-base"
+            value={message}
+            onChange={handleMessageChange}
           />
           <FontAwesomeIcon
             icon={faPaperPlane}

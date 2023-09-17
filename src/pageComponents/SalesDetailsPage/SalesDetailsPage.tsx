@@ -2,7 +2,7 @@ import { useTranslation } from "react-i18next";
 import Link from "next/link";
 import Image from "next/image";
 import toast from "react-hot-toast";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faStar } from "@fortawesome/free-solid-svg-icons";
 import {
@@ -20,9 +20,11 @@ import { Modal } from "../../components/Modal";
 const SalesDetailsPage = (params: { orderId: number }) => {
   const { t, i18n } = useTranslation();
   const ctx = api.useContext();
+  const textareaRef = useRef<HTMLTextAreaElement>(null);
 
   const [saleAnswer, setSaleAnswer] = useState<number>(-1);
   const [showDeliverModal, setShowDeliverModal] = useState<boolean>(false);
+  const [message, setMessage] = useState("");
 
   const { data: sale, isLoading } = api.orders.getSaleOrder.useQuery({
     orderId: params.orderId,
@@ -72,6 +74,23 @@ const SalesDetailsPage = (params: { orderId: number }) => {
 
   const { mutate: createNotification } =
     api.notifications.createOrdersNotification.useMutation();
+
+  useEffect(() => {
+    adjustTextareaHeight();
+  }, [message]);
+
+  const adjustTextareaHeight = () => {
+    if (textareaRef.current) {
+      textareaRef.current.style.height = "59px";
+      textareaRef.current.style.height = `${textareaRef.current.scrollHeight}px`;
+    }
+  };
+
+  const handleMessageChange = (
+    event: React.ChangeEvent<HTMLTextAreaElement>
+  ) => {
+    setMessage(event.target.value);
+  };
 
   const answerOrderRequest = (type: "accept" | "reject") => {
     if (type === "accept") {
@@ -303,12 +322,13 @@ const SalesDetailsPage = (params: { orderId: number }) => {
             {t("pages.sales.messages")}
           </div>
         </div>
-        <div className="flex w-full flex-1 p-4">doako</div>
-        <div className="flex max-h-96 w-full items-center gap-2 border-t-[1px] p-4">
-          <span
-            className="textarea flex max-h-36 min-h-[50px] flex-1 resize-none overflow-y-auto rounded-xl border-[1px] p-2 text-left"
-            role="textbox"
-            contentEditable
+        <div className="flex min-h-[500px] w-full flex-1 p-4 lg:min-h-[300px]"></div>
+        <div className="flex w-full items-center gap-2 border-t-[1px] p-4">
+          <textarea
+            ref={textareaRef}
+            className="flex h-[59px] max-h-56 flex-1 resize-none overflow-y-auto rounded-xl border-[1px] p-2 pt-4 text-left text-base"
+            value={message}
+            onChange={handleMessageChange}
           />
           <FontAwesomeIcon
             icon={faPaperPlane}
