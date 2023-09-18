@@ -7,6 +7,7 @@ import { api } from "~/utils/api";
 import { helper } from "../utils/helper";
 import { LoadingSpinner } from "./LoadingSpinner";
 import dayjs from "dayjs";
+import { faArrowsRotate } from "@fortawesome/free-solid-svg-icons";
 
 type Message = {
   senderId: number;
@@ -33,10 +34,14 @@ const MessageBoard = (params: {
   const [manuallyFetchedMessages, setManuallyFetchedMessages] = useState(false);
   const [prevContainerHeight, setPrevContainerHeight] = useState<number>(0);
 
-  const { data: messagesData, isLoading: isLoadingMessages } =
-    api.messages.getOrderMessages.useQuery({
-      orderId: params.orderId,
-    });
+  const {
+    data: messagesData,
+    isLoading: isLoadingMessages,
+    isRefetching: isRefetchingMessagesData,
+    refetch: refetchMessagesData,
+  } = api.messages.getOrderMessages.useQuery({
+    orderId: params.orderId,
+  });
 
   const { data: messagesDataCursor, refetch: refetchMessagesCursor } =
     api.messages.getOrderMessagesWithCursor.useQuery(
@@ -263,17 +268,22 @@ const MessageBoard = (params: {
 
   return (
     <div className="flex flex-1 flex-col items-center rounded-xl border-[1px] text-center">
-      <div className="flex w-full border-b-[1px] p-4">
+      <div className="flex w-full items-center justify-between border-b-[1px] p-4">
         <div className="text-xl font-semibold ">
           {t("pages.sales.messages")}
         </div>
+        <FontAwesomeIcon
+          icon={faArrowsRotate}
+          className="fa-xl cursor-pointer text-influencer"
+          onClick={() => refetchMessagesData()}
+        />
       </div>
       <div
-        className="flex max-h-[400px] min-h-[400px] w-full flex-1 overflow-y-auto p-4 lg:min-h-[300px]"
+        className="flex max-h-[500px] min-h-[500px] w-full flex-1 overflow-y-auto p-4 lg:min-h-[500px]"
         ref={messagesRef}
       >
-        {isLoadingMessages ? (
-          <div className="flex justify-center">
+        {isLoadingMessages || isRefetchingMessagesData ? (
+          <div className="relative flex flex-1 items-center justify-center">
             <LoadingSpinner />
           </div>
         ) : (
