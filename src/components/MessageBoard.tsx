@@ -6,6 +6,7 @@ import { faPaperPlane } from "@fortawesome/free-regular-svg-icons";
 import { api } from "~/utils/api";
 import { helper } from "../utils/helper";
 import { LoadingSpinner } from "./LoadingSpinner";
+import dayjs from "dayjs";
 
 type Message = {
   senderId: number;
@@ -30,6 +31,7 @@ const MessageBoard = (params: {
   const [messagesTotal, setMessagesTotal] = useState<number>(0);
   const [userAddedNewMessages, setUserAddedNewMessages] = useState(false);
   const [manuallyFetchedMessages, setManuallyFetchedMessages] = useState(false);
+  const [prevContainerHeight, setPrevContainerHeight] = useState<number>(0);
 
   const { data: messagesData, isLoading: isLoadingMessages } =
     api.messages.getOrderMessages.useQuery({
@@ -107,15 +109,17 @@ const MessageBoard = (params: {
 
   useEffect(() => {
     const container = messagesRef.current;
+    // In your scroll event listener:
     const handleScroll = () => {
-      console.log(container?.scrollTop);
       if (
         container &&
-        container.scrollTop <= 400 &&
-        messagesTotal > messages.length
+        container.scrollTop <= 300 &&
+        messagesTotal > messages.length &&
+        !manuallyFetchedMessages
       ) {
-        setManuallyFetchedMessages(true);
         void refetchMessagesCursor();
+        setManuallyFetchedMessages(true);
+        setPrevContainerHeight(container.scrollHeight);
       }
     };
 
@@ -128,7 +132,12 @@ const MessageBoard = (params: {
         container.removeEventListener("scroll", handleScroll);
       }
     };
-  }, [messages.length, messagesTotal, refetchMessagesCursor]);
+  }, [
+    manuallyFetchedMessages,
+    messages.length,
+    messagesTotal,
+    refetchMessagesCursor,
+  ]);
 
   useEffect(() => {
     if (messagesRef && messagesRef.current) {
@@ -142,9 +151,20 @@ const MessageBoard = (params: {
         setUserAddedNewMessages(false);
       } else if (!shouldScrollToBottom && !manuallyFetchedMessages) {
         container.scrollTop = container.scrollHeight - container.clientHeight;
+      } else {
+        if (container.scrollHeight - prevContainerHeight !== 0) {
+          debugger;
+          container.scrollTop =
+            container.scrollHeight - prevContainerHeight + container.scrollTop;
+        }
       }
     }
-  }, [messages, userAddedNewMessages, manuallyFetchedMessages]);
+  }, [
+    messages,
+    userAddedNewMessages,
+    manuallyFetchedMessages,
+    prevContainerHeight,
+  ]);
 
   useEffect(() => {
     adjustTextareaHeight();
@@ -178,14 +198,33 @@ const MessageBoard = (params: {
       const reverseMessages = [...messages].reverse();
       return (
         <div className="flex flex-1 flex-col items-end">
-          {reverseMessages.map((message) => {
+          {reverseMessages.map((message, index) => {
+            const data = [];
+
+            if (
+              dayjs(message.createdAt).isAfter(
+                reverseMessages[index - 1]?.createdAt,
+                "day"
+              ) ||
+              index === 0
+            ) {
+              data.push(
+                <div
+                  key={`${message.id}date`}
+                  className="flex w-full flex-1 items-center justify-center self-end text-sm font-semibold text-gray2"
+                >
+                  {helper.formatOnlyDate(message.createdAt, i18n.language)}
+                </div>
+              );
+            }
+
             if (
               message.senderId === params.receiverId &&
               message.receiverId === params.senderId
             ) {
-              return (
+              data.push(
                 <div
-                  key={message.id}
+                  key={`${message.id}message`}
                   className="flex w-full flex-col items-start"
                 >
                   <div className="m-2 rounded-xl bg-boxShadow p-4 text-white">
@@ -200,9 +239,9 @@ const MessageBoard = (params: {
               message.receiverId === params.receiverId &&
               message.senderId === params.senderId
             ) {
-              return (
+              data.push(
                 <div
-                  key={message.id}
+                  key={`${message.id}message`}
                   className="flex w-full flex-col items-end justify-end "
                 >
                   <div className="m-2 rounded-xl bg-influencer-green-dark p-4 text-white">
@@ -214,6 +253,8 @@ const MessageBoard = (params: {
                 </div>
               );
             }
+
+            return data;
           })}
         </div>
       );
