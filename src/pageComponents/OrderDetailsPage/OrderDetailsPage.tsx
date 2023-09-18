@@ -7,15 +7,13 @@ import Image from "next/image";
 import { helper } from "../../utils/helper";
 import { WhatHappensNext } from "../../components/WhatHappensNext";
 import { Button } from "../../components/Button";
-import { useEffect, useRef, useState } from "react";
+import { useState } from "react";
 import { Modal } from "../../components/Modal";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faStar } from "@fortawesome/free-solid-svg-icons";
-import {
-  faStar as faStarRegular,
-  faPaperPlane,
-} from "@fortawesome/free-regular-svg-icons";
+import { faStar as faStarRegular } from "@fortawesome/free-regular-svg-icons";
 import { useForm } from "react-hook-form";
+import { MessageBoard } from "../../components/MessageBoard";
 
 type ReviewForm = {
   review: string;
@@ -24,12 +22,9 @@ type ReviewForm = {
 const OrderDetailsPage = (params: { orderId: number }) => {
   const { t, i18n } = useTranslation();
   const ctx = api.useContext();
-  const textareaRef = useRef<HTMLTextAreaElement>(null);
-  const messagesRef = useRef<HTMLDivElement>(null);
 
   const [openReviewModal, setOpenReviewModal] = useState<boolean>(false);
   const [starReviewsCount, setStarReviewsCount] = useState<number>(1);
-  const [message, setMessage] = useState("");
 
   const {
     register,
@@ -43,14 +38,6 @@ const OrderDetailsPage = (params: { orderId: number }) => {
     orderId: params.orderId,
   });
 
-  const { data: messages, isLoading: isLoadingMessages } =
-    api.messages.getOrderMessages.useQuery({
-      orderId: params.orderId,
-    });
-
-  const { mutate: createMessage } = api.messages.createMessage.useMutation({
-    onSuccess: () => ctx.messages.getOrderMessages.invalidate(),
-  });
   const { mutate: updateOrderPayment, isLoading: updateAcceptIsLoading } =
     api.orders.updateOrder.useMutation({
       onSuccess: () => {
@@ -101,29 +88,6 @@ const OrderDetailsPage = (params: { orderId: number }) => {
         setStarReviewsCount(1);
       },
     });
-
-  useEffect(() => {
-    adjustTextareaHeight();
-  }, [message]);
-
-  useEffect(() => {
-    if (messagesRef && messagesRef.current) {
-      messagesRef.current?.scrollTo(0, messagesRef.current?.scrollHeight);
-    }
-  }, [messages]);
-
-  const adjustTextareaHeight = () => {
-    if (textareaRef.current) {
-      textareaRef.current.style.height = "59px";
-      textareaRef.current.style.height = `${textareaRef.current.scrollHeight}px`;
-    }
-  };
-
-  const handleMessageChange = (
-    event: React.ChangeEvent<HTMLTextAreaElement>
-  ) => {
-    setMessage(event.target.value);
-  };
 
   const submit = handleSubmit((data) => {
     if (order?.influencerId) {
@@ -440,105 +404,6 @@ const OrderDetailsPage = (params: { orderId: number }) => {
     }
   };
 
-  const renderMessages = () => {
-    if (messages) {
-      return (
-        <div className="flex flex-1 flex-col">
-          {messages.map((message) => {
-            if (
-              message.senderId === order?.buyerId &&
-              message.receiverId === order?.influencerId
-            ) {
-              return (
-                <div
-                  key={message.id}
-                  className="flex w-full flex-1 flex-col items-end justify-end self-end"
-                >
-                  <div className="m-2 rounded-xl bg-influencer-green-dark p-4 text-white">
-                    {message.message}
-                  </div>
-                  <div className="flex justify-end text-sm text-gray2">
-                    {helper.formatShowtime(message.createdAt, i18n.language)}
-                  </div>
-                </div>
-              );
-            } else if (
-              message.receiverId === order?.buyerId &&
-              message.senderId === order?.influencerId
-            ) {
-              return (
-                <div
-                  key={message.id}
-                  className="flex w-full flex-col items-start"
-                >
-                  <div className="m-2 rounded-xl bg-boxShadow p-4 text-white">
-                    {message.message}
-                  </div>
-                  <div className="flex justify-end text-sm text-gray2">
-                    {helper.formatShowtime(message.createdAt, i18n.language)}
-                  </div>
-                </div>
-              );
-            }
-          })}
-        </div>
-      );
-    }
-  };
-
-  const renderMessagesBoard = () => {
-    return (
-      <div className="flex flex-1 flex-col items-center rounded-xl border-[1px] text-center">
-        <div className="flex w-full border-b-[1px] p-4">
-          <div className="text-xl font-semibold ">
-            {t("pages.orders.messages")}
-          </div>
-        </div>
-        <div
-          className="flex max-h-[400px] min-h-[400px] w-full flex-1 overflow-y-auto p-4 lg:min-h-[300px]"
-          ref={messagesRef}
-        >
-          {isLoadingMessages ? (
-            <div className="flex justify-center">
-              <LoadingSpinner />
-            </div>
-          ) : (
-            renderMessages()
-          )}
-        </div>
-        <div className="flex w-full items-center gap-2 border-t-[1px] p-4">
-          <textarea
-            ref={textareaRef}
-            className="flex h-[59px] max-h-56 flex-1 resize-none overflow-y-auto rounded-xl border-[1px] p-2 pt-4 text-left text-base"
-            value={message}
-            onChange={handleMessageChange}
-            onKeyDown={(e) => {
-              if (
-                e.key === "Enter" &&
-                !e.shiftKey &&
-                message !== "" &&
-                message.trim()
-              ) {
-                createMessage({
-                  message: message,
-                  orderId: params.orderId,
-                  receiverId: order?.influencerId || -1,
-                });
-                setMessage("");
-                e.currentTarget.value = "";
-                e.preventDefault();
-              }
-            }}
-          />
-          <FontAwesomeIcon
-            icon={faPaperPlane}
-            className="fa-xl cursor-pointer"
-          />
-        </div>
-      </div>
-    );
-  };
-
   const renderOrderDetails = () => {
     return (
       <div className="flex flex-1 flex-col items-center gap-4 rounded-xl border-[1px] text-center lg:overflow-y-hidden">
@@ -578,7 +443,11 @@ const OrderDetailsPage = (params: { orderId: number }) => {
               </div>
               <div className="flex flex-1 flex-col gap-4">
                 {renderOrderDetails()}
-                {renderMessagesBoard()}
+                <MessageBoard
+                  receiverId={order?.influencerId || -1}
+                  senderId={order?.buyerId || -1}
+                  orderId={params.orderId}
+                />
               </div>
             </div>
           </div>

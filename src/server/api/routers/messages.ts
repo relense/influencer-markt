@@ -34,8 +34,45 @@ export const MessagesRouter = createTRPCRouter({
       })
     )
     .query(async ({ ctx, input }) => {
-      return await ctx.prisma.message.findMany({
+      const totalMessages = await ctx.prisma.message.count({
         where: { orderId: input.orderId },
       });
+
+      const messages = await ctx.prisma.message.findMany({
+        where: { orderId: input.orderId },
+        take: 10,
+        orderBy: {
+          createdAt: "desc",
+        },
+      });
+
+      return {
+        totalMessages,
+        messages,
+      };
+    }),
+
+  getOrderMessagesWithCursor: protectedProcedure
+    .input(
+      z.object({
+        orderId: z.number(),
+        cursor: z.number(),
+      })
+    )
+    .query(async ({ ctx, input }) => {
+      const messages = await ctx.prisma.message.findMany({
+        where: {
+          orderId: input.orderId,
+          id: {
+            lt: input.cursor,
+          },
+        },
+        take: 10,
+        orderBy: {
+          createdAt: "desc",
+        },
+      });
+
+      return messages;
     }),
 });

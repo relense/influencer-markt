@@ -2,13 +2,10 @@ import { useTranslation } from "react-i18next";
 import Link from "next/link";
 import Image from "next/image";
 import toast from "react-hot-toast";
-import { useEffect, useRef, useState } from "react";
+import { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faStar } from "@fortawesome/free-solid-svg-icons";
-import {
-  faPaperPlane,
-  faStar as faStarRegular,
-} from "@fortawesome/free-regular-svg-icons";
+import { faStar as faStarRegular } from "@fortawesome/free-regular-svg-icons";
 import { api } from "~/utils/api";
 
 import { LoadingSpinner } from "../../components/LoadingSpinner";
@@ -16,27 +13,17 @@ import { helper } from "../../utils/helper";
 import { Button } from "../../components/Button";
 import { WhatHappensNext } from "../../components/WhatHappensNext";
 import { Modal } from "../../components/Modal";
+import { MessageBoard } from "../../components/MessageBoard";
 
 const SalesDetailsPage = (params: { orderId: number }) => {
   const { t, i18n } = useTranslation();
   const ctx = api.useContext();
-  const textareaRef = useRef<HTMLTextAreaElement>(null);
 
   const [saleAnswer, setSaleAnswer] = useState<number>(-1);
   const [showDeliverModal, setShowDeliverModal] = useState<boolean>(false);
-  const [message, setMessage] = useState("");
 
   const { data: sale, isLoading } = api.orders.getSaleOrder.useQuery({
     orderId: params.orderId,
-  });
-
-  const { data: messages, isLoading: isLoadingMessages } =
-    api.messages.getOrderMessages.useQuery({
-      orderId: params.orderId,
-    });
-
-  const { mutate: createMessage } = api.messages.createMessage.useMutation({
-    onSuccess: () => ctx.messages.getOrderMessages.invalidate(),
   });
 
   const { mutate: updateOrderAccept, isLoading: updateAcceptIsLoading } =
@@ -83,23 +70,6 @@ const SalesDetailsPage = (params: { orderId: number }) => {
 
   const { mutate: createNotification } =
     api.notifications.createOrdersNotification.useMutation();
-
-  useEffect(() => {
-    adjustTextareaHeight();
-  }, [message]);
-
-  const adjustTextareaHeight = () => {
-    if (textareaRef.current) {
-      textareaRef.current.style.height = "59px";
-      textareaRef.current.style.height = `${textareaRef.current.scrollHeight}px`;
-    }
-  };
-
-  const handleMessageChange = (
-    event: React.ChangeEvent<HTMLTextAreaElement>
-  ) => {
-    setMessage(event.target.value);
-  };
 
   const answerOrderRequest = (type: "accept" | "reject") => {
     if (type === "accept") {
@@ -323,101 +293,6 @@ const SalesDetailsPage = (params: { orderId: number }) => {
     );
   };
 
-  const renderMessages = () => {
-    if (messages) {
-      return (
-        <div className="flex flex-1 flex-col">
-          {messages.map((message) => {
-            if (
-              message.senderId === sale?.buyerId &&
-              message.receiverId === sale?.influencerId
-            ) {
-              return (
-                <div
-                  key={message.id}
-                  className="flex w-full flex-col items-start"
-                >
-                  <div className="m-2 rounded-xl bg-boxShadow p-4 text-white">
-                    {message.message}
-                  </div>
-                  <div className="flex justify-end text-sm text-gray2">
-                    {helper.formatShowtime(message.createdAt, i18n.language)}
-                  </div>
-                </div>
-              );
-            } else if (
-              message.receiverId === sale?.buyerId &&
-              message.senderId === sale?.influencerId
-            ) {
-              return (
-                <div
-                  key={message.id}
-                  className="flex w-full flex-1 flex-col items-end justify-end self-end"
-                >
-                  <div className="m-2 rounded-xl bg-influencer-green-dark p-4 text-white">
-                    {message.message}
-                  </div>
-                  <div className="flex justify-end text-sm text-gray2">
-                    {helper.formatShowtime(message.createdAt, i18n.language)}
-                  </div>
-                </div>
-              );
-            }
-          })}
-        </div>
-      );
-    }
-  };
-  const renderMessagesBoard = () => {
-    return (
-      <div className="flex flex-1 flex-col items-center rounded-xl border-[1px] text-center">
-        <div className="flex w-full border-b-[1px] p-4">
-          <div className="text-xl font-semibold ">
-            {t("pages.sales.messages")}
-          </div>
-        </div>
-        <div className="flex max-h-[400px] min-h-[400px] w-full flex-1 overflow-y-auto p-4 lg:min-h-[300px]">
-          {isLoadingMessages ? (
-            <div className="flex justify-center">
-              <LoadingSpinner />
-            </div>
-          ) : (
-            renderMessages()
-          )}
-        </div>
-        <div className="flex w-full items-center gap-2 border-t-[1px] p-4">
-          <textarea
-            ref={textareaRef}
-            className="flex h-[59px] max-h-56 flex-1 resize-none overflow-y-auto rounded-xl border-[1px] p-2 pt-4 text-left text-base"
-            value={message}
-            onChange={handleMessageChange}
-            onKeyDown={(e) => {
-              if (
-                e.key === "Enter" &&
-                !e.shiftKey &&
-                message !== "" &&
-                message.trim()
-              ) {
-                createMessage({
-                  message: message,
-                  orderId: params.orderId,
-                  receiverId: sale?.buyerId || -1,
-                });
-                setMessage("");
-                e.currentTarget.value = "";
-                e.preventDefault();
-              }
-            }}
-          />
-          <FontAwesomeIcon
-            icon={faPaperPlane}
-            className="fa-xl cursor-pointer"
-          />
-        </div>
-      </div>
-    );
-  };
-
   const renderSalesDetails = () => {
     return (
       <div className="flex flex-1 flex-col items-center gap-4 rounded-xl border-[1px] text-center lg:overflow-y-hidden">
@@ -457,7 +332,11 @@ const SalesDetailsPage = (params: { orderId: number }) => {
             </div>
             <div className="flex flex-1 flex-col gap-4">
               {renderSalesDetails()}
-              {renderMessagesBoard()}
+              <MessageBoard
+                receiverId={sale?.buyerId || -1}
+                senderId={sale?.influencerId || -1}
+                orderId={params.orderId}
+              />
             </div>
           </div>
         </div>
