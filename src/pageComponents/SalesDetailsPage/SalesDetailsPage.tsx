@@ -30,6 +30,15 @@ const SalesDetailsPage = (params: { orderId: number }) => {
     orderId: params.orderId,
   });
 
+  const { data: messages, isLoading: isLoadingMessages } =
+    api.messages.getOrderMessages.useQuery({
+      orderId: params.orderId,
+    });
+
+  const { mutate: createMessage } = api.messages.createMessage.useMutation({
+    onSuccess: () => ctx.messages.getOrderMessages.invalidate(),
+  });
+
   const { mutate: updateOrderAccept, isLoading: updateAcceptIsLoading } =
     api.orders.updateOrder.useMutation({
       onSuccess: () => {
@@ -314,6 +323,51 @@ const SalesDetailsPage = (params: { orderId: number }) => {
     );
   };
 
+  const renderMessages = () => {
+    if (messages) {
+      return (
+        <div className="flex flex-1 flex-col">
+          {messages.map((message) => {
+            if (
+              message.senderId === sale?.buyerId &&
+              message.receiverId === sale?.influencerId
+            ) {
+              return (
+                <div
+                  key={message.id}
+                  className="flex w-full flex-col items-start"
+                >
+                  <div className="m-2 rounded-xl bg-boxShadow p-4 text-white">
+                    {message.message}
+                  </div>
+                  <div className="flex justify-end text-sm text-gray2">
+                    {helper.formatShowtime(message.createdAt, i18n.language)}
+                  </div>
+                </div>
+              );
+            } else if (
+              message.receiverId === sale?.buyerId &&
+              message.senderId === sale?.influencerId
+            ) {
+              return (
+                <div
+                  key={message.id}
+                  className="flex w-full flex-1 flex-col items-end justify-end self-end"
+                >
+                  <div className="m-2 rounded-xl bg-influencer-green-dark p-4 text-white">
+                    {message.message}
+                  </div>
+                  <div className="flex justify-end text-sm text-gray2">
+                    {helper.formatShowtime(message.createdAt, i18n.language)}
+                  </div>
+                </div>
+              );
+            }
+          })}
+        </div>
+      );
+    }
+  };
   const renderMessagesBoard = () => {
     return (
       <div className="flex flex-1 flex-col items-center rounded-xl border-[1px] text-center">
@@ -322,13 +376,38 @@ const SalesDetailsPage = (params: { orderId: number }) => {
             {t("pages.sales.messages")}
           </div>
         </div>
-        <div className="flex min-h-[500px] w-full flex-1 p-4 lg:min-h-[300px]"></div>
+        <div className="flex max-h-[400px] min-h-[400px] w-full flex-1 overflow-y-auto p-4 lg:min-h-[300px]">
+          {isLoadingMessages ? (
+            <div className="flex justify-center">
+              <LoadingSpinner />
+            </div>
+          ) : (
+            renderMessages()
+          )}
+        </div>
         <div className="flex w-full items-center gap-2 border-t-[1px] p-4">
           <textarea
             ref={textareaRef}
             className="flex h-[59px] max-h-56 flex-1 resize-none overflow-y-auto rounded-xl border-[1px] p-2 pt-4 text-left text-base"
             value={message}
             onChange={handleMessageChange}
+            onKeyDown={(e) => {
+              if (
+                e.key === "Enter" &&
+                !e.shiftKey &&
+                message !== "" &&
+                message.trim()
+              ) {
+                createMessage({
+                  message: message,
+                  orderId: params.orderId,
+                  receiverId: sale?.buyerId || -1,
+                });
+                setMessage("");
+                e.currentTarget.value = "";
+                e.preventDefault();
+              }
+            }}
           />
           <FontAwesomeIcon
             icon={faPaperPlane}
