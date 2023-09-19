@@ -74,7 +74,7 @@ export const Layout = (props: {
           loggedInProfileId={user?.profile?.id ? user.profile.id : -1}
         />
         <div
-          className="mb-12 flex w-full flex-1 flex-col overflow-y-auto sm:mb-0"
+          className="mb-24 flex w-full flex-1 flex-col overflow-y-auto sm:mb-0"
           ref={scrollableContainer}
         >
           <div className="flex flex-1 flex-col">
