@@ -286,11 +286,11 @@ const MessageBoard = (params: {
         <div className="text-xl font-semibold ">
           {t("pages.sales.messages")}
         </div>
-        <FontAwesomeIcon
+        {/* <FontAwesomeIcon
           icon={faArrowsRotate}
           className="fa-xl cursor-pointer text-influencer"
           onClick={() => refetchMessagesData()}
-        />
+        /> */}
       </div>
       <div
         className="flex max-h-[500px] min-h-[500px] w-full flex-1 overflow-y-auto p-4 lg:min-h-[500px]"
