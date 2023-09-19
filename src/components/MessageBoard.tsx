@@ -33,6 +33,8 @@ const MessageBoard = (params: {
   const [userAddedNewMessages, setUserAddedNewMessages] = useState(false);
   const [manuallyFetchedMessages, setManuallyFetchedMessages] = useState(false);
   const [prevContainerHeight, setPrevContainerHeight] = useState<number>(0);
+  const [fetchingInProgress, setFetchingInProgress] = useState(false);
+  const [firstTime, setFirstTime] = useState(false);
 
   const {
     data: messagesData,
@@ -85,6 +87,8 @@ const MessageBoard = (params: {
       if (lastMessageArray) {
         setMessagesCursor(lastMessageArray.id);
       }
+
+      setFirstTime(true);
     }
   }, [messagesData]);
 
@@ -120,11 +124,22 @@ const MessageBoard = (params: {
         container &&
         container.scrollTop <= 300 &&
         messagesTotal > messages.length &&
-        !manuallyFetchedMessages
+        !manuallyFetchedMessages &&
+        !fetchingInProgress // Check if a fetch is not already in progress
       ) {
-        void refetchMessagesCursor();
-        setManuallyFetchedMessages(true);
-        setPrevContainerHeight(container.scrollHeight);
+        setFetchingInProgress(true); // Set the flag to indicate fetch is in progress
+
+        // Fetch more messages
+        void refetchMessagesCursor()
+          .then(() => {
+            setFetchingInProgress(false); // Reset the flag when fetch is complete
+            setManuallyFetchedMessages(true);
+            setPrevContainerHeight(container.scrollHeight);
+          })
+          .catch((error) => {
+            console.error("Error fetching messages:", error);
+            setFetchingInProgress(false); // Reset the flag on error as well
+          });
       }
     };
 
@@ -142,33 +157,32 @@ const MessageBoard = (params: {
     messages.length,
     messagesTotal,
     refetchMessagesCursor,
+    fetchingInProgress, // Include the flag in the dependency array
   ]);
 
   useEffect(() => {
     if (messagesRef && messagesRef.current) {
       const container = messagesRef.current;
-      const shouldScrollToBottom =
-        container.scrollTop + container.clientHeight === container.scrollHeight;
 
+      // NEW MESSAGES
       if (userAddedNewMessages) {
-        // Scroll to the bottom only if new messages were added by the user and they are at the bottom
         container.scrollTo(0, container.scrollHeight);
         setUserAddedNewMessages(false);
-      } else if (!shouldScrollToBottom && !manuallyFetchedMessages) {
-        container.scrollTop = container.scrollHeight - container.clientHeight;
-      } else {
-        if (container.scrollHeight - prevContainerHeight !== 0) {
-          debugger;
-          container.scrollTop =
-            container.scrollHeight - prevContainerHeight + container.scrollTop;
-        }
+
+        // NEW FETCHED MESSAGES
+      } else if (manuallyFetchedMessages) {
+        container.scrollTop += container.scrollHeight - prevContainerHeight;
+        setManuallyFetchedMessages(false);
+      } else if (firstTime) {
+        container.scrollTo(0, container.scrollHeight);
+        setFirstTime(false);
       }
     }
   }, [
-    messages,
     userAddedNewMessages,
     manuallyFetchedMessages,
     prevContainerHeight,
+    firstTime,
   ]);
 
   useEffect(() => {
@@ -211,7 +225,7 @@ const MessageBoard = (params: {
                 reverseMessages[index - 1]?.createdAt,
                 "day"
               ) ||
-              index === 0
+              (messages.length === messagesTotal && index === 0)
             ) {
               data.push(
                 <div
