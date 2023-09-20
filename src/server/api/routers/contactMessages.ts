@@ -39,6 +39,7 @@ export const ContactMessagesRouter = createTRPCRouter({
           from: { address: env.EMAIL_FROM, name: "Influencer Markt" },
           to: input.email,
           subject: "Thank You for Your Contact",
+          references: message.id.toString(),
           html: weReceivedContactEmail({
             email: input.email,
             message: input.message,
@@ -53,6 +54,7 @@ export const ContactMessagesRouter = createTRPCRouter({
           to: env.EMAIL_FROM,
           subject: `${message.id} - ${reasonText}`,
           text: `New issue from ${input.name} with email ${input.email}`,
+          references: message.id.toString(),
           html: contactUsEmail({
             email: input.email,
             message: input.message,

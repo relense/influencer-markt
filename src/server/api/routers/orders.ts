@@ -1,5 +1,7 @@
 import { z } from "zod";
 import { createTRPCRouter, protectedProcedure, publicProcedure } from "../trpc";
+import { transporter } from "../../../utils/nodemailer";
+import { newOrderEmail } from "../../../emailTemplates/newOrder/newOrder";
 
 export const OrdersRouter = createTRPCRouter({
   createOrder: protectedProcedure
@@ -21,10 +23,24 @@ export const OrdersRouter = createTRPCRouter({
     .mutation(async ({ ctx, input }) => {
       const profile = await ctx.prisma.profile.findUnique({
         where: { userId: ctx.session.user.id },
+        include: {
+          user: {
+            select: {
+              email: true,
+            },
+          },
+        },
       });
 
       const influencerProfile = await ctx.prisma.profile.findUnique({
         where: { id: input.influencerId },
+        include: {
+          user: {
+            select: {
+              email: true,
+            },
+          },
+        },
       });
 
       if (profile) {
@@ -38,6 +54,9 @@ export const OrdersRouter = createTRPCRouter({
             orderStatusId: 1,
             socialMediaId: input.platformId,
           },
+          include: {
+            socialMedia: true,
+          },
         });
 
         await ctx.prisma.orderValuePack.createMany({
@@ -50,6 +69,23 @@ export const OrdersRouter = createTRPCRouter({
             };
           }),
         });
+
+        //Email influencer to let him know he has an order
+        if (process.env.EMAIL_FROM) {
+          await transporter.sendMail({
+            from: { address: process.env.EMAIL_FROM, name: "Influencer Markt" },
+            to: influencerProfile?.user.email || "",
+            subject: `You have a new order from ${profile.name}`,
+            headers: {
+              References: order.id.toString(),
+            },
+            references: order.id.toString(),
+            html: newOrderEmail({
+              language: "",
+              orderId: order.id,
+            }),
+          });
+        }
 
         return order;
       }
