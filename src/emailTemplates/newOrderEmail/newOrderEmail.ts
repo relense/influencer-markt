@@ -26,6 +26,10 @@ function newOrderEmail(params: {
       from: { email: from, name: "Influencer Markt" },
       to,
       subject,
+      headers: {
+        Reference: `${orderId}${Date.now()}`,
+        "Message-ID": `${orderId}-${Date.now()}@influencermarkt.com`,
+      },
       text: text({ title }),
       html: html({ title, orderId: orderId.toString(), buttonTitle }),
     })

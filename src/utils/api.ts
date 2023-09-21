@@ -37,7 +37,7 @@ export const api = createTRPCNext<AppRouter>({
         defaultOptions: {
           queries: {
             refetchOnWindowFocus: false,
-            retry: (failureCount, error) => {
+            retry: () => {
               // if (error instanceof TRPCClientError) {
               //   if (error) {
               //     toast.error(`Something went wrong`, {
