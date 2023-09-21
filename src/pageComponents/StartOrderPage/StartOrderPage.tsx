@@ -26,7 +26,7 @@ const StartOrderPage = (params: {
   valuePacks: ValuePack[];
   orderProfileId: number;
 }) => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
 
   const [step, setStep] = useState<number>(0);
   const [orderId, setOrderId] = useState<number>(-1);
@@ -146,6 +146,7 @@ const StartOrderPage = (params: {
         };
       }),
       platformId: params.valuePacks[0]?.platform?.id || -1,
+      language: i18n.language,
     });
   });
 

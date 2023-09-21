@@ -1,11 +1,4 @@
-export const weReceivedContactEmail = (params: {
-  reason: string;
-  name: string;
-  email: string;
-  message: string;
-}) => {
-  return `
-  <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html
   data-editor-version="2"
   class="sg-campaigns"
@@ -1195,9 +1188,9 @@ export const weReceivedContactEmail = (params: {
                                                 float: none;
                                                 display: inline;
                                               "
-                                              >Thank you for choosing us,
-                                              and rest assured, we are dedicated
-                                              to ensuring your satisfaction and
+                                              >Thank you for choosing us, and
+                                              rest assured, we are dedicated to
+                                              ensuring your satisfaction and
                                               providing the support you
                                               require.</span
                                             >
@@ -1286,5 +1279,3 @@ export const weReceivedContactEmail = (params: {
     </center>
   </body>
 </html>
-    `;
-};

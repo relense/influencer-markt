@@ -213,7 +213,7 @@ const MessageBoard = (params: {
   };
 
   const renderMessages = () => {
-    if (messages) {
+    if (messages && messages.length > 0) {
       const reverseMessages = [...messages].reverse();
       return (
         <div className="flex flex-1 flex-col items-end">
@@ -275,6 +275,13 @@ const MessageBoard = (params: {
 
             return data;
           })}
+        </div>
+      );
+    } else {
+      return (
+        <div className="flex flex-1 flex-col items-center justify-end text-gray2">
+          <span>There are no messages</span>
+          <span>Be the first to send a message</span>
         </div>
       );
     }

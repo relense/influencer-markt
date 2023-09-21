@@ -1,7 +1,10 @@
 import { z } from "zod";
 import { createTRPCRouter, protectedProcedure, publicProcedure } from "../trpc";
-import { transporter } from "../../../utils/nodemailer";
-import { newOrderEmail } from "../../../emailTemplates/newOrder/newOrder";
+import { newOrderEmail } from "../../../emailTemplates/newOrderEmail/newOrderEmail";
+import { influencerAcceptedOrderEmail } from "../../../emailTemplates/influencerAcceptedOrderEmail/influencerAcceptedOrderEmail";
+import { buyerConfirmedEmail } from "../../../emailTemplates/buyerConfirmOrderEmail/buyerConfirmOrderEmail";
+import { buyerAddDetailsEmail } from "../../../emailTemplates/buyerAddDetailsEmail/buyerAddDetailsEmail";
+import { influencerDeliveredOrderEmail } from "../../../emailTemplates/influencerDeliveredEmail/influencerDeliveredEmail";
 
 export const OrdersRouter = createTRPCRouter({
   createOrder: protectedProcedure
@@ -18,6 +21,7 @@ export const OrdersRouter = createTRPCRouter({
           })
         ),
         platformId: z.number(),
+        language: z.string(),
       })
     )
     .mutation(async ({ ctx, input }) => {
@@ -72,18 +76,12 @@ export const OrdersRouter = createTRPCRouter({
 
         //Email influencer to let him know he has an order
         if (process.env.EMAIL_FROM) {
-          await transporter.sendMail({
-            from: { address: process.env.EMAIL_FROM, name: "Influencer Markt" },
+          newOrderEmail({
+            buyer: profile?.name,
+            from: process.env.EMAIL_FROM,
             to: influencerProfile?.user.email || "",
-            subject: `You have a new order from ${profile.name}`,
-            headers: {
-              References: order.id.toString(),
-            },
-            references: order.id.toString(),
-            html: newOrderEmail({
-              language: "",
-              orderId: order.id,
-            }),
+            language: input.language,
+            orderId: order.id,
           });
         }
 
@@ -106,6 +104,7 @@ export const OrdersRouter = createTRPCRouter({
         ),
         platformId: z.number(),
         offerId: z.number(),
+        language: z.string(),
       })
     )
     .mutation(async ({ ctx, input }) => {
@@ -129,6 +128,17 @@ export const OrdersRouter = createTRPCRouter({
             socialMediaId: input.platformId,
             offerId: input.offerId,
           },
+          include: {
+            influencer: {
+              select: {
+                user: {
+                  select: {
+                    email: true,
+                  },
+                },
+              },
+            },
+          },
         });
 
         await ctx.prisma.orderValuePack.createMany({
@@ -141,6 +151,16 @@ export const OrdersRouter = createTRPCRouter({
             };
           }),
         });
+
+        if (process.env.EMAIL_FROM) {
+          newOrderEmail({
+            buyer: profile?.name,
+            from: process.env.EMAIL_FROM,
+            to: order.influencer?.user.email || "",
+            language: input.language,
+            orderId: order.id,
+          });
+        }
 
         return order;
       }
@@ -450,14 +470,96 @@ export const OrdersRouter = createTRPCRouter({
       z.object({
         orderId: z.number(),
         statusId: z.number(),
+        language: z.string(),
       })
     )
     .mutation(async ({ ctx, input }) => {
-      return await ctx.prisma.order.update({
+      const order = await ctx.prisma.order.update({
         where: { id: input.orderId },
         data: {
           orderStatusId: input.statusId,
         },
+        include: {
+          buyer: {
+            select: {
+              name: true,
+              user: {
+                select: {
+                  email: true,
+                },
+              },
+            },
+          },
+          influencer: {
+            select: {
+              name: true,
+              user: {
+                select: {
+                  email: true,
+                },
+              },
+            },
+          },
+        },
       });
+
+      //Email influencer to let him know he has an order
+      if (process.env.EMAIL_FROM) {
+        if (input.statusId === 3) {
+          influencerAcceptedOrderEmail({
+            influencerName: order.influencer?.name || "",
+            from: process.env.EMAIL_FROM,
+            to: order.buyer?.user.email || "",
+            language: input.language,
+            orderId: order.id,
+          });
+        } else if (input.statusId === 4) {
+          buyerAddDetailsEmail({
+            buyerName: order.buyer?.name || "",
+            from: process.env.EMAIL_FROM,
+            to: order.influencer?.user.email || "",
+            language: input.language,
+            orderId: order.id,
+          });
+        } else if (input.statusId === 5) {
+          influencerDeliveredOrderEmail({
+            influencerName: order.influencer?.name || "",
+            from: process.env.EMAIL_FROM,
+            to: order.buyer?.user.email || "",
+            language: input.language,
+            orderId: order.id,
+          });
+        } else if (input.statusId === 6) {
+          buyerConfirmedEmail({
+            buyerName: order.buyer?.name || "",
+            from: process.env.EMAIL_FROM,
+            to: order.influencer?.user.email || "",
+            language: input.language,
+            orderId: order.id,
+          });
+        }
+      }
+
+      return order;
     }),
+
+  getOrderThatNeedVerification: publicProcedure.query(async ({ ctx }) => {
+    // Calculate the date that was 3 days ago
+    const threeDaysAgo = new Date();
+    threeDaysAgo.setDate(threeDaysAgo.getDate() - 3);
+
+    // const orders = await ctx.prisma.order.updateMany({
+    //   where: { orderStatusId: 3, updatedAt: { gte: threeDaysAgo } },
+    //   data: {
+    //     orderStatusId: 7,
+    //   },
+    // });
+
+    // const orders2 = await ctx.prisma.order.updateMany({
+    //   where: { orderStatusId: 1 },
+    //   data: {
+    //     orderStatusId: 2,
+    //   },
+    // });
+  }),
 });

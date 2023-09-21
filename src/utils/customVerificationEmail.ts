@@ -1,25 +1,29 @@
 import { type Theme } from "next-auth";
+import sgMail, { type MailDataRequired } from "@sendgrid/mail";
 import { type SendVerificationRequestParams } from "next-auth/providers";
-import { transporter } from "./nodemailer";
 
-async function customSendVerificationRequest(
-  params: SendVerificationRequestParams
-) {
+function customSendVerificationRequest(params: SendVerificationRequestParams) {
   const { identifier, url, provider, theme } = params;
   const { host } = new URL(url);
-  // NOTE: You are not required to use `nodemailer`, use whatever you want.
-  const transport = transporter;
-  const result = await transport.sendMail({
+
+  sgMail.setApiKey(process.env.EMAIL_SMTP_KEY || "");
+
+  const msg: MailDataRequired = {
     to: identifier,
-    from: { address: provider.from, name: "Influencer Markt" },
+    from: { email: provider.from, name: "Influencer Markt" },
     subject: `Sign in to ${host}`,
     text: text({ url, host }),
     html: html({ url, host, theme }),
-  });
-  const failed = result.rejected.concat(result.pending).filter(Boolean);
-  if (failed.length) {
-    throw new Error(`Email(s) (${failed.join(", ")}) could not be sent`);
-  }
+  };
+
+  sgMail.send(msg).then(
+    () => {
+      console.log("success");
+    },
+    (error) => {
+      console.error(error);
+    }
+  );
 }
 
 /**

@@ -82,6 +82,7 @@ const OrderDetailsPage = (params: { orderId: number }) => {
         updateOrderConfirmed({
           orderId: params.orderId,
           statusId: 6,
+          language: i18n.language,
         });
         reset();
         setOpenReviewModal(false);
@@ -162,6 +163,7 @@ const OrderDetailsPage = (params: { orderId: number }) => {
                   updateCancelOrder({
                     orderId: order.id,
                     statusId: 7,
+                    language: i18n.language,
                   })
                 }
                 isLoading={isLoadingUpdateCancelOrder}
@@ -176,6 +178,7 @@ const OrderDetailsPage = (params: { orderId: number }) => {
                     updateOrderPayment({
                       orderId: order.id,
                       statusId: 4,
+                      language: i18n.language,
                     })
                   }
                   isLoading={updateAcceptIsLoading}
@@ -187,6 +190,7 @@ const OrderDetailsPage = (params: { orderId: number }) => {
                     updateCancelOrder({
                       orderId: order.id,
                       statusId: 7,
+                      language: i18n.language,
                     })
                   }
                   isLoading={isLoadingUpdateCancelOrder}

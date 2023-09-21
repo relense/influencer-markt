@@ -428,6 +428,7 @@ const ManageOfferDetailsPage = (params: {
         }),
         platformId: offer.socialMediaId,
         offerId: offer.id,
+        language: i18n.language,
       });
     }
   };

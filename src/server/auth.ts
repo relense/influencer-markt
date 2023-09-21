@@ -67,8 +67,8 @@ export const authOptions: NextAuthOptions = {
       from: env.EMAIL_FROM,
       type: "email",
       maxAge: 300,
-      sendVerificationRequest: async (data) => {
-        await customSendVerificationRequest(data);
+      sendVerificationRequest: (data) => {
+        customSendVerificationRequest(data);
       },
     }),
   ],

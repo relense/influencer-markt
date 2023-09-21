@@ -1,9 +1,7 @@
 import { z } from "zod";
 import { createTRPCRouter, protectedProcedure, publicProcedure } from "../trpc";
-import { transporter } from "../../../utils/nodemailer";
-import { env } from "process";
-import { contactUsEmail } from "../../../emailTemplates/contactUsEmail";
-import { weReceivedContactEmail } from "../../../emailTemplates/weReceivedContactEmail";
+import { contactUsEmail } from "../../../emailTemplates/contactUsEmail/contactUsEmail";
+import { weReceivedContactEmail } from "../../../emailTemplates/weReceivedContactEmail/weReceivedContactEmail";
 
 export const ContactMessagesRouter = createTRPCRouter({
   createContactMessage: publicProcedure
@@ -34,33 +32,25 @@ export const ContactMessagesRouter = createTRPCRouter({
       });
 
       //Mail sent to user confirming we received the issue request
-      if (env.EMAIL_FROM) {
-        await transporter.sendMail({
-          from: { address: env.EMAIL_FROM, name: "Influencer Markt" },
+      if (process.env.EMAIL_FROM) {
+        weReceivedContactEmail({
+          from: process.env.EMAIL_FROM,
           to: input.email,
-          subject: "Thank You for Your Contact",
-          references: message.id.toString(),
-          html: weReceivedContactEmail({
-            email: input.email,
-            message: input.message,
-            name: input.name,
-            reason: reasonText,
-          }),
+          email: input.email,
+          message: input.message,
+          name: input.name,
+          reason: reasonText,
         });
 
         //Email to our inbox
-        await transporter.sendMail({
-          from: { address: env.EMAIL_FROM, name: "Influencer Markt" },
-          to: env.EMAIL_FROM,
-          subject: `${message.id} - ${reasonText}`,
-          text: `New issue from ${input.name} with email ${input.email}`,
-          references: message.id.toString(),
-          html: contactUsEmail({
-            email: input.email,
-            message: input.message,
-            name: input.name,
-            reason: reasonText,
-          }),
+        contactUsEmail({
+          from: process.env.EMAIL_FROM,
+          to: process.env.EMAIL_FROM,
+          email: input.email,
+          message: input.message,
+          messageId: message.id.toString(),
+          name: input.name,
+          reason: reasonText,
         });
       }
     }),

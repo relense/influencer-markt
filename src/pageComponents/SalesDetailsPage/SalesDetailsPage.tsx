@@ -76,11 +76,13 @@ const SalesDetailsPage = (params: { orderId: number }) => {
       updateOrderAccept({
         orderId: params.orderId,
         statusId: 3,
+        language: i18n.language,
       });
     } else {
       updateOrderReject({
         orderId: params.orderId,
         statusId: 2,
+        language: i18n.language,
       });
     }
 
@@ -354,6 +356,7 @@ const SalesDetailsPage = (params: { orderId: number }) => {
                     updateOrderDeliver({
                       orderId: params.orderId,
                       statusId: 5,
+                      language: i18n.language,
                     })
                   }
                   isLoading={updateOrderDeliverIsLoading}
