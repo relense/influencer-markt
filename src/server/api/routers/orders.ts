@@ -548,18 +548,18 @@ export const OrdersRouter = createTRPCRouter({
     const threeDaysAgo = new Date();
     threeDaysAgo.setDate(threeDaysAgo.getDate() - 3);
 
-    // const orders = await ctx.prisma.order.updateMany({
-    //   where: { orderStatusId: 3, updatedAt: { gte: threeDaysAgo } },
-    //   data: {
-    //     orderStatusId: 7,
-    //   },
-    // });
+    const orders = await ctx.prisma.order.updateMany({
+      where: { orderStatusId: 3, updatedAt: { gte: threeDaysAgo } },
+      data: {
+        orderStatusId: 7,
+      },
+    });
 
-    // const orders2 = await ctx.prisma.order.updateMany({
-    //   where: { orderStatusId: 1 },
-    //   data: {
-    //     orderStatusId: 2,
-    //   },
-    // });
+    const orders2 = await ctx.prisma.order.updateMany({
+      where: { orderStatusId: 1 },
+      data: {
+        orderStatusId: 2,
+      },
+    });
   }),
 });

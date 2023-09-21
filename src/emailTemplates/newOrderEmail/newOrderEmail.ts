@@ -11,12 +11,12 @@ function newOrderEmail(params: {
 
   let title = "You Received An Order Request";
   let buttonTitle = "View Order";
-  let subject = `You have a new order from ${buyer}`;
+  let subject = `You have a new order from ${buyer} #${orderId}`;
 
   if (language === "pt") {
     title = "Recebeste Um Novo Pedido";
     buttonTitle = "Ver Pedido";
-    subject = `Tens um novo pedido de ${buyer}`;
+    subject = `Tens um novo pedido de ${buyer} #${orderId}`;
   }
 
   sgMail.setApiKey(process.env.EMAIL_SMTP_KEY || "");

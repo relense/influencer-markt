@@ -6,7 +6,6 @@ import { signOut } from "next-auth/react";
 import { type Session } from "next-auth";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
-  faMessage,
   faBell,
   faFileLines,
   faUserCircle,
