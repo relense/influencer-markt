@@ -35,6 +35,8 @@ const MyApp: AppType<{ session: Session | null }> = ({
           content="A Market to find your favorite influencers"
         />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <meta name="apple-mobile-web-app-capable" content="yes" />
+        <meta name="mobile-web-app-capable" content="yes" />
       </Head>
       <SessionProvider session={session}>
         <Toaster />
