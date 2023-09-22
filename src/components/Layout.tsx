@@ -37,6 +37,16 @@ export const Layout = (props: {
   };
 
   useEffect(() => {
+    addEventListener(
+      "load",
+      function () {
+        window.scrollTo(1, 0);
+      },
+      false
+    );
+  });
+
+  useEffect(() => {
     if (status === "authenticated") {
       void refetechUser();
     }
