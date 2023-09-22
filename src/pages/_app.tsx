@@ -34,7 +34,10 @@ const MyApp: AppType<{ session: Session | null }> = ({
           name="description"
           content="A Market to find your favorite influencers"
         />
-        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <meta
+          name="viewport"
+          content="width=device-width,initial-scale=1, viewport-fit=cover"
+        />
         <meta name="apple-mobile-web-app-capable" content="yes" />
         <meta name="mobile-web-app-capable" content="yes" />
       </Head>
