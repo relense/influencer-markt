@@ -5,7 +5,11 @@
 html,
 body,
 #__next {
-  @apply h-screen w-full bg-white font-poppins;
+  @apply h-full w-full bg-white font-poppins;
+}
+
+html {
+  @apply h-screen;
 }
 
 @layer base {
