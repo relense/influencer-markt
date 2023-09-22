@@ -350,7 +350,7 @@ const OrdersPage = () => {
           <LoadingSpinner />
         </div>
       ) : (
-        <div className="flex h-[70vh] flex-col gap-4 lg:overflow-y-auto">
+        <div className="flex flex-col gap-4 lg:h-[70vh] lg:overflow-y-auto">
           {renderOrders()}
           {orders && ordersCount > orders.length && (
             <div className="flex items-center justify-center">

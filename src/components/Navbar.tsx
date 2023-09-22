@@ -698,24 +698,22 @@ export const Navbar = (params: {
   };
 
   return (
-    <nav>
-      <div className="flex w-full select-none items-center justify-between px-4 py-2 lg:h-16 lg:gap-4 lg:p-12">
-        {openExploreDropdown && (
-          <div
-            className="absolute left-0 top-0 z-40 h-screen w-screen"
-            onClick={() => setOpenExploreDropdown(!openExploreDropdown)}
-          />
-        )}
-        {openSavedDropdown && (
-          <div
-            className="absolute left-0 top-0 z-40 h-screen w-screen"
-            onClick={() => setOpenSavedDropdown(!openSavedDropdown)}
-          />
-        )}
-        {renderLogoTitle()}
-        {leftNavBar()}
-        {rightNavbar()}
-      </div>
+    <nav className="flex w-full select-none items-center justify-between px-4 py-2 lg:h-16 lg:gap-4 lg:p-12">
+      {openExploreDropdown && (
+        <div
+          className="absolute left-0 top-0 z-40 h-screen w-screen"
+          onClick={() => setOpenExploreDropdown(!openExploreDropdown)}
+        />
+      )}
+      {openSavedDropdown && (
+        <div
+          className="absolute left-0 top-0 z-40 h-screen w-screen"
+          onClick={() => setOpenSavedDropdown(!openSavedDropdown)}
+        />
+      )}
+      {renderLogoTitle()}
+      {leftNavBar()}
+      {rightNavbar()}
     </nav>
   );
 };

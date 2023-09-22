@@ -64,7 +64,7 @@ export const Layout = (props: {
     return <LoadingSpinner />;
   } else {
     return (
-      <main className="w-full">
+      <main className="lg:flex lg:h-screen lg:w-full lg:flex-1 lg:flex-col">
         <Navbar
           username={user?.username || ""}
           role={user?.role || { id: -1, name: "" }}
