@@ -37,16 +37,6 @@ export const Layout = (props: {
   };
 
   useEffect(() => {
-    addEventListener(
-      "load",
-      function () {
-        window.scrollTo(1, 0);
-      },
-      false
-    );
-  });
-
-  useEffect(() => {
     if (status === "authenticated") {
       void refetechUser();
     }
@@ -74,7 +64,7 @@ export const Layout = (props: {
     return <LoadingSpinner />;
   } else {
     return (
-      <main className="flex h-screen w-full flex-1 flex-col">
+      <main className="w-full">
         <Navbar
           username={user?.username || ""}
           role={user?.role || { id: -1, name: "" }}
@@ -87,7 +77,7 @@ export const Layout = (props: {
           className="mb-12 flex w-full flex-1 flex-col overflow-y-auto sm:mb-0"
           ref={scrollableContainer}
         >
-          <div className="flex flex-1 flex-col">
+          <div className="flex flex-1 flex-col pb-16">
             {props.children({
               openLoginModal: () => setIsModalOpen(true),
               scrollLayoutToPreviousPosition: () =>

@@ -10,7 +10,6 @@ import { config } from "@fortawesome/fontawesome-svg-core";
 import { api } from "~/utils/api";
 import "~/styles/globals.css";
 import i18n from "../../i18n";
-import { useEffect, useRef } from "react";
 
 config.autoAddCss = false;
 
@@ -37,17 +36,8 @@ const MyApp: AppType<{ session: Session | null }> = ({
         />
         <meta
           name="viewport"
-          content="width = device-width, initial-scale = 1.0, minimum-scale = 1, maximum-scale = 1, user-scalable = no"
+          content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
         />
-
-        <meta name="apple-mobile-web-app-title" content="Influencer Market" />
-        <meta name="apple-mobile-web-app-capable" content="yes" />
-        <meta name="apple-mobile-web-app-status-bar-style" content="black" />
-
-        <link rel="apple-touch-icon" href="/favicon.ico" />
-        <link rel="apple-touch-icon" sizes="76x76" href="/favicon.ico" />
-        <link rel="apple-touch-icon" sizes="120x120" href="/favicon.ico" />
-        <link rel="apple-touch-icon" sizes="152x152" href="/favicon.ico" />
       </Head>
       <SessionProvider session={session}>
         <Toaster />

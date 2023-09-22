@@ -8,10 +8,6 @@ body,
   @apply h-full w-full bg-white font-poppins;
 }
 
-html {
-  @apply h-screen;
-}
-
 @layer base {
   input[type="number"]::-webkit-outer-spin-button,
   input[type="number"]::-webkit-inner-spin-button,
