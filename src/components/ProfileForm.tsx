@@ -76,10 +76,11 @@ const ProfileForm = (params: {
     return (
       <div className="relative flex flex-col items-center gap-3">
         <input
+          required={params.isProfileUpdate ? false : true}
           type="file"
           onChange={handleFileUpload}
           title=""
-          className="absolute z-50 h-full w-full cursor-pointer text-[0px] opacity-0 "
+          className="absolute z-50 h-full w-24 cursor-pointer text-[0px] opacity-0 "
         />
         {!profilePicture ? (
           <div className="flex h-24 w-24 cursor-pointer flex-col items-center justify-center rounded-full border-[1px] border-gray3">
@@ -96,14 +97,13 @@ const ProfileForm = (params: {
             />
           </div>
         )}
-        {!profilePicture && (
-          <div className="flex flex-1 items-center justify-center gap-2 text-center text-influencer sm:gap-4">
-            <div className="hidden sm:flex">
-              <FontAwesomeIcon icon={faArrowUpFromBracket} />
-            </div>
-            <div>{t("components.profileForm.addProfilePicture")}</div>
+
+        <div className="flex flex-1 items-center justify-center gap-2 text-center text-influencer sm:gap-4">
+          <div className="hidden sm:flex">
+            <FontAwesomeIcon icon={faArrowUpFromBracket} />
           </div>
-        )}
+          <div>{t("components.profileForm.addProfilePicture")}</div>
+        </div>
       </div>
     );
   };
@@ -122,6 +122,7 @@ const ProfileForm = (params: {
         className="mt-4 flex w-full flex-col gap-6"
         autoComplete="off"
       >
+        {renderAddProfilePicture()}
         <div className="flex flex-col">
           <input
             {...params.register("displayName", { maxLength: 40 })}
@@ -263,7 +264,7 @@ const ProfileForm = (params: {
             </div>
           )}
         </div>
-        <div className="flex flex-col">
+        <div className="flex flex-col gap-1">
           <input
             {...params.register("website", { maxLength: 64 })}
             id="website"
@@ -272,6 +273,9 @@ const ProfileForm = (params: {
             placeholder={t("components.profileForm.websitePlaceholder")}
             autoComplete="one-time-code"
           />
+          <span className="pl-2 text-xs text-gray2">
+            {t("components.profileForm.optional")}
+          </span>
           {params.errors.website && (
             <div className="pl-2 text-red-600">
               {params.errors.website.message}
@@ -288,12 +292,7 @@ const ProfileForm = (params: {
     );
   };
 
-  return (
-    <>
-      {renderAddProfilePicture()}
-      {renderForm()}
-    </>
-  );
+  return <>{renderForm()}</>;
 };
 
 export { ProfileForm };
