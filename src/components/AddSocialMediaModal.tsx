@@ -265,6 +265,14 @@ const AddSocialMediaModal = (params: {
       "flex h-16 w-full items-center rounded-lg border-[1px] border-black p-4 placeholder-gray2";
   }
 
+  let formContainerClasses =
+    "flex h-full min-h-[70vh] w-full flex-col items-center gap-4 p-4 sm:w-full sm:px-8 lg:min-h-[50vh]";
+
+  if (params.isBrand) {
+    formContainerClasses =
+      "flex h-full w-full flex-col items-center gap-4 p-4 sm:w-full sm:px-8 min-h-[10vh]";
+  }
+
   return (
     <Modal
       onClose={params.onCloseModal}
@@ -281,7 +289,7 @@ const AddSocialMediaModal = (params: {
     >
       <form
         id="form-socialMedia"
-        className="flex h-full min-h-[70vh] w-full flex-col items-center gap-4 p-4 sm:w-full sm:px-8 lg:min-h-[50vh]"
+        className={formContainerClasses}
         onSubmit={handleSubmit}
       >
         {params.watch("valuePacks").length === 0 ? (

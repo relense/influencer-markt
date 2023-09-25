@@ -166,9 +166,10 @@ model SocialMedia {
 }
 
 model Portfolio {
-  id      Int      @id @default(autoincrement())
-  url     String   @db.Text
-  profile Profile? @relation(fields: [profileId], references: [id])
+  id       Int      @id @default(autoincrement())
+  url      String   @db.Text
+  blobName String   @db.Text
+  profile  Profile? @relation(fields: [profileId], references: [id])
 
   profileId Int?
 

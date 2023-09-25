@@ -140,7 +140,7 @@ const FirstStepsPage = () => {
     api.profiles.createProfile.useMutation({
       onSuccess: () => void void ctx.users.getUser.invalidate(),
     });
-  const { mutate: userSocialMediaMutation } =
+  const { mutateAsync: userSocialMediaMutation } =
     api.userSocialMedias.createUserSocialMedias.useMutation();
 
   const { mutate: userIdentityMutation } =
@@ -149,6 +149,9 @@ const FirstStepsPage = () => {
         updateStepper();
       },
     });
+
+  const { mutateAsync: createPicture } =
+    api.portfolios.createPicture.useMutation();
 
   const submitStep0 = handleSubmitUserIdentityData((data) => {
     if (
@@ -256,6 +259,12 @@ const FirstStepsPage = () => {
       });
     }
 
+    if (portfolio.length > 0) {
+      for (const picture of portfolio) {
+        await createPicture({ picture: picture.url });
+      }
+    }
+
     if (socialMediaData && socialMediaData?.socialMedia) {
       const newSocialMediaData = socialMediaData.socialMedia.map(
         (socialMedia) => {
@@ -274,7 +283,7 @@ const FirstStepsPage = () => {
         }
       );
 
-      userSocialMediaMutation(newSocialMediaData);
+      await userSocialMediaMutation(newSocialMediaData);
     }
 
     mutate({ firstSteps: true });

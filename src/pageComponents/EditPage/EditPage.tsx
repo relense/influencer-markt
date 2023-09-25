@@ -237,9 +237,9 @@ const EditPage = (params: { role: Option | undefined }) => {
 
   //VISUAL PORTFOLIO FUNCTIONS
 
-  const onAddPicture = (pictureUrl: string) => {
+  const onAddPicture = (picture: string) => {
     setIsLoading(true);
-    addPicture({ url: pictureUrl });
+    addPicture({ picture });
   };
 
   const onDeletePicture = (pictureId: number) => {

@@ -113,13 +113,8 @@ export const PictureCarrosel = (params: {
           currentPicture.url !== dataURL &&
           params.portfolio.map((picture) => picture.url).indexOf(dataURL) === -1
         ) {
-          //this is only until we have azure connected. When azure is connected we will upload to azure.
-          //After uploading to azure we will use that link to update here
-          //dataURL is the one that will have the picture uploaded in base64. Upload this to azure
-          const picture =
-            "https://images.unsplash.com/photo-1629318986794-e7e9c9890016?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=654&q=80";
           if (params.addPicture) {
-            params.addPicture(picture);
+            params.addPicture(dataURL);
           }
         }
       };

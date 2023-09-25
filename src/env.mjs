@@ -30,6 +30,12 @@ export const env = createEnv({
     EMAIL_SERVER: z.string(),
     EMAIL_SMTP_KEY: z.string(),
     EMAIL_FROM: z.string(),
+
+    AZURE_STORAGE_ACCOUNT_NAME: z.string(),
+    AZURE_CONTAINER_NAME: z.string(),
+    AZURE_CLIENT_ID: z.string(),
+    AZURE_TENANT_ID: z.string(),
+    AZURE_CLIENT_SECRET: z.string(),
   },
 
   /**
@@ -59,6 +65,12 @@ export const env = createEnv({
     EMAIL_SERVER: process.env.EMAIL_SERVER,
     EMAIL_SMTP_KEY: process.env.EMAIL_SMTP_KEY,
     EMAIL_FROM: process.env.EMAIL_FROM,
+
+    AZURE_STORAGE_ACCOUNT_NAME: process.env.AZURE_STORAGE_ACCOUNT_NAME,
+    AZURE_CONTAINER_NAME: process.env.AZURE_CONTAINER_NAME,
+    AZURE_CLIENT_ID: process.env.AZURE_CLIENT_ID,
+    AZURE_TENANT_ID: process.env.AZURE_TENANT_ID,
+    AZURE_CLIENT_SECRET: process.env.AZURE_CLIENT_SECRET,
   },
   /**
    * Run `build` or `dev` with `SKIP_ENV_VALIDATION` to skip env validation.
