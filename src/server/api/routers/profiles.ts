@@ -502,7 +502,7 @@ export const profilesRouter = createTRPCRouter({
         update: {
           name: input.displayName,
           genderId: input.gender.id === -1 ? undefined : input.gender.id,
-          profilePicture: input.profilePicture,
+          profilePicture: "",
           categories: {
             set: [],
             connect: input.categories.map((category) => ({
@@ -518,7 +518,7 @@ export const profilesRouter = createTRPCRouter({
         create: {
           name: input.displayName,
           genderId: input.gender.id === -1 ? undefined : input.gender.id,
-          profilePicture: input.profilePicture,
+          profilePicture: "",
           categories: {
             connect: input.categories.map((category) => ({
               id: category.id,
@@ -535,6 +535,41 @@ export const profilesRouter = createTRPCRouter({
           categories: true,
         },
       });
+
+      if (profile) {
+        try {
+          const containerClient = bloblService.getContainerClient(
+            process.env.AZURE_CONTAINER_NAME || ""
+          );
+
+          const blobName = `${Date.now()}-${uuidv4()}-profile:${profile.id}`;
+          const blockBlobClient = containerClient.getBlockBlobClient(blobName);
+          const matches = input.profilePicture.match(
+            /^data:([A-Za-z-+\/]+);base64,(.+)$/
+          );
+
+          if (matches && matches[2]) {
+            const type = matches[1];
+            const base64Buffer = Buffer.from(matches[2], "base64");
+
+            await blockBlobClient.uploadData(base64Buffer, {
+              blobHTTPHeaders: {
+                blobContentType: type,
+              },
+            });
+          }
+          await ctx.prisma.profile.update({
+            where: { id: profile.id },
+            data: {
+              profilePicture: blockBlobClient.url,
+              profilePictureBlobName: blobName,
+            },
+          });
+        } catch (error) {
+          console.error("Error uploading file:", error);
+          throw new Error("Error uploading file");
+        }
+      }
 
       await ctx.prisma.user.update({
         where: { id: ctx.session.user.id },
