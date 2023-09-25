@@ -238,7 +238,8 @@
       "aboutPlaceholder": "Apresenta-te: Partilha uma breve descrição ou bio",
       "websitePlaceholder": "Website URL: fornece o endereço do teu website",
       "emptyMessageNoCountry": "Pesquisa a cidade onde vives",
-      "emptyMessageWithCountry": "Escolhe um país antes de escolheres a cidade"
+      "emptyMessageWithCountry": "Escolhe um país antes de escolheres a cidade",
+      "optional": "Opcional"
     },
 
     "addSocialMediaModal": {
