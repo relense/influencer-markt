@@ -1,5 +1,7 @@
 import { z } from "zod";
 import { createTRPCRouter, protectedProcedure, publicProcedure } from "../trpc";
+import bloblService from "../../../services/azureBlob.service";
+import { v4 as uuidv4 } from "uuid";
 
 export const profilesRouter = createTRPCRouter({
   getAllInfluencerProfiles: publicProcedure
@@ -690,25 +692,71 @@ export const profilesRouter = createTRPCRouter({
       })
     )
     .mutation(async ({ ctx, input }) => {
-      await ctx.prisma.profile.update({
+      const profile = await ctx.prisma.profile.findFirst({
         where: {
           userId: ctx.session.user.id,
         },
-        data: {
-          about: input.about,
-          categories: {
-            set: [],
-            connect: input.categories.map((category) => ({
-              id: category.id,
-            })),
-          },
-          cityId: input.city.id === -1 ? undefined : input.city.id,
-          countryId: input.country.id === -1 ? undefined : input.country.id,
-          name: input.name,
-          website: input.website,
-          profilePicture: input.profilePicture,
-        },
       });
+
+      if (profile) {
+        const containerClient = bloblService.getContainerClient(
+          process.env.AZURE_CONTAINER_NAME || ""
+        );
+
+        if (profile.profilePictureBlobName) {
+          const blockBlobClient = containerClient.getBlockBlobClient(
+            profile.profilePictureBlobName
+          );
+
+          await blockBlobClient.deleteIfExists({
+            deleteSnapshots: "include",
+          });
+        }
+
+        try {
+          const blobName = `${Date.now()}-${uuidv4()}-profile:${profile.id}`;
+          const blockBlobClient = containerClient.getBlockBlobClient(blobName);
+          const matches = input.profilePicture.match(
+            /^data:([A-Za-z-+\/]+);base64,(.+)$/
+          );
+
+          if (matches && matches[2]) {
+            const type = matches[1];
+            const base64Buffer = Buffer.from(matches[2], "base64");
+
+            await blockBlobClient.uploadData(base64Buffer, {
+              blobHTTPHeaders: {
+                blobContentType: type,
+              },
+            });
+
+            await ctx.prisma.profile.update({
+              where: {
+                userId: ctx.session.user.id,
+              },
+              data: {
+                about: input.about,
+                categories: {
+                  set: [],
+                  connect: input.categories.map((category) => ({
+                    id: category.id,
+                  })),
+                },
+                cityId: input.city.id === -1 ? undefined : input.city.id,
+                countryId:
+                  input.country.id === -1 ? undefined : input.country.id,
+                name: input.name,
+                website: input.website,
+                profilePicture: blockBlobClient.url,
+                profilePictureBlobName: blobName,
+              },
+            });
+          }
+        } catch (error) {
+          console.error("Error uploading file:", error);
+          throw new Error("Error uploading file");
+        }
+      }
     }),
 
   getFavorites: protectedProcedure

@@ -72,22 +72,23 @@ model User {
 
 //App data
 model Profile {
-  id              Int               @id @default(autoincrement())
-  profilePicture  String
-  name            String            @db.Text
-  gender          Gender?           @relation(fields: [genderId], references: [id])
-  categories      Category[]
-  about           String            @db.Text
-  country         Country?          @relation(fields: [countryId], references: [id])
-  city            City?             @relation(fields: [cityId], references: [id])
-  user            User              @relation(fields: [userId], references: [id])
-  website         String            @db.Text
-  rating          String?
-  userSocialMedia UserSocialMedia[]
-  profileReviews  Review[]          @relation("profileReviewd")
-  submitedReviews Review[]          @relation("author")
-  portfolio       Portfolio[]
-  verifiedStatus  VerifiedStatus?   @relation(fields: [verifiedStatusId], references: [id])
+  id                     Int               @id @default(autoincrement())
+  profilePicture         String            @db.Text
+  profilePictureBlobName String?           @db.Text
+  name                   String            @db.Text
+  gender                 Gender?           @relation(fields: [genderId], references: [id])
+  categories             Category[]
+  about                  String            @db.Text
+  country                Country?          @relation(fields: [countryId], references: [id])
+  city                   City?             @relation(fields: [cityId], references: [id])
+  user                   User              @relation(fields: [userId], references: [id])
+  website                String            @db.Text
+  rating                 String?
+  userSocialMedia        UserSocialMedia[]
+  profileReviews         Review[]          @relation("profileReviewd")
+  submitedReviews        Review[]          @relation("author")
+  portfolio              Portfolio[]
+  verifiedStatus         VerifiedStatus?   @relation(fields: [verifiedStatusId], references: [id])
 
   createdOffers      Offer[] @relation("offerCreator")
   appliedOffers      Offer[] @relation("offerApplicants")

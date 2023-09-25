@@ -5,7 +5,6 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faArrowUpFromBracket,
   faCamera,
-  faXmark,
 } from "@fortawesome/free-solid-svg-icons";
 import {
   type Control,
@@ -62,7 +61,8 @@ const ProfileForm = (params: {
         const dataURL = reader.result as string;
         if (profilePicture !== dataURL) {
           setProfilePicture(dataURL);
-          params.setValue("profilePicture", "");
+
+          params.setValue("profilePicture", dataURL, { shouldDirty: true });
         }
       };
 
@@ -72,37 +72,21 @@ const ProfileForm = (params: {
     }
   };
 
-  const handleRemovePicture = () => {
-    params.setValue("profilePicture", "");
-    setProfilePicture("");
-  };
-
   const renderAddProfilePicture = () => {
     return (
       <div className="relative flex flex-col items-center gap-3">
-        {!profilePicture && (
-          <input
-            type="file"
-            onChange={handleFileUpload}
-            title=""
-            className="absolute h-full w-full cursor-pointer text-[0px] opacity-0 "
-          />
-        )}
+        <input
+          type="file"
+          onChange={handleFileUpload}
+          title=""
+          className="absolute z-50 h-full w-full cursor-pointer text-[0px] opacity-0 "
+        />
         {!profilePicture ? (
           <div className="flex h-24 w-24 cursor-pointer flex-col items-center justify-center rounded-full border-[1px] border-gray3">
             <FontAwesomeIcon icon={faCamera} className="fa-2x text-gray3" />
           </div>
         ) : (
           <div className="relative flex h-24 w-24 cursor-pointer flex-col items-center justify-center rounded-full border-[1px] border-gray3">
-            <div
-              className="absolute right-[-10px] top-0 flex h-8 w-8 cursor-pointer items-center justify-center self-end rounded-full bg-influencer-green "
-              onClick={() => handleRemovePicture()}
-            >
-              <FontAwesomeIcon
-                icon={faXmark}
-                className=" fa-lg cursor-pointer text-white"
-              />
-            </div>
             <Image
               src={profilePicture}
               alt="Profile Picture"
@@ -112,12 +96,14 @@ const ProfileForm = (params: {
             />
           </div>
         )}
-        <div className="flex flex-1 items-center justify-center gap-2 text-center text-influencer sm:gap-4">
-          <div className="hidden sm:flex">
-            <FontAwesomeIcon icon={faArrowUpFromBracket} />
+        {!profilePicture && (
+          <div className="flex flex-1 items-center justify-center gap-2 text-center text-influencer sm:gap-4">
+            <div className="hidden sm:flex">
+              <FontAwesomeIcon icon={faArrowUpFromBracket} />
+            </div>
+            <div>{t("components.profileForm.addProfilePicture")}</div>
           </div>
-          <div>{t("components.profileForm.addProfilePicture")}</div>
-        </div>
+        )}
       </div>
     );
   };
