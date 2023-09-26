@@ -1,5 +1,5 @@
 import { usePathname } from "next/navigation";
-import { useEffect, useRef, useState, type ReactElement } from "react";
+import { useEffect, useState, type ReactElement } from "react";
 import { api } from "~/utils/api";
 
 import { useSession } from "next-auth/react";
@@ -19,7 +19,6 @@ export const Layout = (props: {
 }) => {
   const pathname = usePathname();
   const { data: sessionData, status } = useSession();
-  const scrollableContainer = useRef<HTMLDivElement>(null);
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [isSignUp, setIsSignUp] = useState<boolean>(false);
   const [layoutScrollPosition, setLayoutScrollPosition] = useState<number>(0);
