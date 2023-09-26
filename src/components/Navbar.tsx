@@ -99,7 +99,7 @@ export const Navbar = (params: {
     if (toggleOptions) {
       document.body.style.overflow = "hidden";
     } else {
-      document.body.style.overflow = "unset";
+      document.body.style.overflow = "auto";
     }
   }, [toggleOptions, width]);
 

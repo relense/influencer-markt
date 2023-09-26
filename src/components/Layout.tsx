@@ -43,20 +43,26 @@ export const Layout = (props: {
   }, [refetechUser, status]);
 
   useEffect(() => {
-    if (scrollableContainer && scrollableContainer.current) {
-      scrollableContainer.current?.scrollTo(0, 0);
+    if (document.scrollingElement) {
+      document.scrollingElement?.scrollTo(0, 0);
+    } else {
+      document.body?.scrollTo(0, 0);
     }
   }, [pathname]);
 
   const scrollLayoutToPreviousPosition = () => {
-    if (scrollableContainer && scrollableContainer.current) {
-      scrollableContainer.current?.scrollTo(0, layoutScrollPosition);
+    if (document.scrollingElement) {
+      document.scrollingElement?.scrollTo(0, layoutScrollPosition);
+    } else {
+      document.body?.scrollTo(0, layoutScrollPosition);
     }
   };
 
   const saveScrollPosition = () => {
-    if (scrollableContainer && scrollableContainer.current) {
-      setLayoutScrollPosition(scrollableContainer.current?.scrollTop);
+    if (document.scrollingElement) {
+      setLayoutScrollPosition(document.scrollingElement?.scrollTop);
+    } else {
+      setLayoutScrollPosition(document.body?.scrollTop);
     }
   };
 
@@ -73,10 +79,7 @@ export const Layout = (props: {
           setIsSignUp={setIsSignUp}
           loggedInProfileId={user?.profile?.id ? user.profile.id : -1}
         />
-        <div
-          className="mb-12 flex w-full flex-1 flex-col overflow-y-auto sm:mb-0"
-          ref={scrollableContainer}
-        >
+        <div className="mb-12 flex w-full flex-1 flex-col overflow-y-auto sm:mb-0">
           <div className="flex flex-1 flex-col pb-16">
             {props.children({
               openLoginModal: () => setIsModalOpen(true),
