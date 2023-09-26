@@ -44,7 +44,7 @@ const BottomBar = (params: {
       profileSetup: true,
     },
     {
-      pageUrl: "/offers",
+      pageUrl: "/jobs",
       icon: faBriefcase,
       loggedIn: false,
       profileSetup: false,

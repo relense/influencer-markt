@@ -3,12 +3,12 @@ import { useSession } from "next-auth/react";
 import { api } from "~/utils/api";
 
 import { useWindowWidth } from "../../utils/helper";
-import type { Option, OfferIncludes } from "../../utils/globalTypes";
+import type { Option, JobIncludes } from "../../utils/globalTypes";
 import { MyApplicationsList } from "./innerComponents/MyApplicationsList";
 import { MyApplicationsDetails } from "./innerComponents/MyApplicationsDetails";
 import { useTranslation } from "react-i18next";
 
-export type OffersFilterState = {
+export type JobsFilterState = {
   platforms: Option[];
   categories: Option[];
   gender: Option;
@@ -28,25 +28,25 @@ const MyApplicationsPage = (params: {
   const session = useSession();
   const width = useWindowWidth();
 
-  const [offers, setOffers] = useState<OfferIncludes[]>([]);
-  const [offersCursor, setOffersCursor] = useState<number>(-1);
-  const [selectedOfferId, setSelectedOfferId] = useState<number>(-1);
+  const [jobs, setJobs] = useState<JobIncludes[]>([]);
+  const [jobsCursor, setJobsCursor] = useState<number>(-1);
+  const [selectedJobId, setSelectedJobId] = useState<number>(-1);
 
   const {
-    data: offersData,
-    isLoading: isLoadingOffers,
-    isRefetching: isRefetchingOffers,
-    isFetching: isFetchingOffers,
+    data: jobsData,
+    isLoading: isLoadingJobs,
+    isRefetching: isRefetchingJobs,
+    isFetching: isFetchingJobs,
   } = api.offers.getAppliedOffers.useQuery(undefined, {
     cacheTime: 0,
   });
 
   const {
-    data: offersWithCursorData,
-    refetch: refetchOffersWithCursor,
-    isFetching: isRefetchingOffersWithCursor,
+    data: jobsWithCursorData,
+    refetch: refetchJobsWithCursor,
+    isFetching: isRefetchingJobsWithCursor,
   } = api.offers.getAppliedOffersWithCursor.useQuery(
-    { cursor: offersCursor },
+    { cursor: jobsCursor },
     { enabled: false }
   );
 
@@ -55,83 +55,77 @@ const MyApplicationsPage = (params: {
   });
 
   useEffect(() => {
-    if (offersData && offersData[1].length > 0) {
-      setOffers(offersData[1]);
+    if (jobsData && jobsData[1].length > 0) {
+      setJobs(jobsData[1]);
 
-      const lastOfferInArray = offersData[1][offersData[1].length - 1];
+      const lastJobInArray = jobsData[1][jobsData[1].length - 1];
 
-      if (lastOfferInArray) {
-        setOffersCursor(lastOfferInArray.id);
+      if (lastJobInArray) {
+        setJobsCursor(lastJobInArray.id);
       }
     }
-  }, [offersData]);
+  }, [jobsData]);
 
   useEffect(() => {
-    if (offersWithCursorData) {
-      setOffers((currentOffers) => {
-        const newOffers = [...currentOffers];
-        offersWithCursorData.forEach((offer) => newOffers.push(offer));
+    if (jobsWithCursorData) {
+      setJobs((currentJobs) => {
+        const newJobs = [...currentJobs];
+        jobsWithCursorData.forEach((job) => newJobs.push(job));
 
-        return newOffers;
+        return newJobs;
       });
 
-      const lastOfferInArray =
-        offersWithCursorData[offersWithCursorData.length - 1];
+      const lastJobInArray = jobsWithCursorData[jobsWithCursorData.length - 1];
 
-      if (lastOfferInArray) {
-        setOffersCursor(lastOfferInArray.id);
+      if (lastJobInArray) {
+        setJobsCursor(lastJobInArray.id);
       }
     }
-  }, [offersWithCursorData]);
+  }, [jobsWithCursorData]);
 
   useEffect(() => {
-    if (
-      offersData &&
-      offersData[1][0] &&
-      width > 1024 &&
-      selectedOfferId === -1
-    ) {
-      setSelectedOfferId(offersData[1][0].id);
+    if (jobsData && jobsData[1][0] && width > 1024 && selectedJobId === -1) {
+      setSelectedJobId(jobsData[1][0].id);
     }
-  }, [offersData, selectedOfferId, width]);
+  }, [jobsData, selectedJobId, width]);
 
   useEffect(() => {
     params.scrollLayoutToPreviousPosition();
-  }, [params, selectedOfferId]);
+  }, [params, selectedJobId]);
 
-  const onChangeOffer = (offer: OfferIncludes) => {
+  const onChangeJob = (job: JobIncludes) => {
     params.saveScrollPosition();
-    setSelectedOfferId(offer.id);
+    setSelectedJobId(job.id);
   };
 
-  const fetchMoreOffers = () => {
+  const fetchMoreJobs = () => {
     params.saveScrollPosition();
-    void refetchOffersWithCursor();
+    void refetchJobsWithCursor();
   };
 
   const renderMobile = () => {
     return (
       <>
         <div className="flex w-full pb-4 lg:hidden lg:h-[70vh] lg:p-0">
-          {selectedOfferId === -1 && (
+          {selectedJobId === -1 && (
             <MyApplicationsList
-              offersCount={offersData ? offersData[0] : 0}
-              isRefetchingOffersWithCursor={isRefetchingOffersWithCursor}
-              fetchMoreOffers={fetchMoreOffers}
-              offers={offers}
-              isLoading={isLoadingOffers || isRefetchingOffers}
-              onChangeOffer={onChangeOffer}
-              selectedOfferId={selectedOfferId}
-              key={"offersListMobile"}
+              jobsCount={jobsData ? jobsData[0] : 0}
+              isRefetchingJobsWithCursor={isRefetchingJobsWithCursor}
+              fetchMoreJobs={fetchMoreJobs}
+              jobs={jobs}
+              isLoading={isLoadingJobs || isRefetchingJobs}
+              onChangeJob={onChangeJob}
+              selectedJobId={selectedJobId}
+              key={"jobsListMobile"}
             />
           )}
-          {selectedOfferId !== -1 && (
+          {selectedJobId !== -1 && (
             <MyApplicationsDetails
               type="mobile"
-              key={`offerDetailDesktop${selectedOfferId || ""}`}
+              key={`jobDetailDesktop${selectedJobId || ""}`}
               userRole={userRole?.role || undefined}
-              selectedOfferId={selectedOfferId}
-              setSelectedOfferId={() => setSelectedOfferId(-1)}
+              selectedJobId={selectedJobId}
+              setSelectedJobId={() => setSelectedJobId(-1)}
             />
           )}
         </div>
@@ -144,22 +138,22 @@ const MyApplicationsPage = (params: {
       <>
         <div className="hidden w-full pb-4 lg:flex lg:h-[70vh] lg:p-0">
           <MyApplicationsList
-            offersCount={offersData ? offersData[0] : 0}
-            isRefetchingOffersWithCursor={isRefetchingOffersWithCursor}
-            fetchMoreOffers={fetchMoreOffers}
-            offers={offers}
-            isLoading={isLoadingOffers || isRefetchingOffers}
-            onChangeOffer={onChangeOffer}
-            selectedOfferId={selectedOfferId}
-            key={"offersListDesktop"}
+            jobsCount={jobsData ? jobsData[0] : 0}
+            isRefetchingJobsWithCursor={isRefetchingJobsWithCursor}
+            fetchMoreJobs={fetchMoreJobs}
+            jobs={jobs}
+            isLoading={isLoadingJobs || isRefetchingJobs}
+            onChangeJob={onChangeJob}
+            selectedJobId={selectedJobId}
+            key={"jobsListDesktop"}
           />
-          {offers.length > 0 && (
+          {jobs.length > 0 && (
             <MyApplicationsDetails
               type="desktop"
-              key={`offerDetailDesktop${selectedOfferId || ""}`}
+              key={`jobDetailDesktop${selectedJobId || ""}`}
               userRole={userRole?.role || undefined}
-              selectedOfferId={selectedOfferId}
-              setSelectedOfferId={() => setSelectedOfferId(-1)}
+              selectedJobId={selectedJobId}
+              setSelectedJobId={() => setSelectedJobId(-1)}
             />
           )}
         </div>
@@ -170,10 +164,10 @@ const MyApplicationsPage = (params: {
   return (
     <>
       <div className="mt-5 flex w-full cursor-default flex-col gap-8 self-center px-4 sm:px-12 xl:w-3/4 2xl:w-3/4 3xl:w-3/4 4xl:w-2/4 5xl:w-2/4">
-        {offers.length === 0 &&
-          !isLoadingOffers &&
-          !isRefetchingOffers &&
-          !isFetchingOffers && (
+        {jobs.length === 0 &&
+          !isLoadingJobs &&
+          !isRefetchingJobs &&
+          !isFetchingJobs && (
             <div className="flex justify-center">
               {t("pages.applications.noApplications")}
             </div>

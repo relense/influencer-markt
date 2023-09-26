@@ -1,9 +1,9 @@
 import type { NextPage } from "next";
 
 import { Layout } from "../../components/Layout";
-import { OffersPage } from "../../pageComponents/OffersPage/OffersPage";
+import { JobsPage } from "../../pageComponents/JobsPage/JobsPage";
 
-const Offers: NextPage = () => {
+const Jobs: NextPage = () => {
   return (
     <Layout>
       {({
@@ -11,7 +11,7 @@ const Offers: NextPage = () => {
         saveScrollPosition,
         openLoginModal,
       }) => (
-        <OffersPage
+        <JobsPage
           scrollLayoutToPreviousPosition={scrollLayoutToPreviousPosition}
           saveScrollPosition={saveScrollPosition}
           openLoginModal={openLoginModal}
@@ -21,4 +21,4 @@ const Offers: NextPage = () => {
   );
 };
 
-export default Offers;
+export default Jobs;

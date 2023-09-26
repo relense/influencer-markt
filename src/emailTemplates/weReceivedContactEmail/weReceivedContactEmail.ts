@@ -310,7 +310,7 @@ function html(params: {
                                            alt=""
                                            data-proportionally-constrained="true"
                                            data-responsive="true"
-                                           src="images/logo.png"
+                                           src="https://publicdevinfmarkt.blob.core.windows.net/inf-markt-assets/logo.png"
                                          />
                                        </td>
                                      </tr>

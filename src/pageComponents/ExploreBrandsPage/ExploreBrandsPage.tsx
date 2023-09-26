@@ -22,6 +22,8 @@ export type BrandsFilterState = {
 
 const ExploreBrandsPage = (params: { loggedInProfileId: number }) => {
   const { t } = useTranslation();
+  const ctx = api.useContext();
+
   const [influencersCursor, setInfluencersCursor] = useState<number>(-1);
   const [userProfiles, setUserProfiles] = useState<UserProfiles[]>([]);
   const [isFilterModalOpen, setIsFilterModalOpen] = useState<boolean>(false);
@@ -185,6 +187,8 @@ const ExploreBrandsPage = (params: { loggedInProfileId: number }) => {
 
     if (categories.length > 0 || platforms.length > 0) {
       setUserProfiles([]);
+
+      void ctx.profiles.getAllBrandsProfilesCursor.reset();
       void profileRefetch();
     }
   };
@@ -205,6 +209,8 @@ const ExploreBrandsPage = (params: { loggedInProfileId: number }) => {
     }
 
     setUserProfiles([]);
+
+    void ctx.profiles.getAllBrandsProfilesCursor.reset();
     void profileRefetch();
   };
 
@@ -278,6 +284,7 @@ const ExploreBrandsPage = (params: { loggedInProfileId: number }) => {
       setUserProfiles([]);
     }
 
+    void ctx.profiles.getAllBrandsProfilesCursor.reset();
     void profileRefetch();
   };
 

@@ -30,6 +30,8 @@ const ExploreInfluencersPage = (params: {
   loggedInProfileId: number;
 }) => {
   const { t } = useTranslation();
+  const ctx = api.useContext();
+
   const [influencersCursor, setInfluencersCursor] = useState<number>(-1);
   const [userProfiles, setUserProfiles] = useState<UserProfiles[]>([]);
   const [isFilterModalOpen, setIsFilterModalOpen] = useState<boolean>(false);
@@ -221,6 +223,8 @@ const ExploreInfluencersPage = (params: {
 
     if (categories.length > 0 || platforms.length > 0) {
       setUserProfiles([]);
+
+      void ctx.profiles.getAllInfluencersProfileCursor.reset();
       void profileRefetch();
     }
   };
@@ -240,6 +244,7 @@ const ExploreInfluencersPage = (params: {
       setFilterPlatforms([]);
     }
 
+    void ctx.profiles.getAllInfluencersProfileCursor.reset();
     void profileRefetch();
   };
 
@@ -342,6 +347,7 @@ const ExploreInfluencersPage = (params: {
       setUserProfiles([]);
     }
 
+    void ctx.profiles.getAllInfluencersProfileCursor.reset();
     void profileRefetch();
   };
 

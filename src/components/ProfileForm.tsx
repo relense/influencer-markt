@@ -20,6 +20,7 @@ import { CustomSelect } from "./CustomSelect";
 import { CustomMultiSelect } from "./CustomMultiSelect";
 import type { ProfileData } from "../utils/globalTypes";
 import { CustomSelectWithInput } from "./CustomSelectWithInput";
+import toast from "react-hot-toast";
 
 const ProfileForm = (params: {
   submit: () => void;
@@ -36,6 +37,7 @@ const ProfileForm = (params: {
   );
 
   const [profilePicture, setProfilePicture] = useState<string>();
+
   const { data: user } = api.users.getUser.useQuery();
   const { data: categories } = api.allRoutes.getAllCategories.useQuery();
   const { data: genders } = api.allRoutes.getAllGenders.useQuery();
@@ -54,7 +56,13 @@ const ProfileForm = (params: {
   const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
 
-    if (file && (file.name.includes("jpeg") || file.name.includes("png"))) {
+    if (
+      file &&
+      (file.name.includes("jpeg") ||
+        file.name.includes("png") ||
+        file.name.includes("jpg")) &&
+      file.size < 2000000
+    ) {
       const reader = new FileReader();
 
       reader.onload = () => {
@@ -68,7 +76,10 @@ const ProfileForm = (params: {
 
       reader.readAsDataURL(file);
     } else {
-      alert(t("components.profileForm.invalidPictureAlert"));
+      toast.error(t("components.profileForm.invalidPictureAlert"), {
+        duration: 5000,
+        position: "bottom-left",
+      });
     }
   };
 
@@ -82,6 +93,7 @@ const ProfileForm = (params: {
           title=""
           className="absolute z-50 h-full w-24 cursor-pointer text-[0px] opacity-0 "
         />
+
         {!profilePicture ? (
           <div className="flex h-24 w-24 cursor-pointer flex-col items-center justify-center rounded-full border-[1px] border-gray3">
             <FontAwesomeIcon icon={faCamera} className="fa-2x text-gray3" />

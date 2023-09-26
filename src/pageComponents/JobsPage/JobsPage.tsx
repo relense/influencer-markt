@@ -7,13 +7,13 @@ import { api } from "~/utils/api";
 
 import { useWindowWidth } from "../../utils/helper";
 import { ComplexSearchBar } from "../../components/ComplexSearchBar";
-import type { Option, OfferIncludes } from "../../utils/globalTypes";
-import { OffersList } from "./innerComponents/OffersList";
-import { OfferDetails } from "./innerComponents/OfferDetails";
+import type { Option, JobIncludes } from "../../utils/globalTypes";
+import { JobsList } from "./innerComponents/JobsList";
+import { JobDetails } from "./innerComponents/JobDetails";
 import { ShareModal } from "../../components/ShareModal";
-import { OffersFilterModal } from "./innerComponents/OffersFilterModal";
+import { JobsFilterModal } from "./innerComponents/JobsFilterModal";
 
-export type OffersFilterState = {
+export type JobsFilterState = {
   platforms: Option[];
   categories: Option[];
   gender: Option;
@@ -24,7 +24,7 @@ export type OffersFilterState = {
   maxPrice: number;
 };
 
-const OffersPage = (params: {
+const JobsPage = (params: {
   scrollLayoutToPreviousPosition: () => void;
   saveScrollPosition: () => void;
   openLoginModal: () => void;
@@ -32,16 +32,17 @@ const OffersPage = (params: {
   const { t } = useTranslation();
   const session = useSession();
   const width = useWindowWidth();
+  const ctx = api.useContext();
 
-  const [offers, setOffers] = useState<OfferIncludes[]>([]);
-  const [offersCursor, setOffersCursor] = useState<number>(-1);
-  const [selectedOfferId, setSelectedOfferId] = useState<number>(-1);
+  const [jobs, setJobs] = useState<JobIncludes[]>([]);
+  const [jobsCursor, setJobsCursor] = useState<number>(-1);
+  const [selectedJobId, setSelectedJobId] = useState<number>(-1);
   const [isShareModalOpen, setIsShareModalOpen] = useState<boolean>();
   const [activeFiltersCount, setActiveFiltersCount] = useState<number>(0);
   const [isFilterModalOpen, setIsFilterModalOpen] = useState<boolean>(false);
   const [filterCategories, setFilterCategories] = useState<Option[]>([]);
   const [filterPlatforms, setFilterPlatforms] = useState<Option[]>([]);
-  const [filterState, setFilterState] = useState<OffersFilterState>({
+  const [filterState, setFilterState] = useState<JobsFilterState>({
     platforms: [],
     categories: [],
     gender: { id: -1, name: "" },
@@ -53,11 +54,11 @@ const OffersPage = (params: {
   });
 
   const {
-    data: offersData,
-    isLoading: isLoadingOffers,
-    isRefetching: isRefetchingOffers,
-    isFetching: isFetchingOffers,
-    refetch: refetchOffers,
+    data: jobsData,
+    isLoading: isLoadingJobs,
+    isRefetching: isRefetchingJobs,
+    isFetching: isFetchingJobs,
+    refetch: refetchJobs,
   } = api.offers.getAllOffers.useQuery({
     socialMedia: filterState.platforms.map((platform) => {
       return platform.id;
@@ -73,12 +74,12 @@ const OffersPage = (params: {
   });
 
   const {
-    data: offersWithCursorData,
-    refetch: refetchOffersWithCursor,
-    isFetching: isFetchingOffersWithCursor,
+    data: jobsWithCursorData,
+    refetch: refetchJobsWithCursor,
+    isFetching: isFetchingJobsWithCursor,
   } = api.offers.getAllOffersWithCursor.useQuery(
     {
-      cursor: offersCursor,
+      cursor: jobsCursor,
       socialMedia: filterState.platforms.map((platform) => {
         return platform.id;
       }),
@@ -102,58 +103,52 @@ const OffersPage = (params: {
   const { data: profile } = api.profiles.getProfile.useQuery();
 
   useEffect(() => {
-    if (offersData && offersData[1].length > 0) {
-      setOffers(offersData[1]);
+    if (jobsData && jobsData[1].length > 0) {
+      setJobs(jobsData[1]);
 
-      const lastOfferInArray = offersData[1][offersData[1].length - 1];
+      const lastJobInArray = jobsData[1][jobsData[1].length - 1];
 
-      if (lastOfferInArray) {
-        setOffersCursor(lastOfferInArray.id);
+      if (lastJobInArray) {
+        setJobsCursor(lastJobInArray.id);
       }
     }
-  }, [offersData]);
+  }, [jobsData]);
 
   useEffect(() => {
-    if (offersWithCursorData) {
-      setOffers((currentOffers) => {
-        const newOffers = [...currentOffers];
-        offersWithCursorData.forEach((offer) => newOffers.push(offer));
+    if (jobsWithCursorData) {
+      setJobs((currentJobs) => {
+        const newJobs = [...currentJobs];
+        jobsWithCursorData.forEach((job) => newJobs.push(job));
 
-        return newOffers;
+        return newJobs;
       });
 
-      const lastOfferInArray =
-        offersWithCursorData[offersWithCursorData.length - 1];
+      const lastJobInArray = jobsWithCursorData[jobsWithCursorData.length - 1];
 
-      if (lastOfferInArray) {
-        setOffersCursor(lastOfferInArray.id);
+      if (lastJobInArray) {
+        setJobsCursor(lastJobInArray.id);
       }
     }
-  }, [offersWithCursorData]);
+  }, [jobsWithCursorData]);
 
   useEffect(() => {
-    if (
-      offersData &&
-      offersData[1][0] &&
-      width > 1024 &&
-      selectedOfferId === -1
-    ) {
-      setSelectedOfferId(offersData[1][0].id);
+    if (jobsData && jobsData[1][0] && width > 1024 && selectedJobId === -1) {
+      setSelectedJobId(jobsData[1][0].id);
     }
-  }, [offersData, selectedOfferId, width]);
+  }, [jobsData, selectedJobId, width]);
 
   useEffect(() => {
     params.scrollLayoutToPreviousPosition();
-  }, [params, selectedOfferId]);
+  }, [params, selectedJobId]);
 
-  const onChangeOffer = (offer: OfferIncludes) => {
+  const onChangeJob = (job: JobIncludes) => {
     params.saveScrollPosition();
-    setSelectedOfferId(offer.id);
+    setSelectedJobId(job.id);
   };
 
-  const fetchMoreOffers = () => {
+  const fetchMoreJobs = () => {
     params.saveScrollPosition();
-    void refetchOffersWithCursor();
+    void refetchJobsWithCursor();
   };
 
   const countActiveFilters = (params: {
@@ -200,8 +195,8 @@ const OffersPage = (params: {
     countActiveFilters(params);
 
     if (activeFiltersCount > 0) {
-      setSelectedOfferId(-1);
-      setOffers([]);
+      setSelectedJobId(-1);
+      setJobs([]);
     }
 
     setFilterState({
@@ -216,10 +211,10 @@ const OffersPage = (params: {
       city: params.city,
     });
 
-    void refetchOffers();
+    void refetchJobs();
   };
 
-  const onClearFilter = () => {
+  const onClearFilter = async () => {
     setIsFilterModalOpen(false);
     setActiveFiltersCount(0);
 
@@ -239,11 +234,12 @@ const OffersPage = (params: {
     setFilterPlatforms([]);
 
     if (activeFiltersCount > 0) {
-      setSelectedOfferId(-1);
-      setOffers([]);
+      setSelectedJobId(-1);
+      setJobs([]);
     }
 
-    void refetchOffers();
+    await ctx.offers.getAllOffersWithCursor.reset();
+    void refetchJobs();
   };
 
   const onHandleSearch = (categories: Option[], platforms: Option[]) => {
@@ -254,8 +250,8 @@ const OffersPage = (params: {
     });
 
     if (categories.length > 0 || platforms.length > 0) {
-      setOffers([]);
-      void refetchOffers();
+      setJobs([]);
+      void refetchJobs();
     }
   };
 
@@ -274,8 +270,8 @@ const OffersPage = (params: {
       setFilterPlatforms([]);
     }
 
-    setOffers([]);
-    void refetchOffers();
+    setJobs([]);
+    void refetchJobs();
   };
 
   const filterBar = () => {
@@ -327,29 +323,29 @@ const OffersPage = (params: {
     return (
       <>
         <div className="flex w-full pb-4 lg:hidden lg:h-[70vh] lg:p-0">
-          {selectedOfferId === -1 && (
-            <OffersList
-              offersCount={offersData ? offersData[0] : 0}
-              isRefetchingOffersWithCursor={isFetchingOffersWithCursor}
-              fetchMoreOffers={fetchMoreOffers}
-              offers={offers}
-              isLoading={isLoadingOffers || isRefetchingOffers}
-              onChangeOffer={onChangeOffer}
-              selectedOfferId={-1}
-              key={"offersListMobile"}
+          {selectedJobId === -1 && (
+            <JobsList
+              jobsCount={jobsData ? jobsData[0] : 0}
+              isRefetchingJobsWithCursor={isFetchingJobsWithCursor}
+              fetchMoreJobs={fetchMoreJobs}
+              jobs={jobs}
+              isLoading={isLoadingJobs || isRefetchingJobs}
+              onChangeJob={onChangeJob}
+              selectedJobId={-1}
+              key={"jobsListMobile"}
               profile={profile || undefined}
               userRole={userRole?.role || undefined}
             />
           )}
-          {selectedOfferId !== -1 && (
-            <OfferDetails
+          {selectedJobId !== -1 && (
+            <JobDetails
               openShareModal={() => setIsShareModalOpen(true)}
               type="mobile"
-              key={`offerDetailMobile${selectedOfferId || ""}`}
+              key={`jobDetailMobile${selectedJobId || ""}`}
               openLoginModal={params.openLoginModal}
               userRole={userRole?.role || undefined}
-              selectedOfferId={selectedOfferId}
-              setSelectedOfferId={() => setSelectedOfferId(-1)}
+              selectedJobId={selectedJobId}
+              setSelectedJobId={() => setSelectedJobId(-1)}
               profile={profile || undefined}
             />
           )}
@@ -362,27 +358,27 @@ const OffersPage = (params: {
     return (
       <>
         <div className="hidden w-full pb-4 lg:flex lg:h-[70vh] lg:p-0">
-          <OffersList
-            offersCount={offersData ? offersData[0] : 0}
-            isRefetchingOffersWithCursor={isFetchingOffersWithCursor}
-            fetchMoreOffers={fetchMoreOffers}
-            offers={offers}
-            isLoading={isLoadingOffers || isRefetchingOffers}
-            onChangeOffer={onChangeOffer}
-            selectedOfferId={selectedOfferId}
-            key={"offersListDesktop"}
+          <JobsList
+            jobsCount={jobsData ? jobsData[0] : 0}
+            isRefetchingJobsWithCursor={isFetchingJobsWithCursor}
+            fetchMoreJobs={fetchMoreJobs}
+            jobs={jobs}
+            isLoading={isLoadingJobs || isRefetchingJobs}
+            onChangeJob={onChangeJob}
+            selectedJobId={selectedJobId}
+            key={"jobsListDesktop"}
             profile={profile || undefined}
             userRole={userRole?.role || undefined}
           />
-          {offers.length > 0 && (
-            <OfferDetails
+          {jobs.length > 0 && (
+            <JobDetails
               openShareModal={() => setIsShareModalOpen(true)}
               type="desktop"
-              key={`offerDetailDesktop${selectedOfferId || ""}`}
+              key={`jobDetailDesktop${selectedJobId || ""}`}
               openLoginModal={params.openLoginModal}
               userRole={userRole?.role || undefined}
-              selectedOfferId={selectedOfferId}
-              setSelectedOfferId={() => setSelectedOfferId(-1)}
+              selectedJobId={selectedJobId}
+              setSelectedJobId={() => setSelectedJobId(-1)}
               profile={profile || undefined}
             />
           )}
@@ -394,17 +390,17 @@ const OffersPage = (params: {
   return (
     <>
       <div className="mt-2 flex w-full cursor-default flex-col gap-8 self-center px-2 sm:px-12 xl:w-3/4 2xl:w-3/4 3xl:w-3/4 4xl:w-3/4 5xl:w-2/4">
-        {(width > 1024 || (width < 1024 && selectedOfferId === -1)) &&
+        {(width > 1024 || (width < 1024 && selectedJobId === -1)) &&
           filterBar()}
-        {offers.length === 0 &&
-          !isLoadingOffers &&
-          !isRefetchingOffers &&
-          !isFetchingOffers && (
+        {jobs.length === 0 &&
+          !isLoadingJobs &&
+          !isRefetchingJobs &&
+          !isFetchingJobs && (
             <div className="flex flex-col justify-center gap-4 text-gray2">
               <FontAwesomeIcon icon={faSearch} className="fa-2xl" />
 
               <div className="flex justify-center">
-                {t("pages.offers.noOffers")}
+                {t("pages.jobs.noJobs")}
               </div>
             </div>
           )}
@@ -412,17 +408,17 @@ const OffersPage = (params: {
         {renderDesktop()}
       </div>
       <div className="flex justify-center">
-        {isShareModalOpen && selectedOfferId !== -1 && (
+        {isShareModalOpen && selectedJobId !== -1 && (
           <ShareModal
-            modalTitle={t("pages.offers.shareModalTitle")}
+            modalTitle={t("pages.jobs.shareModalTitle")}
             onClose={() => setIsShareModalOpen(false)}
-            url={`${window.location.origin}/offers/${selectedOfferId}`}
+            url={`${window.location.origin}/jobs/${selectedJobId}`}
           />
         )}
       </div>
       {isFilterModalOpen && genders && countries && (
         <div className="flex flex-1 justify-center">
-          <OffersFilterModal
+          <JobsFilterModal
             genders={genders?.map((gender) => {
               return {
                 id: gender.id,
@@ -446,4 +442,4 @@ const OffersPage = (params: {
   );
 };
 
-export { OffersPage };
+export { JobsPage };

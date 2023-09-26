@@ -2,14 +2,14 @@ import type { NextPage } from "next";
 
 import { ProtectedWrapper } from "../../components/ProtectedWrapper";
 import { Layout } from "../../components/Layout";
-import { OfferManagementPage } from "../../pageComponents/OfferManagementPage/OfferManagementPage";
+import { JobsManagementPage } from "../../pageComponents/JobsManagementPage/JobsManagementPage";
 
-const ManageOffers: NextPage = () => {
+const ManageJobs: NextPage = () => {
   return (
     <ProtectedWrapper>
-      <Layout>{() => <OfferManagementPage />}</Layout>
+      <Layout>{() => <JobsManagementPage />}</Layout>
     </ProtectedWrapper>
   );
 };
 
-export default ManageOffers;
+export default ManageJobs;

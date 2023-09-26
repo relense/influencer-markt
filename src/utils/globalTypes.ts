@@ -88,7 +88,7 @@ export type UserProfiles = {
   activeOffers?: number;
 };
 
-export type ProfileOffers = Prisma.OfferGetPayload<{
+export type ProfileJobs = Prisma.OfferGetPayload<{
   select: {
     offerSummary: true;
     id: true;
@@ -105,7 +105,7 @@ export type ProfileOffers = Prisma.OfferGetPayload<{
   };
 }>;
 
-export type OfferWithAllData = Prisma.OfferGetPayload<{
+export type JobWithAllData = Prisma.OfferGetPayload<{
   include: {
     id?: true;
     offerStatus: true;
@@ -127,7 +127,7 @@ export type OfferWithAllData = Prisma.OfferGetPayload<{
   };
 }>;
 
-export type OfferIncludes = Prisma.OfferGetPayload<{
+export type JobIncludes = Prisma.OfferGetPayload<{
   include: {
     contentTypeWithQuantity: {
       select: {

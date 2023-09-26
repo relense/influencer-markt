@@ -1,5 +1,5 @@
 import { useTranslation } from "react-i18next";
-import { type OfferIncludes } from "../../../utils/globalTypes";
+import { type JobIncludes } from "../../../utils/globalTypes";
 import { useEffect, useRef, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBriefcase, faChevronLeft } from "@fortawesome/free-solid-svg-icons";
@@ -14,8 +14,8 @@ import Link from "next/link";
 import { type Role } from "@prisma/client";
 
 const MyApplicationsDetails = (params: {
-  setSelectedOfferId: () => void;
-  selectedOfferId: number;
+  setSelectedJobId: () => void;
+  selectedJobId: number;
   type: "mobile" | "desktop";
   userRole: Role | undefined;
 }) => {
@@ -24,24 +24,24 @@ const MyApplicationsDetails = (params: {
   const detailsContainer = useRef<HTMLDivElement>(null);
   const ctx = api.useContext();
 
-  const [offer, setOffer] = useState<OfferIncludes>();
+  const [job, setJob] = useState<JobIncludes>();
   const [applied, setApplied] = useState<boolean>(false);
 
-  const { data: offerData, isLoading } = api.offers.getSimpleOffer.useQuery(
+  const { data: jobData, isLoading } = api.offers.getSimpleOffer.useQuery(
     {
-      offerId: params?.selectedOfferId || -1,
+      offerId: params?.selectedJobId || -1,
     },
     {
       cacheTime: 0,
     }
   );
 
-  const { mutate: applyToOffer, isLoading: applicationIsLoading } =
+  const { mutate: applyToJob, isLoading: applicationIsLoading } =
     api.offers.applyToOffer.useMutation({
       onSuccess: () => {
         setApplied(true);
         void ctx.offers.getSimpleOffer.invalidate().then(() => {
-          toast.success(t("pages.offers.appliedSuccess"), {
+          toast.success(t("pages.applications.appliedSuccess"), {
             position: "bottom-left",
           });
         });
@@ -52,7 +52,7 @@ const MyApplicationsDetails = (params: {
       onSuccess: () => {
         setApplied(false);
         void ctx.offers.getSimpleOffer.invalidate().then(() => {
-          toast.success(t("pages.offers.removedApplicationSuccess"), {
+          toast.success(t("pages.applications.removedApplicationSuccess"), {
             position: "bottom-left",
           });
         });
@@ -60,18 +60,18 @@ const MyApplicationsDetails = (params: {
     });
 
   useEffect(() => {
-    const checkIfUserHasApplied = (offer: OfferIncludes) => {
+    const checkIfUserHasApplied = (job: JobIncludes) => {
       let hasApplied = false;
 
-      const applied = !!offer.applicants.find(
+      const applied = !!job.applicants.find(
         (applicant) => applicant.userId === session.data?.user.id
       );
 
-      const isAccepted = !!offer.acceptedApplicants.find(
+      const isAccepted = !!job.acceptedApplicants.find(
         (applicant) => applicant.userId === session.data?.user.id
       );
 
-      const isRejected = !!offer.rejectedApplicants.find(
+      const isRejected = !!job.rejectedApplicants.find(
         (applicant) => applicant.userId === session.data?.user.id
       );
 
@@ -82,11 +82,11 @@ const MyApplicationsDetails = (params: {
       return hasApplied;
     };
 
-    if (offerData) {
-      setApplied(checkIfUserHasApplied(offerData));
-      setOffer(offerData);
+    if (jobData) {
+      setApplied(checkIfUserHasApplied(jobData));
+      setJob(jobData);
     }
-  }, [offerData, session.data?.user.id]);
+  }, [jobData, session.data?.user.id]);
 
   useEffect(() => {
     detailsContainer.current?.scrollTo(0, 0);
@@ -94,13 +94,13 @@ const MyApplicationsDetails = (params: {
     if (params.type === "mobile") {
       window.scrollTo(0, 0);
     }
-  }, [params, offer, params.type]);
+  }, [params, job, params.type]);
 
-  const onApply = (offer: OfferIncludes) => {
+  const onApply = (job: JobIncludes) => {
     if (applied) {
-      removeApplication({ offerId: offer.id });
+      removeApplication({ offerId: job.id });
     } else {
-      applyToOffer({ offerId: offer.id });
+      applyToJob({ offerId: job.id });
     }
   };
 
@@ -109,7 +109,7 @@ const MyApplicationsDetails = (params: {
       <div className="flex items-center justify-between lg:hidden">
         <div
           className="flex cursor-pointer items-center gap-2 py-2 lg:hidden"
-          onClick={() => params.setSelectedOfferId()}
+          onClick={() => params.setSelectedJobId()}
         >
           <FontAwesomeIcon
             icon={faChevronLeft}
@@ -121,40 +121,40 @@ const MyApplicationsDetails = (params: {
     );
   };
 
-  const renderOfferHeader = () => {
-    if (offer) {
+  const renderJobHeader = () => {
+    if (job) {
       return (
         <div className="flex justify-between">
           <Link
-            href={`offers/${offer.id}`}
+            href={`jobs/${job.id}`}
             className="w-auto text-2xl font-semibold hover:underline lg:w-auto lg:max-w-[80%]"
           >
-            {offer?.offerSummary}
+            {job?.offerSummary}
           </Link>
         </div>
       );
     }
   };
 
-  const renderOfferSubHeader = () => {
+  const renderJobSubHeader = () => {
     return (
       <div className="flex flex-wrap items-center gap-2 text-gray2">
         <Link
-          href={`/${offer?.offerCreator?.user?.username || ""}`}
+          href={`/${job?.offerCreator?.user?.username || ""}`}
           className="hover:underline"
         >
-          {offer?.offerCreator?.name}
+          {job?.offerCreator?.name}
         </Link>
         <div className="h-1 w-1 rounded-full bg-black" />
         <div>
-          {offer?.country?.name}
-          {offer?.state?.name ? `,${offer?.state?.name}` : ""}
+          {job?.country?.name}
+          {job?.state?.name ? `,${job?.state?.name}` : ""}
         </div>
-        {offer?.createdAt && (
+        {job?.createdAt && (
           <>
             <div className="h-1 w-1 rounded-full bg-black" />
 
-            <div>{helper.formatDate(offer?.createdAt, i18n.language)}</div>
+            <div>{helper.formatDate(job?.createdAt, i18n.language)}</div>
           </>
         )}
       </div>
@@ -165,15 +165,13 @@ const MyApplicationsDetails = (params: {
     return (
       <div className="flex gap-2">
         <div className="font-semibold text-influencer">
-          {offer?.socialMedia?.name}
+          {job?.socialMedia?.name}
         </div>
         <div className="flex flex-wrap gap-2">
-          {offer?.contentTypeWithQuantity.map((contentType) => {
+          {job?.contentTypeWithQuantity.map((contentType) => {
             return (
               <div
-                key={`details${contentType.id}${
-                  offer?.offerCreator?.name || ""
-                }`}
+                key={`details${contentType.id}${job?.offerCreator?.name || ""}`}
                 className="flex gap-1 text-black"
               >
                 <div>
@@ -197,23 +195,23 @@ const MyApplicationsDetails = (params: {
           {t("pages.applications.followers")}
         </div>
         <div>
-          {helper.formatNumberWithKorM(offer?.minFollowers || 0)} -{" "}
-          {helper.formatNumberWithKorM(offer?.maxFollowers || 0)}
+          {helper.formatNumberWithKorM(job?.minFollowers || 0)} -{" "}
+          {helper.formatNumberWithKorM(job?.maxFollowers || 0)}
         </div>
       </div>
     );
   };
 
   const renderGender = () => {
-    if (offer) {
+    if (job) {
       return (
         <div className="flex gap-2">
           <div className="font-semibold text-influencer">
             {t("pages.applications.gender")}
           </div>
           <div>
-            {offer?.gender && offer?.gender.name
-              ? t(`pages.applications.${offer.gender.name}`)
+            {job?.gender && job?.gender.name
+              ? t(`pages.applications.${job.gender.name}`)
               : t(`pages.applications.any`)}
           </div>
         </div>
@@ -227,11 +225,11 @@ const MyApplicationsDetails = (params: {
         <span className="pr-2 font-semibold text-influencer">
           {t("pages.applications.categories")}
         </span>
-        {offer?.categories.map((category, index) => {
+        {job?.categories.map((category, index) => {
           return (
             <div key={`categories${category.id}`} className="pr-2">
               {`${t(`general.categories.${category.name}`)}${
-                offer?.categories.length - 1 !== index ? "," : ""
+                job?.categories.length - 1 !== index ? "," : ""
               }`}
             </div>
           );
@@ -244,15 +242,15 @@ const MyApplicationsDetails = (params: {
     return (
       <div className="flex gap-2">
         <div className="font-semibold text-influencer">
-          {t("pages.applications.offerPay")}
+          {t("pages.applications.jobPay")}
         </div>
-        <div>{helper.formatNumber(offer?.price || 0)}€</div>
+        <div>{helper.formatNumber(job?.price || 0)}€</div>
       </div>
     );
   };
 
   const renderApplicants = () => {
-    if (offer?.applicants && offer?.applicants.length > 0) {
+    if (job?.applicants && job?.applicants.length > 0) {
       return (
         <div className="flex flex-col gap-4 sm:flex-row sm:gap-6">
           <div className="flex items-center gap-2">
@@ -262,7 +260,7 @@ const MyApplicationsDetails = (params: {
             />
             <div className="font-semibold">
               {t("pages.applications.applicants", {
-                count: offer?.applicants.length,
+                count: job?.applicants.length,
               })}
             </div>
           </div>
@@ -272,11 +270,11 @@ const MyApplicationsDetails = (params: {
   };
 
   const renderApplyButton = () => {
-    if (offer && (!params.userRole || params.userRole.id !== 1)) {
+    if (job && (!params.userRole || params.userRole.id !== 1)) {
       return (
         <div>
           <Button
-            key={`ApplyButton${offer.id}`}
+            key={`ApplyButton${job.id}`}
             title={
               applied
                 ? t("pages.applications.removeApplication")
@@ -285,20 +283,20 @@ const MyApplicationsDetails = (params: {
             level={applied ? "secondary" : "primary"}
             size="large"
             isLoading={applicationIsLoading || removingIsLoading}
-            onClick={() => onApply(offer)}
+            onClick={() => onApply(job)}
           />
         </div>
       );
     }
   };
 
-  const renderOfferAbout = () => {
+  const renderJobAbout = () => {
     return (
       <div className="flex flex-col gap-2">
         <div className="text-lg font-semibold text-influencer">
-          {t("pages.applications.aboutOffer")}
+          {t("pages.applications.aboutJob")}
         </div>
-        <div className="whitespace-pre-line">{offer?.OfferDetails}</div>
+        <div className="whitespace-pre-line">{job?.OfferDetails}</div>
       </div>
     );
   };
@@ -316,8 +314,8 @@ const MyApplicationsDetails = (params: {
         <div className="flex w-full flex-col gap-3">
           {renderBackButton()}
           <div>
-            {renderOfferHeader()}
-            {renderOfferSubHeader()}
+            {renderJobHeader()}
+            {renderJobSubHeader()}
           </div>
           {renderPlatformWithContentType()}
           {renderFollowers()}
@@ -326,7 +324,7 @@ const MyApplicationsDetails = (params: {
           {renderPrice()}
           {renderApplicants()}
           {renderApplyButton()}
-          {renderOfferAbout()}
+          {renderJobAbout()}
         </div>
       )}
     </div>

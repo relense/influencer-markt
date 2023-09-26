@@ -233,7 +233,7 @@ const ProfileCard = (params: {
             params.activeOffers !== undefined &&
             params.activeOffers > 0 && (
               <div className="text-lg font-semibold">
-                {t("components.profileCard.offers", {
+                {t("components.profileCard.jobs", {
                   count: params.activeOffers,
                 })}
               </div>

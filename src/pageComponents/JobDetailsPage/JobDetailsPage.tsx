@@ -1,5 +1,5 @@
 import { useTranslation } from "react-i18next";
-import { type OfferIncludes } from "../../utils/globalTypes";
+import { type JobIncludes } from "../../utils/globalTypes";
 import { useEffect, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -17,13 +17,13 @@ import { Button } from "../../components/Button";
 import { ShareModal } from "../../components/ShareModal";
 import Image from "next/image";
 
-const OfferDetailsPage = (params: {
-  offerId: number;
+const JobDetailsPage = (params: {
+  jobId: number;
   openLoginModal: () => void;
 }) => {
   const { t, i18n } = useTranslation();
   const session = useSession();
-  const [offer, setOffer] = useState<OfferIncludes>();
+  const [job, setJob] = useState<JobIncludes>();
   const [applied, setApplied] = useState<boolean>();
   const [isShareModalOpen, setIsShareModalOpen] = useState<boolean>();
   const [disableApply, setDisableApply] = useState<boolean>(false);
@@ -31,18 +31,18 @@ const OfferDetailsPage = (params: {
   const { data: profile } = api.profiles.getProfile.useQuery();
 
   const {
-    data: offerData,
-    refetch: refetcheOffer,
+    data: jobData,
+    refetch: refetcheJob,
     isLoading,
   } = api.offers.getSimpleOffer.useQuery({
-    offerId: params.offerId || -1,
+    offerId: params.jobId || -1,
   });
 
-  const { mutate: applyToOffer, isLoading: applicationIsLoading } =
+  const { mutate: applyToJob, isLoading: applicationIsLoading } =
     api.offers.applyToOffer.useMutation({
       onSuccess: () => {
-        void refetcheOffer();
-        toast.success(t("pages.offers.appliedSuccess"), {
+        void refetcheJob();
+        toast.success(t("pages.jobs.appliedSuccess"), {
           position: "bottom-left",
         });
       },
@@ -50,8 +50,8 @@ const OfferDetailsPage = (params: {
   const { mutate: removeApplication, isLoading: removingIsLoading } =
     api.offers.removeOfferApplication.useMutation({
       onSuccess: () => {
-        void refetcheOffer();
-        toast.success(t("pages.offers.removedApplicationSuccess"), {
+        void refetcheJob();
+        toast.success(t("pages.jobs.removedApplicationSuccess"), {
           position: "bottom-left",
         });
       },
@@ -62,18 +62,18 @@ const OfferDetailsPage = (params: {
   });
 
   useEffect(() => {
-    const checkIfUserHasApplied = (offer: OfferIncludes) => {
+    const checkIfUserHasApplied = (job: JobIncludes) => {
       let hasApplied = false;
 
-      const applied = !!offer.applicants.find(
+      const applied = !!job.applicants.find(
         (applicant) => applicant.userId === session.data?.user.id
       );
 
-      const isAccepted = !!offer.acceptedApplicants.find(
+      const isAccepted = !!job.acceptedApplicants.find(
         (applicant) => applicant.userId === session.data?.user.id
       );
 
-      const isRejected = !!offer.rejectedApplicants.find(
+      const isRejected = !!job.rejectedApplicants.find(
         (applicant) => applicant.userId === session.data?.user.id
       );
 
@@ -84,32 +84,30 @@ const OfferDetailsPage = (params: {
       return hasApplied;
     };
 
-    const checkIfUserHasRequirements = (offer: OfferIncludes) => {
+    const checkIfUserHasRequirements = (job: JobIncludes) => {
       if (profile) {
         const hasSocialMedia = profile?.userSocialMedia.find(
           (userSocialMedia) =>
-            userSocialMedia.socialMedia?.id === offer?.socialMediaId
+            userSocialMedia.socialMedia?.id === job?.socialMediaId
         );
 
         let hasFollowers = false;
         if (hasSocialMedia) {
-          hasFollowers = hasSocialMedia.followers >= offer.minFollowers;
+          hasFollowers = hasSocialMedia.followers >= job.minFollowers;
         }
 
-        const hasOfferGender =
-          profile.genderId === offer.genderId || offer.gender === null;
+        const hasJobGender =
+          profile.genderId === job.genderId || job.gender === null;
 
-        const hasCountry = profile.countryId === offer.countryId;
+        const hasCountry = profile.countryId === job.countryId;
 
         const hasCategory = profile.categories.some((category) =>
-          offer.categories.some(
-            (offerCategory) => offerCategory.id === category.id
-          )
+          job.categories.some((jobCategory) => jobCategory.id === category.id)
         );
 
         return (
           !!hasSocialMedia &&
-          hasOfferGender &&
+          hasJobGender &&
           hasCountry &&
           hasFollowers &&
           hasCategory
@@ -117,29 +115,29 @@ const OfferDetailsPage = (params: {
       }
     };
 
-    if (offerData) {
+    if (jobData) {
       if (profile) {
-        const hasRequirements = checkIfUserHasRequirements(offerData);
+        const hasRequirements = checkIfUserHasRequirements(jobData);
 
         if (!hasRequirements) {
           setDisableApply(true);
         }
       }
 
-      setApplied(checkIfUserHasApplied(offerData));
-      setOffer(offerData);
+      setApplied(checkIfUserHasApplied(jobData));
+      setJob(jobData);
     }
-  }, [offerData, profile, profile?.userSocialMedia, session.data?.user.id]);
+  }, [jobData, profile, profile?.userSocialMedia, session.data?.user.id]);
 
-  const onApply = (offer: OfferIncludes) => {
+  const onApply = (job: JobIncludes) => {
     if (session.status === "authenticated" && profile) {
       if (applied) {
-        removeApplication({ offerId: offer.id });
+        removeApplication({ offerId: job.id });
       } else {
-        applyToOffer({ offerId: offer.id });
+        applyToJob({ offerId: job.id });
       }
     } else if (session.status === "authenticated" && !profile) {
-      toast.error(t("pages.offers.toastWarning"), {
+      toast.error(t("pages.jobs.toastWarning"), {
         position: "bottom-left",
       });
     } else {
@@ -158,23 +156,21 @@ const OfferDetailsPage = (params: {
           className="fa-lg cursor-pointer"
         />
 
-        <div className="cursor-pointer underline">
-          {t("pages.offers.share")}
-        </div>
+        <div className="cursor-pointer underline">{t("pages.jobs.share")}</div>
       </div>
     );
   };
 
-  const renderOfferCreatorPicture = () => {
-    if (offer) {
+  const renderJobCreatorPicture = () => {
+    if (job) {
       return (
         <Link
-          href={`/${offer?.offerCreator?.user?.username || ""}`}
+          href={`/${job?.offerCreator?.user?.username || ""}`}
           className="h-20 w-32 cursor-pointer"
         >
           <Image
-            src={offer.offerCreator.profilePicture || ""}
-            alt={`${offer.offerCreator.name} profile picture`}
+            src={job.offerCreator.profilePicture || ""}
+            alt={`${job.offerCreator.name} profile picture`}
             width={1000}
             height={1000}
             className="h-full w-full rounded-lg object-cover"
@@ -185,12 +181,12 @@ const OfferDetailsPage = (params: {
     }
   };
 
-  const renderOfferHeader = () => {
-    if (offer) {
+  const renderJobHeader = () => {
+    if (job) {
       return (
         <div className="flex items-start justify-between">
           <div className="w-auto text-2xl font-semibold lg:w-auto lg:max-w-[80%]">
-            {offer?.offerSummary}
+            {job?.offerSummary}
           </div>
           <div className="hidden lg:flex">{shareButton()}</div>
         </div>
@@ -198,25 +194,25 @@ const OfferDetailsPage = (params: {
     }
   };
 
-  const renderOfferSubHeader = () => {
+  const renderJobSubHeader = () => {
     return (
       <div className="flex flex-wrap items-center gap-2 text-gray2">
         <Link
-          href={`/${offer?.offerCreator?.user?.username || ""}`}
+          href={`/${job?.offerCreator?.user?.username || ""}`}
           className="hover:underline"
         >
-          {offer?.offerCreator?.name}
+          {job?.offerCreator?.name}
         </Link>
         <div className="h-1 w-1 rounded-full bg-black" />
         <div>
-          {offer?.country?.name}
-          {offer?.state?.name ? `,${offer?.state?.name}` : ""}
+          {job?.country?.name}
+          {job?.state?.name ? `,${job?.state?.name}` : ""}
         </div>
-        {offer?.createdAt && (
+        {job?.createdAt && (
           <>
             <div className="h-1 w-1 rounded-full bg-black" />
 
-            <div>{helper.formatDate(offer?.createdAt, i18n.language)}</div>
+            <div>{helper.formatDate(job?.createdAt, i18n.language)}</div>
           </>
         )}
       </div>
@@ -227,15 +223,13 @@ const OfferDetailsPage = (params: {
     return (
       <div className="flex gap-2">
         <div className="font-semibold text-influencer">
-          {offer?.socialMedia?.name}
+          {job?.socialMedia?.name}
         </div>
         <div className="flex gap-2">
-          {offer?.contentTypeWithQuantity.map((contentType) => {
+          {job?.contentTypeWithQuantity.map((contentType) => {
             return (
               <div
-                key={`details${contentType.id}${
-                  offer?.offerCreator?.name || ""
-                }`}
+                key={`details${contentType.id}${job?.offerCreator?.name || ""}`}
                 className="flex gap-1 text-black"
               >
                 <div>
@@ -256,24 +250,24 @@ const OfferDetailsPage = (params: {
     return (
       <div className="flex gap-2">
         <div className="font-semibold text-influencer">
-          {t("pages.offers.followers")}
+          {t("pages.jobs.followers")}
         </div>
-        <div>{helper.formatNumberWithKorM(offer?.minFollowers || 0)} </div>
+        <div>{helper.formatNumberWithKorM(job?.minFollowers || 0)} </div>
       </div>
     );
   };
 
   const renderGender = () => {
-    if (offer) {
+    if (job) {
       return (
         <div className="flex gap-2">
           <div className="font-semibold text-influencer">
-            {t("pages.offers.gender")}
+            {t("pages.jobs.gender")}
           </div>
           <div>
-            {offer?.gender && offer?.gender.name
-              ? t(`pages.offers.${offer.gender.name}`)
-              : t(`pages.offers.any`)}
+            {job?.gender && job?.gender.name
+              ? t(`pages.jobs.${job.gender.name}`)
+              : t(`pages.jobs.any`)}
           </div>
         </div>
       );
@@ -284,13 +278,13 @@ const OfferDetailsPage = (params: {
     return (
       <div className="flex flex-wrap items-center font-normal text-black">
         <span className="pr-2 font-semibold text-influencer">
-          {t("pages.offers.categories")}
+          {t("pages.jobs.categories")}
         </span>
-        {offer?.categories.map((category, index) => {
+        {job?.categories.map((category, index) => {
           return (
             <div key={`categories${category.id}`} className="pr-2">
               {`${t(`general.categories.${category.name}`)}${
-                offer?.categories.length - 1 !== index ? "," : ""
+                job?.categories.length - 1 !== index ? "," : ""
               }`}
             </div>
           );
@@ -303,15 +297,15 @@ const OfferDetailsPage = (params: {
     return (
       <div className="flex gap-2">
         <div className="font-semibold text-influencer">
-          {t("pages.offers.offerPay")}
+          {t("pages.jobs.jobPay")}
         </div>
-        <div>{helper.formatNumber(offer?.price || 0)}€</div>
+        <div>{helper.formatNumber(job?.price || 0)}€</div>
       </div>
     );
   };
 
   const renderApplicants = () => {
-    if (offer?.applicants && offer?.applicants.length > 0) {
+    if (job?.applicants && job?.applicants.length > 0) {
       return (
         <div className="flex flex-col gap-4 sm:flex-row sm:gap-6">
           <div className="flex items-center gap-2">
@@ -320,8 +314,8 @@ const OfferDetailsPage = (params: {
               className="fa-xl cursor-pointer text-influencer"
             />
             <div className="font-semibold">
-              {t("pages.offers.applicants", {
-                count: offer?.applicants.length,
+              {t("pages.jobs.applicants", {
+                count: job?.applicants.length,
               })}
             </div>
           </div>
@@ -331,16 +325,16 @@ const OfferDetailsPage = (params: {
   };
 
   const renderApplyButton = () => {
-    if (offer && (!userRole?.role || userRole?.role.id !== 1)) {
+    if (job && (!userRole?.role || userRole?.role.id !== 1)) {
       let title = applied
-        ? t("pages.offers.removeApplication")
-        : t("pages.offers.apply");
+        ? t("pages.jobs.removeApplication")
+        : t("pages.jobs.apply");
 
       if (disableApply) {
-        title = t("pages.offers.noRequirements");
+        title = t("pages.jobs.noRequirements");
       }
 
-      if (offer.offerStatusId === 1) {
+      if (job.offerStatusId === 1) {
         return (
           <div>
             <Button
@@ -348,7 +342,7 @@ const OfferDetailsPage = (params: {
               level={applied ? "secondary" : "primary"}
               size="large"
               isLoading={isLoading || applicationIsLoading || removingIsLoading}
-              onClick={() => onApply(offer)}
+              onClick={() => onApply(job)}
               disabled={disableApply}
             />
           </div>
@@ -356,20 +350,20 @@ const OfferDetailsPage = (params: {
       } else {
         return (
           <div className="rounded-xl bg-influencer-light p-4 text-center font-semibold text-white">
-            {t("pages.offers.noLongerAvailable")}
+            {t("pages.jobs.noLongerAvailable")}
           </div>
         );
       }
     }
   };
 
-  const renderOfferAbout = () => {
+  const renderJobAbout = () => {
     return (
       <div className="flex flex-col gap-2">
         <div className="text-lg font-semibold text-influencer">
-          {t("pages.offers.aboutOffer")}
+          {t("pages.jobs.aboutJob")}
         </div>
-        <div className="whitespace-pre-line">{offer?.OfferDetails}</div>
+        <div className="whitespace-pre-line">{job?.OfferDetails}</div>
       </div>
     );
   };
@@ -384,16 +378,14 @@ const OfferDetailsPage = (params: {
         ) : (
           <div className="flex w-full flex-col gap-3 p-4 sm:p-0">
             <div className="flex justify-between lg:hidden">
-              {renderOfferCreatorPicture()}
+              {renderJobCreatorPicture()}
               {shareButton()}
             </div>
             <div className="flex gap-4">
-              <div className="hidden lg:flex">
-                {renderOfferCreatorPicture()}
-              </div>
+              <div className="hidden lg:flex">{renderJobCreatorPicture()}</div>
               <div className="flex flex-1 flex-col gap-2">
-                {renderOfferHeader()}
-                {renderOfferSubHeader()}
+                {renderJobHeader()}
+                {renderJobSubHeader()}
               </div>
             </div>
             {renderPlatformWithContentType()}
@@ -403,16 +395,16 @@ const OfferDetailsPage = (params: {
             {renderPrice()}
             {renderApplicants()}
             {renderApplyButton()}
-            {renderOfferAbout()}
+            {renderJobAbout()}
           </div>
         )}
       </div>
       <div className="flex justify-center">
         {isShareModalOpen && (
           <ShareModal
-            modalTitle={t("pages.offers.shareModalTitle")}
+            modalTitle={t("pages.jobs.shareModalTitle")}
             onClose={() => setIsShareModalOpen(false)}
-            url={`${window.location.origin}/offers/${params.offerId}`}
+            url={`${window.location.origin}/jobs/${params.jobId}`}
           />
         )}
       </div>
@@ -420,4 +412,4 @@ const OfferDetailsPage = (params: {
   );
 };
 
-export { OfferDetailsPage };
+export { JobDetailsPage };

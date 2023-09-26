@@ -29,6 +29,7 @@ import {
   faSearch,
   faBell as faBellSolid,
   faReceipt,
+  faFileInvoice,
 } from "@fortawesome/free-solid-svg-icons";
 import { api } from "~/utils/api";
 import { useRouter } from "next/router";
@@ -68,8 +69,10 @@ export const Navbar = (params: {
     useState<boolean>(false);
   const [openSavedDropdown, setOpenSavedDropdown] = useState<boolean>(false);
 
-  const { data: notificationsToBeReadCount } =
-    api.notifications.getUserToBeReadNotifications.useQuery();
+  const { data: notificationsToBeReadCount, refetch: refetchNotficationsRead } =
+    api.notifications.getUserToBeReadNotifications.useQuery(undefined, {
+      enabled: false,
+    });
 
   const { mutate: notificationUpdate } =
     api.notifications.updateNotificationsToRead.useMutation({
@@ -77,6 +80,12 @@ export const Navbar = (params: {
         void ctx.notifications.getUserToBeReadNotifications.invalidate();
       },
     });
+
+  useEffect(() => {
+    if (params.sessionData) {
+      void refetchNotficationsRead();
+    }
+  }, [params.sessionData, refetchNotficationsRead]);
 
   useOutsideClick(() => {
     if (toggleOptions === false) return;
@@ -225,8 +234,8 @@ export const Navbar = (params: {
             </div>
           </>
         )}
-        <Link href="/offers" className="cursor-pointer px-2 text-lg">
-          {t("components.navbar.offers")}
+        <Link href="/jobs" className="cursor-pointer px-2 text-lg">
+          {t("components.navbar.jobs")}
         </Link>
       </div>
     );
@@ -454,13 +463,13 @@ export const Navbar = (params: {
               <div className="cursor-pointer border-[1px] border-white1 lg:hidden" />
               <div className="px-8">
                 <Link
-                  href="/manage-offers"
+                  href="/manage-jobs"
                   className=" group flex cursor-pointer items-center gap-4 py-2"
                 >
                   <FontAwesomeIcon icon={faBriefcase} className="fa-lg" />
 
                   <div className="need-interaction group-hover:underline">
-                    {t("components.navbar.myOffers")}
+                    {t("components.navbar.myJobs")}
                   </div>
                 </Link>
 
@@ -500,6 +509,17 @@ export const Navbar = (params: {
                     </div>
                   </Link>
                 )}
+
+                <Link
+                  href="/billing"
+                  className="group flex cursor-pointer items-center gap-4 py-2"
+                >
+                  <FontAwesomeIcon icon={faFileInvoice} className="fa-lg" />
+
+                  <div className="need-interaction group-hover:underline">
+                    {t("components.navbar.billing")}
+                  </div>
+                </Link>
               </div>
               <div className="cursor-pointer border-[1px] border-white1" />
 

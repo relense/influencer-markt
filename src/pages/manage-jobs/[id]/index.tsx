@@ -6,12 +6,13 @@ import { Layout } from "../../../components/Layout";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
 import { LoadingSpinner } from "../../../components/LoadingSpinner";
-import { ManageOfferDetailsPage } from "../../../pageComponents/ManageOfferDetailsPage/ManageOfferDetailsPage";
-interface OfferDetailsProps {
+import { ManageJobDetailsPage } from "../../../pageComponents/ManageJobDetailsPage/ManageJobDetailsPage";
+
+interface JobDetailsProps {
   id: string;
 }
 
-const OfferDetails: NextPage<OfferDetailsProps> = ({ id }) => {
+const JobDetails: NextPage<JobDetailsProps> = ({ id }) => {
   const router = useRouter();
   const { data: profileOffers, isLoading } =
     api.profiles.getProfileOffers.useQuery(undefined, {
@@ -20,7 +21,7 @@ const OfferDetails: NextPage<OfferDetailsProps> = ({ id }) => {
 
   useEffect(() => {
     const value = !!profileOffers?.createdOffers.find(
-      (offer) => offer.id === parseInt(id)
+      (job) => job.id === parseInt(id)
     );
 
     if (!value && isLoading === false) {
@@ -37,8 +38,8 @@ const OfferDetails: NextPage<OfferDetailsProps> = ({ id }) => {
       <ProtectedWrapper>
         <Layout>
           {({ loggedInProfileId }) => (
-            <ManageOfferDetailsPage
-              offerId={parseInt(id)}
+            <ManageJobDetailsPage
+              jobId={parseInt(id)}
               loggedInProfileId={loggedInProfileId}
             />
           )}
@@ -62,4 +63,4 @@ export const getStaticPaths = () => {
   return { paths: [], fallback: "blocking" };
 };
 
-export default OfferDetails;
+export default JobDetails;

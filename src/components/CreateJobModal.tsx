@@ -7,7 +7,7 @@ import { faPlus, faSubtract } from "@fortawesome/free-solid-svg-icons";
 import { Modal } from "./Modal";
 import { CustomSelect } from "./CustomSelect";
 import { Button } from "./Button";
-import type { OfferWithAllData, Option } from "../utils/globalTypes";
+import type { JobWithAllData, Option } from "../utils/globalTypes";
 import { CustomMultiSelect } from "./CustomMultiSelect";
 import { useEffect, useState } from "react";
 import { toast } from "react-hot-toast";
@@ -15,12 +15,12 @@ import { usePrevious } from "../utils/helper";
 import { useRouter } from "next/router";
 import { ToolTip } from "./ToolTip";
 
-type OfferData = {
-  offerSummary: string;
-  offerDetails: string;
+type JobData = {
+  jobSummary: string;
+  jobDetails: string;
   platform: Option;
   categories: Option[];
-  offerPrice: number;
+  jobPrice: number;
   numberOfInfluencers: number;
   country: Option;
   minFollowers: number;
@@ -33,10 +33,10 @@ type ContentTypeWithQuantity = {
   amount: number;
 };
 
-const CreateOfferModal = (params: {
+const CreateJobModal = (params: {
   onClose: () => void;
   edit: boolean;
-  offer: OfferWithAllData | undefined;
+  job: JobWithAllData | undefined;
 }) => {
   const { t } = useTranslation();
   const ctx = api.useContext();
@@ -48,10 +48,10 @@ const CreateOfferModal = (params: {
   const [isPublished, setIsPublished] = useState<boolean>(false);
 
   const prevContentTypes = usePrevious(
-    params?.offer?.contentTypeWithQuantity || null
+    params?.job?.contentTypeWithQuantity || null
   );
 
-  const prevGender = usePrevious(params?.offer?.gender || null);
+  const prevGender = usePrevious(params?.job?.gender || null);
 
   const {
     control,
@@ -60,51 +60,50 @@ const CreateOfferModal = (params: {
     setValue,
     watch,
     reset,
-    setError,
     formState: { errors, isDirty },
-  } = useForm<OfferData>({
+  } = useForm<JobData>({
     defaultValues: {
       categories: [],
       platform: { id: -1, name: "" },
       country: { id: -1, name: "" },
-      gender: params?.offer?.gender || { id: -1, name: "" },
+      gender: params?.job?.gender || { id: -1, name: "" },
     },
   });
 
   useEffect(() => {
-    if (params.offer) {
-      setValue("country", params.offer.country);
-      setValue("categories", params.offer.categories);
-      setValue("gender", params.offer.gender || { id: -1, name: "" });
-      setValue("minFollowers", params.offer.minFollowers);
-      setValue("numberOfInfluencers", params.offer.numberOfInfluencers);
-      setValue("offerDetails", params.offer.OfferDetails);
-      setValue("offerSummary", params.offer.offerSummary);
-      setValue("offerPrice", params.offer.price);
-      setValue("platform", params.offer.socialMedia);
-      setIsPublished(params.offer.published);
-      setContentTypesList(params.offer.contentTypeWithQuantity);
+    if (params.job) {
+      setValue("country", params.job.country);
+      setValue("categories", params.job.categories);
+      setValue("gender", params.job.gender || { id: -1, name: "" });
+      setValue("minFollowers", params.job.minFollowers);
+      setValue("numberOfInfluencers", params.job.numberOfInfluencers);
+      setValue("jobDetails", params.job.OfferDetails);
+      setValue("jobSummary", params.job.offerSummary);
+      setValue("jobPrice", params.job.price);
+      setValue("platform", params.job.socialMedia);
+      setIsPublished(params.job.published);
+      setContentTypesList(params.job.contentTypeWithQuantity);
     }
-  }, [params.offer, setValue]);
+  }, [params.job, setValue]);
 
   const { data: platforms } = api.allRoutes.getAllSocialMedia.useQuery();
   const { data: categories } = api.allRoutes.getAllCategories.useQuery();
   const { data: genders } = api.allRoutes.getAllGenders.useQuery();
   const { data: countries } = api.allRoutes.getAllCountries.useQuery();
 
-  const { mutate: offerCreation, isLoading: isLoadingCreate } =
+  const { mutate: jobCreation, isLoading: isLoadingCreate } =
     api.offers.createOffer.useMutation({
-      onSuccess: (offer) => {
-        void router.push(`/manage-offers/${offer.id}`);
+      onSuccess: (job) => {
+        void router.push(`/manage-jobs/${job.id}`);
         void ctx.offers.getAllUserOffers.invalidate().then(() => {
-          toast.success(t("components.myOfferDropDown.offerCreated"), {
+          toast.success(t("components.myJobDropDown.jobCreated"), {
             position: "bottom-left",
           });
         });
       },
     });
 
-  const { mutate: offerUpdate, isLoading: isLoadingUpdate } =
+  const { mutate: jobUpdate, isLoading: isLoadingUpdate } =
     api.offers.updateOffer.useMutation({
       onSuccess: () => {
         params.onClose();
@@ -112,7 +111,7 @@ const CreateOfferModal = (params: {
         void ctx.offers.getOffer.invalidate();
         void ctx.offers.getApplicants.invalidate();
         void ctx.offers.getAllUserOffers.invalidate().then(() => {
-          toast.success(t("components.myOfferDropDown.offerUpdated"), {
+          toast.success(t("components.myJobDropDown.jobUpdated"), {
             position: "bottom-left",
           });
         });
@@ -126,9 +125,9 @@ const CreateOfferModal = (params: {
       prevGender !== data.gender
     ) {
       const payload = {
-        offerId: params.offer?.id || -1,
-        offerSummary: data.offerSummary,
-        offerDetails: data.offerDetails,
+        offerId: params.job?.id || -1,
+        offerSummary: data.jobSummary,
+        offerDetails: data.jobDetails,
         socialMediaId: data.platform.id,
         contentTypes: contentTypesList.map((item) => {
           return {
@@ -139,7 +138,7 @@ const CreateOfferModal = (params: {
         categories: data.categories.map((category) => {
           return category.id;
         }),
-        price: data.offerPrice,
+        price: data.jobPrice,
         numberOfInfluencers: data.numberOfInfluencers,
         countryId: data.country.id,
         minFollowers: data.minFollowers,
@@ -148,9 +147,9 @@ const CreateOfferModal = (params: {
       };
 
       if (params.edit) {
-        offerUpdate(payload);
+        jobUpdate(payload);
       } else {
-        offerCreation(payload);
+        jobCreation(payload);
       }
     } else {
       params.onClose();
@@ -158,28 +157,27 @@ const CreateOfferModal = (params: {
     }
   });
 
-  const renderOfferSummaryInput = () => {
+  const renderJobSummaryInput = () => {
     return (
       <>
         <div className="flex flex-col gap-4">
           <div className="text-xl font-medium">
-            {t("pages.manageOffers.offerSummary")}
+            {t("pages.manageJobs.jobSummary")}
           </div>
           <div className="flex w-full flex-col">
             <input
-              {...register("offerSummary", { maxLength: 50 })}
+              {...register("jobSummary", { maxLength: 50 })}
               required
               type="text"
               className="flex h-14 flex-1 cursor-pointer rounded-lg border-[1px] border-gray3 bg-transparent p-4 placeholder-gray2 placeholder:w-11/12"
-              placeholder={t("pages.manageOffers.offerSummaryPlaceholder")}
+              placeholder={t("pages.manageJobs.jobSummaryPlaceholder")}
               autoComplete="off"
             />
-            {errors.offerSummary &&
-              errors.offerSummary.type === "maxLength" && (
-                <div className="px-4 py-1 text-red-600">
-                  {t("pages.manageOffers.errorWarning", { count: 50 })}
-                </div>
-              )}
+            {errors.jobSummary && errors.jobSummary.type === "maxLength" && (
+              <div className="px-4 py-1 text-red-600">
+                {t("pages.manageJobs.errorWarning", { count: 50 })}
+              </div>
+            )}
           </div>
         </div>
         <div className="w-full border-[1px] border-white1" />
@@ -187,29 +185,28 @@ const CreateOfferModal = (params: {
     );
   };
 
-  const renderOfferDetailsInput = () => {
+  const renderJobDetailsInput = () => {
     return (
       <>
         <div className="flex flex-col gap-4">
           <div className="text-xl font-medium">
-            {t("pages.manageOffers.offerDetails")}
+            {t("pages.manageJobs.jobDetails")}
           </div>
           <div className="flex w-full flex-col">
             <textarea
-              {...register("offerDetails", { maxLength: 2200 })}
+              {...register("jobDetails", { maxLength: 2200 })}
               required
               className="flex flex-1 cursor-pointer rounded-lg border-[1px] border-gray3 bg-transparent p-4 placeholder-gray2 placeholder:w-11/12"
-              placeholder={t("pages.manageOffers.detailsPlaceholder")}
+              placeholder={t("pages.manageJobs.detailsPlaceholder")}
               autoComplete="off"
             />
-            {errors.offerDetails &&
-              errors.offerDetails.type === "maxLength" && (
-                <div className="px-4 py-1 text-red-600">
-                  {t("pages.manageOffers.errorWarning", {
-                    count: 2200,
-                  })}
-                </div>
-              )}
+            {errors.jobDetails && errors.jobDetails.type === "maxLength" && (
+              <div className="px-4 py-1 text-red-600">
+                {t("pages.manageJobs.errorWarning", {
+                  count: 2200,
+                })}
+              </div>
+            )}
           </div>
         </div>
         <div className="w-full border-[1px] border-white1" />
@@ -222,7 +219,7 @@ const CreateOfferModal = (params: {
       <>
         <div className="flex flex-col gap-4">
           <div className="text-xl font-medium">
-            {t("pages.manageOffers.platformTitle")}
+            {t("pages.manageJobs.platformTitle")}
           </div>
           <Controller
             name="platform"
@@ -233,7 +230,7 @@ const CreateOfferModal = (params: {
                 <CustomSelect
                   register={register}
                   name="platform"
-                  placeholder={t("pages.manageOffers.platformPlaceholder")}
+                  placeholder={t("pages.manageJobs.platformPlaceholder")}
                   options={platforms?.map((platform) => {
                     return { id: platform.id, name: platform.name };
                   })}
@@ -278,7 +275,7 @@ const CreateOfferModal = (params: {
           <div className="flex flex-col gap-4">
             <div className="flex items-center gap-2">
               <div className="text-xl font-medium">
-                {t("pages.manageOffers.contentTypesTitle")}
+                {t("pages.manageJobs.contentTypesTitle")}
               </div>
               {!allContentTypesSelected && (
                 <div className="flex h-6 w-6 items-center justify-center rounded-full bg-influencer text-white">
@@ -341,7 +338,7 @@ const CreateOfferModal = (params: {
         <div className="flex flex-1 items-center gap-2">
           <CustomSelect
             name="contentType"
-            placeholder={t("pages.manageOffers.contentTypePlaceholder")}
+            placeholder={t("pages.manageJobs.contentTypePlaceholder")}
             options={types.map((type) => {
               return {
                 id: type.id,
@@ -361,7 +358,7 @@ const CreateOfferModal = (params: {
             type="number"
             required
             className="h-14 w-full rounded-lg border-[1px] border-gray3 p-4 placeholder-gray2 focus:border-black focus:outline-none"
-            placeholder={t("pages.manageOffers.howMany")}
+            placeholder={t("pages.manageJobs.howMany")}
             max="1000000000"
             min="1"
             value={contentTypesList[index]?.amount || ""}
@@ -409,7 +406,7 @@ const CreateOfferModal = (params: {
       <>
         <div className="flex flex-col gap-4">
           <div className="text-xl font-medium">
-            {t("pages.manageOffers.offerCategories")}
+            {t("pages.manageJobs.jobCategories")}
           </div>
           <Controller
             name="categories"
@@ -419,7 +416,7 @@ const CreateOfferModal = (params: {
               return (
                 <CustomMultiSelect
                   name="categories"
-                  placeholder={t("pages.manageOffers.categoriesPlaceholder")}
+                  placeholder={t("pages.manageJobs.categoriesPlaceholder")}
                   options={categories?.map((category) => {
                     return {
                       id: category.id,
@@ -441,19 +438,19 @@ const CreateOfferModal = (params: {
     );
   };
 
-  const renderOfferPriceInput = () => {
+  const renderJobPriceInput = () => {
     return (
       <>
         <div className="flex flex-col gap-4">
           <div className="text-xl font-medium">
-            {t("pages.manageOffers.offerPriceTitle")}
+            {t("pages.manageJobs.jobPriceTitle")}
           </div>
           <input
-            {...register("offerPrice", { valueAsNumber: true })}
+            {...register("jobPrice", { valueAsNumber: true })}
             required
             type="number"
             className="flex h-14 flex-1 cursor-pointer rounded-lg border-[1px] border-gray3 bg-transparent p-4 placeholder-gray2 placeholder:w-11/12"
-            placeholder={t("pages.manageOffers.pricePlaceholder")}
+            placeholder={t("pages.manageJobs.pricePlaceholder")}
             autoComplete="off"
             min="0"
             max="1000000000"
@@ -470,14 +467,14 @@ const CreateOfferModal = (params: {
       <>
         <div className="flex flex-col gap-4">
           <div className="text-xl font-medium">
-            {t("pages.manageOffers.numberOfInfluencers")}
+            {t("pages.manageJobs.numberOfInfluencers")}
           </div>
           <input
             {...register("numberOfInfluencers", { valueAsNumber: true })}
             required
             type="number"
             className="flex h-14 flex-1 cursor-pointer rounded-lg border-[1px] border-gray3 bg-transparent p-4 placeholder-gray2 placeholder:w-11/12"
-            placeholder={t("pages.manageOffers.numberOfInfluencersPlaceholder")}
+            placeholder={t("pages.manageJobs.numberOfInfluencersPlaceholder")}
             autoComplete="off"
             min="1"
             max="1000000"
@@ -494,7 +491,7 @@ const CreateOfferModal = (params: {
       <>
         <div className="flex flex-col gap-4">
           <div className="text-xl font-medium">
-            {t("pages.manageOffers.influencerLocation")}
+            {t("pages.manageJobs.influencerLocation")}
           </div>
           <div className="flex flex-col gap-6 lg:flex-row lg:gap-6">
             <Controller
@@ -506,7 +503,7 @@ const CreateOfferModal = (params: {
                   <CustomSelect
                     register={register}
                     name="country"
-                    placeholder={t("pages.manageOffers.country")}
+                    placeholder={t("pages.manageJobs.country")}
                     options={
                       countries && countries.length > 0
                         ? countries?.map((country) => {
@@ -536,19 +533,19 @@ const CreateOfferModal = (params: {
       <>
         <div className="flex flex-col gap-4">
           <div className="text-xl font-medium">
-            {t("pages.manageOffers.influencerFollowers")}
+            {t("pages.manageJobs.influencerFollowers")}
           </div>
           <div className="flex flex-col gap-6 lg:flex-row lg:gap-11">
             <div className="flex flex-1 flex-col gap-1">
               <label className="text-gray2">
-                {t("pages.manageOffers.minimum")}
+                {t("pages.manageJobs.minimum")}
               </label>
               <input
                 {...register("minFollowers", { valueAsNumber: true })}
                 type="number"
                 required
                 className="h-14 w-full rounded-lg border-[1px] border-gray3 p-4 placeholder-gray2 focus:border-black focus:outline-none"
-                placeholder={t("pages.manageOffers.minFollowers")}
+                placeholder={t("pages.manageJobs.minFollowers")}
                 autoComplete="off"
                 max="1000000000"
                 min="0"
@@ -573,7 +570,7 @@ const CreateOfferModal = (params: {
     return (
       <div className="flex flex-col gap-4">
         <div className="text-xl font-medium">
-          {t("pages.manageOffers.influencerGender")}
+          {t("pages.manageJobs.influencerGender")}
         </div>
         <div className="flex flex-wrap justify-start gap-4 text-sm sm:text-base">
           <div
@@ -585,7 +582,7 @@ const CreateOfferModal = (params: {
             }
             onClick={() => setValue("gender", { id: -1, name: "" })}
           >
-            {t(`pages.manageOffers.any`)}
+            {t(`pages.manageJobs.any`)}
           </div>
           {genders?.map((gender) => {
             return (
@@ -598,7 +595,7 @@ const CreateOfferModal = (params: {
                 }
                 onClick={() => setValue("gender", gender)}
               >
-                {t(`pages.manageOffers.${gender.name}`)}
+                {t(`pages.manageJobs.${gender.name}`)}
               </div>
             );
           })}
@@ -613,9 +610,9 @@ const CreateOfferModal = (params: {
       <div className="flex flex-col gap-4">
         <div className="flex gap-4">
           <div className="text-xl font-medium">
-            {t(`pages.manageOffers.publishOffer`)}
+            {t(`pages.manageJobs.publishJob`)}
           </div>
-          <ToolTip content={t(`pages.manageOffers.publishOfferToolTip`)} />
+          <ToolTip content={t(`pages.manageJobs.publishJobToolTip`)} />
         </div>
         <div>
           <label className="relative mr-5 inline-flex cursor-pointer items-center">
@@ -633,8 +630,8 @@ const CreateOfferModal = (params: {
             />
             <span className="ml-2 font-medium text-gray-900">
               {isPublished
-                ? t(`pages.manageOffers.publishOfferToggleLabelPublish`)
-                : t(`pages.manageOffers.publishOfferToggleLabelNot`)}
+                ? t(`pages.manageJobs.publishJobToggleLabelPublish`)
+                : t(`pages.manageJobs.publishJobToggleLabelNot`)}
             </span>
           </label>
         </div>
@@ -646,8 +643,8 @@ const CreateOfferModal = (params: {
     <Modal
       title={
         params.edit
-          ? t("pages.manageOffers.updateOffer")
-          : t("pages.manageOffers.createOffer")
+          ? t("pages.manageJobs.updateJob")
+          : t("pages.manageJobs.createJob")
       }
       onClose={() => {
         params.onClose();
@@ -657,7 +654,7 @@ const CreateOfferModal = (params: {
         <div className="flex justify-center p-4">
           <Button
             type="submit"
-            title={t("pages.manageOffers.saveOffer")}
+            title={t("pages.manageJobs.saveJob")}
             level="primary"
             form="form-createModal"
             isLoading={isLoadingCreate || isLoadingUpdate}
@@ -670,12 +667,12 @@ const CreateOfferModal = (params: {
         className="flex h-full w-full flex-col gap-4 p-4 sm:w-full sm:px-8"
         onSubmit={submitRequest}
       >
-        {renderOfferSummaryInput()}
-        {renderOfferDetailsInput()}
+        {renderJobSummaryInput()}
+        {renderJobDetailsInput()}
         {renderPlatformInput()}
         {renderContentTypeInput()}
         {renderCategoriesInput()}
-        {renderOfferPriceInput()}
+        {renderJobPriceInput()}
         {renderNumberOfInfluencersInput()}
         {renderLocationInputs()}
         {renderFollowersInput()}
@@ -686,4 +683,4 @@ const CreateOfferModal = (params: {
   );
 };
 
-export { CreateOfferModal };
+export { CreateJobModal };

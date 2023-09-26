@@ -6,12 +6,12 @@ import { api } from "~/utils/api";
 import { Modal } from "../../../components/Modal";
 import { Button } from "../../../components/Button";
 import { CustomSelect } from "../../../components/CustomSelect";
-import { type OffersFilterState } from "../OffersPage";
+import { type JobsFilterState } from "../JobsPage";
 
 import { type Option } from "../../../utils/globalTypes";
 import { CustomSelectWithInput } from "../../../components/CustomSelectWithInput";
 
-const OffersFilterModal = (params: {
+const JobsFilterModal = (params: {
   onClose: () => void;
   handleFilterSubmit: (params: {
     gender: Option;
@@ -24,7 +24,7 @@ const OffersFilterModal = (params: {
   handleClearFilter: () => void;
   genders: Option[];
   countries: Option[];
-  filterState: OffersFilterState;
+  filterState: JobsFilterState;
 }) => {
   const { t } = useTranslation();
   const [searchKeys, setSearchKeys] = useState<string>(
@@ -37,7 +37,7 @@ const OffersFilterModal = (params: {
     register: filterRegister,
     setValue: filterSetValue,
     watch: filterWatch,
-  } = useForm<OffersFilterState>({
+  } = useForm<JobsFilterState>({
     defaultValues: {
       gender: params.filterState.gender,
       minFollowers: params.filterState.minFollowers,
@@ -259,7 +259,7 @@ const OffersFilterModal = (params: {
             {t("components.filter.clearAllButton")}
           </div>
           <Button
-            title={t("components.filter.showOffers")}
+            title={t("components.filter.showJobs")}
             level="primary"
             type="submit"
             form="form-filterModal"
@@ -281,4 +281,4 @@ const OffersFilterModal = (params: {
   );
 };
 
-export { OffersFilterModal };
+export { JobsFilterModal };

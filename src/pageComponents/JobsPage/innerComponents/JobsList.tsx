@@ -5,7 +5,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useTranslation } from "react-i18next";
 
 import { LoadingSpinner } from "../../../components/LoadingSpinner";
-import { type OfferIncludes } from "../../../utils/globalTypes";
+import { type JobIncludes } from "../../../utils/globalTypes";
 import { Button } from "../../../components/Button";
 import { helper } from "../../../utils/helper";
 import { faCheckCircle } from "@fortawesome/free-solid-svg-icons";
@@ -24,13 +24,13 @@ type ProfileIncludes = Prisma.ProfileGetPayload<{
   };
 }>;
 
-const OffersList = (params: {
-  offersCount: number;
-  offers: OfferIncludes[];
-  onChangeOffer: (offer: OfferIncludes) => void;
-  selectedOfferId: number;
-  fetchMoreOffers: () => void;
-  isRefetchingOffersWithCursor: boolean;
+const JobsList = (params: {
+  jobsCount: number;
+  jobs: JobIncludes[];
+  onChangeJob: (job: JobIncludes) => void;
+  selectedJobId: number;
+  fetchMoreJobs: () => void;
+  isRefetchingJobsWithCursor: boolean;
   isLoading: boolean;
   profile: ProfileIncludes | undefined;
   userRole: Role | undefined;
@@ -39,31 +39,31 @@ const OffersList = (params: {
   const listContainer = useRef<HTMLDivElement>(null);
 
   const checkIfUserHasRequirements = (
-    offer: OfferIncludes,
+    job: JobIncludes,
     profile: ProfileIncludes
   ) => {
     const hasSocialMedia = profile?.userSocialMedia.find(
       (userSocialMedia) =>
-        userSocialMedia.socialMedia?.id === offer?.socialMediaId
+        userSocialMedia.socialMedia?.id === job?.socialMediaId
     );
 
     let hasFollowers = false;
     if (hasSocialMedia) {
-      hasFollowers = hasSocialMedia.followers >= offer.minFollowers;
+      hasFollowers = hasSocialMedia.followers >= job.minFollowers;
     }
 
-    const hasOfferGender =
-      profile.genderId === offer.genderId || offer.gender === null;
+    const hasJobGender =
+      profile.genderId === job.genderId || job.gender === null;
 
-    const hasCountry = profile.countryId === offer.countryId;
+    const hasCountry = profile.countryId === job.countryId;
 
     const hasCategory = profile.categories.some((category) =>
-      offer.categories.some((offerCategory) => offerCategory.id === category.id)
+      job.categories.some((jobCategory) => jobCategory.id === category.id)
     );
 
     return (
       !!hasSocialMedia &&
-      hasOfferGender &&
+      hasJobGender &&
       hasCountry &&
       hasFollowers &&
       hasCategory
@@ -78,32 +78,32 @@ const OffersList = (params: {
         </div>
       ) : (
         <>
-          {params.offers.length > 0 && (
+          {params.jobs.length > 0 && (
             <div className="bg-influencer-green-dark p-4 text-center text-white">
-              {t("pages.offers.offersAvailable", {
-                available: helper.formatNumberWithKorM(params.offersCount),
+              {t("pages.jobs.jobsAvailable", {
+                available: helper.formatNumberWithKorM(params.jobsCount),
               })}
             </div>
           )}
-          {params.offers?.map((offer, index) => {
-            let offerClass =
+          {params.jobs?.map((job, index) => {
+            let jobClass =
               "flex cursor-pointer gap-4 p-4 hover:bg-influencer-green-light";
 
-            if (params.selectedOfferId === offer.id) {
-              offerClass =
+            if (params.selectedJobId === job.id) {
+              jobClass =
                 "flex cursor-pointer gap-4 p-4 hover:bg-influencer-green-light bg-influencer-green-light";
             }
 
             return (
-              <div key={`offer${offer.id}`}>
+              <div key={`job${job.id}`}>
                 <div
-                  className={offerClass}
-                  onClick={() => params.onChangeOffer(offer)}
+                  className={jobClass}
+                  onClick={() => params.onChangeJob(job)}
                 >
                   <div className="h-20 w-32">
                     <Image
-                      src={offer?.offerCreator?.profilePicture || ""}
-                      alt={`${offer.offerCreator.name} profile picture`}
+                      src={job?.offerCreator?.profilePicture || ""}
+                      alt={`${job.offerCreator.name} profile picture`}
                       width={1000}
                       height={1000}
                       className="h-full w-full rounded-lg object-cover"
@@ -112,28 +112,28 @@ const OffersList = (params: {
                   </div>
                   <div className="flex w-full flex-col gap-1">
                     <div className="font-semibold text-influencer">
-                      {offer.offerSummary}
+                      {job.offerSummary}
                     </div>
-                    <div className="text-sm">{offer.offerCreator.name}</div>
+                    <div className="text-sm">{job.offerCreator.name}</div>
                     <div className="flex flex-1 items-center gap-2 text-sm text-gray2">
                       <div>
-                        {offer?.country?.name || ""}
-                        {offer?.state?.name ? `,${offer.state.name}` : ""}
+                        {job?.country?.name || ""}
+                        {job?.state?.name ? `,${job.state.name}` : ""}
                       </div>
                       <div className="h-1 w-1 rounded-full bg-black" />
                       <div>
-                        {helper.formatDate(offer?.createdAt, i18n.language)}
+                        {helper.formatDate(job?.createdAt, i18n.language)}
                       </div>
                     </div>
 
                     <div className="flex gap-2 text-sm text-gray2">
                       <div className="flex flex-wrap gap-2 font-semibold text-influencer">
                         <div className="flex flex-wrap gap-2">
-                          {offer.socialMedia.name}{" "}
-                          {offer.contentTypeWithQuantity.map((contentType) => {
+                          {job.socialMedia.name}{" "}
+                          {job.contentTypeWithQuantity.map((contentType) => {
                             return (
                               <div
-                                key={`offersList${contentType.id}${offer.offerCreator.name}`}
+                                key={`jobsList${contentType.id}${job.offerCreator.name}`}
                                 className="flex gap-1 font-semibold text-black"
                               >
                                 <div>
@@ -150,40 +150,40 @@ const OffersList = (params: {
                     </div>
                     <div className="flex gap-2 text-sm">
                       <div className="font-semibold text-influencer">
-                        {t("pages.offers.offerPay")}
+                        {t("pages.jobs.jobPay")}
                       </div>
                       <div className="font-semibold text-black">
-                        {helper.formatNumber(offer?.price || 0)}€
+                        {helper.formatNumber(job?.price || 0)}€
                       </div>
                     </div>
                     {params.profile &&
                       params.userRole &&
                       params.userRole.id === 2 &&
-                      checkIfUserHasRequirements(offer, params.profile) && (
+                      checkIfUserHasRequirements(job, params.profile) && (
                         <div className="flex gap-1 text-sm">
                           <FontAwesomeIcon
                             icon={faCheckCircle}
                             className="fa-lg text-influencer-green"
                           />
                           <div className="font-semibold ">
-                            {t("pages.offers.matchsProfile")}
+                            {t("pages.jobs.matchsProfile")}
                           </div>
                         </div>
                       )}
                   </div>
                 </div>
-                {index !== params.offers.length - 1 && (
+                {index !== params.jobs.length - 1 && (
                   <div className="w-full border-[1px] border-white1" />
                 )}
               </div>
             );
           })}
-          {params.offersCount > params.offers.length && (
+          {params.jobsCount > params.jobs.length && (
             <div className="flex items-center justify-center p-2">
               <Button
-                title={t("pages.offers.loadMore")}
-                onClick={() => params.fetchMoreOffers()}
-                isLoading={params.isRefetchingOffersWithCursor}
+                title={t("pages.jobs.loadMore")}
+                onClick={() => params.fetchMoreJobs()}
+                isLoading={params.isRefetchingJobsWithCursor}
                 size="regular"
               />
             </div>
@@ -194,4 +194,4 @@ const OffersList = (params: {
   );
 };
 
-export { OffersList };
+export { JobsList };

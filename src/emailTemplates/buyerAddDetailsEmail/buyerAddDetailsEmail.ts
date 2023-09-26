@@ -129,7 +129,7 @@ function html(params: {
                         font-family: Lobster;
                       "
                       ><img
-                        src="../../../public/images/logo.png"
+                        src="https://publicdevinfmarkt.blob.core.windows.net/inf-markt-assets/logo.png"
                         alt="logo"
                         width="600"
                     /></a>

@@ -1,19 +1,17 @@
 import type { GetStaticProps, NextPage } from "next";
 
 import { Layout } from "../../../components/Layout";
-import { OfferDetailsPage } from "../../../pageComponents/OfferDetailsPage/OfferDetailsPage";
-interface OfferDetailsProps {
+import { JobDetailsPage } from "../../../pageComponents/JobDetailsPage/JobDetailsPage";
+
+interface JobDetailsProps {
   id: string;
 }
 
-const OffersDetails: NextPage<OfferDetailsProps> = ({ id }) => {
+const JobsDetails: NextPage<JobDetailsProps> = ({ id }) => {
   return (
     <Layout>
       {({ openLoginModal }) => (
-        <OfferDetailsPage
-          offerId={parseInt(id)}
-          openLoginModal={openLoginModal}
-        />
+        <JobDetailsPage jobId={parseInt(id)} openLoginModal={openLoginModal} />
       )}
     </Layout>
   );
@@ -33,4 +31,4 @@ export const getStaticPaths = () => {
   return { paths: [], fallback: "blocking" };
 };
 
-export default OffersDetails;
+export default JobsDetails;

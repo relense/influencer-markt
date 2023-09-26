@@ -23,7 +23,6 @@ import { CustomSelect } from "../../components/CustomSelect";
 
 import { type PreloadedImage, helper } from "../../utils/helper";
 
-import { ToolTip } from "../../components/ToolTip";
 import { Modal } from "../../components/Modal";
 import { Review } from "../../components/Review";
 import { LoadingSpinner } from "../../components/LoadingSpinner";
@@ -32,7 +31,7 @@ import type {
   ValuePack,
   Option,
   SocialMediaDetails,
-  ProfileOffers,
+  ProfileJobs,
 } from "../../utils/globalTypes";
 import { ShareModal } from "../../components/ShareModal";
 import {
@@ -70,8 +69,8 @@ const PublicProfilePage = (params: {
   >([]);
   const [reviews, setReviews] = useState<Review[]>([]);
   const [reviewsCursor, setCursor] = useState<number>();
-  const [offers, setOffers] = useState<ProfileOffers[]>([]);
-  const [offersCursor, setOffersCursor] = useState<number>(-1);
+  const [jobs, setJobs] = useState<ProfileJobs[]>([]);
+  const [jobsCursor, setJobsCursor] = useState<number>(-1);
   const [portfolio, setPortfolio] = useState<PreloadedImage[]>();
   const [isLoading, setIsLoading] = useState<boolean>(true);
 
@@ -98,21 +97,21 @@ const PublicProfilePage = (params: {
   );
 
   const {
-    data: offersData,
-    isLoading: isLoadingOffersData,
-    isFetching: isFetchingOffersData,
+    data: jobsData,
+    isLoading: isLoadingJobsData,
+    isFetching: isFetchingJobsData,
   } = api.offers.getProfileOffers.useQuery({
     profileId: profile?.id || -1,
   });
 
   const {
-    data: offersWithCursorData,
-    isFetching: isFetchingOffersWithCursor,
-    refetch: isRefetchingOffersWithCursor,
+    data: jobsWithCursorData,
+    isFetching: isFetchingJobsWithCursor,
+    refetch: isRefetchingJobsWithCursor,
   } = api.offers.getProfileOffersCursor.useQuery(
     {
       profileId: profile?.id || -1,
-      cursor: offersCursor,
+      cursor: jobsCursor,
     },
     {
       enabled: false,
@@ -135,29 +134,29 @@ const PublicProfilePage = (params: {
   });
 
   useEffect(() => {
-    if (offersData) {
-      setOffers(offersData[1]);
+    if (jobsData) {
+      setJobs(jobsData[1]);
 
-      const lastReviewInArray = offersData[1][offersData[1].length - 1];
+      const lastReviewInArray = jobsData[1][jobsData[1].length - 1];
       if (lastReviewInArray) {
-        setOffersCursor(lastReviewInArray.id);
+        setJobsCursor(lastReviewInArray.id);
       }
     }
-  }, [offersData]);
+  }, [jobsData]);
 
   useEffect(() => {
-    if (offersWithCursorData) {
-      const newOffers = [...offers];
-      offersWithCursorData.forEach((offer) => newOffers.push(offer));
-      setOffers(newOffers);
+    if (jobsWithCursorData) {
+      const newJobs = [...jobs];
+      jobsWithCursorData.forEach((job) => newJobs.push(job));
+      setJobs(newJobs);
 
       const lastReviewInArray =
-        offersWithCursorData[offersWithCursorData.length - 1];
+        jobsWithCursorData[jobsWithCursorData.length - 1];
       if (lastReviewInArray) {
-        setOffersCursor(lastReviewInArray.id);
+        setJobsCursor(lastReviewInArray.id);
       }
     }
-  }, [offers, offersWithCursorData]);
+  }, [jobs, jobsWithCursorData]);
 
   useEffect(() => {
     if (profile?.portfolio) {
@@ -550,7 +549,7 @@ const PublicProfilePage = (params: {
     );
   };
 
-  const renderValuePackOrOffersSection = () => {
+  const renderValuePackOrJobsSection = () => {
     return (
       <div className="flex w-full flex-col gap-6">
         {profile?.user?.role?.name === "Influencer" && (
@@ -560,7 +559,7 @@ const PublicProfilePage = (params: {
         )}
 
         {profile?.user?.role?.name === "Brand" && (
-          <div className="flex w-full">{renderOffers()}</div>
+          <div className="flex w-full">{renderJobs()}</div>
         )}
       </div>
     );
@@ -575,7 +574,7 @@ const PublicProfilePage = (params: {
           </div>
           <div className="flex flex-1 flex-col gap-6">
             {renderAboutSection()}
-            {renderValuePackOrOffersSection()}
+            {renderValuePackOrJobsSection()}
           </div>
         </div>
         {renderCategories()}
@@ -771,57 +770,55 @@ const PublicProfilePage = (params: {
     );
   };
 
-  const renderOffers = () => {
-    let offersContainerClasses =
+  const renderJobs = () => {
+    let jobsContainerClasses =
       "flex h-auto flex-1 flex-col gap-2 overflow-y-auto";
 
-    if (offers.length > 4) {
-      offersContainerClasses =
+    if (jobs.length > 4) {
+      jobsContainerClasses =
         "flex max-h-96 flex-1 flex-col gap-2 overflow-y-auto";
     }
 
     return (
-      <div className={offersContainerClasses}>
-        {isLoadingOffersData || isFetchingOffersData ? (
+      <div className={jobsContainerClasses}>
+        {isLoadingJobsData || isFetchingJobsData ? (
           <div className="relative flex flex-1">
             <LoadingSpinner />
           </div>
         ) : (
           <>
             <div className="text-2xl font-semibold">
-              {t("pages.publicProfilePage.offers")}
+              {t("pages.publicProfilePage.jobs")}
             </div>
-            {offersData &&
-            offersData?.[0] === 0 &&
-            isLoadingOffersData === false ? (
+            {jobsData && jobsData?.[0] === 0 && isLoadingJobsData === false ? (
               <div className="flex justify-center">
-                {t("pages.publicProfilePage.noActiveOffers")}
+                {t("pages.publicProfilePage.noActiveJobs")}
               </div>
             ) : (
               <div className="flex flex-col gap-2">
-                {offers.map((offer) => {
+                {jobs.map((job) => {
                   return (
                     <Link
-                      href={`/offers/${offer.id}`}
-                      key={`offer${offer.id}`}
+                      href={`/jobs/${job.id}`}
+                      key={`jobs${job.id}`}
                       className="flex w-full cursor-pointer flex-col rounded-lg border-[1px] p-4 hover:bg-influencer-green-light"
                     >
                       <div className="font-semibold text-influencer">
-                        {offer.offerSummary}
+                        {job.offerSummary}
                       </div>
                       <div className="text-sm text-gray2">
-                        {offer.country.name}
-                        {offer?.state?.name ? `,${offer.state.name}` : ""}
+                        {job.country.name}
+                        {job?.state?.name ? `,${job?.state.name}` : ""}
                       </div>
                       <div className="flex gap-2 text-sm text-gray2">
                         <div className="font-semibold text-influencer">
-                          {offer.socialMedia.name}
+                          {job.socialMedia.name}
                         </div>
                         <div className="flex gap-2">
-                          {offer.contentTypeWithQuantity.map((contentType) => {
+                          {job.contentTypeWithQuantity.map((contentType) => {
                             return (
                               <div
-                                key={`offersList${contentType.id}${offer.id}`}
+                                key={`JobsList${contentType.id}${job.id}`}
                                 className="flex gap-1 font-semibold text-black"
                               >
                                 <div>
@@ -838,16 +835,16 @@ const PublicProfilePage = (params: {
                     </Link>
                   );
                 })}
-                {offersData &&
-                  offersData[0] > offers.length &&
-                  offersData[0] > 0 &&
-                  offers.length > 0 &&
-                  isLoadingOffersData === false && (
+                {jobsData &&
+                  jobsData[0] > jobs.length &&
+                  jobsData[0] > 0 &&
+                  jobs.length > 0 &&
+                  isLoadingJobsData === false && (
                     <div className="flex items-center justify-center">
                       <Button
-                        title={t("pages.publicProfilePage.loadMoreOffers")}
-                        onClick={() => isRefetchingOffersWithCursor()}
-                        isLoading={isFetchingOffersWithCursor}
+                        title={t("pages.publicProfilePage.loadMoreJobs")}
+                        onClick={() => isRefetchingJobsWithCursor()}
+                        isLoading={isFetchingJobsWithCursor}
                       />
                     </div>
                   )}

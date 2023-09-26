@@ -8,18 +8,18 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 
 import { helper, useOutsideClick } from "../../../utils/helper";
-import { type OfferWithAllData } from "../../../utils/globalTypes";
-import { MyOfferDropdown } from "../../../components/MyOfferDropdown";
+import { type JobWithAllData } from "../../../utils/globalTypes";
+import { MyJobDropdown } from "../../../components/MyJobDropdown";
 import Link from "next/link";
 
-const MyOffer = (params: {
-  offer: OfferWithAllData;
-  openOfferModal: () => void;
+const MyJob = (params: {
+  job: JobWithAllData;
+  openJobModal: () => void;
   openWarningModal: (
     type: "archive" | "delete" | "publish",
-    offerId: number
+    jobId: number
   ) => void;
-  duplicateOffer: () => void;
+  duplicateJob: () => void;
 }) => {
   const { t, i18n } = useTranslation();
   const dropdownRef = useRef(null);
@@ -35,52 +35,52 @@ const MyOffer = (params: {
   return (
     <div className="relative flex-1 lg:flex-[0_1_49%]">
       <Link
-        href={`/manage-offers/${params.offer.id}`}
-        key={params.offer.id}
+        href={`/manage-jobs/${params.job.id}`}
+        key={params.job.id}
         className="flex h-full cursor-pointer flex-col justify-between gap-4 rounded-xl border-[1px] p-4"
       >
         <div className="flex flex-col gap-2">
           <div className="line-clamp-2 font-semibold xs:w-3/4">
-            {params.offer.offerSummary}
+            {params.job.offerSummary}
           </div>
           <div className="flex flex-col sm:flex-row sm:items-center sm:gap-4">
             <div className="font-semibold text-gray2">
-              {helper.formatDate(params.offer.createdAt, i18n.language)}
+              {helper.formatDate(params.job.createdAt, i18n.language)}
             </div>
             <div className="font-semibold text-influencer">
-              {params.offer.published
-                ? t("pages.manageOffers.published")
-                : t("pages.manageOffers.unpublished")}
+              {params.job.published
+                ? t("pages.manageJobs.published")
+                : t("pages.manageJobs.unpublished")}
             </div>
           </div>
           <div className="line-clamp-3 whitespace-pre-line">
-            {params.offer.OfferDetails}
+            {params.job.OfferDetails}
           </div>
         </div>
         <div className="flex flex-col gap-4 sm:flex-row sm:gap-6">
-          {params.offer.offerStatusId === 1 && (
+          {params.job.offerStatusId === 1 && (
             <div className="flex items-center gap-2">
               <FontAwesomeIcon
                 icon={faBriefcase}
                 className="fa-xl cursor-pointer text-influencer"
               />
               <div className="font-semibold">
-                {t("pages.manageOffers.applicants", {
-                  count: params.offer.applicants.length,
+                {t("pages.manageJobs.applicants", {
+                  count: params.job.applicants.length,
                 })}
               </div>
             </div>
           )}
-          {params.offer.offerStatusId !== 3 && (
+          {params.job.offerStatusId !== 3 && (
             <div className="flex items-center gap-2">
               <FontAwesomeIcon
                 icon={faCircleCheck}
                 className="fa-xl cursor-pointer text-influencer"
               />
               <div className="font-semibold">
-                {t("pages.manageOffers.openings", {
-                  acceptedAplicants: params.offer.acceptedApplicants.length,
-                  count: params.offer.numberOfInfluencers,
+                {t("pages.manageJobs.openings", {
+                  acceptedAplicants: params.job.acceptedApplicants.length,
+                  count: params.job.numberOfInfluencers,
                 })}
               </div>
             </div>
@@ -96,24 +96,24 @@ const MyOffer = (params: {
         {isDropdownOpen && (
           <div className="flex lg:hidden">
             {
-              <MyOfferDropdown
-                offer={params.offer}
+              <MyJobDropdown
+                job={params.job}
                 closeDropDown={() => setIsDropdownOpen(false)}
-                openEditOfferModal={() => params.openOfferModal()}
+                openEditJobModal={() => params.openJobModal()}
                 openWarningModal={params.openWarningModal}
-                duplicateOffer={params.duplicateOffer}
+                duplicateJob={params.duplicateJob}
               />
             }
           </div>
         )}
         <div className="hidden group-hover:flex">
           {
-            <MyOfferDropdown
-              offer={params.offer}
+            <MyJobDropdown
+              job={params.job}
               closeDropDown={() => setIsDropdownOpen(false)}
-              openEditOfferModal={() => params.openOfferModal()}
+              openEditJobModal={() => params.openJobModal()}
               openWarningModal={params.openWarningModal}
-              duplicateOffer={params.duplicateOffer}
+              duplicateJob={params.duplicateJob}
             />
           }
         </div>
@@ -122,4 +122,4 @@ const MyOffer = (params: {
   );
 };
 
-export { MyOffer };
+export { MyJob };

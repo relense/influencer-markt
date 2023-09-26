@@ -14,20 +14,21 @@ import { api } from "~/utils/api";
 
 import { helper, useOutsideClick } from "../../utils/helper";
 import { LoadingSpinner } from "../../components/LoadingSpinner";
-import { MyOfferDropdown } from "../../components/MyOfferDropdown";
 import { ProfileCard } from "../../components/ProfileCard";
-import { CreateOfferModal } from "../../components/CreateOfferModal";
-import { MyOffersActionConfirmationModal } from "../../components/MyOffersActionConfirmationModal";
+
 import { Button } from "../../components/Button";
 import { useRouter } from "next/router";
 import Link from "next/link";
 import type {
-  OfferWithAllData,
+  JobWithAllData,
   Option,
   UserSocialMedia,
 } from "../../utils/globalTypes";
 import { toast } from "react-hot-toast";
 import { ProfileRow } from "../../components/ProfileRow";
+import { MyJobDropdown } from "../../components/MyJobDropdown";
+import { CreateJobModal } from "../../components/CreateJobModal";
+import { MyJobsActionConfirmationModal } from "../../components/MyJobsActionConfirmationModal";
 
 type ApplicantsProfile = {
   id: number;
@@ -43,8 +44,8 @@ type ApplicantsProfile = {
   activeOffers?: number;
 };
 
-const ManageOfferDetailsPage = (params: {
-  offerId: number;
+const ManageJobDetailsPage = (params: {
+  jobId: number;
   loggedInProfileId: number;
 }) => {
   const { t, i18n } = useTranslation();
@@ -59,14 +60,14 @@ const ManageOfferDetailsPage = (params: {
     useState<boolean>(true);
   const [isRejectedApplicantsOpen, setIsRejectedApplicantsOpen] =
     useState<boolean>(false);
-  const [isSentOfferApplicantsOpen, setIsSentOfferApplicantsOpen] =
+  const [isSentJobApplicantsOpen, setIsSentJobApplicantsOpen] =
     useState<boolean>(true);
   const [isWarningModalOpen, setIsWarningModalOpen] = useState<boolean>(false);
   const [isApplicantsOpen, setIsApplicantsOpen] = useState<boolean>(true);
   const [warningModalType, setWarningModalType] = useState<
     "archive" | "delete" | "publish"
   >("archive");
-  const [warningModalOfferId, setWarningModalOfferId] = useState<number>(-1);
+  const [warningModalJobId, setWarningModalJobId] = useState<number>(-1);
   const [applicants, setApplicants] = useState<ApplicantsProfile[]>([]);
   const [acceptedApplicants, setAcceptedApplicants] = useState<
     ApplicantsProfile[]
@@ -75,55 +76,55 @@ const ManageOfferDetailsPage = (params: {
     ApplicantsProfile[]
   >([]);
   const [sentApplicants, setSentApplicants] = useState<ApplicantsProfile[]>([]);
-  const [offer, setOffer] = useState<OfferWithAllData | undefined>(undefined);
+  const [job, setJob] = useState<JobWithAllData | undefined>(undefined);
   const [listView, setListView] = useState<boolean>(true);
 
   const {
-    data: offerData,
+    data: jobData,
     isLoading,
-    isRefetching: isRefetchingOffer,
+    isRefetching: isRefetchingJob,
   } = api.offers.getOffer.useQuery(
     {
-      offerId: params.offerId,
+      offerId: params.jobId,
     },
     {
       cacheTime: 0,
     }
   );
 
-  const { data: offerApplicants } = api.offers.getApplicants.useQuery(
+  const { data: jobApplicants } = api.offers.getApplicants.useQuery(
     {
-      offerId: params.offerId,
+      offerId: params.jobId,
     },
     {
       cacheTime: 0,
     }
   );
 
-  const { data: offerAcceptedApplicants } =
+  const { data: jobAcceptedApplicants } =
     api.offers.getAcceptedApplicants.useQuery(
       {
-        offerId: params.offerId,
+        offerId: params.jobId,
       },
       {
         cacheTime: 0,
       }
     );
 
-  const { data: offerRejectedApplicants } =
+  const { data: jobRejectedApplicants } =
     api.offers.getRejectedApplicants.useQuery(
       {
-        offerId: params.offerId,
+        offerId: params.jobId,
       },
       {
         cacheTime: 0,
       }
     );
 
-  const { data: offerSentApplicants } =
+  const { data: jobSentApplicants } =
     api.offers.getSentOrderApplicants.useQuery(
       {
-        offerId: params.offerId,
+        offerId: params.jobId,
       },
       {
         cacheTime: 0,
@@ -153,31 +154,29 @@ const ManageOfferDetailsPage = (params: {
     },
   });
 
-  const { mutate: startOffer, isLoading: isLoadingStartOffer } =
+  const { mutate: startJob, isLoading: isLoadingStartJob } =
     api.offers.startOffer.useMutation({
       onSuccess: () => {
         void ctx.offers.getOffer.invalidate();
       },
     });
 
-  const { mutate: publishOfferMutation } =
-    api.offers.publishOffer.useMutation();
+  const { mutate: publishJobMutation } = api.offers.publishOffer.useMutation();
 
-  const { mutate: archiveOfferMutation } =
-    api.offers.archiveOffer.useMutation();
+  const { mutate: archiveJobMutation } = api.offers.archiveOffer.useMutation();
 
-  const { mutate: deleteOfferMutation } = api.offers.deleteOffer.useMutation({
+  const { mutate: deleteJobMutation } = api.offers.deleteOffer.useMutation({
     onSuccess: () => {
-      toast.success(t("components.myOfferDropDown.offerDeleted"), {
+      toast.success(t("components.myJobDropDown.jobDeleted"), {
         position: "bottom-left",
       });
     },
   });
 
-  const { mutate: duplicateOfferMutation } =
+  const { mutate: duplicateJobMutation } =
     api.offers.duplicateOffer.useMutation({
       onSuccess: () => {
-        toast.success(t("components.myOfferDropDown.offerDuplicated"), {
+        toast.success(t("components.myJobDropDown.jobDuplicated"), {
           position: "bottom-left",
         });
       },
@@ -194,7 +193,7 @@ const ManageOfferDetailsPage = (params: {
           });
 
           updateApplicantToSentList({
-            offerId: params.offerId,
+            offerId: params.jobId,
             profileId: order?.influencerId,
           });
         }
@@ -205,8 +204,8 @@ const ManageOfferDetailsPage = (params: {
     api.notifications.createSalesNotification.useMutation();
 
   useEffect(() => {
-    if (offerApplicants) {
-      const newApplicants = offerApplicants.applicants.map((applicant) => {
+    if (jobApplicants) {
+      const newApplicants = jobApplicants.applicants.map((applicant) => {
         let isFavorited = false;
 
         if (params.loggedInProfileId) {
@@ -249,11 +248,11 @@ const ManageOfferDetailsPage = (params: {
 
       setApplicants(newApplicants);
     }
-  }, [offerApplicants, params.loggedInProfileId]);
+  }, [jobApplicants, params.loggedInProfileId]);
 
   useEffect(() => {
-    if (offerAcceptedApplicants) {
-      const newApplicants = offerAcceptedApplicants.acceptedApplicants.map(
+    if (jobAcceptedApplicants) {
+      const newApplicants = jobAcceptedApplicants.acceptedApplicants.map(
         (applicant) => {
           let isFavorited = false;
 
@@ -298,11 +297,11 @@ const ManageOfferDetailsPage = (params: {
 
       setAcceptedApplicants(newApplicants);
     }
-  }, [offerAcceptedApplicants, params.loggedInProfileId]);
+  }, [jobAcceptedApplicants, params.loggedInProfileId]);
 
   useEffect(() => {
-    if (offerRejectedApplicants) {
-      const newApplicants = offerRejectedApplicants.rejectedApplicants.map(
+    if (jobRejectedApplicants) {
+      const newApplicants = jobRejectedApplicants.rejectedApplicants.map(
         (applicant) => {
           let isFavorited = false;
 
@@ -347,11 +346,11 @@ const ManageOfferDetailsPage = (params: {
 
       setRejectedApplicants(newApplicants);
     }
-  }, [offerRejectedApplicants, params.loggedInProfileId]);
+  }, [jobRejectedApplicants, params.loggedInProfileId]);
 
   useEffect(() => {
-    if (offerSentApplicants) {
-      const newApplicants = offerSentApplicants.sentApplicants.map(
+    if (jobSentApplicants) {
+      const newApplicants = jobSentApplicants.sentApplicants.map(
         (applicant) => {
           let isFavorited = false;
 
@@ -396,13 +395,13 @@ const ManageOfferDetailsPage = (params: {
 
       setSentApplicants(newApplicants);
     }
-  }, [offerSentApplicants, params.loggedInProfileId]);
+  }, [jobSentApplicants, params.loggedInProfileId]);
 
   useEffect(() => {
-    if (offerData) {
-      setOffer(offerData);
+    if (jobData) {
+      setJob(jobData);
     }
-  }, [offerData]);
+  }, [jobData]);
 
   useOutsideClick(() => {
     if (isDropdownOpen === false) return;
@@ -411,52 +410,52 @@ const ManageOfferDetailsPage = (params: {
   }, dropdownRef);
 
   const submitOrder = (applicant: ApplicantsProfile) => {
-    if (offer) {
-      const tax = offer.price * ((applicant?.country?.countryTax || 0) / 100);
-      const total = offer.price + tax;
+    if (job) {
+      const tax = job.price * ((applicant?.country?.countryTax || 0) / 100);
+      const total = job.price + tax;
 
       createOrder({
         influencerId: applicant.id,
-        orderDetails: offer.OfferDetails,
+        orderDetails: job.OfferDetails,
         orderPrice: total.toString(),
-        orderValuePacks: offer.contentTypeWithQuantity.map((valuePack) => {
+        orderValuePacks: job.contentTypeWithQuantity.map((valuePack) => {
           return {
             amount: valuePack.amount,
             price: "0",
             contentTypeId: valuePack.contentType.id,
           };
         }),
-        platformId: offer.socialMediaId,
-        offerId: offer.id,
+        platformId: job.socialMediaId,
+        offerId: job.id,
         language: i18n.language,
       });
     }
   };
 
-  const publishOffer = (offerId: number) => {
-    if (offer) {
-      const newOffer = offer;
-      newOffer.published = true;
+  const publishJob = (jobId: number) => {
+    if (job) {
+      const newJob = job;
+      newJob.published = true;
 
-      setOffer(newOffer);
+      setJob(newJob);
 
-      void publishOfferMutation({ offerId });
+      void publishJobMutation({ offerId: jobId });
     }
   };
 
-  const archiveOffer = (offerId: number) => {
-    if (offer) {
-      const newOffer = offer;
-      newOffer.offerStatus = { id: 3, name: "closed" };
+  const archiveJob = (jobId: number) => {
+    if (job) {
+      const newJob = job;
+      newJob.offerStatus = { id: 3, name: "closed" };
 
-      setOffer(newOffer);
-      void archiveOfferMutation({ offerId });
+      setJob(newJob);
+      void archiveJobMutation({ offerId: jobId });
     }
   };
 
-  const deleteOffer = (offerId: number) => {
-    void router.push("/manage-offers");
-    void deleteOfferMutation({ offerId });
+  const deleteJob = (jobId: number) => {
+    void router.push("/manage-jobs");
+    void deleteJobMutation({ offerId: jobId });
   };
 
   const onAcceptedApplicant = (profileId: number) => {
@@ -477,7 +476,7 @@ const ManageOfferDetailsPage = (params: {
       setAcceptedApplicants(newAcceptedApplicantsArray);
 
       acceptedApplicant({
-        offerId: params.offerId,
+        offerId: params.jobId,
         profileId: profileId,
       });
     }
@@ -505,7 +504,7 @@ const ManageOfferDetailsPage = (params: {
       setRejectedApplicants(newRejectApplicantsArray);
 
       rejectApplication({
-        offerId: params.offerId,
+        offerId: params.jobId,
         profileId: profileId,
       });
     }
@@ -532,7 +531,7 @@ const ManageOfferDetailsPage = (params: {
       setAcceptedApplicants(newAcceptedApplicantsArray);
 
       removeApplicantFromAccepted({
-        offerId: params.offerId,
+        offerId: params.jobId,
         profileId: profileId,
       });
     }
@@ -560,7 +559,7 @@ const ManageOfferDetailsPage = (params: {
       setRejectedApplicants(newRejectApplicantsArray);
 
       removeApplicantFromRejected({
-        offerId: params.offerId,
+        offerId: params.jobId,
         profileId: profileId,
       });
     }
@@ -568,15 +567,15 @@ const ManageOfferDetailsPage = (params: {
 
   const openWarningModal = (
     type: "archive" | "delete" | "publish",
-    offerId: number
+    jobId: number
   ) => {
     setIsWarningModalOpen(true);
     setWarningModalType(type);
-    setWarningModalOfferId(offerId);
+    setWarningModalJobId(jobId);
   };
 
   const optionsMenu = () => {
-    if (offer) {
+    if (job) {
       return (
         <div className="z-5 group absolute right-0 top-0" ref={dropdownRef}>
           <FontAwesomeIcon
@@ -587,28 +586,24 @@ const ManageOfferDetailsPage = (params: {
           {isDropdownOpen && (
             <div className="flex lg:hidden">
               {
-                <MyOfferDropdown
-                  offer={offer}
+                <MyJobDropdown
+                  job={job}
                   closeDropDown={() => setIsDropdownOpen(false)}
-                  openEditOfferModal={() => setOpenCreateModal(true)}
+                  openEditJobModal={() => setOpenCreateModal(true)}
                   openWarningModal={openWarningModal}
-                  duplicateOffer={() =>
-                    duplicateOfferMutation({ offerId: offer.id })
-                  }
+                  duplicateJob={() => duplicateJobMutation({ offerId: job.id })}
                 />
               }
             </div>
           )}
           <div className="hidden group-hover:flex">
             {
-              <MyOfferDropdown
-                offer={offer}
+              <MyJobDropdown
+                job={job}
                 closeDropDown={() => setIsDropdownOpen(false)}
-                openEditOfferModal={() => setOpenCreateModal(true)}
+                openEditJobModal={() => setOpenCreateModal(true)}
                 openWarningModal={openWarningModal}
-                duplicateOffer={() =>
-                  duplicateOfferMutation({ offerId: offer.id })
-                }
+                duplicateJob={() => duplicateJobMutation({ offerId: job.id })}
               />
             }
           </div>
@@ -617,35 +612,35 @@ const ManageOfferDetailsPage = (params: {
     }
   };
 
-  const renderOfferHeader = () => {
-    if (offer) {
+  const renderJobHeader = () => {
+    if (job) {
       return (
         <>
           <Link
-            href={`/offers/${offer.id}`}
+            href={`/jobs/${job.id}`}
             className="line-clamp-2 text-xl font-semibold hover:underline xs:w-3/4"
           >
-            {offer.offerSummary}
+            {job.offerSummary}
           </Link>
           <div className="flex flex-col sm:flex-row sm:items-center sm:gap-6">
             <div className="flex items-center gap-2">
-              <div className="text-gray2">{offer.country.name}</div>
+              <div className="text-gray2">{job.country.name}</div>
               <div className="h-1 w-1 rounded-full bg-black"></div>
               <div className="text-gray2">
-                {helper.formatDate(offer.createdAt, i18n.language)}
+                {helper.formatDate(job.createdAt, i18n.language)}
               </div>
             </div>
             <div className="flex items-center gap-2">
               <div className="font-semibold text-influencer">
-                {offer.published
-                  ? t("pages.manageOffers.published")
-                  : t("pages.manageOffers.unpublished")}
+                {job.published
+                  ? t("pages.manageJobs.published")
+                  : t("pages.manageJobs.unpublished")}
               </div>
               <div className="h-1 w-1 rounded-full bg-black"></div>
               <div className="font-semibold text-influencer">
-                {offer.offerStatus.id === 1 && t("pages.manageOffers.open")}
-                {offer.offerStatus.id === 2 && t("pages.manageOffers.progress")}
-                {offer.offerStatus.id === 3 && t("pages.manageOffers.archived")}
+                {job.offerStatus.id === 1 && t("pages.manageJobs.open")}
+                {job.offerStatus.id === 2 && t("pages.manageJobs.progress")}
+                {job.offerStatus.id === 3 && t("pages.manageJobs.archived")}
               </div>
             </div>
           </div>
@@ -655,16 +650,16 @@ const ManageOfferDetailsPage = (params: {
   };
 
   const renderSearchRequirements = () => {
-    if (offer) {
+    if (job) {
       return (
         <div className="flex flex-col items-start sm:flex-row sm:items-center sm:gap-2">
           <div className="flex gap-2">
             <div className="font-semibold text-influencer">
-              {offer.socialMedia.name}
+              {job.socialMedia.name}
             </div>
 
             <div className="flex gap-2">
-              {offer.contentTypeWithQuantity.map((contentType, index) => {
+              {job.contentTypeWithQuantity.map((contentType, index) => {
                 return (
                   <div key={contentType.id} className="flex items-center gap-2">
                     <div>
@@ -672,8 +667,7 @@ const ManageOfferDetailsPage = (params: {
                         `general.contentTypesPlural.${contentType.contentType.name}`,
                         { count: contentType.amount }
                       )}
-                      {offer.contentTypeWithQuantity.length - 1 !== index &&
-                        ", "}
+                      {job.contentTypeWithQuantity.length - 1 !== index && ", "}
                     </div>
                   </div>
                 );
@@ -685,27 +679,27 @@ const ManageOfferDetailsPage = (params: {
             <div className="hidden h-1 w-1 rounded-full bg-black sm:flex"></div>
             <div className="flex items-center gap-2">
               <div className="font-semibold text-influencer">
-                {t("pages.manageOffers.gender")}
+                {t("pages.manageJobs.gender")}
               </div>
-              <div>{offer.gender?.name || t("pages.manageOffers.any")}</div>
+              <div>{job.gender?.name || t("pages.manageJobs.any")}</div>
             </div>
           </>
           <>
             <div className="hidden h-1 w-1 rounded-full bg-black sm:flex"></div>
             <div className="flex items-center gap-2">
               <div className="font-semibold text-influencer">
-                {t("pages.manageOffers.followers")}
+                {t("pages.manageJobs.followers")}
               </div>
-              <div>{helper.formatNumberWithKorM(offer.minFollowers)} </div>
+              <div>{helper.formatNumberWithKorM(job.minFollowers)} </div>
             </div>
           </>
           <>
             <div className="hidden h-1 w-1 rounded-full bg-black sm:flex"></div>
             <div className="flex items-center gap-2">
               <div className="font-semibold text-influencer">
-                {t("pages.manageOffers.price")}
+                {t("pages.manageJobs.price")}
               </div>
-              <div>{helper.formatNumber(offer.price)}€</div>
+              <div>{helper.formatNumber(job.price)}€</div>
             </div>
           </>
         </div>
@@ -714,14 +708,14 @@ const ManageOfferDetailsPage = (params: {
   };
 
   const renderDescription = () => {
-    if (offer) {
+    if (job) {
       return (
         <div>
           <div>
             <span className="pr-2 font-semibold text-influencer">
-              {t("pages.manageOffers.offerDescription")}
+              {t("pages.manageJobs.jobDescription")}
             </span>
-            <div className="whitespace-pre-line">{offer.OfferDetails}</div>
+            <div className="whitespace-pre-line">{job.OfferDetails}</div>
           </div>
         </div>
       );
@@ -729,18 +723,18 @@ const ManageOfferDetailsPage = (params: {
   };
 
   const renderCategories = () => {
-    if (offer) {
+    if (job) {
       return (
         <div>
           <div className="flex flex-wrap items-center">
             <div className="pr-2 font-semibold text-influencer">
-              {t("pages.manageOffers.categories")}
+              {t("pages.manageJobs.categories")}
             </div>
-            {offer.categories.map((category, index) => {
+            {job.categories.map((category, index) => {
               return (
                 <div key={category.id} className="pr-2">
                   {t(`general.categories.${category.name}`)}
-                  {index !== offer.categories.length - 1 && ","}
+                  {index !== job.categories.length - 1 && ","}
                 </div>
               );
             })}
@@ -751,55 +745,55 @@ const ManageOfferDetailsPage = (params: {
   };
 
   const renderInterestedProfiles = () => {
-    if (offer && offerApplicants && offerAcceptedApplicants) {
+    if (job && jobApplicants && jobAcceptedApplicants) {
       return (
         <div className="flex flex-col gap-4 sm:flex-row sm:gap-6">
-          {offer.offerStatusId === 1 && (
+          {job.offerStatusId === 1 && (
             <div className="flex items-center gap-2">
               <FontAwesomeIcon
                 icon={faBriefcase}
                 className="fa-xl cursor-pointer text-influencer"
               />
               <div className="font-semibold">
-                {t("pages.manageOffers.applicants", {
+                {t("pages.manageJobs.applicants", {
                   count: applicants.length,
                 })}
               </div>
             </div>
           )}
-          {offer.offerStatusId !== 3 && (
+          {job.offerStatusId !== 3 && (
             <div className="flex items-center gap-2">
               <FontAwesomeIcon
                 icon={faCircleCheck}
                 className="fa-xl cursor-pointer text-influencer"
               />
               <div className="font-semibold">
-                {t("pages.manageOffers.openings", {
+                {t("pages.manageJobs.openings", {
                   acceptedAplicants:
-                    offerAcceptedApplicants?.acceptedApplicants.length,
-                  count: offer.numberOfInfluencers,
+                    jobAcceptedApplicants?.acceptedApplicants.length,
+                  count: job.numberOfInfluencers,
                 })}
               </div>
             </div>
           )}
-          {acceptedApplicants.length === offer.numberOfInfluencers &&
-            offer.offerStatus.id === 1 && (
+          {acceptedApplicants.length === job.numberOfInfluencers &&
+            job.offerStatus.id === 1 && (
               <Button
-                title={t("pages.manageOffers.initiateOffer")}
+                title={t("pages.manageJobs.initiateJob")}
                 level="primary"
-                isLoading={isLoadingStartOffer || isRefetchingOffer}
+                isLoading={isLoadingStartJob || isRefetchingJob}
                 onClick={() =>
-                  startOffer({
-                    offerId: offer.id,
+                  startJob({
+                    offerId: job.id,
                   })
                 }
               />
             )}
-          {offer.offerStatus.id === 2 && (
+          {job.offerStatus.id === 2 && (
             <Button
-              title={t("pages.manageOffers.archiveOffer")}
+              title={t("pages.manageJobs.archiveJob")}
               level="primary"
-              onClick={() => openWarningModal("archive", offer.id)}
+              onClick={() => openWarningModal("archive", job.id)}
             />
           )}
         </div>
@@ -807,8 +801,8 @@ const ManageOfferDetailsPage = (params: {
     }
   };
 
-  const renderOfferDetails = () => {
-    if (offer) {
+  const renderJobDetails = () => {
+    if (job) {
       return (
         <div className="flex flex-col gap-4">
           <div
@@ -816,7 +810,7 @@ const ManageOfferDetailsPage = (params: {
             onClick={() => setIsDetailsOpen(!isDetailsOpen)}
           >
             <div className="text-2xl font-bold">
-              {t("pages.manageOffers.offerDetails")}
+              {t("pages.manageJobs.jobDetails")}
             </div>
             <div className="flex h-6 w-6 justify-center rounded-full border-[1px]">
               <div>
@@ -837,7 +831,7 @@ const ManageOfferDetailsPage = (params: {
           {isDetailsOpen && (
             <div className="relative">
               <div className="flex flex-col gap-4">
-                {renderOfferHeader()}
+                {renderJobHeader()}
                 {renderSearchRequirements()}
                 {renderCategories()}
                 {renderDescription()}
@@ -852,7 +846,7 @@ const ManageOfferDetailsPage = (params: {
   };
 
   const renderAcceptedApplicantCard = (applicant: ApplicantsProfile) => {
-    if (offer) {
+    if (job) {
       return (
         <div key={applicant.id} className="flex flex-col gap-4">
           <ProfileCard
@@ -876,22 +870,22 @@ const ManageOfferDetailsPage = (params: {
             username={applicant?.username || ""}
             type="Influencer"
             bookmarked={applicant?.bookmarked || false}
-            highlightSocialMediaId={offer.socialMediaId}
+            highlightSocialMediaId={job.socialMediaId}
             loggedInProfileId={params.loggedInProfileId}
           />
 
-          {offer.offerStatus.id === 1 && (
+          {job.offerStatus.id === 1 && (
             <Button
-              title={t("pages.manageOffers.removeButton")}
+              title={t("pages.manageJobs.removeButton")}
               level="secondary"
               size="large"
               onClick={() => onRemoveFromAccepted(applicant.id)}
             />
           )}
-          {offer.offerStatus.id === 2 && (
+          {job.offerStatus.id === 2 && (
             <div className="flex justify-around gap-4 lg:flex-col lg:justify-center">
               <Button
-                title={t("pages.manageOffers.sendOrderRequest")}
+                title={t("pages.manageJobs.sendOrderRequest")}
                 level="primary"
                 size="large"
                 onClick={() => submitOrder(applicant)}
@@ -907,7 +901,7 @@ const ManageOfferDetailsPage = (params: {
   };
 
   const renderAcceptedApplicantRow = (applicant: ApplicantsProfile) => {
-    if (offer) {
+    if (job) {
       return (
         <div key={applicant.id} className="flex flex-col gap-4 lg:flex-row">
           <ProfileRow
@@ -931,22 +925,22 @@ const ManageOfferDetailsPage = (params: {
             username={applicant?.username || ""}
             type="Influencer"
             bookmarked={applicant?.bookmarked || false}
-            highlightSocialMediaId={offer.socialMediaId}
+            highlightSocialMediaId={job.socialMediaId}
           />
-          {offer.offerStatus.id === 1 && (
+          {job.offerStatus.id === 1 && (
             <div className="flex justify-around gap-4 lg:flex-col lg:justify-center">
               <Button
-                title={t("pages.manageOffers.removeButton")}
+                title={t("pages.manageJobs.removeButton")}
                 level="secondary"
                 size="large"
                 onClick={() => onRemoveFromAccepted(applicant.id)}
               />
             </div>
           )}
-          {offer.offerStatus.id === 2 && (
+          {job.offerStatus.id === 2 && (
             <div className="flex justify-around gap-4 lg:flex-col lg:justify-center">
               <Button
-                title={t("pages.manageOffers.sendOrderRequest")}
+                title={t("pages.manageJobs.sendOrderRequest")}
                 level="primary"
                 size="large"
                 onClick={() => submitOrder(applicant)}
@@ -967,7 +961,7 @@ const ManageOfferDetailsPage = (params: {
       applicantsContainerClass = "flex flex-1 flex-col gap-8";
     }
 
-    if (offer) {
+    if (job) {
       return (
         <div className="flex flex-col gap-4">
           <div
@@ -977,7 +971,7 @@ const ManageOfferDetailsPage = (params: {
             }
           >
             <div className="text-2xl font-bold">
-              {t("pages.manageOffers.acceptedAplicants", {
+              {t("pages.manageJobs.acceptedAplicants", {
                 count: acceptedApplicants.length,
               })}
             </div>
@@ -997,7 +991,7 @@ const ManageOfferDetailsPage = (params: {
               </div>
             </div>
           </div>
-          {isAcceptedApplicantsOpen && offerAcceptedApplicants && (
+          {isAcceptedApplicantsOpen && jobAcceptedApplicants && (
             <div className={applicantsContainerClass}>
               {acceptedApplicants.map((applicant) => {
                 return listView
@@ -1012,7 +1006,7 @@ const ManageOfferDetailsPage = (params: {
   };
 
   const renderApplicantCard = (applicant: ApplicantsProfile) => {
-    if (offer) {
+    if (job) {
       return (
         <div key={applicant.id} className="flex flex-col gap-4">
           <ProfileCard
@@ -1036,19 +1030,19 @@ const ManageOfferDetailsPage = (params: {
             username={applicant?.username || ""}
             type="Influencer"
             bookmarked={applicant?.bookmarked || false}
-            highlightSocialMediaId={offer.socialMediaId}
+            highlightSocialMediaId={job.socialMediaId}
             loggedInProfileId={params.loggedInProfileId}
           />
-          {acceptedApplicants.length < offer.numberOfInfluencers && (
+          {acceptedApplicants.length < job.numberOfInfluencers && (
             <div className="flex justify-around gap-4">
               <Button
-                title={t("pages.manageOffers.acceptButton")}
+                title={t("pages.manageJobs.acceptButton")}
                 level="terciary"
                 size="large"
                 onClick={() => onAcceptedApplicant(applicant.id)}
               />
               <Button
-                title={t("pages.manageOffers.rejectButton")}
+                title={t("pages.manageJobs.rejectButton")}
                 level="secondary"
                 size="large"
                 onClick={() => onRejectApplicant(applicant.id)}
@@ -1061,7 +1055,7 @@ const ManageOfferDetailsPage = (params: {
   };
 
   const renderApplicantRow = (applicant: ApplicantsProfile) => {
-    if (offer) {
+    if (job) {
       return (
         <div key={applicant.id} className="flex flex-col gap-4 lg:flex-row">
           <ProfileRow
@@ -1085,18 +1079,18 @@ const ManageOfferDetailsPage = (params: {
             username={applicant?.username || ""}
             type="Influencer"
             bookmarked={applicant?.bookmarked || false}
-            highlightSocialMediaId={offer.socialMediaId}
+            highlightSocialMediaId={job.socialMediaId}
           />
-          {acceptedApplicants.length < offer.numberOfInfluencers && (
+          {acceptedApplicants.length < job.numberOfInfluencers && (
             <div className="flex justify-around gap-4 lg:flex-col lg:justify-center">
               <Button
-                title={t("pages.manageOffers.acceptButton")}
+                title={t("pages.manageJobs.acceptButton")}
                 level="terciary"
                 size="large"
                 onClick={() => onAcceptedApplicant(applicant.id)}
               />
               <Button
-                title={t("pages.manageOffers.rejectButton")}
+                title={t("pages.manageJobs.rejectButton")}
                 level="secondary"
                 size="large"
                 onClick={() => onRejectApplicant(applicant.id)}
@@ -1114,7 +1108,7 @@ const ManageOfferDetailsPage = (params: {
       applicantsContainerClass = "flex flex-1 flex-col gap-8";
     }
 
-    if (offer) {
+    if (job) {
       return (
         <div className="flex flex-col gap-4">
           <div
@@ -1122,7 +1116,7 @@ const ManageOfferDetailsPage = (params: {
             onClick={() => setIsApplicantsOpen(!isApplicantsOpen)}
           >
             <div className="text-2xl font-bold">
-              {t("pages.manageOffers.applicants", { count: applicants.length })}
+              {t("pages.manageJobs.applicants", { count: applicants.length })}
             </div>
             <div className="flex h-6 w-6 justify-center rounded-full border-[1px]">
               <div>
@@ -1140,7 +1134,7 @@ const ManageOfferDetailsPage = (params: {
               </div>
             </div>
           </div>
-          {isApplicantsOpen && offerApplicants && offerAcceptedApplicants && (
+          {isApplicantsOpen && jobApplicants && jobAcceptedApplicants && (
             <div className={applicantsContainerClass}>
               {applicants.map((applicant) => {
                 return listView
@@ -1155,7 +1149,7 @@ const ManageOfferDetailsPage = (params: {
   };
 
   const renderRejectApplicantCard = (applicant: ApplicantsProfile) => {
-    if (offer) {
+    if (job) {
       return (
         <div key={applicant.id} className="flex flex-col gap-4">
           <ProfileCard
@@ -1179,12 +1173,12 @@ const ManageOfferDetailsPage = (params: {
             username={applicant?.username || ""}
             type="Influencer"
             bookmarked={applicant?.bookmarked || false}
-            highlightSocialMediaId={offer.socialMediaId}
+            highlightSocialMediaId={job.socialMediaId}
             loggedInProfileId={params.loggedInProfileId}
           />
 
           <Button
-            title={t("pages.manageOffers.removeButton")}
+            title={t("pages.manageJobs.removeButton")}
             level="secondary"
             size="large"
             onClick={() => onRemoveFromRejected(applicant.id)}
@@ -1195,7 +1189,7 @@ const ManageOfferDetailsPage = (params: {
   };
 
   const renderRejectApplicantRow = (applicant: ApplicantsProfile) => {
-    if (offer) {
+    if (job) {
       return (
         <div key={applicant.id} className="flex flex-col gap-4 lg:flex-row">
           <ProfileRow
@@ -1219,11 +1213,11 @@ const ManageOfferDetailsPage = (params: {
             username={applicant?.username || ""}
             type="Influencer"
             bookmarked={applicant?.bookmarked || false}
-            highlightSocialMediaId={offer.socialMediaId}
+            highlightSocialMediaId={job.socialMediaId}
           />
           <div className="flex justify-around gap-4 lg:flex-col lg:justify-center">
             <Button
-              title={t("pages.manageOffers.removeButton")}
+              title={t("pages.manageJobs.removeButton")}
               level="secondary"
               size="large"
               onClick={() => onRemoveFromRejected(applicant.id)}
@@ -1240,7 +1234,7 @@ const ManageOfferDetailsPage = (params: {
       applicantsContainerClass = "flex flex-1 flex-col gap-8";
     }
 
-    if (offer) {
+    if (job) {
       return (
         <div className="flex flex-col gap-4">
           <div
@@ -1250,7 +1244,7 @@ const ManageOfferDetailsPage = (params: {
             }
           >
             <div className="text-2xl font-bold">
-              {t("pages.manageOffers.rejectedApplicants", {
+              {t("pages.manageJobs.rejectedApplicants", {
                 count: rejectedApplicants.length,
               })}
             </div>
@@ -1284,8 +1278,8 @@ const ManageOfferDetailsPage = (params: {
     }
   };
 
-  const renderSentOfferApplicantCard = (applicant: ApplicantsProfile) => {
-    if (offer) {
+  const renderSentJobApplicantCard = (applicant: ApplicantsProfile) => {
+    if (job) {
       return (
         <div key={applicant.id} className="flex flex-col gap-4">
           <ProfileCard
@@ -1309,7 +1303,7 @@ const ManageOfferDetailsPage = (params: {
             username={applicant?.username || ""}
             type="Influencer"
             bookmarked={applicant?.bookmarked || false}
-            highlightSocialMediaId={offer.socialMediaId}
+            highlightSocialMediaId={job.socialMediaId}
             loggedInProfileId={params.loggedInProfileId}
           />
         </div>
@@ -1317,8 +1311,8 @@ const ManageOfferDetailsPage = (params: {
     }
   };
 
-  const renderSentOfferApplicantRow = (applicant: ApplicantsProfile) => {
-    if (offer) {
+  const renderSentJobApplicantRow = (applicant: ApplicantsProfile) => {
+    if (job) {
       return (
         <div key={applicant.id} className="flex flex-col gap-4 lg:flex-row">
           <ProfileRow
@@ -1342,30 +1336,28 @@ const ManageOfferDetailsPage = (params: {
             username={applicant?.username || ""}
             type="Influencer"
             bookmarked={applicant?.bookmarked || false}
-            highlightSocialMediaId={offer.socialMediaId}
+            highlightSocialMediaId={job.socialMediaId}
           />
         </div>
       );
     }
   };
 
-  const renderSentOfferApplicants = () => {
+  const renderSentJobApplicants = () => {
     let applicantsContainerClass = "flex flex-wrap gap-8";
     if (listView) {
       applicantsContainerClass = "flex flex-1 flex-col gap-8";
     }
 
-    if (offer) {
+    if (job) {
       return (
         <div className="flex flex-col gap-4">
           <div
             className="flex cursor-pointer items-center gap-2"
-            onClick={() =>
-              setIsSentOfferApplicantsOpen(!isSentOfferApplicantsOpen)
-            }
+            onClick={() => setIsSentJobApplicantsOpen(!isSentJobApplicantsOpen)}
           >
             <div className="text-2xl font-bold">
-              {t("pages.manageOffers.sentOfferApplicants", {
+              {t("pages.manageJobs.sentJobApplicants", {
                 count: sentApplicants.length,
               })}
             </div>
@@ -1385,12 +1377,12 @@ const ManageOfferDetailsPage = (params: {
               </div>
             </div>
           </div>
-          {isSentOfferApplicantsOpen && sentApplicants && (
+          {isSentJobApplicantsOpen && sentApplicants && (
             <div className={applicantsContainerClass}>
               {sentApplicants.map((applicant) => {
                 return listView
-                  ? renderSentOfferApplicantRow(applicant)
-                  : renderSentOfferApplicantCard(applicant);
+                  ? renderSentJobApplicantRow(applicant)
+                  : renderSentJobApplicantCard(applicant);
               })}
             </div>
           )}
@@ -1402,14 +1394,14 @@ const ManageOfferDetailsPage = (params: {
   if (isLoading) {
     return <LoadingSpinner />;
   } else {
-    if (offer) {
+    if (job) {
       const listIconClass = "fa-xl cursor-pointer text-gray2";
       const listIconSelectedClass = "fa-xl cursor-pointer text-influencer";
 
       return (
         <>
           <div className="flex w-full cursor-default flex-col gap-8 self-center p-8 pb-10 sm:p-4 sm:px-8 xl:w-3/4 xl:px-2 2xl:w-3/4 3xl:w-3/4 4xl:w-2/4 5xl:w-2/4">
-            {renderOfferDetails()}
+            {renderJobDetails()}
             <div className="w-full border-[1px] border-white1" />
             <div className="flex flex-1 justify-end gap-4">
               <FontAwesomeIcon
@@ -1424,7 +1416,7 @@ const ManageOfferDetailsPage = (params: {
               />
             </div>
             {acceptedApplicants.length > 0 && renderAcceptedApplicants()}
-            {applicants.length > 0 && offer.offerStatus.id === 1 && (
+            {applicants.length > 0 && job.offerStatus.id === 1 && (
               <>
                 {acceptedApplicants.length > 0 && (
                   <div className="w-full border-[1px] border-white1" />
@@ -1432,8 +1424,8 @@ const ManageOfferDetailsPage = (params: {
                 {renderApplicants()}
               </>
             )}
-            {sentApplicants.length > 0 && renderSentOfferApplicants()}
-            {rejectedApplicants.length > 0 && offer.offerStatus.id === 1 && (
+            {sentApplicants.length > 0 && renderSentJobApplicants()}
+            {rejectedApplicants.length > 0 && job.offerStatus.id === 1 && (
               <>
                 {(applicants.length > 0 || acceptedApplicants.length > 0) && (
                   <div className="w-full border-[1px] border-white1" />
@@ -1444,23 +1436,23 @@ const ManageOfferDetailsPage = (params: {
           </div>
           <div className="flex justify-center">
             {openCreateModal && (
-              <CreateOfferModal
+              <CreateJobModal
                 onClose={() => setOpenCreateModal(false)}
                 edit={true}
-                offer={offer}
+                job={job}
               />
             )}
           </div>
           <div className="flex justify-center">
             {isWarningModalOpen && (
-              <MyOffersActionConfirmationModal
+              <MyJobsActionConfirmationModal
                 onClose={() => setIsWarningModalOpen(false)}
                 type={warningModalType}
-                offerId={warningModalOfferId}
-                isOfferDetails={true}
-                archiveOffer={archiveOffer}
-                deleteOffer={deleteOffer}
-                publishOffer={publishOffer}
+                jobId={warningModalJobId}
+                isJobDetails={true}
+                archiveJob={archiveJob}
+                deleteJob={deleteJob}
+                publishJob={publishJob}
               />
             )}
           </div>
@@ -1470,4 +1462,4 @@ const ManageOfferDetailsPage = (params: {
   }
 };
 
-export { ManageOfferDetailsPage };
+export { ManageJobDetailsPage };
