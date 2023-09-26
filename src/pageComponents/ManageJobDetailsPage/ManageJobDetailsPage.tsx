@@ -41,7 +41,7 @@ type ApplicantsProfile = {
   username: string;
   bookmarked?: boolean;
   favoritedBy?: number[];
-  activeOffers?: number;
+  activeJobs?: number;
 };
 
 const ManageJobDetailsPage = (params: {

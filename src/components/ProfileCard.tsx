@@ -41,7 +41,7 @@ const ProfileCard = (params: {
   onHandleBookmark?: () => void;
   openLoginModal?: () => void;
   loggedInProfileId: number;
-  activeOffers?: number;
+  activeJobs?: number;
 }) => {
   const { t } = useTranslation();
   const { status } = useSession();
@@ -230,11 +230,11 @@ const ProfileCard = (params: {
               </div>
             )}
           {params.type === "Brand" &&
-            params.activeOffers !== undefined &&
-            params.activeOffers > 0 && (
+            params.activeJobs !== undefined &&
+            params.activeJobs > 0 && (
               <div className="text-lg font-semibold">
                 {t("components.profileCard.jobs", {
-                  count: params.activeOffers,
+                  count: params.activeJobs,
                 })}
               </div>
             )}

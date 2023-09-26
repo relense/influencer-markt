@@ -75,8 +75,9 @@ export const usersRouter = createTRPCRouter({
         input.username.toUpperCase() === "admin".toUpperCase() ||
         input.username.toUpperCase() === "influencer".toUpperCase() ||
         input.username.toUpperCase() === "offers".toUpperCase() ||
+        input.username.toUpperCase() === "jobs".toUpperCase() ||
         input.username.toUpperCase() === "settings".toUpperCase() ||
-        input.username.toUpperCase() === "manage-offers".toUpperCase() ||
+        input.username.toUpperCase() === "manage-jobs".toUpperCase() ||
         input.username.toUpperCase() === "my-applications".toUpperCase() ||
         input.username.toUpperCase() === "saved".toUpperCase() ||
         input.username.toUpperCase() === "brands".toUpperCase() ||

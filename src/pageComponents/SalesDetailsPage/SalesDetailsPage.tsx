@@ -286,7 +286,7 @@ const SalesDetailsPage = (params: { orderId: number }) => {
   const renderOfferDisclaimer = () => {
     return (
       <Link
-        href={`/offers/${sale?.offerId || -1}`}
+        href={`/jobs/${sale?.offerId || -1}`}
         className="flex cursor-pointer justify-center gap-2 rounded-xl border-[1px] bg-influencer p-4 text-center text-white"
       >
         {t("pages.sales.congratulations")}

@@ -1,7 +1,7 @@
 import { api } from "~/utils/api";
 import { useEffect, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faFilter } from "@fortawesome/free-solid-svg-icons";
+import { faFilter, faSearch } from "@fortawesome/free-solid-svg-icons";
 import { ProfileCard } from "../../components/ProfileCard";
 import { Button } from "../../components/Button";
 
@@ -118,7 +118,7 @@ const ExploreBrandsPage = (params: { loggedInProfileId: number }) => {
             }),
             username: profile.user.username || "",
             bookmarked: isFavorited,
-            activeOffers: profile.createdOffers.length,
+            activeJobs: profile.createdOffers.length,
           };
         })
       );
@@ -163,7 +163,7 @@ const ExploreBrandsPage = (params: { loggedInProfileId: number }) => {
           }),
           username: profile.user.username || "",
           bookmarked: isFavorited,
-          activeOffers: profile.createdOffers.length,
+          activeJobs: profile.createdOffers.length,
         });
       });
 
@@ -292,12 +292,23 @@ const ExploreBrandsPage = (params: { loggedInProfileId: number }) => {
     return (
       <div className="flex flex-col justify-center gap-6">
         <div className="flex flex-1 justify-start text-xl font-medium lg:pl-6">
-          {profiles?.[0] && profiles?.[0] > 0
-            ? t("pages.explore.countBrands", {
-                count: profiles?.[0] || 0,
-              })
-            : t("pages.explore.noBrands")}
+          {profiles &&
+            profiles?.[0] > 0 &&
+            t("pages.explore.countBrands", {
+              count: profiles?.[0],
+            })}
         </div>
+        {profiles && profiles?.[0] === 0 && (
+          <div className="flex flex-col justify-center gap-4 text-center text-gray2">
+            <FontAwesomeIcon
+              icon={faSearch}
+              className="fa-2xl cursor-pointer "
+            />
+            <div className="flex flex-1 justify-center">
+              {t("pages.explore.noBrands")}
+            </div>
+          </div>
+        )}
         <div className="flex flex-1">
           <div className="flex flex-1 flex-wrap justify-center gap-12">
             {userProfiles.map((profile) => {
@@ -315,7 +326,7 @@ const ExploreBrandsPage = (params: { loggedInProfileId: number }) => {
                   type="Brand"
                   bookmarked={profile.bookmarked || false}
                   loggedInProfileId={params.loggedInProfileId}
-                  activeOffers={profile.activeOffers}
+                  activeJobs={profile.activeJobs}
                 />
               );
             })}

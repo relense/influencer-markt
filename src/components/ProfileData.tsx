@@ -219,19 +219,19 @@ const ProfileData = (params: { profile: ProfileAdminIncludes }) => {
             <div className="flex flex-col gap-4 lg:flex-row">
               <div className="flex gap-2">
                 <div className="font-semibold text-influencer">
-                  Number Of Created Offers:
+                  Number Of Created Jobs:
                 </div>
                 <div>{profile.createdOffers.length || 0}</div>
               </div>
               <div className="flex gap-2">
                 <div className="font-semibold text-influencer">
-                  Number of Accepted Offers:
+                  Number of Accepted Jobs:
                 </div>
                 <div>{profile.acceptedOffers.length || 0}</div>
               </div>
               <div className="flex gap-2">
                 <div className="font-semibold text-influencer">
-                  Number of Rejected Offers:
+                  Number of Rejected Jobs:
                 </div>
                 <div>{profile.rejectedApplicants.length || 0}</div>
               </div>

@@ -55,7 +55,7 @@ const SavedPage = (params: { roleId: number; loggedInProfileId: number }) => {
               };
             }),
             username: profile.user.username || "",
-            activeOffers: profile.createdOffers.length,
+            activeJobs: profile.createdOffers.length,
           };
         })
       );
@@ -102,7 +102,7 @@ const SavedPage = (params: { roleId: number; loggedInProfileId: number }) => {
                   bookmarked={true}
                   onHandleBookmark={() => onHandleBookmark(profile.id)}
                   loggedInProfileId={params.loggedInProfileId}
-                  activeOffers={profile.activeOffers}
+                  activeJobs={profile.activeJobs}
                 />
               );
             })}

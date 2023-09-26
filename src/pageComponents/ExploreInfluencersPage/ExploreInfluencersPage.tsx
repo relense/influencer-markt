@@ -367,7 +367,9 @@ const ExploreInfluencersPage = (params: {
               icon={faSearch}
               className="fa-2xl cursor-pointer "
             />
-            <div>{t("pages.explore.noInfluencers")}</div>
+            <div className="flex flex-1 justify-center">
+              {t("pages.explore.noInfluencers")}
+            </div>
           </div>
         )}
         <div className="flex flex-1">

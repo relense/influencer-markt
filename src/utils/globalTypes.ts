@@ -85,7 +85,7 @@ export type UserProfiles = {
   username: string;
   bookmarked?: boolean;
   favoritedBy?: number[];
-  activeOffers?: number;
+  activeJobs?: number;
 };
 
 export type ProfileJobs = Prisma.OfferGetPayload<{
