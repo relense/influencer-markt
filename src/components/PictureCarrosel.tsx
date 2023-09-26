@@ -195,7 +195,7 @@ export const PictureCarrosel = (params: {
   const renderMainPicture = () => {
     if (currentPicture.id !== -1) {
       return (
-        <div className="relative flex h-[340px] flex-col items-center justify-center gap-4 rounded-lg sm:h-[540px] sm:w-[430px]">
+        <div className="relative flex h-[540px] w-full flex-col items-center justify-center gap-4 rounded-lg sm:w-[430px]">
           {!params.visual && (
             <div
               className="absolute right-[-10px] top-[-10px] flex h-10 w-10 cursor-pointer items-center justify-center self-end rounded-full bg-influencer-green"

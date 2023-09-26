@@ -39,7 +39,7 @@ import Draggable, {
 
 import { Button } from "./Button";
 import type { Option } from "../utils/globalTypes";
-import { useOutsideClick } from "../utils/helper";
+import { useOutsideClick, useWindowWidth } from "../utils/helper";
 import { Notifications } from "./Notifications";
 
 export const Navbar = (params: {
@@ -53,6 +53,7 @@ export const Navbar = (params: {
   const { t } = useTranslation();
   const router = useRouter();
   const ctx = api.useContext();
+  const width = useWindowWidth();
 
   const dropdownWrapperRef = useRef(null);
   const drawerRef = useRef<HTMLDivElement>(null);
@@ -93,6 +94,14 @@ export const Navbar = (params: {
       setNotificationsCount(notificationsToBeReadCount);
     }
   }, [notificationsToBeReadCount]);
+
+  useEffect(() => {
+    if (toggleOptions) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "unset";
+    }
+  }, [toggleOptions, width]);
 
   const handleJoinMarketplace = () => {
     params.setIsSignUp(true);
@@ -641,58 +650,67 @@ export const Navbar = (params: {
             {t("components.navbar.helpCenter")}
           </div>
         </div>
-        <Link
-          href="/about"
-          className="group flex cursor-pointer items-center gap-4 py-2"
-        >
-          <FontAwesomeIcon icon={faAddressCard} className="fa-lg" />
+        <div className="px-8">
+          <Link
+            href="/about"
+            className="group flex cursor-pointer items-center gap-4 py-2"
+          >
+            <FontAwesomeIcon icon={faAddressCard} className="fa-lg" />
 
-          <div className="group-hover:underline">
-            {t("components.navbar.aboutUs")}
-          </div>
-        </Link>
-        <Link
-          href="/contact-us"
-          className="group flex cursor-pointer items-center gap-4 py-2"
-        >
-          <FontAwesomeIcon icon={faEnvelope} className="fa-lg" />
+            <div className="group-hover:underline">
+              {t("components.navbar.aboutUs")}
+            </div>
+          </Link>
+        </div>
+        <div className="px-8">
+          <Link
+            href="/contact-us"
+            className="group flex cursor-pointer items-center gap-4 py-2"
+          >
+            <FontAwesomeIcon icon={faEnvelope} className="fa-lg" />
 
-          <div className="group-hover:underline">
-            {t("components.navbar.contactUs")}
-          </div>
-        </Link>
-        <Link
-          href="/faq"
-          className="group flex cursor-pointer items-center gap-4 py-2"
-        >
-          <FontAwesomeIcon icon={faCircleQuestion} className="fa-lg" />
+            <div className="group-hover:underline">
+              {t("components.navbar.contactUs")}
+            </div>
+          </Link>
+        </div>{" "}
+        <div className="px-8">
+          <Link
+            href="/faq"
+            className="group flex cursor-pointer items-center gap-4 py-2"
+          >
+            <FontAwesomeIcon icon={faCircleQuestion} className="fa-lg" />
 
-          <div className="group-hover:underline">
-            {t("components.navbar.faq")}
-          </div>
-        </Link>
+            <div className="group-hover:underline">
+              {t("components.navbar.faq")}
+            </div>
+          </Link>
+        </div>
         <div className="cursor-pointer border-[1px] border-white1" />
+        <div className="px-8">
+          <Link
+            href="/terms-conditions"
+            className="group flex cursor-pointer items-center gap-4 py-2"
+          >
+            <FontAwesomeIcon icon={faFileLines} className="fa-lg" />
 
-        <Link
-          href="/terms-conditions"
-          className="group flex cursor-pointer items-center gap-4 py-2"
-        >
-          <FontAwesomeIcon icon={faFileLines} className="fa-lg" />
+            <div className="group-hover:underline">
+              {t("components.navbar.terms")}
+            </div>
+          </Link>
+        </div>
+        <div className="px-8">
+          <Link
+            href="/privacy-policy"
+            className="group flex cursor-pointer items-center gap-4 py-2"
+          >
+            <FontAwesomeIcon icon={faFileLines} className="fa-lg" />
 
-          <div className="group-hover:underline">
-            {t("components.navbar.terms")}
-          </div>
-        </Link>
-        <Link
-          href="/privacy-policy"
-          className="group flex cursor-pointer items-center gap-4 py-2"
-        >
-          <FontAwesomeIcon icon={faFileLines} className="fa-lg" />
-
-          <div className="group-hover:underline">
-            {t("components.navbar.privacy")}
-          </div>
-        </Link>
+            <div className="group-hover:underline">
+              {t("components.navbar.privacy")}
+            </div>
+          </Link>
+        </div>
       </div>
     );
   };

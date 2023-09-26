@@ -194,7 +194,7 @@ const Notifications = () => {
   return (
     <div className="absolute right-1 top-14 z-50 flex h-auto w-auto flex-col gap-4 overflow-hidden rounded-2xl border-[1px] border-white1 bg-white shadow-lg sm:right-16 lg:top-20">
       <div
-        className="h-96 w-72 overflow-y-auto xxs:h-[550px] xxs:w-[330px] xs:h-[700px] xs:w-[350px] sm:w-[500px]"
+        className="h-96 w-72 overflow-y-auto xxs:h-[550px] xxs:w-[330px] xs:h-[600px] xs:w-[350px] sm:w-[500px]"
         ref={containerRef}
       >
         {isLoadingNotificationsData || isRefetchingNotificationsData ? (

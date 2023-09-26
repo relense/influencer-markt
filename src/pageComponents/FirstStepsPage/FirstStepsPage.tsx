@@ -377,23 +377,22 @@ const FirstStepsPage = () => {
           )}
         </div>
         <div className="flex items-center justify-center gap-4 lg:flex-row">
-          {stepsCount < steps.length - 1 && (
-            <>
-              {stepsCount > 0 && (
-                <div
-                  className="hidden cursor-pointer underline lg:flex"
-                  onClick={() => changeStep("next")}
-                >
-                  {t("pages.firstSteps.skipStep")}
-                </div>
-              )}
-
+          {stepsCount < steps.length - 1 &&
+            currentStep?.id !== StepsEnum.VisualPortfolio && (
               <Button
                 title={t("pages.firstSteps.nextStep")}
                 level="primary"
                 form="form-hook"
               />
-            </>
+            )}
+
+          {currentStep?.id === StepsEnum.VisualPortfolio && (
+            <Button
+              title={t("pages.firstSteps.nextStep")}
+              level="primary"
+              form="form-hook"
+              disabled={portfolio.length === 0}
+            />
           )}
 
           {stepsCount === steps.length - 1 && (

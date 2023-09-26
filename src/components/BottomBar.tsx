@@ -64,8 +64,8 @@ const BottomBar = (params: {
           router.pathname === navigationItem.pageUrl ||
           (router.pathname === "/[username]" &&
             navigationItem.pageUrl === `/${params.username}`)
-            ? "fa-lg"
-            : "fa-lg text-gray1";
+            ? "fa-xl"
+            : "fa-xl text-gray1";
 
         if (
           !navigationItem.loggedIn ||
