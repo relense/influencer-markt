@@ -173,7 +173,7 @@ const HomePage = (params: { openLoginModal: () => void }) => {
             {t("pages.home.section2.subTitle")}
           </h2>
           {session.status === "authenticated" ? (
-            <Link href="/manage-offers">
+            <Link href="/manage-jobs">
               <Button
                 title={t("pages.home.section2.buttonTitle")}
                 level="primary"
