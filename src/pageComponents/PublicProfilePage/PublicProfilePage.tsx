@@ -659,7 +659,7 @@ const PublicProfilePage = (params: {
                         }
                       }
 
-                      const containerClass = `group flex w-full flex-[1_1_48%] cursor-pointer flex-col items-start gap-2 rounded-lg border p-2 text-sm font-medium hover:bg-influencer-green ${selectedContainer}`;
+                      const containerClass = `group flex w-full flex-[0_1_49%] cursor-pointer flex-col items-start gap-2 rounded-lg border p-2 text-sm font-medium hover:bg-influencer-green ${selectedContainer}`;
 
                       return (
                         <div

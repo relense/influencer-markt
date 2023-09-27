@@ -38,6 +38,12 @@ export const allRouter = createTRPCRouter({
     });
   }),
 
+  getAllContentTypesWithoutSocialMedia: publicProcedure.query(
+    async ({ ctx }) => {
+      return await ctx.prisma.contentType.findMany();
+    }
+  ),
+
   getAllReasons: publicProcedure.query(async ({ ctx }) => {
     return await ctx.prisma.reason.findMany();
   }),

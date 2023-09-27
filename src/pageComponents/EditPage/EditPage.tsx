@@ -46,6 +46,9 @@ const EditPage = (params: { role: Option | undefined }) => {
       profileId: profile?.id || -1,
     });
 
+  const { data: contentTypes } =
+    api.allRoutes.getAllContentTypesWithoutSocialMedia.useQuery();
+
   const { mutate: updateProfile } = api.profiles.updateProfile.useMutation({
     onSuccess: () => {
       void ctx.profiles.getProfileWithoutIncludes.invalidate().then(() => {
@@ -325,7 +328,7 @@ const EditPage = (params: { role: Option | undefined }) => {
   });
 
   const onEditSocialMedia = handleSubmitSocialMedia((data) => {
-    if (data.id) {
+    if (data.id && contentTypes) {
       const newUserSocialMediaList = [...userSocialMediaList];
       const editedSocialMedia = {
         id: data.id,
@@ -333,9 +336,15 @@ const EditPage = (params: { role: Option | undefined }) => {
         socialMediaHandler: data.socialMediaHandler,
         platform: data.platform,
         valuePacks: data.valuePacks.map((valuePack) => {
+          const currentContentType = contentTypes.find(
+            (contentType) => contentType.id === valuePack.contentType.id
+          );
           return {
             id: valuePack.id || -1,
-            contentType: valuePack.contentType,
+            contentType: {
+              id: currentContentType?.id || -1,
+              name: currentContentType?.name || "",
+            },
             platform: valuePack.platform,
             valuePackPrice: valuePack.valuePackPrice,
           };
