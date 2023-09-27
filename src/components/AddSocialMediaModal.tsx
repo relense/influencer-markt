@@ -192,6 +192,19 @@ const AddSocialMediaModal = (params: {
     }
   };
 
+  const findContentType = (types: Option[], currentTypeId: number) => {
+    if (currentTypeId === -1) return "";
+    let typeName = "";
+
+    types.forEach((type) => {
+      if (type.id === currentTypeId) {
+        typeName = t(`general.contentTypes.${type.name}`);
+      }
+    });
+
+    return typeName;
+  };
+
   const renderContentTypeWithPriceInput = (index: number, types: Option[]) => {
     return (
       <div
@@ -222,15 +235,10 @@ const AddSocialMediaModal = (params: {
             value={
               {
                 id: contentTypesList?.[index]?.contentType.id || -1,
-                name: contentTypesList?.[index]?.contentType.name
-                  ? t(
-                      `general.contentTypes.${
-                        contentTypesList?.[
-                          index
-                        ]?.contentType.name.toLowerCase() || ""
-                      }`
-                    )
-                  : "",
+                name: findContentType(
+                  types,
+                  contentTypesList?.[index]?.contentType.id || -1
+                ),
               } || { id: -1, name: "" }
             }
             handleOptionSelect={(value: Option) => {

@@ -105,12 +105,15 @@ const JobDetailsPage = (params: {
           job.categories.some((jobCategory) => jobCategory.id === category.id)
         );
 
+        const isCreator = job.jobCreator.id === profile.id;
+
         return (
           !!hasSocialMedia &&
           hasJobGender &&
           hasCountry &&
           hasFollowers &&
-          hasCategory
+          hasCategory &&
+          !isCreator
         );
       }
     };

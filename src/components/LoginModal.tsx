@@ -30,7 +30,7 @@ const LoginModal = ({
 
         <form className="flex w-full flex-col gap-4">
           <input
-            type="text"
+            type="email"
             className="h-14 rounded-lg border-[1px] border-gray3 p-4 placeholder-gray2"
             placeholder="Email"
             autoComplete="off"
