@@ -467,6 +467,11 @@ export const JobsRouter = createTRPCRouter({
               country: true,
               user: { select: { username: true } },
               favoriteBy: { select: { id: true } },
+              influencer: {
+                where: {
+                  jobId: input.jobId,
+                },
+              },
             },
           },
         },

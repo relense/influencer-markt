@@ -734,7 +734,8 @@
       "minFollowersError": "Minimum followers should be less than maximum followers",
       "maxFollowersError": "Maximum followers should be greater than minimum followers",
       "sendOrderRequest": "Send Order",
-      "archiveJob": "Archive Job"
+      "archiveJob": "Archive Job",
+      "viewOrder": "View Order"
     },
 
     "jobs": {

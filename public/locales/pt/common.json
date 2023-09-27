@@ -733,7 +733,8 @@
       "minFollowersError": "Mínimo de seguidoress deve ser menor que o máximo de seguidores",
       "maxFollowersError": "Máximo de seguidores deve ser maior que o mínimo de seguidores",
       "sendOrderRequest": "Enviar Pedido",
-      "archiveJob": "Arquivar Vaga"
+      "archiveJob": "Arquivar Vaga",
+      "viewOrder": "Ver Pedido"
     },
 
     "jobs": {

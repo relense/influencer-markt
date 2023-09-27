@@ -42,6 +42,7 @@ type ApplicantsProfile = {
   bookmarked?: boolean;
   favoritedBy?: number[];
   activeJobs?: number;
+  orderId?: number;
 };
 
 const ManageJobDetailsPage = (params: {
@@ -386,6 +387,7 @@ const ManageJobDetailsPage = (params: {
             favoritedBy: applicant.favoriteBy.map((favorite) => {
               return favorite.id;
             }),
+            orderId: applicant.influencer[0]?.id,
           };
         }
       );
@@ -777,7 +779,7 @@ const ManageJobDetailsPage = (params: {
             job.jobStatus.id === 1 && (
               <Button
                 title={t("pages.manageJobs.initiateJob")}
-                level="primary"
+                level="terciary"
                 isLoading={isLoadingStartJob || isRefetchingJob}
                 onClick={() =>
                   startJob({
@@ -789,7 +791,7 @@ const ManageJobDetailsPage = (params: {
           {job.jobStatus.id === 2 && (
             <Button
               title={t("pages.manageJobs.archiveJob")}
-              level="primary"
+              level="terciary"
               onClick={() => openWarningModal("archive", job.id)}
             />
           )}
@@ -883,7 +885,7 @@ const ManageJobDetailsPage = (params: {
             <div className="flex justify-around gap-4 lg:flex-col lg:justify-center">
               <Button
                 title={t("pages.manageJobs.sendOrderRequest")}
-                level="primary"
+                level="terciary"
                 size="large"
                 onClick={() => submitOrder(applicant)}
                 isLoading={
@@ -938,7 +940,7 @@ const ManageJobDetailsPage = (params: {
             <div className="flex justify-around gap-4 lg:flex-col lg:justify-center">
               <Button
                 title={t("pages.manageJobs.sendOrderRequest")}
-                level="primary"
+                level="terciary"
                 size="large"
                 onClick={() => submitOrder(applicant)}
                 isLoading={
@@ -1303,6 +1305,16 @@ const ManageJobDetailsPage = (params: {
             highlightSocialMediaId={job.socialMediaId}
             loggedInProfileId={params.loggedInProfileId}
           />
+          <div className="flex justify-around gap-4 lg:flex-col lg:justify-center">
+            <Button
+              title={t("pages.manageJobs.viewOrder")}
+              level="terciary"
+              size="large"
+              onClick={() =>
+                void router.push(`/orders/${applicant?.orderId || -1}`)
+              }
+            />
+          </div>
         </div>
       );
     }
@@ -1335,6 +1347,16 @@ const ManageJobDetailsPage = (params: {
             bookmarked={applicant?.bookmarked || false}
             highlightSocialMediaId={job.socialMediaId}
           />
+          <div className="flex justify-around gap-4 lg:flex-col lg:justify-center">
+            <Button
+              title={t("pages.manageJobs.viewOrder")}
+              level="terciary"
+              size="large"
+              onClick={() =>
+                void router.push(`/orders/${applicant?.orderId || -1}`)
+              }
+            />
+          </div>
         </div>
       );
     }
@@ -1360,7 +1382,7 @@ const ManageJobDetailsPage = (params: {
             </div>
             <div className="flex h-6 w-6 justify-center rounded-full border-[1px]">
               <div>
-                {isAcceptedApplicantsOpen ? (
+                {isSentJobApplicantsOpen ? (
                   <FontAwesomeIcon
                     icon={faSubtract}
                     className="fa-2xs cursor-pointer text-gray2"
