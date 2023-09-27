@@ -89,7 +89,7 @@ export const OrdersRouter = createTRPCRouter({
       }
     }),
 
-  createOrderWithOffer: protectedProcedure
+  createOrderWithJob: protectedProcedure
     .input(
       z.object({
         influencerId: z.number(),
@@ -103,7 +103,7 @@ export const OrdersRouter = createTRPCRouter({
           })
         ),
         platformId: z.number(),
-        offerId: z.number(),
+        jobId: z.number(),
         language: z.string(),
       })
     )
@@ -126,7 +126,7 @@ export const OrdersRouter = createTRPCRouter({
             countryId: influencerProfile?.countryId,
             orderStatusId: 1,
             socialMediaId: input.platformId,
-            offerId: input.offerId,
+            jobId: input.jobId,
           },
           include: {
             influencer: {

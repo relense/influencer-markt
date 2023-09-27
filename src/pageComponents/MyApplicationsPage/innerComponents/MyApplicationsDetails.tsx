@@ -27,9 +27,9 @@ const MyApplicationsDetails = (params: {
   const [job, setJob] = useState<JobIncludes>();
   const [applied, setApplied] = useState<boolean>(false);
 
-  const { data: jobData, isLoading } = api.offers.getSimpleOffer.useQuery(
+  const { data: jobData, isLoading } = api.jobs.getSimpleJob.useQuery(
     {
-      offerId: params?.selectedJobId || -1,
+      jobId: params?.selectedJobId || -1,
     },
     {
       cacheTime: 0,
@@ -37,10 +37,10 @@ const MyApplicationsDetails = (params: {
   );
 
   const { mutate: applyToJob, isLoading: applicationIsLoading } =
-    api.offers.applyToOffer.useMutation({
+    api.jobs.applyToJob.useMutation({
       onSuccess: () => {
         setApplied(true);
-        void ctx.offers.getSimpleOffer.invalidate().then(() => {
+        void ctx.jobs.getSimpleJob.invalidate().then(() => {
           toast.success(t("pages.applications.appliedSuccess"), {
             position: "bottom-left",
           });
@@ -48,10 +48,10 @@ const MyApplicationsDetails = (params: {
       },
     });
   const { mutate: removeApplication, isLoading: removingIsLoading } =
-    api.offers.removeOfferApplication.useMutation({
+    api.jobs.removeJobApplication.useMutation({
       onSuccess: () => {
         setApplied(false);
-        void ctx.offers.getSimpleOffer.invalidate().then(() => {
+        void ctx.jobs.getSimpleJob.invalidate().then(() => {
           toast.success(t("pages.applications.removedApplicationSuccess"), {
             position: "bottom-left",
           });
@@ -98,9 +98,9 @@ const MyApplicationsDetails = (params: {
 
   const onApply = (job: JobIncludes) => {
     if (applied) {
-      removeApplication({ offerId: job.id });
+      removeApplication({ jobId: job.id });
     } else {
-      applyToJob({ offerId: job.id });
+      applyToJob({ jobId: job.id });
     }
   };
 
@@ -129,7 +129,7 @@ const MyApplicationsDetails = (params: {
             href={`jobs/${job.id}`}
             className="w-auto text-2xl font-semibold hover:underline lg:w-auto lg:max-w-[80%]"
           >
-            {job?.offerSummary}
+            {job?.jobSummary}
           </Link>
         </div>
       );
@@ -140,10 +140,10 @@ const MyApplicationsDetails = (params: {
     return (
       <div className="flex flex-wrap items-center gap-2 text-gray2">
         <Link
-          href={`/${job?.offerCreator?.user?.username || ""}`}
+          href={`/${job?.jobCreator?.user?.username || ""}`}
           className="hover:underline"
         >
-          {job?.offerCreator?.name}
+          {job?.jobCreator?.name}
         </Link>
         <div className="h-1 w-1 rounded-full bg-black" />
         <div>
@@ -171,7 +171,7 @@ const MyApplicationsDetails = (params: {
           {job?.contentTypeWithQuantity.map((contentType) => {
             return (
               <div
-                key={`details${contentType.id}${job?.offerCreator?.name || ""}`}
+                key={`details${contentType.id}${job?.jobCreator?.name || ""}`}
                 className="flex gap-1 text-black"
               >
                 <div>
@@ -296,7 +296,7 @@ const MyApplicationsDetails = (params: {
         <div className="text-lg font-semibold text-influencer">
           {t("pages.applications.aboutJob")}
         </div>
-        <div className="whitespace-pre-line">{job?.OfferDetails}</div>
+        <div className="whitespace-pre-line">{job?.JobDetails}</div>
       </div>
     );
   };

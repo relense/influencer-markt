@@ -283,10 +283,10 @@ const SalesDetailsPage = (params: { orderId: number }) => {
     }
   };
 
-  const renderOfferDisclaimer = () => {
+  const renderJobDisclaimer = () => {
     return (
       <Link
-        href={`/jobs/${sale?.offerId || -1}`}
+        href={`/jobs/${sale?.jobId || -1}`}
         className="flex cursor-pointer justify-center gap-2 rounded-xl border-[1px] bg-influencer p-4 text-center text-white"
       >
         {t("pages.sales.congratulations")}
@@ -326,7 +326,7 @@ const SalesDetailsPage = (params: { orderId: number }) => {
         </div>
       ) : (
         <div className="flex flex-1 flex-col gap-4">
-          {sale?.offerId && sale.orderStatusId === 1 && renderOfferDisclaimer()}
+          {sale?.jobId && sale.orderStatusId === 1 && renderJobDisclaimer()}
           <div className="flex flex-1 flex-col gap-4 lg:flex-row">
             <div className="flex flex-1 flex-col gap-4">
               {sale?.reviewId && renderOrderReview()}

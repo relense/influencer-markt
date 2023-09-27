@@ -229,7 +229,7 @@
       "Female": "Female",
       "Other": "Other",
       "characterWarning": "Max is {{count}} characters",
-      "invalidPictureAlert": "Pictures must be jpeg or png and can't exceed 2mbs",
+      "invalidPictureAlert": "Pictures must be jpeg, jpg or png and can't exceed 2mbs",
       "addProfilePicture": "Add your Profile Image",
       "displayNamePlaceholder": "Choose Your Display Name: How Would You Like to be Recognized?",
       "genderPlaceholder": "Select your gender: Male, Female, Other",
@@ -270,7 +270,7 @@
     },
 
     "pictureCarrosel": {
-      "invalidPictureWarning": "Picture must be jpeg or png and can't exceed 2mbs",
+      "invalidPictureWarning": "Picture must be jpeg, jpg or png and can't exceed 2mbs",
       "addPicture": "Add your Profile Image"
     },
 

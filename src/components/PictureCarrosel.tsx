@@ -102,11 +102,12 @@ export const PictureCarrosel = (params: {
 
   const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
-
     if (
       file &&
-      (file.name.includes("jpeg") || file.name.includes("png")) &&
-      file.size < 2000000
+      (file.name.includes("jpeg") ||
+        file.name.includes("png") ||
+        file.name.includes("jpg")) &&
+      file.size <= 2000000
     ) {
       const reader = new FileReader();
 

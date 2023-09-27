@@ -88,9 +88,9 @@ export type UserProfiles = {
   activeJobs?: number;
 };
 
-export type ProfileJobs = Prisma.OfferGetPayload<{
+export type ProfileJobs = Prisma.JobGetPayload<{
   select: {
-    offerSummary: true;
+    jobSummary: true;
     id: true;
     contentTypeWithQuantity: {
       select: {
@@ -105,10 +105,10 @@ export type ProfileJobs = Prisma.OfferGetPayload<{
   };
 }>;
 
-export type JobWithAllData = Prisma.OfferGetPayload<{
+export type JobWithAllData = Prisma.JobGetPayload<{
   include: {
     id?: true;
-    offerStatus: true;
+    jobStatus: true;
     categories: true;
     applicants: { select: { id: true } };
     acceptedApplicants: { select: { id: true } };
@@ -119,7 +119,7 @@ export type JobWithAllData = Prisma.OfferGetPayload<{
         id: true;
       };
     };
-    offerCreator: true;
+    jobCreator: true;
     country: true;
     gender: true;
     socialMedia: true;
@@ -127,7 +127,7 @@ export type JobWithAllData = Prisma.OfferGetPayload<{
   };
 }>;
 
-export type JobIncludes = Prisma.OfferGetPayload<{
+export type JobIncludes = Prisma.JobGetPayload<{
   include: {
     contentTypeWithQuantity: {
       select: {
@@ -136,12 +136,12 @@ export type JobIncludes = Prisma.OfferGetPayload<{
         id: true;
       };
     };
-    offerStatus: true;
+    jobStatus: true;
     country: true;
     state: true;
     gender: true;
     socialMedia: true;
-    offerCreator: {
+    jobCreator: {
       include: {
         user: true;
       };

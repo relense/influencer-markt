@@ -1,12 +1,12 @@
 import { z } from "zod";
 import { createTRPCRouter, protectedProcedure, publicProcedure } from "../trpc";
 
-export const OffersRouter = createTRPCRouter({
-  createOffer: protectedProcedure
+export const JobsRouter = createTRPCRouter({
+  createJob: protectedProcedure
     .input(
       z.object({
-        offerSummary: z.string(),
-        offerDetails: z.string(),
+        jobSummary: z.string(),
+        jobDetails: z.string(),
         socialMediaId: z.number(),
         contentTypes: z.array(
           z.object({
@@ -33,10 +33,10 @@ export const OffersRouter = createTRPCRouter({
         throw new Error("Profile not found.");
       }
 
-      const offer = await ctx.prisma.offer.create({
+      const job = await ctx.prisma.job.create({
         data: {
-          offerSummary: input.offerSummary,
-          OfferDetails: input.offerDetails,
+          jobSummary: input.jobSummary,
+          JobDetails: input.jobDetails,
           socialMedia: { connect: { id: input.socialMediaId } },
           categories: {
             connect: input.categories.map((categoryId) => ({ id: categoryId })),
@@ -45,7 +45,7 @@ export const OffersRouter = createTRPCRouter({
           numberOfInfluencers: input.numberOfInfluencers,
           country: { connect: { id: input.countryId } },
           minFollowers: input.minFollowers,
-          offerCreator: { connect: { id: profile.id } },
+          jobCreator: { connect: { id: profile.id } },
           gender:
             input.genderId !== -1 ? { connect: { id: input.genderId } } : {},
           published: input.published,
@@ -57,20 +57,20 @@ export const OffersRouter = createTRPCRouter({
           return {
             contentTypeId: contentType.contentTypeId,
             amount: contentType.amount,
-            offerId: offer.id,
+            jobId: job.id,
           };
         }),
       });
 
-      return offer;
+      return job;
     }),
 
-  updateOffer: protectedProcedure
+  updateJob: protectedProcedure
     .input(
       z.object({
-        offerId: z.number(),
-        offerSummary: z.string(),
-        offerDetails: z.string(),
+        jobId: z.number(),
+        jobSummary: z.string(),
+        jobDetails: z.string(),
         socialMediaId: z.number(),
         contentTypes: z.array(
           z.object({
@@ -89,13 +89,13 @@ export const OffersRouter = createTRPCRouter({
       })
     )
     .mutation(async ({ ctx, input }) => {
-      const offer = await ctx.prisma.offer.update({
+      const job = await ctx.prisma.job.update({
         where: {
-          id: input.offerId,
+          id: input.jobId,
         },
         data: {
-          offerSummary: input.offerSummary,
-          OfferDetails: input.offerDetails,
+          jobSummary: input.jobSummary,
+          JobDetails: input.jobDetails,
           socialMedia: { connect: { id: input.socialMediaId } },
           categories: {
             set: [],
@@ -114,7 +114,7 @@ export const OffersRouter = createTRPCRouter({
       });
 
       await ctx.prisma.contentTypeWithQuantity.deleteMany({
-        where: { Offer: { id: input.offerId } },
+        where: { Job: { id: input.jobId } },
       });
 
       await ctx.prisma.contentTypeWithQuantity.createMany({
@@ -122,18 +122,18 @@ export const OffersRouter = createTRPCRouter({
           return {
             contentTypeId: contentType.contentTypeId,
             amount: contentType.amount,
-            offerId: offer.id,
+            jobId: job.id,
           };
         }),
       });
 
-      return offer;
+      return job;
     }),
 
-  getAllUserOffers: protectedProcedure
+  getAllUserJobs: protectedProcedure
     .input(
       z.object({
-        offerStatusId: z.number(),
+        jobStatusId: z.number(),
       })
     )
     .query(async ({ ctx, input }) => {
@@ -146,16 +146,16 @@ export const OffersRouter = createTRPCRouter({
 
       if (profile) {
         return await ctx.prisma.$transaction([
-          ctx.prisma.offer.count({
+          ctx.prisma.job.count({
             where: {
               profileId: profile.id,
-              offerStatusId: input.offerStatusId,
+              jobStatusId: input.jobStatusId,
             },
           }),
-          ctx.prisma.offer.findMany({
+          ctx.prisma.job.findMany({
             where: {
               profileId: profile.id,
-              offerStatusId: input.offerStatusId,
+              jobStatusId: input.jobStatusId,
             },
             take: 10,
             include: {
@@ -191,7 +191,7 @@ export const OffersRouter = createTRPCRouter({
                   user: { select: { username: true } },
                 },
               },
-              offerStatus: true,
+              jobStatus: true,
               categories: true,
               applicants: { select: { id: true } },
               contentTypeWithQuantity: {
@@ -201,7 +201,7 @@ export const OffersRouter = createTRPCRouter({
                   id: true,
                 },
               },
-              offerCreator: true,
+              jobCreator: true,
               country: true,
               gender: true,
               socialMedia: true,
@@ -215,10 +215,10 @@ export const OffersRouter = createTRPCRouter({
       }
     }),
 
-  getAllUserOffersWithCursor: protectedProcedure
+  getAllUserJobsWithCursor: protectedProcedure
     .input(
       z.object({
-        offerStatusId: z.number(),
+        jobStatusId: z.number(),
         cursor: z.number(),
       })
     )
@@ -231,8 +231,8 @@ export const OffersRouter = createTRPCRouter({
       });
 
       if (profile) {
-        return await ctx.prisma.offer.findMany({
-          where: { profileId: profile.id, offerStatusId: input.offerStatusId },
+        return await ctx.prisma.job.findMany({
+          where: { profileId: profile.id, jobStatusId: input.jobStatusId },
           take: 10,
           skip: 1,
           cursor: {
@@ -271,7 +271,7 @@ export const OffersRouter = createTRPCRouter({
                 user: { select: { username: true } },
               },
             },
-            offerStatus: true,
+            jobStatus: true,
             categories: true,
             applicants: { select: { id: true } },
             contentTypeWithQuantity: {
@@ -281,7 +281,7 @@ export const OffersRouter = createTRPCRouter({
                 id: true,
               },
             },
-            offerCreator: true,
+            jobCreator: true,
             country: true,
             gender: true,
             socialMedia: true,
@@ -294,135 +294,135 @@ export const OffersRouter = createTRPCRouter({
       }
     }),
 
-  publishOffer: protectedProcedure
+  publishJob: protectedProcedure
     .input(
       z.object({
-        offerId: z.number(),
+        jobId: z.number(),
       })
     )
     .mutation(async ({ ctx, input }) => {
-      return await ctx.prisma.offer.update({
-        where: { id: input.offerId },
+      return await ctx.prisma.job.update({
+        where: { id: input.jobId },
         data: {
           published: true,
         },
       });
     }),
 
-  archiveOffer: protectedProcedure
+  archiveJob: protectedProcedure
     .input(
       z.object({
-        offerId: z.number(),
+        jobId: z.number(),
       })
     )
     .mutation(async ({ ctx, input }) => {
-      return await ctx.prisma.offer.update({
-        where: { id: input.offerId },
+      return await ctx.prisma.job.update({
+        where: { id: input.jobId },
         data: {
-          offerStatusId: 3,
+          jobStatusId: 3,
         },
       });
     }),
 
-  startOffer: protectedProcedure
+  startJob: protectedProcedure
     .input(
       z.object({
-        offerId: z.number(),
+        jobId: z.number(),
       })
     )
     .mutation(async ({ ctx, input }) => {
-      return await ctx.prisma.offer.update({
-        where: { id: input.offerId },
+      return await ctx.prisma.job.update({
+        where: { id: input.jobId },
         data: {
-          offerStatusId: 2,
+          jobStatusId: 2,
         },
       });
     }),
 
-  duplicateOffer: protectedProcedure
+  duplicateJob: protectedProcedure
     .input(
       z.object({
-        offerId: z.number(),
+        jobId: z.number(),
       })
     )
     .mutation(async ({ ctx, input }) => {
-      const offer = await ctx.prisma.offer.findFirst({
-        where: { id: input.offerId },
+      const job = await ctx.prisma.job.findFirst({
+        where: { id: input.jobId },
         include: {
           categories: true,
           contentTypeWithQuantity: true,
         },
       });
 
-      if (offer) {
-        const duplicatedOffer = await ctx.prisma.offer.create({
+      if (job) {
+        const duplicatedJob = await ctx.prisma.job.create({
           data: {
-            offerSummary: offer.offerSummary,
-            OfferDetails: offer.OfferDetails,
-            socialMedia: { connect: { id: offer.socialMediaId } },
+            jobSummary: job.jobSummary,
+            JobDetails: job.JobDetails,
+            socialMedia: { connect: { id: job.socialMediaId } },
             categories: {
-              connect: offer.categories.map((category) => ({
+              connect: job.categories.map((category) => ({
                 id: category.id,
               })),
             },
-            price: offer.price,
-            numberOfInfluencers: offer.numberOfInfluencers,
-            country: { connect: { id: offer.countryId } },
-            minFollowers: offer.minFollowers,
-            maxFollowers: offer.maxFollowers,
-            offerCreator: { connect: { id: offer.profileId } },
-            gender: offer.genderId ? { connect: { id: offer.genderId } } : {},
+            price: job.price,
+            numberOfInfluencers: job.numberOfInfluencers,
+            country: { connect: { id: job.countryId } },
+            minFollowers: job.minFollowers,
+            maxFollowers: job.maxFollowers,
+            jobCreator: { connect: { id: job.profileId } },
+            gender: job.genderId ? { connect: { id: job.genderId } } : {},
           },
         });
 
         await ctx.prisma.contentTypeWithQuantity.createMany({
-          data: offer.contentTypeWithQuantity.map((contentType) => {
+          data: job.contentTypeWithQuantity.map((contentType) => {
             return {
               contentTypeId: contentType.contentTypeId,
               amount: contentType.amount,
-              offerId: duplicatedOffer.id,
+              jobId: duplicatedJob.id,
             };
           }),
         });
 
-        return duplicatedOffer;
+        return duplicatedJob;
       }
     }),
 
-  deleteOffer: protectedProcedure
+  deleteJob: protectedProcedure
     .input(
       z.object({
-        offerId: z.number(),
+        jobId: z.number(),
       })
     )
     .mutation(async ({ ctx, input }) => {
       const deleteContentTypesQuantity =
         ctx.prisma.contentTypeWithQuantity.deleteMany({
           where: {
-            Offer: {
-              id: input.offerId,
+            Job: {
+              id: input.jobId,
             },
           },
         });
 
-      const deleteOffer = ctx.prisma.offer.delete({
-        where: { id: input.offerId },
+      const deleteJob = ctx.prisma.job.delete({
+        where: { id: input.jobId },
       });
 
-      await ctx.prisma.$transaction([deleteContentTypesQuantity, deleteOffer]);
+      await ctx.prisma.$transaction([deleteContentTypesQuantity, deleteJob]);
     }),
 
-  getOffer: protectedProcedure
+  getJob: protectedProcedure
     .input(
       z.object({
-        offerId: z.number(),
+        jobId: z.number(),
       })
     )
     .query(async ({ ctx, input }) => {
-      return await ctx.prisma.offer.findFirst({
-        where: { id: input.offerId },
+      return await ctx.prisma.job.findFirst({
+        where: { id: input.jobId },
         include: {
-          offerStatus: true,
+          jobStatus: true,
           categories: true,
           applicants: { select: { id: true } },
           acceptedApplicants: { select: { id: true } },
@@ -433,7 +433,7 @@ export const OffersRouter = createTRPCRouter({
               id: true,
             },
           },
-          offerCreator: true,
+          jobCreator: true,
           country: true,
           gender: true,
           socialMedia: true,
@@ -445,12 +445,12 @@ export const OffersRouter = createTRPCRouter({
   getSentOrderApplicants: protectedProcedure
     .input(
       z.object({
-        offerId: z.number(),
+        jobId: z.number(),
       })
     )
     .query(async ({ ctx, input }) => {
-      return await ctx.prisma.offer.findFirst({
-        where: { id: input.offerId },
+      return await ctx.prisma.job.findFirst({
+        where: { id: input.jobId },
         select: {
           sentApplicants: {
             select: {
@@ -476,12 +476,12 @@ export const OffersRouter = createTRPCRouter({
   getAcceptedApplicants: protectedProcedure
     .input(
       z.object({
-        offerId: z.number(),
+        jobId: z.number(),
       })
     )
     .query(async ({ ctx, input }) => {
-      return await ctx.prisma.offer.findFirst({
-        where: { id: input.offerId },
+      return await ctx.prisma.job.findFirst({
+        where: { id: input.jobId },
         select: {
           acceptedApplicants: {
             select: {
@@ -507,12 +507,12 @@ export const OffersRouter = createTRPCRouter({
   getRejectedApplicants: protectedProcedure
     .input(
       z.object({
-        offerId: z.number(),
+        jobId: z.number(),
       })
     )
     .query(async ({ ctx, input }) => {
-      return await ctx.prisma.offer.findFirst({
-        where: { id: input.offerId },
+      return await ctx.prisma.job.findFirst({
+        where: { id: input.jobId },
         select: {
           rejectedApplicants: {
             select: {
@@ -538,12 +538,12 @@ export const OffersRouter = createTRPCRouter({
   getApplicants: protectedProcedure
     .input(
       z.object({
-        offerId: z.number(),
+        jobId: z.number(),
       })
     )
     .query(async ({ ctx, input }) => {
-      return await ctx.prisma.offer.findFirst({
-        where: { id: input.offerId },
+      return await ctx.prisma.job.findFirst({
+        where: { id: input.jobId },
         take: 10,
         select: {
           applicants: {
@@ -567,15 +567,15 @@ export const OffersRouter = createTRPCRouter({
       });
     }),
 
-  getSimpleOffer: publicProcedure
+  getSimpleJob: publicProcedure
     .input(
       z.object({
-        offerId: z.number(),
+        jobId: z.number(),
       })
     )
     .query(async ({ ctx, input }) => {
-      return await ctx.prisma.offer.findFirst({
-        where: { id: input.offerId },
+      return await ctx.prisma.job.findFirst({
+        where: { id: input.jobId },
         include: {
           contentTypeWithQuantity: {
             select: {
@@ -584,12 +584,12 @@ export const OffersRouter = createTRPCRouter({
               id: true,
             },
           },
-          offerStatus: true,
+          jobStatus: true,
           country: true,
           state: true,
           gender: true,
           socialMedia: true,
-          offerCreator: {
+          jobCreator: {
             include: {
               user: true,
             },
@@ -606,7 +606,7 @@ export const OffersRouter = createTRPCRouter({
       });
     }),
 
-  getAllOffers: publicProcedure
+  getAllJobs: publicProcedure
     .input(
       z.object({
         categories: z.array(z.number()),
@@ -620,10 +620,10 @@ export const OffersRouter = createTRPCRouter({
     )
     .query(async ({ ctx, input }) => {
       return await ctx.prisma.$transaction([
-        ctx.prisma.offer.count({
+        ctx.prisma.job.count({
           where: {
             published: true,
-            offerStatusId: 1,
+            jobStatusId: 1,
             categories: {
               some: {
                 id: {
@@ -659,10 +659,10 @@ export const OffersRouter = createTRPCRouter({
             countryId: input.country !== -1 ? input.country : undefined,
           },
         }),
-        ctx.prisma.offer.findMany({
+        ctx.prisma.job.findMany({
           where: {
             published: true,
-            offerStatusId: 1,
+            jobStatusId: 1,
             categories: {
               some: {
                 id: {
@@ -706,12 +706,12 @@ export const OffersRouter = createTRPCRouter({
                 id: true,
               },
             },
-            offerStatus: true,
+            jobStatus: true,
             country: true,
             state: true,
             gender: true,
             socialMedia: true,
-            offerCreator: {
+            jobCreator: {
               include: {
                 user: true,
               },
@@ -732,7 +732,7 @@ export const OffersRouter = createTRPCRouter({
       ]);
     }),
 
-  getAllOffersWithCursor: publicProcedure
+  getAllJobsWithCursor: publicProcedure
     .input(
       z.object({
         cursor: z.number(),
@@ -746,10 +746,10 @@ export const OffersRouter = createTRPCRouter({
       })
     )
     .query(async ({ ctx, input }) => {
-      return await ctx.prisma.offer.findMany({
+      return await ctx.prisma.job.findMany({
         where: {
           published: true,
-          offerStatusId: 1,
+          jobStatusId: 1,
           categories: {
             some: {
               id: {
@@ -795,12 +795,12 @@ export const OffersRouter = createTRPCRouter({
               id: true,
             },
           },
-          offerStatus: true,
+          jobStatus: true,
           country: true,
           state: true,
           gender: true,
           socialMedia: true,
-          offerCreator: {
+          jobCreator: {
             include: {
               user: true,
             },
@@ -820,10 +820,10 @@ export const OffersRouter = createTRPCRouter({
       });
     }),
 
-  applyToOffer: protectedProcedure
+  applyToJob: protectedProcedure
     .input(
       z.object({
-        offerId: z.number(),
+        jobId: z.number(),
       })
     )
     .mutation(async ({ ctx, input }) => {
@@ -835,8 +835,8 @@ export const OffersRouter = createTRPCRouter({
       });
 
       if (profile) {
-        return await ctx.prisma.offer.update({
-          where: { id: input.offerId, offerStatusId: 1 },
+        return await ctx.prisma.job.update({
+          where: { id: input.jobId, jobStatusId: 1 },
           data: {
             applicants: { connect: { id: profile.id } },
           },
@@ -844,10 +844,10 @@ export const OffersRouter = createTRPCRouter({
       }
     }),
 
-  removeOfferApplication: protectedProcedure
+  removeJobApplication: protectedProcedure
     .input(
       z.object({
-        offerId: z.number(),
+        jobId: z.number(),
       })
     )
     .mutation(async ({ ctx, input }) => {
@@ -859,8 +859,8 @@ export const OffersRouter = createTRPCRouter({
       });
 
       if (profile) {
-        return await ctx.prisma.offer.update({
-          where: { id: input.offerId, offerStatusId: 1 },
+        return await ctx.prisma.job.update({
+          where: { id: input.jobId, jobStatusId: 1 },
           data: {
             applicants: { disconnect: { id: profile.id } },
             acceptedApplicants: { disconnect: { id: profile.id } },
@@ -872,13 +872,13 @@ export const OffersRouter = createTRPCRouter({
   acceptedApplicant: protectedProcedure
     .input(
       z.object({
-        offerId: z.number(),
+        jobId: z.number(),
         profileId: z.number(),
       })
     )
     .mutation(async ({ ctx, input }) => {
-      return await ctx.prisma.offer.update({
-        where: { id: input.offerId, offerStatusId: 1 },
+      return await ctx.prisma.job.update({
+        where: { id: input.jobId, jobStatusId: 1 },
         data: {
           applicants: { disconnect: { id: input.profileId } },
           acceptedApplicants: { connect: { id: input.profileId } },
@@ -889,13 +889,13 @@ export const OffersRouter = createTRPCRouter({
   rejectApplicant: protectedProcedure
     .input(
       z.object({
-        offerId: z.number(),
+        jobId: z.number(),
         profileId: z.number(),
       })
     )
     .mutation(async ({ ctx, input }) => {
-      return await ctx.prisma.offer.update({
-        where: { id: input.offerId, offerStatusId: 1 },
+      return await ctx.prisma.job.update({
+        where: { id: input.jobId, jobStatusId: 1 },
         data: {
           applicants: { disconnect: { id: input.profileId } },
           rejectedApplicants: { connect: { id: input.profileId } },
@@ -906,13 +906,13 @@ export const OffersRouter = createTRPCRouter({
   removeApplicantFromAccepted: protectedProcedure
     .input(
       z.object({
-        offerId: z.number(),
+        jobId: z.number(),
         profileId: z.number(),
       })
     )
     .mutation(async ({ ctx, input }) => {
-      return await ctx.prisma.offer.update({
-        where: { id: input.offerId, offerStatusId: 1 },
+      return await ctx.prisma.job.update({
+        where: { id: input.jobId, jobStatusId: 1 },
         data: {
           applicants: { connect: { id: input.profileId } },
           acceptedApplicants: { disconnect: { id: input.profileId } },
@@ -923,13 +923,13 @@ export const OffersRouter = createTRPCRouter({
   removeApplicantFromRejected: protectedProcedure
     .input(
       z.object({
-        offerId: z.number(),
+        jobId: z.number(),
         profileId: z.number(),
       })
     )
     .mutation(async ({ ctx, input }) => {
-      return await ctx.prisma.offer.update({
-        where: { id: input.offerId, offerStatusId: 1 },
+      return await ctx.prisma.job.update({
+        where: { id: input.jobId, jobStatusId: 1 },
         data: {
           applicants: { connect: { id: input.profileId } },
           rejectedApplicants: { disconnect: { id: input.profileId } },
@@ -940,13 +940,13 @@ export const OffersRouter = createTRPCRouter({
   updateApplicantToSentList: protectedProcedure
     .input(
       z.object({
-        offerId: z.number(),
+        jobId: z.number(),
         profileId: z.number(),
       })
     )
     .mutation(async ({ ctx, input }) => {
-      const offerUpdated = await ctx.prisma.offer.update({
-        where: { id: input.offerId, offerStatusId: 2 },
+      const jobUpdated = await ctx.prisma.job.update({
+        where: { id: input.jobId, jobStatusId: 2 },
         data: {
           sentApplicants: { connect: { id: input.profileId } },
           acceptedApplicants: { disconnect: { id: input.profileId } },
@@ -956,17 +956,17 @@ export const OffersRouter = createTRPCRouter({
         },
       });
 
-      if (offerUpdated && offerUpdated.acceptedApplicants.length === 0) {
-        return await ctx.prisma.offer.update({
-          where: { id: input.offerId, offerStatusId: 2 },
+      if (jobUpdated && jobUpdated.acceptedApplicants.length === 0) {
+        return await ctx.prisma.job.update({
+          where: { id: input.jobId, jobStatusId: 2 },
           data: {
-            offerStatusId: 3,
+            jobStatusId: 3,
           },
         });
       }
     }),
 
-  getProfileOffers: publicProcedure
+  getProfileJobs: publicProcedure
     .input(
       z.object({
         profileId: z.number(),
@@ -974,20 +974,20 @@ export const OffersRouter = createTRPCRouter({
     )
     .query(async ({ ctx, input }) => {
       return await ctx.prisma.$transaction([
-        ctx.prisma.offer.count({
+        ctx.prisma.job.count({
           where: {
             profileId: input.profileId,
-            offerStatusId: 1,
+            jobStatusId: 1,
           },
         }),
-        ctx.prisma.offer.findMany({
+        ctx.prisma.job.findMany({
           where: {
             profileId: input.profileId,
-            offerStatusId: 1,
+            jobStatusId: 1,
           },
           take: 10,
           select: {
-            offerSummary: true,
+            jobSummary: true,
             id: true,
             contentTypeWithQuantity: {
               select: {
@@ -1007,7 +1007,7 @@ export const OffersRouter = createTRPCRouter({
       ]);
     }),
 
-  getProfileOffersCursor: publicProcedure
+  getProfileJobsCursor: publicProcedure
     .input(
       z.object({
         profileId: z.number(),
@@ -1015,10 +1015,10 @@ export const OffersRouter = createTRPCRouter({
       })
     )
     .query(async ({ ctx, input }) => {
-      return await ctx.prisma.offer.findMany({
+      return await ctx.prisma.job.findMany({
         where: {
           profileId: input.profileId,
-          offerStatusId: 10,
+          jobStatusId: 10,
         },
         take: 10,
         skip: 1,
@@ -1026,7 +1026,7 @@ export const OffersRouter = createTRPCRouter({
           id: input.cursor,
         },
         select: {
-          offerSummary: true,
+          jobSummary: true,
           id: true,
           contentTypeWithQuantity: {
             select: {
@@ -1045,7 +1045,7 @@ export const OffersRouter = createTRPCRouter({
       });
     }),
 
-  getAppliedOffers: protectedProcedure.query(async ({ ctx }) => {
+  getAppliedJobs: protectedProcedure.query(async ({ ctx }) => {
     const profile = await ctx.prisma.profile.findFirst({
       where: {
         userId: ctx.session.user.id,
@@ -1054,9 +1054,9 @@ export const OffersRouter = createTRPCRouter({
 
     if (profile) {
       return await ctx.prisma.$transaction([
-        ctx.prisma.offer.count({
+        ctx.prisma.job.count({
           where: {
-            offerStatus: {
+            jobStatus: {
               id: 1,
             },
 
@@ -1085,9 +1085,9 @@ export const OffersRouter = createTRPCRouter({
             ],
           },
         }),
-        ctx.prisma.offer.findMany({
+        ctx.prisma.job.findMany({
           where: {
-            offerStatus: {
+            jobStatus: {
               id: 1,
             },
             OR: [
@@ -1123,12 +1123,12 @@ export const OffersRouter = createTRPCRouter({
                 id: true,
               },
             },
-            offerStatus: true,
+            jobStatus: true,
             country: true,
             state: true,
             gender: true,
             socialMedia: true,
-            offerCreator: {
+            jobCreator: {
               include: {
                 user: true,
               },
@@ -1150,7 +1150,7 @@ export const OffersRouter = createTRPCRouter({
     }
   }),
 
-  getAppliedOffersWithCursor: protectedProcedure
+  getAppliedJobsWithCursor: protectedProcedure
     .input(
       z.object({
         cursor: z.number(),
@@ -1164,9 +1164,9 @@ export const OffersRouter = createTRPCRouter({
       });
 
       if (profile) {
-        return await ctx.prisma.offer.findMany({
+        return await ctx.prisma.job.findMany({
           where: {
-            offerStatus: {
+            jobStatus: {
               id: 1,
             },
             OR: [
@@ -1206,12 +1206,12 @@ export const OffersRouter = createTRPCRouter({
                 id: true,
               },
             },
-            offerStatus: true,
+            jobStatus: true,
             country: true,
             state: true,
             gender: true,
             socialMedia: true,
-            offerCreator: {
+            jobCreator: {
               include: {
                 user: true,
               },

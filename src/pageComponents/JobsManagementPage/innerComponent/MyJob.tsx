@@ -41,7 +41,7 @@ const MyJob = (params: {
       >
         <div className="flex flex-col gap-2">
           <div className="line-clamp-2 font-semibold xs:w-3/4">
-            {params.job.offerSummary}
+            {params.job.jobSummary}
           </div>
           <div className="flex flex-col sm:flex-row sm:items-center sm:gap-4">
             <div className="font-semibold text-gray2">
@@ -54,11 +54,11 @@ const MyJob = (params: {
             </div>
           </div>
           <div className="line-clamp-3 whitespace-pre-line">
-            {params.job.OfferDetails}
+            {params.job.JobDetails}
           </div>
         </div>
         <div className="flex flex-col gap-4 sm:flex-row sm:gap-6">
-          {params.job.offerStatusId === 1 && (
+          {params.job.jobStatusId === 1 && (
             <div className="flex items-center gap-2">
               <FontAwesomeIcon
                 icon={faBriefcase}
@@ -71,7 +71,7 @@ const MyJob = (params: {
               </div>
             </div>
           )}
-          {params.job.offerStatusId !== 3 && (
+          {params.job.jobStatusId !== 3 && (
             <div className="flex items-center gap-2">
               <FontAwesomeIcon
                 icon={faCircleCheck}

@@ -369,9 +369,9 @@ export const profilesRouter = createTRPCRouter({
                 id: true,
               },
             },
-            createdOffers: {
+            createdJobs: {
               where: {
-                offerStatusId: 1,
+                jobStatusId: 1,
               },
             },
           },
@@ -455,9 +455,9 @@ export const profilesRouter = createTRPCRouter({
               id: true,
             },
           },
-          createdOffers: {
+          createdJobs: {
             where: {
-              offerStatusId: 1,
+              jobStatusId: 1,
             },
           },
         },
@@ -519,6 +519,8 @@ export const profilesRouter = createTRPCRouter({
           name: input.displayName,
           genderId: input.gender.id === -1 ? undefined : input.gender.id,
           profilePicture: "",
+          profilePictureBlobName: "",
+          nif: "",
           categories: {
             connect: input.categories.map((category) => ({
               id: category.id,
@@ -826,9 +828,9 @@ export const profilesRouter = createTRPCRouter({
                 },
               },
               user: true,
-              createdOffers: {
+              createdJobs: {
                 where: {
-                  offerStatusId: 1,
+                  jobStatusId: 1,
                 },
               },
             },
@@ -897,13 +899,13 @@ export const profilesRouter = createTRPCRouter({
     });
   }),
 
-  getProfileOffers: protectedProcedure.query(async ({ ctx }) => {
+  getProfileJobs: protectedProcedure.query(async ({ ctx }) => {
     return await ctx.prisma.profile.findFirst({
       where: {
         userId: ctx.session.user.id,
       },
       select: {
-        createdOffers: {
+        createdJobs: {
           select: {
             id: true,
           },
@@ -962,12 +964,12 @@ export const profilesRouter = createTRPCRouter({
           },
           take: 10,
           include: {
-            acceptedOffers: {
+            acceptedJobs: {
               select: {
                 id: true,
               },
             },
-            appliedOffers: {
+            appliedJobs: {
               select: {
                 id: true,
               },
@@ -975,7 +977,7 @@ export const profilesRouter = createTRPCRouter({
             categories: true,
             city: true,
             country: true,
-            createdOffers: {
+            createdJobs: {
               select: {
                 id: true,
               },
@@ -1067,12 +1069,12 @@ export const profilesRouter = createTRPCRouter({
           id: input.cursor,
         },
         include: {
-          acceptedOffers: {
+          acceptedJobs: {
             select: {
               id: true,
             },
           },
-          appliedOffers: {
+          appliedJobs: {
             select: {
               id: true,
             },
@@ -1080,7 +1082,7 @@ export const profilesRouter = createTRPCRouter({
           categories: true,
           city: true,
           country: true,
-          createdOffers: {
+          createdJobs: {
             select: {
               id: true,
             },
@@ -1138,12 +1140,12 @@ export const profilesRouter = createTRPCRouter({
       return await ctx.prisma.profile.findFirst({
         where: { id: input.profileId },
         include: {
-          acceptedOffers: {
+          acceptedJobs: {
             select: {
               id: true,
             },
           },
-          appliedOffers: {
+          appliedJobs: {
             select: {
               id: true,
             },
@@ -1151,7 +1153,7 @@ export const profilesRouter = createTRPCRouter({
           categories: true,
           city: true,
           country: true,
-          createdOffers: {
+          createdJobs: {
             select: {
               id: true,
             },

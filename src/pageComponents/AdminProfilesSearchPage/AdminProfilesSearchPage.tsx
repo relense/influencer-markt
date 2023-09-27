@@ -20,12 +20,12 @@ type ProfilesSearch = {
 
 type ProfilesAdmin = Prisma.ProfileGetPayload<{
   include: {
-    acceptedOffers: {
+    acceptedJobs: {
       select: {
         id: true;
       };
     };
-    appliedOffers: {
+    appliedJobs: {
       select: {
         id: true;
       };
@@ -33,7 +33,7 @@ type ProfilesAdmin = Prisma.ProfileGetPayload<{
     categories: true;
     city: true;
     country: true;
-    createdOffers: {
+    createdJobs: {
       select: {
         id: true;
       };

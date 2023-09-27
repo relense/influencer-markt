@@ -27,7 +27,7 @@ const MyJobDropdown = (params: {
       className="absolute right-0 z-30 flex-col rounded-lg border-[1px] bg-white"
       onClick={() => params.closeDropDown()}
     >
-      {!params.job.published && params.job.offerStatus.id === 1 && (
+      {!params.job.published && params.job.jobStatus.id === 1 && (
         <div
           className="flex cursor-pointer items-center gap-2 rounded-lg p-4 hover:bg-influencer-green-dark hover:text-white"
           onClick={() => params.openWarningModal("publish", params.job.id)}
@@ -39,7 +39,7 @@ const MyJobDropdown = (params: {
           {t("components.myJobDropDown.publish")}
         </div>
       )}
-      {params.job.offerStatus.id !== 3 && (
+      {params.job.jobStatus.id !== 3 && (
         <div
           className="flex cursor-pointer items-center gap-2 rounded-lg p-4 hover:bg-influencer-green-dark hover:text-white"
           onClick={() => params.openWarningModal("archive", params.job.id)}
@@ -51,7 +51,7 @@ const MyJobDropdown = (params: {
           {t("components.myJobDropDown.archive")}
         </div>
       )}
-      {!params.job.published && params.job.offerStatus.id === 1 && (
+      {!params.job.published && params.job.jobStatus.id === 1 && (
         <div
           className="flex cursor-pointer items-center gap-2 rounded-lg p-4 hover:bg-influencer-green-dark hover:text-white"
           onClick={() => params.openEditJobModal()}
@@ -68,8 +68,8 @@ const MyJobDropdown = (params: {
         {t("components.myJobDropDown.duplicate")}
       </div>
       {(!params.job.published ||
-        (params.job.published && params.job.offerStatus.id === 1) ||
-        params.job.offerStatus.id === 3) && (
+        (params.job.published && params.job.jobStatus.id === 1) ||
+        params.job.jobStatus.id === 3) && (
         <div
           className="flex cursor-pointer items-center gap-2 rounded-lg p-4 hover:bg-influencer-green-dark hover:text-white"
           onClick={() => params.openWarningModal("delete", params.job.id)}

@@ -86,6 +86,7 @@ const FirstStepsPage = () => {
   const [currentStep, setCurrentStep] = useState<Step>();
   const [stepsCount, setStepsCount] = useState<number>(0);
   const [portfolio, setPortfolio] = useState<PreloadedImage[]>([]);
+  const [isSavingData, setIsSaving] = useState<boolean>(false);
 
   const {
     control: userIdentityControl,
@@ -135,11 +136,10 @@ const FirstStepsPage = () => {
     username: userIdentityWatch("username") || "",
   });
 
-  const { mutate } = api.users.updateUserFirstSteps.useMutation();
+  const { mutateAsync: updateFirstSteps } =
+    api.users.updateUserFirstSteps.useMutation();
   const { mutateAsync: profileMutation } =
-    api.profiles.createProfile.useMutation({
-      onSuccess: () => void void ctx.users.getUser.invalidate(),
-    });
+    api.profiles.createProfile.useMutation();
   const { mutateAsync: userSocialMediaMutation } =
     api.userSocialMedias.createUserSocialMedias.useMutation();
 
@@ -233,6 +233,7 @@ const FirstStepsPage = () => {
   };
 
   const saveAllData = async () => {
+    setIsSaving(true);
     const profileData = getValuesProfile();
     const socialMediaData = getValuesSocialMedia();
 
@@ -284,9 +285,13 @@ const FirstStepsPage = () => {
       );
 
       await userSocialMediaMutation(newSocialMediaData);
-    }
 
-    mutate({ firstSteps: true });
+      await updateFirstSteps({ firstSteps: true });
+      await ctx.users.getUser.invalidate();
+      void router.push("/");
+
+      setIsSaving(false);
+    }
   };
 
   const renderCloseButton = () => {
@@ -450,7 +455,11 @@ const FirstStepsPage = () => {
             {currentStep?.id === StepsEnum.Final && (
               <div className="mt-6 flex h-full w-full flex-1 flex-col justify-center gap-8 p-4 sm:mt-0">
                 {renderStepMainTitle()}
-                <FinalStep changeStep={changeStep} saveAllData={saveAllData} />
+                <FinalStep
+                  changeStep={changeStep}
+                  saveAllData={saveAllData}
+                  isLoadingSavingData={isSavingData}
+                />
               </div>
             )}
             {renderStepperButtons()}

@@ -37,7 +37,7 @@ const MyApplicationsPage = (params: {
     isLoading: isLoadingJobs,
     isRefetching: isRefetchingJobs,
     isFetching: isFetchingJobs,
-  } = api.offers.getAppliedOffers.useQuery(undefined, {
+  } = api.jobs.getAppliedJobs.useQuery(undefined, {
     cacheTime: 0,
   });
 
@@ -45,7 +45,7 @@ const MyApplicationsPage = (params: {
     data: jobsWithCursorData,
     refetch: refetchJobsWithCursor,
     isFetching: isRefetchingJobsWithCursor,
-  } = api.offers.getAppliedOffersWithCursor.useQuery(
+  } = api.jobs.getAppliedJobsWithCursor.useQuery(
     { cursor: jobsCursor },
     { enabled: false }
   );
@@ -164,14 +164,6 @@ const MyApplicationsPage = (params: {
   return (
     <>
       <div className="mt-5 flex w-full cursor-default flex-col gap-8 self-center px-4 sm:px-12 xl:w-3/4 2xl:w-3/4 3xl:w-3/4 4xl:w-2/4 5xl:w-2/4">
-        {jobs.length === 0 &&
-          !isLoadingJobs &&
-          !isRefetchingJobs &&
-          !isFetchingJobs && (
-            <div className="flex justify-center">
-              {t("pages.applications.noApplications")}
-            </div>
-          )}
         {renderMobile()}
         {renderDesktop()}
       </div>

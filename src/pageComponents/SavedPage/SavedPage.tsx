@@ -55,7 +55,7 @@ const SavedPage = (params: { roleId: number; loggedInProfileId: number }) => {
               };
             }),
             username: profile.user.username || "",
-            activeJobs: profile.createdOffers.length,
+            activeJobs: profile.createdJobs.length,
           };
         })
       );

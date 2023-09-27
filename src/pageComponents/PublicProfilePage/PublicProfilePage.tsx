@@ -100,7 +100,7 @@ const PublicProfilePage = (params: {
     data: jobsData,
     isLoading: isLoadingJobsData,
     isFetching: isFetchingJobsData,
-  } = api.offers.getProfileOffers.useQuery({
+  } = api.jobs.getProfileJobs.useQuery({
     profileId: profile?.id || -1,
   });
 
@@ -108,7 +108,7 @@ const PublicProfilePage = (params: {
     data: jobsWithCursorData,
     isFetching: isFetchingJobsWithCursor,
     refetch: isRefetchingJobsWithCursor,
-  } = api.offers.getProfileOffersCursor.useQuery(
+  } = api.jobs.getProfileJobsCursor.useQuery(
     {
       profileId: profile?.id || -1,
       cursor: jobsCursor,
@@ -804,7 +804,7 @@ const PublicProfilePage = (params: {
                       className="flex w-full cursor-pointer flex-col rounded-lg border-[1px] p-4 hover:bg-influencer-green-light"
                     >
                       <div className="font-semibold text-influencer">
-                        {job.offerSummary}
+                        {job.jobSummary}
                       </div>
                       <div className="text-sm text-gray2">
                         {job.country.name}

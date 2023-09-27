@@ -40,34 +40,34 @@ const JobsManagementPage = () => {
     isLoading: isLoadingJobs,
     refetch: refetchJobs,
     isRefetching: isRefetchingJobs,
-  } = api.offers.getAllUserOffers.useQuery({
-    offerStatusId: jobStatus.id,
+  } = api.jobs.getAllUserJobs.useQuery({
+    jobStatusId: jobStatus.id,
   });
 
   const {
     data: jobsWithCursorData,
     refetch: refetchJobsWithCursor,
     isFetching: isRefetchingJobsWithCursor,
-  } = api.offers.getAllUserOffersWithCursor.useQuery(
+  } = api.jobs.getAllUserJobsWithCursor.useQuery(
     {
-      offerStatusId: jobStatus.id,
+      jobStatusId: jobStatus.id,
       cursor: jobsCursor,
     },
     { enabled: false }
   );
 
-  const { data: jobStatusData } = api.allRoutes.getAllOfferStatus.useQuery();
+  const { data: jobStatusData } = api.allRoutes.getAllJobStatus.useQuery();
 
-  const { mutate: publishJobMutation } = api.offers.publishOffer.useMutation();
+  const { mutate: publishJobMutation } = api.jobs.publishJob.useMutation();
 
-  const { mutate: archiveJobMutation } = api.offers.archiveOffer.useMutation();
+  const { mutate: archiveJobMutation } = api.jobs.archiveJob.useMutation();
 
-  const { mutate: deleteJobMutation } = api.offers.deleteOffer.useMutation();
+  const { mutate: deleteJobMutation } = api.jobs.deleteJob.useMutation();
 
   const { mutate: duplicateJobMutation, isLoading: isLoadingDuplicatingJob } =
-    api.offers.duplicateOffer.useMutation({
+    api.jobs.duplicateJob.useMutation({
       onSuccess: () => {
-        void ctx.offers.getAllUserOffers.invalidate();
+        void ctx.jobs.getAllUserJobs.invalidate();
         toast.success(t("components.myJobDropDown.jobDuplicated"), {
           position: "bottom-left",
         });
@@ -117,7 +117,7 @@ const JobsManagementPage = () => {
       }
     }
 
-    void publishJobMutation({ offerId: jobId });
+    void publishJobMutation({ jobId: jobId });
   };
 
   const archiveJob = (jobId: number) => {
@@ -129,7 +129,7 @@ const JobsManagementPage = () => {
     setJobs(newJobs);
     setJobsCount(jobsCount - 1);
 
-    void archiveJobMutation({ offerId: jobId });
+    void archiveJobMutation({ jobId: jobId });
   };
 
   const deleteJob = (jobId: number) => {
@@ -141,11 +141,11 @@ const JobsManagementPage = () => {
     setJobs(newJobs);
     setJobsCount(jobsCount - 1);
 
-    void deleteJobMutation({ offerId: jobId });
+    void deleteJobMutation({ jobId: jobId });
   };
 
   const duplicateJob = (job: JobWithAllData) => {
-    void duplicateJobMutation({ offerId: job.id });
+    void duplicateJobMutation({ jobId: job.id });
   };
 
   const setfirstVisitInfo = () => {

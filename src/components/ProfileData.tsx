@@ -9,12 +9,12 @@ import { Button } from "../components/Button";
 
 export type ProfileAdminIncludes = Prisma.ProfileGetPayload<{
   include: {
-    acceptedOffers: {
+    acceptedJobs: {
       select: {
         id: true;
       };
     };
-    appliedOffers: {
+    appliedJobs: {
       select: {
         id: true;
       };
@@ -22,7 +22,7 @@ export type ProfileAdminIncludes = Prisma.ProfileGetPayload<{
     categories: true;
     city: true;
     country: true;
-    createdOffers: {
+    createdJobs: {
       select: {
         id: true;
       };
@@ -221,13 +221,13 @@ const ProfileData = (params: { profile: ProfileAdminIncludes }) => {
                 <div className="font-semibold text-influencer">
                   Number Of Created Jobs:
                 </div>
-                <div>{profile.createdOffers.length || 0}</div>
+                <div>{profile.createdJobs.length || 0}</div>
               </div>
               <div className="flex gap-2">
                 <div className="font-semibold text-influencer">
                   Number of Accepted Jobs:
                 </div>
-                <div>{profile.acceptedOffers.length || 0}</div>
+                <div>{profile.acceptedJobs.length || 0}</div>
               </div>
               <div className="flex gap-2">
                 <div className="font-semibold text-influencer">

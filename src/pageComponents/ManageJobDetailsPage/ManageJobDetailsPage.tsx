@@ -83,18 +83,18 @@ const ManageJobDetailsPage = (params: {
     data: jobData,
     isLoading,
     isRefetching: isRefetchingJob,
-  } = api.offers.getOffer.useQuery(
+  } = api.jobs.getJob.useQuery(
     {
-      offerId: params.jobId,
+      jobId: params.jobId,
     },
     {
       cacheTime: 0,
     }
   );
 
-  const { data: jobApplicants } = api.offers.getApplicants.useQuery(
+  const { data: jobApplicants } = api.jobs.getApplicants.useQuery(
     {
-      offerId: params.jobId,
+      jobId: params.jobId,
     },
     {
       cacheTime: 0,
@@ -102,9 +102,9 @@ const ManageJobDetailsPage = (params: {
   );
 
   const { data: jobAcceptedApplicants } =
-    api.offers.getAcceptedApplicants.useQuery(
+    api.jobs.getAcceptedApplicants.useQuery(
       {
-        offerId: params.jobId,
+        jobId: params.jobId,
       },
       {
         cacheTime: 0,
@@ -112,60 +112,58 @@ const ManageJobDetailsPage = (params: {
     );
 
   const { data: jobRejectedApplicants } =
-    api.offers.getRejectedApplicants.useQuery(
+    api.jobs.getRejectedApplicants.useQuery(
       {
-        offerId: params.jobId,
+        jobId: params.jobId,
       },
       {
         cacheTime: 0,
       }
     );
 
-  const { data: jobSentApplicants } =
-    api.offers.getSentOrderApplicants.useQuery(
-      {
-        offerId: params.jobId,
-      },
-      {
-        cacheTime: 0,
-      }
-    );
+  const { data: jobSentApplicants } = api.jobs.getSentOrderApplicants.useQuery(
+    {
+      jobId: params.jobId,
+    },
+    {
+      cacheTime: 0,
+    }
+  );
 
   const { mutate: acceptedApplicant } =
-    api.offers.acceptedApplicant.useMutation();
+    api.jobs.acceptedApplicant.useMutation();
 
-  const { mutate: rejectApplication } =
-    api.offers.rejectApplicant.useMutation();
+  const { mutate: rejectApplication } = api.jobs.rejectApplicant.useMutation();
 
   const { mutate: removeApplicantFromAccepted } =
-    api.offers.removeApplicantFromAccepted.useMutation();
+    api.jobs.removeApplicantFromAccepted.useMutation();
 
   const { mutate: removeApplicantFromRejected } =
-    api.offers.removeApplicantFromRejected.useMutation();
+    api.jobs.removeApplicantFromRejected.useMutation();
 
   const {
     mutate: updateApplicantToSentList,
     isLoading: isLoadingUpdateApplicantToSentList,
-  } = api.offers.updateApplicantToSentList.useMutation({
+  } = api.jobs.updateApplicantToSentList.useMutation({
     onSuccess: () => {
-      void ctx.offers.getOffer.invalidate();
-      void ctx.offers.getAcceptedApplicants.invalidate();
-      void ctx.offers.getSentOrderApplicants.invalidate();
+      void ctx.jobs.getJob.invalidate();
+      void ctx.jobs.getAcceptedApplicants.invalidate();
+      void ctx.jobs.getSentOrderApplicants.invalidate();
     },
   });
 
   const { mutate: startJob, isLoading: isLoadingStartJob } =
-    api.offers.startOffer.useMutation({
+    api.jobs.startJob.useMutation({
       onSuccess: () => {
-        void ctx.offers.getOffer.invalidate();
+        void ctx.jobs.getJob.invalidate();
       },
     });
 
-  const { mutate: publishJobMutation } = api.offers.publishOffer.useMutation();
+  const { mutate: publishJobMutation } = api.jobs.publishJob.useMutation();
 
-  const { mutate: archiveJobMutation } = api.offers.archiveOffer.useMutation();
+  const { mutate: archiveJobMutation } = api.jobs.archiveJob.useMutation();
 
-  const { mutate: deleteJobMutation } = api.offers.deleteOffer.useMutation({
+  const { mutate: deleteJobMutation } = api.jobs.deleteJob.useMutation({
     onSuccess: () => {
       toast.success(t("components.myJobDropDown.jobDeleted"), {
         position: "bottom-left",
@@ -173,17 +171,16 @@ const ManageJobDetailsPage = (params: {
     },
   });
 
-  const { mutate: duplicateJobMutation } =
-    api.offers.duplicateOffer.useMutation({
-      onSuccess: () => {
-        toast.success(t("components.myJobDropDown.jobDuplicated"), {
-          position: "bottom-left",
-        });
-      },
-    });
+  const { mutate: duplicateJobMutation } = api.jobs.duplicateJob.useMutation({
+    onSuccess: () => {
+      toast.success(t("components.myJobDropDown.jobDuplicated"), {
+        position: "bottom-left",
+      });
+    },
+  });
 
   const { mutate: createOrder, isLoading: isLoadingCreateOrder } =
-    api.orders.createOrderWithOffer.useMutation({
+    api.orders.createOrderWithJob.useMutation({
       onSuccess: (order) => {
         if (order && order.influencerId) {
           createNotification({
@@ -193,7 +190,7 @@ const ManageJobDetailsPage = (params: {
           });
 
           updateApplicantToSentList({
-            offerId: params.jobId,
+            jobId: params.jobId,
             profileId: order?.influencerId,
           });
         }
@@ -416,7 +413,7 @@ const ManageJobDetailsPage = (params: {
 
       createOrder({
         influencerId: applicant.id,
-        orderDetails: job.OfferDetails,
+        orderDetails: job.JobDetails,
         orderPrice: total.toString(),
         orderValuePacks: job.contentTypeWithQuantity.map((valuePack) => {
           return {
@@ -426,7 +423,7 @@ const ManageJobDetailsPage = (params: {
           };
         }),
         platformId: job.socialMediaId,
-        offerId: job.id,
+        jobId: job.id,
         language: i18n.language,
       });
     }
@@ -439,23 +436,23 @@ const ManageJobDetailsPage = (params: {
 
       setJob(newJob);
 
-      void publishJobMutation({ offerId: jobId });
+      void publishJobMutation({ jobId: jobId });
     }
   };
 
   const archiveJob = (jobId: number) => {
     if (job) {
       const newJob = job;
-      newJob.offerStatus = { id: 3, name: "closed" };
+      newJob.jobStatus = { id: 3, name: "closed" };
 
       setJob(newJob);
-      void archiveJobMutation({ offerId: jobId });
+      void archiveJobMutation({ jobId: jobId });
     }
   };
 
   const deleteJob = (jobId: number) => {
     void router.push("/manage-jobs");
-    void deleteJobMutation({ offerId: jobId });
+    void deleteJobMutation({ jobId: jobId });
   };
 
   const onAcceptedApplicant = (profileId: number) => {
@@ -476,7 +473,7 @@ const ManageJobDetailsPage = (params: {
       setAcceptedApplicants(newAcceptedApplicantsArray);
 
       acceptedApplicant({
-        offerId: params.jobId,
+        jobId: params.jobId,
         profileId: profileId,
       });
     }
@@ -504,7 +501,7 @@ const ManageJobDetailsPage = (params: {
       setRejectedApplicants(newRejectApplicantsArray);
 
       rejectApplication({
-        offerId: params.jobId,
+        jobId: params.jobId,
         profileId: profileId,
       });
     }
@@ -531,7 +528,7 @@ const ManageJobDetailsPage = (params: {
       setAcceptedApplicants(newAcceptedApplicantsArray);
 
       removeApplicantFromAccepted({
-        offerId: params.jobId,
+        jobId: params.jobId,
         profileId: profileId,
       });
     }
@@ -559,7 +556,7 @@ const ManageJobDetailsPage = (params: {
       setRejectedApplicants(newRejectApplicantsArray);
 
       removeApplicantFromRejected({
-        offerId: params.jobId,
+        jobId: params.jobId,
         profileId: profileId,
       });
     }
@@ -591,7 +588,7 @@ const ManageJobDetailsPage = (params: {
                   closeDropDown={() => setIsDropdownOpen(false)}
                   openEditJobModal={() => setOpenCreateModal(true)}
                   openWarningModal={openWarningModal}
-                  duplicateJob={() => duplicateJobMutation({ offerId: job.id })}
+                  duplicateJob={() => duplicateJobMutation({ jobId: job.id })}
                 />
               }
             </div>
@@ -603,7 +600,7 @@ const ManageJobDetailsPage = (params: {
                 closeDropDown={() => setIsDropdownOpen(false)}
                 openEditJobModal={() => setOpenCreateModal(true)}
                 openWarningModal={openWarningModal}
-                duplicateJob={() => duplicateJobMutation({ offerId: job.id })}
+                duplicateJob={() => duplicateJobMutation({ jobId: job.id })}
               />
             }
           </div>
@@ -620,7 +617,7 @@ const ManageJobDetailsPage = (params: {
             href={`/jobs/${job.id}`}
             className="line-clamp-2 text-xl font-semibold hover:underline xs:w-3/4"
           >
-            {job.offerSummary}
+            {job.jobSummary}
           </Link>
           <div className="flex flex-col sm:flex-row sm:items-center sm:gap-6">
             <div className="flex items-center gap-2">
@@ -638,9 +635,9 @@ const ManageJobDetailsPage = (params: {
               </div>
               <div className="h-1 w-1 rounded-full bg-black"></div>
               <div className="font-semibold text-influencer">
-                {job.offerStatus.id === 1 && t("pages.manageJobs.open")}
-                {job.offerStatus.id === 2 && t("pages.manageJobs.progress")}
-                {job.offerStatus.id === 3 && t("pages.manageJobs.archived")}
+                {job.jobStatus.id === 1 && t("pages.manageJobs.open")}
+                {job.jobStatus.id === 2 && t("pages.manageJobs.progress")}
+                {job.jobStatus.id === 3 && t("pages.manageJobs.archived")}
               </div>
             </div>
           </div>
@@ -715,7 +712,7 @@ const ManageJobDetailsPage = (params: {
             <span className="pr-2 font-semibold text-influencer">
               {t("pages.manageJobs.jobDescription")}
             </span>
-            <div className="whitespace-pre-line">{job.OfferDetails}</div>
+            <div className="whitespace-pre-line">{job.JobDetails}</div>
           </div>
         </div>
       );
@@ -748,7 +745,7 @@ const ManageJobDetailsPage = (params: {
     if (job && jobApplicants && jobAcceptedApplicants) {
       return (
         <div className="flex flex-col gap-4 sm:flex-row sm:gap-6">
-          {job.offerStatusId === 1 && (
+          {job.jobStatusId === 1 && (
             <div className="flex items-center gap-2">
               <FontAwesomeIcon
                 icon={faBriefcase}
@@ -761,7 +758,7 @@ const ManageJobDetailsPage = (params: {
               </div>
             </div>
           )}
-          {job.offerStatusId !== 3 && (
+          {job.jobStatusId !== 3 && (
             <div className="flex items-center gap-2">
               <FontAwesomeIcon
                 icon={faCircleCheck}
@@ -777,19 +774,19 @@ const ManageJobDetailsPage = (params: {
             </div>
           )}
           {acceptedApplicants.length === job.numberOfInfluencers &&
-            job.offerStatus.id === 1 && (
+            job.jobStatus.id === 1 && (
               <Button
                 title={t("pages.manageJobs.initiateJob")}
                 level="primary"
                 isLoading={isLoadingStartJob || isRefetchingJob}
                 onClick={() =>
                   startJob({
-                    offerId: job.id,
+                    jobId: job.id,
                   })
                 }
               />
             )}
-          {job.offerStatus.id === 2 && (
+          {job.jobStatus.id === 2 && (
             <Button
               title={t("pages.manageJobs.archiveJob")}
               level="primary"
@@ -874,7 +871,7 @@ const ManageJobDetailsPage = (params: {
             loggedInProfileId={params.loggedInProfileId}
           />
 
-          {job.offerStatus.id === 1 && (
+          {job.jobStatus.id === 1 && (
             <Button
               title={t("pages.manageJobs.removeButton")}
               level="secondary"
@@ -882,7 +879,7 @@ const ManageJobDetailsPage = (params: {
               onClick={() => onRemoveFromAccepted(applicant.id)}
             />
           )}
-          {job.offerStatus.id === 2 && (
+          {job.jobStatus.id === 2 && (
             <div className="flex justify-around gap-4 lg:flex-col lg:justify-center">
               <Button
                 title={t("pages.manageJobs.sendOrderRequest")}
@@ -927,7 +924,7 @@ const ManageJobDetailsPage = (params: {
             bookmarked={applicant?.bookmarked || false}
             highlightSocialMediaId={job.socialMediaId}
           />
-          {job.offerStatus.id === 1 && (
+          {job.jobStatus.id === 1 && (
             <div className="flex justify-around gap-4 lg:flex-col lg:justify-center">
               <Button
                 title={t("pages.manageJobs.removeButton")}
@@ -937,7 +934,7 @@ const ManageJobDetailsPage = (params: {
               />
             </div>
           )}
-          {job.offerStatus.id === 2 && (
+          {job.jobStatus.id === 2 && (
             <div className="flex justify-around gap-4 lg:flex-col lg:justify-center">
               <Button
                 title={t("pages.manageJobs.sendOrderRequest")}
@@ -1416,7 +1413,7 @@ const ManageJobDetailsPage = (params: {
               />
             </div>
             {acceptedApplicants.length > 0 && renderAcceptedApplicants()}
-            {applicants.length > 0 && job.offerStatus.id === 1 && (
+            {applicants.length > 0 && job.jobStatus.id === 1 && (
               <>
                 {acceptedApplicants.length > 0 && (
                   <div className="w-full border-[1px] border-white1" />
@@ -1425,7 +1422,7 @@ const ManageJobDetailsPage = (params: {
               </>
             )}
             {sentApplicants.length > 0 && renderSentJobApplicants()}
-            {rejectedApplicants.length > 0 && job.offerStatus.id === 1 && (
+            {rejectedApplicants.length > 0 && job.jobStatus.id === 1 && (
               <>
                 {(applicants.length > 0 || acceptedApplicants.length > 0) && (
                   <div className="w-full border-[1px] border-white1" />

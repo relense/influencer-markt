@@ -207,7 +207,7 @@ const StartOrderPage = (params: {
     }
   };
 
-  const renderOfferDetails = () => {
+  const renderJobDetails = () => {
     return (
       <div className="flex flex-col gap-4">
         <div className="text-xl font-medium">
@@ -233,7 +233,7 @@ const StartOrderPage = (params: {
     );
   };
 
-  const renderFinalOfferDetails = () => {
+  const renderFinalJobDetails = () => {
     return (
       <div className="flex flex-col gap-4">
         <div className="text-xl font-medium">
@@ -406,7 +406,7 @@ const StartOrderPage = (params: {
         {renderTotalPay()}
         <div className="w-full border-[1px] border-white1" />
         <form id="form-order" onSubmit={submitOrder}>
-          {renderOfferDetails()}
+          {renderJobDetails()}
         </form>
         <div className="flex justify-center">
           <Button
@@ -431,7 +431,7 @@ const StartOrderPage = (params: {
           {renderFinalValuePacks()}
           {renderTotalPay()}
           <div className="w-full border-[1px] border-white1" />
-          {renderFinalOfferDetails()}
+          {renderFinalJobDetails()}
         </div>
         <Link href={`/orders/${orderId}`} className="flex justify-center">
           <Button

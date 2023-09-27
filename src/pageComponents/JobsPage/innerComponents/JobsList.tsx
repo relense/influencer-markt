@@ -102,8 +102,8 @@ const JobsList = (params: {
                 >
                   <div className="h-20 w-32">
                     <Image
-                      src={job?.offerCreator?.profilePicture || ""}
-                      alt={`${job.offerCreator.name} profile picture`}
+                      src={job?.jobCreator?.profilePicture || ""}
+                      alt={`${job.jobCreator.name} profile picture`}
                       width={1000}
                       height={1000}
                       className="h-full w-full rounded-lg object-cover"
@@ -112,9 +112,9 @@ const JobsList = (params: {
                   </div>
                   <div className="flex w-full flex-col gap-1">
                     <div className="font-semibold text-influencer">
-                      {job.offerSummary}
+                      {job.jobSummary}
                     </div>
-                    <div className="text-sm">{job.offerCreator.name}</div>
+                    <div className="text-sm">{job.jobCreator.name}</div>
                     <div className="flex flex-1 items-center gap-2 text-sm text-gray2">
                       <div>
                         {job?.country?.name || ""}
@@ -133,7 +133,7 @@ const JobsList = (params: {
                           {job.contentTypeWithQuantity.map((contentType) => {
                             return (
                               <div
-                                key={`jobsList${contentType.id}${job.offerCreator.name}`}
+                                key={`jobsList${contentType.id}${job.jobCreator.name}`}
                                 className="flex gap-1 font-semibold text-black"
                               >
                                 <div>

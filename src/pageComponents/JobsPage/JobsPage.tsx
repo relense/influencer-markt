@@ -59,7 +59,7 @@ const JobsPage = (params: {
     isRefetching: isRefetchingJobs,
     isFetching: isFetchingJobs,
     refetch: refetchJobs,
-  } = api.offers.getAllOffers.useQuery({
+  } = api.jobs.getAllJobs.useQuery({
     socialMedia: filterState.platforms.map((platform) => {
       return platform.id;
     }),
@@ -77,7 +77,7 @@ const JobsPage = (params: {
     data: jobsWithCursorData,
     refetch: refetchJobsWithCursor,
     isFetching: isFetchingJobsWithCursor,
-  } = api.offers.getAllOffersWithCursor.useQuery(
+  } = api.jobs.getAllJobsWithCursor.useQuery(
     {
       cursor: jobsCursor,
       socialMedia: filterState.platforms.map((platform) => {
@@ -238,7 +238,7 @@ const JobsPage = (params: {
       setJobs([]);
     }
 
-    await ctx.offers.getAllOffersWithCursor.reset();
+    await ctx.jobs.getAllJobsWithCursor.reset();
     void refetchJobs();
   };
 

@@ -77,8 +77,8 @@ const CreateJobModal = (params: {
       setValue("gender", params.job.gender || { id: -1, name: "" });
       setValue("minFollowers", params.job.minFollowers);
       setValue("numberOfInfluencers", params.job.numberOfInfluencers);
-      setValue("jobDetails", params.job.OfferDetails);
-      setValue("jobSummary", params.job.offerSummary);
+      setValue("jobDetails", params.job.JobDetails);
+      setValue("jobSummary", params.job.jobSummary);
       setValue("jobPrice", params.job.price);
       setValue("platform", params.job.socialMedia);
       setIsPublished(params.job.published);
@@ -92,10 +92,10 @@ const CreateJobModal = (params: {
   const { data: countries } = api.allRoutes.getAllCountries.useQuery();
 
   const { mutate: jobCreation, isLoading: isLoadingCreate } =
-    api.offers.createOffer.useMutation({
+    api.jobs.createJob.useMutation({
       onSuccess: (job) => {
         void router.push(`/manage-jobs/${job.id}`);
-        void ctx.offers.getAllUserOffers.invalidate().then(() => {
+        void ctx.jobs.getAllUserJobs.invalidate().then(() => {
           toast.success(t("components.myJobDropDown.jobCreated"), {
             position: "bottom-left",
           });
@@ -104,13 +104,13 @@ const CreateJobModal = (params: {
     });
 
   const { mutate: jobUpdate, isLoading: isLoadingUpdate } =
-    api.offers.updateOffer.useMutation({
+    api.jobs.updateJob.useMutation({
       onSuccess: () => {
         params.onClose();
         reset();
-        void ctx.offers.getOffer.invalidate();
-        void ctx.offers.getApplicants.invalidate();
-        void ctx.offers.getAllUserOffers.invalidate().then(() => {
+        void ctx.jobs.getJob.invalidate();
+        void ctx.jobs.getApplicants.invalidate();
+        void ctx.jobs.getAllUserJobs.invalidate().then(() => {
           toast.success(t("components.myJobDropDown.jobUpdated"), {
             position: "bottom-left",
           });
@@ -125,9 +125,9 @@ const CreateJobModal = (params: {
       prevGender !== data.gender
     ) {
       const payload = {
-        offerId: params.job?.id || -1,
-        offerSummary: data.jobSummary,
-        offerDetails: data.jobDetails,
+        jobId: params.job?.id || -1,
+        jobSummary: data.jobSummary,
+        jobDetails: data.jobDetails,
         socialMediaId: data.platform.id,
         contentTypes: contentTypesList.map((item) => {
           return {

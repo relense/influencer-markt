@@ -34,12 +34,12 @@ const JobDetailsPage = (params: {
     data: jobData,
     refetch: refetcheJob,
     isLoading,
-  } = api.offers.getSimpleOffer.useQuery({
-    offerId: params.jobId || -1,
+  } = api.jobs.getSimpleJob.useQuery({
+    jobId: params.jobId || -1,
   });
 
   const { mutate: applyToJob, isLoading: applicationIsLoading } =
-    api.offers.applyToOffer.useMutation({
+    api.jobs.applyToJob.useMutation({
       onSuccess: () => {
         void refetcheJob();
         toast.success(t("pages.jobs.appliedSuccess"), {
@@ -48,7 +48,7 @@ const JobDetailsPage = (params: {
       },
     });
   const { mutate: removeApplication, isLoading: removingIsLoading } =
-    api.offers.removeOfferApplication.useMutation({
+    api.jobs.removeJobApplication.useMutation({
       onSuccess: () => {
         void refetcheJob();
         toast.success(t("pages.jobs.removedApplicationSuccess"), {
@@ -132,9 +132,9 @@ const JobDetailsPage = (params: {
   const onApply = (job: JobIncludes) => {
     if (session.status === "authenticated" && profile) {
       if (applied) {
-        removeApplication({ offerId: job.id });
+        removeApplication({ jobId: job.id });
       } else {
-        applyToJob({ offerId: job.id });
+        applyToJob({ jobId: job.id });
       }
     } else if (session.status === "authenticated" && !profile) {
       toast.error(t("pages.jobs.toastWarning"), {
@@ -165,12 +165,12 @@ const JobDetailsPage = (params: {
     if (job) {
       return (
         <Link
-          href={`/${job?.offerCreator?.user?.username || ""}`}
+          href={`/${job?.jobCreator?.user?.username || ""}`}
           className="h-20 w-32 cursor-pointer"
         >
           <Image
-            src={job.offerCreator.profilePicture || ""}
-            alt={`${job.offerCreator.name} profile picture`}
+            src={job.jobCreator.profilePicture || ""}
+            alt={`${job.jobCreator.name} profile picture`}
             width={1000}
             height={1000}
             className="h-full w-full rounded-lg object-cover"
@@ -186,7 +186,7 @@ const JobDetailsPage = (params: {
       return (
         <div className="flex items-start justify-between">
           <div className="w-auto text-2xl font-semibold lg:w-auto lg:max-w-[80%]">
-            {job?.offerSummary}
+            {job?.jobSummary}
           </div>
           <div className="hidden lg:flex">{shareButton()}</div>
         </div>
@@ -198,10 +198,10 @@ const JobDetailsPage = (params: {
     return (
       <div className="flex flex-wrap items-center gap-2 text-gray2">
         <Link
-          href={`/${job?.offerCreator?.user?.username || ""}`}
+          href={`/${job?.jobCreator?.user?.username || ""}`}
           className="hover:underline"
         >
-          {job?.offerCreator?.name}
+          {job?.jobCreator?.name}
         </Link>
         <div className="h-1 w-1 rounded-full bg-black" />
         <div>
@@ -229,7 +229,7 @@ const JobDetailsPage = (params: {
           {job?.contentTypeWithQuantity.map((contentType) => {
             return (
               <div
-                key={`details${contentType.id}${job?.offerCreator?.name || ""}`}
+                key={`details${contentType.id}${job?.jobCreator?.name || ""}`}
                 className="flex gap-1 text-black"
               >
                 <div>
@@ -334,7 +334,7 @@ const JobDetailsPage = (params: {
         title = t("pages.jobs.noRequirements");
       }
 
-      if (job.offerStatusId === 1) {
+      if (job.jobStatusId === 1) {
         return (
           <div>
             <Button
@@ -363,7 +363,7 @@ const JobDetailsPage = (params: {
         <div className="text-lg font-semibold text-influencer">
           {t("pages.jobs.aboutJob")}
         </div>
-        <div className="whitespace-pre-line">{job?.OfferDetails}</div>
+        <div className="whitespace-pre-line">{job?.JobDetails}</div>
       </div>
     );
   };

@@ -25,7 +25,7 @@ type Data = {
 
 async function main() {
   const response = await fetch(
-    "https://developmentinfmarkt.blob.core.windows.net/developmentinfmarkt/portugal.json"
+    "https://publicdevinfmarkt.blob.core.windows.net/dev-inf-market-json-files/portugal.json"
   );
   const data: Data = await response.json();
 
@@ -71,7 +71,7 @@ async function main() {
     data: [{ name: "Male" }, { name: "Female" }, { name: "Other" }],
   });
 
-  await prisma.offerStatus.createMany({
+  await prisma.jobStatus.createMany({
     data: [{ name: "open" }, { name: "progress" }, { name: "closed" }],
   });
 
@@ -365,6 +365,8 @@ async function main() {
         name: "Nike",
         profilePicture:
           "https://images.unsplash.com/photo-1608541737042-87a12275d313?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1722&q=80",
+        profilePictureBlobName: "exampleBlob",
+        nif: "1234567",
         userId: users[0]?.id || "",
         website: "https://www.nike.com/pt/en/",
       },
@@ -376,6 +378,8 @@ async function main() {
         name: "Coca Cola",
         profilePicture:
           "https://images.unsplash.com/photo-1535990379313-5cd271a2da2d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2064&q=80",
+        profilePictureBlobName: "exampleBlob",
+        nif: "1234567",
         userId: users[1]?.id || "",
         website: "https://www.cocacolaportugal.pt/",
       },
@@ -387,17 +391,21 @@ async function main() {
         name: "Apple",
         profilePicture:
           "https://images.unsplash.com/photo-1531554694128-c4c6665f59c2?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=774&q=80",
+        profilePictureBlobName: "exampleBlob",
+        nif: "1234567",
         userId: users[2]?.id || "",
         website: "https://www.apple.com/pt/",
       },
       {
         about:
-          "LG, a leading global technology company, brings innovation and convenience to your everyday life. With a diverse range of products, LG offers cutting-edge solutions that enhance your home, work, and entertainment experiences. From state-of-the-art televisions and home appliances to advanced mobile devices and cutting-edge audio systems, LG combines sleek design with exceptional performance. Immerse yourself in vibrant visuals",
+          "LG, a leading global technology company, brings innovation and convenience to your everyday life. With a diverse range of products, LG jobs cutting-edge solutions that enhance your home, work, and entertainment experiences. From state-of-the-art televisions and home appliances to advanced mobile devices and cutting-edge audio systems, LG combines sleek design with exceptional performance. Immerse yourself in vibrant visuals",
         cityId: 3,
         countryId: 1,
         name: "LG",
         profilePicture:
           "https://images.unsplash.com/photo-1590664177914-9da6d6e8f0f6?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1740&q=80",
+        profilePictureBlobName: "exampleBlob",
+        nif: "1234567",
         userId: users[3]?.id || "",
         website: "https://www.lg.com/pt",
       },
@@ -409,6 +417,8 @@ async function main() {
         name: "Tomas Oliveira",
         profilePicture:
           "https://images.unsplash.com/photo-1504593811423-6dd665756598?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1770&q=80",
+        profilePictureBlobName: "exampleBlob",
+        nif: "1234567",
         userId: users[4]?.id || "",
         genderId: 1,
         website: "",
@@ -421,6 +431,8 @@ async function main() {
         name: "Andre Gomes",
         profilePicture:
           "https://images.unsplash.com/photo-1500048993953-d23a436266cf?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1769&q=80",
+        profilePictureBlobName: "exampleBlob",
+        nif: "1234567",
         userId: users[5]?.id || "",
         genderId: 1,
         website: "",
@@ -433,6 +445,8 @@ async function main() {
         name: "Andreia Sofia",
         profilePicture:
           "https://images.unsplash.com/photo-1499952127939-9bbf5af6c51c?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1776&q=80",
+        profilePictureBlobName: "exampleBlob",
+        nif: "1234567",
         userId: users[6]?.id || "",
         genderId: 2,
         website: "",
@@ -445,6 +459,8 @@ async function main() {
         name: "Ines Guerreiro",
         profilePicture:
           "https://images.unsplash.com/photo-1580489944761-15a19d654956?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=922&q=80",
+        profilePictureBlobName: "exampleBlob",
+        nif: "1234567",
         userId: users[7]?.id || "",
         genderId: 2,
         website: "",

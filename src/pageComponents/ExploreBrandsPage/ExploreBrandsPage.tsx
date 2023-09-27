@@ -118,7 +118,7 @@ const ExploreBrandsPage = (params: { loggedInProfileId: number }) => {
             }),
             username: profile.user.username || "",
             bookmarked: isFavorited,
-            activeJobs: profile.createdOffers.length,
+            activeJobs: profile.createdJobs.length,
           };
         })
       );
@@ -163,7 +163,7 @@ const ExploreBrandsPage = (params: { loggedInProfileId: number }) => {
           }),
           username: profile.user.username || "",
           bookmarked: isFavorited,
-          activeJobs: profile.createdOffers.length,
+          activeJobs: profile.createdJobs.length,
         });
       });
 

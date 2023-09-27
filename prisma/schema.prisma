@@ -65,6 +65,9 @@ model User {
   sessions      Session[]
   profile       Profile?
 
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
   roleId Int?
 
   @@index([roleId])
@@ -74,8 +77,9 @@ model User {
 model Profile {
   id                     Int               @id @default(autoincrement())
   profilePicture         String            @db.Text
-  profilePictureBlobName String?           @db.Text
+  profilePictureBlobName String            @db.Text
   name                   String            @db.Text
+  nif                    String
   gender                 Gender?           @relation(fields: [genderId], references: [id])
   categories             Category[]
   about                  String            @db.Text
@@ -90,11 +94,11 @@ model Profile {
   portfolio              Portfolio[]
   verifiedStatus         VerifiedStatus?   @relation(fields: [verifiedStatusId], references: [id])
 
-  createdOffers      Offer[] @relation("offerCreator")
-  appliedOffers      Offer[] @relation("offerApplicants")
-  acceptedOffers     Offer[] @relation("offerAcceptedApplicants")
-  rejectedApplicants Offer[] @relation("offerRejectedApplicants")
-  sentApplicants     Offer[] @relation("offerSentApplicants")
+  createdJobs        Job[] @relation("jobCreator")
+  appliedJobs        Job[] @relation("jobApplicants")
+  acceptedJobs       Job[] @relation("jobAcceptedApplicants")
+  rejectedApplicants Job[] @relation("jobRejectedApplicants")
+  sentApplicants     Job[] @relation("jobSentApplicants")
 
   influencer Order[] @relation("influencer")
   buyer      Order[] @relation("buyer")
@@ -128,7 +132,7 @@ model Category {
   id      Int       @id @default(autoincrement())
   name    String    @unique
   profile Profile[]
-  Offer   Offer[]
+  Job     Job[]
 }
 
 model Role {
@@ -141,7 +145,7 @@ model Gender {
   id      Int       @id @default(autoincrement())
   name    String    @unique
   profile Profile[]
-  Offer   Offer[]
+  Job     Job[]
 }
 
 model ValuePack {
@@ -153,6 +157,9 @@ model ValuePack {
   contentTypeId     Int
   userSocialMediaId Int
 
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
   @@index([contentTypeId])
   @@index([userSocialMediaId])
 }
@@ -162,7 +169,7 @@ model SocialMedia {
   name            String
   UserSocialMedia UserSocialMedia[]
   contentTypes    ContentType[]
-  Offer           Offer[]
+  Job             Job[]
   order           Order[]
 }
 
@@ -173,6 +180,9 @@ model Portfolio {
   profile  Profile? @relation(fields: [profileId], references: [id])
 
   profileId Int?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   @@index([profileId])
 }
@@ -188,6 +198,9 @@ model UserSocialMedia {
 
   socialMediaId Int
   profileId     Int?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   @@index([socialMediaId])
   @@index([profileId])
@@ -259,7 +272,7 @@ model Country {
   countryTax Int?
   profile    Profile[]
   state      State[]
-  Offer      Offer[]
+  Job        Job[]
   order      Order[]
 }
 
@@ -270,7 +283,7 @@ model State {
   city    City[]
 
   countryId Int
-  Offer     Offer[]
+  Job       Job[]
 
   @@index([countryId])
 }
@@ -286,10 +299,10 @@ model City {
   @@index([stateId])
 }
 
-model Offer {
+model Job {
   id                      Int                       @id @default(autoincrement())
-  offerSummary            String
-  OfferDetails            String                    @db.Text
+  jobSummary              String
+  JobDetails              String                    @db.Text
   socialMedia             SocialMedia               @relation(fields: [socialMediaId], references: [id])
   contentTypeWithQuantity ContentTypeWithQuantity[]
   categories              Category[]
@@ -300,15 +313,15 @@ model Offer {
   minFollowers            Int
   maxFollowers            Int?
   gender                  Gender?                   @relation(fields: [genderId], references: [id])
-  offerStatus             OfferStatus               @relation(fields: [offerStatusId], references: [id])
-  offerCreator            Profile                   @relation("offerCreator", fields: [profileId], references: [id])
+  jobStatus               JobStatus                 @relation(fields: [jobStatusId], references: [id])
+  jobCreator              Profile                   @relation("jobCreator", fields: [profileId], references: [id])
   published               Boolean                   @default(false)
   order                   Order[]
 
-  applicants         Profile[] @relation("offerApplicants")
-  acceptedApplicants Profile[] @relation("offerAcceptedApplicants")
-  rejectedApplicants Profile[] @relation("offerRejectedApplicants")
-  sentApplicants     Profile[] @relation("offerSentApplicants")
+  applicants         Profile[] @relation("jobApplicants")
+  acceptedApplicants Profile[] @relation("jobAcceptedApplicants")
+  rejectedApplicants Profile[] @relation("jobRejectedApplicants")
+  sentApplicants     Profile[] @relation("jobSentApplicants")
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -318,34 +331,34 @@ model Offer {
   genderId      Int?
   stateId       Int?
   profileId     Int
-  offerStatusId Int  @default(1)
+  jobStatusId   Int  @default(1)
 
   @@index([socialMediaId])
   @@index([countryId])
   @@index([genderId])
   @@index([stateId])
   @@index([profileId])
-  @@index([offerStatusId])
+  @@index([jobStatusId])
 }
 
 model ContentTypeWithQuantity {
   id          Int         @id @default(autoincrement())
   contentType ContentType @relation(fields: [contentTypeId], references: [id])
   amount      Int
-  Offer       Offer?      @relation(fields: [offerId], references: [id])
+  Job         Job?        @relation(fields: [jobId], references: [id])
 
   contentTypeId Int
-  offerId       Int?
+  jobId         Int?
 
   @@index([contentTypeId])
-  @@index([offerId])
+  @@index([jobId])
 }
 
-model OfferStatus {
+model JobStatus {
   id   Int    @id @default(autoincrement())
   name String
 
-  offer Offer[]
+  job Job[]
 }
 
 model VerifiedStatus {
@@ -366,7 +379,7 @@ model Order {
   orderStatus            OrderStatus?     @relation(fields: [orderStatusId], references: [id])
   socialMedia            SocialMedia?     @relation(fields: [socialMediaId], references: [id])
   review                 Review?          @relation(fields: [reviewId], references: [id])
-  offer                  Offer?           @relation(fields: [offerId], references: [id])
+  job                    Job?             @relation(fields: [jobId], references: [id])
   messages               Message[]
 
   cardReferenceStripe String?
@@ -377,7 +390,7 @@ model Order {
   orderStatusId Int?
   socialMediaId Int?
   reviewId      Int? @unique
-  offerId       Int?
+  jobId         Int?
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -388,7 +401,7 @@ model Order {
   @@index([influencerId])
   @@index([buyerId])
   @@index([reviewId])
-  @@index([offerId])
+  @@index([jobId])
 }
 
 model OrderValuePack {
