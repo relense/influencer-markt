@@ -396,6 +396,13 @@
       "influencerPaymentDetails": "The order is now in progress and it is your turn to shine. Do what you need to meet the order requirements.",
       "influencerInProgress": "The order has been delivered",
       "influencerConfirmed": "The buyer will confirm if everything is has expected and review your order."
+    },
+
+    "messageBoard": {
+      "sendMessageHere": "Send message here",
+      "messages": "Messages",
+      "noMessages": "There are no messages",
+      "noMessagesSubtitle": "Be the first to send a message"
     }
   },
 
@@ -871,7 +878,6 @@
       "visit": "Visit offer",
       "progressInformation": "Order Progress",
       "reviewTitle": "Buyer Review",
-      "messages": "Messages",
       "orderDetails": "Order Details"
     },
 
@@ -911,7 +917,6 @@
       "messageInputPlaceholder": "Share your thoughts on the influencer's performance and the content delivered for your order. Your feedback helps them improve and future clients make informed decisions. Remember, this will appear in the influencer's page.",
       "progressInformation": "Order Progress",
       "reviewTitle": "Review",
-      "messages": "Messages",
       "orderDetails": "Order Details"
     }
   }

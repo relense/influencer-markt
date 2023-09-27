@@ -396,6 +396,13 @@
       "influencerPaymentDetails": "O pedido está agora em progresso e é a tua vez de brilhar. Faz o que for necessário para cumprir os requisitos do pedido",
       "influencerInProgress": "O pedido foi entregue",
       "influencerConfirmed": "O comprador vai confirmar se tudo está como esperado e dar uma avaliação."
+    },
+
+    "messageBoard": {
+      "sendMessageHere": "Envia mensagens aqui",
+      "messages": "Mensages",
+      "noMessages": "Não há mensagens",
+      "noMessagesSubtitle": "Sê o primeiro a enviar uma mensagem"
     }
   },
 
@@ -870,7 +877,6 @@
       "visit": "Visitar oferta",
       "progressInformation": "Progresso do Pedido",
       "reviewTitle": "Avaliação do Comprador",
-      "messages": "Mensagens",
       "orderDetails": "Detalhes do Pedido"
     },
 
@@ -909,7 +915,6 @@
       "messageInputPlaceholder": "Partilhe as suas opiniões sobre o desempenho do influencer e o conteúdo entregue para o seu pedido. O seu feedback ajuda-os a melhorar e permite que futuros clientes tomem decisões informadas. Lembra-te, isto vai aparecer na página do influencer.",
       "progressInformation": "Progresso do Pedido",
       "reviewTitle": "Avaliação",
-      "messages": "Mensagens",
       "orderDetails": "Detalhes do Pedido"
     }
   }

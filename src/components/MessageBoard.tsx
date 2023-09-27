@@ -281,8 +281,8 @@ const MessageBoard = (params: {
     } else {
       return (
         <div className="flex flex-1 flex-col items-center justify-end text-gray2">
-          <span>There are no messages</span>
-          <span>Be the first to send a message</span>
+          <span>{t("components.messageBoard.noMessages")}</span>
+          <span>{t("components.messageBoard.noMessagesSubtitle")}</span>
         </div>
       );
     }
@@ -292,7 +292,7 @@ const MessageBoard = (params: {
     <div className="flex flex-1 flex-col items-center rounded-xl border-[1px] text-center">
       <div className="flex w-full items-center justify-between border-b-[1px] p-4">
         <div className="text-xl font-semibold ">
-          {t("pages.sales.messages")}
+          {t("components.messageBoard.messages")}
         </div>
         <FontAwesomeIcon
           icon={faArrowsRotate}
@@ -318,9 +318,14 @@ const MessageBoard = (params: {
       <div className="flex w-full items-center gap-2 border-t-[1px] p-4">
         <textarea
           ref={textareaRef}
-          className="flex h-[59px] max-h-56 flex-1 resize-none overflow-y-auto rounded-xl border-[1px] p-2 pt-4 text-left text-base"
+          className="flex h-[59px] max-h-56 flex-1 resize-none overflow-y-auto rounded-xl border-[1px] bg-white1 p-2 pt-4 text-left text-base"
           value={message}
           onChange={handleMessageChange}
+          placeholder={
+            messages.length === 0
+              ? t("components.messageBoard.sendMessageHere")
+              : ""
+          }
           onKeyDown={(e) => {
             if (e.key === "Enter" && !e.shiftKey) {
               e.preventDefault();
