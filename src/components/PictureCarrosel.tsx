@@ -222,24 +222,26 @@ export const PictureCarrosel = (params: {
               currentPictureIndex < params.portfolio.length - 1 && (
                 <FontAwesomeIcon
                   icon={faCircleRight}
-                  className="fa-xl absolute right-2 cursor-pointer text-white"
+                  className="fa-xl absolute right-2 cursor-pointer text-gray2"
                   onClick={() => handleNextPicture(true)}
                 />
               )}
             {params.portfolio.length > 1 && currentPictureIndex > 0 && (
               <FontAwesomeIcon
                 icon={faCircleLeft}
-                className="fa-xl absolute left-2 cursor-pointer text-white"
+                className="fa-xl absolute left-2 cursor-pointer text-gray2"
                 onClick={() => handleNextPicture(false)}
               />
             )}
 
             <div className="absolute bottom-2 flex items-center justify-center gap-4">
               {params.portfolio.map(({}, index) => {
-                let colorClass = "h-2 w-2 rounded-full bg-gray2";
+                let colorClass =
+                  "h-2 w-2 rounded-full bg-gray2 border-[1px] border-gray2";
 
                 if (currentPictureIndex === index) {
-                  colorClass = "h-2 w-2 rounded-full bg-white";
+                  colorClass =
+                    "h-2 w-2 rounded-full bg-white border-[1px] border-gray2";
                 }
 
                 return <div key={index} className={colorClass} />;
