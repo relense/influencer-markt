@@ -50,7 +50,7 @@ const FirstTimeJobManagementModal = (params: {
                   Jobs can be of 3 types:
                   <span className="font-semibold">open</span>,
                   <span className="font-semibold">in progress</span>, or
-                  <span className="font-semibold">archived</span>.
+                  <span className="font-semibold">concluded</span>.
                 </Trans>
               </div>
             </div>
@@ -67,7 +67,7 @@ const FirstTimeJobManagementModal = (params: {
                   <Trans i18nKey="pages.manageJobs.openJobsCanBe">
                     Open jobs can be
                     <span className="font-semibold">
-                      published, updated, archived, duplicated,
+                      published, updated, concluded, duplicated,
                     </span>
                     or
                     <span className="font-semibold">deleted</span>.
