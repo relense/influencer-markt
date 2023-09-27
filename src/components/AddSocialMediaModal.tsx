@@ -222,6 +222,7 @@ const AddSocialMediaModal = (params: {
         )}
         <div className="flex flex-1 items-center gap-2">
           <CustomSelect
+            isOverInput
             name={`contentType${index}`}
             placeholder={t(
               "components.addSocialMediaModal.contentTypePlaceholder"

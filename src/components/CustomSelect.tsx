@@ -16,6 +16,7 @@ export const CustomSelect = (params: {
   options: Option[] | undefined;
   handleOptionSelect: (option: Option) => void;
   required?: boolean;
+  isOverInput?: boolean;
 }) => {
   const [selectStatus, setSelectStatus] = useState<boolean>(false);
   const customSelectWrapperRef = useRef(null);
@@ -31,6 +32,13 @@ export const CustomSelect = (params: {
   if (params.noBorder) {
     customBorder =
       "flex h-14 w-full flex-1 cursor-pointer bg-transparent p-4 placeholder-gray2 caret-transparent placeholder:w-11/12 focus:border-black focus:outline-none focus:border-[1px] focus:rounded-lg ";
+  }
+
+  let dropdownClass =
+    "relative z-10 h-auto max-h-52 overflow-y-auto rounded-2xl border-[1px] border-gray3 bg-white shadow-xl";
+  if (params.isOverInput) {
+    dropdownClass =
+      "relative bottom-full z-10 h-auto max-h-52 overflow-y-auto rounded-lg border-[1px] border-gray3 bg-white shadow-xl";
   }
 
   return (
@@ -92,7 +100,7 @@ export const CustomSelect = (params: {
       </div>
 
       {selectStatus && (
-        <div className="relative z-10 h-auto max-h-52 overflow-y-auto rounded-2xl border-[1px] border-gray3 bg-white shadow-xl">
+        <div className={dropdownClass}>
           {params.options &&
             params.options.map((option) => {
               let classes = "";
