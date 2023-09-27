@@ -359,7 +359,7 @@ const CreateJobModal = (params: {
             required
             className="h-14 w-full rounded-lg border-[1px] border-gray3 p-4 placeholder-gray2 focus:border-black focus:outline-none"
             placeholder={t("pages.manageJobs.howMany")}
-            max="1000000000"
+            max="10"
             min="1"
             value={contentTypesList[index]?.amount || ""}
             onWheel={(e) => e.currentTarget.blur()}
