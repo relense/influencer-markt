@@ -17,6 +17,7 @@ export const FinalStep = (params: {
         size="large"
         onClick={() => params.saveAllData()}
         isLoading={params.isLoadingSavingData}
+        disabled={params.isLoadingSavingData}
       />
     </div>
   );

@@ -520,7 +520,7 @@
       "reviews_one": "{{count}} Comentário",
       "reviews_other": "{{count}} Comentários",
       "platform": "Plataforma",
-      "platformPlaceholder": "Seleciona a platforma da rede social",
+      "platformPlaceholder": "Seleciona a plataforma da rede social",
       "disclaimer": "Os detalhes de pagamento só são necessários quando o influencer aceitar o pedido",
       "subtotal": "Subtotal",
       "fee": "IVA",
@@ -644,7 +644,7 @@
       "jobSummaryPlaceholder": "Fornece um título cativante e descritivo para a tua vaga",
       "jobDetails": "Detalhes da Vaga",
       "detailsPlaceholder": "Especifique os seus requisitos para esta vaga. Partilhe o número desejado de publicações ou fotografias e os resultados específicos que espera. Por exemplo, se precisar de um vídeo a promover o seu produto, forneça as orientações necessárias. Instruções claras ajudam o influencer a compreender as suas expectativas e a envolver eficazmente o seu público-alvo.",
-      "platformTitle": "Platforma da Vaga",
+      "platformTitle": "Plataforma da Vaga",
       "platformPlaceholder": "Seleciona a rede social para a tua vaga",
       "jobCategories": "Categorias da Vaga",
       "categoriesPlaceholder": "Escolha as Categorias",
@@ -830,7 +830,7 @@
       "continuePayments": "Continuar os Detalhes de Pagamento",
       "viewOrder": "Ver Detalhes do Pedido",
       "step1Title": "O teu pedido foi enviado",
-      "step1Subtitle": "O influencer tem 24h para responder. Manteremos-te informado por e-mail."
+      "step1Subtitle": "Manteremos-te informado por e-mail."
     },
 
     "sales": {
@@ -838,7 +838,7 @@
       "saleMade": "Data do pedido",
       "viewDetails": "Ver detalhes do pedido",
       "buyer": "Comprador",
-      "platform": "Platforma",
+      "platform": "Plataforma",
       "valuePacks": "Packs de Valor",
       "saleTotal": "Total do pedido",
       "saleTotalTaxes": "Total do pedido com IVA",
@@ -878,7 +878,7 @@
       "orderMade": "Data do pedido",
       "viewDetails": "Ver detalhes do pedido",
       "influencer": "Influencer",
-      "platform": "Platforma",
+      "platform": "Plataforma",
       "valuePacks": "Packs de Valor",
       "orderTotal": "Total do pedido",
       "orderTotalTaxes": "Total do pedido com IVA",
