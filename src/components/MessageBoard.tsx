@@ -217,7 +217,7 @@ const MessageBoard = (params: {
     if (messages && messages.length > 0) {
       const reverseMessages = [...messages].reverse();
       return (
-        <div className="flex flex-1 flex-col items-end">
+        <div className="flex flex-1 flex-col items-end justify-end">
           {reverseMessages.map((message, index) => {
             const data = [];
 
@@ -231,7 +231,7 @@ const MessageBoard = (params: {
               data.push(
                 <div
                   key={`${message.id}date`}
-                  className="flex w-full flex-1 items-center justify-center self-end text-sm font-semibold text-gray2"
+                  className="flex w-full items-center justify-center self-end text-sm font-semibold text-gray2"
                 >
                   {helper.formatOnlyDate(message.createdAt, i18n.language)}
                 </div>
@@ -245,9 +245,9 @@ const MessageBoard = (params: {
               data.push(
                 <div
                   key={`${message.id}message`}
-                  className="flex w-full flex-col items-start"
+                  className="flex w-full flex-col items-start justify-end text-left"
                 >
-                  <div className="m-2 rounded-xl bg-boxShadow p-4 text-white">
+                  <div className="m-2 max-w-[75%] rounded-xl bg-boxShadow p-4 text-white">
                     {message.message}
                   </div>
                   <div className="flex justify-end text-sm text-gray2">
@@ -262,9 +262,9 @@ const MessageBoard = (params: {
               data.push(
                 <div
                   key={`${message.id}message`}
-                  className="flex w-full flex-col items-end justify-end "
+                  className="flex w-full flex-col items-end justify-end text-left"
                 >
-                  <div className="m-2 rounded-xl bg-influencer-green-dark p-4 text-white">
+                  <div className="m-2 max-w-[75%] rounded-xl bg-influencer-green-dark p-4 text-white">
                     {message.message}
                   </div>
                   <div className="flex justify-end text-sm text-gray2">
