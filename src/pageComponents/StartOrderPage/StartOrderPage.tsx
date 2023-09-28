@@ -8,8 +8,7 @@ import type { Option, ValuePack } from "../../utils/globalTypes";
 import { helper } from "../../utils/helper";
 import { faChevronDown, faChevronUp } from "@fortawesome/free-solid-svg-icons";
 import { Button } from "../../components/Button";
-import Link from "next/link";
-import { WhatHappensNext } from "../../components/WhatHappensNext";
+import { useRouter } from "next/router";
 
 type OrderData = {
   orderDetails: string;
@@ -27,9 +26,7 @@ const StartOrderPage = (params: {
   orderProfileId: number;
 }) => {
   const { t, i18n } = useTranslation();
-
-  const [step, setStep] = useState<number>(0);
-  const [orderId, setOrderId] = useState<number>(-1);
+  const router = useRouter();
 
   const [contentTypesList, setContentTypesList] = useState<
     ContentTypeWithQuantityAndValue[]
@@ -52,8 +49,12 @@ const StartOrderPage = (params: {
     {
       onSuccess: (order) => {
         if (order) {
-          setStep(1);
-          setOrderId(order.id);
+          void router.push({
+            pathname: `/orders/${order.id}`,
+            query: {
+              redirect: true,
+            },
+          });
 
           createNotification({
             entityId: order.id,
@@ -71,7 +72,6 @@ const StartOrderPage = (params: {
   const {
     register,
     handleSubmit,
-    watch,
     formState: { errors },
   } = useForm<OrderData>();
 
@@ -150,22 +150,11 @@ const StartOrderPage = (params: {
     });
   });
 
-  const stepperTitleStep0 = () => {
+  const stepperTitle = () => {
     return (
       <div className="flex items-center gap-4">
         <div className="flex items-center gap-2 font-semibold">
           <div className="text-3xl">{t("pages.startOrder.initiateOrder")}</div>
-        </div>
-      </div>
-    );
-  };
-
-  const stepperTitleStep1 = () => {
-    return (
-      <div className="flex items-center gap-4">
-        <div className="cursor-pointer flex-col items-center gap-2">
-          <div className="text-3xl">{t("pages.startOrder.step1Title")}</div>
-          <div>{t("pages.startOrder.step1Subtitle")}</div>
         </div>
       </div>
     );
@@ -228,19 +217,6 @@ const StartOrderPage = (params: {
               })}
             </div>
           )}
-        </div>
-      </div>
-    );
-  };
-
-  const renderFinalJobDetails = () => {
-    return (
-      <div className="flex flex-col gap-4">
-        <div className="text-xl font-medium">
-          {t("pages.startOrder.orderDetails")}
-        </div>
-        <div className="flex w-full flex-col whitespace-pre-line">
-          {watch("orderDetails")}
         </div>
       </div>
     );
@@ -319,41 +295,6 @@ const StartOrderPage = (params: {
     );
   };
 
-  const renderFinalValuePacks = () => {
-    return (
-      <div className="flex flex-col gap-2">
-        <div className="text-xl font-medium">
-          {t("pages.startOrder.valuePacks")}
-        </div>
-        <div className="flex flex-col gap-4 lg:flex-row">
-          {contentTypesList.map((valuePack) => {
-            return (
-              <div
-                key={valuePack.contentType.id}
-                className="flex items-center gap-2"
-              >
-                <div className="flex items-center gap-1">
-                  {valuePack.amount}x
-                </div>
-                <div className="flex select-none gap-2">
-                  <div className="text-base font-semibold text-influencer">
-                    {t(`general.contentTypes.${valuePack.contentType.name}`)}
-                  </div>
-                  <div className="text-base font-medium">
-                    {helper.formatNumberWithDecimalValue(
-                      valuePack.price * valuePack.amount
-                    ) || 0}
-                    €
-                  </div>
-                </div>
-              </div>
-            );
-          })}
-        </div>
-      </div>
-    );
-  };
-
   const renderTotalPay = () => {
     if (profile) {
       let valuePacksSum = 0;
@@ -395,54 +336,29 @@ const StartOrderPage = (params: {
     }
   };
 
-  if (step === 0) {
-    return (
-      <div className="flex w-full flex-1 cursor-default flex-col gap-8 self-center px-8 py-8 sm:px-12 xl:w-3/4 2xl:w-3/4 3xl:w-2/4">
-        {stepperTitleStep0()}
-        {renderInfluencerDetails()}
-        <div className="w-full border-[1px] border-white1" />
-        {renderPlatform()}
-        {renderValuePacks()}
-        {renderTotalPay()}
-        <div className="w-full border-[1px] border-white1" />
-        <form id="form-order" onSubmit={submitOrder}>
-          {renderJobDetails()}
-        </form>
-        <div className="flex justify-center">
-          <Button
-            title={t("pages.startOrder.orderSummary")}
-            level="primary"
-            size="regular"
-            form="form-order"
-            isLoading={isLoading}
-          />
-        </div>
+  return (
+    <div className="flex w-full flex-1 cursor-default flex-col gap-8 self-center px-8 py-8 sm:px-12 xl:w-3/4 2xl:w-3/4 3xl:w-2/4">
+      {stepperTitle()}
+      {renderInfluencerDetails()}
+      <div className="w-full border-[1px] border-white1" />
+      {renderPlatform()}
+      {renderValuePacks()}
+      {renderTotalPay()}
+      <div className="w-full border-[1px] border-white1" />
+      <form id="form-order" onSubmit={submitOrder}>
+        {renderJobDetails()}
+      </form>
+      <div className="flex justify-center">
+        <Button
+          title={t("pages.startOrder.orderSummary")}
+          level="primary"
+          size="regular"
+          form="form-order"
+          isLoading={isLoading}
+        />
       </div>
-    );
-  } else if (step === 1) {
-    return (
-      <div className="flex w-full flex-1 cursor-default flex-col gap-8 self-center px-8 py-8 sm:px-12 2xl:w-3/4 3xl:w-3/4 4xl:w-2/4 5xl:w-2/4">
-        {stepperTitleStep1()}
-        <WhatHappensNext stage="awaiting" view="buyer" startedOrder={true} />
-        <div className="flex flex-col gap-4 rounded-xl border-[1px] p-4 lg:p-8">
-          {renderInfluencerDetails()}
-          <div className="w-full border-[1px] border-white1" />
-          {renderPlatform()}
-          {renderFinalValuePacks()}
-          {renderTotalPay()}
-          <div className="w-full border-[1px] border-white1" />
-          {renderFinalJobDetails()}
-        </div>
-        <Link href={`/orders/${orderId}`} className="flex justify-center">
-          <Button
-            title={t("pages.startOrder.viewOrder")}
-            level="primary"
-            size="regular"
-          />
-        </Link>
-      </div>
-    );
-  }
+    </div>
+  );
 };
 
 export { StartOrderPage };

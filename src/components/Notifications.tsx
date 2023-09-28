@@ -234,6 +234,10 @@ const getNotificationMessageKey = (notificationsTypeId: number) => {
     return "salesPaymentsAdded";
   } else if (notificationsTypeId === 7) {
     return "salesConfirmed";
+  } else if (notificationsTypeId === 8) {
+    return "salesReviewed";
+  } else if (notificationsTypeId === 9) {
+    return "ordersCanceled";
   } else {
     return "";
   }

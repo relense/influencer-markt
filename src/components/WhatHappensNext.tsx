@@ -1,7 +1,13 @@
 import { useTranslation } from "react-i18next";
 
 const WhatHappensNext = (params: {
-  stage: "awaiting" | "accepted" | "progress" | "delivered" | "confirmed";
+  stage:
+    | "awaiting"
+    | "accepted"
+    | "progress"
+    | "delivered"
+    | "confirmed"
+    | "reviewed";
   view: "buyer" | "seller";
   startedOrder: boolean;
 }) => {
@@ -194,6 +200,19 @@ const WhatHappensNext = (params: {
               ? false
               : true
           )}
+          {renderItemMobile(
+            t("components.whathappensNext.confirmed"),
+            params.view === "buyer"
+              ? t("components.whathappensNext.buyerRate")
+              : t("components.whathappensNext.influencerRate"),
+            params.stage === "awaiting" ||
+              params.stage === "accepted" ||
+              params.stage === "progress" ||
+              params.stage === "delivered" ||
+              params.stage === "confirmed"
+              ? false
+              : true
+          )}
           <div className="flex self-start">
             <div className="flex h-full flex-1 flex-col items-center self-start">
               <div className={"h-4 w-4 rounded-full bg-influencer"} />
@@ -201,7 +220,7 @@ const WhatHappensNext = (params: {
             <div className="flex flex-col py-[6px]">
               <div className="h-1 w-full border-t-[3px] border-dashed border-gray3" />
               <div className="px-4 py-2 font-semibold">
-                {t("components.whathappensNext.confirmed")}
+                {t("components.whathappensNext.reviewed")}
               </div>
             </div>
           </div>

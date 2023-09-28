@@ -203,10 +203,10 @@ const MessageBoard = (params: {
     setMessage(event.target.value);
   };
 
-  const handleSendMessage = () => {
-    if (message !== "" && message.trim()) {
+  const handleSendMessage = (userMessage: string) => {
+    if (userMessage !== "" && userMessage.trim()) {
       createMessage({
-        message: message,
+        message: userMessage,
         orderId: params.orderId,
         receiverId: params.receiverId || -1,
       });
@@ -329,14 +329,19 @@ const MessageBoard = (params: {
           onKeyDown={(e) => {
             if (e.key === "Enter" && !e.shiftKey) {
               e.preventDefault();
-              handleSendMessage();
+              handleSendMessage(message);
+              setMessage("");
             }
           }}
         />
         <FontAwesomeIcon
           icon={faPaperPlane}
           className="fa-xl cursor-pointer"
-          onClick={() => handleSendMessage()}
+          onClick={() => {
+            const currentMessage = message;
+            handleSendMessage(currentMessage);
+            setMessage("");
+          }}
         />
       </div>
     </div>

@@ -1,6 +1,6 @@
 import sgMail from "@sendgrid/mail";
 
-function buyerConfirmedEmail(params: {
+function buyerReviewedOrderEmail(params: {
   from: string;
   to: string;
   orderId: number;
@@ -9,14 +9,14 @@ function buyerConfirmedEmail(params: {
 }) {
   const { orderId, language, from, to, buyerName } = params;
 
-  let title = `${buyerName} Confirmed Your Order`;
+  let title = `${buyerName} Reviewed Your Order`;
   let buttonTitle = "View Order";
-  let subject = `${buyerName} confirmed your order`;
+  let subject = `${buyerName} reviewed your order`;
 
   if (language === "pt") {
-    title = `${buyerName} Confirmou o Teu Pedido`;
+    title = `${buyerName} Avaliou o Teu Pedido`;
     buttonTitle = "Ver Pedido";
-    subject = `${buyerName} confirmed your order`;
+    subject = `${buyerName} avaliou your order`;
   }
 
   sgMail.setApiKey(process.env.EMAIL_SMTP_KEY || "");
@@ -184,4 +184,4 @@ function text({ title }: { title: string }) {
   return `${title}`;
 }
 
-export { buyerConfirmedEmail };
+export { buyerReviewedOrderEmail };

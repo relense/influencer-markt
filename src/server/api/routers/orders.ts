@@ -5,6 +5,7 @@ import { influencerAcceptedOrderEmail } from "../../../emailTemplates/influencer
 import { buyerConfirmedEmail } from "../../../emailTemplates/buyerConfirmOrderEmail/buyerConfirmOrderEmail";
 import { buyerAddDetailsEmail } from "../../../emailTemplates/buyerAddDetailsEmail/buyerAddDetailsEmail";
 import { influencerDeliveredOrderEmail } from "../../../emailTemplates/influencerDeliveredEmail/influencerDeliveredEmail";
+import { buyerReviewedOrderEmail } from "../../../emailTemplates/buyerReviewedOrderEmail/buyerReviewedOrderEmail";
 
 export const OrdersRouter = createTRPCRouter({
   createOrder: protectedProcedure
@@ -355,7 +356,6 @@ export const OrdersRouter = createTRPCRouter({
           ctx.prisma.order.count({
             where: {
               influencerId: profile.id,
-              NOT: [{ orderStatusId: 7 }],
               orderStatusId:
                 input.saleStatusId !== -1 ? input.saleStatusId : undefined,
               id: input.saleId !== -1 ? input.saleId : undefined,
@@ -364,7 +364,6 @@ export const OrdersRouter = createTRPCRouter({
           ctx.prisma.order.findMany({
             where: {
               influencerId: profile.id,
-              NOT: [{ orderStatusId: 7 }],
               orderStatusId:
                 input.saleStatusId !== -1 ? input.saleStatusId : undefined,
               id: input.saleId !== -1 ? input.saleId : undefined,
@@ -414,7 +413,6 @@ export const OrdersRouter = createTRPCRouter({
         return await ctx.prisma.order.findMany({
           where: {
             influencerId: profile.id,
-            NOT: [{ orderStatusId: 7 }],
             orderStatusId:
               input.saleStatusId !== -1 ? input.saleStatusId : undefined,
             id: input.saleId !== -1 ? input.saleId : undefined,
@@ -531,6 +529,14 @@ export const OrdersRouter = createTRPCRouter({
           });
         } else if (input.statusId === 6) {
           buyerConfirmedEmail({
+            buyerName: order.buyer?.name || "",
+            from: process.env.EMAIL_FROM,
+            to: order.influencer?.user.email || "",
+            language: input.language,
+            orderId: order.id,
+          });
+        } else if (input.statusId === 8) {
+          buyerReviewedOrderEmail({
             buyerName: order.buyer?.name || "",
             from: process.env.EMAIL_FROM,
             to: order.influencer?.user.email || "",

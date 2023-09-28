@@ -134,6 +134,7 @@
       "ordersAccepted": "{{actor}} aceitou a tua oferta",
       "ordersDelivered": "{{actor}} entregou o pedido",
       "salesCanceled": "{{actor}} cancelou o pedido",
+      "ordersCanceled": "{{actor}} cancelou o pedido",
       "salesPaymentsAdded": "{{actor}} adicionou os detalhes de pagamento. Podes trabalhar no pedido",
       "salesConfirmed": "{{actor}} confirmou o pedido. O teu pagamento está disponível no menu de facturação"
     },
@@ -146,7 +147,8 @@
       "progress": "Em Progresso",
       "delivered": "Entregue",
       "canceled": "Cancelado",
-      "confirmed": "Confirmada"
+      "confirmed": "Confirmada",
+      "reviewed": "Avaliada"
     }
   },
   "components": {
@@ -385,17 +387,20 @@
       "paymentDetails": "Detalhes de Pagamento",
       "inProgress": "Em Progresso",
       "delivered": "Entregue",
-      "confirmed": "Confirmada",
-      "buyerOrderSent": "O influencer tem que dar uma resposta ao teu pedido. Podem conversar através do campo de mensagens",
-      "buyerOrderAccepted": "O influencer aceitou o teu pedido. Agora tens 72 horas para adicionar os teus detalhes de pagamento",
-      "buyerPaymentDetails": "A encomenda está agora em progresso e, quando o influencer cumprir os requisitos, será entregue",
+      "confirmed": "Confirmado",
+      "reviewed": "Avaliado",
+      "buyerOrderSent": "O influencer tem que dar uma resposta ao teu pedido. Podem conversar através do campo de mensagens.",
+      "buyerOrderAccepted": "O influencer aceitou o teu pedido. Podes adicionar os teus detalhes de pagamento.",
+      "buyerPaymentDetails": "A encomenda está agora em progresso e, quando o influencer cumprir os requisitos, será entregue.",
       "buyerInProgress": "O pedido foi entregue pelo influencer.",
       "buyerConfirmed": "Confirma o pedido, verifica se tudo está como esperado e dá uma avaliação.",
-      "influencerOrderSent": "O comprador fez um pedido. Tens que aceitar ou rejeitá-lo",
-      "influencerOrderAccepted": "O comprador tem 72 horas para adicionar os seus detalhes de pagamento. Depois disso, podes trabalhar no pedido. Informaremos quando podes começar",
-      "influencerPaymentDetails": "O pedido está agora em progresso e é a tua vez de brilhar. Faz o que for necessário para cumprir os requisitos do pedido",
-      "influencerInProgress": "O pedido foi entregue",
-      "influencerConfirmed": "O comprador vai confirmar se tudo está como esperado e dar uma avaliação."
+      "influencerOrderSent": "O comprador fez um pedido. Tens que aceitar ou rejeitá-lo.",
+      "influencerOrderAccepted": "Depois disso, podes trabalhar no pedido. Informaremos quando podes começar.",
+      "influencerPaymentDetails": "O pedido está agora em progresso e é a tua vez de brilhar. Faz o que for necessário para cumprir os requisitos do pedido.",
+      "influencerInProgress": "O pedido foi entregue.",
+      "influencerConfirmed": "O comprador vai confirmar se tudo está como esperado.",
+      "buyerRate": "Para finalizar falta availar o pedido.",
+      "influencerRate": "O comprador vai dar uma avaliação."
     },
 
     "messageBoard": {
@@ -836,9 +841,7 @@
       "total": "Total",
       "price": "Preço",
       "continuePayments": "Continuar os Detalhes de Pagamento",
-      "viewOrder": "Ver Detalhes do Pedido",
-      "step1Title": "O teu pedido foi enviado",
-      "step1Subtitle": "Manteremos-te informado por e-mail."
+      "viewOrder": "Ver Detalhes do Pedido"
     },
 
     "sales": {
@@ -851,7 +854,7 @@
       "saleTotal": "Total do pedido",
       "saleTotalTaxes": "Total do pedido com IVA",
       "saleStatus": "Estado do pedido",
-      "sale": "Venda",
+      "sale": "Ref da Venda",
       "saleRequirements": "Requerimentos do pedido",
       "status": "Estado",
       "sales": "Vendas",
@@ -877,7 +880,9 @@
       "visit": "Visitar oferta",
       "progressInformation": "Progresso do Pedido",
       "reviewTitle": "Avaliação do Comprador",
-      "orderDetails": "Detalhes do Pedido"
+      "orderDetails": "Detalhes do Pedido",
+      "reviewed": "Pedido Avaliado",
+      "cancelOrder": "Cancelar Pedido"
     },
 
     "orders": {
@@ -890,7 +895,7 @@
       "orderTotal": "Total do pedido",
       "orderTotalTaxes": "Total do pedido com IVA",
       "orderStatus": "Estado do pedido",
-      "order": "Pedido",
+      "order": "Ref do Pedido",
       "orderRequirements": "Requerimentos do pedido",
       "status": "Estado",
       "orders": "Pedidos",
@@ -915,7 +920,11 @@
       "messageInputPlaceholder": "Partilhe as suas opiniões sobre o desempenho do influencer e o conteúdo entregue para o seu pedido. O seu feedback ajuda-os a melhorar e permite que futuros clientes tomem decisões informadas. Lembra-te, isto vai aparecer na página do influencer.",
       "progressInformation": "Progresso do Pedido",
       "reviewTitle": "Avaliação",
-      "orderDetails": "Detalhes do Pedido"
+      "orderDetails": "Detalhes do Pedido",
+      "confirm": "Confirmar Pedido",
+      "reviewed": "Pedido Avaliado",
+      "newRequestTitle": "O teu pedido foi enviado",
+      "newRequestSubtitle": "Manteremos-te informado por e-mail."
     }
   }
 }

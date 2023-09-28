@@ -31,9 +31,18 @@ const OrderDetails: NextPage<OrderDetailsProps> = ({ id }) => {
       <LoadingSpinner />
     </ProtectedWrapper>;
   } else {
+    const isRedirect = router.query.redirect === "true" ? true : false;
+
     return (
       <ProtectedWrapper>
-        <Layout>{() => <OrderDetailsPage orderId={parseInt(id)} />}</Layout>
+        <Layout>
+          {() => (
+            <OrderDetailsPage
+              orderId={parseInt(id)}
+              isRedirected={isRedirect || false}
+            />
+          )}
+        </Layout>
       </ProtectedWrapper>
     );
   }

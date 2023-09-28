@@ -84,6 +84,7 @@ async function main() {
       { name: "delivered" },
       { name: "confirmed" },
       { name: "canceled" },
+      { name: "reviewed" },
     ],
   });
 
@@ -98,8 +99,11 @@ async function main() {
       { entityType: "orders", entityAction: "accepted" },
       { entityType: "orders", entityAction: "delivered" },
       { entityType: "sales", entityAction: "canceled" },
+      { entityType: "orders", entityAction: "canceled" },
       { entityType: "sales", entityAction: "paymentAdded" },
       { entityType: "sales", entityAction: "confirmed" },
+      { entityType: "sales", entityAction: "reviewed" },
+      { entityType: "orders", entityAction: "canceled" },
     ],
   });
 

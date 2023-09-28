@@ -10,6 +10,7 @@ export const NotificationsRouter = createTRPCRouter({
         notificationTypeAction: z.union([
           z.literal("rejected"),
           z.literal("accepted"),
+          z.literal("canceled"),
           z.literal("delivered"),
         ]),
       })
@@ -47,6 +48,7 @@ export const NotificationsRouter = createTRPCRouter({
           z.literal("paymentAdded"),
           z.literal("confirmed"),
           z.literal("canceled"),
+          z.literal("reviewed"),
         ]),
       })
     )
@@ -154,6 +156,8 @@ const getNotificationTypeActionId = (
       return 3;
     } else if (notificationAction === "delivered") {
       return 4;
+    } else if (notificationAction === "canceled") {
+      return 9;
     }
   } else if (notificationType === "sales") {
     if (notificationAction === "awaitingReply") {
@@ -164,6 +168,8 @@ const getNotificationTypeActionId = (
       return 6;
     } else if (notificationAction === "confirmed") {
       return 7;
+    } else if (notificationAction === "reviewed") {
+      return 8;
     }
   }
 };

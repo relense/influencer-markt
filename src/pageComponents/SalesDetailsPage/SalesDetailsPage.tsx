@@ -55,6 +55,18 @@ const SalesDetailsPage = (params: { orderId: number }) => {
       },
     });
 
+  const { mutate: updateCancelOrder, isLoading: isLoadingUpdateCancelOrder } =
+    api.orders.updateOrder.useMutation({
+      onSuccess: () => {
+        void createNotification({
+          entityId: params.orderId,
+          notifierId: sale?.buyerId || -1,
+          notificationTypeAction: "canceled",
+        });
+        void ctx.orders.getSaleOrder.invalidate();
+      },
+    });
+
   const { mutate: updateOrderDeliver, isLoading: updateOrderDeliverIsLoading } =
     api.orders.updateOrder.useMutation({
       onSuccess: () => {
@@ -97,13 +109,15 @@ const SalesDetailsPage = (params: { orderId: number }) => {
         | "accepted"
         | "progress"
         | "delivered"
-        | "confirmed" = "";
+        | "confirmed"
+        | "reviewed" = "";
       if (
         sale.orderStatus?.name === "awaiting" ||
         sale.orderStatus?.name === "accepted" ||
         sale.orderStatus?.name === "progress" ||
         sale.orderStatus?.name === "delivered" ||
-        sale.orderStatus?.name === "confirmed"
+        sale.orderStatus?.name === "confirmed" ||
+        sale.orderStatus?.name === "reviewed"
       ) {
         whatHappensNext = sale.orderStatus?.name;
       }
@@ -155,6 +169,20 @@ const SalesDetailsPage = (params: { orderId: number }) => {
                   isLoading={updateRejectIsLoading}
                 />
               </div>
+            )}
+            {sale.orderStatusId === 3 && (
+              <Button
+                title={t("pages.sales.cancelOrder")}
+                level="terciary"
+                onClick={() =>
+                  updateCancelOrder({
+                    orderId: sale.id,
+                    statusId: 7,
+                    language: i18n.language,
+                  })
+                }
+                isLoading={isLoadingUpdateCancelOrder}
+              />
             )}
             {sale.orderStatusId === 4 && (
               <div className="flex gap-12">

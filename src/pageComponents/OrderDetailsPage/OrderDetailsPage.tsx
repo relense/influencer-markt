@@ -19,7 +19,10 @@ type ReviewForm = {
   review: string;
 };
 
-const OrderDetailsPage = (params: { orderId: number }) => {
+const OrderDetailsPage = (params: {
+  orderId: number;
+  isRedirected: boolean;
+}) => {
   const { t, i18n } = useTranslation();
   const ctx = api.useContext();
 
@@ -28,7 +31,6 @@ const OrderDetailsPage = (params: { orderId: number }) => {
 
   const {
     register,
-    watch,
     reset,
     handleSubmit,
     formState: { errors },
@@ -62,16 +64,29 @@ const OrderDetailsPage = (params: { orderId: number }) => {
       },
     });
 
-  const { mutate: updateOrderConfirmed } = api.orders.updateOrder.useMutation({
-    onSuccess: () => {
-      void createNotification({
-        entityId: params.orderId,
-        notifierId: order?.influencerId || -1,
-        notificationTypeAction: "confirmed",
-      });
-      void ctx.orders.getBuyerOrder.invalidate();
-    },
-  });
+  const { mutate: updateOrderConfirmed, isLoading: isLoadingUpdateConfirmed } =
+    api.orders.updateOrder.useMutation({
+      onSuccess: () => {
+        void createNotification({
+          entityId: params.orderId,
+          notifierId: order?.influencerId || -1,
+          notificationTypeAction: "confirmed",
+        });
+        void ctx.orders.getBuyerOrder.invalidate();
+      },
+    });
+
+  const { mutate: updateOrderReviewed, isLoading: isLoadingUpdateReviewed } =
+    api.orders.updateOrder.useMutation({
+      onSuccess: () => {
+        void createNotification({
+          entityId: params.orderId,
+          notifierId: order?.influencerId || -1,
+          notificationTypeAction: "reviewed",
+        });
+        void ctx.orders.getBuyerOrder.invalidate();
+      },
+    });
 
   const { mutate: createNotification } =
     api.notifications.createSalesNotification.useMutation();
@@ -79,9 +94,9 @@ const OrderDetailsPage = (params: { orderId: number }) => {
   const { mutate: createReview, isLoading: isLoadingCreateReview } =
     api.reviews.createReview.useMutation({
       onSuccess: () => {
-        updateOrderConfirmed({
+        updateOrderReviewed({
           orderId: params.orderId,
-          statusId: 6,
+          statusId: 8,
           language: i18n.language,
         });
         reset();
@@ -109,13 +124,15 @@ const OrderDetailsPage = (params: { orderId: number }) => {
         | "accepted"
         | "progress"
         | "delivered"
-        | "confirmed" = "";
+        | "confirmed"
+        | "reviewed" = "";
       if (
         order.orderStatus?.name === "awaiting" ||
         order.orderStatus?.name === "accepted" ||
         order.orderStatus?.name === "progress" ||
         order.orderStatus?.name === "delivered" ||
-        order.orderStatus?.name === "confirmed"
+        order.orderStatus?.name === "confirmed" ||
+        order.orderStatus?.name === "reviewed"
       ) {
         whatHappensNext = order.orderStatus?.name;
       }
@@ -200,9 +217,26 @@ const OrderDetailsPage = (params: { orderId: number }) => {
             {order.orderStatusId === 5 && (
               <div className="flex gap-12">
                 <Button
+                  title={t("pages.orders.confirm")}
+                  level="terciary"
+                  onClick={() =>
+                    updateOrderConfirmed({
+                      orderId: order.id,
+                      statusId: 6,
+                      language: i18n.language,
+                    })
+                  }
+                  isLoading={isLoadingUpdateConfirmed}
+                />
+              </div>
+            )}
+            {order.orderStatusId === 6 && (
+              <div className="flex gap-12">
+                <Button
                   title={t("pages.orders.review")}
                   level="terciary"
                   onClick={() => setOpenReviewModal(true)}
+                  isLoading={isLoadingUpdateReviewed}
                 />
               </div>
             )}
@@ -331,10 +365,6 @@ const OrderDetailsPage = (params: { orderId: number }) => {
                   title={t("pages.orders.review")}
                   level="terciary"
                   form="form-review"
-                  disabled={
-                    watch("review") === undefined ||
-                    watch("review").length === 0
-                  }
                   isLoading={isLoadingCreateReview}
                 />
               </div>
@@ -352,7 +382,6 @@ const OrderDetailsPage = (params: { orderId: number }) => {
               {renderStarSelection()}
               <textarea
                 {...register("review", { maxLength: 446 })}
-                required
                 className="flex min-h-[20vh] w-full cursor-pointer rounded-lg border-[1px] border-gray3 bg-transparent p-4 placeholder-gray2 placeholder:w-11/12"
                 placeholder={t("pages.orders.messageInputPlaceholder")}
                 autoComplete="off"
@@ -426,9 +455,22 @@ const OrderDetailsPage = (params: { orderId: number }) => {
     );
   };
 
+  const renderNewOrderDisclaimer = () => {
+    return (
+      <div className="flex items-center gap-4">
+        <div className="cursor-pointer flex-col items-center gap-2">
+          <div className="text-3xl">{t("pages.orders.newRequestTitle")}</div>
+          <div>{t("pages.orders.newRequestSubtitle")}</div>
+        </div>
+      </div>
+    );
+  };
+
   return (
     <>
       <div className="flex w-full cursor-default flex-col gap-6 self-center px-4 pb-10 sm:px-12 lg:w-full 2xl:w-10/12 3xl:w-3/4 4xl:w-8/12">
+        {params.isRedirected && renderNewOrderDisclaimer()}
+
         <div className="text-2xl font-semibold">
           {t("pages.orders.order")}
           {order?.id && `: ${order?.id}`}

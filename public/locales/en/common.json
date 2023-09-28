@@ -134,8 +134,10 @@
       "ordersAccepted": "{{actor}} accepted your order",
       "ordersDelivered": "{{actor }} devilered your order",
       "salesCanceled": "{{actor}} canceled the order",
+      "ordersCanceled": "{{actor}} canceled the order",
       "salesPaymentsAdded": "{{actor}} added payment details. You can now work on your order",
-      "salesConfirmed": "{{actor}} confirmed the order. Your payment is available in the billing menu"
+      "salesConfirmed": "{{actor}} confirmed the order. Your payment is available in the billing menu",
+      "salesReviewed": "{{actor}} gave a review to your order"
     },
 
     "orderStatus": {
@@ -146,7 +148,8 @@
       "progress": "In Progress",
       "delivered": "Delivered",
       "canceled": "Canceled",
-      "confirmed": "Confirmed"
+      "confirmed": "Confirmed",
+      "reviewed": "Reviewed"
     }
   },
   "components": {
@@ -386,16 +389,19 @@
       "inProgress": "In Progress",
       "delivered": "Delivered",
       "confirmed": "Confirmed",
-      "buyerOrderSent": "The influencer has to give an answer to your order request. You can talk to him through the messages field",
-      "buyerOrderAccepted": "The influencer accepted your order. Now you have 72 hours to add your payment details",
-      "buyerPaymentDetails": "The order is now in progress and when the influencer has meet the requirements he will deliver",
+      "reviewed": "Reviewed",
+      "buyerOrderSent": "The influencer has to give an answer to your order request. You can talk to him through the messages field.",
+      "buyerOrderAccepted": "The influencer accepted your order. You can add your payment details.",
+      "buyerPaymentDetails": "The order is now in progress and when the influencer has meet the requirements he will deliver.",
       "buyerInProgress": "The order has been delivered by the influencer.",
       "buyerConfirmed": "You need to confirm the order. Make sure everything is how you expect and then give a review.",
-      "influencerOrderSent": "The buyer has made an order. You may accept or reject it",
-      "influencerOrderAccepted": "The buyer has 72 hours to add his payment details. Afterwards you can work on the request. We will let you know when you can start.",
+      "influencerOrderSent": "The buyer has made an order. You may accept or reject it.",
+      "influencerOrderAccepted": "Afterwards you can work on the request. We will let you know when you can start.",
       "influencerPaymentDetails": "The order is now in progress and it is your turn to shine. Do what you need to meet the order requirements.",
-      "influencerInProgress": "The order has been delivered",
-      "influencerConfirmed": "The buyer will confirm if everything is has expected and review your order."
+      "influencerInProgress": "The order has been delivered.",
+      "influencerConfirmed": "The buyer will confirm if everything is has expected and review your order.",
+      "buyerRate": "To conclude the order give a review.",
+      "influencerRate": "The buyer will give a review of the order."
     },
 
     "messageBoard": {
@@ -837,9 +843,7 @@
       "total": "Total",
       "price": "Price",
       "continuePayments": "Continue Payment Details",
-      "viewOrder": "View Order Details",
-      "step1Title": "Your order request was sent",
-      "step1Subtitle": "We will keep you up to date by e-mail."
+      "viewOrder": "View Order Details"
     },
 
     "sales": {
@@ -852,7 +856,7 @@
       "saleTotal": "Order total",
       "saleTotalTaxes": "Order total with taxes",
       "saleStatus": "Order status",
-      "sale": "Sale",
+      "sale": "Sale Ref",
       "saleRequirements": "Order requirements",
       "status": "Status",
       "sales": "Sales",
@@ -878,7 +882,9 @@
       "visit": "Visit offer",
       "progressInformation": "Order Progress",
       "reviewTitle": "Buyer Review",
-      "orderDetails": "Order Details"
+      "orderDetails": "Order Details",
+      "reviewed": "Order Reviewed",
+      "cancelOrder": "Cancel Order"
     },
 
     "orders": {
@@ -891,7 +897,7 @@
       "orderTotal": "Order total",
       "orderTotalTaxes": "Order total with taxes",
       "orderStatus": "Order status",
-      "order": "Order",
+      "order": "Order Ref",
       "orderRequirements": "Order requirements",
       "status": "Status",
       "orders": "Orders",
@@ -917,7 +923,11 @@
       "messageInputPlaceholder": "Share your thoughts on the influencer's performance and the content delivered for your order. Your feedback helps them improve and future clients make informed decisions. Remember, this will appear in the influencer's page.",
       "progressInformation": "Order Progress",
       "reviewTitle": "Review",
-      "orderDetails": "Order Details"
+      "orderDetails": "Order Details",
+      "confirm": "Confirm Order",
+      "reviewed": "Order Reviewed",
+      "newRequestTitle": "Your order request was sent",
+      "newRequestSubtitle": "We will keep you up to date by e-mail."
     }
   }
 }
