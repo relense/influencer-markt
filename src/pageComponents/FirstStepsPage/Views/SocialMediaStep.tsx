@@ -181,6 +181,7 @@ export const SocialMediaStep = (params: {
                 socialMedia={socialMedia}
                 onDelete={() => removeSocialMedia(socialMedia)}
                 onClick={() => handleOnclickSocialMediaCard(socialMedia)}
+                showDeleteModal={false}
               />
             );
           })}

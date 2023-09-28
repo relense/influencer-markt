@@ -274,7 +274,11 @@
 
     "pictureCarrosel": {
       "invalidPictureWarning": "Picture must be jpeg, jpg or png and can't exceed 2mbs",
-      "addPicture": "Add your Profile Image"
+      "addPicture": "Add your Profile Image",
+      "deleteButton": "Delete Picture",
+      "areYouSure": "Are You Sure?",
+      "deleteWarning": "Are you sure you want to delete this picture? This action is permanent.",
+      "lastPictureWarning": "If you delete this picture you won't have a portfolio. Without pictures you won't show up in search results."
     },
 
     "valuePack": {
@@ -314,7 +318,10 @@
       "revision_one": "{{count}} Revision",
       "revision_other": "{{count}} Revisions",
       "handler": "Handler",
-      "followers": "Followers"
+      "followers": "Followers",
+      "deleteButton": "Delete Social Media",
+      "areYouSure": "Are You Sure?",
+      "deleteWarning": "Are you sure you want to delete this social media? This action is permanent."
     },
 
     "profileCard": {

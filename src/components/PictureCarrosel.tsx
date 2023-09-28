@@ -16,9 +16,12 @@ import Image from "next/image";
 import { toast } from "react-hot-toast";
 import { type PreloadedImage, usePrevious } from "../utils/helper";
 import { useTranslation } from "react-i18next";
+import { Modal } from "./Modal";
+import { Button } from "./Button";
 
 export const PictureCarrosel = (params: {
   visual: boolean;
+  showDeleteModal: boolean;
   portfolio: PreloadedImage[] | [];
   addPicture?: (pictureUrl: string) => void;
   deletePicture?: (pictureId: number) => void;
@@ -32,6 +35,7 @@ export const PictureCarrosel = (params: {
     height: 430,
   });
   const [currentPictureIndex, setCurrentPictureIndex] = useState<number>(0);
+  const [openDeleteModal, setOpenDeleteModal] = useState<boolean>(false);
 
   const prevPortfolio = usePrevious(params.portfolio);
   const prevPathname = usePrevious(pathname);
@@ -134,8 +138,17 @@ export const PictureCarrosel = (params: {
   };
 
   const handleRemovePicture = () => {
+    if (params.showDeleteModal) {
+      setOpenDeleteModal(true);
+    } else {
+      removePicture();
+    }
+  };
+
+  const removePicture = () => {
     if (params.deletePicture) {
       params.deletePicture(currentPicture.id);
+      setOpenDeleteModal(false);
     }
   };
 
@@ -204,7 +217,9 @@ export const PictureCarrosel = (params: {
           {!params.visual && (
             <div
               className="absolute right-[-10px] top-[-10px] flex h-10 w-10 cursor-pointer items-center justify-center self-end rounded-full bg-influencer-green"
-              onClick={() => handleRemovePicture()}
+              onClick={() => {
+                handleRemovePicture();
+              }}
             >
               <FontAwesomeIcon
                 icon={faXmark}
@@ -319,10 +334,49 @@ export const PictureCarrosel = (params: {
   };
 
   return (
-    <div className="flex flex-col gap-4">
-      {renderUploadMainPicture()}
-      {renderMainPicture()}
-      {renderPictureCarrosel()}
-    </div>
+    <>
+      <div className="flex flex-col gap-4">
+        {renderUploadMainPicture()}
+        {renderMainPicture()}
+        {renderPictureCarrosel()}
+      </div>
+      {openDeleteModal && !params.visual && (
+        <div className="fixed left-[5%] z-50 w-full  justify-center md:left-[15%] lg:left-[30%] 2xl:left-[35%]">
+          <Modal
+            onClose={() => setOpenDeleteModal(false)}
+            button={
+              <div className="flex justify-center p-4">
+                <Button
+                  type="submit"
+                  title={t(`components.pictureCarrosel.deleteButton`)}
+                  level="primary"
+                  form="form-warningModal"
+                />
+              </div>
+            }
+          >
+            <form
+              id="form-warningModal"
+              onSubmit={(e) => {
+                e.preventDefault();
+                removePicture();
+              }}
+              className="flex flex-col gap-4 p-4"
+            >
+              <div className="text-center text-3xl font-semibold text-influencer">
+                {t("components.pictureCarrosel.areYouSure")}
+              </div>
+              <div className="flex flex-col gap-4 text-center text-lg">
+                <span>{t(`components.pictureCarrosel.deleteWarning`)}</span>
+                <span>
+                  {params.portfolio.length === 1 &&
+                    t(`components.pictureCarrosel.lastPictureWarning`)}
+                </span>
+              </div>
+            </form>
+          </Modal>
+        </div>
+      )}
+    </>
   );
 };

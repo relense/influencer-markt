@@ -13,6 +13,7 @@ export const VisualPortfolioStep = (params: {
       <form id="form-hook" onSubmit={() => params.changeStep("next")} />
       <PictureCarrosel
         visual={false}
+        showDeleteModal={false}
         portfolio={params.portfolio}
         addPicture={params.addPicture}
         deletePicture={params.deletePicture}

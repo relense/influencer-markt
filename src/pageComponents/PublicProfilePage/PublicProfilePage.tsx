@@ -570,7 +570,11 @@ const PublicProfilePage = (params: {
       <div className="flex flex-col gap-6">
         <div className="flex flex-col gap-6 lg:flex-row">
           <div className="flex items-start justify-center">
-            <PictureCarrosel visual={true} portfolio={portfolio || []} />
+            <PictureCarrosel
+              showDeleteModal={false}
+              visual={true}
+              portfolio={portfolio || []}
+            />
           </div>
           <div className="flex flex-1 flex-col gap-6">
             {renderAboutSection()}

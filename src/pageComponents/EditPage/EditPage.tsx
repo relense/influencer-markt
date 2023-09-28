@@ -468,6 +468,7 @@ const EditPage = (params: { role: Option | undefined }) => {
           {t("pages.editPage.visualPortfolio")}
         </div>
         <PictureCarrosel
+          showDeleteModal={true}
           visual={false}
           portfolio={portfolio}
           addPicture={onAddPicture}
@@ -491,7 +492,7 @@ const EditPage = (params: { role: Option | undefined }) => {
             >
               <FontAwesomeIcon
                 icon={faPlus}
-                className="fa-sm cursor-pointer "
+                className="fa-sm cursor-pointer pl-[1px]"
               />
             </div>
           )}
@@ -538,6 +539,7 @@ const EditPage = (params: { role: Option | undefined }) => {
                     onDeleteSocialMedia(parsedSocialMedia);
                   }}
                   socialMedia={parsedSocialMedia}
+                  showDeleteModal={true}
                 />
               );
             })}

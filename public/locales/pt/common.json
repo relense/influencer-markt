@@ -273,7 +273,11 @@
 
     "pictureCarrosel": {
       "invalidPictureWarning": "Images têm de ser jpeg, jpg ou png e não podem exceder 2mbs",
-      "addPicture": "Adiciona a tua imagem de perfil"
+      "addPicture": "Adiciona a tua imagem de perfil",
+      "deleteButton": "Apagar Foto",
+      "areYouSure": "Tens a certeza?",
+      "deleteWarning": "Tens a certeza que queres apagar esta foto? Esta acção é permanente.",
+      "lastPictureWarning": "Se apagares esta foto não vais ter portfolio. Sem fotos não apareces nos resultados das pesquisas."
     },
 
     "valuePack": {
@@ -313,7 +317,10 @@
       "revision_one": "{{count}} Revisão",
       "revision_other": "{{count}} Revisões",
       "handler": "Nome de Utilizador",
-      "followers": "Seguidores"
+      "followers": "Seguidores",
+      "deleteButton": "Apagar Rede Social",
+      "areYouSure": "Tens a certeza?",
+      "deleteWarning": "Tens a certeza que queres apagar esta rede social? Esta acção é permanente."
     },
 
     "profileCard": {
