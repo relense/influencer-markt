@@ -355,6 +355,7 @@ const StartOrderPage = (params: {
           size="regular"
           form="form-order"
           isLoading={isLoading}
+          disabled={isLoading}
         />
       </div>
     </div>

@@ -53,7 +53,6 @@ export const Navbar = (params: {
 }) => {
   const { t } = useTranslation();
   const router = useRouter();
-  const ctx = api.useContext();
   const width = useWindowWidth();
 
   const dropdownWrapperRef = useRef(null);
@@ -74,10 +73,10 @@ export const Navbar = (params: {
       enabled: false,
     });
 
-  const { mutate: notificationUpdate } =
+  const { mutateAsync: notificationUpdate } =
     api.notifications.updateNotificationsToRead.useMutation({
-      onSuccess: () => {
-        void ctx.notifications.getUserToBeReadNotifications.invalidate();
+      onSuccess: async () => {
+        await refetchNotficationsRead();
       },
     });
 
@@ -132,11 +131,11 @@ export const Navbar = (params: {
     }
   };
 
-  const handleOpenNotificationsMenu = () => {
+  const handleOpenNotificationsMenu = async () => {
     setNotificationsOpen(!notificationsOpen);
     if (notificationsCount) {
-      notificationUpdate();
       setNotificationsCount(0);
+      await notificationUpdate();
     }
   };
 
