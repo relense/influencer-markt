@@ -16,4 +16,7 @@ body,
     margin: 0;
     -moz-appearance: textfield !important;
   }
+  input[type="date"]::-webkit-calendar-picker-indicator {
+    cursor: pointer;
+  }
 }

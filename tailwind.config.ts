@@ -23,6 +23,7 @@ export default {
         "influencer-light": "#ffabcb",
         "influencer-dark": "#fa2877",
         "influencer-green": "#64EA9E",
+        "influencer-green-disabled": "#a2f2c5",
         "influencer-green-light": "#fafdfb",
         "influencer-green-dark": "#67E09B",
         "light-red": "#F8F4F4",

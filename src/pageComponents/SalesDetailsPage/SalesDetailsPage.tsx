@@ -14,6 +14,7 @@ import { Button } from "../../components/Button";
 import { WhatHappensNext } from "../../components/WhatHappensNext";
 import { Modal } from "../../components/Modal";
 import { MessageBoard } from "../../components/MessageBoard";
+import dayjs from "dayjs";
 
 const SalesDetailsPage = (params: { orderId: number }) => {
   const { t, i18n } = useTranslation();
@@ -208,7 +209,7 @@ const SalesDetailsPage = (params: { orderId: number }) => {
 
   const renderSaleDetails = () => {
     return (
-      <div className="flex flex-col gap-2">
+      <div className="flex flex-col gap-1">
         <div className="text-lg font-medium">{t("pages.sales.platform")}</div>
         <div className="font-semibold text-influencer">
           {sale?.socialMedia?.name || ""}
@@ -219,7 +220,7 @@ const SalesDetailsPage = (params: { orderId: number }) => {
 
   const renderValuePacks = () => {
     return (
-      <div className="flex flex-col gap-2">
+      <div className="flex flex-col gap-1">
         <div className="text-lg font-medium">{t("pages.sales.valuePacks")}</div>
         <div className="flex flex-col items-center justify-center gap-4 lg:flex-row">
           {sale?.orderValuePacks.map((valuePack) => {
@@ -245,7 +246,7 @@ const SalesDetailsPage = (params: { orderId: number }) => {
   const renderTotalPrice = () => {
     if (sale) {
       return (
-        <div className="flex flex-col gap-2">
+        <div className="flex flex-col gap-1">
           <div className="text-lg font-medium">
             {t("pages.sales.saleTotalTaxes")}
           </div>
@@ -253,6 +254,21 @@ const SalesDetailsPage = (params: { orderId: number }) => {
             {helper.formatNumberWithDecimalValue(parseFloat(sale.orderPrice)) ||
               0}
             €
+          </div>
+        </div>
+      );
+    }
+  };
+
+  const renderDateOfDelivery = () => {
+    if (sale) {
+      return (
+        <div className="flex flex-col gap-1">
+          <div className="text-lg font-medium">
+            {t("pages.sales.dateOfDelivery")}
+          </div>
+          <div className="text-base font-semibold text-influencer">
+            {dayjs(sale.dateOfDelivery).format("DD MMMM YYYY")}
           </div>
         </div>
       );
@@ -331,10 +347,11 @@ const SalesDetailsPage = (params: { orderId: number }) => {
             {t("pages.sales.orderDetails")}
           </div>
         </div>
-        <div className="overflow-y-auto p-8">
+        <div className="flex flex-1 flex-col gap-4 overflow-y-auto p-8">
           {renderSaleDetails()}
           {renderValuePacks()}
           {renderTotalPrice()}
+          {renderDateOfDelivery()}
           {renderFinalOrderDetails()}
         </div>
       </div>

@@ -9,9 +9,11 @@ import { helper } from "../../utils/helper";
 import { faChevronDown, faChevronUp } from "@fortawesome/free-solid-svg-icons";
 import { Button } from "../../components/Button";
 import { useRouter } from "next/router";
+import dayjs from "dayjs";
 
 type OrderData = {
   orderDetails: string;
+  dateOfDelivery: Date;
 };
 
 type ContentTypeWithQuantityAndValue = {
@@ -40,6 +42,8 @@ const StartOrderPage = (params: {
       };
     })
   );
+  const [disableSubmitButton, setDisableSubmitButton] =
+    useState<boolean>(false);
 
   const { data: profile } = api.profiles.getProfileById.useQuery({
     profileId: params.orderProfileId,
@@ -125,6 +129,7 @@ const StartOrderPage = (params: {
   };
 
   const submitOrder = handleSubmit((data) => {
+    setDisableSubmitButton(true);
     let valuePacksSum = 0;
 
     contentTypesList.forEach((contentType) => {
@@ -147,6 +152,7 @@ const StartOrderPage = (params: {
       }),
       platformId: params.valuePacks[0]?.platform?.id || -1,
       language: i18n.language,
+      dateOfDelivery: dayjs(data.dateOfDelivery).toDate(),
     });
   });
 
@@ -206,7 +212,7 @@ const StartOrderPage = (params: {
           <textarea
             {...register("orderDetails", { maxLength: 2200 })}
             required
-            className="flex h-48 cursor-pointer rounded-lg border-[1px] border-gray3 bg-transparent p-4 placeholder-gray2 placeholder:w-11/12"
+            className="flex h-48 cursor-pointer rounded-lg border-[1px] border-gray3 bg-transparent p-4 placeholder-gray2 placeholder:w-11/12  focus:border-[1px] focus:border-black focus:outline-none"
             placeholder={t("pages.startOrder.detailsPlaceholder")}
             autoComplete="off"
           />
@@ -336,18 +342,44 @@ const StartOrderPage = (params: {
     }
   };
 
+  const renderDeliveryDate = () => {
+    return (
+      <div className="flex flex-col gap-2">
+        <div className="select-none text-xl font-medium">
+          {t("pages.startOrder.dateDelivery")}
+        </div>
+        <div>
+          <input
+            {...register("dateOfDelivery")}
+            type="date"
+            required
+            className="rounded-xl border-[1px] p-2 focus:border-[1px] focus:border-black focus:outline-none"
+            min={dayjs(Date.now()).format("YYYY-MM-DD")}
+          />
+        </div>
+        <span className="pl-2 text-sm text-gray2">
+          {t("pages.startOrder.dateDisclaimer")}
+        </span>
+      </div>
+    );
+  };
+
   return (
-    <div className="flex w-full flex-1 cursor-default flex-col gap-8 self-center px-8 py-8 sm:px-12 xl:w-3/4 2xl:w-3/4 3xl:w-2/4">
+    <form
+      id="form-order"
+      onSubmit={submitOrder}
+      className="flex w-full flex-1 cursor-default flex-col gap-8 self-center px-8 py-8 sm:px-12 xl:w-3/4 2xl:w-3/4 3xl:w-2/4"
+    >
       {stepperTitle()}
       {renderInfluencerDetails()}
       <div className="w-full border-[1px] border-white1" />
       {renderPlatform()}
       {renderValuePacks()}
       {renderTotalPay()}
+      {renderDeliveryDate()}
       <div className="w-full border-[1px] border-white1" />
-      <form id="form-order" onSubmit={submitOrder}>
-        {renderJobDetails()}
-      </form>
+
+      {renderJobDetails()}
       <div className="flex justify-center">
         <Button
           title={t("pages.startOrder.orderSummary")}
@@ -355,10 +387,10 @@ const StartOrderPage = (params: {
           size="regular"
           form="form-order"
           isLoading={isLoading}
-          disabled={isLoading}
+          disabled={disableSubmitButton}
         />
       </div>
-    </div>
+    </form>
   );
 };
 

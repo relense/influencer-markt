@@ -23,6 +23,7 @@ export const OrdersRouter = createTRPCRouter({
         ),
         platformId: z.number(),
         language: z.string(),
+        dateOfDelivery: z.date(),
       })
     )
     .mutation(async ({ ctx, input }) => {
@@ -58,6 +59,7 @@ export const OrdersRouter = createTRPCRouter({
             countryId: influencerProfile?.countryId,
             orderStatusId: 1,
             socialMediaId: input.platformId,
+            dateOfDelivery: input.dateOfDelivery,
           },
           include: {
             socialMedia: true,
@@ -106,6 +108,7 @@ export const OrdersRouter = createTRPCRouter({
         platformId: z.number(),
         jobId: z.number(),
         language: z.string(),
+        dateOfDelivery: z.date(),
       })
     )
     .mutation(async ({ ctx, input }) => {
@@ -128,6 +131,7 @@ export const OrdersRouter = createTRPCRouter({
             orderStatusId: 1,
             socialMediaId: input.platformId,
             jobId: input.jobId,
+            dateOfDelivery: input.dateOfDelivery,
           },
           include: {
             influencer: {
@@ -568,4 +572,20 @@ export const OrdersRouter = createTRPCRouter({
       },
     });
   }),
+
+  updateOrderDateOfDelivery: protectedProcedure
+    .input(
+      z.object({
+        orderId: z.number(),
+        dateOfDelivery: z.date(),
+      })
+    )
+    .mutation(async ({ ctx, input }) => {
+      return await ctx.prisma.order.update({
+        where: { id: input.orderId },
+        data: {
+          dateOfDelivery: input.dateOfDelivery,
+        },
+      });
+    }),
 });

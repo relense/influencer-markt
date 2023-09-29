@@ -848,7 +848,9 @@
       "total": "Total",
       "price": "Preço",
       "continuePayments": "Continuar os Detalhes de Pagamento",
-      "viewOrder": "Ver Detalhes do Pedido"
+      "viewOrder": "Ver Detalhes do Pedido",
+      "dateDelivery": "Date de Entrega",
+      "dateDisclaimer": "A data limite pode ser adiada no futuro depois de fazer a encomenda"
     },
 
     "sales": {
@@ -889,7 +891,8 @@
       "reviewTitle": "Avaliação do Comprador",
       "orderDetails": "Detalhes do Pedido",
       "reviewed": "Pedido Avaliado",
-      "cancelOrder": "Cancelar Pedido"
+      "cancelOrder": "Cancelar Pedido",
+      "dateOfDelivery": "Data de Entrega"
     },
 
     "orders": {
@@ -931,7 +934,8 @@
       "confirm": "Confirmar Pedido",
       "reviewed": "Pedido Avaliado",
       "newRequestTitle": "O teu pedido foi enviado",
-      "newRequestSubtitle": "Manteremos-te informado por e-mail."
+      "newRequestSubtitle": "Manteremos-te informado por e-mail.",
+      "dateOfDelivery": "Data de Entrega"
     }
   }
 }

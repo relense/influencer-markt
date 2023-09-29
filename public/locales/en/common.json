@@ -850,7 +850,9 @@
       "total": "Total",
       "price": "Price",
       "continuePayments": "Continue Payment Details",
-      "viewOrder": "View Order Details"
+      "viewOrder": "View Order Details",
+      "dateDelivery": "Date of Delivery",
+      "dateDisclaimer": "The deadline can be postponed in the future after placing the order"
     },
 
     "sales": {
@@ -891,7 +893,8 @@
       "reviewTitle": "Buyer Review",
       "orderDetails": "Order Details",
       "reviewed": "Order Reviewed",
-      "cancelOrder": "Cancel Order"
+      "cancelOrder": "Cancel Order",
+      "dateOfDelivery": "Date of Delivery"
     },
 
     "orders": {
@@ -934,7 +937,8 @@
       "confirm": "Confirm Order",
       "reviewed": "Order Reviewed",
       "newRequestTitle": "Your order request was sent",
-      "newRequestSubtitle": "We will keep you up to date by e-mail."
+      "newRequestSubtitle": "We will keep you up to date by e-mail.",
+      "dateOfDelivery": "Date of Delivery"
     }
   }
 }

@@ -63,7 +63,10 @@ const SocialMediaCard = (params: {
                     <div className="flex flex-col items-start gap-2 text-sm font-medium text-gray2 lg:flex-row lg:items-center">
                       <div className="text-base font-semibold  text-influencer">
                         {t(
-                          `general.contentTypes.${valuePack.contentType.name}`
+                          `general.contentTypes.${
+                            valuePack.contentType.name.charAt(0).toLowerCase() +
+                            valuePack.contentType.name.slice(1)
+                          }`
                         )}
                       </div>
                     </div>

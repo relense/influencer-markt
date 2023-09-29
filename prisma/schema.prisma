@@ -381,6 +381,7 @@ model Order {
   review                 Review?          @relation(fields: [reviewId], references: [id])
   job                    Job?             @relation(fields: [jobId], references: [id])
   messages               Message[]
+  dateOfDelivery         DateTime
 
   cardReferenceStripe String?
 

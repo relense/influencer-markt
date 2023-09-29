@@ -29,6 +29,7 @@ import { ProfileRow } from "../../components/ProfileRow";
 import { MyJobDropdown } from "../../components/MyJobDropdown";
 import { CreateJobModal } from "../../components/CreateJobModal";
 import { MyJobsActionConfirmationModal } from "../../components/MyJobsActionConfirmationModal";
+import dayjs from "dayjs";
 
 type ApplicantsProfile = {
   id: number;
@@ -79,6 +80,7 @@ const ManageJobDetailsPage = (params: {
   const [sentApplicants, setSentApplicants] = useState<ApplicantsProfile[]>([]);
   const [job, setJob] = useState<JobWithAllData | undefined>(undefined);
   const [listView, setListView] = useState<boolean>(true);
+  const [dateOfDelivery, setDateOfDelivery] = useState<string>("");
 
   const {
     data: jobData,
@@ -427,6 +429,7 @@ const ManageJobDetailsPage = (params: {
         platformId: job.socialMediaId,
         jobId: job.id,
         language: i18n.language,
+        dateOfDelivery: dayjs(dateOfDelivery).toDate(),
       });
     }
   };
@@ -882,7 +885,8 @@ const ManageJobDetailsPage = (params: {
             />
           )}
           {job.jobStatus.id === 2 && (
-            <div className="flex justify-around gap-4 lg:flex-col lg:justify-center">
+            <div className="flex flex-col justify-center gap-4">
+              {renderDateOfDelivery()}
               <Button
                 title={t("pages.manageJobs.sendOrderRequest")}
                 level="terciary"
@@ -890,6 +894,11 @@ const ManageJobDetailsPage = (params: {
                 onClick={() => submitOrder(applicant)}
                 isLoading={
                   isLoadingCreateOrder || isLoadingUpdateApplicantToSentList
+                }
+                disabled={
+                  isLoadingCreateOrder ||
+                  isLoadingUpdateApplicantToSentList ||
+                  !dateOfDelivery
                 }
               />
             </div>
@@ -937,7 +946,8 @@ const ManageJobDetailsPage = (params: {
             </div>
           )}
           {job.jobStatus.id === 2 && (
-            <div className="flex justify-around gap-4 lg:flex-col lg:justify-center">
+            <div className="flex flex-col justify-center gap-4">
+              {renderDateOfDelivery()}
               <Button
                 title={t("pages.manageJobs.sendOrderRequest")}
                 level="terciary"
@@ -945,6 +955,11 @@ const ManageJobDetailsPage = (params: {
                 onClick={() => submitOrder(applicant)}
                 isLoading={
                   isLoadingCreateOrder || isLoadingUpdateApplicantToSentList
+                }
+                disabled={
+                  isLoadingCreateOrder ||
+                  isLoadingUpdateApplicantToSentList ||
+                  !dateOfDelivery
                 }
               />
             </div>
@@ -1275,6 +1290,24 @@ const ManageJobDetailsPage = (params: {
         </div>
       );
     }
+  };
+
+  const renderDateOfDelivery = () => {
+    return (
+      <div className="flex flex-col gap-2">
+        <div className="select-none text-xl font-medium">
+          {t("pages.startOrder.dateDelivery")}
+        </div>
+        <div>
+          <input
+            type="date"
+            className="w-full rounded-xl border-[1px] p-2 focus:border-[1px] focus:border-black focus:outline-none"
+            min={dayjs(Date.now()).format("YYYY-MM-DD")}
+            onChange={(e) => setDateOfDelivery(e.target.value)}
+          />
+        </div>
+      </div>
+    );
   };
 
   const renderSentJobApplicantCard = (applicant: ApplicantsProfile) => {

@@ -7,13 +7,14 @@ import Image from "next/image";
 import { helper } from "../../utils/helper";
 import { WhatHappensNext } from "../../components/WhatHappensNext";
 import { Button } from "../../components/Button";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Modal } from "../../components/Modal";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faStar } from "@fortawesome/free-solid-svg-icons";
+import { faClose, faPencil, faStar } from "@fortawesome/free-solid-svg-icons";
 import { faStar as faStarRegular } from "@fortawesome/free-regular-svg-icons";
 import { useForm } from "react-hook-form";
 import { MessageBoard } from "../../components/MessageBoard";
+import dayjs from "dayjs";
 
 type ReviewForm = {
   review: string;
@@ -28,6 +29,9 @@ const OrderDetailsPage = (params: {
 
   const [openReviewModal, setOpenReviewModal] = useState<boolean>(false);
   const [starReviewsCount, setStarReviewsCount] = useState<number>(1);
+  const [dateOfDelivery, setDateOfDelivery] = useState<string>();
+  const [showEditDateOfDelivery, setShowEditDateOfDelivery] =
+    useState<boolean>(false);
 
   const {
     register,
@@ -104,6 +108,20 @@ const OrderDetailsPage = (params: {
         setStarReviewsCount(1);
       },
     });
+
+  const { mutate: updateDateOfDelivery, isLoading: isLoadingUpdateDelivery } =
+    api.orders.updateOrderDateOfDelivery.useMutation({
+      onSuccess: () => {
+        setShowEditDateOfDelivery(false);
+        void ctx.orders.getBuyerOrder.invalidate();
+      },
+    });
+
+  useEffect(() => {
+    if (order) {
+      setDateOfDelivery(order.dateOfDelivery.toString());
+    }
+  }, [order]);
 
   const submit = handleSubmit((data) => {
     if (order?.influencerId) {
@@ -255,7 +273,7 @@ const OrderDetailsPage = (params: {
 
   const renderOrderPlatform = () => {
     return (
-      <div className="flex flex-col gap-2">
+      <div className="flex flex-col gap-1">
         <div className="text-lg font-medium">{t("pages.orders.platform")}</div>
         <div className="font-semibold text-influencer">
           {order?.socialMedia?.name || ""}
@@ -266,7 +284,7 @@ const OrderDetailsPage = (params: {
 
   const renderValuePacks = () => {
     return (
-      <div className="flex flex-col gap-2">
+      <div className="flex flex-col gap-1">
         <div className="text-lg font-medium">
           {t("pages.orders.valuePacks")}
         </div>
@@ -294,7 +312,7 @@ const OrderDetailsPage = (params: {
   const renderTotalPrice = () => {
     if (order) {
       return (
-        <div className="flex flex-col gap-2">
+        <div className="flex flex-col gap-1">
           <div className="text-lg font-medium">
             {t("pages.orders.orderTotalTaxes")}
           </div>
@@ -304,6 +322,53 @@ const OrderDetailsPage = (params: {
             ) || 0}
             €
           </div>
+        </div>
+      );
+    }
+  };
+
+  const renderDateOfDelivery = () => {
+    if (order) {
+      return (
+        <div className="flex flex-col gap-1">
+          <div className="text-lg font-medium">
+            {t("pages.orders.dateOfDelivery")}
+          </div>
+          {!showEditDateOfDelivery ? (
+            <div
+              className="flex cursor-pointer justify-center gap-2"
+              onClick={() => setShowEditDateOfDelivery(true)}
+            >
+              <div className="text-base font-semibold text-influencer">
+                {dayjs(dateOfDelivery).format("DD MMMM YYYY")}
+              </div>
+              <FontAwesomeIcon
+                icon={faPencil}
+                className=" fa-lg cursor-pointer text-influencer"
+              />
+            </div>
+          ) : (
+            <form
+              id="dateOfDeliveryOrder-form"
+              className="flex cursor-pointer items-center justify-center gap-2"
+            >
+              <input
+                type="date"
+                required
+                className="rounded-xl border-[1px] p-2 focus:border-[1px] focus:border-black focus:outline-none"
+                min={dayjs(order.dateOfDelivery)
+                  .add(1, "day")
+                  .format("YYYY-MM-DD")}
+                value={dayjs(dateOfDelivery).format("YYYY-MM-DD")}
+                onChange={(e) => setDateOfDelivery(e.target.value)}
+              />
+              <FontAwesomeIcon
+                icon={faClose}
+                className=" fa-xl cursor-pointer text-influencer"
+                onClick={() => setShowEditDateOfDelivery(false)}
+              />
+            </form>
+          )}
         </div>
       );
     }
@@ -445,12 +510,31 @@ const OrderDetailsPage = (params: {
             {t("pages.orders.orderDetails")}
           </div>
         </div>
-        <div className="overflow-y-auto p-8">
+        <div className="flex flex-1 flex-col gap-4 overflow-y-auto p-8">
           {renderOrderPlatform()}
           {renderValuePacks()}
           {renderTotalPrice()}
+          {renderDateOfDelivery()}
           {renderFinalOrderDetails()}
         </div>
+        {showEditDateOfDelivery && (
+          <div className="pb-4">
+            <Button
+              level="terciary"
+              title="update"
+              form="dateOfDeliveryOrder-form"
+              isLoading={isLoading || isLoadingUpdateDelivery}
+              disabled={isLoading || isLoadingUpdateDelivery}
+              onClick={(e) => {
+                e.preventDefault();
+                updateDateOfDelivery({
+                  orderId: params.orderId,
+                  dateOfDelivery: dayjs(dateOfDelivery).toDate(),
+                });
+              }}
+            />
+          </div>
+        )}
       </div>
     );
   };
