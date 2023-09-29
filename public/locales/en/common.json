@@ -137,7 +137,8 @@
       "ordersCanceled": "{{actor}} canceled the order",
       "salesPaymentsAdded": "{{actor}} added payment details. You can now work on your order",
       "salesConfirmed": "{{actor}} confirmed the order. Your payment is available in the billing menu",
-      "salesReviewed": "{{actor}} gave a review to your order"
+      "salesReviewed": "{{actor}} gave a review to your order",
+      "salesDeliveryDateUpdate": "{{actor}} updated the order delivery date"
     },
 
     "orderStatus": {

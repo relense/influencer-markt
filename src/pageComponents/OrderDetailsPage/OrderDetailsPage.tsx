@@ -114,6 +114,11 @@ const OrderDetailsPage = (params: {
       onSuccess: () => {
         setShowEditDateOfDelivery(false);
         void ctx.orders.getBuyerOrder.invalidate();
+        void createNotification({
+          entityId: params.orderId,
+          notifierId: order?.influencerId || -1,
+          notificationTypeAction: "deliveryDateUpdate",
+        });
       },
     });
 

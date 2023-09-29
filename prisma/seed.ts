@@ -103,7 +103,7 @@ async function main() {
       { entityType: "sales", entityAction: "paymentAdded" },
       { entityType: "sales", entityAction: "confirmed" },
       { entityType: "sales", entityAction: "reviewed" },
-      { entityType: "orders", entityAction: "canceled" },
+      { entityType: "sales", entityAction: "deliveryDateUpdate" },
     ],
   });
 

@@ -231,13 +231,15 @@ const getNotificationMessageKey = (notificationsTypeId: number) => {
   } else if (notificationsTypeId === 5) {
     return "salesCanceled";
   } else if (notificationsTypeId === 6) {
-    return "salesPaymentsAdded";
-  } else if (notificationsTypeId === 7) {
-    return "salesConfirmed";
-  } else if (notificationsTypeId === 8) {
-    return "salesReviewed";
-  } else if (notificationsTypeId === 9) {
     return "ordersCanceled";
+  } else if (notificationsTypeId === 7) {
+    return "salesPaymentsAdded";
+  } else if (notificationsTypeId === 8) {
+    return "salesConfirmed";
+  } else if (notificationsTypeId === 9) {
+    return "salesReviewed";
+  } else if (notificationsTypeId === 10) {
+    return "salesDeliveryDateUpdate";
   } else {
     return "";
   }

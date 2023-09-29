@@ -49,6 +49,7 @@ export const NotificationsRouter = createTRPCRouter({
           z.literal("confirmed"),
           z.literal("canceled"),
           z.literal("reviewed"),
+          z.literal("deliveryDateUpdate"),
         ]),
       })
     )
@@ -157,7 +158,7 @@ const getNotificationTypeActionId = (
     } else if (notificationAction === "delivered") {
       return 4;
     } else if (notificationAction === "canceled") {
-      return 9;
+      return 6;
     }
   } else if (notificationType === "sales") {
     if (notificationAction === "awaitingReply") {
@@ -165,11 +166,13 @@ const getNotificationTypeActionId = (
     } else if (notificationAction === "canceled") {
       return 5;
     } else if (notificationAction === "paymentAdded") {
-      return 6;
-    } else if (notificationAction === "confirmed") {
       return 7;
-    } else if (notificationAction === "reviewed") {
+    } else if (notificationAction === "confirmed") {
       return 8;
+    } else if (notificationAction === "reviewed") {
+      return 9;
+    } else if (notificationAction === "deliveryDateUpdate") {
+      return 10;
     }
   }
 };

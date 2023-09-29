@@ -136,7 +136,8 @@
       "salesCanceled": "{{actor}} cancelou o pedido",
       "ordersCanceled": "{{actor}} cancelou o pedido",
       "salesPaymentsAdded": "{{actor}} adicionou os detalhes de pagamento. Podes trabalhar no pedido",
-      "salesConfirmed": "{{actor}} confirmou o pedido. O teu pagamento está disponível no menu de facturação"
+      "salesConfirmed": "{{actor}} confirmou o pedido. O teu pagamento está disponível no menu de facturação",
+      "salesDeliveryDateUpdate": "{{actor}} actualizou a data de entrega do pedido"
     },
 
     "orderStatus": {
