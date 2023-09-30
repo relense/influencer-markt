@@ -190,7 +190,8 @@
     "adminNavbar": {
       "influencers": "Influencers",
       "brands": "Brands",
-      "messages": "Messages"
+      "messages": "Messages",
+      "disputes": "Disputes"
     },
 
     "footer": {

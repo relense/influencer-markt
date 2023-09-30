@@ -19,6 +19,9 @@ const AdminNavbar = () => {
         <Link href="/admin/messages" className="cursor-pointer px-2 text-lg">
           {t("components.adminNavbar.messages")}
         </Link>
+        <Link href="/admin/disputes" className="cursor-pointer px-2 text-lg">
+          {t("components.adminNavbar.disputes")}
+        </Link>
       </div>
     );
   };
