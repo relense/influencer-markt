@@ -375,6 +375,7 @@ async function main() {
         nif: "1234567",
         userId: users[0]?.id || "",
         website: "https://www.nike.com/pt/en/",
+        verifiedStatusId: 1,
       },
       {
         about:
@@ -388,6 +389,7 @@ async function main() {
         nif: "1234567",
         userId: users[1]?.id || "",
         website: "https://www.cocacolaportugal.pt/",
+        verifiedStatusId: 1,
       },
       {
         about:
@@ -401,6 +403,7 @@ async function main() {
         nif: "1234567",
         userId: users[2]?.id || "",
         website: "https://www.apple.com/pt/",
+        verifiedStatusId: 1,
       },
       {
         about:
@@ -414,6 +417,7 @@ async function main() {
         nif: "1234567",
         userId: users[3]?.id || "",
         website: "https://www.lg.com/pt",
+        verifiedStatusId: 1,
       },
       {
         about:
@@ -428,6 +432,7 @@ async function main() {
         userId: users[4]?.id || "",
         genderId: 1,
         website: "",
+        verifiedStatusId: 1,
       },
       {
         about:
@@ -442,6 +447,7 @@ async function main() {
         userId: users[5]?.id || "",
         genderId: 1,
         website: "",
+        verifiedStatusId: 1,
       },
       {
         about:
@@ -456,6 +462,7 @@ async function main() {
         userId: users[6]?.id || "",
         genderId: 2,
         website: "",
+        verifiedStatusId: 1,
       },
       {
         about:
@@ -470,6 +477,7 @@ async function main() {
         userId: users[7]?.id || "",
         genderId: 2,
         website: "",
+        verifiedStatusId: 1,
       },
     ],
   });
