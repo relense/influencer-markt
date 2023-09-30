@@ -381,6 +381,7 @@ model Order {
   review                 Review?          @relation(fields: [reviewId], references: [id])
   job                    Job?             @relation(fields: [jobId], references: [id])
   messages               Message[]
+  dispute                Dispute?
   dateOfDelivery         DateTime
 
   cardReferenceStripe String?
@@ -392,6 +393,7 @@ model Order {
   socialMediaId Int?
   reviewId      Int? @unique
   jobId         Int?
+  disputeId     Int?
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -403,6 +405,7 @@ model Order {
   @@index([buyerId])
   @@index([reviewId])
   @@index([jobId])
+  @@index([disputeId])
 }
 
 model OrderValuePack {
@@ -480,4 +483,27 @@ model Message {
   @@index([senderId])
   @@index([receiverId])
   @@index([orderId])
+}
+
+model Dispute {
+  id            Int            @id @default(autoincrement())
+  order         Order          @relation(fields: [orderId], references: [id])
+  message       String         @db.Text
+  disputeStatus DisputeStatus? @relation(fields: [disputeStatusId], references: [id])
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  orderId         Int @unique
+  disputeStatusId Int
+
+  @@index([orderId])
+  @@index([disputeStatusId])
+}
+
+model DisputeStatus {
+  id   Int    @id @default(autoincrement())
+  name String
+
+  dispute Dispute[]
 }

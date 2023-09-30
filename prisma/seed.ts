@@ -89,6 +89,10 @@ async function main() {
     ],
   });
 
+  await prisma.disputeStatus.createMany({
+    data: [{ name: "open" }, { name: "progress" }, { name: "closed" }],
+  });
+
   await prisma.notificationStatus.createMany({
     data: [{ name: "toRead" }, { name: "read" }, { name: "hidden" }],
   });

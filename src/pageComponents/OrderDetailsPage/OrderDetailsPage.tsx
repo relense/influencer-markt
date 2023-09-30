@@ -152,6 +152,18 @@ const OrderDetailsPage = (params: {
       },
     });
 
+  const { mutate: createDispute, isLoading: isLoadingCreateDispute } =
+    api.disputes.createDispute.useMutation({
+      onSuccess: () => {
+        updateOrderInDispute({
+          orderId: params.orderId,
+          statusId: 9,
+          language: i18n.language,
+        });
+        setOpenDisputeModal(false);
+      },
+    });
+
   useEffect(() => {
     if (order) {
       setDateOfDelivery(order.dateOfDelivery.toString());
@@ -170,13 +182,10 @@ const OrderDetailsPage = (params: {
   });
 
   const submitDisputeForm = handleSubmitDisputeForm((data) => {
-    if (order?.influencerId) {
-      updateOrderInDispute({
-        orderId: order.id,
-        statusId: 9,
-        language: i18n.language,
-      });
-    }
+    createDispute({
+      disputeMessage: data.dispute,
+      orderId: params.orderId,
+    });
   });
 
   const renderInfluencerDetails = () => {
@@ -554,10 +563,13 @@ const OrderDetailsPage = (params: {
                   title={t("pages.orders.openDispute")}
                   level="primary"
                   form="form-dispute"
-                  isLoading={isLoadingUpdateOrderInDispute}
+                  isLoading={
+                    isLoadingUpdateOrderInDispute || isLoadingCreateDispute
+                  }
                   disabled={
                     isLoadingUpdateOrderInDispute ||
-                    !watchDisputeForm("dispute")
+                    !watchDisputeForm("dispute") ||
+                    isLoadingCreateDispute
                   }
                 />
               </div>
