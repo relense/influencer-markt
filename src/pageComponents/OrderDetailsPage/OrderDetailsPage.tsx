@@ -20,6 +20,10 @@ type ReviewForm = {
   review: string;
 };
 
+type DisputeForm = {
+  dispute: string;
+};
+
 const OrderDetailsPage = (params: {
   orderId: number;
   isRedirected: boolean;
@@ -32,6 +36,9 @@ const OrderDetailsPage = (params: {
   const [dateOfDelivery, setDateOfDelivery] = useState<string>();
   const [showEditDateOfDelivery, setShowEditDateOfDelivery] =
     useState<boolean>(false);
+  const [openDisputeModal, setOpenDisputeModal] = useState<boolean>(false);
+  const [openConfirmOrderModal, setOpenConfirmOrderModal] =
+    useState<boolean>(false);
 
   const {
     register,
@@ -39,6 +46,13 @@ const OrderDetailsPage = (params: {
     handleSubmit,
     formState: { errors },
   } = useForm<ReviewForm>();
+
+  const {
+    register: registerDisputeForm,
+    handleSubmit: handleSubmitDisputeForm,
+    watch: watchDisputeForm,
+    formState: { errors: errorsDisputeForm },
+  } = useForm<DisputeForm>();
 
   const { data: order, isLoading } = api.orders.getBuyerOrder.useQuery({
     orderId: params.orderId,
@@ -71,6 +85,7 @@ const OrderDetailsPage = (params: {
   const { mutate: updateOrderConfirmed, isLoading: isLoadingUpdateConfirmed } =
     api.orders.updateOrder.useMutation({
       onSuccess: () => {
+        setOpenConfirmOrderModal(false);
         void createNotification({
           entityId: params.orderId,
           notifierId: order?.influencerId || -1,
@@ -110,6 +125,7 @@ const OrderDetailsPage = (params: {
     isLoading: isLoadingUpdateOrderInDispute,
   } = api.orders.updateOrder.useMutation({
     onSuccess: () => {
+      setOpenDisputeModal(false);
       void createNotification({
         entityId: params.orderId,
         notifierId: order?.influencerId || -1,
@@ -149,6 +165,16 @@ const OrderDetailsPage = (params: {
         profileReviewdId: order?.influencerId,
         rating: starReviewsCount,
         review: data.review,
+      });
+    }
+  });
+
+  const submitDisputeForm = handleSubmitDisputeForm((data) => {
+    if (order?.influencerId) {
+      updateOrderInDispute({
+        orderId: order.id,
+        statusId: 9,
+        language: i18n.language,
       });
     }
   });
@@ -225,7 +251,7 @@ const OrderDetailsPage = (params: {
                 />
               )}
               {order.orderStatusId === 3 && (
-                <div className="flex gap-12">
+                <div className="flex flex-col gap-6 lg:flex-row lg:gap-12">
                   <Button
                     title={t("pages.orders.addPayment")}
                     level="terciary"
@@ -253,17 +279,11 @@ const OrderDetailsPage = (params: {
                 </div>
               )}
               {order.orderStatusId === 5 && (
-                <div className="flex gap-12">
+                <div className="flex flex-col gap-6 lg:flex-row lg:gap-12">
                   <Button
                     title={t("pages.orders.confirm")}
                     level="terciary"
-                    onClick={() =>
-                      updateOrderConfirmed({
-                        orderId: order.id,
-                        statusId: 6,
-                        language: i18n.language,
-                      })
-                    }
+                    onClick={() => setOpenConfirmOrderModal(true)}
                     isLoading={isLoadingUpdateConfirmed}
                     disabled={
                       isLoadingUpdateOrderInDispute || isLoadingUpdateConfirmed
@@ -272,13 +292,7 @@ const OrderDetailsPage = (params: {
                   <Button
                     title={t("pages.orders.openDispute")}
                     level="secondary"
-                    onClick={() =>
-                      updateOrderInDispute({
-                        orderId: order.id,
-                        statusId: 9,
-                        language: i18n.language,
-                      })
-                    }
+                    onClick={() => setOpenDisputeModal(true)}
                     isLoading={isLoadingUpdateConfirmed}
                     disabled={
                       isLoadingUpdateOrderInDispute || isLoadingUpdateConfirmed
@@ -528,6 +542,103 @@ const OrderDetailsPage = (params: {
     }
   };
 
+  const renderAreYouSureDisputeModal = () => {
+    if (order && openDisputeModal) {
+      return (
+        <div className="flex justify-center">
+          <Modal
+            onClose={() => setOpenDisputeModal(false)}
+            button={
+              <div className="flex justify-center p-4">
+                <Button
+                  title={t("pages.orders.openDispute")}
+                  level="primary"
+                  form="form-dispute"
+                  isLoading={isLoadingUpdateOrderInDispute}
+                  disabled={
+                    isLoadingUpdateOrderInDispute ||
+                    !watchDisputeForm("dispute")
+                  }
+                />
+              </div>
+            }
+          >
+            <form
+              onSubmit={submitDisputeForm}
+              id="form-dispute"
+              className="flex flex-col items-center justify-center gap-12 p-4 text-center"
+            >
+              <div className="flex flex-col gap-4 text-center">
+                <div className="font-playfair text-3xl">
+                  {t("pages.orders.inDisputeTitle")}
+                </div>
+                <div className="px-12">{t("pages.orders.inDisputeText")}</div>
+              </div>
+              <div className="flex w-10/12 flex-col gap-4">
+                <div className="text-xl font-medium">
+                  {t("pages.orders.inDisputeInputText")}
+                </div>
+                <div className="flex w-full flex-col">
+                  <textarea
+                    {...registerDisputeForm("dispute", { maxLength: 2200 })}
+                    required
+                    className="flex h-48 cursor-pointer rounded-lg border-[1px] border-gray3 bg-transparent p-4 placeholder-gray2 placeholder:w-11/12  focus:border-[1px] focus:border-black focus:outline-none"
+                    placeholder=""
+                    autoComplete="off"
+                  />
+                  {errorsDisputeForm.dispute &&
+                    errorsDisputeForm.dispute.type === "maxLength" && (
+                      <div className="px-4 py-1 text-red-600">
+                        {t("pages.startOrder.errorWarning", {
+                          count: 2200,
+                        })}
+                      </div>
+                    )}
+                </div>
+              </div>
+            </form>
+          </Modal>
+        </div>
+      );
+    }
+  };
+
+  const renderIsOrderReallyConfirmedModal = () => {
+    if (order && openConfirmOrderModal) {
+      return (
+        <div className="flex justify-center">
+          <Modal
+            onClose={() => setOpenConfirmOrderModal(false)}
+            button={
+              <div className="flex justify-center p-4">
+                <Button
+                  title={t("pages.orders.confirm")}
+                  level="terciary"
+                  onClick={() =>
+                    updateOrderConfirmed({
+                      orderId: order.id,
+                      statusId: 6,
+                      language: i18n.language,
+                    })
+                  }
+                  isLoading={isLoadingUpdateConfirmed}
+                  disabled={isLoadingUpdateConfirmed}
+                />
+              </div>
+            }
+          >
+            <div className="flex flex-col items-center justify-center gap-4 p-4 text-center">
+              <div className="font-playfair text-3xl">
+                {t("pages.orders.confirmModalTitle")}
+              </div>
+              <div className="px-12">{t("pages.orders.confirmModalText")}</div>
+            </div>
+          </Modal>
+        </div>
+      );
+    }
+  };
+
   const renderOrderReview = () => {
     if (order?.review) {
       return (
@@ -650,6 +761,8 @@ const OrderDetailsPage = (params: {
         )}
       </div>
       {renderReviewModal()}
+      {renderAreYouSureDisputeModal()}
+      {renderIsOrderReallyConfirmedModal()}
     </>
   );
 };

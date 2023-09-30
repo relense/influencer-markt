@@ -160,7 +160,7 @@ const SalesDetailsPage = (params: { orderId: number }) => {
                 {t(`pages.sales.${sale?.orderStatus?.name || ""}`)}
               </div>
               {sale.orderStatusId === 1 && (
-                <div className="flex gap-12">
+                <div className="flex flex-col gap-6 lg:flex-row lg:gap-12">
                   <Button
                     title={t("pages.sales.accept")}
                     level="terciary"
