@@ -85,6 +85,7 @@ async function main() {
       { name: "confirmed" },
       { name: "canceled" },
       { name: "reviewed" },
+      { name: "inDispute" },
     ],
   });
 
@@ -104,6 +105,7 @@ async function main() {
       { entityType: "sales", entityAction: "confirmed" },
       { entityType: "sales", entityAction: "reviewed" },
       { entityType: "sales", entityAction: "deliveryDateUpdate" },
+      { entityType: "sales", entityAction: "inDispute" },
     ],
   });
 

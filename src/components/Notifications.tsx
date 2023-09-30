@@ -240,6 +240,8 @@ const getNotificationMessageKey = (notificationsTypeId: number) => {
     return "salesReviewed";
   } else if (notificationsTypeId === 10) {
     return "salesDeliveryDateUpdate";
+  } else if (notificationsTypeId === 11) {
+    return "salesInDispute";
   } else {
     return "";
   }

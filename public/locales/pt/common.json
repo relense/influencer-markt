@@ -137,7 +137,8 @@
       "ordersCanceled": "{{actor}} cancelou o pedido",
       "salesPaymentsAdded": "{{actor}} adicionou os detalhes de pagamento. Podes trabalhar no pedido",
       "salesConfirmed": "{{actor}} confirmou o pedido. O teu pagamento está disponível no menu de facturação",
-      "salesDeliveryDateUpdate": "{{actor}} actualizou a data de entrega do pedido"
+      "salesDeliveryDateUpdate": "{{actor}} actualizou a data de entrega do pedido",
+      "salesInDispute": "{{actor}} abriu uma disputa para o pedido entregue. O Influencer Markt vai analisar a situação"
     },
 
     "orderStatus": {
@@ -415,7 +416,8 @@
       "sendMessageHere": "Envia mensagens aqui",
       "messages": "Mensages",
       "noMessages": "Não há mensagens",
-      "noMessagesSubtitle": "Sê o primeiro a enviar uma mensagem"
+      "noMessagesSubtitle": "Sê o primeiro a enviar uma mensagem",
+      "inputDisabled": "Indisponível"
     }
   },
 
@@ -893,7 +895,8 @@
       "orderDetails": "Detalhes do Pedido",
       "reviewed": "Pedido Avaliado",
       "cancelOrder": "Cancelar Pedido",
-      "dateOfDelivery": "Data de Entrega"
+      "dateOfDelivery": "Data de Entrega",
+      "inDispute": "Em Disputa"
     },
 
     "orders": {
@@ -936,7 +939,9 @@
       "reviewed": "Pedido Avaliado",
       "newRequestTitle": "O teu pedido foi enviado",
       "newRequestSubtitle": "Manteremos-te informado por e-mail.",
-      "dateOfDelivery": "Data de Entrega"
+      "dateOfDelivery": "Data de Entrega",
+      "openDispute": "Abrir Disputa",
+      "inDispute": "Em Disputa"
     }
   }
 }

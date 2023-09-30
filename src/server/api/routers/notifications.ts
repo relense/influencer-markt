@@ -50,6 +50,7 @@ export const NotificationsRouter = createTRPCRouter({
           z.literal("canceled"),
           z.literal("reviewed"),
           z.literal("deliveryDateUpdate"),
+          z.literal("inDispute"),
         ]),
       })
     )
@@ -173,6 +174,8 @@ const getNotificationTypeActionId = (
       return 9;
     } else if (notificationAction === "deliveryDateUpdate") {
       return 10;
+    } else if (notificationAction === "inDispute") {
+      return 11;
     }
   }
 };

@@ -21,6 +21,7 @@ const MessageBoard = (params: {
   orderId: number;
   receiverId: number;
   senderId: number;
+  orderStatusId: number;
 }) => {
   const { t, i18n } = useTranslation();
   const textareaRef = useRef<HTMLTextAreaElement>(null);
@@ -288,6 +289,16 @@ const MessageBoard = (params: {
     }
   };
 
+  let inputPlaceholder = t("components.messageBoard.sendMessageHere");
+  let sendMessageIconClass = "fa-xl cursor-pointer";
+  if (
+    params.orderStatusId === 2 ||
+    params.orderStatusId === 7 ||
+    params.orderStatusId === 8
+  ) {
+    sendMessageIconClass = "fa-xl";
+    inputPlaceholder = t("components.messageBoard.inputDisabled");
+  }
   return (
     <div className="flex flex-1 flex-col items-center rounded-xl border-[1px] text-center">
       <div className="flex w-full items-center justify-between border-b-[1px] p-4">
@@ -321,11 +332,12 @@ const MessageBoard = (params: {
           className="flex h-[59px] max-h-56 flex-1 resize-none overflow-y-auto rounded-xl border-[1px] bg-white1 p-2 pt-4 text-left text-base"
           value={message}
           onChange={handleMessageChange}
-          placeholder={
-            messages.length === 0
-              ? t("components.messageBoard.sendMessageHere")
-              : ""
+          disabled={
+            params.orderStatusId === 2 ||
+            params.orderStatusId === 7 ||
+            params.orderStatusId === 8
           }
+          placeholder={messages.length === 0 ? inputPlaceholder : ""}
           onKeyDown={(e) => {
             if (e.key === "Enter" && !e.shiftKey) {
               e.preventDefault();
@@ -336,11 +348,17 @@ const MessageBoard = (params: {
         />
         <FontAwesomeIcon
           icon={faPaperPlane}
-          className="fa-xl cursor-pointer"
+          className={sendMessageIconClass}
           onClick={() => {
-            const currentMessage = message;
-            handleSendMessage(currentMessage);
-            setMessage("");
+            if (
+              params.orderStatusId !== 2 &&
+              params.orderStatusId !== 7 &&
+              params.orderStatusId !== 8
+            ) {
+              const currentMessage = message;
+              handleSendMessage(currentMessage);
+              setMessage("");
+            }
           }}
         />
       </div>

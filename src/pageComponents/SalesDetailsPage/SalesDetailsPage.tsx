@@ -124,83 +124,88 @@ const SalesDetailsPage = (params: { orderId: number }) => {
       }
 
       return (
-        <div className="flex flex-1 flex-col rounded-xl border-[1px] lg:gap-4">
-          <div className="flex w-full border-b-[1px] p-4">
-            <div className="text-xl font-semibold ">
-              {t("pages.sales.progressInformation")}
-            </div>
-          </div>
-          <div className="flex flex-1 flex-col items-center gap-4 px-4 py-8">
-            <Link href={`/${sale.buyer?.user.username || ""}`} className="flex">
-              <Image
-                src={sale.buyer?.profilePicture || ""}
-                alt="profile picture"
-                width={1000}
-                height={1000}
-                quality={100}
-                className="h-24 w-24 rounded-full object-cover"
-              />
-            </Link>
-            <Link
-              href={`/${sale.buyer?.user.username || ""}`}
-              className="flex flex-col gap-2"
-            >
-              <div className="font-medium text-influencer">
-                {sale.buyer?.name || ""}
+        <div className="flex flex-1 flex-col">
+          <div className="rounded-xl border-[1px] lg:gap-4">
+            <div className="flex w-full border-b-[1px] p-4">
+              <div className="text-xl font-semibold ">
+                {t("pages.sales.progressInformation")}
               </div>
-            </Link>
-            <div className="font-medium">
-              {helper.formatFullDateWithTime(sale.createdAt, i18n.language)}
             </div>
-            <div className="font-semibold ">
-              {t(`pages.sales.${sale?.orderStatus?.name || ""}`)}
-            </div>
-            {sale.orderStatusId === 1 && (
-              <div className="flex gap-12">
+            <div className="flex flex-1 flex-col items-center gap-4 px-4 py-8">
+              <Link
+                href={`/${sale.buyer?.user.username || ""}`}
+                className="flex"
+              >
+                <Image
+                  src={sale.buyer?.profilePicture || ""}
+                  alt="profile picture"
+                  width={1000}
+                  height={1000}
+                  quality={100}
+                  className="h-24 w-24 rounded-full object-cover"
+                />
+              </Link>
+              <Link
+                href={`/${sale.buyer?.user.username || ""}`}
+                className="flex flex-col gap-2"
+              >
+                <div className="font-medium text-influencer">
+                  {sale.buyer?.name || ""}
+                </div>
+              </Link>
+              <div className="font-medium">
+                {helper.formatFullDateWithTime(sale.createdAt, i18n.language)}
+              </div>
+              <div className="font-semibold ">
+                {t(`pages.sales.${sale?.orderStatus?.name || ""}`)}
+              </div>
+              {sale.orderStatusId === 1 && (
+                <div className="flex gap-12">
+                  <Button
+                    title={t("pages.sales.accept")}
+                    level="terciary"
+                    onClick={() => answerOrderRequest("accept")}
+                    isLoading={updateAcceptIsLoading}
+                  />
+                  <Button
+                    title={t("pages.sales.reject")}
+                    level="secondary"
+                    onClick={() => answerOrderRequest("reject")}
+                    isLoading={updateRejectIsLoading}
+                  />
+                </div>
+              )}
+              {sale.orderStatusId === 3 && (
                 <Button
-                  title={t("pages.sales.accept")}
+                  title={t("pages.sales.cancelOrder")}
                   level="terciary"
-                  onClick={() => answerOrderRequest("accept")}
-                  isLoading={updateAcceptIsLoading}
+                  onClick={() =>
+                    updateCancelOrder({
+                      orderId: sale.id,
+                      statusId: 7,
+                      language: i18n.language,
+                    })
+                  }
+                  isLoading={isLoadingUpdateCancelOrder}
                 />
-                <Button
-                  title={t("pages.sales.reject")}
-                  level="secondary"
-                  onClick={() => answerOrderRequest("reject")}
-                  isLoading={updateRejectIsLoading}
+              )}
+              {sale.orderStatusId === 4 && (
+                <div className="flex gap-12">
+                  <Button
+                    title={t("pages.sales.deliver")}
+                    level="terciary"
+                    onClick={() => setShowDeliverModal(true)}
+                  />
+                </div>
+              )}
+              {whatHappensNext && (
+                <WhatHappensNext
+                  stage={whatHappensNext}
+                  view="seller"
+                  startedOrder={false}
                 />
-              </div>
-            )}
-            {sale.orderStatusId === 3 && (
-              <Button
-                title={t("pages.sales.cancelOrder")}
-                level="terciary"
-                onClick={() =>
-                  updateCancelOrder({
-                    orderId: sale.id,
-                    statusId: 7,
-                    language: i18n.language,
-                  })
-                }
-                isLoading={isLoadingUpdateCancelOrder}
-              />
-            )}
-            {sale.orderStatusId === 4 && (
-              <div className="flex gap-12">
-                <Button
-                  title={t("pages.sales.deliver")}
-                  level="terciary"
-                  onClick={() => setShowDeliverModal(true)}
-                />
-              </div>
-            )}
-            {whatHappensNext && (
-              <WhatHappensNext
-                stage={whatHappensNext}
-                view="seller"
-                startedOrder={false}
-              />
-            )}
+              )}
+            </div>
           </div>
         </div>
       );
@@ -383,6 +388,7 @@ const SalesDetailsPage = (params: { orderId: number }) => {
                 receiverId={sale?.buyerId || -1}
                 senderId={sale?.influencerId || -1}
                 orderId={params.orderId}
+                orderStatusId={sale?.orderStatusId || -1}
               />
             </div>
           </div>
@@ -409,7 +415,7 @@ const SalesDetailsPage = (params: { orderId: number }) => {
               </div>
             }
           >
-            <div className="flex flex-col items-center justify-center gap-4 p-4">
+            <div className="flex flex-col items-center justify-center gap-4 p-4 text-center">
               <div className="font-playfair text-3xl">
                 {t("pages.sales.deliveryModalTitle")}
               </div>

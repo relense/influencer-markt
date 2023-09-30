@@ -138,7 +138,8 @@
       "salesPaymentsAdded": "{{actor}} added payment details. You can now work on your order",
       "salesConfirmed": "{{actor}} confirmed the order. Your payment is available in the billing menu",
       "salesReviewed": "{{actor}} gave a review to your order",
-      "salesDeliveryDateUpdate": "{{actor}} updated the order delivery date"
+      "salesDeliveryDateUpdate": "{{actor}} updated the order delivery date",
+      "salesInDispute": "{{actor}} opened a dispute for your order delivery. Influencer Markt will analyze the situation"
     },
 
     "orderStatus": {
@@ -416,7 +417,8 @@
       "sendMessageHere": "Send message here",
       "messages": "Messages",
       "noMessages": "There are no messages",
-      "noMessagesSubtitle": "Be the first to send a message"
+      "noMessagesSubtitle": "Be the first to send a message",
+      "inputDisabled": "Unavailable"
     }
   },
 
@@ -895,7 +897,8 @@
       "orderDetails": "Order Details",
       "reviewed": "Order Reviewed",
       "cancelOrder": "Cancel Order",
-      "dateOfDelivery": "Date of Delivery"
+      "dateOfDelivery": "Date of Delivery",
+      "inDispute": "In Dispute"
     },
 
     "orders": {
@@ -939,7 +942,9 @@
       "reviewed": "Order Reviewed",
       "newRequestTitle": "Your order request was sent",
       "newRequestSubtitle": "We will keep you up to date by e-mail.",
-      "dateOfDelivery": "Date of Delivery"
+      "dateOfDelivery": "Date of Delivery",
+      "openDispute": "Open Dispute",
+      "inDispute": "In Dispute"
     }
   }
 }

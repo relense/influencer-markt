@@ -92,6 +92,33 @@ const OrderDetailsPage = (params: {
       },
     });
 
+  const { mutate: updateDateOfDelivery, isLoading: isLoadingUpdateDelivery } =
+    api.orders.updateOrderDateOfDelivery.useMutation({
+      onSuccess: () => {
+        setShowEditDateOfDelivery(false);
+        void ctx.orders.getBuyerOrder.invalidate();
+        void createNotification({
+          entityId: params.orderId,
+          notifierId: order?.influencerId || -1,
+          notificationTypeAction: "deliveryDateUpdate",
+        });
+      },
+    });
+
+  const {
+    mutate: updateOrderInDispute,
+    isLoading: isLoadingUpdateOrderInDispute,
+  } = api.orders.updateOrder.useMutation({
+    onSuccess: () => {
+      void createNotification({
+        entityId: params.orderId,
+        notifierId: order?.influencerId || -1,
+        notificationTypeAction: "inDispute",
+      });
+      void ctx.orders.getBuyerOrder.invalidate();
+    },
+  });
+
   const { mutate: createNotification } =
     api.notifications.createSalesNotification.useMutation();
 
@@ -106,19 +133,6 @@ const OrderDetailsPage = (params: {
         reset();
         setOpenReviewModal(false);
         setStarReviewsCount(1);
-      },
-    });
-
-  const { mutate: updateDateOfDelivery, isLoading: isLoadingUpdateDelivery } =
-    api.orders.updateOrderDateOfDelivery.useMutation({
-      onSuccess: () => {
-        setShowEditDateOfDelivery(false);
-        void ctx.orders.getBuyerOrder.invalidate();
-        void createNotification({
-          entityId: params.orderId,
-          notifierId: order?.influencerId || -1,
-          notificationTypeAction: "deliveryDateUpdate",
-        });
       },
     });
 
@@ -161,71 +175,45 @@ const OrderDetailsPage = (params: {
       }
 
       return (
-        <div className="flex flex-1 flex-col rounded-xl border-[1px] lg:gap-4">
-          <div className="flex w-full border-b-[1px] p-4">
-            <div className="text-xl font-semibold ">
-              {t("pages.orders.progressInformation")}
-            </div>
-          </div>
-          <div className="flex flex-1 flex-col items-center gap-4 px-4 py-8">
-            <Link
-              href={`/${order.influencer?.user.username || ""}`}
-              className="flex"
-            >
-              <Image
-                src={order.influencer?.profilePicture || ""}
-                alt="profile picture"
-                width={1000}
-                height={1000}
-                quality={100}
-                className="h-24 w-24 rounded-full object-cover"
-              />
-            </Link>
-            <Link
-              href={`/${order.influencer?.user.username || ""}`}
-              className="flex flex-col gap-2"
-            >
-              <div className="font-medium text-influencer">
-                {order.influencer?.name || ""}
+        <div className="flex flex-1 flex-col">
+          <div className=" rounded-xl border-[1px] lg:gap-4">
+            <div className="flex w-full border-b-[1px] p-4">
+              <div className="text-xl font-semibold ">
+                {t("pages.orders.progressInformation")}
               </div>
-            </Link>
-            <div className="font-medium">
-              {helper.formatFullDateWithTime(order.createdAt, i18n.language)}
             </div>
-            <div className="font-semibold ">
-              {t(`pages.orders.${order?.orderStatus?.name || ""}`)}
-            </div>
-            {order.orderStatusId === 1 && (
-              <Button
-                title={t("pages.orders.cancel")}
-                level="terciary"
-                onClick={() =>
-                  updateCancelOrder({
-                    orderId: order.id,
-                    statusId: 7,
-                    language: i18n.language,
-                  })
-                }
-                isLoading={isLoadingUpdateCancelOrder}
-              />
-            )}
-            {order.orderStatusId === 3 && (
-              <div className="flex gap-12">
-                <Button
-                  title={t("pages.orders.addPayment")}
-                  level="terciary"
-                  onClick={() =>
-                    updateOrderPayment({
-                      orderId: order.id,
-                      statusId: 4,
-                      language: i18n.language,
-                    })
-                  }
-                  isLoading={updateAcceptIsLoading}
+            <div className="flex flex-1 flex-col items-center gap-4 px-4 py-8">
+              <Link
+                href={`/${order.influencer?.user.username || ""}`}
+                className="flex"
+              >
+                <Image
+                  src={order.influencer?.profilePicture || ""}
+                  alt="profile picture"
+                  width={1000}
+                  height={1000}
+                  quality={100}
+                  className="h-24 w-24 rounded-full object-cover"
                 />
+              </Link>
+              <Link
+                href={`/${order.influencer?.user.username || ""}`}
+                className="flex flex-col gap-2"
+              >
+                <div className="font-medium text-influencer">
+                  {order.influencer?.name || ""}
+                </div>
+              </Link>
+              <div className="font-medium">
+                {helper.formatFullDateWithTime(order.createdAt, i18n.language)}
+              </div>
+              <div className="font-semibold ">
+                {t(`pages.orders.${order?.orderStatus?.name || ""}`)}
+              </div>
+              {order.orderStatusId === 1 && (
                 <Button
                   title={t("pages.orders.cancel")}
-                  level="secondary"
+                  level="terciary"
                   onClick={() =>
                     updateCancelOrder({
                       orderId: order.id,
@@ -235,41 +223,87 @@ const OrderDetailsPage = (params: {
                   }
                   isLoading={isLoadingUpdateCancelOrder}
                 />
-              </div>
-            )}
-            {order.orderStatusId === 5 && (
-              <div className="flex gap-12">
-                <Button
-                  title={t("pages.orders.confirm")}
-                  level="terciary"
-                  onClick={() =>
-                    updateOrderConfirmed({
-                      orderId: order.id,
-                      statusId: 6,
-                      language: i18n.language,
-                    })
-                  }
-                  isLoading={isLoadingUpdateConfirmed}
+              )}
+              {order.orderStatusId === 3 && (
+                <div className="flex gap-12">
+                  <Button
+                    title={t("pages.orders.addPayment")}
+                    level="terciary"
+                    onClick={() =>
+                      updateOrderPayment({
+                        orderId: order.id,
+                        statusId: 4,
+                        language: i18n.language,
+                      })
+                    }
+                    isLoading={updateAcceptIsLoading}
+                  />
+                  <Button
+                    title={t("pages.orders.cancel")}
+                    level="secondary"
+                    onClick={() =>
+                      updateCancelOrder({
+                        orderId: order.id,
+                        statusId: 7,
+                        language: i18n.language,
+                      })
+                    }
+                    isLoading={isLoadingUpdateCancelOrder}
+                  />
+                </div>
+              )}
+              {order.orderStatusId === 5 && (
+                <div className="flex gap-12">
+                  <Button
+                    title={t("pages.orders.confirm")}
+                    level="terciary"
+                    onClick={() =>
+                      updateOrderConfirmed({
+                        orderId: order.id,
+                        statusId: 6,
+                        language: i18n.language,
+                      })
+                    }
+                    isLoading={isLoadingUpdateConfirmed}
+                    disabled={
+                      isLoadingUpdateOrderInDispute || isLoadingUpdateConfirmed
+                    }
+                  />
+                  <Button
+                    title={t("pages.orders.openDispute")}
+                    level="secondary"
+                    onClick={() =>
+                      updateOrderInDispute({
+                        orderId: order.id,
+                        statusId: 9,
+                        language: i18n.language,
+                      })
+                    }
+                    isLoading={isLoadingUpdateConfirmed}
+                    disabled={
+                      isLoadingUpdateOrderInDispute || isLoadingUpdateConfirmed
+                    }
+                  />
+                </div>
+              )}
+              {order.orderStatusId === 6 && (
+                <div className="flex gap-12">
+                  <Button
+                    title={t("pages.orders.review")}
+                    level="terciary"
+                    onClick={() => setOpenReviewModal(true)}
+                    isLoading={isLoadingUpdateReviewed}
+                  />
+                </div>
+              )}
+              {whatHappensNext && (
+                <WhatHappensNext
+                  stage={whatHappensNext}
+                  view="buyer"
+                  startedOrder={false}
                 />
-              </div>
-            )}
-            {order.orderStatusId === 6 && (
-              <div className="flex gap-12">
-                <Button
-                  title={t("pages.orders.review")}
-                  level="terciary"
-                  onClick={() => setOpenReviewModal(true)}
-                  isLoading={isLoadingUpdateReviewed}
-                />
-              </div>
-            )}
-            {whatHappensNext && (
-              <WhatHappensNext
-                stage={whatHappensNext}
-                view="buyer"
-                startedOrder={false}
-              />
-            )}
+              )}
+            </div>
           </div>
         </div>
       );
@@ -333,7 +367,18 @@ const OrderDetailsPage = (params: {
   };
 
   const renderDateOfDelivery = () => {
-    if (order) {
+    if (order && order.orderStatus) {
+      let pressToEditContainerClass = "flex justify-center gap-2";
+      if (
+        order?.orderStatus &&
+        order?.orderStatus?.id !== 6 &&
+        order?.orderStatus?.id !== 7 &&
+        order?.orderStatus?.id !== 8 &&
+        order?.orderStatus?.id !== 9
+      ) {
+        pressToEditContainerClass = "flex cursor-pointer justify-center gap-2";
+      }
+
       return (
         <div className="flex flex-col gap-1">
           <div className="text-lg font-medium">
@@ -341,16 +386,31 @@ const OrderDetailsPage = (params: {
           </div>
           {!showEditDateOfDelivery ? (
             <div
-              className="flex cursor-pointer justify-center gap-2"
-              onClick={() => setShowEditDateOfDelivery(true)}
+              className={pressToEditContainerClass}
+              onClick={() =>
+                setShowEditDateOfDelivery(
+                  order?.orderStatus &&
+                    order?.orderStatus?.id !== 6 &&
+                    order?.orderStatus?.id !== 7 &&
+                    order?.orderStatus?.id !== 8 &&
+                    order?.orderStatus?.id !== 9
+                    ? true
+                    : false
+                )
+              }
             >
               <div className="text-base font-semibold text-influencer">
                 {dayjs(dateOfDelivery).format("DD MMMM YYYY")}
               </div>
-              <FontAwesomeIcon
-                icon={faPencil}
-                className=" fa-lg cursor-pointer text-influencer"
-              />
+              {order?.orderStatus?.id !== 6 &&
+                order?.orderStatus?.id !== 7 &&
+                order?.orderStatus?.id !== 8 &&
+                order?.orderStatus?.id !== 9 && (
+                  <FontAwesomeIcon
+                    icon={faPencil}
+                    className=" fa-lg text-influencer"
+                  />
+                )}
             </div>
           ) : (
             <form
@@ -582,6 +642,7 @@ const OrderDetailsPage = (params: {
                   receiverId={order?.influencerId || -1}
                   senderId={order?.buyerId || -1}
                   orderId={params.orderId}
+                  orderStatusId={order?.orderStatusId || -1}
                 />
               </div>
             </div>
