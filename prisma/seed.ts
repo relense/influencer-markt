@@ -155,6 +155,7 @@ async function main() {
       { name: "Education" },
       { name: "Celebrity" },
       { name: "Technology" },
+      { name: "Politic" },
     ],
   });
 
