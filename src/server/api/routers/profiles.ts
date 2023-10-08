@@ -520,7 +520,6 @@ export const profilesRouter = createTRPCRouter({
           genderId: input.gender.id === -1 ? undefined : input.gender.id,
           profilePicture: "",
           profilePictureBlobName: "",
-          nif: "",
           categories: {
             connect: input.categories.map((category) => ({
               id: category.id,

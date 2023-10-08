@@ -377,7 +377,6 @@ async function main() {
         profilePicture:
           "https://images.unsplash.com/photo-1608541737042-87a12275d313?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1722&q=80",
         profilePictureBlobName: "exampleBlob",
-        nif: "1234567",
         userId: users[0]?.id || "",
         website: "https://www.nike.com/pt/en/",
         verifiedStatusId: 1,
@@ -391,7 +390,6 @@ async function main() {
         profilePicture:
           "https://images.unsplash.com/photo-1535990379313-5cd271a2da2d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2064&q=80",
         profilePictureBlobName: "exampleBlob",
-        nif: "1234567",
         userId: users[1]?.id || "",
         website: "https://www.cocacolaportugal.pt/",
         verifiedStatusId: 1,
@@ -405,7 +403,6 @@ async function main() {
         profilePicture:
           "https://images.unsplash.com/photo-1531554694128-c4c6665f59c2?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=774&q=80",
         profilePictureBlobName: "exampleBlob",
-        nif: "1234567",
         userId: users[2]?.id || "",
         website: "https://www.apple.com/pt/",
         verifiedStatusId: 1,
@@ -419,7 +416,6 @@ async function main() {
         profilePicture:
           "https://images.unsplash.com/photo-1590664177914-9da6d6e8f0f6?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1740&q=80",
         profilePictureBlobName: "exampleBlob",
-        nif: "1234567",
         userId: users[3]?.id || "",
         website: "https://www.lg.com/pt",
         verifiedStatusId: 1,
@@ -433,7 +429,6 @@ async function main() {
         profilePicture:
           "https://images.unsplash.com/photo-1504593811423-6dd665756598?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1770&q=80",
         profilePictureBlobName: "exampleBlob",
-        nif: "1234567",
         userId: users[4]?.id || "",
         genderId: 1,
         website: "",
@@ -448,7 +443,6 @@ async function main() {
         profilePicture:
           "https://images.unsplash.com/photo-1500048993953-d23a436266cf?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1769&q=80",
         profilePictureBlobName: "exampleBlob",
-        nif: "1234567",
         userId: users[5]?.id || "",
         genderId: 1,
         website: "",
@@ -463,7 +457,6 @@ async function main() {
         profilePicture:
           "https://images.unsplash.com/photo-1499952127939-9bbf5af6c51c?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1776&q=80",
         profilePictureBlobName: "exampleBlob",
-        nif: "1234567",
         userId: users[6]?.id || "",
         genderId: 2,
         website: "",
@@ -478,7 +471,6 @@ async function main() {
         profilePicture:
           "https://images.unsplash.com/photo-1580489944761-15a19d654956?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=922&q=80",
         profilePictureBlobName: "exampleBlob",
-        nif: "1234567",
         userId: users[7]?.id || "",
         genderId: 2,
         website: "",
