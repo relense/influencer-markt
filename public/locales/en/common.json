@@ -436,13 +436,13 @@
       "offers": {
         "offer1.title1": "Pay on Delivery",
         "offer1.subTitle1": "Find influencers. Plan campaigns, only pay when the work is done",
-        "offer1.title2": "10% Marketplace Fee",
-        "offer1.subTitle2": "No plans, no subscriptions, only 10% transaction fee",
+        "offer1.title2": "15% Marketplace Fee",
+        "offer1.subTitle2": "No plans, no subscriptions, only 15% transaction fee",
 
-        "offer2.title1": "Instant Messaging",
-        "offer2.subTitle1": "Communication is key for success,  instant messaging is always available",
-        "offer2.title2": "List of Contacts",
-        "offer2.subTitle2": "Create a list of your most important contacts and reach out when you need",
+        "offer2.title1": "Messagin System",
+        "offer2.subTitle1": "Communication is key for success, the chat is always available",
+        "offer2.title2": "List of Favorites",
+        "offer2.subTitle2": "Create a list of your most important contacts",
 
         "offer3.title1": "Safe Transactions",
         "offer3.subTitle1": "Complete payment protection until you give final approval",
@@ -594,11 +594,11 @@
     },
 
     "about": {
-      "title": "We connect Brands with Influencers",
-      "subTitle": "Being the preferred destination for brands seeking influential voices, offering a diverse network of content creators who engage with your specific target audience.",
-      "photoSubTitle": "Phrase that gives emphasis to the picture",
+      "title": "We connect Brands with Content Creators",
+      "subTitle": "The preferred destination for brands seeking influential voices, offering a diverse network of content creators who engage with your specific target audience.",
+      "photoSubTitle": "Our platform is where influencers and brands seamlessly unite, fostering creativity and turning opportunities into success stories.",
       "selfPromoTitle": "We are dedicated to building strong partnerships.",
-      "selfPromoSubTitle": "At Influencer Markt, we connect content creators with brands reliably, quickly, safely, and transparently – so that together we can enhance communication across various digital channels and achieve new levels of success.",
+      "selfPromoSubTitle": "At Influencer Markt, we connect content creators with brands reliably, quickly, safely, and transparently - so that together we can enhance communication across various digital channels and achieve new levels of success.",
       "selfPromoText": "The idea for Influencer Markt arose when one of the co-founders faced the challenge of expanding an international brand into the Portuguese market. The difficulty lay in finding regional-level content creators who would engage with the target audience and fit within the brand's limited budget for the national market launch.",
       "meetTeamTitle": "Meet our team",
       "coFounder": "Co-Founder"

@@ -9,10 +9,10 @@ const AboutPage = () => {
       <>
         <div className="flex flex-1 flex-col gap-2">
           <div className="mb-10 flex flex-col gap-12 text-center">
-            <div className="flex text-center font-playfair text-5xl font-semibold lg:text-left">
+            <div className="flex flex-1 justify-center text-center font-playfair text-5xl font-semibold">
               {t("pages.about.title")}
             </div>
-            <div className="flex flex-col text-center text-lg font-medium lg:text-left">
+            <div className="flex flex-col text-center text-lg font-medium">
               {t("pages.about.subTitle")}
             </div>
           </div>
@@ -111,7 +111,7 @@ const AboutPage = () => {
   };
 
   return (
-    <div className="flex flex-1 flex-col justify-center gap-16 p-4 xl:w-3/4 xl:self-center 2xl:w-3/4 3xl:w-3/4 4xl:w-2/4 5xl:w-2/4">
+    <div className="flex flex-1 flex-col justify-center gap-16 p-4 lg:w-3/4 lg:self-center xl:w-3/4 2xl:w-3/4 3xl:w-3/4 4xl:w-2/4 5xl:w-2/4">
       {renderMission()}
       {renderSelfPromo()}
       {renderMeetOurTeam()}

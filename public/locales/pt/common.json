@@ -435,13 +435,13 @@
       "offers": {
         "offer1.title1": "Paga na Entrega",
         "offer1.subTitle1": "Encontra influencers. Planea campanhas, paga só quando o trabalho está feito",
-        "offer1.title2": "10% Taxa de Mercado",
-        "offer1.subTitle2": "Não há planos, não há subscrições, só 10% Taxa de Mercado",
+        "offer1.title2": "15% Taxa de Mercado",
+        "offer1.subTitle2": "Não há planos, não há subscrições, só 15% Taxa de Mercado",
 
-        "offer2.title1": "Messagens Instantâneas",
-        "offer2.subTitle1": "Comunicação é a chave para o sucesso, messagens instantâneas está sempre disponível",
-        "offer2.title2": "Lista de Contactos",
-        "offer2.subTitle2": "Cria uma lista com os teus contactos mais importantes e entre em contacto sempre que precisar",
+        "offer2.title1": "Sistema de Mensagens",
+        "offer2.subTitle1": "Comunicação é a chave para o sucesso, o chat está sempre disponível",
+        "offer2.title2": "Lista de Favoritos",
+        "offer2.subTitle2": "Cria uma lista com os teus contatos mais importantes",
 
         "offer3.title1": "Transações Seguras",
         "offer3.subTitle1": "Proteção completa de pagamento até dares aprovação final",
@@ -592,11 +592,11 @@
     },
 
     "about": {
-      "title": "Conectamos Marcas com Influencers",
-      "subTitle": "Ser o destino preferencial para marcas que procuram vozes influentes, oferecendo uma rede diversificada de criadores de conteúdo que interagem com o seu público-alvo específico.",
-      "photoSubTitle": "Uma frase que dá ênfase à fotografia.",
+      "title": "Conectamos Marcas com Criadores de Conteúdo",
+      "subTitle": "O destino preferencial para marcas que procuram vozes influentes, oferecendo uma rede diversificada de criadores de conteúdo que interagem com o seu público-alvo específico.",
+      "photoSubTitle": "A nossa plataforma é onde os criadores de conteúdo e as marcas se unem de forma transparente, promovendo a criatividade e transformando oportunidades em histórias de sucesso.",
       "selfPromoTitle": "Estamos dedicados a construir parcerias sólidas",
-      "selfPromoSubTitle": "Na Influencer Markt ligamos criadores de conteúdo a marcas de forma confiável, rápida, segura e transparente – para que juntos possamos potenciar a comunicação em diferentes canais digitais e atingir novos patamares de sucesso.",
+      "selfPromoSubTitle": "Na Influencer Markt ligamos criadores de conteúdo a marcas de forma confiável, rápida, segura e transparente - para que juntos possamos potenciar a comunicação em diferentes canais digitais e atingir novos patamares de sucesso.",
       "selfPromoText": "A ideia para a Influencer Markt surgiu quando um dos co-fundadores se deparou com o desafio de tentar expandir uma marca internacional para o mercado português. A dificuldade residia em encontrar criadores de conteúdo a um nível regional que interagissem com o público-alvo e encaixassem no orçamento restrito da marca para o lançamento no mercado nacional.",
       "meetTeamTitle": "Conhece a equipa",
       "coFounder": "Co-Fundador"
