@@ -453,7 +453,7 @@
       "positivesBoards": {
         "brands.title": "For Brands",
         "brands.positive1": "Unlimited searches of the best influencers for you",
-        "brands.positive2": "Ability to create offers for the influencer you want",
+        "brands.positive2": "Ability to create jobs for the influencer you want",
         "brands.positive3": "Save influencers for future campaigns",
         "brands.positive4": "Unlimited campaigns",
         "brands.positive5": "Unlimited influencers can apply to your campaign",
@@ -465,11 +465,11 @@
         "influencers.positive1": "Be part of a community",
         "influencers.positive2": "Follow other influencers and trade ideas",
         "influencers.positive3": "Dedicated profile page to share with brands",
-        "influencers.positive4": "Offers page tailored to your needs",
+        "influencers.positive4": "Jobs page tailored to your needs",
         "influencers.positive5": "Rewards based on performance",
         "influencers.positive6": "Ability to review the job",
         "influencers.positive7": "Offers page tailored",
-        "influencers.positive8": "Find the best brand for you and introduce yourself"
+        "influencers.positive8": "Find the best brand for you and apply to a job offer"
       }
     },
 
@@ -634,8 +634,6 @@
       "answer.brands.answer2": "We serve as a marketplace where you can discover and hire influencers on popular platforms like as Instagram, TikTok, YouTube, Twitter, Twitch, Meta, Pinterest and LinkedIn. You can easily search through several content creators and make payments directly through the website.",
       "questions.brands.question3": "How are influencers verified before joining Influencer Markt?",
       "answer.brands.answer3": "We ensure the authenticity of each influencer listed on our platform by verifying their identity. Additionally, we conduct comprehensive audits of their social media accounts to detect any signs of fake followers or engagement. Their previous brand deals are also taken into consideration.",
-      "questions.brands.question4": "How can I send custom offers?",
-      "answer.brands.answer4": "If you have a specific request that doesn't fit within an influencer's existing packages, you can send them a custom offer. Simply visit the influencer's profile and click the ''Request a custom value pack'' button, then follow the provided steps. Additionally, you can open a public offer, allowing influencers to pitch you instead.",
       "questions.brands.question5": "How long do influencers have to accept my order?",
       "answer.brands.answer5": "Influencers are given 72 hours to accept new orders before they automatically expire.",
       "questions.brands.question6": "What happens if an influencer declines my order?",
@@ -892,7 +890,7 @@
       "deliveryModalTitle": "Are all the requirements met?",
       "deliveryModalText": "Before delivering the order, please ensure that you have fulfilled all of the buyer's requests. If there is anything missing or if you need to discuss any aspect of the order, please feel free to use the messaging platform to communicate with them. Your attention to detail and communication are essential to providing a great experience for the buyer.",
       "congratulations": "Congratulations! An application you submitted led to this order!",
-      "visit": "Visit offer",
+      "visit": "Visit Job",
       "progressInformation": "Order Progress",
       "reviewTitle": "Buyer Review",
       "orderDetails": "Order Details",

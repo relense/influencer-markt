@@ -79,7 +79,6 @@ model Profile {
   profilePicture         String            @db.Text
   profilePictureBlobName String            @db.Text
   name                   String            @db.Text
-  nif                    String
   gender                 Gender?           @relation(fields: [genderId], references: [id])
   categories             Category[]
   about                  String            @db.Text
@@ -93,6 +92,7 @@ model Profile {
   submitedReviews        Review[]          @relation("author")
   portfolio              Portfolio[]
   verifiedStatus         VerifiedStatus?   @relation(fields: [verifiedStatusId], references: [id])
+  billing                Billing?
 
   createdJobs        Job[] @relation("jobCreator")
   appliedJobs        Job[] @relation("jobApplicants")
@@ -383,8 +383,8 @@ model Order {
   messages               Message[]
   dispute                Dispute?
   dateOfDelivery         DateTime
-
-  cardReferenceStripe String?
+  cardReferenceStripe    String?
+  invoice                Invoice[]
 
   influencerId  Int?
   buyerId       Int?
@@ -506,4 +506,37 @@ model DisputeStatus {
   name String
 
   dispute Dispute[]
+}
+
+model Billing {
+  id       Int       @id @default(autoincrement())
+  name     String?
+  address  String?
+  vat      String?
+  iban     String?
+  invoices Invoice[]
+  profile  Profile   @relation(fields: [profileId], references: [id])
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  profileId Int @unique
+
+  @@index([profileId])
+}
+
+model Invoice {
+  id      Int     @id @default(autoincrement())
+  order   Order   @relation(fields: [orderId], references: [id])
+  billing Billing @relation(fields: [billingId], references: [id])
+  paid Boolean
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  billingId Int
+  orderId   Int @unique
+
+  @@index([billingId])
+  @@index([orderId])
 }
