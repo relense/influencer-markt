@@ -15,6 +15,7 @@ import { faStar as faStarRegular } from "@fortawesome/free-regular-svg-icons";
 import { useForm } from "react-hook-form";
 import { MessageBoard } from "../../components/MessageBoard";
 import dayjs from "dayjs";
+import toast from "react-hot-toast";
 
 type ReviewForm = {
   review: string;
@@ -132,6 +133,9 @@ const OrderDetailsPage = (params: {
         notificationTypeAction: "inDispute",
       });
       void ctx.orders.getBuyerOrder.invalidate();
+      toast.success(t("pages.orders.disputeOpenToast"), {
+        position: "bottom-left",
+      });
     },
   });
 

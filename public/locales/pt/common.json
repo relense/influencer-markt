@@ -947,7 +947,8 @@
       "inDisputeText": "Se houver algum problema com a entrega, por favor, fala com o influencer antes de abrir uma disputa. Pode ter havido má comunicação e ainda pode ser resolvido. Se tens a certeza de que algo não está certo, iremos avaliar e entraremos em contacto contigo o mais rápido possível.",
       "inDisputeInputText": "Diz-nos o que aconteceu",
       "confirmModalTitle": "Está tudo confirmado?",
-      "confirmModalText": "Certifique-se de que tudo está como esperado. Se houver algo que não esteja como deveria ser, por favor, comunique com o influencer. Pode ter havido má comunicação, e ainda pode ser corrigido."
+      "confirmModalText": "Certifique-se de que tudo está como esperado. Se houver algo que não esteja como deveria ser, por favor, comunique com o influencer. Pode ter havido má comunicação, e ainda pode ser corrigido.",
+      "disputeOpenToast": "Disputa aberta. Vamos contactar-te quando tivermos uma decisão"
     }
   }
 }

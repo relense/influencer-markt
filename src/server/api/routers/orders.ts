@@ -6,6 +6,7 @@ import { buyerConfirmedEmail } from "../../../emailTemplates/buyerConfirmOrderEm
 import { buyerAddDetailsEmail } from "../../../emailTemplates/buyerAddDetailsEmail/buyerAddDetailsEmail";
 import { influencerDeliveredOrderEmail } from "../../../emailTemplates/influencerDeliveredEmail/influencerDeliveredEmail";
 import { buyerReviewedOrderEmail } from "../../../emailTemplates/buyerReviewedOrderEmail/buyerReviewedOrderEmail";
+import { buyerOpensDisputeToInfluencerEmail } from "../../../emailTemplates/buyerOpensDisputeToInfluencerEmail/buyerOpensDisputeToInfluencerEmail";
 
 export const OrdersRouter = createTRPCRouter({
   createOrder: protectedProcedure
@@ -541,6 +542,14 @@ export const OrdersRouter = createTRPCRouter({
           });
         } else if (input.statusId === 8) {
           buyerReviewedOrderEmail({
+            buyerName: order.buyer?.name || "",
+            from: process.env.EMAIL_FROM,
+            to: order.influencer?.user.email || "",
+            language: input.language,
+            orderId: order.id,
+          });
+        } else if (input.statusId === 9) {
+          buyerOpensDisputeToInfluencerEmail({
             buyerName: order.buyer?.name || "",
             from: process.env.EMAIL_FROM,
             to: order.influencer?.user.email || "",

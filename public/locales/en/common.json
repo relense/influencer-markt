@@ -950,7 +950,8 @@
       "inDisputeText": "If there is an issue with the delivery, please speak with the influencer before initiating a dispute. There might have been a miscommunication, and it can still be resolved. If you are certain that something is amiss, we will assess the situation and respond to you as soon as possible.",
       "inDisputeInputText": "Let us know what happened",
       "confirmModalTitle": "Is everything confirmed?",
-      "confirmModalText": "Make sure that everything is as you expect. If there is anything that isn't as it's supposed to be, please communicate with the influencer. There might have been a miscommunication, and it can still be rectified."
+      "confirmModalText": "Make sure that everything is as you expect. If there is anything that isn't as it's supposed to be, please communicate with the influencer. There might have been a miscommunication, and it can still be rectified.",
+      "disputeOpenToast": "Dispute opened. We will contact you when we have a decision"
     }
   }
 }

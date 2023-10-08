@@ -329,7 +329,7 @@ const MessageBoard = (params: {
       <div className="flex w-full items-center gap-2 border-t-[1px] p-4">
         <textarea
           ref={textareaRef}
-          className="flex h-[59px] max-h-56 flex-1 resize-none overflow-y-auto rounded-xl border-[1px] bg-white1 p-2 pt-4 text-left text-base"
+          className="flex h-[59px] max-h-56 flex-1 resize-none overflow-y-auto rounded-xl border-[1px] bg-white1 p-2 pt-4 text-left text-base focus:border-[1px] focus:border-black focus:outline-none"
           value={message}
           onChange={handleMessageChange}
           disabled={

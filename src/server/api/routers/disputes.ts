@@ -1,5 +1,6 @@
 import { z } from "zod";
 import { createTRPCRouter, protectedProcedure } from "../trpc";
+import { buyerOpenedDisputeToOurInboxEmail } from "../../../emailTemplates/buyerOpensDisputeToOurInboxEmail/buyerOpensDisputeToOurInboxEmail";
 
 export const DisputesRoutes = createTRPCRouter({
   createDispute: protectedProcedure
@@ -10,21 +11,52 @@ export const DisputesRoutes = createTRPCRouter({
       })
     )
     .mutation(async ({ ctx, input }) => {
-      return await ctx.prisma.dispute.create({
-        data: {
-          order: {
-            connect: {
-              id: input.orderId,
-            },
-          },
-          message: input.disputeMessage,
-          disputeStatus: {
-            connect: {
-              id: 1,
+      const order = await ctx.prisma.order.findFirst({
+        where: {
+          id: input.orderId,
+        },
+        include: {
+          buyer: {
+            select: {
+              name: true,
+              user: {
+                select: {
+                  email: true,
+                },
+              },
             },
           },
         },
       });
+
+      if (order) {
+        const dispute = await ctx.prisma.dispute.create({
+          data: {
+            order: {
+              connect: {
+                id: input.orderId,
+              },
+            },
+            message: input.disputeMessage,
+            disputeStatus: {
+              connect: {
+                id: 1,
+              },
+            },
+          },
+        });
+
+        buyerOpenedDisputeToOurInboxEmail({
+          buyerName: order.buyer?.name || "",
+          buyerEmail: order.buyer?.user.email || "",
+          from: process.env.EMAIL_FROM || "",
+          to: process.env.EMAIL_FROM || "",
+          issueMessage: input.disputeMessage,
+          orderId: input.orderId.toString(),
+        });
+
+        return dispute;
+      }
     }),
 
   getAllDisputes: protectedProcedure
