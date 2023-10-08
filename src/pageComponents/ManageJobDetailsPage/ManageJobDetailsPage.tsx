@@ -412,13 +412,10 @@ const ManageJobDetailsPage = (params: {
 
   const submitOrder = (applicant: ApplicantsProfile) => {
     if (job) {
-      const tax = job.price * ((applicant?.country?.countryTax || 0) / 100);
-      const total = job.price + tax;
-
       createOrder({
         influencerId: applicant.id,
         orderDetails: job.JobDetails,
-        orderPrice: total.toString(),
+        orderPrice: job.price.toString(),
         orderValuePacks: job.contentTypeWithQuantity.map((valuePack) => {
           return {
             amount: valuePack.amount,

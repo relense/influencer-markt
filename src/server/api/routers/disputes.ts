@@ -2,7 +2,7 @@ import { z } from "zod";
 import { createTRPCRouter, protectedProcedure } from "../trpc";
 import { buyerOpenedDisputeToOurInboxEmail } from "../../../emailTemplates/buyerOpensDisputeToOurInboxEmail/buyerOpensDisputeToOurInboxEmail";
 
-export const DisputesRoutes = createTRPCRouter({
+export const DisputesRouter = createTRPCRouter({
   createDispute: protectedProcedure
     .input(
       z.object({

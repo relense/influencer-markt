@@ -47,6 +47,7 @@ export const OrdersRouter = createTRPCRouter({
               email: true,
             },
           },
+          country: true,
         },
       });
 
@@ -57,6 +58,7 @@ export const OrdersRouter = createTRPCRouter({
             influencerId: input.influencerId,
             orderDetails: input.orderDetails,
             orderPrice: input.orderPrice,
+            orderTaxPercentage: influencerProfile?.country?.countryTax || 0,
             countryId: influencerProfile?.countryId,
             orderStatusId: 1,
             socialMediaId: input.platformId,
@@ -119,6 +121,9 @@ export const OrdersRouter = createTRPCRouter({
 
       const influencerProfile = await ctx.prisma.profile.findUnique({
         where: { id: input.influencerId },
+        include: {
+          country: true,
+        },
       });
 
       if (profile) {
@@ -128,6 +133,7 @@ export const OrdersRouter = createTRPCRouter({
             influencerId: input.influencerId,
             orderDetails: input.orderDetails,
             orderPrice: input.orderPrice,
+            orderTaxPercentage: influencerProfile?.country?.countryTax || 0,
             countryId: influencerProfile?.countryId,
             orderStatusId: 1,
             socialMediaId: input.platformId,

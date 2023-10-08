@@ -40,6 +40,8 @@ const OrderDetailsPage = (params: {
   const [openDisputeModal, setOpenDisputeModal] = useState<boolean>(false);
   const [openConfirmOrderModal, setOpenConfirmOrderModal] =
     useState<boolean>(false);
+  const [openPaymentDetailsModal, setOpenPaymentDetailsModal] =
+    useState<boolean>(false);
 
   const {
     register,
@@ -92,6 +94,7 @@ const OrderDetailsPage = (params: {
           notifierId: order?.influencerId || -1,
           notificationTypeAction: "confirmed",
         });
+        void createInvoice({ orderId: params.orderId });
         void ctx.orders.getBuyerOrder.invalidate();
       },
     });
@@ -167,6 +170,8 @@ const OrderDetailsPage = (params: {
         setOpenDisputeModal(false);
       },
     });
+
+  const { mutate: createInvoice } = api.invoices.createInvoice.useMutation();
 
   useEffect(() => {
     if (order) {
@@ -268,13 +273,7 @@ const OrderDetailsPage = (params: {
                   <Button
                     title={t("pages.orders.addPayment")}
                     level="terciary"
-                    onClick={() =>
-                      updateOrderPayment({
-                        orderId: order.id,
-                        statusId: 4,
-                        language: i18n.language,
-                      })
-                    }
+                    onClick={() => setOpenPaymentDetailsModal(true)}
                     isLoading={updateAcceptIsLoading}
                   />
                   <Button
@@ -384,7 +383,8 @@ const OrderDetailsPage = (params: {
           </div>
           <div className="text-base font-semibold text-influencer">
             {helper.formatNumberWithDecimalValue(
-              parseFloat(order.orderPrice)
+              parseFloat(order.orderPrice) +
+                parseFloat(order.orderPrice) * (order.orderTaxPercentage / 100)
             ) || 0}
             €
           </div>
@@ -742,6 +742,37 @@ const OrderDetailsPage = (params: {
     );
   };
 
+  const renderPaymentDetailsModal = () => {
+    if (openPaymentDetailsModal && order) {
+      return (
+        <div className="flex justify-center ">
+          <Modal
+            button={
+              <div className="flex justify-center p-4">
+                <Button
+                  title={t("pages.orders.addPayment")}
+                  level="terciary"
+                  isLoading={false}
+                  onClick={() => {
+                    updateOrderPayment({
+                      orderId: order.id,
+                      statusId: 4,
+                      language: i18n.language,
+                    });
+                    setOpenPaymentDetailsModal(false);
+                  }}
+                />
+              </div>
+            }
+            onClose={() => setOpenPaymentDetailsModal(false)}
+          >
+            <div>Payments</div>
+          </Modal>
+        </div>
+      );
+    }
+  };
+
   return (
     <>
       <div className="flex w-full cursor-default flex-col gap-6 self-center px-4 pb-10 sm:px-12 lg:w-full 2xl:w-10/12 3xl:w-3/4 4xl:w-8/12">
@@ -779,6 +810,7 @@ const OrderDetailsPage = (params: {
       {renderReviewModal()}
       {renderAreYouSureDisputeModal()}
       {renderIsOrderReallyConfirmedModal()}
+      {renderPaymentDetailsModal()}
     </>
   );
 };

@@ -136,13 +136,10 @@ const StartOrderPage = (params: {
       valuePacksSum += contentType.amount * contentType.price;
     });
 
-    const tax = valuePacksSum * ((profile?.country?.countryTax || 0) / 100);
-    const total = valuePacksSum + tax;
-
     createOrder({
       influencerId: params.orderProfileId,
       orderDetails: data.orderDetails,
-      orderPrice: total.toString(),
+      orderPrice: valuePacksSum.toString(),
       orderValuePacks: contentTypesList.map((valuePack) => {
         return {
           amount: valuePack.amount,

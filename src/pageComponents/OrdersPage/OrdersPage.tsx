@@ -24,6 +24,7 @@ type Order = {
   socialMediaName: string;
   orderValuePacks: OrderValuePack[];
   orderPrice: string;
+  orderTaxPercentage: number;
 };
 
 type OrderValuePack = {
@@ -102,6 +103,7 @@ const OrdersPage = () => {
               };
             }),
             socialMediaName: order.socialMedia?.name || "",
+            orderTaxPercentage: order.orderTaxPercentage,
           };
         })
       );
@@ -116,34 +118,35 @@ const OrdersPage = () => {
 
   useEffect(() => {
     if (ordersDataCursor) {
-      const newSales: Order[] = [...orders];
+      const newOrders: Order[] = [...orders];
 
-      ordersDataCursor.forEach((sale) => {
-        newSales.push({
-          influencerName: sale.influencer?.name || "",
-          influencerProfile: sale.influencer?.profilePicture || "",
-          influencerUsername: sale.influencer?.user?.username || "",
-          createdAt: sale.createdAt,
-          id: sale.id,
-          orderPrice: sale.orderPrice,
-          orderStatusName: sale.orderStatus?.name || "",
-          orderValuePacks: sale.orderValuePacks.map((valuePack) => {
+      ordersDataCursor.forEach((order) => {
+        newOrders.push({
+          influencerName: order.influencer?.name || "",
+          influencerProfile: order.influencer?.profilePicture || "",
+          influencerUsername: order.influencer?.user?.username || "",
+          createdAt: order.createdAt,
+          id: order.id,
+          orderPrice: order.orderPrice,
+          orderStatusName: order.orderStatus?.name || "",
+          orderValuePacks: order.orderValuePacks.map((valuePack) => {
             return {
               amount: valuePack.amount,
               contentTypeName: valuePack.contentType.name,
               id: valuePack.id,
             };
           }),
-          socialMediaName: sale.socialMedia?.name || "",
+          socialMediaName: order.socialMedia?.name || "",
+          orderTaxPercentage: order.orderTaxPercentage,
         });
       });
 
-      setOrders(newSales);
+      setOrders(newOrders);
 
-      const lastSalesArray = ordersDataCursor[ordersDataCursor.length - 1];
+      const lastOrdersArray = ordersDataCursor[ordersDataCursor.length - 1];
 
-      if (lastSalesArray) {
-        setOrdersCursor(lastSalesArray.id);
+      if (lastOrdersArray) {
+        setOrdersCursor(lastOrdersArray.id);
       }
     }
   }, [orders, ordersDataCursor]);
@@ -235,8 +238,10 @@ const OrdersPage = () => {
               </div>
               <div>
                 {helper.formatNumberWithDecimalValue(
-                  parseFloat(order?.orderPrice)
-                )}
+                  parseFloat(order.orderPrice) +
+                    parseFloat(order.orderPrice) *
+                      (order.orderTaxPercentage / 100)
+                ) || 0}
                 €
               </div>
             </div>

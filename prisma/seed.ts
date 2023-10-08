@@ -125,6 +125,10 @@ async function main() {
     data: [{ name: "open" }, { name: "progress" }, { name: "closed" }],
   });
 
+  await prisma.invoiceType.createMany({
+    data: [{ name: "buy" }, { name: "sale" }],
+  });
+
   await prisma.verifiedStatus.createMany({
     data: [
       { name: "notVerified" },

@@ -24,6 +24,7 @@ type Sale = {
   socialMediaName: string;
   orderValuePacks: SaleValuePack[];
   orderPrice: string;
+  orderTaxPercentage: number;
 };
 
 type SaleValuePack = {
@@ -103,6 +104,7 @@ const SalesPage = () => {
               };
             }),
             socialMediaName: sale.socialMedia?.name || "",
+            orderTaxPercentage: sale.orderTaxPercentage,
           };
         })
       );
@@ -136,6 +138,7 @@ const SalesPage = () => {
             };
           }),
           socialMediaName: sale.socialMedia?.name || "",
+          orderTaxPercentage: sale.orderTaxPercentage,
         });
       });
 
@@ -233,8 +236,10 @@ const SalesPage = () => {
               </div>
               <div>
                 {helper.formatNumberWithDecimalValue(
-                  parseFloat(sale?.orderPrice)
-                )}
+                  parseFloat(sale.orderPrice) +
+                    parseFloat(sale.orderPrice) *
+                      (sale.orderTaxPercentage / 100)
+                ) || 0}
                 €
               </div>
             </div>

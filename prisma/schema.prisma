@@ -376,6 +376,7 @@ model Order {
   orderValuePacks        OrderValuePack[]
   orderInfluencerCountry Country?         @relation(fields: [countryId], references: [id])
   orderPrice             String
+  orderTaxPercentage     Int
   orderStatus            OrderStatus?     @relation(fields: [orderStatusId], references: [id])
   socialMedia            SocialMedia?     @relation(fields: [socialMediaId], references: [id])
   review                 Review?          @relation(fields: [reviewId], references: [id])
@@ -511,8 +512,7 @@ model DisputeStatus {
 model Billing {
   id       Int       @id @default(autoincrement())
   name     String?
-  address  String?
-  vat      String?
+  tin      String?
   iban     String?
   invoices Invoice[]
   profile  Profile   @relation(fields: [profileId], references: [id])
@@ -526,17 +526,34 @@ model Billing {
 }
 
 model Invoice {
-  id      Int     @id @default(autoincrement())
-  order   Order   @relation(fields: [orderId], references: [id])
-  billing Billing @relation(fields: [billingId], references: [id])
-  paid Boolean
+  id                        Int         @id @default(autoincrement())
+  order                     Order       @relation(fields: [orderId], references: [id])
+  billing                   Billing     @relation(fields: [billingId], references: [id])
+  name                      String?
+  tin                       String?
+  saleValue                 Decimal
+  influencerMarktCutValue   Decimal?
+  influencerMarktPercentage Int?
+  taxValue                  Decimal
+  taxPercentage             Int
+  paid                      Boolean     @default(false)
+  invoiceType               InvoiceType @relation(fields: [invoiceTypeId], references: [id])
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  billingId Int
-  orderId   Int @unique
+  billingId     Int
+  orderId       Int
+  invoiceTypeId Int
 
   @@index([billingId])
   @@index([orderId])
+  @@index([invoiceTypeId])
+}
+
+model InvoiceType {
+  id   Int    @id @default(autoincrement())
+  name String
+
+  invoice Invoice[]
 }
