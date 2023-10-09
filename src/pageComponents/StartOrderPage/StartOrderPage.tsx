@@ -307,7 +307,8 @@ const StartOrderPage = (params: {
       });
 
       const tax = valuePacksSum * ((profile?.country?.countryTax || 0) / 100);
-      const total = valuePacksSum + tax;
+      const serviceFee = valuePacksSum * helper.calculateServiceFee();
+      const total = valuePacksSum + tax  + serviceFee;
 
       return (
         <div className="flex flex-col gap-2">
@@ -320,6 +321,12 @@ const StartOrderPage = (params: {
                 {t("pages.startOrder.valuePacks")}:
               </div>
               <div>{helper.formatNumberWithDecimalValue(valuePacksSum)}€</div>
+            </div>
+            <div className="flex gap-2">
+              <div className="select-none font-semibold text-influencer">
+                {t("pages.startOrder.serviceFee")}:
+              </div>
+              <div>{helper.formatNumberWithDecimalValue(serviceFee)}€</div>
             </div>
             <div className="flex gap-2">
               <div className="select-none font-semibold text-influencer">

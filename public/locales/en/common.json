@@ -559,7 +559,8 @@
       "editMyPage": "Edit",
       "bookmarkWarning": "Complete your profile to be able to save",
       "verified": "Verified",
-      "needsVerification": "Needs New Verification"
+      "needsVerification": "Needs New Verification",
+      "serviceFee": "Service Fee"
     },
 
     "editPage": {
@@ -848,9 +849,10 @@
       "location": "Location",
       "detailsPlaceholder": "Specify your requirements for the chosen influencer. Share the specific deliverables you expect and provide the necessary guidelines for each value pack. Clear instructions help the influencer understand your expectations and engage your target audience effectively.",
       "errorWarning": "Max is {{count}} characters",
-      "fee": "Tax",
+      "fee": "VAT",
       "total": "Total",
       "price": "Price",
+      "serviceFee": "Service Fee",
       "continuePayments": "Continue Payment Details",
       "viewOrder": "View Order Details",
       "dateDelivery": "Date of Delivery",
@@ -865,7 +867,6 @@
       "platform": "Platform",
       "valuePacks": "Value packs",
       "saleTotal": "Order total",
-      "saleTotalTaxes": "Order total with taxes",
       "saleStatus": "Order status",
       "sale": "Sale Ref",
       "saleRequirements": "Order requirements",
@@ -897,7 +898,9 @@
       "reviewed": "Order Reviewed",
       "cancelOrder": "Cancel Order",
       "dateOfDelivery": "Date of Delivery",
-      "inDispute": "In Dispute"
+      "inDispute": "In Dispute",
+      "includesFees": "Includes VAT and service fee",
+      "disputeSubtitle": "We will contact you when we have a decision"
     },
 
     "orders": {
@@ -906,9 +909,8 @@
       "viewDetails": "View order details",
       "influencer": "Influencer",
       "platform": "Platform",
-      "valuePacks": "Value packs",
-      "orderTotal": "Order total",
-      "orderTotalTaxes": "Order total with taxes",
+      "valuePacks": "Value Packs",
+      "orderTotal": "Order Total",
       "orderStatus": "Order status",
       "order": "Order Ref",
       "orderRequirements": "Order requirements",
@@ -949,7 +951,9 @@
       "inDisputeInputText": "Let us know what happened",
       "confirmModalTitle": "Is Everything Confirmed?",
       "confirmModalText": "Make sure that everything is as you expect. If there is anything that isn't as it's supposed to be, please communicate with the influencer. There might have been a miscommunication, and it can still be rectified.",
-      "disputeOpenToast": "Dispute opened. We will contact you when we have a decision"
+      "disputeOpenToast": "Dispute opened. We will contact you when we have a decision",
+      "includesFees": "Includes VAT and service fee",
+      "disputeSubtitle": "We will contact you when we have a decision"
     },
 
     "billing": {
@@ -957,8 +961,15 @@
       "confirmBilling": "Confirm Billing Details",
       "billingModalTitle": "Billing",
       "billingName": "Name",
-      "billingAddress": "Address",
-      "billingTaxNumber": "National Insurance Number"
+      "billingTaxNumber": "National Insurance Number",
+      "billingInformation": "Billing Information",
+      "balanceInformation": "Balance Information",
+      "currentBalance": "Current Balance Amount",
+      "iban": "IBAN",
+      "update": "Update",
+      "withdraw": "Withdraw",
+      "salesInvoices": "Sales Invoices",
+      "purchasesInvoices": "Purchases Invoices"
     }
   }
 }

@@ -16,6 +16,7 @@ import { useForm } from "react-hook-form";
 import { MessageBoard } from "../../components/MessageBoard";
 import dayjs from "dayjs";
 import toast from "react-hot-toast";
+import { ToolTip } from "../../components/ToolTip";
 
 type ReviewForm = {
   review: string;
@@ -254,6 +255,11 @@ const OrderDetailsPage = (params: {
               <div className="font-semibold ">
                 {t(`pages.orders.${order?.orderStatus?.name || ""}`)}
               </div>
+              {order?.orderStatus?.id === 9 && (
+                <div className="text-center font-medium">
+                  {t("pages.orders.disputeSubtitle")}
+                </div>
+              )}
               {order.orderStatusId === 1 && (
                 <Button
                   title={t("pages.orders.cancel")}
@@ -378,13 +384,18 @@ const OrderDetailsPage = (params: {
     if (order) {
       return (
         <div className="flex flex-col gap-1">
-          <div className="text-lg font-medium">
-            {t("pages.orders.orderTotalTaxes")}
+          <div className="flex justify-center gap-2">
+            <div className="text-lg font-medium">
+              {t("pages.orders.orderTotal")}
+            </div>
+            <ToolTip content={t("pages.orders.includesFees")} />
           </div>
           <div className="text-base font-semibold text-influencer">
             {helper.formatNumberWithDecimalValue(
               parseFloat(order.orderPrice) +
-                parseFloat(order.orderPrice) * (order.orderTaxPercentage / 100)
+                parseFloat(order.orderPrice) *
+                  (order.orderTaxPercentage / 100) +
+                parseFloat(order.orderPrice) * helper.calculateServiceFee()
             ) || 0}
             €
           </div>
@@ -702,7 +713,7 @@ const OrderDetailsPage = (params: {
             {t("pages.orders.orderDetails")}
           </div>
         </div>
-        <div className="flex flex-1 flex-col gap-4 overflow-y-auto p-8">
+        <div className="flex w-full flex-1 flex-col gap-4 overflow-y-auto p-8">
           {renderOrderPlatform()}
           {renderValuePacks()}
           {renderTotalPrice()}

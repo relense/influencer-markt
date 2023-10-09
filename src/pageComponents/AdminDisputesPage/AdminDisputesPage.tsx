@@ -1,15 +1,17 @@
 import { useEffect, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { useTranslation } from "react-i18next";
+import Link from "next/link";
+import { faClose } from "@fortawesome/free-solid-svg-icons";
 
 import { api } from "~/utils/api";
 
 import { LoadingSpinner } from "../../components/LoadingSpinner";
 import { Button } from "../../components/Button";
-import { faClose } from "@fortawesome/free-solid-svg-icons";
-
 import { CustomSelect } from "../../components/CustomSelect";
 import { type Option } from "../../utils/globalTypes";
+import { helper } from "../../utils/helper";
 
 type DisputeSearch = {
   searchDisputeId: string;
@@ -23,9 +25,12 @@ type DisputeType = {
   updatedAt: Date;
   orderId: number;
   disputeStatusId: number;
+  disputeStatus: Option;
 };
 
 const AdminDisputesPage = () => {
+  const { i18n } = useTranslation();
+
   const [disputes, setDisputes] = useState<DisputeType[]>([]);
   const [disputesCursor, setDisputesCursor] = useState<number>(-1);
   const [disputesCount, setDisputesCount] = useState<number>(0);
@@ -71,7 +76,22 @@ const AdminDisputesPage = () => {
 
   useEffect(() => {
     if (disputesData) {
-      setDisputes(disputesData[1]);
+      setDisputes(
+        disputesData[1].map((dispute) => {
+          return {
+            disputeStatus: {
+              id: dispute?.disputeStatus?.id || -1,
+              name: dispute?.disputeStatus?.name || "",
+            },
+            id: dispute.id,
+            createdAt: dispute.createdAt,
+            updatedAt: dispute.updatedAt,
+            disputeStatusId: dispute.disputeStatusId,
+            message: dispute.message,
+            orderId: dispute.orderId,
+          };
+        })
+      );
       setDisputesCount(disputesData[0]);
 
       const lastDisputeInArray = disputesData[1][disputesData[1].length - 1];
@@ -86,8 +106,19 @@ const AdminDisputesPage = () => {
     if (disputesCursorData) {
       const newDisputes: DisputeType[] = [...disputes];
 
-      disputesCursorData.forEach((dispute: DisputeType) => {
-        newDisputes.push(dispute);
+      disputesCursorData.forEach((dispute) => {
+        newDisputes.push({
+          disputeStatus: {
+            id: dispute?.disputeStatus?.id || -1,
+            name: dispute?.disputeStatus?.name || "",
+          },
+          id: dispute.id,
+          createdAt: dispute.createdAt,
+          updatedAt: dispute.updatedAt,
+          disputeStatusId: dispute.disputeStatusId,
+          message: dispute.message,
+          orderId: dispute.orderId,
+        });
       });
 
       setDisputes(newDisputes);
@@ -178,9 +209,30 @@ const AdminDisputesPage = () => {
             return (
               <div
                 key={dispute.id}
-                className="flex flex-col gap-6 rounded-xl border-[1px] p-4"
+                className="flex flex-1 flex-row items-center gap-6 rounded-xl border-[1px] p-4"
               >
-                {dispute.message}
+                <div>
+                  <span className="font-semibold">Dispute ID:</span>{" "}
+                  {dispute.id}
+                </div>
+                <div>
+                  <span className="font-semibold">Status:</span>{" "}
+                  {dispute.disputeStatus.name}
+                </div>
+                <div>
+                  <span className="font-semibold">Order Ref:</span>{" "}
+                  {dispute.orderId}
+                </div>
+                <div>
+                  <span className="font-semibold">Created Date:</span>{" "}
+                  {helper.formatDate(dispute.createdAt, i18n.language)}
+                </div>
+                <Link
+                  href={`/admin/disputes/${dispute.id}`}
+                  className="flex flex-1 justify-end"
+                >
+                  <Button title="View Dispute" level="primary" />
+                </Link>
               </div>
             );
           })}
@@ -199,8 +251,10 @@ const AdminDisputesPage = () => {
           <div className="flex flex-1 justify-center">
             <LoadingSpinner />
           </div>
-        ) : (
+        ) : disputes.length > 0 ? (
           renderDisputes()
+        ) : (
+          <div>No Disputes</div>
         )}
         {disputesCount > disputes.length && (
           <div className="flex items-center justify-center">

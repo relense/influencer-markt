@@ -377,6 +377,7 @@ model Order {
   orderInfluencerCountry Country?         @relation(fields: [countryId], references: [id])
   orderPrice             String
   orderTaxPercentage     Int
+  orderServicePercentage Int
   orderStatus            OrderStatus?     @relation(fields: [orderStatusId], references: [id])
   socialMedia            SocialMedia?     @relation(fields: [socialMediaId], references: [id])
   review                 Review?          @relation(fields: [reviewId], references: [id])

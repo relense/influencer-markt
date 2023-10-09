@@ -4,7 +4,7 @@ import { AdminLayout } from "../../../components/AdminLayout";
 import { AdminProtectedWrapper } from "../../../components/AdminProtectedWrapper";
 import { AdminDisputesPage } from "../../../pageComponents/AdminDisputesPage/AdminDisputesPage";
 
-const AdminInfluencers: NextPage = () => {
+const AdminDisputes: NextPage = () => {
   return (
     <AdminProtectedWrapper>
       <AdminLayout>
@@ -14,4 +14,4 @@ const AdminInfluencers: NextPage = () => {
   );
 };
 
-export default AdminInfluencers;
+export default AdminDisputes;

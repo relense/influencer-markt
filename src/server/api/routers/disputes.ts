@@ -46,6 +46,17 @@ export const DisputesRouter = createTRPCRouter({
           },
         });
 
+        if (dispute) {
+          await ctx.prisma.order.update({
+            where: {
+              id: input.orderId,
+            },
+            data: {
+              disputeId: dispute.id,
+            },
+          });
+        }
+
         buyerOpenedDisputeToOurInboxEmail({
           buyerName: order.buyer?.name || "",
           buyerEmail: order.buyer?.user.email || "",
@@ -81,6 +92,9 @@ export const DisputesRouter = createTRPCRouter({
             disputeStatusId:
               input.disputeStatusId !== -1 ? input.disputeStatusId : undefined,
           },
+          include: {
+            disputeStatus: true,
+          },
           take: 10,
         }),
       ]);
@@ -100,6 +114,9 @@ export const DisputesRouter = createTRPCRouter({
           id: input.searchId ? parseInt(input.searchId) : undefined,
           disputeStatusId:
             input.disputeStatusId !== -1 ? input.disputeStatusId : undefined,
+        },
+        include: {
+          disputeStatus: true,
         },
         take: 10,
         skip: 1,

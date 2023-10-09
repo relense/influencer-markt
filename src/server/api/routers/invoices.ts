@@ -1,5 +1,6 @@
 import { z } from "zod";
 import { createTRPCRouter, protectedProcedure } from "../trpc";
+import { helper } from "../../../utils/helper";
 
 export const InvoicesRouter = createTRPCRouter({
   createInvoice: protectedProcedure
@@ -30,11 +31,21 @@ export const InvoicesRouter = createTRPCRouter({
 
       if (order) {
         //create Buyer invoice
-        const taxValue =
-          parseFloat(order.orderPrice) * (order.orderTaxPercentage / 100);
-        const ourCutValue = (parseFloat(order.orderPrice) * (15 / 100)).toFixed(
-          2
-        );
+        const taxValue = (
+          parseFloat(order.orderPrice) *
+          (order.orderTaxPercentage / 100)
+        ).toFixed(2);
+
+        const ourCutValue = (
+          parseFloat(order.orderPrice) *
+          (order.orderServicePercentage / 100)
+        ).toFixed(2);
+
+        const saleValue = (
+          parseFloat(order.orderPrice) +
+          parseFloat(ourCutValue) +
+          parseFloat(taxValue)
+        ).toFixed(2);
 
         await ctx.prisma.invoice.create({
           data: {
@@ -49,7 +60,9 @@ export const InvoicesRouter = createTRPCRouter({
               },
             },
             taxPercentage: order.orderTaxPercentage,
-            saleValue: parseFloat(order.orderPrice),
+            influencerMarktPercentage: helper.calculateServiceFee() * 100,
+            influencerMarktCutValue: ourCutValue,
+            saleValue: saleValue,
             taxValue: taxValue,
             name: order.buyer?.billing?.name || "",
             tin: order.buyer?.billing?.tin || "",
@@ -75,9 +88,9 @@ export const InvoicesRouter = createTRPCRouter({
               },
             },
             taxPercentage: order.orderTaxPercentage,
-            influencerMarktPercentage: 15,
+            influencerMarktPercentage: helper.calculateServiceFee() * 100,
             influencerMarktCutValue: ourCutValue,
-            saleValue: parseFloat(order.orderPrice),
+            saleValue: saleValue,
             taxValue: taxValue,
             name: order.influencer?.billing?.name || "",
             tin: order.influencer?.billing?.tin || "",
@@ -90,4 +103,20 @@ export const InvoicesRouter = createTRPCRouter({
         });
       }
     }),
+
+  getPurchasesInvoices: protectedProcedure.query(async ({ ctx }) => {
+    const billing = await ctx.prisma.billing.findFirst({
+      where: {
+        profile: {
+          userId: ctx.session.user.id,
+        },
+      },
+    });
+
+    if (billing) {
+      return await ctx.prisma.invoice.findMany({
+        where: { invoiceTypeId: 1, billingId: billing.id },
+      });
+    }
+  }),
 });

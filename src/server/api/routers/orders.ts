@@ -7,6 +7,7 @@ import { buyerAddDetailsEmail } from "../../../emailTemplates/buyerAddDetailsEma
 import { influencerDeliveredOrderEmail } from "../../../emailTemplates/influencerDeliveredEmail/influencerDeliveredEmail";
 import { buyerReviewedOrderEmail } from "../../../emailTemplates/buyerReviewedOrderEmail/buyerReviewedOrderEmail";
 import { buyerOpensDisputeToInfluencerEmail } from "../../../emailTemplates/buyerOpensDisputeToInfluencerEmail/buyerOpensDisputeToInfluencerEmail";
+import { helper } from "../../../utils/helper";
 
 export const OrdersRouter = createTRPCRouter({
   createOrder: protectedProcedure
@@ -63,6 +64,7 @@ export const OrdersRouter = createTRPCRouter({
             orderStatusId: 1,
             socialMediaId: input.platformId,
             dateOfDelivery: input.dateOfDelivery,
+            orderServicePercentage: helper.calculateServiceFee() * 100,
           },
           include: {
             socialMedia: true,
@@ -139,6 +141,7 @@ export const OrdersRouter = createTRPCRouter({
             socialMediaId: input.platformId,
             jobId: input.jobId,
             dateOfDelivery: input.dateOfDelivery,
+            orderServicePercentage: helper.calculateServiceFee() * 100,
           },
           include: {
             influencer: {
@@ -600,6 +603,32 @@ export const OrdersRouter = createTRPCRouter({
         where: { id: input.orderId },
         data: {
           dateOfDelivery: input.dateOfDelivery,
+        },
+      });
+    }),
+
+  getOrderByDisputeId: protectedProcedure
+    .input(
+      z.object({
+        disputeId: z.number(),
+      })
+    )
+    .query(async ({ ctx, input }) => {
+      return ctx.prisma.order.findFirst({
+        where: {
+          disputeId: input.disputeId,
+        },
+        include: {
+          dispute: true,
+          buyer: true,
+          influencer: true,
+          messages: true,
+          socialMedia: true,
+          orderValuePacks: {
+            include: {
+              contentType: true,
+            },
+          },
         },
       });
     }),

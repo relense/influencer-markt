@@ -1,12 +1,13 @@
 import { useState } from "react";
-import { Button } from "../../components/Button";
 import { useForm } from "react-hook-form";
-import { Modal } from "../../components/Modal";
 import { useTranslation } from "react-i18next";
+import { api } from "~/utils/api";
+
+import { Button } from "../../components/Button";
+import { Modal } from "../../components/Modal";
 
 type BillingForm = {
   name: string;
-  address: string;
   TIN: string;
 };
 
@@ -15,6 +16,12 @@ const BillingPage = () => {
 
   const [openBillingDetailsModal, setOpenBillingDetailsModal] =
     useState<boolean>(false);
+
+  const { data: billingInfo, isLoading: isLoadingBillingInfo } =
+    api.billings.getBillingInfo.useQuery();
+
+  const { data: purchasesInvoices, isLoading: isLoadingPurchasesInvoices } =
+    api.invoices.getPurchasesInvoices.useQuery();
 
   const {
     register: registerBillingForm,
@@ -26,60 +33,93 @@ const BillingPage = () => {
   });
 
   const billingInformation = () => {
-    return (
-      <div className="flex flex-1 flex-col gap-6 rounded-xl border-[1px] p-6 shadow-md">
-        <div className="text-xl font-semibold">Blling Information</div>
-        <div className="flex flex-1 flex-col gap-6">
-          <div className="flex flex-col gap-2">
-            <div className="text-lg font-medium">Name</div>
-            <div>Nunix</div>
+    if (billingInfo) {
+      return (
+        <div className="flex flex-1 flex-col gap-6 rounded-xl border-[1px] p-6 shadow-md">
+          <div className="text-xl font-semibold">
+            {t("pages.billing.billingInformation")}
           </div>
-          <div className="flex flex-col gap-2">
-            <div className="text-lg font-medium">Address</div>
-            <div>Nunix</div>
+          <div className="flex flex-1 flex-col gap-6">
+            <div className="flex flex-col gap-2">
+              <div className="text-lg font-medium">
+                {t("pages.billing.billingName")}
+              </div>
+              <div>{billingInfo.name || "No Information"}</div>
+            </div>
+            <div className="flex flex-col gap-2">
+              <div className="text-lg font-medium">
+                {t("pages.billing.billingTaxNumber")}
+              </div>
+              <div>{billingInfo.tin || "No Information"}</div>
+            </div>
           </div>
-          <div className="flex flex-col gap-2">
-            <div className="text-lg font-medium">Tax Identification Number</div>
-            <div>Nunix</div>
+          <div className="flex justify-center">
+            <Button
+              level="primary"
+              size="regular"
+              title={t("pages.billing.update")}
+              onClick={() => setOpenBillingDetailsModal(true)}
+            />
           </div>
         </div>
-        <div className="flex justify-center">
-          <Button level="primary" size="regular" title="Update" />
-        </div>
-      </div>
-    );
+      );
+    }
   };
 
   const balanceInfo = () => {
-    return (
-      <div className="flex flex-1 flex-col gap-6 rounded-xl border-[1px] p-6 shadow-md">
-        <div className="text-xl font-semibold">Balance Information</div>
-        <div className="flex flex-1 flex-col gap-6">
-          <div className="flex flex-col gap-2">
-            <div className="text-lg font-medium">Current Balance Amount</div>
-            <div>Nunix</div>
+    if (billingInfo) {
+      return (
+        <div className="flex flex-1 flex-col gap-6 rounded-xl border-[1px] p-6 shadow-md">
+          <div className="text-xl font-semibold">
+            {t("pages.billing.balanceInformation")}
           </div>
-          <div className="flex flex-col gap-2">
-            <div className="text-lg font-medium">IBAN</div>
-            <div>Nunix</div>
+          <div className="flex flex-1 flex-col gap-6">
+            <div className="flex flex-col gap-2">
+              <div className="text-lg font-medium">
+                {t("pages.billing.currentBalance")}
+              </div>
+              <div>0</div>
+            </div>
+            <div className="flex flex-col gap-2">
+              <div className="text-lg font-medium">
+                {t("pages.billing.iban")}
+              </div>
+              <div>{billingInfo?.iban || "No Information"}</div>
+            </div>
+          </div>
+          <div className="flex justify-center">
+            <Button
+              level="primary"
+              size="regular"
+              title={t("pages.billing.withdraw")}
+            />
           </div>
         </div>
-        <div className="flex justify-center">
-          <Button
-            level="primary"
-            size="regular"
-            title="Withdraw"
-            onClick={() => setOpenBillingDetailsModal(true)}
-          />
+      );
+    }
+  };
+
+  const renderPurchasesInvoices = () => {
+    return (
+      <div className="flex flex-1 flex-col rounded-xl border-[1px] p-6 shadow-md">
+        <div className="text-xl font-semibold">
+          {t("pages.billing.purchasesInvoices")}
+        </div>
+        <div>
+          {purchasesInvoices?.map((item) => {
+            return <div key={item.id}>dadsa</div>;
+          })}
         </div>
       </div>
     );
   };
 
-  const invoices = () => {
+  const renderSalesInvoices = () => {
     return (
       <div className="flex flex-1 flex-col rounded-xl border-[1px] p-6 shadow-md">
-        <div className="text-xl font-semibold">Invoices</div>
+        <div className="text-xl font-semibold">
+          {t("pages.billing.salesInvoices")}
+        </div>
       </div>
     );
   };
@@ -89,11 +129,11 @@ const BillingPage = () => {
       return (
         <div className="flex justify-center ">
           <Modal
-            title={t("pages.orders.billingModalTitle")}
+            title={t("pages.billing.billingModalTitle")}
             button={
               <div className="flex justify-center p-4">
                 <Button
-                  title={t("pages.orders.addBilling")}
+                  title={t("pages.billing.addBilling")}
                   level="terciary"
                   form="form-billing"
                   isLoading={false}
@@ -109,7 +149,7 @@ const BillingPage = () => {
             >
               <div className="flex flex-col gap-4">
                 <div className="text-xl font-medium">
-                  {t("pages.orders.billingName")}
+                  {t("pages.billing.billingName")}
                 </div>
                 <div className="flex w-full flex-col">
                   <input
@@ -123,21 +163,7 @@ const BillingPage = () => {
               </div>
               <div className="flex flex-col gap-4">
                 <div className="text-xl font-medium">
-                  {t("pages.orders.billingAddress")}
-                </div>
-                <div className="flex w-full flex-col">
-                  <input
-                    {...registerBillingForm("address", { maxLength: 200 })}
-                    required
-                    type="text"
-                    className="flex h-14 flex-1 cursor-pointer rounded-lg border-[1px] border-gray3 bg-transparent p-4 placeholder-gray2 placeholder:w-11/12"
-                    autoComplete="off"
-                  />
-                </div>
-              </div>
-              <div className="flex flex-col gap-4">
-                <div className="text-xl font-medium">
-                  {t("pages.orders.billingTaxNumber")}
+                  {t("pages.billing.billingTaxNumber")}
                 </div>
                 <div className="flex w-full flex-col">
                   <input
@@ -163,7 +189,10 @@ const BillingPage = () => {
           {billingInformation()}
           {balanceInfo()}
         </div>
-        {invoices()}
+        <div className="flex flex-1 flex-col gap-6 lg:flex-row">
+          {renderPurchasesInvoices()}
+          {renderSalesInvoices()}
+        </div>
       </div>
       {renderBillingDetailsModal()}
     </>

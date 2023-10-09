@@ -18,7 +18,7 @@ const ToolTip = (params: { content: string; color?: "warning" | "valid" }) => {
   const dropdown = () => {
     return (
       <div
-        className="absolute top-3 z-10 w-auto rounded-lg border-[1px] bg-gray4 px-4 py-4 text-white opacity-90 xs:left-[-35px] xs:w-72 lg:w-96"
+        className="absolute top-3 z-10 w-auto rounded-lg border-[1px] bg-gray4 px-4 py-2 text-white opacity-90 xs:left-[-35px] xs:w-72 lg:w-80 text-sm"
         onClick={() => setShowtip(!showTip)}
       >
         {params.content}

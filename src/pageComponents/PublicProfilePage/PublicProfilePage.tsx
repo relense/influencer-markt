@@ -737,6 +737,20 @@ const PublicProfilePage = (params: {
                 )}
               </div>
               <div className="flex flex-1 justify-between">
+                <div>{t("pages.publicProfilePage.serviceFee")}</div>
+                {selectedValuePacks.length > 0 &&
+                profile?.country?.countryTax ? (
+                  <div>
+                    {helper.formatNumberWithDecimalValue(
+                      sumValuePacks() * helper.calculateServiceFee()
+                    )}
+                    €
+                  </div>
+                ) : (
+                  "-"
+                )}
+              </div>
+              <div className="flex flex-1 justify-between">
                 <div>{t("pages.publicProfilePage.fee")}</div>
                 {selectedValuePacks.length > 0 &&
                 profile?.country?.countryTax ? (
@@ -760,7 +774,8 @@ const PublicProfilePage = (params: {
                   {helper.formatNumberWithDecimalValue(
                     sumValuePacks() +
                       sumValuePacks() *
-                        (profile?.country?.countryTax / 100 || 1)
+                        (profile?.country?.countryTax / 100 || 1) +
+                      sumValuePacks() * helper.calculateServiceFee()
                   )}
                   €
                 </div>

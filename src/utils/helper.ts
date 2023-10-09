@@ -138,6 +138,10 @@ const preloadImages = async (
   }
 };
 
+const calculateServiceFee = () => {
+  return 0.15;
+};
+
 export const helper = {
   formatNumber,
   formatNumberWithDecimalValue,
@@ -147,4 +151,5 @@ export const helper = {
   formatShowtime,
   formatNumberWithKorM,
   preloadImages,
+  calculateServiceFee,
 };

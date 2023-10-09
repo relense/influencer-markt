@@ -238,7 +238,8 @@ const SalesPage = () => {
                 {helper.formatNumberWithDecimalValue(
                   parseFloat(sale.orderPrice) +
                     parseFloat(sale.orderPrice) *
-                      (sale.orderTaxPercentage / 100)
+                      (sale.orderTaxPercentage / 100) +
+                    parseFloat(sale.orderPrice) * helper.calculateServiceFee()
                 ) || 0}
                 €
               </div>

@@ -15,6 +15,7 @@ import { WhatHappensNext } from "../../components/WhatHappensNext";
 import { Modal } from "../../components/Modal";
 import { MessageBoard } from "../../components/MessageBoard";
 import dayjs from "dayjs";
+import { ToolTip } from "../../components/ToolTip";
 
 const SalesDetailsPage = (params: { orderId: number }) => {
   const { t, i18n } = useTranslation();
@@ -159,6 +160,11 @@ const SalesDetailsPage = (params: { orderId: number }) => {
               <div className="font-semibold ">
                 {t(`pages.sales.${sale?.orderStatus?.name || ""}`)}
               </div>
+              {sale?.orderStatus?.id === 9 && (
+                <div className="text-center font-medium">
+                  {t("pages.sales.disputeSubtitle")}
+                </div>
+              )}
               {sale.orderStatusId === 1 && (
                 <div className="flex flex-col gap-6 lg:flex-row lg:gap-12">
                   <Button
@@ -252,13 +258,17 @@ const SalesDetailsPage = (params: { orderId: number }) => {
     if (sale) {
       return (
         <div className="flex flex-col gap-1">
-          <div className="text-lg font-medium">
-            {t("pages.sales.saleTotalTaxes")}
+          <div className="flex justify-center gap-2">
+            <div className="text-lg font-medium">
+              {t("pages.sales.saleTotal")}
+            </div>
+            <ToolTip content={t("pages.sales.includesFees")} />
           </div>
           <div className="text-base font-semibold text-influencer">
             {helper.formatNumberWithDecimalValue(
               parseFloat(sale.orderPrice) +
-                parseFloat(sale.orderPrice) * (sale.orderTaxPercentage / 100)
+                parseFloat(sale.orderPrice) * (sale.orderTaxPercentage / 100) +
+                parseFloat(sale.orderPrice) * helper.calculateServiceFee()
             ) || 0}
             €
           </div>
