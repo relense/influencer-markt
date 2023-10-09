@@ -219,7 +219,7 @@ async function main() {
   //YouTube
   await prisma.socialMedia.create({
     data: {
-      name: "Youtube",
+      name: "YouTube",
       contentTypes: {
         connect: [{ id: 6 }, { id: 7 }, { id: 8 }, { id: 14 }, { id: 9 }],
       },

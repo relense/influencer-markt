@@ -620,8 +620,28 @@ export const OrdersRouter = createTRPCRouter({
         },
         include: {
           dispute: true,
-          buyer: true,
-          influencer: true,
+          buyer: {
+            include: {
+              user: true,
+              gender: true,
+              userSocialMedia: {
+                include: {
+                  socialMedia: true,
+                },
+              },
+            },
+          },
+          influencer: {
+            include: {
+              user: true,
+              gender: true,
+              userSocialMedia: {
+                include: {
+                  socialMedia: true,
+                },
+              },
+            },
+          },
           messages: true,
           socialMedia: true,
           orderValuePacks: {
