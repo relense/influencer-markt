@@ -77,6 +77,60 @@ export const NotificationsRouter = createTRPCRouter({
       }
     }),
 
+  createInfluencerIsRightNotification: protectedProcedure
+    .input(
+      z.object({
+        notifierId: z.number(),
+        entityId: z.number(),
+        senderId: z.number(),
+      })
+    )
+    .mutation(async ({ ctx, input }) => {
+      const notificationTypeId = getNotificationTypeActionId(
+        "orders",
+        "influencerWonDispute"
+      );
+
+      if (notificationTypeId) {
+        return await ctx.prisma.notification.create({
+          data: {
+            actorId: input.senderId,
+            notifierId: input.notifierId,
+            entityId: input.entityId,
+            notificationTypeId: notificationTypeId,
+            notificationStatusId: 1,
+          },
+        });
+      }
+    }),
+
+  createBuyerIsRightNotification: protectedProcedure
+    .input(
+      z.object({
+        notifierId: z.number(),
+        entityId: z.number(),
+        senderId: z.number(),
+      })
+    )
+    .mutation(async ({ ctx, input }) => {
+      const notificationTypeId = getNotificationTypeActionId(
+        "sales",
+        "buyerWonDispute"
+      );
+
+      if (notificationTypeId) {
+        return await ctx.prisma.notification.create({
+          data: {
+            actorId: input.senderId,
+            notifierId: input.notifierId,
+            entityId: input.entityId,
+            notificationTypeId: notificationTypeId,
+            notificationStatusId: 1,
+          },
+        });
+      }
+    }),
+
   getUserToBeReadNotifications: protectedProcedure.query(async ({ ctx }) => {
     return await ctx.prisma.notification.count({
       where: {
@@ -160,6 +214,8 @@ const getNotificationTypeActionId = (
       return 4;
     } else if (notificationAction === "canceled") {
       return 6;
+    } else if (notificationAction === "influencerWonDispute") {
+      return 12;
     }
   } else if (notificationType === "sales") {
     if (notificationAction === "awaitingReply") {
@@ -176,6 +232,8 @@ const getNotificationTypeActionId = (
       return 10;
     } else if (notificationAction === "inDispute") {
       return 11;
+    } else if (notificationAction === "buyerWonDispute") {
+      return 13;
     }
   }
 };

@@ -144,14 +144,16 @@ const Notifications = () => {
                   key={notification.id}
                   className="flex cursor-pointer items-center gap-4 px-4 py-6 hover:bg-white1"
                 >
-                  <Image
-                    src={notification.actorProfilePicture || ""}
-                    alt="profile picture"
-                    width={1000}
-                    height={1000}
-                    quality={100}
-                    className="h-14 w-14 rounded-full object-cover"
-                  />
+                  <div className="flex h-16 w-24">
+                    <Image
+                      src={notification.actorProfilePicture || ""}
+                      alt="profile picture"
+                      width={1000}
+                      height={1000}
+                      quality={100}
+                      className="h-14 w-14 rounded-full object-cover"
+                    />
+                  </div>
                   <div className="flex flex-col gap-2 text-sm">
                     <div>
                       {t(
@@ -242,6 +244,10 @@ const getNotificationMessageKey = (notificationsTypeId: number) => {
     return "salesDeliveryDateUpdate";
   } else if (notificationsTypeId === 11) {
     return "salesInDispute";
+  } else if (notificationsTypeId === 12) {
+    return "ordersInfluencerWonDispute";
+  } else if (notificationsTypeId === 13) {
+    return "salesBuyerWonDispute";
   } else {
     return "";
   }

@@ -26,6 +26,7 @@ type DisputeType = {
   orderId: number;
   disputeStatusId: number;
   disputeStatus: Option;
+  reviewerName: string;
 };
 
 const AdminDisputesPage = () => {
@@ -89,6 +90,7 @@ const AdminDisputesPage = () => {
             disputeStatusId: dispute.disputeStatusId,
             message: dispute.message,
             orderId: dispute.orderId,
+            reviewerName: dispute?.disputeSolver?.name || "",
           };
         })
       );
@@ -118,6 +120,7 @@ const AdminDisputesPage = () => {
           disputeStatusId: dispute.disputeStatusId,
           message: dispute.message,
           orderId: dispute.orderId,
+          reviewerName: dispute?.disputeSolver?.name || "",
         });
       });
 
@@ -209,7 +212,7 @@ const AdminDisputesPage = () => {
             return (
               <div
                 key={dispute.id}
-                className="flex flex-1 flex-row items-center gap-6 rounded-xl border-[1px] p-4"
+                className="flex flex-1 flex-col items-center gap-6 rounded-xl border-[1px] p-4 lg:flex-row"
               >
                 <div>
                   <span className="font-semibold">Dispute ID:</span>{" "}
@@ -227,6 +230,12 @@ const AdminDisputesPage = () => {
                   <span className="font-semibold">Created Date:</span>{" "}
                   {helper.formatDate(dispute.createdAt, i18n.language)}
                 </div>
+                {dispute.reviewerName && (
+                  <div>
+                    <span className="font-semibold">Reviewer:</span>{" "}
+                    {dispute.reviewerName}
+                  </div>
+                )}
                 <Link
                   href={`/admin/disputes/${dispute.id}`}
                   className="flex flex-1 justify-end"

@@ -110,6 +110,8 @@ async function main() {
       { entityType: "sales", entityAction: "reviewed" },
       { entityType: "sales", entityAction: "deliveryDateUpdate" },
       { entityType: "sales", entityAction: "inDispute" },
+      { entityType: "orders", entityAction: "influencerWonDispute" },
+      { entityType: "sales", entityAction: "buyerWonDispute" },
     ],
   });
 

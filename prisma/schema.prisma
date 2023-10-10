@@ -93,6 +93,7 @@ model Profile {
   portfolio              Portfolio[]
   verifiedStatus         VerifiedStatus?   @relation(fields: [verifiedStatusId], references: [id])
   billing                Billing?
+  disputeSolver          Dispute[]
 
   createdJobs        Job[] @relation("jobCreator")
   appliedJobs        Job[] @relation("jobApplicants")
@@ -385,6 +386,7 @@ model Order {
   messages               Message[]
   dispute                Dispute?
   dateOfDelivery         DateTime
+  dateItWasDelivered     DateTime?
   cardReferenceStripe    String?
   invoice                Invoice[]
 
@@ -488,17 +490,22 @@ model Message {
 }
 
 model Dispute {
-  id            Int            @id @default(autoincrement())
-  order         Order          @relation(fields: [orderId], references: [id])
-  message       String         @db.Text
-  disputeStatus DisputeStatus? @relation(fields: [disputeStatusId], references: [id])
+  id                     Int            @id @default(autoincrement())
+  order                  Order          @relation(fields: [orderId], references: [id])
+  message                String         @db.Text
+  disputeStatus          DisputeStatus? @relation(fields: [disputeStatusId], references: [id])
+  disputeSolver          Profile?       @relation(fields: [profileId], references: [id])
+  influencerFault        Boolean?
+  disputeDecisionMessage String?        @db.Text
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  orderId         Int @unique
+  profileId       Int?
+  orderId         Int  @unique
   disputeStatusId Int
 
+  @@index([profileId])
   @@index([orderId])
   @@index([disputeStatusId])
 }

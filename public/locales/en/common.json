@@ -139,7 +139,9 @@
       "salesConfirmed": "{{actor}} confirmed the order. Your payment is available in the billing menu",
       "salesReviewed": "{{actor}} gave a review to your order",
       "salesDeliveryDateUpdate": "{{actor}} updated the order delivery date",
-      "salesInDispute": "{{actor}} opened a dispute for your order delivery. Influencer Markt will analyze the situation"
+      "salesInDispute": "{{actor}} opened a dispute for your order delivery. Influencer Markt will analyze the situation",
+      "ordersInfluencerWonDispute": "We have come to a decision that {{actor}} delivered what was asked to",
+      "salesBuyerWonDispute": "We have come to a decision that {{actor}} didn't receive what he requested"
     },
 
     "orderStatus": {
@@ -151,7 +153,7 @@
       "delivered": "Delivered",
       "canceled": "Canceled",
       "confirmed": "Confirmed",
-      "reviewed": "Reviewed"
+      "reviewed": "Closed"
     }
   },
   "components": {
@@ -895,7 +897,7 @@
       "progressInformation": "Order Progress",
       "reviewTitle": "Buyer Review",
       "orderDetails": "Order Details",
-      "reviewed": "Order Reviewed",
+      "reviewed": "Closed",
       "cancelOrder": "Cancel Order",
       "dateOfDelivery": "Date of Delivery",
       "inDispute": "In Dispute",
@@ -940,7 +942,7 @@
       "reviewTitle": "Review",
       "orderDetails": "Order Details",
       "confirm": "Confirm Order",
-      "reviewed": "Order Reviewed",
+      "reviewed": "Closed",
       "newRequestTitle": "Your order request was sent",
       "newRequestSubtitle": "We will keep you up to date by e-mail.",
       "dateOfDelivery": "Date of Delivery",

@@ -420,6 +420,7 @@ const SalesDetailsPage = (params: { orderId: number }) => {
                       orderId: params.orderId,
                       statusId: 5,
                       language: i18n.language,
+                      deliveredDate: dayjs(Date.now()).toDate(),
                     })
                   }
                   isLoading={updateOrderDeliverIsLoading}

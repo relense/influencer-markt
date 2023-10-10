@@ -18,11 +18,107 @@ import { api } from "~/utils/api";
 
 import { helper } from "../../utils/helper";
 import { faGlobe } from "@fortawesome/free-solid-svg-icons";
+import { useTranslation } from "react-i18next";
+import { Button } from "../../components/Button";
+import { useState } from "react";
+import { Modal } from "../../components/Modal";
 
 const AdminManageDisputesPage = (params: { disputeId: number }) => {
-  const { data: order } = api.orders.getOrderByDisputeId.useQuery({
-    disputeId: params.disputeId,
+  const { i18n } = useTranslation();
+  const ctx = api.useContext();
+
+  const [openInfluencerIsRightModal, setOpenInfluencerIsRightModal] =
+    useState<boolean>(false);
+  const [openBuyerIsRightModal, setOpenBuyerIsRightModal] =
+    useState<boolean>(false);
+  const [decisionMessage, setDecisionMessage] = useState<string>("");
+
+  const { data: order, isLoading: isLoadingOrder } =
+    api.orders.getOrderByDisputeId.useQuery({
+      disputeId: params.disputeId,
+    });
+
+  const { mutate: createInvoice } = api.invoices.createInvoice.useMutation();
+
+  const { mutate: createInfluencerNotification } =
+    api.notifications.createBuyerIsRightNotification.useMutation();
+
+  const { mutate: createBuyerNotification } =
+    api.notifications.createInfluencerIsRightNotification.useMutation();
+
+  const { mutate: updatedOrderClosed, isLoading: isLoadingOrderClosed } =
+    api.orders.updateOrderAndCloseAfterDispute.useMutation({
+      onSuccess: (orderData) => {
+        if (orderData && orderData.dispute?.influencerFault === false) {
+          setOpenInfluencerIsRightModal(false);
+          void createInvoice({ orderId: orderData.id });
+          void createBuyerNotification({
+            entityId: orderData.id,
+            notifierId: order?.buyerId || -1,
+            senderId: order?.influencerId || -1,
+          });
+          void ctx.orders.getOrderByDisputeId.invalidate();
+        } else {
+          setOpenBuyerIsRightModal(false);
+          //MISSING: WHAT DO WE DO HERE. THE BUYER WON. That Means we must give him his money back
+          void createInfluencerNotification({
+            entityId: orderData.id,
+            notifierId: order?.influencerId || -1,
+            senderId: order?.buyerId || -1,
+          });
+          void ctx.orders.getOrderByDisputeId.invalidate();
+        }
+      },
+    });
+
+  const {
+    mutate: updateDisputeToProgress,
+    isLoading: isLoadingUpdatedisputeToProgress,
+  } = api.disputes.updateDisputeToProgress.useMutation({
+    onSuccess: () => {
+      void ctx.orders.getOrderByDisputeId.invalidate();
+    },
   });
+
+  const { mutate: resolveDispute, isLoading: isLoadingResolveDispute } =
+    api.disputes.resolveDispute.useMutation({
+      onSuccess: (dispute) => {
+        if (dispute && dispute?.influencerFault) {
+          updatedOrderClosed({
+            orderId: dispute?.orderId || -1,
+            statusId: 8,
+            language: i18n.language,
+            influencerFault: true,
+          });
+        } else {
+          updatedOrderClosed({
+            orderId: dispute?.orderId || -1,
+            statusId: 8,
+            language: i18n.language,
+            influencerFault: false,
+          });
+        }
+      },
+    });
+
+  const submitInfluencerRight = (e: React.FormEvent) => {
+    e.preventDefault();
+    resolveDispute({
+      decisionMessage,
+      disputeId: params.disputeId,
+      influencerFault: false,
+    });
+  };
+
+  const submitBuyerRight = (e: React.FormEvent) => {
+    e.preventDefault();
+    resolveDispute({
+      decisionMessage,
+      disputeId: params.disputeId,
+      influencerFault: true,
+    });
+    setOpenBuyerIsRightModal(false);
+  };
 
   const socialMediaIcon = (socialMediaName: string): IconDefinition => {
     if (socialMediaName === "Instagram") {
@@ -149,7 +245,7 @@ const AdminManageDisputesPage = (params: { disputeId: number }) => {
               href={`/${order.influencer?.user.username || ""}`}
               className="flex flex-col gap-2"
             >
-              <div className="font-medium text-influencer hover:underline">
+              <div className="font-medium text-influencer-green-dark hover:underline">
                 {order.influencer?.name || ""}
               </div>
             </Link>
@@ -210,7 +306,7 @@ const AdminManageDisputesPage = (params: { disputeId: number }) => {
           <div className="flex w-full border-b-[1px] p-4">
             <div className="text-xl font-semibold ">Order Details</div>
           </div>
-          <div className="flex w-full flex-1 flex-col gap-4 overflow-y-auto p-8">
+          <div className="flex max-h-[500px] min-h-[500px] w-full flex-1 flex-col gap-4 overflow-y-auto p-4 lg:min-h-[500px]">
             <div className="flex flex-col gap-1">
               <div className="text-lg font-medium">Platform</div>
               <div className="font-semibold text-influencer">
@@ -256,6 +352,12 @@ const AdminManageDisputesPage = (params: { disputeId: number }) => {
                 {dayjs(order.dateOfDelivery).format("DD MMMM YYYY")}
               </div>
             </div>
+            <div className="flex flex-col gap-1">
+              <div className="text-lg font-medium">Day it was Delivered</div>
+              <div className="text-base font-semibold text-influencer">
+                {dayjs(order.dateItWasDelivered).format("DD MMMM YYYY")}
+              </div>
+            </div>
             <div className="flex flex-col gap-4">
               <div className="text-lg font-medium">Order Description</div>
               <div className="flex w-full flex-col whitespace-pre-line text-justify">
@@ -275,7 +377,30 @@ const AdminManageDisputesPage = (params: { disputeId: number }) => {
           <div className="flex w-full border-b-[1px] p-4">
             <div className="text-xl font-semibold">Messages</div>
           </div>
-          <div className="flex flex-1 flex-col items-center gap-4 px-4 py-8"></div>
+          <div className="flex max-h-[500px] min-h-[500px] w-full flex-1 flex-col gap-4 overflow-y-auto p-4 lg:min-h-[500px]">
+            {order.messages.map((message) => {
+              return (
+                <div key={message.id} className="flex flex-1 gap-2 text-left">
+                  <div
+                    className={`${
+                      message.senderId === order.buyerId
+                        ? "text-influencer"
+                        : "text-influencer-green-dark"
+                    } font-semibold`}
+                  >
+                    {message?.sender.name || ""}{" "}
+                    {helper.formatFullDateWithTime(
+                      message.createdAt,
+                      i18n.language
+                    )}
+                    <div className="whitespace-pre-line font-normal text-black">
+                      {message.message}
+                    </div>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
         </div>
       );
     }
@@ -285,31 +410,209 @@ const AdminManageDisputesPage = (params: { disputeId: number }) => {
     if (order && order.dispute) {
       return (
         <div className="flex flex-1 flex-col items-center gap-4 rounded-xl border-[1px] text-center lg:overflow-y-hidden">
-          <div className="flex w-full border-b-[1px] p-4">
+          <div className="flex w-full flex-col justify-between gap-2 border-b-[1px] p-4 text-left lg:flex-row">
             <div className="text-xl font-semibold">
-              Dispute Ref: {order?.disputeId}
+              Dispute Ref:{" "}
+              <span className="font-normal">{order?.disputeId}</span>
             </div>
+            {order?.dispute.disputeSolver && (
+              <div className="text-xl font-semibold">
+                Dispute Reviewer:{" "}
+                <span className="font-normal">
+                  {order?.dispute.disputeSolver.name}
+                </span>
+              </div>
+            )}
           </div>
           <div className="flex flex-1 flex-col items-center gap-4 px-4 py-8">
-            <div>{order?.dispute.message}</div>
+            <div className="flex flex-col gap-1">
+              <div className="font-semibold text-influencer">Order Ref</div>
+              <div>{order.id}</div>
+            </div>
+            <div className="flex flex-col gap-1">
+              <div className="font-semibold text-influencer">
+                Dispute Status
+              </div>
+              <div>{order?.dispute?.disputeStatus?.name}</div>
+            </div>
+            <div className="flex flex-col gap-1">
+              <div className="font-semibold text-influencer">
+                Date Dispute Was Created
+              </div>
+              <div>
+                {helper.formatFullDateWithTime(
+                  order?.dispute.createdAt,
+                  i18n.language
+                )}
+              </div>
+            </div>
+            <div className="flex flex-col gap-1">
+              <div className="font-semibold text-influencer">
+                Dispute Complaint
+              </div>
+              <div>{order?.dispute.message}</div>
+            </div>
           </div>
+          {order.dispute.disputeStatusId === 1 && (
+            <div className="flex gap-12 pb-6">
+              <Button
+                title="Start Solving Dispute"
+                level="primary"
+                isLoading={isLoadingUpdatedisputeToProgress}
+                disabled={isLoadingUpdatedisputeToProgress || isLoadingOrder}
+                onClick={() =>
+                  updateDisputeToProgress({
+                    disputeId: params.disputeId,
+                  })
+                }
+              />
+            </div>
+          )}
+          {order.dispute.disputeStatusId === 2 && (
+            <div className="flex gap-6 px-4 pb-6 lg:gap-12">
+              <Button
+                title="Buyer is Right"
+                level="primary"
+                onClick={() => setOpenBuyerIsRightModal(true)}
+                isLoading={isLoadingResolveDispute}
+              />
+              <Button
+                title="Influencer is Right"
+                level="terciary"
+                onClick={() => setOpenInfluencerIsRightModal(true)}
+                isLoading={isLoadingResolveDispute}
+              />
+            </div>
+          )}
+        </div>
+      );
+    }
+  };
+
+  const renderBuyerIsRightModal = () => {
+    if (openBuyerIsRightModal) {
+      return (
+        <div className="flex justify-center ">
+          <Modal
+            button={
+              <div className="flex justify-center p-4">
+                <Button
+                  form="form-buyerRight"
+                  title="Buyer is Right"
+                  level="primary"
+                  isLoading={isLoadingResolveDispute}
+                />
+              </div>
+            }
+            onClose={() => setOpenBuyerIsRightModal(false)}
+          >
+            <form
+              onSubmit={submitBuyerRight}
+              id="form-buyerRight"
+              className="flex flex-col items-center justify-center gap-12 p-4 text-center"
+            >
+              <div className="flex flex-col gap-4 text-center">
+                <div className="font-playfair text-3xl">
+                  Are You Sure The Buyer Is Right?
+                </div>
+                <div className="px-12">
+                  Please check everything that you can to be absolutely sure
+                  that this is the final decision
+                </div>
+                <div className="px-12">
+                  If you give reason to the buyer then the influencer won't be
+                  paid and we will give the money back to the buyer.
+                </div>
+                <div className="px-12">
+                  It is very important that every detail was checked. If you
+                  need please contact the buyer and the influencer to clear any
+                  doubts that are still pending.
+                </div>
+                <textarea
+                  value={decisionMessage}
+                  onChange={(e) => setDecisionMessage(e.target.value)}
+                  className="flex min-h-[20vh] w-full cursor-pointer rounded-lg border-[1px] border-gray3 bg-transparent p-4 placeholder-gray2 placeholder:w-11/12"
+                  autoComplete="off"
+                  placeholder="Addional info so that we later know what happened and why this decision was taken. This will helps in case there is any more issues"
+                />
+              </div>
+            </form>
+          </Modal>
+        </div>
+      );
+    }
+  };
+
+  const renderInfluencerIsRightModal = () => {
+    if (openInfluencerIsRightModal) {
+      return (
+        <div className="flex justify-center ">
+          <Modal
+            button={
+              <div className="flex justify-center p-4">
+                <Button
+                  form="form-influencerRight"
+                  title="Influencer is Right"
+                  level="terciary"
+                  isLoading={isLoadingResolveDispute || isLoadingOrderClosed}
+                />
+              </div>
+            }
+            onClose={() => setOpenInfluencerIsRightModal(false)}
+          >
+            <form
+              onSubmit={submitInfluencerRight}
+              id="form-influencerRight"
+              className="flex flex-col items-center justify-center gap-12 p-4 text-center"
+            >
+              <div className="flex flex-col gap-4 text-center">
+                <div className="font-playfair text-3xl">
+                  Are You sure The Influencer Is Right?
+                </div>
+                <div className="px-12">
+                  Please check everything that you can to be absolutely sure
+                  that this is the final decision
+                </div>
+                <div className="px-12">
+                  If you give reason to the influencer, the influencer will be
+                  paid and the buyer will not get his money back
+                </div>
+                <div className="px-12">
+                  It is very important that every detail was checked. If you
+                  need please contact the buyer and the influencer to clear any
+                  doubts that are still pending.
+                </div>
+              </div>
+              <textarea
+                value={decisionMessage}
+                onChange={(e) => setDecisionMessage(e.target.value)}
+                className="flex min-h-[20vh] w-full cursor-pointer rounded-lg border-[1px] border-gray3 bg-transparent p-4 placeholder-gray2 placeholder:w-11/12"
+                autoComplete="off"
+                placeholder="Addional info so that we later know what happened and why this decision was taken. This will helps in case there is any more issues"
+              />
+            </form>
+          </Modal>
         </div>
       );
     }
   };
 
   return (
-    <div className="flex w-full cursor-default flex-col gap-6 self-center px-4 pb-10 sm:px-12 xl:w-3/4 2xl:w-3/4 3xl:w-2/4">
-      {renderDispute()}
-      <div className="flex flex-col gap-6 lg:flex-row">
-        {renderBuyerProfile()}
-        {renderInfluencerProfile()}
+    <>
+      <div className="flex w-full cursor-default flex-col gap-6 self-center px-4 pb-10 sm:px-12 xl:w-3/4 2xl:w-3/4 3xl:w-2/4">
+        {renderDispute()}
+        <div className="flex flex-col gap-6 lg:flex-row">
+          {renderBuyerProfile()}
+          {renderInfluencerProfile()}
+        </div>
+        <div className="flex flex-col gap-6 lg:flex-row">
+          {renderOrderDetails()}
+          {renderMessages()}
+        </div>
       </div>
-      <div className="flex flex-col gap-6 lg:flex-row">
-        {renderOrderDetails()}
-        {renderMessages()}
-      </div>
-    </div>
+      {renderInfluencerIsRightModal()}
+      {renderBuyerIsRightModal()}
+    </>
   );
 };
 

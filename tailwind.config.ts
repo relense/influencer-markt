@@ -28,6 +28,7 @@ export default {
         "influencer-green-dark": "#67E09B",
         "light-red": "#F8F4F4",
         boxShadow: "#64646f80",
+        white: "#ffffff",
       },
       screens: {
         xxs: "360px",

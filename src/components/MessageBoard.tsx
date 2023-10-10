@@ -248,7 +248,7 @@ const MessageBoard = (params: {
                   key={`${message.id}message`}
                   className="flex w-full flex-col items-start justify-end text-left"
                 >
-                  <div className="m-2 max-w-[75%] rounded-xl bg-boxShadow p-4 text-white">
+                  <div className="m-2 max-w-[75%] whitespace-pre-line rounded-xl bg-boxShadow p-4 text-white">
                     {message.message}
                   </div>
                   <div className="flex justify-end text-sm text-gray2">
@@ -265,7 +265,7 @@ const MessageBoard = (params: {
                   key={`${message.id}message`}
                   className="flex w-full flex-col items-end justify-end text-left"
                 >
-                  <div className="m-2 max-w-[75%] rounded-xl bg-influencer-green-dark p-4 text-white">
+                  <div className="m-2 max-w-[75%] whitespace-pre-line rounded-xl bg-influencer-green-dark p-4 text-white">
                     {message.message}
                   </div>
                   <div className="flex justify-end text-sm text-gray2">
@@ -323,7 +323,7 @@ const MessageBoard = (params: {
             <LoadingSpinner />
           </div>
         ) : (
-          renderMessages()
+          <div>{renderMessages()}</div>
         )}
       </div>
       <div className="flex w-full items-center gap-2 border-t-[1px] p-4">

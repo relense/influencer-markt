@@ -94,6 +94,11 @@ export const DisputesRouter = createTRPCRouter({
           },
           include: {
             disputeStatus: true,
+            disputeSolver: {
+              select: {
+                name: true,
+              },
+            },
           },
           take: 10,
         }),
@@ -117,6 +122,11 @@ export const DisputesRouter = createTRPCRouter({
         },
         include: {
           disputeStatus: true,
+          disputeSolver: {
+            select: {
+              name: true,
+            },
+          },
         },
         take: 10,
         skip: 1,
@@ -124,5 +134,73 @@ export const DisputesRouter = createTRPCRouter({
           id: input.cursor,
         },
       });
+    }),
+
+  updateDisputeToProgress: protectedProcedure
+    .input(
+      z.object({
+        disputeId: z.number(),
+      })
+    )
+    .mutation(async ({ ctx, input }) => {
+      const profile = await ctx.prisma.profile.findFirst({
+        where: {
+          userId: ctx.session.user.id,
+        },
+      });
+
+      if (profile) {
+        return await ctx.prisma.dispute.update({
+          where: { id: input.disputeId },
+          data: {
+            disputeStatus: {
+              connect: {
+                id: 2,
+              },
+            },
+            disputeSolver: {
+              connect: {
+                id: profile.id,
+              },
+            },
+          },
+        });
+      }
+    }),
+
+  resolveDispute: protectedProcedure
+    .input(
+      z.object({
+        disputeId: z.number(),
+        influencerFault: z.boolean(),
+        decisionMessage: z.string(),
+      })
+    )
+    .mutation(async ({ ctx, input }) => {
+      const profile = await ctx.prisma.profile.findFirst({
+        where: {
+          userId: ctx.session.user.id,
+        },
+      });
+
+      if (profile) {
+        return await ctx.prisma.dispute.update({
+          where: {
+            id: input.disputeId,
+          },
+          data: {
+            disputeSolver: {
+              connect: {
+                id: profile.id,
+              },
+            },
+            disputeStatus: {
+              connect: { id: 3 },
+            },
+            disputeDecisionMessage: input.decisionMessage,
+            influencerFault: input.influencerFault,
+          },
+        });
+      }
     }),
 });

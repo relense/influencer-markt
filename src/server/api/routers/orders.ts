@@ -483,6 +483,7 @@ export const OrdersRouter = createTRPCRouter({
         orderId: z.number(),
         statusId: z.number(),
         language: z.string(),
+        deliveredDate: z.date().optional(),
       })
     )
     .mutation(async ({ ctx, input }) => {
@@ -490,6 +491,7 @@ export const OrdersRouter = createTRPCRouter({
         where: { id: input.orderId },
         data: {
           orderStatusId: input.statusId,
+          dateItWasDelivered: input.deliveredDate ? input.deliveredDate : null,
         },
         include: {
           buyer: {
@@ -619,7 +621,16 @@ export const OrdersRouter = createTRPCRouter({
           disputeId: input.disputeId,
         },
         include: {
-          dispute: true,
+          dispute: {
+            include: {
+              disputeStatus: true,
+              disputeSolver: {
+                select: {
+                  name: true,
+                },
+              },
+            },
+          },
           buyer: {
             include: {
               user: true,
@@ -642,7 +653,15 @@ export const OrdersRouter = createTRPCRouter({
               },
             },
           },
-          messages: true,
+          messages: {
+            include: {
+              sender: {
+                select: {
+                  name: true,
+                },
+              },
+            },
+          },
           socialMedia: true,
           orderValuePacks: {
             include: {
@@ -651,5 +670,62 @@ export const OrdersRouter = createTRPCRouter({
           },
         },
       });
+    }),
+
+  updateOrderAndCloseAfterDispute: protectedProcedure
+    .input(
+      z.object({
+        orderId: z.number(),
+        statusId: z.number(),
+        language: z.string(),
+        deliveredDate: z.date().optional(),
+        influencerFault: z.boolean(),
+      })
+    )
+    .mutation(async ({ ctx, input }) => {
+      const order = await ctx.prisma.order.update({
+        where: { id: input.orderId },
+        data: {
+          orderStatusId: input.statusId,
+          dateItWasDelivered: input.deliveredDate ? input.deliveredDate : null,
+        },
+        include: {
+          buyer: {
+            select: {
+              name: true,
+              user: {
+                select: {
+                  email: true,
+                },
+              },
+            },
+          },
+          influencer: {
+            select: {
+              name: true,
+              user: {
+                select: {
+                  email: true,
+                },
+              },
+            },
+          },
+          dispute: {
+            select: {
+              influencerFault: true,
+            },
+          },
+        },
+      });
+
+      if (input.influencerFault) {
+        //influencer email
+        //buyer email
+      } else {
+        //influencer email
+        //buyer email
+      }
+
+      return order;
     }),
 });

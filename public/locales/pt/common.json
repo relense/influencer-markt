@@ -138,7 +138,9 @@
       "salesPaymentsAdded": "{{actor}} adicionou os detalhes de pagamento. Podes trabalhar no pedido",
       "salesConfirmed": "{{actor}} confirmou o pedido. O teu pagamento está disponível no menu de facturação",
       "salesDeliveryDateUpdate": "{{actor}} actualizou a data de entrega do pedido",
-      "salesInDispute": "{{actor}} abriu uma disputa para o pedido entregue. O Influencer Markt vai analisar a situação"
+      "salesInDispute": "{{actor}} abriu uma disputa para o pedido entregue. O Influencer Markt vai analisar a situação",
+      "ordersInfluencerWonDispute": "Chegámos à conclusão de que o {{actor}} entregou o que lhe foi pedido",
+      "salesBuyerWonDispute": "Chegámos à conclusão de que o {{actor}} não recebeu o que pediu"
     },
 
     "orderStatus": {
@@ -150,7 +152,7 @@
       "delivered": "Entregue",
       "canceled": "Cancelado",
       "confirmed": "Confirmada",
-      "reviewed": "Avaliada"
+      "reviewed": "Concluída"
     }
   },
   "components": {
@@ -895,7 +897,7 @@
       "progressInformation": "Progresso do Pedido",
       "reviewTitle": "Avaliação do Comprador",
       "orderDetails": "Detalhes do Pedido",
-      "reviewed": "Pedido Avaliado",
+      "reviewed": "Concluído",
       "cancelOrder": "Cancelar Pedido",
       "dateOfDelivery": "Data de Entrega",
       "inDispute": "Em Disputa",
@@ -940,7 +942,7 @@
       "reviewTitle": "Avaliação",
       "orderDetails": "Detalhes do Pedido",
       "confirm": "Confirmar Pedido",
-      "reviewed": "Pedido Avaliado",
+      "reviewed": "Concluído",
       "newRequestTitle": "O teu pedido foi enviado",
       "newRequestSubtitle": "Manteremos-te informado por e-mail.",
       "dateOfDelivery": "Data de Entrega",
