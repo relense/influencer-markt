@@ -520,8 +520,8 @@ const AdminManageDisputesPage = (params: { disputeId: number }) => {
                   that this is the final decision
                 </div>
                 <div className="px-12">
-                  If you give reason to the buyer then the influencer won't be
-                  paid and we will give the money back to the buyer.
+                  If you give reason to the buyer then the influencer won&apost
+                  be paid and we will give the money back to the buyer.
                 </div>
                 <div className="px-12">
                   It is very important that every detail was checked. If you
