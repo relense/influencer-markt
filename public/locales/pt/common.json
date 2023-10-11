@@ -7,7 +7,7 @@
       "Cannabis": "Canábis",
       "Beauty": "Beleza",
       "Travel": "Viajar",
-      "Health": "Health & Fitness",
+      "Health": "Saúde e Fitness",
       "Food": "Comida & Bebida",
       "Model": "Modelo",
       "Comedy": "Comédia e Entretenimento",
@@ -129,18 +129,21 @@
     },
 
     "notificationsMessages": {
-      "salesAwaitingReply": "{{actor}} fez um pedido que precisa da tua revisão",
-      "ordersRejected": "{{actor}} rejeitou a tua oferta",
-      "ordersAccepted": "{{actor}} aceitou a tua oferta",
-      "ordersDelivered": "{{actor}} entregou o pedido",
-      "salesCanceled": "{{actor}} cancelou o pedido",
-      "ordersCanceled": "{{actor}} cancelou o pedido",
-      "salesPaymentsAdded": "{{actor}} adicionou os detalhes de pagamento. Podes trabalhar no pedido",
-      "salesConfirmed": "{{actor}} confirmou o pedido. O teu pagamento está disponível no menu de facturação",
-      "salesDeliveryDateUpdate": "{{actor}} actualizou a data de entrega do pedido",
-      "salesInDispute": "{{actor}} abriu uma disputa para o pedido entregue. O Influencer Markt vai analisar a situação",
-      "ordersInfluencerWonDispute": "Chegámos à conclusão de que o {{actor}} entregou o que lhe foi pedido",
-      "salesBuyerWonDispute": "Chegámos à conclusão de que o {{actor}} não recebeu o que pediu"
+      "awaitingOrderReply": "{{actor}} fez um pedido que precisa da tua revisão",
+      "orderRejected": "{{actor}} rejeitou a tua oferta",
+      "orderAccepted": "{{actor}} aceitou a tua oferta",
+      "orderDelivered": "{{actor}} entregou o pedido",
+      "orderCanceled": "{{actor}} cancelou o pedido",
+      "saleCanceled": "{{actor}} cancelou o pedido",
+      "orderPaymentsAdded": "{{actor}} adicionou os detalhes de pagamento. Podes trabalhar no pedido",
+      "orderConfirmed": "{{actor}} confirmou o pedido. O teu pagamento está disponível no menu de facturação",
+      "orderReviewed": "{{actor}} deu uma avaliação ao teu pedido",
+      "orderDeliveryDateUpdate": "{{actor}} actualizou a data de entrega do pedido",
+      "orderInDispute": "{{actor}} abriu uma disputa para o pedido entregue. O Influencer Markt vai analisar a situação",
+      "orderInfluencerWonDispute": "Chegámos à conclusão de que o {{actor}} entregou o que lhe foi pedido",
+      "orderBuyerWonDispute": "Chegámos à conclusão de que o {{actor}} não recebeu o que pediu",
+      "orderRectificationBuyer": "",
+      "orderRectificationInfluencer": ""
     },
 
     "orderStatus": {
@@ -857,7 +860,7 @@
       "serviceFee": "Taxa de Serviço",
       "continuePayments": "Continuar os Detalhes de Pagamento",
       "viewOrder": "Ver Detalhes do Pedido",
-      "dateDelivery": "Date de Entrega",
+      "dateDelivery": "Data de Entrega",
       "dateDisclaimer": "A data limite pode ser adiada no futuro depois de fazer a encomenda"
     },
 
@@ -871,7 +874,7 @@
       "saleTotal": "Total do pedido",
       "saleStatus": "Estado do pedido",
       "sale": "Ref da Venda",
-      "saleRequirements": "Requerimentos do pedido",
+      "saleRequirements": "Requisitos do pedido",
       "status": "Estado",
       "sales": "Vendas",
       "noSales": "Não há pedidos",
@@ -902,7 +905,7 @@
       "dateOfDelivery": "Data de Entrega",
       "inDispute": "Em Disputa",
       "includesFees": "Incluí IVA e taxa de serviço",
-      "disputeSubtitle": "Quando chegarmos a uma decisão vamos contarctar-te."
+      "disputeSubtitle": "Quando chegarmos a uma decisão vamos contactar-te."
     },
 
     "orders": {

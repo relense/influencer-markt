@@ -129,19 +129,21 @@
     },
 
     "notificationsMessages": {
-      "salesAwaitingReply": "{{actor}} made a new order that needs your review",
-      "ordersRejected": "{{actor}} rejected your order",
-      "ordersAccepted": "{{actor}} accepted your order",
-      "ordersDelivered": "{{actor }} devilered your order",
-      "salesCanceled": "{{actor}} canceled the order",
-      "ordersCanceled": "{{actor}} canceled the order",
-      "salesPaymentsAdded": "{{actor}} added payment details. You can now work on your order",
-      "salesConfirmed": "{{actor}} confirmed the order. Your payment is available in the billing menu",
-      "salesReviewed": "{{actor}} gave a review to your order",
-      "salesDeliveryDateUpdate": "{{actor}} updated the order delivery date",
-      "salesInDispute": "{{actor}} opened a dispute for your order delivery. Influencer Markt will analyze the situation",
-      "ordersInfluencerWonDispute": "We have come to a decision that {{actor}} delivered what was asked to",
-      "salesBuyerWonDispute": "We have come to a decision that {{actor}} didn't receive what he requested"
+      "awaitingOrderReply": "{{actor}} made a new order that needs your review",
+      "orderRejected": "{{actor}} rejected your order",
+      "orderAccepted": "{{actor}} accepted your order",
+      "orderDelivered": "{{actor }} devilered your order",
+      "orderCanceled": "{{actor}} canceled the order",
+      "saleCanceled": "{{actor}} canceled the order",
+      "orderPaymentsAdded": "{{actor}} added payment details. You can now work on your order",
+      "orderConfirmed": "{{actor}} confirmed the order. Your payment is available in the billing menu",
+      "orderReviewed": "{{actor}} gave a review to your order",
+      "orderDeliveryDateUpdate": "{{actor}} updated the order delivery date",
+      "orderInDispute": "{{actor}} opened a dispute for your order delivery. Influencer Markt will analyze the situation",
+      "orderInfluencerWonDispute": "We have come to a decision that {{actor}} delivered what was asked to",
+      "orderBuyerWonDispute": "We have come to a decision that {{actor}} didn't receive what he requested",
+      "orderRectificationBuyer": "",
+      "orderRectificationInfluencer": ""
     },
 
     "orderStatus": {
@@ -441,7 +443,7 @@
         "offer1.title2": "15% Marketplace Fee",
         "offer1.subTitle2": "No plans, no subscriptions, only 15% transaction fee",
 
-        "offer2.title1": "Messagin System",
+        "offer2.title1": "Messaging System",
         "offer2.subTitle1": "Communication is key for success, the chat is always available",
         "offer2.title2": "List of Favorites",
         "offer2.subTitle2": "Create a list of your most important contacts",
@@ -871,7 +873,7 @@
       "saleTotal": "Order total",
       "saleStatus": "Order status",
       "sale": "Sale Ref",
-      "saleRequirements": "Order requirements",
+      "saleRequirements": "Order Requirements",
       "status": "Status",
       "sales": "Sales",
       "noSales": "There are no orders",

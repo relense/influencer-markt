@@ -30,8 +30,19 @@ export const DisputesRouter = createTRPCRouter({
       });
 
       if (order) {
-        const dispute = await ctx.prisma.dispute.create({
-          data: {
+        const dispute = await ctx.prisma.dispute.upsert({
+          where: {
+            orderId: input.orderId,
+          },
+          update: {
+            message: input.disputeMessage,
+            disputeStatus: {
+              connect: {
+                id: 1,
+              },
+            },
+          },
+          create: {
             order: {
               connect: {
                 id: input.orderId,
@@ -94,11 +105,6 @@ export const DisputesRouter = createTRPCRouter({
           },
           include: {
             disputeStatus: true,
-            disputeSolver: {
-              select: {
-                name: true,
-              },
-            },
           },
           take: 10,
         }),
@@ -122,11 +128,6 @@ export const DisputesRouter = createTRPCRouter({
         },
         include: {
           disputeStatus: true,
-          disputeSolver: {
-            select: {
-              name: true,
-            },
-          },
         },
         take: 10,
         skip: 1,
@@ -147,6 +148,13 @@ export const DisputesRouter = createTRPCRouter({
         where: {
           userId: ctx.session.user.id,
         },
+        include: {
+          user: {
+            select: {
+              username: true,
+            },
+          },
+        },
       });
 
       if (profile) {
@@ -158,11 +166,7 @@ export const DisputesRouter = createTRPCRouter({
                 id: 2,
               },
             },
-            disputeSolver: {
-              connect: {
-                id: profile.id,
-              },
-            },
+            disputeSolver: profile.user.username || "",
           },
         });
       }
@@ -172,7 +176,7 @@ export const DisputesRouter = createTRPCRouter({
     .input(
       z.object({
         disputeId: z.number(),
-        influencerFault: z.boolean(),
+        influencerFault: z.boolean().optional(),
         decisionMessage: z.string(),
       })
     )
@@ -180,6 +184,13 @@ export const DisputesRouter = createTRPCRouter({
       const profile = await ctx.prisma.profile.findFirst({
         where: {
           userId: ctx.session.user.id,
+        },
+        include: {
+          user: {
+            select: {
+              username: true,
+            },
+          },
         },
       });
 
@@ -189,16 +200,14 @@ export const DisputesRouter = createTRPCRouter({
             id: input.disputeId,
           },
           data: {
-            disputeSolver: {
-              connect: {
-                id: profile.id,
-              },
-            },
+            disputeSolver: profile.user.username || "",
             disputeStatus: {
               connect: { id: 3 },
             },
             disputeDecisionMessage: input.decisionMessage,
-            influencerFault: input.influencerFault,
+            influencerFault: input.influencerFault
+              ? input.influencerFault
+              : null,
           },
         });
       }

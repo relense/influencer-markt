@@ -218,7 +218,7 @@ const MessageBoard = (params: {
     if (messages && messages.length > 0) {
       const reverseMessages = [...messages].reverse();
       return (
-        <div className="flex flex-1 flex-col items-end justify-end">
+        <div className="flex flex-1 flex-col">
           {reverseMessages.map((message, index) => {
             const data = [];
 
@@ -246,12 +246,12 @@ const MessageBoard = (params: {
               data.push(
                 <div
                   key={`${message.id}message`}
-                  className="flex w-full flex-col items-start justify-end text-left"
+                  className="flex w-full flex-col items-start text-left"
                 >
                   <div className="m-2 max-w-[75%] whitespace-pre-line rounded-xl bg-boxShadow p-4 text-white">
                     {message.message}
                   </div>
-                  <div className="flex justify-end text-sm text-gray2">
+                  <div className="flex text-sm text-gray2">
                     {helper.formatShowtime(message.createdAt, i18n.language)}
                   </div>
                 </div>
@@ -263,12 +263,12 @@ const MessageBoard = (params: {
               data.push(
                 <div
                   key={`${message.id}message`}
-                  className="flex w-full flex-col items-end justify-end text-left"
+                  className="flex w-full flex-col items-end text-left"
                 >
                   <div className="m-2 max-w-[75%] whitespace-pre-line rounded-xl bg-influencer-green-dark p-4 text-white">
                     {message.message}
                   </div>
-                  <div className="flex justify-end text-sm text-gray2">
+                  <div className="flex text-sm text-gray2">
                     {helper.formatShowtime(message.createdAt, i18n.language)}
                   </div>
                 </div>
@@ -323,7 +323,7 @@ const MessageBoard = (params: {
             <LoadingSpinner />
           </div>
         ) : (
-          <div>{renderMessages()}</div>
+          <div className="flex flex-1">{renderMessages()}</div>
         )}
       </div>
       <div className="flex w-full items-center gap-2 border-t-[1px] p-4">

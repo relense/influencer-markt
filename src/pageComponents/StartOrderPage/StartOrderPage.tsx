@@ -62,7 +62,7 @@ const StartOrderPage = (params: {
 
           createNotification({
             entityId: order.id,
-            notificationTypeAction: "awaitingReply",
+            entityAction: "awaitingOrderReply",
             notifierId: params.orderProfileId,
           });
         }
@@ -71,7 +71,7 @@ const StartOrderPage = (params: {
   );
 
   const { mutate: createNotification } =
-    api.notifications.createSalesNotification.useMutation();
+    api.notifications.createNotification.useMutation();
 
   const {
     register,
@@ -308,7 +308,7 @@ const StartOrderPage = (params: {
 
       const tax = valuePacksSum * ((profile?.country?.countryTax || 0) / 100);
       const serviceFee = valuePacksSum * helper.calculateServiceFee();
-      const total = valuePacksSum + tax  + serviceFee;
+      const total = valuePacksSum + tax + serviceFee;
 
       return (
         <div className="flex flex-col gap-2">

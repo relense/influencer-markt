@@ -34,7 +34,7 @@ const SalesDetailsPage = (params: { orderId: number }) => {
         void createNotification({
           entityId: params.orderId,
           notifierId: sale?.buyerId || -1,
-          notificationTypeAction: "accepted",
+          entityAction: "orderAccepted",
         });
         void ctx.orders.getSaleOrder.invalidate().then(() => {
           saleAnswer === 4 &&
@@ -51,7 +51,7 @@ const SalesDetailsPage = (params: { orderId: number }) => {
         void createNotification({
           entityId: params.orderId,
           notifierId: sale?.buyerId || -1,
-          notificationTypeAction: "rejected",
+          entityAction: "orderRejected",
         });
         void ctx.orders.getSaleOrder.invalidate();
       },
@@ -63,7 +63,7 @@ const SalesDetailsPage = (params: { orderId: number }) => {
         void createNotification({
           entityId: params.orderId,
           notifierId: sale?.buyerId || -1,
-          notificationTypeAction: "canceled",
+          entityAction: "orderCanceled",
         });
         void ctx.orders.getSaleOrder.invalidate();
       },
@@ -76,14 +76,14 @@ const SalesDetailsPage = (params: { orderId: number }) => {
         void createNotification({
           entityId: params.orderId,
           notifierId: sale?.buyerId || -1,
-          notificationTypeAction: "delivered",
+          entityAction: "orderDelivered",
         });
         void ctx.orders.getSaleOrder.invalidate();
       },
     });
 
   const { mutate: createNotification } =
-    api.notifications.createOrdersNotification.useMutation();
+    api.notifications.createNotification.useMutation();
 
   const answerOrderRequest = (type: "accept" | "reject") => {
     if (type === "accept") {
@@ -285,7 +285,9 @@ const SalesDetailsPage = (params: { orderId: number }) => {
             {t("pages.sales.dateOfDelivery")}
           </div>
           <div className="text-base font-semibold text-influencer">
-            {dayjs(sale.dateOfDelivery).format("DD MMMM YYYY")}
+            {dayjs(sale.dateOfDelivery)
+              .locale(i18n.language)
+              .format("DD MMMM YYYY")}
           </div>
         </div>
       );

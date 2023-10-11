@@ -8,6 +8,10 @@ import { influencerDeliveredOrderEmail } from "../../../emailTemplates/influence
 import { buyerReviewedOrderEmail } from "../../../emailTemplates/buyerReviewedOrderEmail/buyerReviewedOrderEmail";
 import { buyerOpensDisputeToInfluencerEmail } from "../../../emailTemplates/buyerOpensDisputeToInfluencerEmail/buyerOpensDisputeToInfluencerEmail";
 import { helper } from "../../../utils/helper";
+import { toBuyerInfluencerIsWrongEmail } from "../../../emailTemplates/toBuyerInfluencerIsWrongEmail/toBuyerInfluencerIsWrongEmail";
+import { toInfluencerInfluencerIsWrongEmail } from "../../../emailTemplates/toInfluencerInfluencerIsWrongEmail/toInfluencerInfluencerIsWrongEmail";
+import { toBuyerInfluencerIsRightEmail } from "../../../emailTemplates/toBuyerInfluencerIsRightEmail/toBuyerInfluencerIsRightEmail";
+import { toInfluencerInfluencerIsRightEmail } from "../../../emailTemplates/toInfluencerInfluencerIsRightEmail/toInfluencerInfluencerIsRightEmail";
 
 export const OrdersRouter = createTRPCRouter({
   createOrder: protectedProcedure
@@ -573,6 +577,47 @@ export const OrdersRouter = createTRPCRouter({
       return order;
     }),
 
+  updateOrderStatusToRectify: protectedProcedure
+    .input(
+      z.object({
+        orderId: z.number(),
+        statusId: z.number(),
+        language: z.string(),
+      })
+    )
+    .mutation(async ({ ctx, input }) => {
+      const order = await ctx.prisma.order.update({
+        where: { id: input.orderId },
+        data: {
+          orderStatusId: input.statusId,
+        },
+        include: {
+          buyer: {
+            select: {
+              name: true,
+              user: {
+                select: {
+                  email: true,
+                },
+              },
+            },
+          },
+          influencer: {
+            select: {
+              name: true,
+              user: {
+                select: {
+                  email: true,
+                },
+              },
+            },
+          },
+        },
+      });
+
+      return order;
+    }),
+
   updateOrderDateOfDelivery: protectedProcedure
     .input(
       z.object({
@@ -604,11 +649,6 @@ export const OrdersRouter = createTRPCRouter({
           dispute: {
             include: {
               disputeStatus: true,
-              disputeSolver: {
-                select: {
-                  name: true,
-                },
-              },
             },
           },
           buyer: {
@@ -658,8 +698,8 @@ export const OrdersRouter = createTRPCRouter({
         orderId: z.number(),
         statusId: z.number(),
         language: z.string(),
-        deliveredDate: z.date().optional(),
         influencerFault: z.boolean(),
+        disputeId: z.number(),
       })
     )
     .mutation(async ({ ctx, input }) => {
@@ -667,7 +707,6 @@ export const OrdersRouter = createTRPCRouter({
         where: { id: input.orderId },
         data: {
           orderStatusId: input.statusId,
-          dateItWasDelivered: input.deliveredDate ? input.deliveredDate : null,
         },
         include: {
           buyer: {
@@ -700,10 +739,38 @@ export const OrdersRouter = createTRPCRouter({
 
       if (input.influencerFault) {
         //influencer email
+        toInfluencerInfluencerIsWrongEmail({
+          orderId: input.orderId,
+          to: order.influencer?.user.email || "",
+          from: process.env.EMAIL_FROM || "",
+          language: input.language,
+          buyerName: order.buyer?.name || "",
+        });
         //buyer email
+        toBuyerInfluencerIsWrongEmail({
+          orderId: input.orderId,
+          to: order.buyer?.user.email || "",
+          from: process.env.EMAIL_FROM || "",
+          language: input.language,
+          influencerName: order.influencer?.name || "",
+        });
       } else {
         //influencer email
+        toInfluencerInfluencerIsRightEmail({
+          orderId: input.orderId,
+          to: order.influencer?.user.email || "",
+          from: process.env.EMAIL_FROM || "",
+          language: input.language,
+          buyerName: order.buyer?.name || "",
+        });
         //buyer email
+        toBuyerInfluencerIsRightEmail({
+          orderId: input.orderId,
+          to: order.buyer?.user.email || "",
+          from: process.env.EMAIL_FROM || "",
+          language: input.language,
+          influencerName: order.influencer?.name || "",
+        });
       }
 
       return order;

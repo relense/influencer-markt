@@ -93,7 +93,6 @@ model Profile {
   portfolio              Portfolio[]
   verifiedStatus         VerifiedStatus?   @relation(fields: [verifiedStatusId], references: [id])
   billing                Billing?
-  disputeSolver          Dispute[]
 
   createdJobs        Job[] @relation("jobCreator")
   appliedJobs        Job[] @relation("jobApplicants")
@@ -441,6 +440,7 @@ model NotificationType {
   notifications Notification[]
 }
 
+
 model NotificationStatus {
   id   Int    @id @default(autoincrement())
   name String
@@ -494,18 +494,16 @@ model Dispute {
   order                  Order          @relation(fields: [orderId], references: [id])
   message                String         @db.Text
   disputeStatus          DisputeStatus? @relation(fields: [disputeStatusId], references: [id])
-  disputeSolver          Profile?       @relation(fields: [profileId], references: [id])
+  disputeSolver          String?
   influencerFault        Boolean?
   disputeDecisionMessage String?        @db.Text
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  profileId       Int?
-  orderId         Int  @unique
+  orderId         Int @unique
   disputeStatusId Int
 
-  @@index([profileId])
   @@index([orderId])
   @@index([disputeStatusId])
 }

@@ -24,6 +24,7 @@ const PublicProfile: NextPage<PublicProfileProps> = ({ username }) => {
         cacheTime: 0,
       }
     );
+
   const { data: profile, isLoading: isLoadingProfile } =
     api.profiles.getProfileMinimumInfo.useQuery({
       username,
@@ -31,13 +32,14 @@ const PublicProfile: NextPage<PublicProfileProps> = ({ username }) => {
 
   useEffect(() => {
     if (
-      !userExists &&
-      isLoadingProfile === false &&
-      isLoadingUserExists === false
+      (!userExists &&
+        isLoadingProfile === false &&
+        isLoadingUserExists === false) ||
+      (isLoadingProfile === false && isLoadingUserExists === false && !profile)
     ) {
       void router.push("/");
     }
-  }, [userExists, router, isLoadingProfile, isLoadingUserExists]);
+  }, [userExists, router, isLoadingProfile, isLoadingUserExists, profile]);
 
   return (
     <>

@@ -41,10 +41,10 @@ const AdminManageDisputesPage = (params: { disputeId: number }) => {
   const { mutate: createInvoice } = api.invoices.createInvoice.useMutation();
 
   const { mutate: createInfluencerNotification } =
-    api.notifications.createBuyerIsRightNotification.useMutation();
+    api.notifications.createNotification.useMutation();
 
   const { mutate: createBuyerNotification } =
-    api.notifications.createInfluencerIsRightNotification.useMutation();
+    api.notifications.createNotification.useMutation();
 
   const { mutate: updatedOrderClosed, isLoading: isLoadingOrderClosed } =
     api.orders.updateOrderAndCloseAfterDispute.useMutation({
@@ -56,6 +56,7 @@ const AdminManageDisputesPage = (params: { disputeId: number }) => {
             entityId: orderData.id,
             notifierId: order?.buyerId || -1,
             senderId: order?.influencerId || -1,
+            entityAction: "orderInfluencerWonDispute",
           });
           void ctx.orders.getOrderByDisputeId.invalidate();
         } else {
@@ -65,6 +66,7 @@ const AdminManageDisputesPage = (params: { disputeId: number }) => {
             entityId: orderData.id,
             notifierId: order?.influencerId || -1,
             senderId: order?.buyerId || -1,
+            entityAction: "orderBuyerWonDispute",
           });
           void ctx.orders.getOrderByDisputeId.invalidate();
         }
@@ -89,6 +91,7 @@ const AdminManageDisputesPage = (params: { disputeId: number }) => {
             statusId: 8,
             language: i18n.language,
             influencerFault: true,
+            disputeId: params.disputeId,
           });
         } else {
           updatedOrderClosed({
@@ -96,10 +99,33 @@ const AdminManageDisputesPage = (params: { disputeId: number }) => {
             statusId: 8,
             language: i18n.language,
             influencerFault: false,
+            disputeId: params.disputeId,
           });
         }
       },
     });
+
+  const { mutate: rectifyDispute, isLoading: isLoadingRectifyDispute } =
+    api.disputes.resolveDispute.useMutation({
+      onSuccess: (order) => {
+        if (order) {
+          updateOrderStatusToRectify({
+            orderId: order.id || -1,
+            statusId: 4,
+            language: i18n.language,
+          });
+        }
+      },
+    });
+
+  const {
+    mutate: updateOrderStatusToRectify,
+    isLoading: isLoadingUpdateOrderStatusToRectify,
+  } = api.orders.updateOrderStatusToRectify.useMutation({
+    onSuccess: () => {
+      void ctx.orders.getOrderByDisputeId.invalidate();
+    },
+  });
 
   const submitInfluencerRight = (e: React.FormEvent) => {
     e.preventDefault();
@@ -221,7 +247,7 @@ const AdminManageDisputesPage = (params: { disputeId: number }) => {
   };
 
   const renderInfluencerProfile = () => {
-    if (order) {
+    if (order && order.dispute) {
       return (
         <div className="flex flex-1 flex-col items-center gap-4 rounded-xl border-[1px] text-center lg:overflow-y-hidden">
           <div className="flex w-full border-b-[1px] p-4">
@@ -293,6 +319,28 @@ const AdminManageDisputesPage = (params: { disputeId: number }) => {
                 );
               })}
             </div>
+            {order?.dispute.disputeStatusId === 2 && (
+              <Button
+                title="Rectify"
+                level="primary"
+                onClick={() =>
+                  rectifyDispute({
+                    decisionMessage,
+                    disputeId: params.disputeId,
+                  })
+                }
+                isLoading={
+                  isLoadingRectifyDispute ||
+                  isLoadingUpdateOrderStatusToRectify ||
+                  isLoadingResolveDispute
+                }
+                disabled={
+                  isLoadingRectifyDispute ||
+                  isLoadingUpdateOrderStatusToRectify ||
+                  isLoadingResolveDispute
+                }
+              />
+            )}
           </div>
         </div>
       );
@@ -408,6 +456,8 @@ const AdminManageDisputesPage = (params: { disputeId: number }) => {
 
   const renderDispute = () => {
     if (order && order.dispute) {
+      const dispute = order.dispute;
+
       return (
         <div className="flex flex-1 flex-col items-center gap-4 rounded-xl border-[1px] text-center lg:overflow-y-hidden">
           <div className="flex w-full flex-col justify-between gap-2 border-b-[1px] p-4 text-left lg:flex-row">
@@ -415,12 +465,10 @@ const AdminManageDisputesPage = (params: { disputeId: number }) => {
               Dispute Ref:{" "}
               <span className="font-normal">{order?.disputeId}</span>
             </div>
-            {order?.dispute.disputeSolver && (
+            {dispute.disputeSolver && (
               <div className="text-xl font-semibold">
                 Dispute Reviewer:{" "}
-                <span className="font-normal">
-                  {order?.dispute.disputeSolver.name}
-                </span>
+                <span className="font-normal">{dispute.disputeSolver}</span>
               </div>
             )}
           </div>
@@ -433,7 +481,7 @@ const AdminManageDisputesPage = (params: { disputeId: number }) => {
               <div className="font-semibold text-influencer">
                 Dispute Status
               </div>
-              <div>{order?.dispute?.disputeStatus?.name}</div>
+              <div>{dispute.disputeStatus?.name}</div>
             </div>
             <div className="flex flex-col gap-1">
               <div className="font-semibold text-influencer">
@@ -441,7 +489,18 @@ const AdminManageDisputesPage = (params: { disputeId: number }) => {
               </div>
               <div>
                 {helper.formatFullDateWithTime(
-                  order?.dispute.createdAt,
+                  dispute.createdAt,
+                  i18n.language
+                )}
+              </div>
+            </div>
+            <div className="flex flex-col gap-1">
+              <div className="font-semibold text-influencer">
+                Date Dispute Last Update
+              </div>
+              <div>
+                {helper.formatFullDateWithTime(
+                  dispute.updatedAt,
                   i18n.language
                 )}
               </div>
@@ -450,10 +509,18 @@ const AdminManageDisputesPage = (params: { disputeId: number }) => {
               <div className="font-semibold text-influencer">
                 Dispute Complaint
               </div>
-              <div>{order?.dispute.message}</div>
+              <div>{dispute.message}</div>
             </div>
+            {dispute.disputeDecisionMessage && (
+              <div className="flex flex-col gap-1">
+                <div className="font-semibold text-influencer">
+                  Dispute Decision Message
+                </div>
+                <div>{dispute.disputeDecisionMessage}</div>
+              </div>
+            )}
           </div>
-          {order.dispute.disputeStatusId === 1 && (
+          {dispute.disputeStatusId === 1 && (
             <div className="flex gap-12 pb-6">
               <Button
                 title="Start Solving Dispute"
@@ -468,19 +535,21 @@ const AdminManageDisputesPage = (params: { disputeId: number }) => {
               />
             </div>
           )}
-          {order.dispute.disputeStatusId === 2 && (
+          {dispute.disputeStatusId === 2 && (
             <div className="flex gap-6 px-4 pb-6 lg:gap-12">
               <Button
                 title="Buyer is Right"
                 level="primary"
                 onClick={() => setOpenBuyerIsRightModal(true)}
-                isLoading={isLoadingResolveDispute}
+                isLoading={isLoadingResolveDispute || isLoadingRectifyDispute}
+                disabled={isLoadingResolveDispute || isLoadingRectifyDispute}
               />
               <Button
                 title="Influencer is Right"
                 level="terciary"
                 onClick={() => setOpenInfluencerIsRightModal(true)}
-                isLoading={isLoadingResolveDispute}
+                isLoading={isLoadingResolveDispute || isLoadingRectifyDispute}
+                disabled={isLoadingResolveDispute || isLoadingRectifyDispute}
               />
             </div>
           )}

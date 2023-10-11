@@ -68,7 +68,7 @@ const OrderDetailsPage = (params: {
         void createNotification({
           entityId: params.orderId,
           notifierId: order?.influencerId || -1,
-          notificationTypeAction: "paymentAdded",
+          entityAction: "orderPaymentsAdded",
         });
         void ctx.orders.getBuyerOrder.invalidate();
       },
@@ -80,7 +80,7 @@ const OrderDetailsPage = (params: {
         void createNotification({
           entityId: params.orderId,
           notifierId: order?.influencerId || -1,
-          notificationTypeAction: "canceled",
+          entityAction: "orderCanceled",
         });
         void ctx.orders.getBuyerOrder.invalidate();
       },
@@ -93,7 +93,7 @@ const OrderDetailsPage = (params: {
         void createNotification({
           entityId: params.orderId,
           notifierId: order?.influencerId || -1,
-          notificationTypeAction: "confirmed",
+          entityAction: "orderConfirmed",
         });
         void createInvoice({ orderId: params.orderId });
         void ctx.orders.getBuyerOrder.invalidate();
@@ -106,7 +106,7 @@ const OrderDetailsPage = (params: {
         void createNotification({
           entityId: params.orderId,
           notifierId: order?.influencerId || -1,
-          notificationTypeAction: "reviewed",
+          entityAction: "orderReviewed",
         });
         void ctx.orders.getBuyerOrder.invalidate();
       },
@@ -120,7 +120,7 @@ const OrderDetailsPage = (params: {
         void createNotification({
           entityId: params.orderId,
           notifierId: order?.influencerId || -1,
-          notificationTypeAction: "deliveryDateUpdate",
+          entityAction: "orderDeliveryDateUpdate",
         });
       },
     });
@@ -134,7 +134,7 @@ const OrderDetailsPage = (params: {
       void createNotification({
         entityId: params.orderId,
         notifierId: order?.influencerId || -1,
-        notificationTypeAction: "inDispute",
+        entityAction: "orderInDispute",
       });
       void ctx.orders.getBuyerOrder.invalidate();
       toast.success(t("pages.orders.disputeOpenToast"), {
@@ -144,7 +144,7 @@ const OrderDetailsPage = (params: {
   });
 
   const { mutate: createNotification } =
-    api.notifications.createSalesNotification.useMutation();
+    api.notifications.createNotification.useMutation();
 
   const { mutate: createReview, isLoading: isLoadingCreateReview } =
     api.reviews.createReview.useMutation({
@@ -438,7 +438,9 @@ const OrderDetailsPage = (params: {
               }
             >
               <div className="text-base font-semibold text-influencer">
-                {dayjs(dateOfDelivery).format("DD MMMM YYYY")}
+                {dayjs(dateOfDelivery)
+                  .locale(i18n.language)
+                  .format("DD MMMM YYYY")}
               </div>
               {order?.orderStatus?.id !== 6 &&
                 order?.orderStatus?.id !== 7 &&

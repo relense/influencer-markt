@@ -8,20 +8,23 @@ import { api } from "~/utils/api";
 import { LoadingSpinner } from "./LoadingSpinner";
 import { helper } from "../utils/helper";
 import Link from "next/link";
+import { useRouter } from "next/router";
 
 type Notification = {
   id: number;
   actorProfilePicture: string;
   notificationTypeId: number;
-  entityId: number;
   notificationEntity: string;
   actorName: string;
   notificationCreatedAt: Date;
+  notificationTypeAction: string;
+  entityId: number;
 };
 
 const Notifications = () => {
   const { t, i18n } = useTranslation();
   const containerRef = useRef<HTMLDivElement>(null);
+  const router = useRouter();
 
   const [notifications, setNotifications] = useState<Notification[]>([]);
   const [notificationsTotal, setNotificationsTotal] = useState<number>(0);
@@ -45,7 +48,6 @@ const Notifications = () => {
     { cursor: notificationsCursor },
     { enabled: false }
   );
-
   useEffect(() => {
     if (notificationsData) {
       setNotificationsTotal(notificationsData[0]);
@@ -57,8 +59,9 @@ const Notifications = () => {
             id: notification.id,
             notificationCreatedAt: notification.createdAt,
             notificationTypeId: notification.notificationTypeId,
-            entityId: notification.entityId,
             notificationEntity: notification.notificationType.entityType,
+            entityId: notification.entityId,
+            notificationTypeAction: notification.notificationType.entityAction,
           };
         })
       );
@@ -85,6 +88,7 @@ const Notifications = () => {
           notificationTypeId: notification.notificationTypeId,
           entityId: notification.entityId,
           notificationEntity: notification.notificationType.entityType,
+          notificationTypeAction: notification.notificationType.entityAction,
         });
       });
 
@@ -143,23 +147,31 @@ const Notifications = () => {
                   href={`/${notification.notificationEntity}/${notification.entityId}`}
                   key={notification.id}
                   className="flex cursor-pointer items-center gap-4 px-4 py-6 hover:bg-white1"
+                  onClick={() => {
+                    if (
+                      router.asPath ===
+                      `/${notification.notificationEntity}/${notification.entityId}`
+                    ) {
+                      router.reload();
+                    }
+                  }}
                 >
-                  <div className="flex h-16 w-24">
+                  <div className="flex h-16 w-16">
                     <Image
                       src={notification.actorProfilePicture || ""}
                       alt="profile picture"
-                      width={1000}
-                      height={1000}
+                      width={64}
+                      height={80}
                       quality={100}
                       className="h-14 w-14 rounded-full object-cover"
                     />
                   </div>
-                  <div className="flex flex-col gap-2 text-sm">
+                  <div className="flex flex-1 flex-col gap-2 text-sm">
                     <div>
                       {t(
-                        `general.notificationsMessages.${getNotificationMessageKey(
-                          notification.notificationTypeId
-                        )}`,
+                        `general.notificationsMessages.
+                          ${notification.notificationTypeAction}
+                        }`,
                         { actor: notification.actorName }
                       )}
                     </div>
@@ -220,35 +232,3 @@ const Notifications = () => {
 };
 
 export { Notifications };
-
-const getNotificationMessageKey = (notificationsTypeId: number) => {
-  if (notificationsTypeId === 1) {
-    return "salesAwaitingReply";
-  } else if (notificationsTypeId === 2) {
-    return "ordersRejected";
-  } else if (notificationsTypeId === 3) {
-    return "ordersAccepted";
-  } else if (notificationsTypeId === 4) {
-    return "ordersDelivered";
-  } else if (notificationsTypeId === 5) {
-    return "salesCanceled";
-  } else if (notificationsTypeId === 6) {
-    return "ordersCanceled";
-  } else if (notificationsTypeId === 7) {
-    return "salesPaymentsAdded";
-  } else if (notificationsTypeId === 8) {
-    return "salesConfirmed";
-  } else if (notificationsTypeId === 9) {
-    return "salesReviewed";
-  } else if (notificationsTypeId === 10) {
-    return "salesDeliveryDateUpdate";
-  } else if (notificationsTypeId === 11) {
-    return "salesInDispute";
-  } else if (notificationsTypeId === 12) {
-    return "ordersInfluencerWonDispute";
-  } else if (notificationsTypeId === 13) {
-    return "salesBuyerWonDispute";
-  } else {
-    return "";
-  }
-};

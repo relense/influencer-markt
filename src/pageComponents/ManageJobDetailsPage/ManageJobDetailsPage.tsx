@@ -188,7 +188,7 @@ const ManageJobDetailsPage = (params: {
         if (order && order.influencerId) {
           createNotification({
             entityId: order.id,
-            notificationTypeAction: "awaitingReply",
+            entityAction: "awaitingOrderReply",
             notifierId: order.influencerId,
           });
 
@@ -201,7 +201,7 @@ const ManageJobDetailsPage = (params: {
     });
 
   const { mutate: createNotification } =
-    api.notifications.createSalesNotification.useMutation();
+    api.notifications.createNotification.useMutation();
 
   useEffect(() => {
     if (jobApplicants) {

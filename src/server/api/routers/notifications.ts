@@ -2,130 +2,54 @@ import { z } from "zod";
 import { createTRPCRouter, protectedProcedure } from "../trpc";
 
 export const NotificationsRouter = createTRPCRouter({
-  createOrdersNotification: protectedProcedure
+  createNotification: protectedProcedure
     .input(
       z.object({
         notifierId: z.number(),
         entityId: z.number(),
-        notificationTypeAction: z.union([
-          z.literal("rejected"),
-          z.literal("accepted"),
-          z.literal("canceled"),
-          z.literal("delivered"),
+        senderId: z.number().optional(),
+        entityAction: z.union([
+          z.literal("awaitingOrderReply"),
+          z.literal("orderRejected"),
+          z.literal("orderAccepted"),
+          z.literal("orderDelivered"),
+          z.literal("orderCanceled"),
+          z.literal("saleCanceled"),
+          z.literal("orderPaymentsAdded"),
+          z.literal("orderConfirmed"),
+          z.literal("orderReviewed"),
+          z.literal("orderDeliveryDateUpdate"),
+          z.literal("orderInDispute"),
+          z.literal("orderInfluencerWonDispute"),
+          z.literal("orderBuyerWonDispute"),
         ]),
       })
     )
     .mutation(async ({ ctx, input }) => {
+      const whereCondition = input.senderId
+        ? { id: input.senderId }
+        : { userId: ctx.session.user.id };
+
       const actor = await ctx.prisma.profile.findUnique({
-        where: { userId: ctx.session.user.id },
+        where: whereCondition,
       });
 
-      const notificationTypeId = getNotificationTypeActionId(
-        "orders",
-        input.notificationTypeAction
-      );
+      const entityType = await ctx.prisma.notificationType.findFirst({
+        where: {
+          entityType: {
+            contains: input.entityAction,
+          },
+        },
+      });
 
-      if (actor && notificationTypeId) {
+      if (actor && entityType) {
         return await ctx.prisma.notification.create({
           data: {
             actorId: actor?.id,
             notifierId: input.notifierId,
-            entityId: input.entityId,
-            notificationTypeId: notificationTypeId,
+            notificationTypeId: entityType.id,
             notificationStatusId: 1,
-          },
-        });
-      }
-    }),
-
-  createSalesNotification: protectedProcedure
-    .input(
-      z.object({
-        notifierId: z.number(),
-        entityId: z.number(),
-        notificationTypeAction: z.union([
-          z.literal("awaitingReply"),
-          z.literal("paymentAdded"),
-          z.literal("confirmed"),
-          z.literal("canceled"),
-          z.literal("reviewed"),
-          z.literal("deliveryDateUpdate"),
-          z.literal("inDispute"),
-        ]),
-      })
-    )
-    .mutation(async ({ ctx, input }) => {
-      const actor = await ctx.prisma.profile.findUnique({
-        where: { userId: ctx.session.user.id },
-      });
-
-      const notificationTypeId = getNotificationTypeActionId(
-        "sales",
-        input.notificationTypeAction
-      );
-
-      if (actor && notificationTypeId) {
-        return await ctx.prisma.notification.create({
-          data: {
-            actorId: actor?.id,
-            notifierId: input.notifierId,
             entityId: input.entityId,
-            notificationTypeId: notificationTypeId,
-            notificationStatusId: 1,
-          },
-        });
-      }
-    }),
-
-  createInfluencerIsRightNotification: protectedProcedure
-    .input(
-      z.object({
-        notifierId: z.number(),
-        entityId: z.number(),
-        senderId: z.number(),
-      })
-    )
-    .mutation(async ({ ctx, input }) => {
-      const notificationTypeId = getNotificationTypeActionId(
-        "orders",
-        "influencerWonDispute"
-      );
-
-      if (notificationTypeId) {
-        return await ctx.prisma.notification.create({
-          data: {
-            actorId: input.senderId,
-            notifierId: input.notifierId,
-            entityId: input.entityId,
-            notificationTypeId: notificationTypeId,
-            notificationStatusId: 1,
-          },
-        });
-      }
-    }),
-
-  createBuyerIsRightNotification: protectedProcedure
-    .input(
-      z.object({
-        notifierId: z.number(),
-        entityId: z.number(),
-        senderId: z.number(),
-      })
-    )
-    .mutation(async ({ ctx, input }) => {
-      const notificationTypeId = getNotificationTypeActionId(
-        "sales",
-        "buyerWonDispute"
-      );
-
-      if (notificationTypeId) {
-        return await ctx.prisma.notification.create({
-          data: {
-            actorId: input.senderId,
-            notifierId: input.notifierId,
-            entityId: input.entityId,
-            notificationTypeId: notificationTypeId,
-            notificationStatusId: 1,
           },
         });
       }
@@ -200,40 +124,3 @@ export const NotificationsRouter = createTRPCRouter({
     });
   }),
 });
-
-const getNotificationTypeActionId = (
-  notificationType: "orders" | "sales",
-  notificationAction: string
-) => {
-  if (notificationType === "orders") {
-    if (notificationAction === "rejected") {
-      return 2;
-    } else if (notificationAction === "accepted") {
-      return 3;
-    } else if (notificationAction === "delivered") {
-      return 4;
-    } else if (notificationAction === "canceled") {
-      return 6;
-    } else if (notificationAction === "influencerWonDispute") {
-      return 12;
-    }
-  } else if (notificationType === "sales") {
-    if (notificationAction === "awaitingReply") {
-      return 1;
-    } else if (notificationAction === "canceled") {
-      return 5;
-    } else if (notificationAction === "paymentAdded") {
-      return 7;
-    } else if (notificationAction === "confirmed") {
-      return 8;
-    } else if (notificationAction === "reviewed") {
-      return 9;
-    } else if (notificationAction === "deliveryDateUpdate") {
-      return 10;
-    } else if (notificationAction === "inDispute") {
-      return 11;
-    } else if (notificationAction === "buyerWonDispute") {
-      return 13;
-    }
-  }
-};

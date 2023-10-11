@@ -90,7 +90,7 @@ const AdminDisputesPage = () => {
             disputeStatusId: dispute.disputeStatusId,
             message: dispute.message,
             orderId: dispute.orderId,
-            reviewerName: dispute?.disputeSolver?.name || "",
+            reviewerName: dispute?.disputeSolver || "",
           };
         })
       );
@@ -120,7 +120,7 @@ const AdminDisputesPage = () => {
           disputeStatusId: dispute.disputeStatusId,
           message: dispute.message,
           orderId: dispute.orderId,
-          reviewerName: dispute?.disputeSolver?.name || "",
+          reviewerName: dispute?.disputeSolver || "",
         });
       });
 
