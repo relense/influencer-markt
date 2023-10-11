@@ -82,7 +82,7 @@ const formatFullDateWithTime = (
   date: Date | number,
   locale: string
 ): string => {
-  return dayjs(date).locale(locale).format("DD MMMM YYYY - HH:MM ");
+  return dayjs(date).locale(locale).format("DD MMMM YYYY - HH:mm ");
 };
 
 const formatOnlyDate = (date: Date | number, locale: string): string => {
@@ -90,7 +90,7 @@ const formatOnlyDate = (date: Date | number, locale: string): string => {
 };
 
 const formatShowtime = (date: Date | number, locale: string): string => {
-  return dayjs(date).locale(locale).format("HH:MM ");
+  return dayjs(date).locale(locale).format("HH:mm ");
 };
 
 const formatNumberWithKorM = (number: number) => {

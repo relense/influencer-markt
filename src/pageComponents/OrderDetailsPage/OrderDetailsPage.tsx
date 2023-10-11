@@ -153,6 +153,7 @@ const OrderDetailsPage = (params: {
           orderId: params.orderId,
           statusId: 8,
           language: i18n.language,
+          deliveredDate: order?.dateItWasDelivered || undefined,
         });
         reset();
         setOpenReviewModal(false);
@@ -167,6 +168,7 @@ const OrderDetailsPage = (params: {
           orderId: params.orderId,
           statusId: 9,
           language: i18n.language,
+          deliveredDate: order?.dateItWasDelivered || undefined,
         });
         setOpenDisputeModal(false);
       },
@@ -648,6 +650,7 @@ const OrderDetailsPage = (params: {
                       orderId: order.id,
                       statusId: 6,
                       language: i18n.language,
+                      deliveredDate: order?.dateItWasDelivered || undefined,
                     })
                   }
                   isLoading={isLoadingUpdateConfirmed}

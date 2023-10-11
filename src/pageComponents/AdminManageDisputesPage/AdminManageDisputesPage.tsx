@@ -40,10 +40,7 @@ const AdminManageDisputesPage = (params: { disputeId: number }) => {
 
   const { mutate: createInvoice } = api.invoices.createInvoice.useMutation();
 
-  const { mutate: createInfluencerNotification } =
-    api.notifications.createNotification.useMutation();
-
-  const { mutate: createBuyerNotification } =
+  const { mutate: createNotification } =
     api.notifications.createNotification.useMutation();
 
   const { mutate: updatedOrderClosed, isLoading: isLoadingOrderClosed } =
@@ -52,22 +49,24 @@ const AdminManageDisputesPage = (params: { disputeId: number }) => {
         if (orderData && orderData.dispute?.influencerFault === false) {
           setOpenInfluencerIsRightModal(false);
           void createInvoice({ orderId: orderData.id });
-          void createBuyerNotification({
+          void createNotification({
             entityId: orderData.id,
             notifierId: order?.buyerId || -1,
             senderId: order?.influencerId || -1,
             entityAction: "orderInfluencerWonDispute",
           });
+          //INFLUENCER NOTIFICAITON BEING TOLD HE WON
           void ctx.orders.getOrderByDisputeId.invalidate();
         } else {
           setOpenBuyerIsRightModal(false);
           //MISSING: WHAT DO WE DO HERE. THE BUYER WON. That Means we must give him his money back
-          void createInfluencerNotification({
+          void createNotification({
             entityId: orderData.id,
             notifierId: order?.influencerId || -1,
             senderId: order?.buyerId || -1,
             entityAction: "orderBuyerWonDispute",
           });
+          //BUYER NOTIFICAITON BEING TOLD THAT HE LOST
           void ctx.orders.getOrderByDisputeId.invalidate();
         }
       },
@@ -107,10 +106,10 @@ const AdminManageDisputesPage = (params: { disputeId: number }) => {
 
   const { mutate: rectifyDispute, isLoading: isLoadingRectifyDispute } =
     api.disputes.resolveDispute.useMutation({
-      onSuccess: (order) => {
-        if (order) {
+      onSuccess: (dispute) => {
+        if (dispute) {
           updateOrderStatusToRectify({
-            orderId: order.id || -1,
+            orderId: dispute.orderId || -1,
             statusId: 4,
             language: i18n.language,
           });
@@ -122,8 +121,26 @@ const AdminManageDisputesPage = (params: { disputeId: number }) => {
     mutate: updateOrderStatusToRectify,
     isLoading: isLoadingUpdateOrderStatusToRectify,
   } = api.orders.updateOrderStatusToRectify.useMutation({
-    onSuccess: () => {
-      void ctx.orders.getOrderByDisputeId.invalidate();
+    onSuccess: (order) => {
+      if (order) {
+        //INFLUENCER NOTIFICATION
+        void createNotification({
+          entityId: order.id,
+          notifierId: order?.influencerId || -1,
+          senderId: order?.buyerId || -1,
+          entityAction: "orderRectifiedInfluencer",
+        });
+
+        //BUYER NOTIFICATION
+        void createNotification({
+          entityId: order.id,
+          notifierId: order?.buyerId || -1,
+          senderId: order?.influencerId || -1,
+          entityAction: "orderRectifiedBuyer",
+        });
+
+        void ctx.orders.getOrderByDisputeId.invalidate();
+      }
     },
   });
 

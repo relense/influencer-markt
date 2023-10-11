@@ -22,6 +22,8 @@ export const NotificationsRouter = createTRPCRouter({
           z.literal("orderInDispute"),
           z.literal("orderInfluencerWonDispute"),
           z.literal("orderBuyerWonDispute"),
+          z.literal("orderRectifiedInfluencer"),
+          z.literal("orderRectifiedBuyer"),
         ]),
       })
     )

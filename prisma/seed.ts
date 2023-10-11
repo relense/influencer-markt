@@ -112,8 +112,8 @@ async function main() {
       { entityType: "sales", entityAction: "orderInDispute" },
       { entityType: "orders", entityAction: "orderInfluencerWonDispute" },
       { entityType: "sales", entityAction: "orderBuyerWonDispute" },
-      { entityType: "orders", entityAction: "orderRectificationBuyer" },
-      { entityType: "sales", entityAction: "orderRectificationInfluencer" },
+      { entityType: "orders", entityAction: "orderRectifiedBuyer" },
+      { entityType: "sales", entityAction: "orderRectifiedInfluencer" },
     ],
   });
 
