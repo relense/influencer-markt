@@ -586,10 +586,15 @@ export const OrdersRouter = createTRPCRouter({
       })
     )
     .mutation(async ({ ctx, input }) => {
+      const currentDate = new Date(); // Create a new Date object for the current date and time
+      const newDate = new Date(currentDate);
+      newDate.setDate(currentDate.getDate() + 2);
+
       const order = await ctx.prisma.order.update({
         where: { id: input.orderId },
         data: {
           orderStatusId: input.statusId,
+          dateOfDelivery: newDate,
         },
         include: {
           buyer: {
