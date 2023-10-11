@@ -142,8 +142,8 @@
       "orderInDispute": "{{actor}} opened a dispute for your order delivery. Influencer Markt will analyze the situation",
       "orderInfluencerWonDispute": "We have come to a decision that {{actor}} delivered what was asked to",
       "orderBuyerWonDispute": "We have come to a decision that {{actor}} didn't receive what he requested",
-      "orderRectifiedBuyer": "After deliberation, we are giving {{actor}} the opportunity to rectify the delivery",
-      "orderRectifiedInfluencer": "After deliberation, we are giving you the chance to rectify your delivery"
+      "orderRectifiedBuyer": "After deliberation, we are giving {{actor}} the opportunity to rectify the order and 2 days to deliver",
+      "orderRectifiedInfluencer": "After deliberation, we are giving you the chance to rectify the order and 2 days to deliver"
     },
 
     "orderStatus": {

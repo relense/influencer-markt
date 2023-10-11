@@ -142,8 +142,8 @@
       "orderInDispute": "{{actor}} abriu uma disputa para o pedido entregue. O Influencer Markt vai analisar a situação",
       "orderInfluencerWonDispute": "Chegámos à conclusão de que o {{actor}} entregou o que lhe foi pedido",
       "orderBuyerWonDispute": "Chegámos à conclusão de que o {{actor}} não recebeu o que pediu",
-      "orderRectifiedBuyer": "Depois de ponderar, estamos a dar a {{actor}} a oportunidade de corrigir a entrega",
-      "orderRectifiedInfluencer": "Depois de ponderar, estamos a dar-te a oportunidade de corrigir a entrega"
+      "orderRectifiedBuyer": "Depois de ponderar, estamos a dar a {{actor}} a oportunidade de corrigir o pedido e entregar daqui a 2 dias",
+      "orderRectifiedInfluencer": "Depois de ponderar, estamos a dar-te a oportunidade de corrigir o pedido e entregar daqui a 2 dias"
     },
 
     "orderStatus": {
