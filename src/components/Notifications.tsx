@@ -169,9 +169,7 @@ const Notifications = () => {
                   <div className="flex flex-1 flex-col gap-2 text-sm">
                     <div>
                       {t(
-                        `general.notificationsMessages.
-                          ${notification.notificationTypeAction}
-                        }`,
+                        `general.notificationsMessages.${notification.notificationTypeAction}`,
                         { actor: notification.actorName }
                       )}
                     </div>
