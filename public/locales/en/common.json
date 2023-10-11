@@ -140,10 +140,12 @@
       "orderReviewed": "{{actor}} gave a review to your order",
       "orderDeliveryDateUpdate": "{{actor}} updated the order delivery date",
       "orderInDispute": "{{actor}} opened a dispute for your order delivery. Influencer Markt will analyze the situation",
-      "orderInfluencerWonDispute": "We have come to a decision that {{actor}} delivered what was asked to",
-      "orderBuyerWonDispute": "We have come to a decision that {{actor}} didn't receive what he requested",
       "orderRectifiedBuyer": "After deliberation, we are giving {{actor}} the opportunity to rectify the order and 2 days to deliver",
-      "orderRectifiedInfluencer": "After deliberation, we are giving you the chance to rectify the order and 2 days to deliver"
+      "orderRectifiedInfluencer": "After deliberation, we are giving you the chance to rectify the order and 2 days to deliver",
+      "orderBuyerLostDispute": "We have come to a decision that {{actor}} delivered what was asked to",
+      "orderInfluencerLostdispute": "We have come to a decision that {{actor}} did not receive what he requested",
+      "orderInfluencerWonDispute": "We have come to a decision that you delivered what {{actor}} requested",
+      "orderBuyerWonDispute": "We have come to a decision that {{actor}} did not fulfill what was requested.The money will be refunded"
     },
 
     "orderStatus": {

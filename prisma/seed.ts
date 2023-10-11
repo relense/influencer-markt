@@ -110,10 +110,12 @@ async function main() {
       { entityType: "sales", entityAction: "orderReviewed" },
       { entityType: "sales", entityAction: "orderDeliveryDateUpdate" },
       { entityType: "sales", entityAction: "orderInDispute" },
-      { entityType: "orders", entityAction: "orderInfluencerWonDispute" },
-      { entityType: "sales", entityAction: "orderBuyerWonDispute" },
       { entityType: "orders", entityAction: "orderRectifiedBuyer" },
       { entityType: "sales", entityAction: "orderRectifiedInfluencer" },
+      { entityType: "orders", entityAction: "orderBuyerLostDispute" },
+      { entityType: "sales", entityAction: "orderInfluencerLostdispute" },
+      { entityType: "orders", entityAction: "orderBuyerWonDispute" },
+      { entityType: "sales", entityAction: "orderInfluencerWonDispute" },
     ],
   });
 

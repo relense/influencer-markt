@@ -53,9 +53,15 @@ const AdminManageDisputesPage = (params: { disputeId: number }) => {
             entityId: orderData.id,
             notifierId: order?.buyerId || -1,
             senderId: order?.influencerId || -1,
-            entityAction: "orderInfluencerWonDispute",
+            entityAction: "orderBuyerLostDispute",
           });
           //INFLUENCER NOTIFICAITON BEING TOLD HE WON
+          void createNotification({
+            entityId: orderData.id,
+            notifierId: order?.influencerId || -1,
+            senderId: order?.buyerId || -1,
+            entityAction: "orderInfluencerWonDispute",
+          });
           void ctx.orders.getOrderByDisputeId.invalidate();
         } else {
           setOpenBuyerIsRightModal(false);
@@ -64,9 +70,15 @@ const AdminManageDisputesPage = (params: { disputeId: number }) => {
             entityId: orderData.id,
             notifierId: order?.influencerId || -1,
             senderId: order?.buyerId || -1,
-            entityAction: "orderBuyerWonDispute",
+            entityAction: "orderInfluencerLostdispute",
           });
           //BUYER NOTIFICAITON BEING TOLD THAT HE LOST
+          void createNotification({
+            entityId: orderData.id,
+            notifierId: order?.buyerId || -1,
+            senderId: order?.influencerId || -1,
+            entityAction: "orderBuyerWonDispute",
+          });
           void ctx.orders.getOrderByDisputeId.invalidate();
         }
       },
@@ -123,7 +135,6 @@ const AdminManageDisputesPage = (params: { disputeId: number }) => {
   } = api.orders.updateOrderStatusToRectify.useMutation({
     onSuccess: (order) => {
       if (order) {
-        //INFLUENCER NOTIFICATION
         void createNotification({
           entityId: order.id,
           notifierId: order?.influencerId || -1,
@@ -131,7 +142,6 @@ const AdminManageDisputesPage = (params: { disputeId: number }) => {
           entityAction: "orderRectifiedInfluencer",
         });
 
-        //BUYER NOTIFICATION
         void createNotification({
           entityId: order.id,
           notifierId: order?.buyerId || -1,
