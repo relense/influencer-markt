@@ -36,7 +36,7 @@ export const NotificationsRouter = createTRPCRouter({
 
       const entityType = await ctx.prisma.notificationType.findFirst({
         where: {
-          entityType: {
+          entityAction: {
             contains: input.entityAction,
           },
         },
