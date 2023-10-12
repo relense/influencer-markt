@@ -207,7 +207,7 @@ export const DisputesRouter = createTRPCRouter({
             disputeDecisionMessage: input.decisionMessage,
             influencerFault: input.influencerFault
               ? input.influencerFault
-              : null,
+              : false,
           },
         });
       }
