@@ -1236,4 +1236,20 @@ export const JobsRouter = createTRPCRouter({
         });
       }
     }),
+
+  verifyJobExists: protectedProcedure
+    .input(
+      z.object({
+        jobId: z.number(),
+      })
+    )
+    .query(async ({ ctx, input }) => {
+      const job = await ctx.prisma.job.findFirst({
+        where: {
+          id: input.jobId,
+        },
+      });
+
+      return !!job;
+    }),
 });
