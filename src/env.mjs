@@ -36,6 +36,8 @@ export const env = createEnv({
     AZURE_CLIENT_ID: z.string(),
     AZURE_TENANT_ID: z.string(),
     AZURE_CLIENT_SECRET: z.string(),
+
+    NEXT_PUBLIC_CURRENT_ENV: z.string(),
   },
 
   /**
@@ -71,6 +73,8 @@ export const env = createEnv({
     AZURE_CLIENT_ID: process.env.AZURE_CLIENT_ID,
     AZURE_TENANT_ID: process.env.AZURE_TENANT_ID,
     AZURE_CLIENT_SECRET: process.env.AZURE_CLIENT_SECRET,
+
+    NEXT_PUBLIC_CURRENT_ENV: process.env.NEXT_PUBLIC_BASE_URL,
   },
   /**
    * Run `build` or `dev` with `SKIP_ENV_VALIDATION` to skip env validation.

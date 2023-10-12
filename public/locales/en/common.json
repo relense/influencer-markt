@@ -977,5 +977,9 @@
       "salesInvoices": "Sales Invoices",
       "purchasesInvoices": "Purchases Invoices"
     }
+  },
+
+  "temp": {
+    "inConstruction": "In Construction"
   }
 }
