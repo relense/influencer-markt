@@ -36,6 +36,8 @@ export const env = createEnv({
     AZURE_CLIENT_ID: z.string(),
     AZURE_TENANT_ID: z.string(),
     AZURE_CLIENT_SECRET: z.string(),
+
+    CURRENT_ENV: z.string(),
   },
 
   /**
@@ -71,6 +73,8 @@ export const env = createEnv({
     AZURE_CLIENT_ID: process.env.AZURE_CLIENT_ID,
     AZURE_TENANT_ID: process.env.AZURE_TENANT_ID,
     AZURE_CLIENT_SECRET: process.env.AZURE_CLIENT_SECRET,
+
+    CURRENT_ENV: process.env.CURRENT_ENV,
   },
   /**
    * Run `build` or `dev` with `SKIP_ENV_VALIDATION` to skip env validation.

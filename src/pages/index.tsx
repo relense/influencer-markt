@@ -6,7 +6,11 @@ const Home: NextPage = () => {
   return (
     <>
       <Layout>
-        {({ openLoginModal }) => <HomePage openLoginModal={openLoginModal} />}
+        {process.env.CURRENT_ENV === "PROD"
+          ? () => <div>EM CONSTRUCAO</div>
+          : ({ openLoginModal }) => (
+              <HomePage openLoginModal={openLoginModal} />
+            )}
       </Layout>
     </>
   );
