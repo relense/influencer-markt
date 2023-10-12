@@ -978,5 +978,9 @@
       "salesInvoices": "Faturas de Vendas",
       "purchasesInvoices": "Faturas de Compras"
     }
+  },
+
+  "temp": {
+    "inConstruction": "Em construção"
   }
 }
