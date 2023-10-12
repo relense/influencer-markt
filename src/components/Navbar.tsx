@@ -147,7 +147,7 @@ export const Navbar = (params: {
         </Link>
 
         <div className="group relative flex px-2">
-          {!params.sessionData && params.loggedInProfileId === -1 && (
+          {params.loggedInProfileId === -1 && (
             <div className="flex items-center gap-2">
               <Link
                 href="/explore/influencers"

@@ -12,6 +12,8 @@ import { toBuyerInfluencerIsWrongEmail } from "../../../emailTemplates/toBuyerIn
 import { toInfluencerInfluencerIsWrongEmail } from "../../../emailTemplates/toInfluencerInfluencerIsWrongEmail/toInfluencerInfluencerIsWrongEmail";
 import { toBuyerInfluencerIsRightEmail } from "../../../emailTemplates/toBuyerInfluencerIsRightEmail/toBuyerInfluencerIsRightEmail";
 import { toInfluencerInfluencerIsRightEmail } from "../../../emailTemplates/toInfluencerInfluencerIsRightEmail/toInfluencerInfluencerIsRightEmail";
+import { buyerOrderWasRectified } from "../../../emailTemplates/buyerOrderWasRectified/buyerOrderWasRectified";
+import { influencerOrderWasRectified } from "../../../emailTemplates/influencerOrderWasRectified/influencerOrderWasRectified";
 
 export const OrdersRouter = createTRPCRouter({
   createOrder: protectedProcedure
@@ -619,6 +621,23 @@ export const OrdersRouter = createTRPCRouter({
           },
         },
       });
+
+      if (process.env.EMAIL_FROM) {
+        influencerOrderWasRectified({
+          from: process.env.EMAIL_FROM,
+          to: order.influencer?.user.email || "",
+          language: input.language,
+          orderId: order.id,
+        });
+
+        buyerOrderWasRectified({
+          influencerName: order.influencer?.name || "",
+          from: process.env.EMAIL_FROM,
+          to: order.buyer?.user.email || "",
+          language: input.language,
+          orderId: order.id,
+        });
+      }
 
       return order;
     }),
