@@ -132,7 +132,7 @@
       "awaitingOrderReply": "{{actor}} made a new order that needs your review",
       "orderRejected": "{{actor}} rejected your order",
       "orderAccepted": "{{actor}} accepted your order",
-      "orderDelivered": "{{actor }} devilered your order",
+      "orderDelivered": "{{actor }} delivered your order",
       "orderCanceled": "{{actor}} canceled the order",
       "saleCanceled": "{{actor}} canceled the order",
       "orderPaymentsAdded": "{{actor}} added payment details. You can now work on your order",

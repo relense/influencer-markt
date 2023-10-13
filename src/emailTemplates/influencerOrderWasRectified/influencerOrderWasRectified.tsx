@@ -130,7 +130,7 @@ function html(params: {
                 <tr>
                   <td style="padding: 15px">
                     <a
-                      href="https://influencerMarkt.com"
+                      href="https://influencermarkt.com"
                       style="
                         text-decoration: none;
                         color: #fd3a84;

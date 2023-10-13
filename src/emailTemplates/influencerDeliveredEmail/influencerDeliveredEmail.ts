@@ -116,7 +116,7 @@ function html(params: { title: string; orderId: string; buttonTitle: string }) {
                 <tr>
                   <td style="padding: 15px">
                     <a
-                      href="https://influencerMarkt.com"
+                      href="https://influencermarkt.com"
                       style="
                         text-decoration: none;
                         color: #fd3a84;
@@ -146,7 +146,7 @@ function html(params: { title: string; orderId: string; buttonTitle: string }) {
                     <h3 class="title">${title}</h3>
   
                     <a
-                      href="https://influencermarkt.com/sales/${orderId}"
+                      href="https://influencermarkt.com/orders/${orderId}"
                       class="button"
                       ><span style="color: #fff">${buttonTitle}</span></a
                     >
