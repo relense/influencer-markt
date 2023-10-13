@@ -7,7 +7,7 @@ import { ProtectedWrapper } from "../../components/ProtectedWrapper";
 const Billing: NextPage = () => {
   return (
     <ProtectedWrapper>
-      <Layout>{() => <BillingPage />}</Layout>
+      <Layout>{({ isBrand }) => <BillingPage isBrand={isBrand} />}</Layout>
     </ProtectedWrapper>
   );
 };

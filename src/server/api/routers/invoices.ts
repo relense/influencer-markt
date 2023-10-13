@@ -114,9 +114,45 @@ export const InvoicesRouter = createTRPCRouter({
     });
 
     if (billing) {
-      return await ctx.prisma.invoice.findMany({
-        where: { invoiceTypeId: 1, billingId: billing.id },
-      });
+      return await ctx.prisma.$transaction([
+        ctx.prisma.invoice.count({
+          where: { invoiceTypeId: 1, billingId: billing.id },
+          take: 10,
+        }),
+        ctx.prisma.invoice.findMany({
+          where: { invoiceTypeId: 1, billingId: billing.id },
+          take: 10,
+          include: {
+            order: {
+              select: {
+                socialMedia: {
+                  select: { name: true },
+                },
+                orderDetails: true,
+                orderValuePacks: {
+                  select: {
+                    contentTypeId: true,
+                    amount: true,
+                    contentType: {
+                      select: { name: true },
+                    },
+                  },
+                },
+                influencer: {
+                  select: {
+                    user: {
+                      select: { email: true, username: true },
+                    },
+                    profilePicture: true,
+                    name: true,
+                  },
+                },
+                dateItWasDelivered: true,
+              },
+            },
+          },
+        }),
+      ]);
     }
   }),
 });

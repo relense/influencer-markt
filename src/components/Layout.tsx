@@ -15,6 +15,7 @@ export const Layout = (props: {
     loggedInProfileId: number;
     scrollLayoutToPreviousPosition: () => void;
     saveScrollPosition: () => void;
+    isBrand: boolean;
   }) => ReactElement;
 }) => {
   const pathname = usePathname();
@@ -86,6 +87,7 @@ export const Layout = (props: {
                 scrollLayoutToPreviousPosition(),
               saveScrollPosition: () => saveScrollPosition(),
               loggedInProfileId: user?.profile?.id ? user.profile.id : -1,
+              isBrand: user?.role?.id === 1 ? true : false,
             })}
           </div>
           <Footer />
