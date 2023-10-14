@@ -20,7 +20,8 @@
       "Adventure": "Adventure & Outdoors",
       "Education": "Education",
       "Celebrity": "Celebrity & Public Figure",
-      "Technology": "Technology"
+      "Technology": "Technology",
+      "Politic": "Politic"
     },
 
     "reasons": {
@@ -157,7 +158,8 @@
       "delivered": "Delivered",
       "canceled": "Canceled",
       "confirmed": "Confirmed",
-      "reviewed": "Closed"
+      "reviewed": "Closed",
+      "inDispute": "In Dispute"
     }
   },
   "components": {
@@ -260,6 +262,7 @@
       "modalTitle": "Social Media Details",
       "platformPlaceholder": "Choose your Social Media: e.g., Instagram, TikTok",
       "handlerPlaceholder": "Social media handler",
+      "podcastPlaceholder": "Podcast website URL",
       "followersPlaceholder": "Social Media Followers",
       "deliveryTime": "Delivery Time",
       "revisionTime": "Number of Revisions",
@@ -561,7 +564,8 @@
       "valuePackSubmitButton": "Start Order",
       "removedProfile": "Removed Profile Successfully",
       "savedProfile": "Saved Profile Successfully",
-      "shareModalTitle": "Share Influencer Page",
+      "shareBrandModalTitle": "Share Brand Page",
+      "shareInfluencerModalTitle": "Share Influencer Page",
       "editMyPage": "Edit",
       "bookmarkWarning": "Complete your profile to be able to save",
       "verified": "Verified",

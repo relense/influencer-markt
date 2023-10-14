@@ -80,13 +80,14 @@ const AddSocialMediaModal = (params: {
   const addSocialMediaLink = (socialMedia: string) => {
     const linkMappings: Record<string, string> = {
       Instagram: "instagram.com/",
-      Twitter: "twitter.com/",
-      TikTok: "tiktok.com/@",
       YouTube: "youtube.com/@",
       Facebook: "facebook.com/",
+      TikTok: "tiktok.com/@",
       Linkedin: "linkedin.com/in/",
-      Pinterest: "pinterest.com/",
       Twitch: "twitch.tv/",
+      Twitter: "twitter.com/",
+      Podcast: "",
+      Pinterest: "pinterest.com/",
     };
 
     return linkMappings[socialMedia] || "";
@@ -342,9 +343,11 @@ const AddSocialMediaModal = (params: {
               onFocus={() => setIsMyInputFocused(true)}
               type="text"
               className="flex w-full flex-1 rounded-lg placeholder-gray2 focus:border-black focus:outline-none"
-              placeholder={t(
-                "components.addSocialMediaModal.handlerPlaceholder"
-              )}
+              placeholder={
+                params.watch("platform").name !== "Podcast"
+                  ? t("components.addSocialMediaModal.handlerPlaceholder")
+                  : t("components.addSocialMediaModal.podcastPlaceholder")
+              }
               autoComplete="one-time-code"
             />
             {params.errors.socialMediaHandler &&

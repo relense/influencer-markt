@@ -972,7 +972,11 @@ const PublicProfilePage = (params: {
         )}
         {isShareModalOpen && (
           <ShareModal
-            modalTitle={t("pages.shareModalTitle.shareModalTitle")}
+            modalTitle={
+              profile?.user?.role?.id === 1
+                ? t("pages.publicProfilePage.shareBrandModalTitle")
+                : t("pages.publicProfilePage.shareInfluencerModalTitle")
+            }
             onClose={() => setIsShareModalOpen(false)}
             url={window.location.href}
           />

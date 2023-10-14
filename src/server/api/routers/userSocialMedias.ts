@@ -300,19 +300,21 @@ const createSocialMediaUrl = (socialMediaId: number, handler: string) => {
   if (socialMediaId === 1) {
     return `https://www.instagram.com/${handler}/`;
   } else if (socialMediaId === 2) {
-    return `https://twitter.com/${handler}/`;
-  } else if (socialMediaId === 3) {
-    return `https://www.tiktok.com/@${handler}/`;
-  } else if (socialMediaId === 4) {
     return `https://www.youtube.com/@${handler}/`;
-  } else if (socialMediaId === 5) {
+  } else if (socialMediaId === 3) {
     return `https://www.facebook.com/${handler}/`;
-  } else if (socialMediaId === 6) {
+  } else if (socialMediaId === 4) {
+    return `https://www.tiktok.com/@${handler}/`;
+  } else if (socialMediaId === 5) {
     return `https://www.linkedin.com/in/${handler}/`;
-  } else if (socialMediaId === 7) {
-    return `https://www.pinterest.com/${handler}/`;
-  } else if (socialMediaId === 8) {
+  } else if (socialMediaId === 6) {
     return `https://www.twitch.tv/${handler}/`;
+  } else if (socialMediaId === 7) {
+    return `https://x.com/${handler}/`;
+  } else if (socialMediaId === 8) {
+    return handler;
+  } else if (socialMediaId === 9) {
+    return `https://www.pinterest.com/${handler}/`;
   } else {
     return "";
   }

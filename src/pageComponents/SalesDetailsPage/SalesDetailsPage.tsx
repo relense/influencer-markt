@@ -63,7 +63,7 @@ const SalesDetailsPage = (params: { orderId: number }) => {
         void createNotification({
           entityId: params.orderId,
           notifierId: sale?.buyerId || -1,
-          entityAction: "orderCanceled",
+          entityAction: "saleCanceled",
         });
         void ctx.orders.getSaleOrder.invalidate();
       },
