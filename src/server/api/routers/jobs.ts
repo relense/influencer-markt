@@ -983,12 +983,14 @@ export const JobsRouter = createTRPCRouter({
           where: {
             profileId: input.profileId,
             jobStatusId: 1,
+            published: true,
           },
         }),
         ctx.prisma.job.findMany({
           where: {
             profileId: input.profileId,
             jobStatusId: 1,
+            published: true,
           },
           take: 10,
           select: {
@@ -1023,7 +1025,8 @@ export const JobsRouter = createTRPCRouter({
       return await ctx.prisma.job.findMany({
         where: {
           profileId: input.profileId,
-          jobStatusId: 10,
+          jobStatusId: 1,
+          published: true,
         },
         take: 10,
         skip: 1,

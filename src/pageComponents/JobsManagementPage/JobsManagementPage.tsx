@@ -3,31 +3,29 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
 import { useTranslation } from "react-i18next";
 import { api } from "~/utils/api";
+import { toast } from "react-hot-toast";
+import Link from "next/link";
+import { useRouter } from "next/router";
 
 import { MyJob } from "./innerComponent/MyJob";
 import { LoadingSpinner } from "../../components/LoadingSpinner";
 import type { JobWithAllData, Option } from "../../utils/globalTypes";
 import { Button } from "../../components/Button";
 import { FirstTimeJobManagementModal } from "./innerComponent/FirstTimeJobManagementModal";
-import { toast } from "react-hot-toast";
 import { MyJobsActionConfirmationModal } from "../../components/MyJobsActionConfirmationModal";
-import { CreateJobModal } from "../../components/CreateJobModal";
 
 const JobsManagementPage = () => {
   const { t } = useTranslation();
   const ctx = api.useContext();
+  const router = useRouter();
 
   const [jobStatus, setJobStatus] = useState<Option>({
     id: 1,
     name: "open",
   });
-  const [openCreateModal, setOpenCreateModal] = useState<boolean>(false);
   const [isWarningModalOpen, setIsWarningModalOpen] = useState<boolean>(false);
   const [jobs, setJobs] = useState<JobWithAllData[]>([]);
   const [jobsCursor, setJobsCursor] = useState<number>(-1);
-  const [jobToEdit, setJobToEdit] = useState<JobWithAllData | undefined>(
-    undefined
-  );
   const [jobsCount, setJobsCount] = useState<number>(0);
   const [warningModalType, setWarningModalType] = useState<
     "archive" | "delete" | "publish"
@@ -159,11 +157,6 @@ const JobsManagementPage = () => {
     void refetchJobs();
   };
 
-  const openModalToEdit = (job: JobWithAllData) => {
-    setOpenCreateModal(true);
-    setJobToEdit(job);
-  };
-
   const openWarningModal = (
     type: "archive" | "delete" | "publish",
     jobId: number
@@ -171,11 +164,6 @@ const JobsManagementPage = () => {
     setIsWarningModalOpen(true);
     setWarningModalType(type);
     setWarningModalJobId(jobId);
-  };
-
-  const closeMyJobsModal = () => {
-    setJobToEdit(undefined);
-    setOpenCreateModal(false);
   };
 
   const renderJobButtons = () => {
@@ -217,7 +205,15 @@ const JobsManagementPage = () => {
                   <MyJob
                     job={job}
                     key={job.id}
-                    openJobModal={() => openModalToEdit(job)}
+                    openJobModal={() =>
+                      void router.push({
+                        pathname: "/manage-jobs/create-job",
+                        query: {
+                          jobId: JSON.stringify(job.id),
+                          edit: true,
+                        },
+                      })
+                    }
                     openWarningModal={openWarningModal}
                     duplicateJob={() => duplicateJob(job)}
                   />
@@ -239,15 +235,15 @@ const JobsManagementPage = () => {
   return (
     <>
       <div className="flex w-full cursor-default flex-col gap-6 self-center px-4 pb-10 sm:px-12 xl:w-3/4 2xl:w-3/4 3xl:w-3/4 4xl:w-2/4 5xl:w-2/4">
-        <div
+        <Link
+          href={`manage-jobs/create-job`}
           className="flex h-auto cursor-pointer items-center justify-center gap-2 rounded-xl border-[1px] p-4 hover:bg-light-red"
-          onClick={() => setOpenCreateModal(true)}
         >
           <div className="flex h-6 w-6 items-center justify-center rounded-full bg-influencer text-white">
             <FontAwesomeIcon icon={faPlus} className="fa-sm cursor-pointer" />
           </div>
           <div>{t("pages.manageJobs.createJob")}</div>
-        </div>
+        </Link>
         {(isLoadingDuplicatingJob || isRefetchingJobs) && (
           <div className="flex flex-1 justify-center">
             <LoadingSpinner />
@@ -263,15 +259,6 @@ const JobsManagementPage = () => {
               isLoading={isRefetchingJobsWithCursor}
             />
           </div>
-        )}
-      </div>
-      <div className="flex justify-center">
-        {openCreateModal && (
-          <CreateJobModal
-            onClose={() => closeMyJobsModal()}
-            edit={jobToEdit !== undefined ? true : false}
-            job={jobToEdit || undefined}
-          />
         )}
       </div>
       <div className="flex justify-center">

@@ -27,7 +27,6 @@ import type {
 import { toast } from "react-hot-toast";
 import { ProfileRow } from "../../components/ProfileRow";
 import { MyJobDropdown } from "../../components/MyJobDropdown";
-import { CreateJobModal } from "../../components/CreateJobModal";
 import { MyJobsActionConfirmationModal } from "../../components/MyJobsActionConfirmationModal";
 import dayjs from "dayjs";
 
@@ -57,7 +56,6 @@ const ManageJobDetailsPage = (params: {
 
   const [isDropdownOpen, setIsDropdownOpen] = useState<boolean>(false);
   const [isDetailsOpen, setIsDetailsOpen] = useState<boolean>(true);
-  const [openCreateModal, setOpenCreateModal] = useState<boolean>(false);
   const [isAcceptedApplicantsOpen, setIsAcceptedApplicantsOpen] =
     useState<boolean>(true);
   const [isRejectedApplicantsOpen, setIsRejectedApplicantsOpen] =
@@ -588,7 +586,15 @@ const ManageJobDetailsPage = (params: {
                 <MyJobDropdown
                   job={job}
                   closeDropDown={() => setIsDropdownOpen(false)}
-                  openEditJobModal={() => setOpenCreateModal(true)}
+                  openEditJobModal={() =>
+                    void router.push({
+                      pathname: "/manage-jobs/create-job",
+                      query: {
+                        jobId: JSON.stringify(job.id),
+                        edit: true,
+                      },
+                    })
+                  }
                   openWarningModal={openWarningModal}
                   duplicateJob={() => duplicateJobMutation({ jobId: job.id })}
                 />
@@ -600,7 +606,15 @@ const ManageJobDetailsPage = (params: {
               <MyJobDropdown
                 job={job}
                 closeDropDown={() => setIsDropdownOpen(false)}
-                openEditJobModal={() => setOpenCreateModal(true)}
+                openEditJobModal={() =>
+                  void router.push({
+                    pathname: "/manage-jobs/create-job",
+                    query: {
+                      jobId: JSON.stringify(job.id),
+                      edit: true,
+                    },
+                  })
+                }
                 openWarningModal={openWarningModal}
                 duplicateJob={() => duplicateJobMutation({ jobId: job.id })}
               />
@@ -1481,15 +1495,6 @@ const ManageJobDetailsPage = (params: {
                 )}
                 {renderRejectedApplicants()}
               </>
-            )}
-          </div>
-          <div className="flex justify-center">
-            {openCreateModal && (
-              <CreateJobModal
-                onClose={() => setOpenCreateModal(false)}
-                edit={true}
-                job={job}
-              />
             )}
           </div>
           <div className="flex justify-center">

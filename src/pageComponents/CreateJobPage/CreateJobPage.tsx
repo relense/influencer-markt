@@ -3,17 +3,17 @@ import { useTranslation } from "react-i18next";
 import { api } from "~/utils/api";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus, faSubtract } from "@fortawesome/free-solid-svg-icons";
-
-import { Modal } from "./Modal";
-import { CustomSelect } from "./CustomSelect";
-import { Button } from "./Button";
-import type { JobWithAllData, Option } from "../utils/globalTypes";
-import { CustomMultiSelect } from "./CustomMultiSelect";
 import { useEffect, useState } from "react";
 import { toast } from "react-hot-toast";
-import { usePrevious } from "../utils/helper";
 import { useRouter } from "next/router";
-import { ToolTip } from "./ToolTip";
+
+import type { Option } from "../../utils/globalTypes";
+import { usePrevious } from "../../utils/helper";
+import { CustomSelect } from "../../components/CustomSelect";
+import { CustomMultiSelect } from "../../components/CustomMultiSelect";
+import { ToolTip } from "../../components/ToolTip";
+import { Button } from "../../components/Button";
+import { LoadingSpinner } from "../../components/LoadingSpinner";
 
 type JobData = {
   jobSummary: string;
@@ -33,11 +33,7 @@ type ContentTypeWithQuantity = {
   amount: number;
 };
 
-const CreateJobModal = (params: {
-  onClose: () => void;
-  edit: boolean;
-  job: JobWithAllData | undefined;
-}) => {
+const CreateJobPage = (params: { edit: boolean; jobId: number }) => {
   const { t } = useTranslation();
   const ctx = api.useContext();
   const router = useRouter();
@@ -47,11 +43,22 @@ const CreateJobModal = (params: {
   >([{ contentType: { id: -1, name: "" }, amount: 0 }]);
   const [isPublished, setIsPublished] = useState<boolean>(false);
 
-  const prevContentTypes = usePrevious(
-    params?.job?.contentTypeWithQuantity || null
+  const {
+    data: job,
+    refetch: refetchJob,
+    isLoading: isLoadingJob,
+  } = api.jobs.getJob.useQuery(
+    {
+      jobId: params.jobId,
+    },
+    {
+      enabled: false,
+    }
   );
 
-  const prevGender = usePrevious(params?.job?.gender || null);
+  const prevContentTypes = usePrevious(job?.contentTypeWithQuantity || null);
+
+  const prevGender = usePrevious(job?.gender || null);
 
   const {
     control,
@@ -66,25 +73,31 @@ const CreateJobModal = (params: {
       categories: [],
       platform: { id: -1, name: "" },
       country: { id: -1, name: "" },
-      gender: params?.job?.gender || { id: -1, name: "" },
+      gender: { id: -1, name: "" },
     },
   });
 
   useEffect(() => {
-    if (params.job) {
-      setValue("country", params.job.country);
-      setValue("categories", params.job.categories);
-      setValue("gender", params.job.gender || { id: -1, name: "" });
-      setValue("minFollowers", params.job.minFollowers);
-      setValue("numberOfInfluencers", params.job.numberOfInfluencers);
-      setValue("jobDetails", params.job.JobDetails);
-      setValue("jobSummary", params.job.jobSummary);
-      setValue("jobPrice", params.job.price);
-      setValue("platform", params.job.socialMedia);
-      setIsPublished(params.job.published);
-      setContentTypesList(params.job.contentTypeWithQuantity);
+    if (params.edit) {
+      void refetchJob();
     }
-  }, [params.job, setValue]);
+  }, [params.edit, refetchJob]);
+
+  useEffect(() => {
+    if (job) {
+      setValue("country", job.country);
+      setValue("categories", job.categories);
+      setValue("gender", job.gender || { id: -1, name: "" });
+      setValue("minFollowers", job.minFollowers);
+      setValue("numberOfInfluencers", job.numberOfInfluencers);
+      setValue("jobDetails", job.JobDetails);
+      setValue("jobSummary", job.jobSummary);
+      setValue("jobPrice", job.price);
+      setValue("platform", job.socialMedia);
+      setIsPublished(job.published);
+      setContentTypesList(job.contentTypeWithQuantity);
+    }
+  }, [job, setValue]);
 
   const { data: platforms } = api.allRoutes.getAllSocialMedia.useQuery();
   const { data: categories } = api.allRoutes.getAllCategories.useQuery();
@@ -105,9 +118,8 @@ const CreateJobModal = (params: {
 
   const { mutate: jobUpdate, isLoading: isLoadingUpdate } =
     api.jobs.updateJob.useMutation({
-      onSuccess: () => {
-        params.onClose();
-        reset();
+      onSuccess: (job) => {
+        void router.push(`/manage-jobs/${job.id}`);
         void ctx.jobs.getJob.invalidate();
         void ctx.jobs.getApplicants.invalidate();
         void ctx.jobs.getAllUserJobs.invalidate().then(() => {
@@ -125,7 +137,7 @@ const CreateJobModal = (params: {
       prevGender !== data.gender
     ) {
       const payload = {
-        jobId: params.job?.id || -1,
+        jobId: params.jobId || -1,
         jobSummary: data.jobSummary,
         jobDetails: data.jobDetails,
         socialMediaId: data.platform.id,
@@ -152,7 +164,6 @@ const CreateJobModal = (params: {
         jobCreation(payload);
       }
     } else {
-      params.onClose();
       reset();
     }
   });
@@ -196,7 +207,7 @@ const CreateJobModal = (params: {
             <textarea
               {...register("jobDetails", { maxLength: 2200 })}
               required
-              className="flex flex-1 cursor-pointer rounded-lg border-[1px] border-gray3 bg-transparent p-4 placeholder-gray2 placeholder:w-11/12"
+              className="flex min-h-[230px]  cursor-pointer rounded-lg border-[1px] border-gray3 bg-transparent p-4 placeholder-gray2 placeholder:w-11/12"
               placeholder={t("pages.manageJobs.detailsPlaceholder")}
               autoComplete="off"
             />
@@ -640,18 +651,33 @@ const CreateJobModal = (params: {
   };
 
   return (
-    <Modal
-      title={
-        params.edit
+    <form
+      id="form-createModal"
+      className="mt-2 flex w-full cursor-default flex-col gap-6 self-center px-4 pb-10 sm:px-12 lg:w-full xl:w-10/12 2xl:w-3/4 3xl:w-3/4 4xl:w-7/12 5xl:w-2/4"
+      onSubmit={submitRequest}
+    >
+      <div className="flex flex-1 justify-center font-playfair text-5xl font-semibold">
+        {params.edit
           ? t("pages.manageJobs.updateJob")
-          : t("pages.manageJobs.createJob")
-      }
-      onClose={() => {
-        params.onClose();
-        reset();
-      }}
-      button={
-        <div className="flex justify-center p-4">
+          : t("pages.manageJobs.createJob")}
+      </div>
+      {isLoadingJob && params.edit ? (
+        <div className="flex justify-center">
+          <LoadingSpinner />
+        </div>
+      ) : (
+        <>
+          {renderJobSummaryInput()}
+          {renderJobDetailsInput()}
+          {renderPlatformInput()}
+          {renderContentTypeInput()}
+          {renderCategoriesInput()}
+          {renderJobPriceInput()}
+          {renderNumberOfInfluencersInput()}
+          {renderLocationInputs()}
+          {renderFollowersInput()}
+          {renderGenderInput()}
+          {renderPublishedToggled()}
           <Button
             type="submit"
             title={t("pages.manageJobs.saveJob")}
@@ -659,28 +685,10 @@ const CreateJobModal = (params: {
             form="form-createModal"
             isLoading={isLoadingCreate || isLoadingUpdate}
           />
-        </div>
-      }
-    >
-      <form
-        id="form-createModal"
-        className="flex h-full w-full flex-col gap-4 p-4 sm:w-full sm:px-8"
-        onSubmit={submitRequest}
-      >
-        {renderJobSummaryInput()}
-        {renderJobDetailsInput()}
-        {renderPlatformInput()}
-        {renderContentTypeInput()}
-        {renderCategoriesInput()}
-        {renderJobPriceInput()}
-        {renderNumberOfInfluencersInput()}
-        {renderLocationInputs()}
-        {renderFollowersInput()}
-        {renderGenderInput()}
-        {renderPublishedToggled()}
-      </form>
-    </Modal>
+        </>
+      )}
+    </form>
   );
 };
 
-export { CreateJobModal };
+export { CreateJobPage };
