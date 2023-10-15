@@ -32,19 +32,13 @@ export const InvoicesRouter = createTRPCRouter({
       if (order) {
         //create Buyer invoice
         const taxValue = (
-          parseFloat(order.orderPrice) *
+          Number(order.orderBasePrice) *
           (order.orderTaxPercentage / 100)
         ).toFixed(2);
 
         const ourCutValue = (
-          parseFloat(order.orderPrice) *
+          Number(order.orderBasePrice) *
           (order.orderServicePercentage / 100)
-        ).toFixed(2);
-
-        const saleValue = (
-          parseFloat(order.orderPrice) +
-          parseFloat(ourCutValue) +
-          parseFloat(taxValue)
         ).toFixed(2);
 
         await ctx.prisma.invoice.create({
@@ -62,7 +56,8 @@ export const InvoicesRouter = createTRPCRouter({
             taxPercentage: order.orderTaxPercentage,
             influencerMarktPercentage: helper.calculateServiceFee() * 100,
             influencerMarktCutValue: ourCutValue,
-            saleValue: saleValue,
+            saleBaseValue: order.orderBasePrice,
+            saleTotalValue: order.orderTotalPrice,
             taxValue: taxValue,
             name: order.buyer?.billing?.name || "",
             tin: order.buyer?.billing?.tin || "",
@@ -90,7 +85,8 @@ export const InvoicesRouter = createTRPCRouter({
             taxPercentage: order.orderTaxPercentage,
             influencerMarktPercentage: helper.calculateServiceFee() * 100,
             influencerMarktCutValue: ourCutValue,
-            saleValue: saleValue,
+            saleBaseValue: order.orderBasePrice,
+            saleTotalValue: order.orderTotalPrice,
             taxValue: taxValue,
             name: order.influencer?.billing?.name || "",
             tin: order.influencer?.billing?.tin || "",

@@ -1,22 +1,23 @@
 import { api } from "~/utils/api";
-
-import { LoadingSpinner } from "../../components/LoadingSpinner";
 import { useTranslation } from "react-i18next";
 import Link from "next/link";
 import Image from "next/image";
-import { helper } from "../../utils/helper";
-import { WhatHappensNext } from "../../components/WhatHappensNext";
-import { Button } from "../../components/Button";
 import { useEffect, useState } from "react";
-import { Modal } from "../../components/Modal";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faClose, faPencil, faStar } from "@fortawesome/free-solid-svg-icons";
 import { faStar as faStarRegular } from "@fortawesome/free-regular-svg-icons";
 import { useForm } from "react-hook-form";
-import { MessageBoard } from "../../components/MessageBoard";
 import dayjs from "dayjs";
 import toast from "react-hot-toast";
+
+import { LoadingSpinner } from "../../components/LoadingSpinner";
+import { helper } from "../../utils/helper";
+import { WhatHappensNext } from "../../components/WhatHappensNext";
+import { Button } from "../../components/Button";
+import { Modal } from "../../components/Modal";
+import { MessageBoard } from "../../components/MessageBoard";
 import { ToolTip } from "../../components/ToolTip";
+import { PaymentDetailsModal } from "./innerComponents/PaymentDetailsModal";
 
 type ReviewForm = {
   review: string;
@@ -61,18 +62,6 @@ const OrderDetailsPage = (params: {
   const { data: order, isLoading } = api.orders.getBuyerOrder.useQuery({
     orderId: params.orderId,
   });
-
-  const { mutate: updateOrderPayment, isLoading: updateAcceptIsLoading } =
-    api.orders.updateOrder.useMutation({
-      onSuccess: () => {
-        void createNotification({
-          entityId: params.orderId,
-          notifierId: order?.influencerId || -1,
-          entityAction: "orderPaymentsAdded",
-        });
-        void ctx.orders.getBuyerOrder.invalidate();
-      },
-    });
 
   const { mutate: updateCancelOrder, isLoading: isLoadingUpdateCancelOrder } =
     api.orders.updateOrder.useMutation({
@@ -282,7 +271,6 @@ const OrderDetailsPage = (params: {
                     title={t("pages.orders.addPayment")}
                     level="terciary"
                     onClick={() => setOpenPaymentDetailsModal(true)}
-                    isLoading={updateAcceptIsLoading}
                   />
                   <Button
                     title={t("pages.orders.cancel")}
@@ -394,10 +382,7 @@ const OrderDetailsPage = (params: {
           </div>
           <div className="text-base font-semibold text-influencer">
             {helper.formatNumberWithDecimalValue(
-              parseFloat(order.orderPrice) +
-                parseFloat(order.orderPrice) *
-                  (order.orderTaxPercentage / 100) +
-                parseFloat(order.orderPrice) * helper.calculateServiceFee()
+              Number(order.orderTotalPrice)
             ) || 0}
             €
           </div>
@@ -758,37 +743,6 @@ const OrderDetailsPage = (params: {
     );
   };
 
-  const renderPaymentDetailsModal = () => {
-    if (openPaymentDetailsModal && order) {
-      return (
-        <div className="flex justify-center ">
-          <Modal
-            button={
-              <div className="flex justify-center p-4">
-                <Button
-                  title={t("pages.orders.addPayment")}
-                  level="terciary"
-                  isLoading={false}
-                  onClick={() => {
-                    updateOrderPayment({
-                      orderId: order.id,
-                      statusId: 4,
-                      language: i18n.language,
-                    });
-                    setOpenPaymentDetailsModal(false);
-                  }}
-                />
-              </div>
-            }
-            onClose={() => setOpenPaymentDetailsModal(false)}
-          >
-            <div>Payments</div>
-          </Modal>
-        </div>
-      );
-    }
-  };
-
   return (
     <>
       <div className="flex w-full cursor-default flex-col gap-6 self-center px-4 pb-10 sm:px-12 lg:w-full 2xl:w-10/12 3xl:w-3/4 4xl:w-8/12">
@@ -826,7 +780,13 @@ const OrderDetailsPage = (params: {
       {renderReviewModal()}
       {renderAreYouSureDisputeModal()}
       {renderIsOrderReallyConfirmedModal()}
-      {renderPaymentDetailsModal()}
+      {openPaymentDetailsModal && order && (
+        <PaymentDetailsModal
+          amount={Number(order.orderTotalPrice)}
+          orderId={order.id}
+          onClose={() => setOpenPaymentDetailsModal(false)}
+        />
+      )}
     </>
   );
 };

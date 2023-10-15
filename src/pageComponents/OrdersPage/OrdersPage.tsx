@@ -93,7 +93,7 @@ const OrdersPage = () => {
             influencerUsername: order.influencer?.user?.username || "",
             createdAt: order.createdAt,
             id: order.id,
-            orderPrice: order.orderPrice,
+            orderPrice: order.orderTotalPrice.toString(),
             orderStatusName: order.orderStatus?.name || "",
             orderValuePacks: order.orderValuePacks.map((valuePack) => {
               return {
@@ -127,7 +127,7 @@ const OrdersPage = () => {
           influencerUsername: order.influencer?.user?.username || "",
           createdAt: order.createdAt,
           id: order.id,
-          orderPrice: order.orderPrice,
+          orderPrice: order.orderTotalPrice.toString(),
           orderStatusName: order.orderStatus?.name || "",
           orderValuePacks: order.orderValuePacks.map((valuePack) => {
             return {

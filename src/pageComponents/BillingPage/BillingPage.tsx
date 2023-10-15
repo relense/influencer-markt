@@ -75,7 +75,7 @@ const BillingPage = (params: { isBrand: boolean }) => {
                 amount: valuePack.amount,
               };
             }),
-            invoiceSaleTotal: Number(invoice.saleValue),
+            invoiceSaleTotal: Number(invoice.saleTotalValue),
             invoiceInfluencerMarktCut: Number(invoice.influencerMarktCutValue),
             invoiceInfluencerMaketPercentage: Number(
               invoice.influencerMarktPercentage

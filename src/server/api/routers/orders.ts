@@ -59,12 +59,28 @@ export const OrdersRouter = createTRPCRouter({
       });
 
       if (profile) {
+        const taxValue = (
+          Number(input.orderPrice) *
+          ((influencerProfile?.country?.countryTax || 0) / 100)
+        ).toFixed(2);
+
+        const ourCutValue = (
+          Number(input.orderPrice) * helper.calculateServiceFee()
+        ).toFixed(2);
+
+        const saleValue = (
+          Number(input.orderPrice) +
+          parseFloat(ourCutValue) +
+          parseFloat(taxValue)
+        ).toFixed(2);
+
         const order = await ctx.prisma.order.create({
           data: {
             buyerId: profile.id,
             influencerId: input.influencerId,
             orderDetails: input.orderDetails,
-            orderPrice: input.orderPrice,
+            orderBasePrice: input.orderPrice,
+            orderTotalPrice: saleValue,
             orderTaxPercentage: influencerProfile?.country?.countryTax || 0,
             countryId: influencerProfile?.countryId,
             orderStatusId: 1,
@@ -135,12 +151,28 @@ export const OrdersRouter = createTRPCRouter({
       });
 
       if (profile) {
+        const taxValue = (
+          Number(input.orderPrice) *
+          ((influencerProfile?.country?.countryTax || 0) / 100)
+        ).toFixed(2);
+
+        const ourCutValue = (
+          Number(input.orderPrice) * helper.calculateServiceFee()
+        ).toFixed(2);
+
+        const saleValue = (
+          Number(input.orderPrice) +
+          parseFloat(ourCutValue) +
+          parseFloat(taxValue)
+        ).toFixed(2);
+
         const order = await ctx.prisma.order.create({
           data: {
             buyerId: profile.id,
             influencerId: input.influencerId,
             orderDetails: input.orderDetails,
-            orderPrice: input.orderPrice,
+            orderBasePrice: input.orderPrice,
+            orderTotalPrice: saleValue,
             orderTaxPercentage: influencerProfile?.country?.countryTax || 0,
             countryId: influencerProfile?.countryId,
             orderStatusId: 1,

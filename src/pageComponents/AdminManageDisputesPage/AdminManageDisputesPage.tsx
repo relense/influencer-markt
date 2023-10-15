@@ -413,10 +413,7 @@ const AdminManageDisputesPage = (params: { disputeId: number }) => {
               </div>
               <div className="text-base font-semibold text-influencer">
                 {helper.formatNumberWithDecimalValue(
-                  parseFloat(order.orderPrice) +
-                    parseFloat(order.orderPrice) *
-                      (order.orderTaxPercentage / 100) +
-                    parseFloat(order.orderPrice) * helper.calculateServiceFee()
+                  Number(order.orderTotalPrice)
                 ) || 0}
                 €
               </div>

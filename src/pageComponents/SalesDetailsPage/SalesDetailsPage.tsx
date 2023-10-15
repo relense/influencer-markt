@@ -266,9 +266,7 @@ const SalesDetailsPage = (params: { orderId: number }) => {
           </div>
           <div className="text-base font-semibold text-influencer">
             {helper.formatNumberWithDecimalValue(
-              parseFloat(sale.orderPrice) +
-                parseFloat(sale.orderPrice) * (sale.orderTaxPercentage / 100) +
-                parseFloat(sale.orderPrice) * helper.calculateServiceFee()
+              Number(sale.orderTotalPrice)
             ) || 0}
             €
           </div>

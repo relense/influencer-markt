@@ -94,7 +94,7 @@ const SalesPage = () => {
             buyerUsername: sale.buyer?.user?.username || "",
             createdAt: sale.createdAt,
             id: sale.id,
-            orderPrice: sale.orderPrice,
+            orderPrice: sale.orderTotalPrice.toString(),
             orderStatusName: sale.orderStatus?.name || "",
             orderValuePacks: sale.orderValuePacks.map((valuePack) => {
               return {
@@ -128,7 +128,7 @@ const SalesPage = () => {
           buyerUsername: sale.buyer?.user?.username || "",
           createdAt: sale.createdAt,
           id: sale.id,
-          orderPrice: sale.orderPrice,
+          orderPrice: sale.orderTotalPrice.toString(),
           orderStatusName: sale.orderStatus?.name || "",
           orderValuePacks: sale.orderValuePacks.map((valuePack) => {
             return {

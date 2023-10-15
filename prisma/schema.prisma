@@ -375,7 +375,8 @@ model Order {
   orderDetails           String           @db.Text
   orderValuePacks        OrderValuePack[]
   orderInfluencerCountry Country?         @relation(fields: [countryId], references: [id])
-  orderPrice             String
+  orderBasePrice         Decimal          @db.Decimal(10, 2)
+  orderTotalPrice        Decimal          @db.Decimal(10, 2)
   orderTaxPercentage     Int
   orderServicePercentage Int
   orderStatus            OrderStatus?     @relation(fields: [orderStatusId], references: [id])
@@ -439,7 +440,6 @@ model NotificationType {
 
   notifications Notification[]
 }
-
 
 model NotificationStatus {
   id   Int    @id @default(autoincrement())
@@ -537,10 +537,11 @@ model Invoice {
   billing                   Billing     @relation(fields: [billingId], references: [id])
   name                      String?
   tin                       String?
-  saleValue                 Decimal
-  influencerMarktCutValue   Decimal?
+  saleBaseValue             Decimal     @db.Decimal(10, 2)
+  saleTotalValue            Decimal     @db.Decimal(10, 2)
+  influencerMarktCutValue   Decimal?    @db.Decimal(10, 2)
   influencerMarktPercentage Int?
-  taxValue                  Decimal
+  taxValue                  Decimal     @db.Decimal(10, 2)
   taxPercentage             Int
   paid                      Boolean     @default(false)
   invoiceType               InvoiceType @relation(fields: [invoiceTypeId], references: [id])
