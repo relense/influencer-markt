@@ -44,6 +44,7 @@ import {
   faXTwitter,
   faYoutube,
 } from "@fortawesome/free-brands-svg-icons";
+import { FinishProfileDisclaimer } from "../../components/FinishProfileDisclaimer";
 
 const PublicProfilePage = (params: {
   username: string;
@@ -949,6 +950,15 @@ const PublicProfilePage = (params: {
     return (
       <div className="flex justify-center">
         <div className="mt-2 flex w-full cursor-default flex-col gap-6 self-center px-4 pb-10 sm:px-12 lg:w-full xl:w-10/12 2xl:w-3/4 3xl:w-3/4 4xl:w-7/12 5xl:w-2/4">
+          {session.data?.user.id === profile?.userId &&
+            profile &&
+            profile.userSocialMedia &&
+            profile.portfolio && (
+              <FinishProfileDisclaimer
+                userSocialMediaLength={profile.userSocialMedia.length}
+                portfolioLength={profile.portfolio.length}
+              />
+            )}
           {renderHeader()}
           {renderMiddleContent()}
           {renderReviews()}

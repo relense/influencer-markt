@@ -429,6 +429,12 @@
       "noMessages": "Não há mensagens",
       "noMessagesSubtitle": "Sê o primeiro a enviar uma mensagem",
       "inputDisabled": "Indisponível"
+    },
+
+    "finishProfileDisclaimer": {
+      "disclaimer1": "Assegura a tua presença no menu 'Explorar' ao adicionar imagens ao teu portfólio e ao ligares as tuas redes sociais",
+      "disclaimer2": "Assegura a tua presença no menu 'Explorar' ao ligares as tuas redes sociais",
+      "disclaimer3": "Assegura a tua presença no menu 'Explorar' ao adicionar imagens ao teu portfólio"
     }
   },
 

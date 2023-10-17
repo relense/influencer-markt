@@ -16,6 +16,7 @@ import type { ProfileData, SocialMediaDetails } from "../../utils/globalTypes";
 import { SocialMediaCard } from "../../components/SocialMediaCard";
 import { type PreloadedImage, helper } from "../../utils/helper";
 import { useRouter } from "next/router";
+import { FinishProfileDisclaimer } from "../../components/FinishProfileDisclaimer";
 
 const EditPage = () => {
   const { t } = useTranslation();
@@ -422,6 +423,12 @@ const EditPage = () => {
         )}
         <div className="flex w-full flex-1 justify-center pb-10 xl:w-3/4 xl:self-center 2xl:w-3/4 3xl:w-3/4 4xl:w-3/4 5xl:w-2/4">
           <div className="flex w-full flex-1 cursor-default flex-col gap-6 px-4 sm:w-8/12 sm:px-12">
+            {profile && profileSocialMedia && profile.portfolio && (
+              <FinishProfileDisclaimer
+                userSocialMediaLength={profileSocialMedia.length}
+                portfolioLength={profile.portfolio.length}
+              />
+            )}
             <div className="flex w-full flex-1 flex-col gap-6 md:flex-row xl:gap-12">
               <div className="flex flex-1 flex-col gap-6">
                 {renderProfileDescription()}

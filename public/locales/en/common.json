@@ -430,6 +430,12 @@
       "noMessages": "There are no messages",
       "noMessagesSubtitle": "Be the first to send a message",
       "inputDisabled": "Unavailable"
+    },
+
+    "finishProfileDisclaimer": {
+      "disclaimer1": "Ensure your presence on the Explore menu by adding pictures to your portfolio and linking your social media",
+      "disclaimer2": "Ensure your presence on the Explore menu by linking your social media",
+      "disclaimer3": "Ensure your presence on the Explore menu by adding pictures to your portfolio"
     }
   },
 
