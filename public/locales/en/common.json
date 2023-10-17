@@ -480,6 +480,17 @@
         "influencers.positive6": "Ability to review the job",
         "influencers.positive7": "Offers page tailored",
         "influencers.positive8": "Find the best brand for you and apply to a job offer"
+      },
+
+      "welcomeModal": {
+        "buttonExplore": "Explore Influencer Markt",
+        "buttonEditProfile": "Add Profile Details",
+        "title": "Welcome to Influencer Markt",
+        "subtitle1": "Unlocking the full potential of your profile requires a few essential enhancements before you can make your mark in the Explore menu.",
+        "subtitle2": "Keep in mind that even after configuring your profile, the journey to monetization is incomplete without integrating your active social media accounts and specifying the captivating content you're eager to monetize.",
+        "subtitle3": "Furthermore, don't forget to grace your portfolio with captivating images. These visuals serve as a showcase of your outstanding work, enticing potential collaborators and admirers.",
+        "subtitle4": "All these important updates can be seamlessly executed within your profile settings, empowering you to stand out and captivate your audience.",
+        "subtitle5": "You have the option to complete these enhancements later, but consider the opportunities that await when you embark on your journey in the thriving Influencer Market. You can either delay this or choose to make your profile irresistibly compelling right away."
       }
     },
 
@@ -517,21 +528,6 @@
         "subTitle": "Define Your Online Profile identity",
         "mainTitle": "Establish Your Online Presence",
         "mainSubTitle": "Let's Establish who you are and what defines your online identity"
-      },
-
-      "socialMediaStep": {
-        "title": "Social Media",
-        "subTitle": "Share your social media accounts",
-        "mainTitle": "Connect and Showcase Your Influence",
-        "mainSubTitle": "Fill in Relevant Details, Leave the Rest Optional",
-        "addSocial": "Add Social Media Details"
-      },
-
-      "visualPortfolioStep": {
-        "title": "Visual Portfolio",
-        "subTitle": "Create a portfolio related with your needs",
-        "mainTitle": "Build Your Visual Portfolio",
-        "mainSubTitle": "Showcase Your Best Photos on Your Profile"
       },
 
       "finalStep": {

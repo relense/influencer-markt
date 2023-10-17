@@ -479,6 +479,17 @@
         "influencers.positive6": "Capacidade de avaliar as ofertas",
         "influencers.positive7": "Página de ofertas adaptadas às tuas necessities",
         "influencers.positive8": "Encontra a melhor marca para ti e apresenta-te"
+      },
+
+      "welcomeModal": {
+        "buttonExplore": "Explora Influencer Markt",
+        "buttonEditProfile": "Adiciona Detalhes de Perfil",
+        "title": "Bem-vindo ao Influencer Markt",
+        "subtitle1": "Antes que todos te possam encontrar no menu 'Explorar', é necessário acrescentar alguns elementos ao teu perfil.",
+        "subtitle2": "Tem em mente que, mesmo após configurares o teu perfil, a jornada para a monetização não estará completa sem a integração das tuas contas ativas nas redes sociais e a especificação do conteúdo cativante que desejas rentabilizar.",
+        "subtitle3": "Além disso, não te esqueças de enriquecer o teu portfólio com imagens cativantes. Estas imagens servem como um showcase do teu trabalho notável, atraindo potenciais colaboradores e admiradores.",
+        "subtitle4": "Todas estas atualizações essenciais podem ser facilmente realizadas nas configurações do teu perfil, capacitando-o a destacar-se e cativar a tua audiência.",
+        "subtitle5": "Podes optar por completar estas melhorias mais tarde, mas considera as oportunidades que o aguardam quando embarcar na próspera indústria dos Influencers. Podes adiar isto ou escolher tornar o seu perfil irresistivelmente cativante desde já."
       }
     },
 
@@ -516,21 +527,6 @@
         "subTitle": "Define o teu perfil de identidade online",
         "mainTitle": "Establece a tua presença online",
         "mainSubTitle": "Vamos establecer quem tu és e o que define a tua identidade online"
-      },
-
-      "socialMediaStep": {
-        "title": "Redes Sociais",
-        "subTitle": "Partilha as tuas contas das redes sociais",
-        "mainTitle": "Liga e demonstra a tua influência",
-        "mainSubTitle": "Preenche os detalhes relevantes, deixa o resto opcional",
-        "addSocial": "Adiciona Detalhes de uma Rede Social"
-      },
-
-      "visualPortfolioStep": {
-        "title": "Portfólio Visual",
-        "subTitle": "Cria um portfólio de acordo com as tuas necessidades",
-        "mainTitle": "Constrói o teu portfólio visual",
-        "mainSubTitle": "Mostra as tuas melhores fotos no teu perfil"
       },
 
       "finalStep": {

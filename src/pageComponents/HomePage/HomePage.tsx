@@ -10,11 +10,15 @@ import {
   faLock,
 } from "@fortawesome/free-solid-svg-icons";
 import { useTranslation } from "react-i18next";
+import { useEffect, useState } from "react";
+import Link from "next/link";
+import { useSession } from "next-auth/react";
+import { api } from "~/utils/api";
 
 import { SimpleSearchBar } from "./innerComponents/SimpleSearchBar";
 import { Button } from "../../components/Button";
-import { useSession } from "next-auth/react";
-import Link from "next/link";
+import { Modal } from "../../components/Modal";
+import { useRouter } from "next/router";
 
 type Offer = {
   icon: IconDefinition;
@@ -34,9 +38,36 @@ const brands = [
   "twitch",
 ];
 
-const HomePage = (params: { openLoginModal: () => void }) => {
+const HomePage = (params: {
+  openLoginModal: () => void;
+  profileId: number;
+}) => {
   const { t } = useTranslation();
   const session = useSession();
+  const router = useRouter();
+
+  const [showWelcomeModal, setShowWelcomeModal] = useState<boolean>(false);
+
+  const { data: user } = api.users.getUserUsername.useQuery();
+
+  useEffect(() => {
+    if (
+      !localStorage.getItem("showWelcomeModal") &&
+      session.status === "authenticated" &&
+      params.profileId
+    ) {
+      setShowWelcomeModal(true);
+    }
+  }, [params.profileId, session.status]);
+
+  const setWelcomeModal = (toEditMenu: boolean) => {
+    setShowWelcomeModal(false);
+    localStorage.setItem("showWelcomeModal", "false");
+
+    if (toEditMenu && user && user.username) {
+      void router.push(`/${user.username}/edit`);
+    }
+  };
 
   const offers: Offer[] = [
     {
@@ -250,11 +281,53 @@ const HomePage = (params: { openLoginModal: () => void }) => {
     );
   };
 
+  const renderWelcomeModal = () => {
+    if (showWelcomeModal) {
+      return (
+        <div className="flex justify-center">
+          <Modal
+            onClose={() => () => setWelcomeModal(false)}
+            button={
+              <div className="flex w-full justify-center gap-4 p-4 sm:px-8">
+                <Button
+                  title={t("pages.home.welcomeModal.buttonExplore")}
+                  level="primary"
+                  onClick={() => setWelcomeModal(false)}
+                />
+                <Button
+                  title={t("pages.home.welcomeModal.buttonEditProfile")}
+                  level="primary"
+                  onClick={() => setWelcomeModal(true)}
+                />
+              </div>
+            }
+          >
+            <div className="flex flex-col items-center justify-center gap-4 p-8 text-center">
+              <div className="font-playfair text-4xl">
+                {t("pages.home.welcomeModal.title")}
+              </div>
+              <div className="font-semibold">
+                {t("pages.home.welcomeModal.subtitle1")}
+              </div>
+              <div>{t("pages.home.welcomeModal.subtitle2")}</div>
+              <div>{t("pages.home.welcomeModal.subtitle3")}</div>
+              <div className="font-semibold">
+                {t("pages.home.welcomeModal.subtitle4")}
+              </div>
+              <div>{t("pages.home.welcomeModal.subtitle5")}</div>
+            </div>
+          </Modal>
+        </div>
+      );
+    }
+  };
+
   return (
     <>
       {renderSectionOne()}
       {renderSectionTwo()}
       {renderSectionThree()}
+      {renderWelcomeModal()}
     </>
   );
 };

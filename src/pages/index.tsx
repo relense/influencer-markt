@@ -16,7 +16,12 @@ const Home: NextPage = () => {
     return (
       <>
         <Layout>
-          {({ openLoginModal }) => <HomePage openLoginModal={openLoginModal} />}
+          {({ openLoginModal, loggedInProfileId }) => (
+            <HomePage
+              openLoginModal={openLoginModal}
+              profileId={loggedInProfileId}
+            />
+          )}
         </Layout>
       </>
     );
