@@ -86,6 +86,7 @@ async function main() {
       { name: "canceled" },
       { name: "reviewed" },
       { name: "inDispute" },
+      { name: "processingPayment" },
     ],
   });
 

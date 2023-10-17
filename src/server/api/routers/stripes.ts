@@ -1,11 +1,6 @@
 import { z } from "zod";
 import { createTRPCRouter, protectedProcedure } from "../trpc";
-import Stripe from "stripe";
-
-// Initialize Stripe with your API key
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY || "", {
-  apiVersion: "2023-08-16",
-});
+import { stripe } from "../../stripe";
 
 const calculateOrderAmount = (paymentAmount: number) => {
   return paymentAmount * 100; // Amount in cents (EUR)
@@ -16,6 +11,7 @@ export const StripesRouter = createTRPCRouter({
     .input(
       z.object({
         paymentAmount: z.number(),
+        orderId: z.number(),
       })
     )
     .mutation(async ({ ctx, input }) => {
@@ -26,6 +22,10 @@ export const StripesRouter = createTRPCRouter({
         automatic_payment_methods: {
           enabled: true,
         },
+        metadata: {
+          orderId: input.orderId,
+        },
+        receipt_email: ctx.session.user.email || "",
       });
     }),
 });

@@ -13,7 +13,7 @@ import { JobsRouter } from "./routers/jobs";
 import { DisputesRouter } from "./routers/disputes";
 import { InvoicesRouter } from "./routers/invoices";
 import { BillingsRouter } from "./routers/billings";
-import { StripesRouter } from "./routers/stripe";
+import { StripesRouter } from "./routers/stripes";
 
 /**
  * This is the primary router for your server.

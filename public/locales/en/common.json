@@ -159,7 +159,8 @@
       "canceled": "Canceled",
       "confirmed": "Confirmed",
       "reviewed": "Closed",
-      "inDispute": "In Dispute"
+      "inDispute": "In Dispute",
+      "processingPayment": "Processing Payment"
     }
   },
   "components": {
@@ -910,7 +911,8 @@
       "dateOfDelivery": "Date of Delivery",
       "inDispute": "In Dispute",
       "includesFees": "Includes VAT and service fee",
-      "disputeSubtitle": "We will contact you when we have a decision"
+      "disputeSubtitle": "We will contact you when we have a decision",
+      "processingPayment": "Processing Payment"
     },
 
     "orders": {
@@ -963,7 +965,8 @@
       "confirmModalText": "Make sure that everything is as you expect. If there is anything that isn't as it's supposed to be, please communicate with the influencer. There might have been a miscommunication, and it can still be rectified.",
       "disputeOpenToast": "Dispute opened. We will contact you when we have a decision",
       "includesFees": "Includes VAT and service fee",
-      "disputeSubtitle": "We will contact you when we have a decision"
+      "disputeSubtitle": "We will contact you when we have a decision",
+      "processingPayment": "Processing Payment"
     },
 
     "billing": {

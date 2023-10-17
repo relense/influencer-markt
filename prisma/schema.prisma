@@ -387,8 +387,8 @@ model Order {
   dispute                Dispute?
   dateOfDelivery         DateTime
   dateItWasDelivered     DateTime?
-  cardReferenceStripe    String?
   invoice                Invoice[]
+  paymentIntent          String?
 
   influencerId  Int?
   buyerId       Int?

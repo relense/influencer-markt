@@ -515,6 +515,84 @@ export const OrdersRouter = createTRPCRouter({
     });
   }),
 
+  updateOrderAddPaymentIntent: protectedProcedure
+    .input(
+      z.object({
+        orderId: z.number(),
+        paymentIntent: z.string(),
+      })
+    )
+    .mutation(async ({ ctx, input }) => {
+      return await ctx.prisma.order.update({
+        where: {
+          id: input.orderId,
+        },
+        data: {
+          paymentIntent: input.paymentIntent,
+          orderStatusId: 10,
+        },
+      });
+    }),
+
+  updateOrderStatusToInProgress: protectedProcedure
+    .input(
+      z.object({
+        orderId: z.number(),
+        statusId: z.number(),
+        language: z.string(),
+      })
+    )
+    .mutation(async ({ ctx, input }) => {
+      const beforeUpdateOrder = await ctx.prisma.order.findFirst({
+        where: {
+          id: input.orderId,
+        },
+      });
+
+      if (beforeUpdateOrder?.orderStatusId === 10) {
+        const order = await ctx.prisma.order.update({
+          where: { id: input.orderId },
+          data: {
+            orderStatusId: input.statusId,
+          },
+          include: {
+            buyer: {
+              select: {
+                name: true,
+                user: {
+                  select: {
+                    email: true,
+                  },
+                },
+              },
+            },
+            influencer: {
+              select: {
+                name: true,
+                user: {
+                  select: {
+                    email: true,
+                  },
+                },
+              },
+            },
+          },
+        });
+
+        if (process.env.EMAIL_FROM) {
+          buyerAddDetailsEmail({
+            buyerName: order.buyer?.name || "",
+            from: process.env.EMAIL_FROM,
+            to: order.influencer?.user.email || "",
+            language: input.language,
+            orderId: order.id,
+          });
+        }
+
+        return order;
+      }
+    }),
+
   updateOrder: protectedProcedure
     .input(
       z.object({
@@ -525,90 +603,93 @@ export const OrdersRouter = createTRPCRouter({
       })
     )
     .mutation(async ({ ctx, input }) => {
-      const order = await ctx.prisma.order.update({
-        where: { id: input.orderId },
-        data: {
-          orderStatusId: input.statusId,
-          dateItWasDelivered: input.deliveredDate ? input.deliveredDate : null,
-        },
-        include: {
-          buyer: {
-            select: {
-              name: true,
-              user: {
-                select: {
-                  email: true,
-                },
-              },
-            },
-          },
-          influencer: {
-            select: {
-              name: true,
-              user: {
-                select: {
-                  email: true,
-                },
-              },
-            },
-          },
+      const beforeUpdateOrder = await ctx.prisma.order.findFirst({
+        where: {
+          id: input.orderId,
         },
       });
 
-      //Email influencer to let him know he has an order
-      if (process.env.EMAIL_FROM) {
-        if (input.statusId === 3) {
-          influencerAcceptedOrderEmail({
-            influencerName: order.influencer?.name || "",
-            from: process.env.EMAIL_FROM,
-            to: order.buyer?.user.email || "",
-            language: input.language,
-            orderId: order.id,
-          });
-        } else if (input.statusId === 4) {
-          buyerAddDetailsEmail({
-            buyerName: order.buyer?.name || "",
-            from: process.env.EMAIL_FROM,
-            to: order.influencer?.user.email || "",
-            language: input.language,
-            orderId: order.id,
-          });
-        } else if (input.statusId === 5) {
-          influencerDeliveredOrderEmail({
-            influencerName: order.influencer?.name || "",
-            from: process.env.EMAIL_FROM,
-            to: order.buyer?.user.email || "",
-            language: input.language,
-            orderId: order.id,
-          });
-        } else if (input.statusId === 6) {
-          buyerConfirmedEmail({
-            buyerName: order.buyer?.name || "",
-            from: process.env.EMAIL_FROM,
-            to: order.influencer?.user.email || "",
-            language: input.language,
-            orderId: order.id,
-          });
-        } else if (input.statusId === 8) {
-          buyerReviewedOrderEmail({
-            buyerName: order.buyer?.name || "",
-            from: process.env.EMAIL_FROM,
-            to: order.influencer?.user.email || "",
-            language: input.language,
-            orderId: order.id,
-          });
-        } else if (input.statusId === 9) {
-          buyerOpensDisputeToInfluencerEmail({
-            buyerName: order.buyer?.name || "",
-            from: process.env.EMAIL_FROM,
-            to: order.influencer?.user.email || "",
-            language: input.language,
-            orderId: order.id,
-          });
+      if (beforeUpdateOrder?.orderStatusId !== input.statusId) {
+        const order = await ctx.prisma.order.update({
+          where: { id: input.orderId },
+          data: {
+            orderStatusId: input.statusId,
+            dateItWasDelivered: input.deliveredDate
+              ? input.deliveredDate
+              : null,
+          },
+          include: {
+            buyer: {
+              select: {
+                name: true,
+                user: {
+                  select: {
+                    email: true,
+                  },
+                },
+              },
+            },
+            influencer: {
+              select: {
+                name: true,
+                user: {
+                  select: {
+                    email: true,
+                  },
+                },
+              },
+            },
+          },
+        });
+
+        if (process.env.EMAIL_FROM) {
+          if (input.statusId === 3) {
+            influencerAcceptedOrderEmail({
+              influencerName: order.influencer?.name || "",
+              from: process.env.EMAIL_FROM,
+              to: order.buyer?.user.email || "",
+              language: input.language,
+              orderId: order.id,
+            });
+          } else if (input.statusId === 5) {
+            influencerDeliveredOrderEmail({
+              influencerName: order.influencer?.name || "",
+              from: process.env.EMAIL_FROM,
+              to: order.buyer?.user.email || "",
+              language: input.language,
+              orderId: order.id,
+            });
+          } else if (input.statusId === 6) {
+            buyerConfirmedEmail({
+              buyerName: order.buyer?.name || "",
+              from: process.env.EMAIL_FROM,
+              to: order.influencer?.user.email || "",
+              language: input.language,
+              orderId: order.id,
+            });
+          } else if (input.statusId === 8) {
+            buyerReviewedOrderEmail({
+              buyerName: order.buyer?.name || "",
+              from: process.env.EMAIL_FROM,
+              to: order.influencer?.user.email || "",
+              language: input.language,
+              orderId: order.id,
+            });
+          } else if (input.statusId === 9) {
+            buyerOpensDisputeToInfluencerEmail({
+              buyerName: order.buyer?.name || "",
+              from: process.env.EMAIL_FROM,
+              to: order.influencer?.user.email || "",
+              language: input.language,
+              orderId: order.id,
+            });
+          }
         }
+
+        return order;
       }
 
-      return order;
+      //Email influencer to let him know he has an order
     }),
 
   updateOrderStatusToRectify: protectedProcedure

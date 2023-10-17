@@ -29,6 +29,7 @@ const PaymentDetailsModal = (params: {
   useEffect(() => {
     void createPaymentIntent({
       paymentAmount: params.amount,
+      orderId: params.orderId,
     });
   }, [createPaymentIntent, params.amount]);
 
