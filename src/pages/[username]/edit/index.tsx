@@ -23,17 +23,7 @@ const Edit: NextPage = () => {
     return (
       <>
         <ProtectedWrapper>
-          <Layout>
-            {() => (
-              <EditPage
-                role={
-                  userData?.role
-                    ? { id: userData?.role?.id, name: userData?.role?.name }
-                    : undefined
-                }
-              />
-            )}
-          </Layout>
+          <Layout>{() => <EditPage />}</Layout>
         </ProtectedWrapper>
       </>
     );
