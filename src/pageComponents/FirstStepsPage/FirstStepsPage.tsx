@@ -2,25 +2,15 @@ import { useEffect, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import { api } from "~/utils/api";
 import Link from "next/link";
+import { useTranslation } from "react-i18next";
+import { useRouter } from "next/router";
 
 import { SetupProfileStep } from "./Views/SetupProfileStep";
-import { SocialMediaStep } from "./Views/SocialMediaStep";
-
 import { ProgressRing } from "../../components/ProgressRing";
-import { VisualPortfolioStep } from "./Views/VisualPortfolioStep";
 import { FinalStep } from "./Views/FinalStep";
 import { Button } from "../../components/Button";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faXmark } from "@fortawesome/free-solid-svg-icons";
 import { RoleEnum, DefineUserStep } from "./Views/DefineUserStep";
-import { useTranslation } from "react-i18next";
-import type {
-  ProfileData,
-  SocialMediaData,
-  UserIdentityData,
-} from "../../utils/globalTypes";
-import { type PreloadedImage } from "../../utils/helper";
-import { useRouter } from "next/router";
+import type { ProfileData, UserIdentityData } from "../../utils/globalTypes";
 
 enum StepsEnum {
   OnlinePresence,
@@ -53,23 +43,6 @@ const FirstStepsPage = () => {
       mainSubTitle: t("pages.firstSteps.setupProfileStep.mainSubTitle"),
     },
     {
-      id: StepsEnum.SocialMedia,
-      step: t("pages.firstSteps.stepIdentifier2"),
-      title: t("pages.firstSteps.socialMediaStep.title"),
-      subTitle: t("pages.firstSteps.socialMediaStep.subTitle"),
-      mainTitle: t("pages.firstSteps.socialMediaStep.mainTitle"),
-      mainSubTitle: t("pages.firstSteps.socialMediaStep.mainSubTitle"),
-    },
-    {
-      id: StepsEnum.VisualPortfolio,
-      step: t("pages.firstSteps.stepIdentifier3"),
-      title: t("pages.firstSteps.visualPortfolioStep.title"),
-      subTitle: t("pages.firstSteps.visualPortfolioStep.subTitle"),
-      mainTitle: t("pages.firstSteps.visualPortfolioStep.mainTitle"),
-      mainSubTitle: t("pages.firstSteps.visualPortfolioStep.mainSubTitle"),
-    },
-
-    {
       id: StepsEnum.Final,
       step: t("pages.firstSteps.stepIdentifier4"),
       title: t("pages.firstSteps.finalStep.title"),
@@ -85,7 +58,6 @@ const FirstStepsPage = () => {
   const [steps, setSteps] = useState<Step[]>(generalSteps);
   const [currentStep, setCurrentStep] = useState<Step>();
   const [stepsCount, setStepsCount] = useState<number>(0);
-  const [portfolio, setPortfolio] = useState<PreloadedImage[]>([]);
   const [isSavingData, setIsSaving] = useState<boolean>(false);
 
   const {
@@ -118,15 +90,7 @@ const FirstStepsPage = () => {
     },
   });
 
-  const {
-    getValues: getValuesSocialMedia,
-    setValue: setValueSocialMedia,
-    register: registerSocialMedia,
-    handleSubmit: handleSubmitSocialMediaData,
-  } = useForm<SocialMediaData>();
-
-  const { data: user, refetch: userRefetch } = api.users.getUser.useQuery();
-  const { data: platforms } = api.allRoutes.getAllSocialMedia.useQuery();
+  const { data: user } = api.users.getUser.useQuery();
 
   const {
     data: usernameVerification,
@@ -140,18 +104,25 @@ const FirstStepsPage = () => {
     api.users.updateUserFirstSteps.useMutation();
   const { mutateAsync: profileMutation } =
     api.profiles.createProfile.useMutation();
-  const { mutateAsync: userSocialMediaMutation } =
-    api.userSocialMedias.createUserSocialMedias.useMutation();
 
   const { mutate: userIdentityMutation } =
     api.users.updateUserIdentity.useMutation({
       onSuccess: () => {
-        updateStepper();
+        setIsUserTypeFormComplete(true);
+
+        setCurrentStep(generalSteps[0]);
+        setSteps(generalSteps);
       },
     });
 
-  const { mutateAsync: createPicture } =
-    api.portfolios.createPicture.useMutation();
+  useEffect(() => {
+    if (user?.role) {
+      setIsUserTypeFormComplete(true);
+
+      setCurrentStep(generalSteps[0]);
+      setSteps(generalSteps);
+    }
+  }, [user]);
 
   const submitStep0 = handleSubmitUserIdentityData((data) => {
     if (
@@ -166,30 +137,11 @@ const FirstStepsPage = () => {
         username: data.username,
       });
     }
-
-    void userRefetch();
   });
 
   const submitStep1 = handleSubmitProfileData(() => {
     changeStep("next");
   });
-
-  const submitStep2 = handleSubmitSocialMediaData(() => {
-    changeStep("next");
-  });
-
-  useEffect(() => {
-    if (user?.role) {
-      updateStepper();
-    }
-  }, [user]);
-
-  const updateStepper = () => {
-    setIsUserTypeFormComplete(true);
-
-    setCurrentStep(generalSteps[0]);
-    setSteps(generalSteps);
-  };
 
   const changeStep = (type: "next" | "previous") => {
     if (mainContentRef.current) {
@@ -209,33 +161,9 @@ const FirstStepsPage = () => {
     }
   };
 
-  const onAddPicture = (pictureUrl: string) => {
-    const newPortfolio = [...portfolio];
-    newPortfolio.push({
-      id: newPortfolio.length,
-      url: pictureUrl,
-      width: 540,
-      height: 430,
-    });
-    setPortfolio(newPortfolio);
-  };
-
-  const onDeletePicture = (pictureId: number) => {
-    const newPortfolio = [...portfolio];
-
-    const index = newPortfolio.map((picture) => picture.id).indexOf(pictureId);
-
-    if (index > -1) {
-      newPortfolio.splice(index, 1);
-    }
-
-    setPortfolio(newPortfolio);
-  };
-
   const saveAllData = async () => {
     setIsSaving(true);
     const profileData = getValuesProfile();
-    const socialMediaData = getValuesSocialMedia();
 
     if (
       profileData &&
@@ -260,52 +188,11 @@ const FirstStepsPage = () => {
       });
     }
 
-    if (portfolio.length > 0) {
-      for (const picture of portfolio) {
-        await createPicture({ picture: picture.url });
-      }
-    }
+    await updateFirstSteps({ firstSteps: true });
+    await ctx.users.getUser.invalidate();
+    void router.push("/");
 
-    if (socialMediaData && socialMediaData?.socialMedia) {
-      const newSocialMediaData = socialMediaData.socialMedia.map(
-        (socialMedia) => {
-          return {
-            handler: socialMedia.socialMediaHandler,
-            followers: socialMedia.socialMediaFollowers,
-            socialMedia: socialMedia.platform,
-            valuePacks: socialMedia.valuePacks.map((valuePack) => {
-              return {
-                platformId: valuePack.platform.id,
-                contentTypeId: valuePack.contentType.id,
-                valuePackPrice: parseInt(valuePack.valuePackPrice),
-              };
-            }),
-          };
-        }
-      );
-
-      await userSocialMediaMutation(newSocialMediaData);
-
-      await updateFirstSteps({ firstSteps: true });
-      await ctx.users.getUser.invalidate();
-      void router.push("/");
-
-      setIsSaving(false);
-    }
-  };
-
-  const renderCloseButton = () => {
-    return (
-      <div
-        className="absolute right-1 top-1 flex h-14 w-14 cursor-pointer items-center justify-center rounded-full bg-influencer-green lg:right-2 lg:top-2"
-        onClick={() => void router.push("/")}
-      >
-        <FontAwesomeIcon
-          icon={faXmark}
-          className="fa-2x cursor-pointer text-white"
-        />
-      </div>
-    );
+    setIsSaving(false);
   };
 
   const renderSteps = () => {
@@ -391,15 +278,6 @@ const FirstStepsPage = () => {
               />
             )}
 
-          {currentStep?.id === StepsEnum.VisualPortfolio && (
-            <Button
-              title={t("pages.firstSteps.nextStep")}
-              level="primary"
-              form="form-hook"
-              disabled={portfolio.length === 0}
-            />
-          )}
-
           {stepsCount === steps.length - 1 && (
             <Link href="/" className="flex flex-1 justify-center sm:hidden">
               <Button
@@ -432,24 +310,6 @@ const FirstStepsPage = () => {
                 submit={submitStep1}
                 errors={errors}
                 watch={watch}
-              />
-            )}
-            {currentStep?.id === StepsEnum.SocialMedia && (
-              <SocialMediaStep
-                registerSocialMedia={registerSocialMedia}
-                platforms={platforms}
-                setValue={setValueSocialMedia}
-                getValues={getValuesSocialMedia}
-                submit={submitStep2}
-                isBrand={user?.role?.name === "Brand"}
-              />
-            )}
-            {currentStep?.id === StepsEnum.VisualPortfolio && (
-              <VisualPortfolioStep
-                changeStep={changeStep}
-                portfolio={portfolio}
-                addPicture={onAddPicture}
-                deletePicture={onDeletePicture}
               />
             )}
             {currentStep?.id === StepsEnum.Final && (
@@ -521,12 +381,7 @@ const FirstStepsPage = () => {
     );
   };
 
-  return (
-    <>
-      {renderCloseButton()}
-      {isUserTypeFormComplete ? renderFirstSteps() : renderUserTypeForm()}
-    </>
-  );
+  return isUserTypeFormComplete ? renderFirstSteps() : renderUserTypeForm();
 };
 
 export { FirstStepsPage };
