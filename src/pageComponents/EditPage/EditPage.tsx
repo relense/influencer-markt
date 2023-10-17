@@ -7,30 +7,24 @@ import { toast } from "react-hot-toast";
 import Image from "next/image";
 
 import { PictureCarrosel } from "../../components/PictureCarrosel";
-import { AddSocialMediaModal } from "../../components/AddSocialMediaModal";
 import { ProfileForm } from "../../components/ProfileForm";
 import { Modal } from "../../components/Modal";
 import { Button } from "../../components/Button";
 import { LoadingSpinner } from "../../components/LoadingSpinner";
 import { useTranslation } from "react-i18next";
-import type {
-  Option,
-  ProfileData,
-  SocialMediaDetails,
-} from "../../utils/globalTypes";
+import type { ProfileData, SocialMediaDetails } from "../../utils/globalTypes";
 import { SocialMediaCard } from "../../components/SocialMediaCard";
 import { type PreloadedImage, helper } from "../../utils/helper";
+import { useRouter } from "next/router";
 
-const EditPage = (params: { role: Option | undefined }) => {
+const EditPage = () => {
   const { t } = useTranslation();
   const ctx = api.useContext();
+  const router = useRouter();
 
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [isProfileModalOpen, setIsProfileModalOpen] = useState<boolean>(false);
-  const [isSocialMediaModalOpen, setIsSocialMediaModalOpen] =
-    useState<boolean>(false);
   const [portfolio, setPortfolio] = useState<PreloadedImage[]>([]);
-  const [socialMediaEditing, setSocialMediaEditing] = useState<boolean>(false);
   const [currentSocialMediaIndex, setCurrentSocialMediaIndex] =
     useState<number>(-1);
   const [userSocialMediaList, setUserSocialMediaList] = useState<
@@ -45,9 +39,6 @@ const EditPage = (params: { role: Option | undefined }) => {
     api.userSocialMedias.getUserSocialMediaByProfileId.useQuery({
       profileId: profile?.id || -1,
     });
-
-  const { data: contentTypes } =
-    api.allRoutes.getAllContentTypesWithoutSocialMedia.useQuery();
 
   const { mutate: updateProfile } = api.profiles.updateProfile.useMutation({
     onSuccess: () => {
@@ -91,19 +82,8 @@ const EditPage = (params: { role: Option | undefined }) => {
     },
   });
 
-  const { mutate: createUserSocialMedia } =
-    api.userSocialMedias.createUserSocialMedia.useMutation({
-      onSuccess: () => {
-        setIsLoading(false);
-        void ctx.userSocialMedias.getUserSocialMediaByProfileId.invalidate();
-      },
-    });
-
   const { mutate: deleteUserSocialMedia } =
     api.userSocialMedias.deleteUserSocialMedia.useMutation();
-
-  const { mutate: updateUserSocialMedia } =
-    api.userSocialMedias.updateUserSocialMedia.useMutation();
 
   //FORMS FROM REACT HOOK
 
@@ -122,21 +102,6 @@ const EditPage = (params: { role: Option | undefined }) => {
       categories: [],
       profilePicture: "",
       website: "",
-    },
-  });
-
-  const {
-    control,
-    register,
-    watch: socialMediaWatch,
-    reset: socialMediaReset,
-    setValue: socialMediaSetValue,
-    handleSubmit: handleSubmitSocialMedia,
-    formState: { errors: socialMediaErrors },
-  } = useForm<SocialMediaDetails>({
-    defaultValues: {
-      platform: { id: -1, name: "" },
-      valuePacks: [],
     },
   });
 
@@ -264,122 +229,10 @@ const EditPage = (params: { role: Option | undefined }) => {
   };
 
   const handleOnclickSocialMediaCard = (socialMedia: SocialMediaDetails) => {
-    setIsSocialMediaModalOpen(true);
-    setSocialMediaEditing(true);
-    socialMediaSetValue("id", socialMedia.id);
-    socialMediaSetValue("platform", socialMedia.platform);
-    socialMediaSetValue(
-      "socialMediaFollowers",
-      socialMedia.socialMediaFollowers
-    );
-    socialMediaSetValue("socialMediaHandler", socialMedia.socialMediaHandler);
-    socialMediaSetValue("valuePacks", socialMedia.valuePacks);
-  };
-
-  const onCloseSocialMediaModal = () => {
-    setIsSocialMediaModalOpen(false);
-    socialMediaReset();
-  };
-
-  const onAddSocialMedia = handleSubmitSocialMedia((data) => {
-    if (
-      !data.platform ||
-      data.platform.id === -1 ||
-      data.socialMediaFollowers === -1 ||
-      data.socialMediaHandler === ""
-    ) {
-      setIsSocialMediaModalOpen(false);
-      socialMediaReset();
-      return;
+    if (socialMedia.id) {
+      void router.push(`/social-media/edit/${socialMedia.id}`);
     }
-
-    const newUserSocialMediaList = [...userSocialMediaList];
-    newUserSocialMediaList.push({
-      socialMediaFollowers: data.socialMediaFollowers,
-      socialMediaHandler: data.socialMediaHandler,
-      platform: data.platform,
-      valuePacks: data.valuePacks.map((valuePack) => {
-        return {
-          contentType: valuePack.contentType,
-          platform: data.platform,
-          valuePackPrice: valuePack.valuePackPrice,
-        };
-      }),
-    });
-
-    setUserSocialMediaList(newUserSocialMediaList);
-
-    createUserSocialMedia({
-      followers: data.socialMediaFollowers,
-      handler: data.socialMediaHandler,
-      socialMedia: data.platform,
-      valuePacks: data.valuePacks.map((valuePack) => {
-        return {
-          contentTypeId: valuePack.contentType.id,
-          platformId: data.platform.id,
-          valuePackPrice: parseInt(valuePack.valuePackPrice),
-        };
-      }),
-    });
-
-    setIsLoading(true);
-    setIsSocialMediaModalOpen(false);
-    socialMediaReset();
-  });
-
-  const onEditSocialMedia = handleSubmitSocialMedia((data) => {
-    if (data.id && contentTypes) {
-      const newUserSocialMediaList = [...userSocialMediaList];
-      const editedSocialMedia = {
-        id: data.id,
-        socialMediaFollowers: data.socialMediaFollowers,
-        socialMediaHandler: data.socialMediaHandler,
-        platform: data.platform,
-        valuePacks: data.valuePacks.map((valuePack) => {
-          const currentContentType = contentTypes.find(
-            (contentType) => contentType.id === valuePack.contentType.id
-          );
-          return {
-            id: valuePack.id || -1,
-            contentType: {
-              id: currentContentType?.id || -1,
-              name: currentContentType?.name || "",
-            },
-            platform: valuePack.platform,
-            valuePackPrice: valuePack.valuePackPrice,
-          };
-        }),
-      };
-
-      newUserSocialMediaList.splice(
-        currentSocialMediaIndex,
-        1,
-        editedSocialMedia
-      );
-
-      setUserSocialMediaList(newUserSocialMediaList);
-
-      updateUserSocialMedia({
-        id: data.id,
-        followers: data.socialMediaFollowers,
-        handler: data.socialMediaHandler,
-        socialMedia: data.platform,
-        valuePacks: data.valuePacks.map((valuePack) => {
-          return {
-            id: valuePack.id || -1,
-            contentTypeId: valuePack.contentType.id,
-            platformId: valuePack.platform.id,
-            valuePackPrice: parseInt(valuePack.valuePackPrice),
-          };
-        }),
-      });
-    }
-
-    setIsSocialMediaModalOpen(false);
-    setSocialMediaEditing(false);
-    setCurrentSocialMediaIndex(-1);
-    socialMediaReset();
-  });
+  };
 
   //RENDER FUNCTIONS
 
@@ -488,7 +341,7 @@ const EditPage = (params: { role: Option | undefined }) => {
           {platforms?.length !== userSocialMediaList?.length && (
             <div
               className="flex h-6 w-6 items-center justify-center rounded-full bg-influencer text-white"
-              onClick={() => setIsSocialMediaModalOpen(true)}
+              onClick={() => void router.push("/social-media/create")}
             >
               <FontAwesomeIcon
                 icon={faPlus}
@@ -580,29 +433,6 @@ const EditPage = (params: { role: Option | undefined }) => {
             </div>
             {renderSocialMedia()}
           </div>
-          {isSocialMediaModalOpen && userSocialMediaList && (
-            <AddSocialMediaModal
-              addSocialMedia={
-                socialMediaEditing ? onEditSocialMedia : onAddSocialMedia
-              }
-              platforms={platforms}
-              errors={socialMediaErrors}
-              socialMediaList={userSocialMediaList.map((item) => {
-                return {
-                  platform: item.platform,
-                  socialMediaHandler: item.socialMediaHandler,
-                  socialMediaFollowers: item.socialMediaFollowers,
-                  valuePacks: [],
-                };
-              })}
-              control={control}
-              register={register}
-              watch={socialMediaWatch}
-              onCloseModal={onCloseSocialMediaModal}
-              setValue={socialMediaSetValue}
-              isBrand={params.role?.name === "Brand"}
-            />
-          )}
           {isProfileModalOpen && (
             <Modal
               onClose={onCloseProfileModal}

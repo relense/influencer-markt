@@ -264,7 +264,7 @@
       "platformPlaceholder": "Choose your Social Media: e.g., Instagram, TikTok",
       "handlerPlaceholder": "Social media handler",
       "podcastPlaceholder": "Podcast website URL",
-      "followersPlaceholder": "Social Media Followers",
+      "followersPlaceholder": "How many followers do you have?",
       "deliveryTime": "Delivery Time",
       "revisionTime": "Number of Revisions",
       "price": "Price",
@@ -983,6 +983,21 @@
       "withdraw": "Withdraw",
       "salesInvoices": "Sales Invoices",
       "purchasesInvoices": "Purchases Invoices"
+    },
+
+    "socialMediaCreate": {
+      "characterWarning": "Max is {{count}} characters",
+      "modalTitle": "Social Media Details",
+      "platformPlaceholder": "Choose your Social Media: e.g., Instagram, TikTok",
+      "handlerPlaceholder": "Social media handler",
+      "podcastPlaceholder": "Podcast website URL",
+      "followersPlaceholder": "How many followers do you have?",
+      "deliveryTime": "Delivery Time",
+      "revisionTime": "Number of Revisions",
+      "price": "Price",
+      "button": "Save Social Media",
+      "contentTypesTitle": "Platform Content Types",
+      "contentTypePlaceholder": "Content Type"
     }
   },
 

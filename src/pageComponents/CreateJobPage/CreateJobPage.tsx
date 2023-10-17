@@ -653,7 +653,7 @@ const CreateJobPage = (params: { edit: boolean; jobId: number }) => {
   return (
     <form
       id="form-createModal"
-      className="mt-2 flex w-full cursor-default flex-col gap-6 self-center px-4 pb-10 sm:px-12 lg:w-full xl:w-10/12 2xl:w-3/4 3xl:w-3/4 4xl:w-7/12 5xl:w-2/4"
+      className="flex w-full cursor-default flex-col gap-6 self-center px-4 pb-10 sm:px-12 lg:w-full xl:w-10/12 2xl:w-3/4 3xl:w-3/4 4xl:w-7/12 5xl:w-2/4"
       onSubmit={submitRequest}
     >
       <div className="flex flex-1 justify-center font-playfair text-5xl font-semibold">

@@ -263,7 +263,7 @@
       "platformPlaceholder": "Escolhe a tua rede social: E.g. Instagram, TikTok",
       "handlerPlaceholder": "Nome de Utilizador da rede social",
       "podcastPlaceholder": "URL do website para o podcast",
-      "followersPlaceholder": "Seguidores da rede social",
+      "followersPlaceholder": "Quantos seguidores tens?",
       "deliveryTime": "Tempo de Entrega",
       "revisionTime": "Número de Revisões",
       "price": "Preço",
@@ -983,6 +983,21 @@
       "withdraw": "Retirar",
       "salesInvoices": "Faturas de Vendas",
       "purchasesInvoices": "Faturas de Compras"
+    },
+
+    "socialMediaCreate": {
+      "characterWarning": "Máximo de {{count}} caracteres",
+      "modalTitle": "Adiciona detalhes da rede social",
+      "platformPlaceholder": "Escolhe a tua rede social: E.g. Instagram, TikTok",
+      "handlerPlaceholder": "Nome de Utilizador da rede social",
+      "podcastPlaceholder": "URL do website para o podcast",
+      "followersPlaceholder": "Quantos seguidores tens?",
+      "deliveryTime": "Tempo de Entrega",
+      "revisionTime": "Número de Revisões",
+      "price": "Preço",
+      "button": "Guarda Rede Social",
+      "contentTypesTitle": "Tipos de Conteúdo da Plataforma",
+      "contentTypePlaceholder": "Tipo de conteúdo"
     }
   },
 

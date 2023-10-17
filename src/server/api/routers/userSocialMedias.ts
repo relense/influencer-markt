@@ -24,6 +24,11 @@ export const userSocialMediasRouter = createTRPCRouter({
       const profile = await ctx.prisma.profile.findUnique({
         where: { userId: ctx.session.user.id },
         include: {
+          user: {
+            select: {
+              username: true,
+            },
+          },
           userSocialMedia: {
             include: {
               valuePacks: true,
@@ -64,6 +69,8 @@ export const userSocialMediasRouter = createTRPCRouter({
           });
         }
       }
+
+      return profile;
     }),
 
   createUserSocialMedias: protectedProcedure
@@ -179,6 +186,11 @@ export const userSocialMediasRouter = createTRPCRouter({
       const profile = await ctx.prisma.profile.findUnique({
         where: { userId: ctx.session.user.id },
         include: {
+          user: {
+            select: {
+              username: true,
+            },
+          },
           userSocialMedia: {
             include: {
               valuePacks: true,
@@ -233,6 +245,8 @@ export const userSocialMediasRouter = createTRPCRouter({
           },
         });
       }
+
+      return profile;
     }),
 
   getUserSocialMediaByProfileId: publicProcedure
@@ -260,6 +274,56 @@ export const userSocialMediasRouter = createTRPCRouter({
           },
         },
       });
+    }),
+
+  getUserSocialMediaById: protectedProcedure
+    .input(
+      z.object({
+        userSocialMediaId: z.number(),
+      })
+    )
+    .query(async ({ ctx, input }) => {
+      return await ctx.prisma.userSocialMedia.findFirst({
+        where: { id: input.userSocialMediaId },
+        select: {
+          socialMedia: true,
+          profile: false,
+          followers: true,
+          handler: true,
+          socialMediaId: true,
+          url: true,
+          profileId: false,
+          id: true,
+          valuePacks: {
+            include: {
+              contentType: true,
+            },
+          },
+        },
+      });
+    }),
+
+  verifySocialMediaExistsById: protectedProcedure
+    .input(
+      z.object({
+        socialMediaId: z.number(),
+      })
+    )
+    .query(async ({ ctx, input }) => {
+      const profile = await ctx.prisma.profile.findFirst({
+        where: {
+          userId: ctx.session.user.id,
+        },
+      });
+
+      if (profile) {
+        return !!(await ctx.prisma.userSocialMedia.findFirst({
+          where: {
+            id: input.socialMediaId,
+            profileId: profile.id,
+          },
+        }));
+      }
     }),
 
   deleteUserSocialMedia: protectedProcedure
