@@ -185,25 +185,38 @@ export const PictureCarrosel = (params: {
   const renderUploadMainPicture = () => {
     if (currentPicture.id === -1) {
       return (
-        <div className="relative flex h-full w-full cursor-pointer gap-4 rounded-lg border-[1px] border-gray3 sm:h-[540px] sm:w-[430px]">
+        <div
+          className={`relative flex h-full w-full gap-4 rounded-lg border-[1px] border-gray3 sm:h-[540px] sm:w-[430px] ${
+            params.portfolio.length > 0 ? "cursor-pointer" : ""
+          }`}
+        >
           <div className="relative flex h-[540px] w-full flex-col items-center justify-center ">
-            <input
-              type="file"
-              onChange={handleFileUpload}
-              title=""
-              className="absolute h-full w-full cursor-pointer text-[0px] opacity-0"
-            />
-            <div className="flex h-24 w-24 cursor-pointer flex-col items-center justify-center rounded-full border-[1px] border-gray3">
+            {!params.visual && (
+              <input
+                type="file"
+                onChange={handleFileUpload}
+                title=""
+                className="absolute h-full w-full cursor-pointer text-[0px] opacity-0"
+              />
+            )}
+            <div
+              className={`flex h-24 w-24 flex-col items-center justify-center rounded-full border-[1px] border-gray3 ${
+                params.portfolio.length > 0 ? "cursor-pointer" : ""
+              }`}
+            >
               <FontAwesomeIcon icon={faCamera} className="fa-2x text-gray3" />
             </div>
-            <div className="flex items-center justify-center gap-2 text-center text-influencer sm:gap-4">
-              <div className="hidden sm:flex">
-                <FontAwesomeIcon icon={faArrowUpFromBracket} />
+            {!params.visual && (
+              <div className="flex items-center justify-center gap-2 text-center text-influencer sm:gap-4">
+                <div className="hidden sm:flex">
+                  <FontAwesomeIcon icon={faArrowUpFromBracket} />
+                </div>
+
+                <div className="flex flex-wrap overflow-hidden p-4">
+                  {t("components.pictureCarrosel.addPicture")}
+                </div>
               </div>
-              <div className="flex flex-wrap overflow-hidden p-4">
-                {t("components.pictureCarrosel.addPicture")}
-              </div>
-            </div>
+            )}
           </div>
         </div>
       );
