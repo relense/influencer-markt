@@ -186,7 +186,7 @@ const SocialMediaEditPage = (params: {
               {t("pages.socialMediaCreate.contentTypesTitle")}
             </div>
             {!allContentTypesSelected && (
-              <div className="flex h-6 w-6 items-center justify-center rounded-full bg-influencer text-white">
+              <div className="flex h-6 w-6 items-center justify-center rounded-full bg-influencer-green text-white">
                 <FontAwesomeIcon
                   icon={faPlus}
                   className="fa-sm cursor-pointer"
