@@ -26,11 +26,11 @@ const OrderDetails: NextPage<OrderDetailsProps> = ({ id }) => {
     }
   }, [isLoading, order, router]);
 
-  if (isLoading) {
+  if (isLoading && order === null) {
     <ProtectedWrapper>
       <LoadingSpinner />
     </ProtectedWrapper>;
-  } else {
+  } else if (isLoading === false && order !== null) {
     const isRedirect = router.query.redirect === "true" ? true : false;
 
     return (

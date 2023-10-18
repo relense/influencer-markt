@@ -26,11 +26,11 @@ const SalesDetails: NextPage<SalesDetailsProps> = ({ id }) => {
     }
   }, [isLoading, order, router]);
 
-  if (isLoading) {
+  if (isLoading && order === null) {
     <ProtectedWrapper>
       <LoadingSpinner />
     </ProtectedWrapper>;
-  } else {
+  } else if (isLoading === false && order !== null) {
     return (
       <ProtectedWrapper>
         <Layout>{() => <SalesDetailsPage orderId={parseInt(id)} />}</Layout>
