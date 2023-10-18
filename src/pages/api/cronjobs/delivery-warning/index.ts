@@ -4,9 +4,9 @@ import { toBuyerDeliveryIsTomorrowEmail } from "../../../../emailTemplates/toBuy
 import { toInfluencerDeliveryIsTomorrowEmail } from "../../../../emailTemplates/toInfluencerDeliveryIsTomorrowEmail/toInfluencerDeliveryIsTomorrowEmail";
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
-  const sig = req.headers["influencermarkt-signature"]!;
+  const sig = req.headers["signature"]!;
 
-  if (sig) {
+  if (sig && sig === "influencermarkt-signature") {
     const today = new Date();
     const tomorrow = new Date(today);
     tomorrow.setDate(today.getDate() + 1); // Set the date to be tomorrow
