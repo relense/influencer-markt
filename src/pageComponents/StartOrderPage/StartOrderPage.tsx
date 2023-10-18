@@ -62,6 +62,7 @@ const StartOrderPage = (params: {
 
           createNotification({
             entityId: order.id,
+            senderId: order.buyerId || -1,
             entityAction: "awaitingOrderReply",
             notifierId: params.orderProfileId,
           });

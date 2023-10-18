@@ -114,9 +114,14 @@ async function main() {
       { entityType: "orders", entityAction: "orderRectifiedBuyer" },
       { entityType: "sales", entityAction: "orderRectifiedInfluencer" },
       { entityType: "orders", entityAction: "orderBuyerLostDispute" },
-      { entityType: "sales", entityAction: "orderInfluencerLostdispute" },
+      { entityType: "sales", entityAction: "orderInfluencerLostDispute" },
       { entityType: "orders", entityAction: "orderBuyerWonDispute" },
       { entityType: "sales", entityAction: "orderInfluencerWonDispute" },
+      { entityType: "orders", entityAction: "toBuyerConfirmByInfluencerMakrt" },
+      {
+        entityType: "sales",
+        entityAction: "toInfluencerConfirmByInfluencerMakrt",
+      },
     ],
   });
 

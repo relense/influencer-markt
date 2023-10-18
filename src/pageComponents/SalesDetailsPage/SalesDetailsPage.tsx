@@ -39,6 +39,7 @@ const SalesDetailsPage = (params: { orderId: number }) => {
       onSuccess: () => {
         void createNotification({
           entityId: params.orderId,
+          senderId: sale?.influencerId || -1,
           notifierId: sale?.buyerId || -1,
           entityAction: "orderAccepted",
         });
@@ -56,6 +57,7 @@ const SalesDetailsPage = (params: { orderId: number }) => {
       onSuccess: () => {
         void createNotification({
           entityId: params.orderId,
+          senderId: sale?.influencerId || -1,
           notifierId: sale?.buyerId || -1,
           entityAction: "orderRejected",
         });
@@ -68,6 +70,7 @@ const SalesDetailsPage = (params: { orderId: number }) => {
       onSuccess: () => {
         void createNotification({
           entityId: params.orderId,
+          senderId: sale?.influencerId || -1,
           notifierId: sale?.buyerId || -1,
           entityAction: "saleCanceled",
         });
@@ -80,6 +83,7 @@ const SalesDetailsPage = (params: { orderId: number }) => {
       onSuccess: () => {
         setShowDeliverModal(false);
         void createNotification({
+          senderId: sale?.influencerId || -1,
           entityId: params.orderId,
           notifierId: sale?.buyerId || -1,
           entityAction: "orderDelivered",

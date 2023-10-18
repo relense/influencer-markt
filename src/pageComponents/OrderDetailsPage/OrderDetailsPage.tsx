@@ -69,6 +69,7 @@ const OrderDetailsPage = (params: {
       onSuccess: () => {
         void createNotification({
           entityId: params.orderId,
+          senderId: order?.buyerId || -1,
           notifierId: order?.influencerId || -1,
           entityAction: "orderCanceled",
         });
@@ -82,6 +83,7 @@ const OrderDetailsPage = (params: {
         setOpenConfirmOrderModal(false);
         void createNotification({
           entityId: params.orderId,
+          senderId: order?.buyerId || -1,
           notifierId: order?.influencerId || -1,
           entityAction: "orderConfirmed",
         });
@@ -95,6 +97,7 @@ const OrderDetailsPage = (params: {
       onSuccess: () => {
         void createNotification({
           entityId: params.orderId,
+          senderId: order?.buyerId || -1,
           notifierId: order?.influencerId || -1,
           entityAction: "orderReviewed",
         });
@@ -109,6 +112,7 @@ const OrderDetailsPage = (params: {
         void ctx.orders.getBuyerOrder.invalidate();
         void createNotification({
           entityId: params.orderId,
+          senderId: order?.buyerId || -1,
           notifierId: order?.influencerId || -1,
           entityAction: "orderDeliveryDateUpdate",
         });
@@ -123,6 +127,7 @@ const OrderDetailsPage = (params: {
       setOpenDisputeModal(false);
       void createNotification({
         entityId: params.orderId,
+        senderId: order?.buyerId || -1,
         notifierId: order?.influencerId || -1,
         entityAction: "orderInDispute",
       });

@@ -19,11 +19,12 @@ const OrderPayCallback: NextPage<OrderPayCallbackProps> = ({ orderId }) => {
     api.orders.updateOrderAddPaymentIntent.useMutation({
       onSuccess: (order) => {
         if (order) {
-          // void createNotification({
-          //   entityId: order.id,
-          //   notifierId: order?.influencerId || -1,
-          //   entityAction: "orderPaymentsAdded",
-          // });
+          void createNotification({
+            entityId: order.id,
+            senderId: order.buyerId || -1,
+            notifierId: order?.influencerId || -1,
+            entityAction: "orderPaymentsAdded",
+          });
 
           void router.push(`/orders/${order.id}`);
         }

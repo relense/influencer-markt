@@ -144,9 +144,11 @@
       "orderRectifiedBuyer": "After deliberation, we are giving {{actor}} the opportunity to rectify the order and 2 days to deliver",
       "orderRectifiedInfluencer": "After deliberation, we are giving you the chance to rectify the order and 2 days to deliver",
       "orderBuyerLostDispute": "We have come to a decision that {{actor}} delivered what was asked to",
-      "orderInfluencerLostdispute": "We have come to a decision that {{actor}} did not receive what he requested",
+      "orderInfluencerLostDispute": "We have come to a decision that {{actor}} did not receive what he requested",
       "orderInfluencerWonDispute": "We have come to a decision that you delivered what {{actor}} requested",
-      "orderBuyerWonDispute": "We have come to a decision that {{actor}} did not fulfill what was requested.The money will be refunded"
+      "orderBuyerWonDispute": "We have come to a decision that {{actor}} did not fulfill what was requested.The money will be refunded",
+      "toBuyerConfirmByInfluencerMakrt": "The 96-hour window for order confirmation has passed. We have now confirmed the order and issued the relevant invoice",
+      "toInfluencerConfirmByInfluencerMakrt": "The 96-hour window for order confirmation has passed. We have now confirmed the order and issued the relevant invoice"
     },
 
     "orderStatus": {

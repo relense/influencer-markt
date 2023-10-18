@@ -1,6 +1,100 @@
 import { z } from "zod";
 import { createTRPCRouter, protectedProcedure } from "../trpc";
 import { helper } from "../../../utils/helper";
+import { prisma } from "../../db";
+
+const createInvoice = async (params: { orderId: number }) => {
+  const { orderId } = params;
+
+  const order = await prisma.order.findFirst({
+    where: {
+      id: orderId,
+    },
+    include: {
+      orderInfluencerCountry: true,
+      buyer: {
+        include: {
+          billing: true,
+        },
+      },
+      influencer: {
+        include: {
+          billing: true,
+        },
+      },
+    },
+  });
+
+  if (order) {
+    //create Buyer invoice
+    const taxValue = (
+      Number(order.orderBasePrice) *
+      (order.orderTaxPercentage / 100)
+    ).toFixed(2);
+
+    const ourCutValue = (
+      Number(order.orderBasePrice) *
+      (order.orderServicePercentage / 100)
+    ).toFixed(2);
+
+    await prisma.invoice.create({
+      data: {
+        order: {
+          connect: {
+            id: orderId,
+          },
+        },
+        billing: {
+          connect: {
+            id: order.buyer?.billing?.id,
+          },
+        },
+        taxPercentage: order.orderTaxPercentage,
+        influencerMarktPercentage: helper.calculateServiceFee() * 100,
+        influencerMarktCutValue: ourCutValue,
+        saleBaseValue: order.orderBasePrice,
+        saleTotalValue: order.orderTotalPrice,
+        taxValue: taxValue,
+        name: order.buyer?.billing?.name || "",
+        tin: order.buyer?.billing?.tin || "",
+        invoiceType: {
+          connect: {
+            id: 1,
+          },
+        },
+      },
+    });
+
+    //create Influencer Invoice
+    await prisma.invoice.create({
+      data: {
+        order: {
+          connect: {
+            id: orderId,
+          },
+        },
+        billing: {
+          connect: {
+            id: order.influencer?.billing?.id,
+          },
+        },
+        taxPercentage: order.orderTaxPercentage,
+        influencerMarktPercentage: helper.calculateServiceFee() * 100,
+        influencerMarktCutValue: ourCutValue,
+        saleBaseValue: order.orderBasePrice,
+        saleTotalValue: order.orderTotalPrice,
+        taxValue: taxValue,
+        name: order.influencer?.billing?.name || "",
+        tin: order.influencer?.billing?.tin || "",
+        invoiceType: {
+          connect: {
+            id: 2,
+          },
+        },
+      },
+    });
+  }
+};
 
 export const InvoicesRouter = createTRPCRouter({
   createInvoice: protectedProcedure
@@ -9,95 +103,8 @@ export const InvoicesRouter = createTRPCRouter({
         orderId: z.number(),
       })
     )
-    .mutation(async ({ ctx, input }) => {
-      const order = await ctx.prisma.order.findFirst({
-        where: {
-          id: input.orderId,
-        },
-        include: {
-          orderInfluencerCountry: true,
-          buyer: {
-            include: {
-              billing: true,
-            },
-          },
-          influencer: {
-            include: {
-              billing: true,
-            },
-          },
-        },
-      });
-
-      if (order) {
-        //create Buyer invoice
-        const taxValue = (
-          Number(order.orderBasePrice) *
-          (order.orderTaxPercentage / 100)
-        ).toFixed(2);
-
-        const ourCutValue = (
-          Number(order.orderBasePrice) *
-          (order.orderServicePercentage / 100)
-        ).toFixed(2);
-
-        await ctx.prisma.invoice.create({
-          data: {
-            order: {
-              connect: {
-                id: input.orderId,
-              },
-            },
-            billing: {
-              connect: {
-                id: order.buyer?.billing?.id,
-              },
-            },
-            taxPercentage: order.orderTaxPercentage,
-            influencerMarktPercentage: helper.calculateServiceFee() * 100,
-            influencerMarktCutValue: ourCutValue,
-            saleBaseValue: order.orderBasePrice,
-            saleTotalValue: order.orderTotalPrice,
-            taxValue: taxValue,
-            name: order.buyer?.billing?.name || "",
-            tin: order.buyer?.billing?.tin || "",
-            invoiceType: {
-              connect: {
-                id: 1,
-              },
-            },
-          },
-        });
-
-        //create Influencer Invoice
-        await ctx.prisma.invoice.create({
-          data: {
-            order: {
-              connect: {
-                id: input.orderId,
-              },
-            },
-            billing: {
-              connect: {
-                id: order.influencer?.billing?.id,
-              },
-            },
-            taxPercentage: order.orderTaxPercentage,
-            influencerMarktPercentage: helper.calculateServiceFee() * 100,
-            influencerMarktCutValue: ourCutValue,
-            saleBaseValue: order.orderBasePrice,
-            saleTotalValue: order.orderTotalPrice,
-            taxValue: taxValue,
-            name: order.influencer?.billing?.name || "",
-            tin: order.influencer?.billing?.tin || "",
-            invoiceType: {
-              connect: {
-                id: 2,
-              },
-            },
-          },
-        });
-      }
+    .mutation(async ({ input }) => {
+      await createInvoice({ orderId: input.orderId });
     }),
 
   getPurchasesInvoices: protectedProcedure.query(async ({ ctx }) => {
@@ -152,3 +159,5 @@ export const InvoicesRouter = createTRPCRouter({
     }
   }),
 });
+
+export { createInvoice };

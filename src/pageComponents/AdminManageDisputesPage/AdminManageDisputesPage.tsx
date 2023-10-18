@@ -70,7 +70,7 @@ const AdminManageDisputesPage = (params: { disputeId: number }) => {
             entityId: orderData.id,
             notifierId: order?.influencerId || -1,
             senderId: order?.buyerId || -1,
-            entityAction: "orderInfluencerLostdispute",
+            entityAction: "orderInfluencerLostDispute",
           });
           //BUYER NOTIFICAITON BEING TOLD THAT HE LOST
           void createNotification({

@@ -187,6 +187,7 @@ const ManageJobDetailsPage = (params: {
           createNotification({
             entityId: order.id,
             entityAction: "awaitingOrderReply",
+            senderId: order?.buyerId || -1,
             notifierId: order.influencerId,
           });
 

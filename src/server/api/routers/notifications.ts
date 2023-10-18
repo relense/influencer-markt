@@ -1,5 +1,84 @@
 import { z } from "zod";
 import { createTRPCRouter, protectedProcedure } from "../trpc";
+import { prisma } from "../../db";
+
+type Actions =
+  | "awaitingOrderReply"
+  | "orderRejected"
+  | "orderAccepted"
+  | "orderDelivered"
+  | "orderCanceled"
+  | "saleCanceled"
+  | "orderPaymentsAdded"
+  | "orderConfirmed"
+  | "orderReviewed"
+  | "orderDeliveryDateUpdate"
+  | "orderInDispute"
+  | "orderRectifiedInfluencer"
+  | "orderRectifiedBuyer"
+  | "orderBuyerLostDispute"
+  | "orderInfluencerLostDispute"
+  | "orderInfluencerWonDispute"
+  | "orderBuyerWonDispute"
+  | "toBuyerConfirmByInfluencerMakrt"
+  | "toInfluencerConfirmByInfluencerMakrt";
+
+const createNotification = async (params: {
+  notifierId: number;
+  entityId: number;
+  entityAction: Actions;
+  senderId?: number;
+}) => {
+  const { notifierId, entityId, entityAction, senderId } = params;
+
+  const actor = await prisma.profile.findUnique({
+    where: { id: senderId },
+  });
+
+  const entityType = await prisma.notificationType.findFirst({
+    where: {
+      entityAction: {
+        contains: entityAction,
+      },
+    },
+  });
+
+  if (actor && entityType) {
+    const numberOfNotifications = await prisma.notification.count({
+      where: {
+        notifierId: notifierId,
+      },
+    });
+
+    if (numberOfNotifications >= 40) {
+      const findOldestNotification = await prisma.notification.findMany({
+        where: {
+          notifierId: notifierId,
+        },
+        orderBy: {
+          createdAt: "asc",
+        },
+        take: 1,
+      });
+
+      if (findOldestNotification[0]) {
+        await prisma.notification.delete({
+          where: { id: findOldestNotification[0].id },
+        });
+      }
+    }
+
+    return await prisma.notification.create({
+      data: {
+        actorId: actor?.id,
+        notifierId: notifierId,
+        notificationTypeId: entityType.id,
+        notificationStatusId: 1,
+        entityId: entityId,
+      },
+    });
+  }
+};
 
 export const NotificationsRouter = createTRPCRouter({
   createNotification: protectedProcedure
@@ -23,66 +102,21 @@ export const NotificationsRouter = createTRPCRouter({
           z.literal("orderRectifiedInfluencer"),
           z.literal("orderRectifiedBuyer"),
           z.literal("orderBuyerLostDispute"),
-          z.literal("orderInfluencerLostdispute"),
+          z.literal("orderInfluencerLostDispute"),
           z.literal("orderInfluencerWonDispute"),
           z.literal("orderBuyerWonDispute"),
+          z.literal("toBuyerConfirmByInfluencerMakrt"),
+          z.literal("toInfluencerConfirmByInfluencerMakrt"),
         ]),
       })
     )
-    .mutation(async ({ ctx, input }) => {
-      const whereCondition = input.senderId
-        ? { id: input.senderId }
-        : { userId: ctx.session.user.id };
-
-      const actor = await ctx.prisma.profile.findUnique({
-        where: whereCondition,
+    .mutation(async ({ input }) => {
+      return await createNotification({
+        entityAction: input.entityAction,
+        entityId: input.entityId,
+        senderId: input.senderId,
+        notifierId: input.notifierId,
       });
-
-      const entityType = await ctx.prisma.notificationType.findFirst({
-        where: {
-          entityAction: {
-            contains: input.entityAction,
-          },
-        },
-      });
-
-      if (actor && entityType) {
-        const numberOfNotifications = await ctx.prisma.notification.count({
-          where: {
-            notifierId: input.notifierId,
-          },
-        });
-
-        if (numberOfNotifications >= 40) {
-          const findOldestNotification = await ctx.prisma.notification.findMany(
-            {
-              where: {
-                notifierId: input.notifierId,
-              },
-              orderBy: {
-                createdAt: "asc",
-              },
-              take: 1,
-            }
-          );
-
-          if (findOldestNotification[0]) {
-            await ctx.prisma.notification.delete({
-              where: { id: findOldestNotification[0].id },
-            });
-          }
-        }
-
-        return await ctx.prisma.notification.create({
-          data: {
-            actorId: actor?.id,
-            notifierId: input.notifierId,
-            notificationTypeId: entityType.id,
-            notificationStatusId: 1,
-            entityId: input.entityId,
-          },
-        });
-      }
     }),
 
   getUserToBeReadNotifications: protectedProcedure.query(async ({ ctx }) => {
@@ -154,3 +188,5 @@ export const NotificationsRouter = createTRPCRouter({
     });
   }),
 });
+
+export { createNotification };

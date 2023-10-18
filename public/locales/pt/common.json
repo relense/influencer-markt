@@ -144,9 +144,11 @@
       "orderRectifiedBuyer": "Depois de ponderar, estamos a dar a {{actor}} a oportunidade de corrigir o pedido e entregar daqui a 2 dias",
       "orderRectifiedInfluencer": "Depois de ponderar, estamos a dar-te a oportunidade de corrigir o pedido e entregar daqui a 2 dias",
       "orderBuyerLostDispute": "Chegámos à conclusão de que o {{actor}} entregou o que lhe foi pedido",
-      "orderInfluencerLostdispute": "Chegámos à conclusão de que o {{actor}} não recebeu o que pediu",
+      "orderInfluencerLostDispute": "Chegámos à conclusão de que o {{actor}} não recebeu o que pediu",
       "orderInfluencerWonDispute": "Chegámos à conclusão de que entregas-te o que foi pedido a {{actor}}",
-      "orderBuyerWonDispute": "Chegámos à conclusão de que o {{actor}} não entregou o que foi pedido. O dinheiro será reembolsado"
+      "orderBuyerWonDispute": "Chegámos à conclusão de que o {{actor}} não entregou o que foi pedido. O dinheiro será reembolsado",
+      "toBuyerConfirmByInfluencerMakrt": "O período de 96 horas para confirmação da encomenda expirou. Confirmámos a encomenda e emitimos a fatura relevante",
+      "toInfluencerConfirmByInfluencerMakrt": "O período de 96 horas para confirmação da encomenda expirou. Confirmámos a encomenda e emitimos a fatura relevante"
     },
 
     "orderStatus": {
