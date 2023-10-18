@@ -71,8 +71,8 @@ export const DisputesRouter = createTRPCRouter({
         buyerOpenedDisputeToOurInboxEmail({
           buyerName: order.buyer?.name || "",
           buyerEmail: order.buyer?.user.email || "",
-          from: process.env.EMAIL_FROM || "",
-          to: process.env.EMAIL_FROM || "",
+          from: process.env.NEXT_PUBLIC_EMAIL_FROM || "",
+          to: process.env.NEXT_PUBLIC_EMAIL_FROM || "",
           issueMessage: input.disputeMessage,
           orderId: input.orderId.toString(),
         });

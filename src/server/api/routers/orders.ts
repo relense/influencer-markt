@@ -105,10 +105,10 @@ export const OrdersRouter = createTRPCRouter({
         });
 
         //Email influencer to let him know he has an order
-        if (process.env.EMAIL_FROM) {
+        if (process.env.NEXT_PUBLIC_EMAIL_FROM) {
           newOrderEmail({
             buyer: profile?.name,
-            from: process.env.EMAIL_FROM,
+            from: process.env.NEXT_PUBLIC_EMAIL_FROM,
             to: influencerProfile?.user.email || "",
             language: input.language,
             orderId: order.id,
@@ -205,10 +205,10 @@ export const OrdersRouter = createTRPCRouter({
           }),
         });
 
-        if (process.env.EMAIL_FROM) {
+        if (process.env.NEXT_PUBLIC_EMAIL_FROM) {
           newOrderEmail({
             buyer: profile?.name,
-            from: process.env.EMAIL_FROM,
+            from: process.env.NEXT_PUBLIC_EMAIL_FROM,
             to: order.influencer?.user.email || "",
             language: input.language,
             orderId: order.id,
@@ -579,10 +579,10 @@ export const OrdersRouter = createTRPCRouter({
           },
         });
 
-        if (process.env.EMAIL_FROM) {
+        if (process.env.NEXT_PUBLIC_EMAIL_FROM) {
           buyerAddDetailsEmail({
             buyerName: order.buyer?.name || "",
-            from: process.env.EMAIL_FROM,
+            from: process.env.NEXT_PUBLIC_EMAIL_FROM,
             to: order.influencer?.user.email || "",
             language: input.language,
             orderId: order.id,
@@ -642,11 +642,11 @@ export const OrdersRouter = createTRPCRouter({
           },
         });
 
-        if (process.env.EMAIL_FROM) {
+        if (process.env.NEXT_PUBLIC_EMAIL_FROM) {
           if (input.statusId === 3) {
             influencerAcceptedOrderEmail({
               influencerName: order.influencer?.name || "",
-              from: process.env.EMAIL_FROM,
+              from: process.env.NEXT_PUBLIC_EMAIL_FROM,
               to: order.buyer?.user.email || "",
               language: input.language,
               orderId: order.id,
@@ -654,7 +654,7 @@ export const OrdersRouter = createTRPCRouter({
           } else if (input.statusId === 5) {
             influencerDeliveredOrderEmail({
               influencerName: order.influencer?.name || "",
-              from: process.env.EMAIL_FROM,
+              from: process.env.NEXT_PUBLIC_EMAIL_FROM,
               to: order.buyer?.user.email || "",
               language: input.language,
               orderId: order.id,
@@ -662,7 +662,7 @@ export const OrdersRouter = createTRPCRouter({
           } else if (input.statusId === 6) {
             buyerConfirmedEmail({
               buyerName: order.buyer?.name || "",
-              from: process.env.EMAIL_FROM,
+              from: process.env.NEXT_PUBLIC_EMAIL_FROM,
               to: order.influencer?.user.email || "",
               language: input.language,
               orderId: order.id,
@@ -670,7 +670,7 @@ export const OrdersRouter = createTRPCRouter({
           } else if (input.statusId === 8) {
             buyerReviewedOrderEmail({
               buyerName: order.buyer?.name || "",
-              from: process.env.EMAIL_FROM,
+              from: process.env.NEXT_PUBLIC_EMAIL_FROM,
               to: order.influencer?.user.email || "",
               language: input.language,
               orderId: order.id,
@@ -678,7 +678,7 @@ export const OrdersRouter = createTRPCRouter({
           } else if (input.statusId === 9) {
             buyerOpensDisputeToInfluencerEmail({
               buyerName: order.buyer?.name || "",
-              from: process.env.EMAIL_FROM,
+              from: process.env.NEXT_PUBLIC_EMAIL_FROM,
               to: order.influencer?.user.email || "",
               language: input.language,
               orderId: order.id,
@@ -735,9 +735,9 @@ export const OrdersRouter = createTRPCRouter({
         },
       });
 
-      if (process.env.EMAIL_FROM) {
+      if (process.env.NEXT_PUBLIC_EMAIL_FROM) {
         influencerOrderWasRectified({
-          from: process.env.EMAIL_FROM,
+          from: process.env.NEXT_PUBLIC_EMAIL_FROM,
           to: order.influencer?.user.email || "",
           language: input.language,
           orderId: order.id,
@@ -745,7 +745,7 @@ export const OrdersRouter = createTRPCRouter({
 
         buyerOrderWasRectified({
           influencerName: order.influencer?.name || "",
-          from: process.env.EMAIL_FROM,
+          from: process.env.NEXT_PUBLIC_EMAIL_FROM,
           to: order.buyer?.user.email || "",
           language: input.language,
           orderId: order.id,
@@ -879,7 +879,7 @@ export const OrdersRouter = createTRPCRouter({
         toInfluencerInfluencerIsWrongEmail({
           orderId: input.orderId,
           to: order.influencer?.user.email || "",
-          from: process.env.EMAIL_FROM || "",
+          from: process.env.NEXT_PUBLIC_EMAIL_FROM || "",
           language: input.language,
           buyerName: order.buyer?.name || "",
         });
@@ -887,7 +887,7 @@ export const OrdersRouter = createTRPCRouter({
         toBuyerInfluencerIsWrongEmail({
           orderId: input.orderId,
           to: order.buyer?.user.email || "",
-          from: process.env.EMAIL_FROM || "",
+          from: process.env.NEXT_PUBLIC_EMAIL_FROM || "",
           language: input.language,
           influencerName: order.influencer?.name || "",
         });
@@ -896,7 +896,7 @@ export const OrdersRouter = createTRPCRouter({
         toInfluencerInfluencerIsRightEmail({
           orderId: input.orderId,
           to: order.influencer?.user.email || "",
-          from: process.env.EMAIL_FROM || "",
+          from: process.env.NEXT_PUBLIC_EMAIL_FROM || "",
           language: input.language,
           buyerName: order.buyer?.name || "",
         });
@@ -904,7 +904,7 @@ export const OrdersRouter = createTRPCRouter({
         toBuyerInfluencerIsRightEmail({
           orderId: input.orderId,
           to: order.buyer?.user.email || "",
-          from: process.env.EMAIL_FROM || "",
+          from: process.env.NEXT_PUBLIC_EMAIL_FROM || "",
           language: input.language,
           influencerName: order.influencer?.name || "",
         });

@@ -32,9 +32,9 @@ export const ContactMessagesRouter = createTRPCRouter({
       });
 
       //Mail sent to user confirming we received the issue request
-      if (process.env.EMAIL_FROM) {
+      if (process.env.NEXT_PUBLIC_EMAIL_FROM) {
         weReceivedContactEmail({
-          from: process.env.EMAIL_FROM,
+          from: process.env.NEXT_PUBLIC_EMAIL_FROM,
           to: input.email,
           email: input.email,
           message: input.message,
@@ -44,8 +44,8 @@ export const ContactMessagesRouter = createTRPCRouter({
 
         //Email to our inbox
         contactUsEmail({
-          from: process.env.EMAIL_FROM,
-          to: process.env.EMAIL_FROM,
+          from: process.env.NEXT_PUBLIC_EMAIL_FROM,
+          to: process.env.NEXT_PUBLIC_EMAIL_FROM,
           email: input.email,
           message: input.message,
           messageId: message.id.toString(),

@@ -29,7 +29,7 @@ export const env = createEnv({
 
     EMAIL_SERVER: z.string(),
     EMAIL_SMTP_KEY: z.string(),
-    EMAIL_FROM: z.string(),
+    NEXT_PUBLIC_EMAIL_FROM: z.string(),
 
     AZURE_STORAGE_ACCOUNT_NAME: z.string(),
     AZURE_CONTAINER_NAME: z.string(),
@@ -70,7 +70,7 @@ export const env = createEnv({
 
     EMAIL_SERVER: process.env.EMAIL_SERVER,
     EMAIL_SMTP_KEY: process.env.EMAIL_SMTP_KEY,
-    EMAIL_FROM: process.env.EMAIL_FROM,
+    NEXT_PUBLIC_EMAIL_FROM: process.env.NEXT_PUBLIC_EMAIL_FROM,
 
     AZURE_STORAGE_ACCOUNT_NAME: process.env.AZURE_STORAGE_ACCOUNT_NAME,
     AZURE_CONTAINER_NAME: process.env.AZURE_CONTAINER_NAME,

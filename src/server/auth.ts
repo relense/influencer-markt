@@ -64,7 +64,7 @@ export const authOptions: NextAuthOptions = {
     }),
     EmailProvider({
       server: env.EMAIL_SERVER,
-      from: env.EMAIL_FROM,
+      from: env.NEXT_PUBLIC_EMAIL_FROM,
       type: "email",
       maxAge: 300,
       sendVerificationRequest: (data) => {
