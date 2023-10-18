@@ -7,7 +7,8 @@ const WhatHappensNext = (params: {
     | "progress"
     | "delivered"
     | "confirmed"
-    | "reviewed";
+    | "reviewed"
+    | "processingPayment";
   view: "buyer" | "seller";
   startedOrder: boolean;
 }) => {
@@ -19,104 +20,6 @@ const WhatHappensNext = (params: {
     } else {
       return t("components.whathappensNext.buyerOrderStatusInProgress");
     }
-  };
-
-  const renderItemDesktop = (
-    title: string,
-    subtitle: string,
-    highlight: boolean
-  ) => {
-    return (
-      <div className="flex flex-col text-sm">
-        <div className="flex h-10 items-center">
-          <div className="flex w-32 font-semibold">{title}</div>
-        </div>
-        <div className="flex items-center">
-          <div
-            className={`h-4 w-4 rounded-full ${
-              highlight ? "bg-influencer" : "bg-influencer-light"
-            }`}
-          />
-          <div
-            className={`m-[-2px] h-1 w-40 lg:w-40 xl:w-48 ${
-              highlight ? "bg-influencer" : "bg-influencer-light"
-            }`}
-          />
-        </div>
-        <div className="flex pl-[7px]">
-          <div className="h-full w-1 border-l-[3px] border-dashed border-gray3" />
-          <div className="w-40 px-4 py-2 text-sm lg:w-40 xl:w-48">
-            {subtitle}
-          </div>
-        </div>
-      </div>
-    );
-  };
-
-  const renderDesktopView = () => {
-    return (
-      <div className="hidden flex-col gap-6 xl:flex">
-        <div className="font-medium">{renderTitle()}</div>
-        <div className="flex">
-          {renderItemDesktop(
-            t("components.whathappensNext.orderSent"),
-            params.view === "buyer"
-              ? t("components.whathappensNext.buyerOrderSent")
-              : t("components.whathappensNext.influencerOrderSent"),
-            true
-          )}
-          {renderItemDesktop(
-            t("components.whathappensNext.ordersAccepted"),
-            params.view === "buyer"
-              ? t("components.whathappensNext.buyerOrderAccepted")
-              : t("components.whathappensNext.influencerOrderAccepted"),
-            params.stage === "awaiting" ? false : true
-          )}
-          {renderItemDesktop(
-            t("components.whathappensNext.paymentDetails"),
-            params.view === "buyer"
-              ? t("components.whathappensNext.buyerPaymentDetails")
-              : t("components.whathappensNext.influencerPaymentDetails"),
-            params.stage === "awaiting" || params.stage === "accepted"
-              ? false
-              : true
-          )}
-          {renderItemDesktop(
-            t("components.whathappensNext.inProgress"),
-            params.view === "buyer"
-              ? t("components.whathappensNext.buyerInProgress")
-              : t("components.whathappensNext.influencerInProgress"),
-            params.stage === "awaiting" ||
-              params.stage === "accepted" ||
-              params.stage === "progress"
-              ? false
-              : true
-          )}
-          {renderItemDesktop(
-            t("components.whathappensNext.delivered"),
-            params.view === "buyer"
-              ? t("components.whathappensNext.buyerConfirmed")
-              : t("components.whathappensNext.influencerConfirmed"),
-            params.stage === "awaiting" ||
-              params.stage === "accepted" ||
-              params.stage === "progress" ||
-              params.stage === "delivered"
-              ? false
-              : true
-          )}
-          <div className="flex flex-col text-sm">
-            <div className="flex h-10 items-center">
-              <div className="font-semibold">
-                {t("components.whathappensNext.confirmed")}
-              </div>
-            </div>
-            <div className="flex items-center">
-              <div className="h-4 w-4 rounded-full bg-influencer" />
-            </div>
-          </div>
-        </div>
-      </div>
-    );
   };
 
   const renderItemMobile = (
@@ -173,7 +76,9 @@ const WhatHappensNext = (params: {
             params.view === "buyer"
               ? t("components.whathappensNext.buyerPaymentDetails")
               : t("components.whathappensNext.influencerPaymentDetails"),
-            params.stage === "awaiting" || params.stage === "accepted"
+            params.stage === "awaiting" ||
+              params.stage === "accepted" ||
+              params.stage === "processingPayment"
               ? false
               : true
           )}
@@ -184,7 +89,8 @@ const WhatHappensNext = (params: {
               : t("components.whathappensNext.influencerInProgress"),
             params.stage === "awaiting" ||
               params.stage === "accepted" ||
-              params.stage === "progress"
+              params.stage === "progress" ||
+              params.stage === "processingPayment"
               ? false
               : true
           )}
@@ -196,7 +102,8 @@ const WhatHappensNext = (params: {
             params.stage === "awaiting" ||
               params.stage === "accepted" ||
               params.stage === "progress" ||
-              params.stage === "delivered"
+              params.stage === "delivered" ||
+              params.stage === "processingPayment"
               ? false
               : true
           )}
@@ -209,7 +116,8 @@ const WhatHappensNext = (params: {
               params.stage === "accepted" ||
               params.stage === "progress" ||
               params.stage === "delivered" ||
-              params.stage === "confirmed"
+              params.stage === "confirmed" ||
+              params.stage === "processingPayment"
               ? false
               : true
           )}

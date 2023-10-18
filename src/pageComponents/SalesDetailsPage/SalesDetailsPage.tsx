@@ -23,6 +23,12 @@ const SalesDetailsPage = (params: { orderId: number }) => {
 
   const [saleAnswer, setSaleAnswer] = useState<number>(-1);
   const [showDeliverModal, setShowDeliverModal] = useState<boolean>(false);
+  const [disableAcceptOrRejectButons, setDisableAcceptOrRejectButtons] =
+    useState<boolean>(false);
+  const [disableDeliverButton, setDisableDeliverButton] =
+    useState<boolean>(false);
+  const [showCancelModal, setShowCancelModal] = useState<boolean>(false);
+  const [disableCancel, setDisabledCancel] = useState<boolean>(false);
 
   const { data: sale, isLoading } = api.orders.getSaleOrder.useQuery({
     orderId: params.orderId,
@@ -100,6 +106,8 @@ const SalesDetailsPage = (params: { orderId: number }) => {
       });
     }
 
+    setDisableAcceptOrRejectButtons(true);
+
     setSaleAnswer(type === "accept" ? 4 : 3);
   };
 
@@ -112,14 +120,16 @@ const SalesDetailsPage = (params: { orderId: number }) => {
         | "progress"
         | "delivered"
         | "confirmed"
-        | "reviewed" = "";
+        | "reviewed"
+        | "processingPayment" = "";
       if (
         sale.orderStatus?.name === "awaiting" ||
         sale.orderStatus?.name === "accepted" ||
         sale.orderStatus?.name === "progress" ||
         sale.orderStatus?.name === "delivered" ||
         sale.orderStatus?.name === "confirmed" ||
-        sale.orderStatus?.name === "reviewed"
+        sale.orderStatus?.name === "reviewed" ||
+        sale.orderStatus?.name === "processingPayment"
       ) {
         whatHappensNext = sale.orderStatus?.name;
       }
@@ -172,27 +182,32 @@ const SalesDetailsPage = (params: { orderId: number }) => {
                     level="terciary"
                     onClick={() => answerOrderRequest("accept")}
                     isLoading={updateAcceptIsLoading}
+                    disabled={
+                      updateRejectIsLoading ||
+                      updateAcceptIsLoading ||
+                      disableAcceptOrRejectButons
+                    }
                   />
                   <Button
                     title={t("pages.sales.reject")}
                     level="secondary"
                     onClick={() => answerOrderRequest("reject")}
                     isLoading={updateRejectIsLoading}
+                    disabled={
+                      updateRejectIsLoading ||
+                      updateAcceptIsLoading ||
+                      disableAcceptOrRejectButons
+                    }
                   />
                 </div>
               )}
               {sale.orderStatusId === 3 && (
                 <Button
                   title={t("pages.sales.cancelOrder")}
-                  level="terciary"
-                  onClick={() =>
-                    updateCancelOrder({
-                      orderId: sale.id,
-                      statusId: 7,
-                      language: i18n.language,
-                    })
-                  }
+                  level="secondary"
+                  onClick={() => setShowCancelModal(true)}
                   isLoading={isLoadingUpdateCancelOrder}
+                  disabled={isLoadingUpdateCancelOrder || disableCancel}
                 />
               )}
               {sale.orderStatusId === 4 && (
@@ -201,6 +216,9 @@ const SalesDetailsPage = (params: { orderId: number }) => {
                     title={t("pages.sales.deliver")}
                     level="terciary"
                     onClick={() => setShowDeliverModal(true)}
+                    disabled={
+                      updateOrderDeliverIsLoading || disableDeliverButton
+                    }
                   />
                 </div>
               )}
@@ -375,6 +393,90 @@ const SalesDetailsPage = (params: { orderId: number }) => {
     );
   };
 
+  const renderDeliverModal = () => {
+    if (showDeliverModal) {
+      return (
+        <div className="flex justify-center">
+          <Modal
+            onClose={() => setShowDeliverModal(false)}
+            button={
+              <div className="flex justify-center p-4">
+                <Button
+                  title={t("pages.sales.deliver")}
+                  level="terciary"
+                  onClick={() => {
+                    setDisableDeliverButton(false);
+                    updateOrderDeliver({
+                      orderId: params.orderId,
+                      statusId: 5,
+                      language: i18n.language,
+                      deliveredDate: dayjs(Date.now()).toDate(),
+                    });
+                  }}
+                  isLoading={updateOrderDeliverIsLoading}
+                  disabled={disableDeliverButton || updateOrderDeliverIsLoading}
+                />
+              </div>
+            }
+          >
+            <div className="flex flex-col items-center justify-center gap-4 p-4 text-center">
+              <div className="font-playfair text-3xl">
+                {t("pages.sales.deliveryModalTitle")}
+              </div>
+              <div className="px-12">{t("pages.sales.deliveryModalText")}</div>
+            </div>
+          </Modal>
+        </div>
+      );
+    }
+  };
+
+  const renderCancelModal = () => {
+    if (showCancelModal && sale) {
+      return (
+        <div className="flex justify-center">
+          <Modal
+            onClose={() => setShowCancelModal(false)}
+            button={
+              <div className="flex justify-center p-4">
+                <Button
+                  title={t("pages.sales.cancelOrder")}
+                  level="terciary"
+                  form="form-cancel"
+                  isLoading={isLoadingUpdateCancelOrder}
+                  disabled={disableCancel || isLoadingUpdateCancelOrder}
+                />
+              </div>
+            }
+          >
+            <form
+              onSubmit={() => {
+                setShowCancelModal(false);
+                setDisabledCancel(true);
+                updateCancelOrder({
+                  orderId: sale.id,
+                  statusId: 7,
+                  language: i18n.language,
+                });
+              }}
+              id="form-cancel"
+              className="flex flex-col items-center justify-center gap-12 p-4 text-center"
+            >
+              <div className="flex flex-col gap-4 text-center">
+                <div className="font-playfair text-3xl">
+                  {t("pages.sales.cancelModalTitle")}
+                </div>
+                <div className="px-12">
+                  {t("pages.sales.cancelModalDescription")}
+                </div>
+              </div>
+            </form>
+          </Modal>
+        </div>
+      );
+    }
+  };
+
   return (
     <div className="flex w-full cursor-default flex-col gap-6 self-center px-4 pb-10 sm:px-12 lg:w-full 2xl:w-10/12 3xl:w-3/4 4xl:w-8/12">
       <div className="text-2xl font-semibold">
@@ -406,37 +508,8 @@ const SalesDetailsPage = (params: { orderId: number }) => {
           </div>
         </div>
       )}
-      {showDeliverModal && (
-        <div className="flex justify-center">
-          <Modal
-            onClose={() => setShowDeliverModal(false)}
-            button={
-              <div className="flex justify-center p-4">
-                <Button
-                  title={t("pages.sales.deliver")}
-                  level="terciary"
-                  onClick={() =>
-                    updateOrderDeliver({
-                      orderId: params.orderId,
-                      statusId: 5,
-                      language: i18n.language,
-                      deliveredDate: dayjs(Date.now()).toDate(),
-                    })
-                  }
-                  isLoading={updateOrderDeliverIsLoading}
-                />
-              </div>
-            }
-          >
-            <div className="flex flex-col items-center justify-center gap-4 p-4 text-center">
-              <div className="font-playfair text-3xl">
-                {t("pages.sales.deliveryModalTitle")}
-              </div>
-              <div className="px-12">{t("pages.sales.deliveryModalText")}</div>
-            </div>
-          </Modal>
-        </div>
-      )}
+      {renderDeliverModal()}
+      {renderCancelModal()}
     </div>
   );
 };

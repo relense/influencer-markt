@@ -44,6 +44,7 @@ const OrderDetailsPage = (params: {
     useState<boolean>(false);
   const [openPaymentDetailsModal, setOpenPaymentDetailsModal] =
     useState<boolean>(false);
+  const [showCancelModal, setShowCancelModal] = useState<boolean>(false);
 
   const {
     register,
@@ -198,14 +199,16 @@ const OrderDetailsPage = (params: {
         | "progress"
         | "delivered"
         | "confirmed"
-        | "reviewed" = "";
+        | "reviewed"
+        | "processingPayment" = "";
       if (
         order.orderStatus?.name === "awaiting" ||
         order.orderStatus?.name === "accepted" ||
         order.orderStatus?.name === "progress" ||
         order.orderStatus?.name === "delivered" ||
         order.orderStatus?.name === "confirmed" ||
-        order.orderStatus?.name === "reviewed"
+        order.orderStatus?.name === "reviewed" ||
+        order.orderStatus?.name === "processingPayment"
       ) {
         whatHappensNext = order.orderStatus?.name;
       }
@@ -254,15 +257,10 @@ const OrderDetailsPage = (params: {
               {order.orderStatusId === 1 && (
                 <Button
                   title={t("pages.orders.cancel")}
-                  level="terciary"
-                  onClick={() =>
-                    updateCancelOrder({
-                      orderId: order.id,
-                      statusId: 7,
-                      language: i18n.language,
-                    })
-                  }
+                  level="secondary"
+                  onClick={() => setShowCancelModal(true)}
                   isLoading={isLoadingUpdateCancelOrder}
+                  disabled={isLoadingUpdateCancelOrder}
                 />
               )}
               {order.orderStatusId === 3 && (
@@ -275,14 +273,9 @@ const OrderDetailsPage = (params: {
                   <Button
                     title={t("pages.orders.cancel")}
                     level="secondary"
-                    onClick={() =>
-                      updateCancelOrder({
-                        orderId: order.id,
-                        statusId: 7,
-                        language: i18n.language,
-                      })
-                    }
+                    onClick={() => setShowCancelModal(true)}
                     isLoading={isLoadingUpdateCancelOrder}
+                    disabled={isLoadingUpdateCancelOrder}
                   />
                 </div>
               )}
@@ -315,6 +308,7 @@ const OrderDetailsPage = (params: {
                     level="terciary"
                     onClick={() => setOpenReviewModal(true)}
                     isLoading={isLoadingUpdateReviewed}
+                    disabled={isLoadingUpdateReviewed}
                   />
                 </div>
               )}
@@ -743,6 +737,51 @@ const OrderDetailsPage = (params: {
     );
   };
 
+  const renderCancelModal = () => {
+    if (showCancelModal && order) {
+      return (
+        <div className="flex justify-center">
+          <Modal
+            onClose={() => setShowCancelModal(false)}
+            button={
+              <div className="flex justify-center p-4">
+                <Button
+                  title={t("pages.orders.cancel")}
+                  level="terciary"
+                  form="form-cancel"
+                  isLoading={isLoadingUpdateCancelOrder}
+                  disabled={isLoadingUpdateCancelOrder}
+                />
+              </div>
+            }
+          >
+            <form
+              onSubmit={() => {
+                setShowCancelModal(false);
+                updateCancelOrder({
+                  orderId: order.id,
+                  statusId: 7,
+                  language: i18n.language,
+                });
+              }}
+              id="form-cancel"
+              className="flex flex-col items-center justify-center gap-12 p-4 text-center"
+            >
+              <div className="flex flex-col gap-4 text-center">
+                <div className="font-playfair text-3xl">
+                  {t("pages.orders.cancelModalTitle")}
+                </div>
+                <div className="px-12">
+                  {t("pages.orders.cancelModalDescription")}
+                </div>
+              </div>
+            </form>
+          </Modal>
+        </div>
+      );
+    }
+  };
+
   return (
     <>
       <div className="flex w-full cursor-default flex-col gap-6 self-center px-4 pb-10 sm:px-12 lg:w-full 2xl:w-10/12 3xl:w-3/4 4xl:w-8/12">
@@ -780,6 +819,7 @@ const OrderDetailsPage = (params: {
       {renderReviewModal()}
       {renderAreYouSureDisputeModal()}
       {renderIsOrderReallyConfirmedModal()}
+      {renderCancelModal()}
       {openPaymentDetailsModal && order && (
         <PaymentDetailsModal
           amount={Number(order.orderTotalPrice)}

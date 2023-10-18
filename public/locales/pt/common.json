@@ -914,7 +914,9 @@
       "inDispute": "Em Disputa",
       "includesFees": "Incluí IVA e taxa de serviço",
       "disputeSubtitle": "Quando chegarmos a uma decisão vamos contactar-te.",
-      "processingPayment": "Processar Pagamento"
+      "processingPayment": "Processar Pagamento",
+      "cancelModalTitle": "Tens a certeza?",
+      "cancelModalDescription": "Antes de avançar, tira um momento para considerar. Cancelar é verdadeiramente a tua melhor opção? Estamos aqui para ajudar - entre em contacto antes de decidir."
     },
 
     "orders": {
@@ -968,7 +970,9 @@
       "disputeOpenToast": "Disputa aberta. Vamos contactar-te quando tivermos uma decisão",
       "includesFees": "Incluí IVA e taxa de serviço",
       "disputeSubtitle": "Quando chegarmos a uma decisão vamos contarctar-te.",
-      "processingPayment": "Processar Pagamento"
+      "processingPayment": "Processar Pagamento",
+      "cancelModalTitle": "Tens a certeza?",
+      "cancelModalDescription": "Antes de avançar, tira um momento para considerar. Cancelar é verdadeiramente a tua melhor opção? Estamos aqui para ajudar - entre em contacto antes de decidir."
     },
 
     "billing": {

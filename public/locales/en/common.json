@@ -914,7 +914,9 @@
       "inDispute": "In Dispute",
       "includesFees": "Includes VAT and service fee",
       "disputeSubtitle": "We will contact you when we have a decision",
-      "processingPayment": "Processing Payment"
+      "processingPayment": "Processing Payment",
+      "cancelModalTitle": "Are You Sure?",
+      "cancelModalDescription": "Before you proceed, take a moment to consider. Is canceling truly your best option? We're here to help - reach out before you decide."
     },
 
     "orders": {
@@ -968,7 +970,9 @@
       "disputeOpenToast": "Dispute opened. We will contact you when we have a decision",
       "includesFees": "Includes VAT and service fee",
       "disputeSubtitle": "We will contact you when we have a decision",
-      "processingPayment": "Processing Payment"
+      "processingPayment": "Processing Payment",
+      "cancelModalTitle": "Are You Sure?",
+      "cancelModalDescription": "Before you proceed, take a moment to consider. Is canceling truly your best option? We're here to help - reach out before you decide."
     },
 
     "billing": {

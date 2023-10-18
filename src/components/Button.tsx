@@ -69,7 +69,7 @@ export const Button = ({
     hover = "";
   }
 
-  classes = `${cursor} rounded-lg ${bgColor} px-8 py-4 text-center font-semibold ${textColor} ${wSize} lg:rounded-2xl ${borderColor} ${shadowBox} ${hover}`;
+  classes = `${cursor} rounded-lg ${bgColor} text-sm px-4 py-2 lg:text-base lg:px-8 lg:py-4 text-center font-semibold ${textColor} ${wSize} lg:rounded-2xl ${borderColor} ${shadowBox} ${hover}`;
 
   return (
     <button {...params} className={classes} disabled={disabled}>

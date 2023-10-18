@@ -286,7 +286,7 @@ const HomePage = (params: {
       return (
         <div className="flex justify-center">
           <Modal
-            onClose={() => () => setWelcomeModal(false)}
+            onClose={() => setWelcomeModal(false)}
             button={
               <div className="flex w-full justify-center gap-4 p-4 sm:px-8">
                 <Button
@@ -296,7 +296,7 @@ const HomePage = (params: {
                 />
                 <Button
                   title={t("pages.home.welcomeModal.buttonEditProfile")}
-                  level="primary"
+                  level="terciary"
                   onClick={() => setWelcomeModal(true)}
                 />
               </div>

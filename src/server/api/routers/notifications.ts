@@ -47,6 +47,32 @@ export const NotificationsRouter = createTRPCRouter({
       });
 
       if (actor && entityType) {
+        const numberOfNotifications = await ctx.prisma.notification.count({
+          where: {
+            notifierId: input.notifierId,
+          },
+        });
+
+        if (numberOfNotifications >= 40) {
+          const findOldestNotification = await ctx.prisma.notification.findMany(
+            {
+              where: {
+                notifierId: input.notifierId,
+              },
+              orderBy: {
+                createdAt: "asc",
+              },
+              take: 1,
+            }
+          );
+
+          if (findOldestNotification[0]) {
+            await ctx.prisma.notification.delete({
+              where: { id: findOldestNotification[0].id },
+            });
+          }
+        }
+
         return await ctx.prisma.notification.create({
           data: {
             actorId: actor?.id,
