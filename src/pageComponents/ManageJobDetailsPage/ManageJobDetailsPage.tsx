@@ -424,7 +424,6 @@ const ManageJobDetailsPage = (params: {
         }),
         platformId: job.socialMediaId,
         jobId: job.id,
-        language: i18n.language,
         dateOfDelivery: dayjs(dateOfDelivery).toDate(),
       });
     }

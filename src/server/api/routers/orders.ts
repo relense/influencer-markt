@@ -30,7 +30,6 @@ export const OrdersRouter = createTRPCRouter({
           })
         ),
         platformId: z.number(),
-        language: z.string(),
         dateOfDelivery: z.date(),
       })
     )
@@ -90,6 +89,11 @@ export const OrdersRouter = createTRPCRouter({
           },
           include: {
             socialMedia: true,
+            influencer: {
+              select: {
+                country: true,
+              },
+            },
           },
         });
 
@@ -110,7 +114,7 @@ export const OrdersRouter = createTRPCRouter({
             buyer: profile?.name,
             from: process.env.NEXT_PUBLIC_EMAIL_FROM,
             to: influencerProfile?.user.email || "",
-            language: input.language,
+            language: order.influencer?.country?.name || "en",
             orderId: order.id,
           });
         }
@@ -134,7 +138,6 @@ export const OrdersRouter = createTRPCRouter({
         ),
         platformId: z.number(),
         jobId: z.number(),
-        language: z.string(),
         dateOfDelivery: z.date(),
       })
     )
@@ -184,6 +187,7 @@ export const OrdersRouter = createTRPCRouter({
           include: {
             influencer: {
               select: {
+                country: true,
                 user: {
                   select: {
                     email: true,
@@ -210,7 +214,7 @@ export const OrdersRouter = createTRPCRouter({
             buyer: profile?.name,
             from: process.env.NEXT_PUBLIC_EMAIL_FROM,
             to: order.influencer?.user.email || "",
-            language: input.language,
+            language: order.influencer?.country?.name || "en",
             orderId: order.id,
           });
         }
@@ -539,7 +543,6 @@ export const OrdersRouter = createTRPCRouter({
       z.object({
         orderId: z.number(),
         statusId: z.number(),
-        language: z.string(),
       })
     )
     .mutation(async ({ ctx, input }) => {
@@ -569,6 +572,7 @@ export const OrdersRouter = createTRPCRouter({
             influencer: {
               select: {
                 name: true,
+                country: true,
                 user: {
                   select: {
                     email: true,
@@ -584,7 +588,7 @@ export const OrdersRouter = createTRPCRouter({
             buyerName: order.buyer?.name || "",
             from: process.env.NEXT_PUBLIC_EMAIL_FROM,
             to: order.influencer?.user.email || "",
-            language: input.language,
+            language: order.influencer?.country?.name || "en",
             orderId: order.id,
           });
         }
@@ -598,7 +602,6 @@ export const OrdersRouter = createTRPCRouter({
       z.object({
         orderId: z.number(),
         statusId: z.number(),
-        language: z.string(),
         deliveredDate: z.date().optional(),
       })
     )
@@ -622,6 +625,7 @@ export const OrdersRouter = createTRPCRouter({
             buyer: {
               select: {
                 name: true,
+                country: true,
                 user: {
                   select: {
                     email: true,
@@ -632,6 +636,7 @@ export const OrdersRouter = createTRPCRouter({
             influencer: {
               select: {
                 name: true,
+                country: true,
                 user: {
                   select: {
                     email: true,
@@ -648,7 +653,7 @@ export const OrdersRouter = createTRPCRouter({
               influencerName: order.influencer?.name || "",
               from: process.env.NEXT_PUBLIC_EMAIL_FROM,
               to: order.buyer?.user.email || "",
-              language: input.language,
+              language: order.buyer?.country?.name || "en",
               orderId: order.id,
             });
           } else if (input.statusId === 5) {
@@ -656,7 +661,7 @@ export const OrdersRouter = createTRPCRouter({
               influencerName: order.influencer?.name || "",
               from: process.env.NEXT_PUBLIC_EMAIL_FROM,
               to: order.buyer?.user.email || "",
-              language: input.language,
+              language: order.buyer?.country?.name || "en",
               orderId: order.id,
             });
           } else if (input.statusId === 6) {
@@ -664,7 +669,7 @@ export const OrdersRouter = createTRPCRouter({
               buyerName: order.buyer?.name || "",
               from: process.env.NEXT_PUBLIC_EMAIL_FROM,
               to: order.influencer?.user.email || "",
-              language: input.language,
+              language: order.influencer?.country?.name || "en",
               orderId: order.id,
             });
           } else if (input.statusId === 8) {
@@ -672,7 +677,7 @@ export const OrdersRouter = createTRPCRouter({
               buyerName: order.buyer?.name || "",
               from: process.env.NEXT_PUBLIC_EMAIL_FROM,
               to: order.influencer?.user.email || "",
-              language: input.language,
+              language: order.influencer?.country?.name || "en",
               orderId: order.id,
             });
           } else if (input.statusId === 9) {
@@ -680,7 +685,7 @@ export const OrdersRouter = createTRPCRouter({
               buyerName: order.buyer?.name || "",
               from: process.env.NEXT_PUBLIC_EMAIL_FROM,
               to: order.influencer?.user.email || "",
-              language: input.language,
+              language: order.influencer?.country?.name || "en",
               orderId: order.id,
             });
           }
@@ -697,7 +702,6 @@ export const OrdersRouter = createTRPCRouter({
       z.object({
         orderId: z.number(),
         statusId: z.number(),
-        language: z.string(),
       })
     )
     .mutation(async ({ ctx, input }) => {
@@ -715,6 +719,7 @@ export const OrdersRouter = createTRPCRouter({
           buyer: {
             select: {
               name: true,
+              country: true,
               user: {
                 select: {
                   email: true,
@@ -725,6 +730,7 @@ export const OrdersRouter = createTRPCRouter({
           influencer: {
             select: {
               name: true,
+              country: true,
               user: {
                 select: {
                   email: true,
@@ -739,7 +745,7 @@ export const OrdersRouter = createTRPCRouter({
         influencerOrderWasRectified({
           from: process.env.NEXT_PUBLIC_EMAIL_FROM,
           to: order.influencer?.user.email || "",
-          language: input.language,
+          language: order.influencer?.country?.name || "en",
           orderId: order.id,
         });
 
@@ -747,7 +753,7 @@ export const OrdersRouter = createTRPCRouter({
           influencerName: order.influencer?.name || "",
           from: process.env.NEXT_PUBLIC_EMAIL_FROM,
           to: order.buyer?.user.email || "",
-          language: input.language,
+          language: order.buyer?.country?.name || "en",
           orderId: order.id,
         });
       }
@@ -834,7 +840,6 @@ export const OrdersRouter = createTRPCRouter({
       z.object({
         orderId: z.number(),
         statusId: z.number(),
-        language: z.string(),
         influencerFault: z.boolean(),
         disputeId: z.number(),
       })
@@ -849,6 +854,7 @@ export const OrdersRouter = createTRPCRouter({
           buyer: {
             select: {
               name: true,
+              country: true,
               user: {
                 select: {
                   email: true,
@@ -859,6 +865,7 @@ export const OrdersRouter = createTRPCRouter({
           influencer: {
             select: {
               name: true,
+              country: true,
               user: {
                 select: {
                   email: true,
@@ -880,7 +887,7 @@ export const OrdersRouter = createTRPCRouter({
           orderId: input.orderId,
           to: order.influencer?.user.email || "",
           from: process.env.NEXT_PUBLIC_EMAIL_FROM || "",
-          language: input.language,
+          language: order.influencer?.country?.name || "en",
           buyerName: order.buyer?.name || "",
         });
         //buyer email
@@ -888,7 +895,7 @@ export const OrdersRouter = createTRPCRouter({
           orderId: input.orderId,
           to: order.buyer?.user.email || "",
           from: process.env.NEXT_PUBLIC_EMAIL_FROM || "",
-          language: input.language,
+          language: order.buyer?.country?.name || "en",
           influencerName: order.influencer?.name || "",
         });
       } else {
@@ -897,7 +904,7 @@ export const OrdersRouter = createTRPCRouter({
           orderId: input.orderId,
           to: order.influencer?.user.email || "",
           from: process.env.NEXT_PUBLIC_EMAIL_FROM || "",
-          language: input.language,
+          language: order.influencer?.country?.name || "en",
           buyerName: order.buyer?.name || "",
         });
         //buyer email
@@ -905,7 +912,7 @@ export const OrdersRouter = createTRPCRouter({
           orderId: input.orderId,
           to: order.buyer?.user.email || "",
           from: process.env.NEXT_PUBLIC_EMAIL_FROM || "",
-          language: input.language,
+          language: order.buyer?.country?.name || "en",
           influencerName: order.influencer?.name || "",
         });
       }

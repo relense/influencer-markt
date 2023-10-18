@@ -100,13 +100,11 @@ const SalesDetailsPage = (params: { orderId: number }) => {
       updateOrderAccept({
         orderId: params.orderId,
         statusId: 3,
-        language: i18n.language,
       });
     } else {
       updateOrderReject({
         orderId: params.orderId,
         statusId: 2,
-        language: i18n.language,
       });
     }
 
@@ -413,7 +411,7 @@ const SalesDetailsPage = (params: { orderId: number }) => {
                     updateOrderDeliver({
                       orderId: params.orderId,
                       statusId: 5,
-                      language: i18n.language,
+
                       deliveredDate: dayjs(Date.now()).toDate(),
                     });
                   }}
@@ -460,7 +458,6 @@ const SalesDetailsPage = (params: { orderId: number }) => {
                 updateCancelOrder({
                   orderId: sale.id,
                   statusId: 7,
-                  language: i18n.language,
                 });
               }}
               id="form-cancel"

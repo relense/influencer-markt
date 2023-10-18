@@ -27,7 +27,7 @@ const StartOrderPage = (params: {
   valuePacks: ValuePack[];
   orderProfileId: number;
 }) => {
-  const { t, i18n } = useTranslation();
+  const { t } = useTranslation();
   const router = useRouter();
 
   const [contentTypesList, setContentTypesList] = useState<
@@ -149,7 +149,6 @@ const StartOrderPage = (params: {
         };
       }),
       platformId: params.valuePacks[0]?.platform?.id || -1,
-      language: i18n.language,
       dateOfDelivery: dayjs(data.dateOfDelivery).toDate(),
     });
   });

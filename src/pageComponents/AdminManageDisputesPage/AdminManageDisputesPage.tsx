@@ -100,7 +100,6 @@ const AdminManageDisputesPage = (params: { disputeId: number }) => {
           updatedOrderClosed({
             orderId: dispute?.orderId || -1,
             statusId: 8,
-            language: i18n.language,
             influencerFault: true,
             disputeId: params.disputeId,
           });
@@ -108,7 +107,6 @@ const AdminManageDisputesPage = (params: { disputeId: number }) => {
           updatedOrderClosed({
             orderId: dispute?.orderId || -1,
             statusId: 8,
-            language: i18n.language,
             influencerFault: false,
             disputeId: params.disputeId,
           });
@@ -123,7 +121,6 @@ const AdminManageDisputesPage = (params: { disputeId: number }) => {
           updateOrderStatusToRectify({
             orderId: dispute.orderId || -1,
             statusId: 4,
-            language: i18n.language,
           });
         }
       },

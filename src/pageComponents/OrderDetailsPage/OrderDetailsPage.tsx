@@ -147,7 +147,6 @@ const OrderDetailsPage = (params: {
         updateOrderReviewed({
           orderId: params.orderId,
           statusId: 8,
-          language: i18n.language,
           deliveredDate: order?.dateItWasDelivered || undefined,
         });
         reset();
@@ -162,7 +161,6 @@ const OrderDetailsPage = (params: {
         updateOrderInDispute({
           orderId: params.orderId,
           statusId: 9,
-          language: i18n.language,
           deliveredDate: order?.dateItWasDelivered || undefined,
         });
         setOpenDisputeModal(false);
@@ -633,7 +631,7 @@ const OrderDetailsPage = (params: {
                     updateOrderConfirmed({
                       orderId: order.id,
                       statusId: 6,
-                      language: i18n.language,
+
                       deliveredDate: order?.dateItWasDelivered || undefined,
                     })
                   }
@@ -766,7 +764,6 @@ const OrderDetailsPage = (params: {
                 updateCancelOrder({
                   orderId: order.id,
                   statusId: 7,
-                  language: i18n.language,
                 });
               }}
               id="form-cancel"
