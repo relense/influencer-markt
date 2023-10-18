@@ -407,7 +407,7 @@ const EditPage = () => {
 
   if (isLoadingProfile) {
     return (
-      <div className="relative flex flex-1">
+      <div className="flex flex-1 items-center">
         <LoadingSpinner />
       </div>
     );
