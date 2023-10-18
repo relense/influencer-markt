@@ -267,13 +267,15 @@ model ContentType {
 }
 
 model Country {
-  id         Int       @id @default(autoincrement())
-  name       String
-  countryTax Int?
-  profile    Profile[]
-  state      State[]
-  Job        Job[]
-  order      Order[]
+  id                  Int    @id @default(autoincrement())
+  name                String
+  countryTax          Int?
+  countryLanguageCode String?
+
+  profile Profile[]
+  state   State[]
+  Job     Job[]
+  order   Order[]
 }
 
 model State {

@@ -16,6 +16,7 @@ type State = {
 type Country = {
   id: string;
   name: string;
+  languageCode: string;
   states: State[];
 };
 
@@ -33,6 +34,7 @@ async function main() {
     const currentCountry = await prisma.country.create({
       data: {
         name: country.name,
+        countryLanguageCode: country.languageCode,
       },
     });
 
