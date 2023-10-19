@@ -1,5 +1,5 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faXmark } from "@fortawesome/free-solid-svg-icons";
+import { faPencil, faXmark } from "@fortawesome/free-solid-svg-icons";
 import { useTranslation } from "react-i18next";
 
 import type { SocialMediaDetails } from "../utils/globalTypes";
@@ -29,8 +29,12 @@ const SocialMediaCard = (params: {
           className="flex h-full w-auto flex-col gap-4 rounded-lg border-[1px] border-gray3 p-4"
           onClick={params.onClick}
         >
-          <div className="font-semibold text-influencer">
+          <div className="flex items-center gap-1 font-semibold text-influencer">
             {params.socialMedia.platform.name}
+            <FontAwesomeIcon
+              icon={faPencil}
+              className="fa-base cursor-pointer pb-1 text-influencer"
+            />
           </div>
           <div className="flex flex-col gap-2 xs:gap-4 2xl:flex-row">
             <div className="break-words">
