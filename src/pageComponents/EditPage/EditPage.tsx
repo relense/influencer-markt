@@ -26,8 +26,6 @@ const EditPage = () => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [isProfileModalOpen, setIsProfileModalOpen] = useState<boolean>(false);
   const [portfolio, setPortfolio] = useState<PreloadedImage[]>([]);
-  const [currentSocialMediaIndex, setCurrentSocialMediaIndex] =
-    useState<number>(-1);
   const [userSocialMediaList, setUserSocialMediaList] = useState<
     SocialMediaDetails[]
   >([]);
@@ -218,14 +216,17 @@ const EditPage = () => {
 
   //SOCIAL MEDIA FUNCTIONS
   const onDeleteSocialMedia = (socialMedia: SocialMediaDetails) => {
-    if (socialMedia && socialMedia.id && currentSocialMediaIndex) {
+    if (socialMedia && socialMedia.id) {
       const newUserSocialMediaList = [...userSocialMediaList];
-      newUserSocialMediaList.splice(currentSocialMediaIndex, 1);
+
+      const index = newUserSocialMediaList.findIndex(
+        (elem) => elem.id === socialMedia.id
+      );
+
+      newUserSocialMediaList.splice(index, 1);
       setUserSocialMediaList(newUserSocialMediaList);
 
       deleteUserSocialMedia({ id: socialMedia.id });
-
-      setCurrentSocialMediaIndex(-1);
     }
   };
 
@@ -385,11 +386,9 @@ const EditPage = () => {
                 <SocialMediaCard
                   key={`${socialMedia.id || -1}  ${index}`}
                   onClick={() => {
-                    setCurrentSocialMediaIndex(index);
                     handleOnclickSocialMediaCard(parsedSocialMedia);
                   }}
                   onDelete={() => {
-                    setCurrentSocialMediaIndex(index);
                     onDeleteSocialMedia(parsedSocialMedia);
                   }}
                   socialMedia={parsedSocialMedia}

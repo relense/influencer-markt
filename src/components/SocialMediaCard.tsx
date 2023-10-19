@@ -17,12 +17,9 @@ const SocialMediaCard = (params: {
   const { t } = useTranslation();
   const [openDeleteModal, setOpenDeleteModal] = useState<boolean>(false);
 
-  const onHandleDelete = () => {
-    if (params.showDeleteModal) {
-      setOpenDeleteModal(true);
-    } else {
-      params.onDelete();
-    }
+  const handleSubmit = () => {
+    setOpenDeleteModal(false);
+    params.onDelete();
   };
 
   return (
@@ -84,41 +81,31 @@ const SocialMediaCard = (params: {
         </div>
         <div
           className="absolute right-2 top-[-8px] flex h-8 w-8 cursor-pointer items-center justify-center  rounded-full bg-influencer-green sm:right-[-5px] sm:top-[-5px]"
-          onClick={() => onHandleDelete()}
+          onClick={() => setOpenDeleteModal(true)}
         >
           <FontAwesomeIcon icon={faXmark} className="fa-lg text-white" />
         </div>
       </div>
       {openDeleteModal && (
         <div className="fixed left-[5%] z-50 w-full  justify-center md:left-[15%] lg:left-[30%] 2xl:left-[35%]">
-          <Modal
-            onClose={() => setOpenDeleteModal(false)}
-            button={
-              <div className="flex justify-center p-4">
-                <Button
-                  type="submit"
-                  title={t(`components.socialMediaCard.deleteButton`)}
-                  level="primary"
-                  form="form-warningModal"
-                />
-              </div>
-            }
-          >
-            <form
-              id="form-warningModal"
-              onSubmit={(e) => {
-                e.preventDefault();
-                params.onDelete();
-              }}
-              className="flex flex-col gap-4 p-4"
-            >
+          <Modal onClose={() => setOpenDeleteModal(false)}>
+            <div className="flex flex-col gap-4 p-4">
               <div className="text-center text-3xl font-semibold text-influencer">
                 {t("components.socialMediaCard.areYouSure")}
               </div>
               <div className="text-center text-lg">
                 {t(`components.socialMediaCard.deleteWarning`)}
               </div>
-            </form>
+              <div className="flex justify-center p-4">
+                <Button
+                  type="submit"
+                  title={t(`components.socialMediaCard.deleteButton`)}
+                  level="primary"
+                  form="form-warningModal"
+                  onClick={() => handleSubmit()}
+                />
+              </div>
+            </div>
           </Modal>
         </div>
       )}

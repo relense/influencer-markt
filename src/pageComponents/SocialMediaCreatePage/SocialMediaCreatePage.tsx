@@ -268,8 +268,8 @@ const SocialMediaCreatePage = (params: {
       TikTok: "tiktok.com/@",
       Linkedin: "linkedin.com/in/",
       Twitch: "twitch.tv/",
-      Twitter: "twitter.com/",
-      Podcast: "",
+      X: "x.com/",
+      Podcast: "www.",
       Pinterest: "pinterest.com/",
     };
 

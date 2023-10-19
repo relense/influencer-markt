@@ -376,7 +376,7 @@ const createSocialMediaUrl = (socialMediaId: number, handler: string) => {
   } else if (socialMediaId === 7) {
     return `https://x.com/${handler}/`;
   } else if (socialMediaId === 8) {
-    return handler;
+    return `https://${handler}`;
   } else if (socialMediaId === 9) {
     return `https://www.pinterest.com/${handler}/`;
   } else {

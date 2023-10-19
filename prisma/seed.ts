@@ -34,7 +34,7 @@ async function main() {
     const currentCountry = await prisma.country.create({
       data: {
         name: country.name,
-        countryLanguageCode: country.languageCode,
+        languageCode: country.languageCode,
       },
     });
 
