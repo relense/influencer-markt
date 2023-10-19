@@ -1,3 +1,4 @@
+/** The point of this cron job is to warn the influencer and the buyer that the delivery is tomorrow */
 import type { NextApiRequest, NextApiResponse } from "next";
 import { prisma } from "../../../../server/db";
 import { toBuyerDeliveryIsTomorrowEmail } from "../../../../emailTemplates/toBuyerDeliveryIsTomorrowEmail/toBuyerDeliveryIsTomorrowEmail";
@@ -15,10 +16,6 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     const tomorrowFormatted = tomorrow.toISOString().split("T")[0];
 
     if (tomorrowFormatted) {
-      // Convert tomorrowFormatted to a date object before adding the time for the end of the day
-      const endOfTomorrow = new Date(tomorrowFormatted);
-      endOfTomorrow.setHours(23, 59, 59, 999); // Set it to the end of tomorrow
-
       const orders = await prisma.order.findMany({
         where: {
           orderStatusId: 4,

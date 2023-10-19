@@ -1,3 +1,4 @@
+/** The point of this cron job is to warn the influencer and the buyer that delivery was 96hours ago and since the buyer didn't confirm we will confirm for him */
 import type { NextApiRequest, NextApiResponse } from "next";
 import dayjs from "dayjs";
 
@@ -10,12 +11,12 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const sig = req.headers["signature"];
   if (sig && sig === "influencermarkt-signature") {
     const now = dayjs();
-    const cutoffDate = now.subtract(48, "hour").toISOString(); // Calculate the date and time 96 hours ago
+    const cutoffDate = now.subtract(96, "hour").toISOString();
     const orders = await prisma.order.findMany({
       where: {
         orderStatusId: 5,
         dateOfDelivery: {
-          lte: cutoffDate, // Convert to JavaScript Date object
+          lte: cutoffDate,
         },
         dateItWasDelivered: {
           not: null,

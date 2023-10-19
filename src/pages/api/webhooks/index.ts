@@ -47,16 +47,22 @@ const webhookHandler = async (req: NextApiRequest, res: NextApiResponse) => {
         const paymentItent = event.data.object as Stripe.PaymentIntent;
         const paymentIntentId = paymentItent.id;
 
-        const order = await prisma.order.findFirst({
-          where: {
-            paymentIntent: paymentIntentId,
+        const payment = await prisma.payment.findFirst({
+          where: { paymentIntent: paymentIntentId },
+          select: {
+            orderId: true,
+            order: {
+              select: {
+                orderStatusId: true,
+              },
+            },
           },
         });
 
-        if (order && order.orderStatusId === 10) {
+        if (payment && payment.order.orderStatusId === 10) {
           await prisma.order.update({
             where: {
-              id: order.id,
+              id: payment.orderId,
             },
             data: {
               orderStatusId: 4,

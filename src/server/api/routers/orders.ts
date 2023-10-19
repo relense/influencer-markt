@@ -527,15 +527,35 @@ export const OrdersRouter = createTRPCRouter({
       })
     )
     .mutation(async ({ ctx, input }) => {
-      return await ctx.prisma.order.update({
-        where: {
-          id: input.orderId,
-        },
-        data: {
-          paymentIntent: input.paymentIntent,
-          orderStatusId: 10,
+      const order = await ctx.prisma.order.findFirst({
+        where: { id: input.orderId },
+        select: {
+          orderTotalPrice: true,
         },
       });
+
+      if (order) {
+        await ctx.prisma.payment.create({
+          data: {
+            amount: order?.orderTotalPrice,
+            paymentIntent: input.paymentIntent,
+            order: {
+              connect: {
+                id: input.orderId,
+              },
+            },
+          },
+        });
+
+        return await ctx.prisma.order.update({
+          where: {
+            id: input.orderId,
+          },
+          data: {
+            orderStatusId: 10,
+          },
+        });
+      }
     }),
 
   updateOrderStatusToInProgress: protectedProcedure

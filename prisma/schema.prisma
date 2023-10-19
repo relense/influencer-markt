@@ -112,6 +112,8 @@ model Profile {
   sender   Message[] @relation("sender")
   receiver Message[] @relation("receiver")
 
+  credit Credit?
+
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
@@ -390,14 +392,17 @@ model Order {
   dateOfDelivery         DateTime
   dateItWasDelivered     DateTime?
   invoice                Invoice[]
-  paymentIntent          String?
+  payment                Payment?
+  needsRefund            Boolean          @default(false)
+
+  refund Refund?
 
   influencerId  Int?
   buyerId       Int?
   countryId     Int?
   orderStatusId Int?
   socialMediaId Int?
-  reviewId      Int? @unique
+  reviewId      Int?    @unique
   jobId         Int?
   disputeId     Int?
 
@@ -565,4 +570,57 @@ model InvoiceType {
   name String
 
   invoice Invoice[]
+}
+
+model Payment {
+  id            String  @id @default(cuid())
+  paymentIntent String
+  amount        Decimal @db.Decimal(10, 2)
+  order         Order   @relation(fields: [orderId], references: [id])
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  orderId Int @unique
+
+  @@index([orderId])
+}
+
+model Refund {
+  id                String             @id @default(cuid())
+  refundValue       Decimal            @db.Decimal(10, 2)
+  order             Order              @relation(fields: [orderId], references: [id])
+  isCredit          Boolean
+  creditTransaction CreditTransaction?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  orderId Int @unique
+
+  @@index([orderId])
+}
+
+model Credit {
+  id                String              @id @default(cuid())
+  creditTransaction CreditTransaction[]
+  profile           Profile             @relation(fields: [profileId], references: [id])
+
+  profileId Int @unique
+
+  @@index([profileId])
+}
+
+model CreditTransaction {
+  id         String  @id @default(cuid())
+  amount     Decimal @db.Decimal(10, 2)
+  isWithdraw Boolean
+  Credit     Credit  @relation(fields: [creditId], references: [id])
+  refund     Refund? @relation(fields: [refundId], references: [id])
+
+  refundId String? @unique
+  creditId String
+
+  @@index([refundId])
+  @@index([creditId])
 }
