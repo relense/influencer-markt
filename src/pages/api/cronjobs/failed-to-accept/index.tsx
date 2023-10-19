@@ -2,9 +2,6 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 
 import { prisma } from "../../../../server/db";
-import { createNotification } from "../../../../server/api/routers/notifications";
-import { toBuyerOrderOnHoldEmail } from "../../../../emailTemplates/toBuyerOrderOnHoldEmail/toBuyerOrderOnHoldEmail";
-import { toInfluencerOrderOnHoldEmail } from "../../../../emailTemplates/toInfluencerOrderOnHoldEmail/toInfluencerOrderOnHoldEmail";
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const sig = req.headers["signature"]!;
@@ -18,7 +15,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     if (todayFormated) {
       const orders = await prisma.order.findMany({
         where: {
-          orderStatusId: 4,
+          OR: [{ orderStatusId: 1 }, { orderStatusId: 3 }],
           dateOfDelivery: {
             lt: new Date(todayFormated),
           },
@@ -30,12 +27,12 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
       if (orders) {
         for (const order of orders) {
-          const udpatedOrder = await prisma.order.update({
+          await prisma.order.update({
             where: {
               id: order.id,
             },
             data: {
-              orderStatusId: 11,
+              orderStatusId: 8,
             },
             select: {
               buyerId: true,
@@ -67,36 +64,6 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
               },
             },
           });
-          if (udpatedOrder) {
-            //send influencer email
-            toInfluencerOrderOnHoldEmail({
-              buyerName: udpatedOrder.buyer?.name || "",
-              from: process.env.NEXT_PUBLIC_EMAIL_FROM || "",
-              to: udpatedOrder.influencer?.user.email || "",
-              language: udpatedOrder.influencer?.country?.name || "en",
-              orderId: udpatedOrder.id,
-            });
-            //send buyer email
-            toBuyerOrderOnHoldEmail({
-              influencerName: udpatedOrder.influencer?.name || "",
-              from: process.env.NEXT_PUBLIC_EMAIL_FROM || "",
-              to: udpatedOrder.buyer?.user.email || "",
-              language: udpatedOrder.buyer?.country?.name || "en",
-              orderId: udpatedOrder.id,
-            });
-            await createNotification({
-              entityId: udpatedOrder.id,
-              senderId: udpatedOrder.buyerId || -1,
-              notifierId: udpatedOrder?.influencerId || -1,
-              entityAction: "toInfluencerOrderOnHold",
-            });
-            await createNotification({
-              entityId: udpatedOrder.id,
-              senderId: udpatedOrder?.influencerId || -1,
-              notifierId: udpatedOrder?.buyerId || -1,
-              entityAction: "toBuyerOrderOnHold",
-            });
-          }
         }
       }
 
