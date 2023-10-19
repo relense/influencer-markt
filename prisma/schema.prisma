@@ -393,7 +393,6 @@ model Order {
   dateItWasDelivered     DateTime?
   invoice                Invoice[]
   payment                Payment?
-  needsRefund            Boolean          @default(false)
   refund                 Refund?
 
   influencerId  Int?

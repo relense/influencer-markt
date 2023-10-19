@@ -21,7 +21,9 @@ type Actions =
   | "orderInfluencerWonDispute"
   | "orderBuyerWonDispute"
   | "toBuyerConfirmByInfluencerMakrt"
-  | "toInfluencerConfirmByInfluencerMakrt";
+  | "toInfluencerConfirmByInfluencerMakrt"
+  | "toBuyerOrderOnHold"
+  | "toInfluencerOrderOnHold";
 
 const createNotification = async (params: {
   notifierId: number;
@@ -107,6 +109,8 @@ export const NotificationsRouter = createTRPCRouter({
           z.literal("orderBuyerWonDispute"),
           z.literal("toBuyerConfirmByInfluencerMakrt"),
           z.literal("toInfluencerConfirmByInfluencerMakrt"),
+          z.literal("toBuyerOrderOnHold"),
+          z.literal("toInfluencerOrderOnHold"),
         ]),
       })
     )

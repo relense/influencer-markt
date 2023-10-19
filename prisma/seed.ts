@@ -89,6 +89,7 @@ async function main() {
       { name: "reviewed" },
       { name: "inDispute" },
       { name: "processingPayment" },
+      { name: "onHold" },
     ],
   });
 
@@ -124,6 +125,8 @@ async function main() {
         entityType: "sales",
         entityAction: "toInfluencerConfirmByInfluencerMakrt",
       },
+      { entityType: "orders", entityAction: "toBuyerOrderOnHold" },
+      { entityType: "sales", entityAction: "toInfluencerOrderOnHold" },
     ],
   });
 

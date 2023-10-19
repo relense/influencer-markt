@@ -177,6 +177,11 @@ const SalesDetailsPage = (params: { orderId: number }) => {
                   {t("pages.sales.disputeSubtitle")}
                 </div>
               )}
+              {sale?.orderStatus?.id === 11 && (
+                <div className="text-center font-medium">
+                  {t("pages.sales.onHoldSubtitle")}
+                </div>
+              )}
               {sale.orderStatusId === 1 && (
                 <div className="flex flex-col gap-6 lg:flex-row lg:gap-12">
                   <Button
@@ -318,7 +323,7 @@ const SalesDetailsPage = (params: { orderId: number }) => {
         <div className="text-lg font-medium">
           {t("pages.sales.saleRequirements")}
         </div>
-        <div className="flex w-full flex-col whitespace-pre-line text-justify">
+        <div className="flex w-full flex-col whitespace-pre-line text-center">
           {sale?.orderDetails}
         </div>
       </div>
@@ -384,7 +389,7 @@ const SalesDetailsPage = (params: { orderId: number }) => {
             {t("pages.sales.orderDetails")}
           </div>
         </div>
-        <div className="flex flex-1 flex-col gap-4 overflow-y-auto p-8">
+        <div className="flex w-full flex-1 flex-col gap-4 overflow-y-auto p-8">
           {renderSaleDetails()}
           {renderValuePacks()}
           {renderTotalPrice()}
