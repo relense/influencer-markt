@@ -87,13 +87,13 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
               entityId: udpatedOrder.id,
               senderId: udpatedOrder.buyerId || -1,
               notifierId: udpatedOrder?.influencerId || -1,
-              entityAction: "toBuyerOrderOnHold",
+              entityAction: "toInfluencerOrderOnHold",
             });
             await createNotification({
               entityId: udpatedOrder.id,
               senderId: udpatedOrder?.influencerId || -1,
               notifierId: udpatedOrder?.buyerId || -1,
-              entityAction: "toInfluencerOrderOnHold",
+              entityAction: "toBuyerOrderOnHold",
             });
           }
         }
