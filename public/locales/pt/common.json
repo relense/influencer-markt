@@ -980,7 +980,8 @@
       "cancelModalTitle": "Tens a certeza?",
       "cancelModalDescription": "Antes de avançar, tira um momento para considerar. Cancelar é verdadeiramente a tua melhor opção? Estamos aqui para ajudar - entre em contacto antes de decidir.",
       "onHold": "Suspenso",
-      "onHoldSubtitle": "O comprador está atualmente a ponderar os próximos passos. Fica tranquilo, iremos informar-te assim que uma decisão for alcançada."
+      "onHoldSubtitle": "O comprador está atualmente a ponderar os próximos passos. Fica tranquilo, iremos informar-te assim que uma decisão for alcançada.",
+      "toastUpdateDeliveryDate": "Por favor, atualize a data de entrega antes de inserir os detalhes de pagamento"
     },
 
     "billing": {

@@ -193,6 +193,21 @@ const OrderDetailsPage = (params: {
     });
   });
 
+  const handleOpenPaymentDetails = () => {
+    if (order) {
+      const currentUTCDate = dayjs().startOf("day"); // Get the current date without time
+      const deliveryDate = dayjs(order?.dateOfDelivery).startOf("day"); // Get the delivery date without time
+
+      if (deliveryDate.isBefore(currentUTCDate)) {
+        toast.error(t("pages.orders.toastUpdateDeliveryDate"), {
+          position: "bottom-left",
+        });
+      } else {
+        setOpenPaymentDetailsModal(true);
+      }
+    }
+  };
+
   const renderInfluencerDetails = () => {
     if (order) {
       let whatHappensNext:
@@ -271,7 +286,7 @@ const OrderDetailsPage = (params: {
                   <Button
                     title={t("pages.orders.addPayment")}
                     level="terciary"
-                    onClick={() => setOpenPaymentDetailsModal(true)}
+                    onClick={() => handleOpenPaymentDetails()}
                   />
                   <Button
                     title={t("pages.orders.cancel")}
@@ -445,9 +460,7 @@ const OrderDetailsPage = (params: {
                 type="date"
                 required
                 className="rounded-xl border-[1px] p-2 focus:border-[1px] focus:border-black focus:outline-none"
-                min={dayjs(order.dateOfDelivery)
-                  .add(1, "day")
-                  .format("YYYY-MM-DD")}
+                min={dayjs().add(1, "day").format("YYYY-MM-DD")}
                 value={dayjs(dateOfDelivery).format("YYYY-MM-DD")}
                 onChange={(e) => setDateOfDelivery(e.target.value)}
               />
