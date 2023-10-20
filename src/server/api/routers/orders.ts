@@ -14,6 +14,7 @@ import { toBuyerInfluencerIsRightEmail } from "../../../emailTemplates/toBuyerIn
 import { toInfluencerInfluencerIsRightEmail } from "../../../emailTemplates/toInfluencerInfluencerIsRightEmail/toInfluencerInfluencerIsRightEmail";
 import { buyerOrderWasRectified } from "../../../emailTemplates/buyerOrderWasRectified/buyerOrderWasRectified";
 import { influencerOrderWasRectified } from "../../../emailTemplates/influencerOrderWasRectified/influencerOrderWasRectified";
+import { toInfluencerOnHoldtoPostponed } from "../../../emailTemplates/toInfluencerOnHoldtoPostponed/toInfluencerOnHoldtoPostponed";
 
 export const OrdersRouter = createTRPCRouter({
   createOrder: protectedProcedure
@@ -795,6 +796,51 @@ export const OrdersRouter = createTRPCRouter({
           dateOfDelivery: input.dateOfDelivery,
         },
       });
+    }),
+
+  updateOrderDateOfDeliveryFromOnHold: protectedProcedure
+    .input(
+      z.object({
+        orderId: z.number(),
+        dateOfDelivery: z.date(),
+      })
+    )
+    .mutation(async ({ ctx, input }) => {
+      const order = await ctx.prisma.order.update({
+        where: { id: input.orderId },
+        data: {
+          dateOfDelivery: input.dateOfDelivery,
+          orderStatusId: 4,
+        },
+        select: {
+          id: true,
+          buyer: {
+            select: {
+              name: true,
+            },
+          },
+          influencer: {
+            select: {
+              country: true,
+              user: {
+                select: {
+                  email: true,
+                },
+              },
+            },
+          },
+        },
+      });
+
+      toInfluencerOnHoldtoPostponed({
+        buyerName: order.buyer?.name || "",
+        from: process.env.NEXT_PUBLIC_EMAIL_FROM || "",
+        to: order.influencer?.user.email || "",
+        language: order.influencer?.country?.languageCode || "en",
+        orderId: order.id,
+      });
+
+      return order;
     }),
 
   getOrderByDisputeId: protectedProcedure

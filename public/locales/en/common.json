@@ -150,7 +150,8 @@
       "toBuyerConfirmByInfluencerMakrt": "The 96-hour window for order confirmation has passed. We have now confirmed the order and issued the relevant invoice",
       "toInfluencerConfirmByInfluencerMakrt": "The 96-hour window for order confirmation has passed. We have now confirmed the order and issued the relevant invoice",
       "toBuyerOrderOnHold": "The delivery deadline has been missed. You now have the opportunity to choose how you wish to proceed",
-      "toInfluencerOrderOnHold": "The delivery deadline has not been met. The order is currently on hold, awaiting the buyer's decision"
+      "toInfluencerOrderOnHold": "The delivery deadline has not been met. The order is currently on hold, awaiting the buyer's decision",
+      "toInfluencerOrderOnHoldToInProgress": "The delivery deadline has been extended. We kindly urge you to ensure the punctual delivery of the items originally requested"
     },
 
     "orderStatus": {
@@ -981,7 +982,15 @@
       "cancelModalTitle": "Are You Sure?",
       "cancelModalDescription": "Before you proceed, take a moment to consider. Is canceling truly your best option? We're here to help - reach out before you decide.",
       "onHold": "On Hold",
-      "toastUpdateDeliveryDate": "Please update the delivery date before entering payment details"
+      "toastUpdateDeliveryDate": "Please update the delivery date before entering payment details",
+      "getRefund": "Get Refund",
+      "update": "Update",
+      "postponeDelivery": "Postpone Delivery",
+      "onHoldDisclaimerTitle": "We have temporarily placed your order on hold, allowing you time to determine the best course of action.",
+      "onHoldDisclaimerSubtitle": "You have the flexibility to choose between receiving a refund or opting to delay the delivery, ensuring you ultimately get the product you originally desired.",
+      "onHoldDisclaimerSubtitle2": "Please don't hesitate to engage in a conversation with the influencer to ensure that the decision you make aligns perfectly with your best interests.",
+      "postponedDeliveryDateModalTitle": "Postpone date of delivery",
+      "postponedDeliveryDateModalSubtitle": "Select a delivery date that accommodates the influencer, ensuring they won't miss the deadline once more."
     },
 
     "billing": {

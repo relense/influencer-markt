@@ -45,6 +45,9 @@ const OrderDetailsPage = (params: {
   const [openPaymentDetailsModal, setOpenPaymentDetailsModal] =
     useState<boolean>(false);
   const [showCancelModal, setShowCancelModal] = useState<boolean>(false);
+  const [showPosponeDeliveryModal, setShowPosponeDeliveryModal] =
+    useState<boolean>(false);
+  const [showRefundModal, setShowRefundModal] = useState<boolean>(false);
 
   const {
     register,
@@ -118,6 +121,22 @@ const OrderDetailsPage = (params: {
         });
       },
     });
+
+  const {
+    mutate: updateDateOfDeliveryFromOnHold,
+    isLoading: isLoadingUpdateDeliveryFromOnHold,
+  } = api.orders.updateOrderDateOfDeliveryFromOnHold.useMutation({
+    onSuccess: () => {
+      setShowPosponeDeliveryModal(false);
+      void ctx.orders.getBuyerOrder.invalidate();
+      void createNotification({
+        entityId: params.orderId,
+        senderId: order?.buyerId || -1,
+        notifierId: order?.influencerId || -1,
+        entityAction: "toInfluencerOrderOnHoldToInProgress",
+      });
+    },
+  });
 
   const {
     mutate: updateOrderInDispute,
@@ -206,6 +225,13 @@ const OrderDetailsPage = (params: {
         setOpenPaymentDetailsModal(true);
       }
     }
+  };
+
+  const handleUpdateDateOfDeliveryFromOnHold = () => {
+    updateDateOfDeliveryFromOnHold({
+      orderId: params.orderId,
+      dateOfDelivery: dayjs(dateOfDelivery).toDate(),
+    });
   };
 
   const renderInfluencerDetails = () => {
@@ -318,6 +344,27 @@ const OrderDetailsPage = (params: {
                     }
                   />
                 </div>
+              )}
+              {order.orderStatusId === 11 && (
+                <>
+                  <div className="flex w-9/12 flex-col gap-4 pb-4 text-center text-sm">
+                    <div>{t("pages.orders.onHoldDisclaimerTitle")}</div>
+                    <div>{t("pages.orders.onHoldDisclaimerSubtitle")}</div>
+                    <div>{t("pages.orders.onHoldDisclaimerSubtitle2")}</div>
+                  </div>
+                  <div className="flex flex-col gap-6 lg:flex-row lg:gap-12">
+                    <Button
+                      title={t("pages.orders.getRefund")}
+                      level="secondary"
+                      onClick={() => setShowRefundModal(true)}
+                    />
+                    <Button
+                      title={t("pages.orders.postponeDelivery")}
+                      level="terciary"
+                      onClick={() => setShowPosponeDeliveryModal(true)}
+                    />
+                  </div>
+                </>
               )}
               {order.orderStatusId === 6 && (
                 <div className="flex gap-12">
@@ -454,20 +501,37 @@ const OrderDetailsPage = (params: {
           ) : (
             <form
               id="dateOfDeliveryOrder-form"
-              className="flex cursor-pointer items-center justify-center gap-2"
+              className="flex cursor-pointer flex-col items-center justify-center gap-4"
             >
-              <input
-                type="date"
-                required
-                className="rounded-xl border-[1px] p-2 focus:border-[1px] focus:border-black focus:outline-none"
-                min={dayjs().add(1, "day").format("YYYY-MM-DD")}
-                value={dayjs(dateOfDelivery).format("YYYY-MM-DD")}
-                onChange={(e) => setDateOfDelivery(e.target.value)}
-              />
-              <FontAwesomeIcon
-                icon={faClose}
-                className=" fa-xl cursor-pointer text-influencer"
-                onClick={() => setShowEditDateOfDelivery(false)}
+              <div className="flex cursor-pointer items-center justify-center gap-2">
+                <input
+                  type="date"
+                  required
+                  className="rounded-xl border-[1px] p-2 focus:border-[1px] focus:border-black focus:outline-none"
+                  min={dayjs(dateOfDelivery).add(1, "day").format("YYYY-MM-DD")}
+                  value={dayjs(dateOfDelivery).format("YYYY-MM-DD")}
+                  onChange={(e) => setDateOfDelivery(e.target.value)}
+                />
+                <FontAwesomeIcon
+                  icon={faClose}
+                  className=" fa-xl cursor-pointer text-influencer"
+                  onClick={() => setShowEditDateOfDelivery(false)}
+                />
+              </div>
+
+              <Button
+                level="terciary"
+                title={t("pages.orders.update")}
+                form="dateOfDeliveryOrder-form"
+                isLoading={isLoading || isLoadingUpdateDelivery}
+                disabled={isLoading || isLoadingUpdateDelivery}
+                onClick={(e) => {
+                  e.preventDefault();
+                  updateDateOfDelivery({
+                    orderId: params.orderId,
+                    dateOfDelivery: dayjs(dateOfDelivery).toDate(),
+                  });
+                }}
               />
             </form>
           )}
@@ -482,7 +546,7 @@ const OrderDetailsPage = (params: {
         <div className="text-lg font-medium">
           {t("pages.orders.orderRequirements")}
         </div>
-        <div className="flex w-full flex-col whitespace-pre-line text-justify">
+        <div className="flex w-full flex-col whitespace-pre-line text-center">
           {order?.orderDetails}
         </div>
       </div>
@@ -720,24 +784,6 @@ const OrderDetailsPage = (params: {
           {renderDateOfDelivery()}
           {renderFinalOrderDetails()}
         </div>
-        {showEditDateOfDelivery && (
-          <div className="pb-4">
-            <Button
-              level="terciary"
-              title="update"
-              form="dateOfDeliveryOrder-form"
-              isLoading={isLoading || isLoadingUpdateDelivery}
-              disabled={isLoading || isLoadingUpdateDelivery}
-              onClick={(e) => {
-                e.preventDefault();
-                updateDateOfDelivery({
-                  orderId: params.orderId,
-                  dateOfDelivery: dayjs(dateOfDelivery).toDate(),
-                });
-              }}
-            />
-          </div>
-        )}
       </div>
     );
   };
@@ -797,6 +843,51 @@ const OrderDetailsPage = (params: {
     }
   };
 
+  const renderPostponeDeliveryModal = () => {
+    if (showPosponeDeliveryModal) {
+      return (
+        <div className="flex justify-center">
+          <Modal
+            onClose={() => setShowPosponeDeliveryModal(false)}
+            button={
+              <div className="flex justify-center p-4">
+                <Button
+                  form="form-onHoldDateOfDelivery"
+                  level="terciary"
+                  title={t("pages.orders.update")}
+                  isLoading={isLoading || isLoadingUpdateDeliveryFromOnHold}
+                  disabled={isLoading || isLoadingUpdateDeliveryFromOnHold}
+                  onClick={(e) => {
+                    e.preventDefault();
+                    handleUpdateDateOfDeliveryFromOnHold();
+                  }}
+                />
+              </div>
+            }
+          >
+            <form
+              className="flex flex-col items-center justify-center gap-8 p-4 text-center"
+              id="form-onHoldDateOfDelivery"
+            >
+              <div className="font-playfair text-3xl font-semibold">
+                {t("pages.orders.postponedDeliveryDateModalTitle")}
+              </div>
+              <div>{t("pages.orders.postponedDeliveryDateModalSubtitle")}</div>
+              <input
+                type="date"
+                required
+                className="w-9/12 rounded-xl border-[1px] p-2 focus:border-[1px] focus:border-black focus:outline-none"
+                min={dayjs(dateOfDelivery).add(1, "day").format("YYYY-MM-DD")}
+                value={dayjs(dateOfDelivery).format("YYYY-MM-DD")}
+                onChange={(e) => setDateOfDelivery(e.target.value)}
+              />
+            </form>
+          </Modal>
+        </div>
+      );
+    }
+  };
+
   return (
     <>
       <div className="flex w-full cursor-default flex-col gap-6 self-center px-4 pb-10 sm:px-12 lg:w-full 2xl:w-10/12 3xl:w-3/4 4xl:w-8/12">
@@ -835,6 +926,7 @@ const OrderDetailsPage = (params: {
       {renderAreYouSureDisputeModal()}
       {renderIsOrderReallyConfirmedModal()}
       {renderCancelModal()}
+      {renderPostponeDeliveryModal()}
       {openPaymentDetailsModal && order && (
         <PaymentDetailsModal
           amount={Number(order.orderTotalPrice)}

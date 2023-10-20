@@ -150,7 +150,8 @@
       "toBuyerConfirmByInfluencerMakrt": "O período de 96 horas para confirmação da encomenda expirou. Confirmámos a encomenda e emitimos a fatura relevante",
       "toInfluencerConfirmByInfluencerMakrt": "O período de 96 horas para confirmação da encomenda expirou. Confirmámos a encomenda e emitimos a fatura relevante",
       "toBuyerOrderOnHold": "O prazo de entrega não foi cumprido. Agora, tem a oportunidade de escolher como deseja proceder",
-      "toInfluencerOrderOnHold": "O prazo de entrega não foi cumprido. O pedido encontra-se atualmente em espera, aguardando a decisão do comprador"
+      "toInfluencerOrderOnHold": "O prazo de entrega não foi cumprido. O pedido encontra-se atualmente em espera, aguardando a decisão do comprador",
+      "toInfluencerOrderOnHoldToInProgress": "O prazo de entrega foi prorrogado. Pedimos que assegures a entrega pontual dos itens originalmente solicitados"
     },
 
     "orderStatus": {
@@ -981,7 +982,15 @@
       "cancelModalDescription": "Antes de avançar, tira um momento para considerar. Cancelar é verdadeiramente a tua melhor opção? Estamos aqui para ajudar - entre em contacto antes de decidir.",
       "onHold": "Suspenso",
       "onHoldSubtitle": "O comprador está atualmente a ponderar os próximos passos. Fica tranquilo, iremos informar-te assim que uma decisão for alcançada.",
-      "toastUpdateDeliveryDate": "Por favor, atualize a data de entrega antes de inserir os detalhes de pagamento"
+      "toastUpdateDeliveryDate": "Por favor, atualize a data de entrega antes de inserir os detalhes de pagamento",
+      "update": "Actualizar",
+      "getRefund": "Pedir Reembolso",
+      "postponeDelivery": "Adiar Entrega",
+      "onHoldDisclaimerTitle": "Colocámos temporariamente o teu pedido em espera, dando-te tempo para decidires a melhor forma de proceder.",
+      "onHoldDisclaimerSubtitle": "Tens a flexibilidade de escolher entre receber um reembolso ou optar por adiar a entrega, garantindo que, no final, obténs o produto que originalmente desejavas.",
+      "onHoldDisclaimerSubtitle2": "Por favor, não hesites em conversar com o influenciador para garantir que a decisão que tomares está perfeitamente alinhada com os teus melhores interesses.",
+      "postponedDeliveryDateModalTitle": "Adiar data de entrega",
+      "postponedDeliveryDateModalSubtitle": "Escolha uma data de entrega que permita ao influenciador não perder o prazo novamente."
     },
 
     "billing": {

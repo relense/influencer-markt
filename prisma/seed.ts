@@ -127,6 +127,10 @@ async function main() {
       },
       { entityType: "orders", entityAction: "toBuyerOrderOnHold" },
       { entityType: "sales", entityAction: "toInfluencerOrderOnHold" },
+      {
+        entityType: "sales",
+        entityAction: "toInfluencerOrderOnHoldToInProgress",
+      },
     ],
   });
 
