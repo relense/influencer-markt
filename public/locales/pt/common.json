@@ -151,7 +151,8 @@
       "toInfluencerConfirmByInfluencerMakrt": "O período de 96 horas para confirmação da encomenda expirou. Confirmámos a encomenda e emitimos a fatura relevante",
       "toBuyerOrderOnHold": "O prazo de entrega não foi cumprido. Agora, tem a oportunidade de escolher como deseja proceder",
       "toInfluencerOrderOnHold": "O prazo de entrega não foi cumprido. O pedido encontra-se atualmente em espera, aguardando a decisão do comprador",
-      "toInfluencerOrderOnHoldToInProgress": "O prazo de entrega foi prorrogado. Pedimos que assegures a entrega pontual dos itens originalmente solicitados"
+      "toInfluencerOrderOnHoldToInProgress": "O prazo de entrega foi prorrogado. Pedimos que assegures a entrega pontual dos itens originalmente solicitados",
+      "toInfluencerOrderOnHoldToConfirm": "{{actor}} decidiu não dar continuidade ao pedido"
     },
 
     "orderStatus": {
@@ -990,7 +991,13 @@
       "onHoldDisclaimerSubtitle": "Tens a flexibilidade de escolher entre receber um reembolso ou optar por adiar a entrega, garantindo que, no final, obténs o produto que originalmente desejavas.",
       "onHoldDisclaimerSubtitle2": "Por favor, não hesites em conversar com o influenciador para garantir que a decisão que tomares está perfeitamente alinhada com os teus melhores interesses.",
       "postponedDeliveryDateModalTitle": "Adiar data de entrega",
-      "postponedDeliveryDateModalSubtitle": "Escolha uma data de entrega que permita ao influenciador não perder o prazo novamente."
+      "postponedDeliveryDateModalSubtitle": "Escolha uma data de entrega que permita ao influenciador não perder o prazo novamente.",
+      "refundInCash": "Reembolso Dinheiro",
+      "refundInCredits": "Reembolso Créditos",
+      "refundModalTitle": "Como queres o reembolso?",
+      "refundModalSubtitle1": "Tens duas opções para receber os teus reembolsos.",
+      "refundModalSubtitle2": "A opção de reembolso em dinheiro assegura que receberás o valor total do reembolso (menos o custo inicial da transação) num prazo razoável de 5 a 10 dias úteis.",
+      "refundModalSubtitle3": "A opção de reembolso em créditos permite-te receber o valor total do teu reembolso sob a forma de créditos. Estes créditos podem ser usados para desfrutar dos serviços de outros influenciadores. Além disso, estes créditos ficam imediatamente disponíveis para uso imediato, oferecendo comodidade e flexibilidade."
     },
 
     "billing": {

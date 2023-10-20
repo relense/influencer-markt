@@ -131,6 +131,7 @@ async function main() {
         entityType: "sales",
         entityAction: "toInfluencerOrderOnHoldToInProgress",
       },
+      { entityType: "sales", entityAction: "toInfluencerOrderOnHoldToConfirm" },
     ],
   });
 

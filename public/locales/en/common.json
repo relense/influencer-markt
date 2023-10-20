@@ -151,7 +151,8 @@
       "toInfluencerConfirmByInfluencerMakrt": "The 96-hour window for order confirmation has passed. We have now confirmed the order and issued the relevant invoice",
       "toBuyerOrderOnHold": "The delivery deadline has been missed. You now have the opportunity to choose how you wish to proceed",
       "toInfluencerOrderOnHold": "The delivery deadline has not been met. The order is currently on hold, awaiting the buyer's decision",
-      "toInfluencerOrderOnHoldToInProgress": "The delivery deadline has been extended. We kindly urge you to ensure the punctual delivery of the items originally requested"
+      "toInfluencerOrderOnHoldToInProgress": "The delivery deadline has been extended. We kindly urge you to ensure the punctual delivery of the items originally requested",
+      "toInfluencerOrderOnHoldToConfirm": "{{actor}} decided not to continue with the order."
     },
 
     "orderStatus": {
@@ -990,7 +991,13 @@
       "onHoldDisclaimerSubtitle": "You have the flexibility to choose between receiving a refund or opting to delay the delivery, ensuring you ultimately get the product you originally desired.",
       "onHoldDisclaimerSubtitle2": "Please don't hesitate to engage in a conversation with the influencer to ensure that the decision you make aligns perfectly with your best interests.",
       "postponedDeliveryDateModalTitle": "Postpone date of delivery",
-      "postponedDeliveryDateModalSubtitle": "Select a delivery date that accommodates the influencer, ensuring they won't miss the deadline once more."
+      "postponedDeliveryDateModalSubtitle": "Select a delivery date that accommodates the influencer, ensuring they won't miss the deadline once more.",
+      "refundInCash": "Refund In Cash",
+      "refundInCredits": "Refund In Credits",
+      "refundModalTitle": "How do you want your refund?",
+      "refundModalSubtitle1": "You have two options for receiving your refunds.",
+      "refundModalSubtitle2": "Cash refund option, ensures that you'll receive the full refund amount (minus the initial transaction cost) within a reasonable timeframe of 5 to 10 business days.",
+      "refundModalSubtitle3": "Credit refund option is to receive your full refund amount in the form of credits. These credits can be redeemed to avail the services of other influencers. Furthermore, these credits become instantly available for your immediate use, offering convenience and flexibility."
     },
 
     "billing": {

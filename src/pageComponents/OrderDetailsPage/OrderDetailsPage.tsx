@@ -139,6 +139,42 @@ const OrderDetailsPage = (params: {
   });
 
   const {
+    mutate: updateOrderGiveCreditsRefund,
+    isLoading: isLoadingUpdateOrderGiveCreditsRefund,
+  } = api.orders.updateOrderToConfirmedFromOnHold.useMutation({
+    onSuccess: () => {
+      setShowRefundModal(false);
+      void ctx.orders.getBuyerOrder.invalidate();
+      void createNotification({
+        entityId: params.orderId,
+        senderId: order?.buyerId || -1,
+        notifierId: order?.influencerId || -1,
+        entityAction: "toInfluencerOrderOnHoldToConfirm",
+      });
+
+      //give cash refund
+    },
+  });
+
+  const {
+    mutate: updateOrderGiveCashRefund,
+    isLoading: isLoadingUpdateOrderGiveCashRefund,
+  } = api.orders.updateOrderToConfirmedFromOnHold.useMutation({
+    onSuccess: () => {
+      setShowRefundModal(false);
+      void ctx.orders.getBuyerOrder.invalidate();
+      void createNotification({
+        entityId: params.orderId,
+        senderId: order?.buyerId || -1,
+        notifierId: order?.influencerId || -1,
+        entityAction: "toInfluencerOrderOnHoldToConfirm",
+      });
+
+      //create new credit
+    },
+  });
+
+  const {
     mutate: updateOrderInDispute,
     isLoading: isLoadingUpdateOrderInDispute,
   } = api.orders.updateOrder.useMutation({
@@ -888,6 +924,51 @@ const OrderDetailsPage = (params: {
     }
   };
 
+  const renderRefundModal = () => {
+    if (showRefundModal && order) {
+      return (
+        <div className="flex justify-center">
+          <Modal onClose={() => setShowRefundModal(false)}>
+            <div className="flex flex-col items-center justify-center gap-8 p-4 px-8 text-center">
+              <div className="font-playfair text-3xl">
+                {t("pages.orders.refundModalTitle")}
+              </div>
+              <div>{t("pages.orders.refundModalSubtitle1")}</div>
+              <div>{t("pages.orders.refundModalSubtitle2")}</div>
+              <div>{t("pages.orders.refundModalSubtitle3")}</div>
+              <div className="flex gap-8">
+                <Button
+                  form="form-onHoldDateOfDelivery"
+                  level="secondary"
+                  title={t("pages.orders.refundInCash")}
+                  isLoading={isLoading || isLoadingUpdateOrderGiveCashRefund}
+                  disabled={isLoading || isLoadingUpdateOrderGiveCashRefund}
+                  onClick={() =>
+                    updateOrderGiveCashRefund({
+                      orderId: order.id,
+                    })
+                  }
+                />
+                <Button
+                  form="form-onHoldDateOfDelivery"
+                  level="terciary"
+                  title={t("pages.orders.refundInCredits")}
+                  isLoading={isLoading || isLoadingUpdateOrderGiveCreditsRefund}
+                  disabled={isLoading || isLoadingUpdateOrderGiveCreditsRefund}
+                  onClick={() => {
+                    updateOrderGiveCreditsRefund({
+                      orderId: order.id,
+                    });
+                  }}
+                />
+              </div>
+            </div>
+          </Modal>
+        </div>
+      );
+    }
+  };
+
   return (
     <>
       <div className="flex w-full cursor-default flex-col gap-6 self-center px-4 pb-10 sm:px-12 lg:w-full 2xl:w-10/12 3xl:w-3/4 4xl:w-8/12">
@@ -927,6 +1008,7 @@ const OrderDetailsPage = (params: {
       {renderIsOrderReallyConfirmedModal()}
       {renderCancelModal()}
       {renderPostponeDeliveryModal()}
+      {renderRefundModal()}
       {openPaymentDetailsModal && order && (
         <PaymentDetailsModal
           amount={Number(order.orderTotalPrice)}
