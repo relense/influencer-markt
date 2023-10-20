@@ -11,13 +11,13 @@ function influencerMarktConfirmEmail(params: {
   let title = `The order with ref:${orderId} was confirmed by Influencer Markt`;
   let buttonTitle = "View Order";
   let subject = `The order with ref:${orderId} was confirmed`;
-  let description = `The 96-hour window for order confirmation has passed. We have now confirmed the order and issued the relevant invoice.`;
+  let description = `The 96-hour window for order confirmation has passed. We have now confirmed the order and issued the relevant invoice. The order can be reviewed`;
 
   if (language === "pt") {
     title = `O pedido com a ref:${orderId} foi confirmado pelo Influencer Markt`;
     buttonTitle = "Ver Pedido";
     subject = `O pedido com ref:${orderId} foi confirmado`;
-    description = `O período de 96 horas para confirmação da encomenda expirou. Confirmámos a encomenda e emitimos a fatura relevante.`;
+    description = `O período de 96 horas para confirmação da encomenda expirou. Confirmámos a encomenda e emitimos a fatura relevante. O pedido pode ser avaliado`;
   }
 
   sgMail.setApiKey(process.env.EMAIL_SMTP_KEY || "");

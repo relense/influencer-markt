@@ -29,7 +29,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         const updatedOrder = await prisma.order.update({
           where: { id: order.id },
           data: {
-            orderStatusId: 8,
+            orderStatusId: 6,
           },
           include: {
             buyer: {
