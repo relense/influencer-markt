@@ -8,7 +8,7 @@ import { toast } from "react-hot-toast";
 import { useRouter } from "next/router";
 
 import type { Option } from "../../utils/globalTypes";
-import { usePrevious } from "../../utils/helper";
+import { helper, usePrevious } from "../../utils/helper";
 import { CustomSelect } from "../../components/CustomSelect";
 import { CustomMultiSelect } from "../../components/CustomMultiSelect";
 import { ToolTip } from "../../components/ToolTip";
@@ -92,7 +92,7 @@ const CreateJobPage = (params: { edit: boolean; jobId: number }) => {
       setValue("numberOfInfluencers", job.numberOfInfluencers);
       setValue("jobDetails", job.JobDetails);
       setValue("jobSummary", job.jobSummary);
-      setValue("jobPrice", job.price);
+      setValue("jobPrice", helper.calculerMonetaryValue(job.price));
       setValue("platform", job.socialMedia);
       setIsPublished(job.published);
       setContentTypesList(job.contentTypeWithQuantity);

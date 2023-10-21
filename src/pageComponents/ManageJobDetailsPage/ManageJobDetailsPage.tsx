@@ -629,12 +629,18 @@ const ManageJobDetailsPage = (params: {
     if (job) {
       return (
         <>
-          <Link
-            href={`/jobs/${job.id}`}
-            className="line-clamp-2 text-xl font-semibold hover:underline xs:w-3/4"
-          >
-            {job.jobSummary}
-          </Link>
+          {job.published ? (
+            <Link
+              href={`/jobs/${job.id}`}
+              className="line-clamp-2 text-xl font-semibold hover:underline xs:w-3/4"
+            >
+              {job.jobSummary}
+            </Link>
+          ) : (
+            <div className="line-clamp-2 text-xl font-semibold xs:w-3/4">
+              {job.jobSummary}
+            </div>
+          )}
           <div className="flex flex-col sm:flex-row sm:items-center sm:gap-6">
             <div className="flex items-center gap-2">
               <div className="text-gray2">{job.country.name}</div>
@@ -712,7 +718,9 @@ const ManageJobDetailsPage = (params: {
               <div className="font-semibold text-influencer">
                 {t("pages.manageJobs.price")}
               </div>
-              <div>{helper.formatNumber(job.price)}€</div>
+              <div>
+                {helper.formatNumber(helper.calculerMonetaryValue(job.price))}€
+              </div>
             </div>
           </>
         </div>

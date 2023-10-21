@@ -1,5 +1,6 @@
 import { z } from "zod";
 import { createTRPCRouter, protectedProcedure, publicProcedure } from "../trpc";
+import { helper } from "../../../utils/helper";
 
 export const JobsRouter = createTRPCRouter({
   createJob: protectedProcedure
@@ -41,7 +42,7 @@ export const JobsRouter = createTRPCRouter({
           categories: {
             connect: input.categories.map((categoryId) => ({ id: categoryId })),
           },
-          price: input.price,
+          price: helper.calculateMonetaryValueInCents(input.price),
           numberOfInfluencers: input.numberOfInfluencers,
           country: { connect: { id: input.countryId } },
           minFollowers: input.minFollowers,
@@ -101,7 +102,7 @@ export const JobsRouter = createTRPCRouter({
             set: [],
             connect: input.categories.map((categoryId) => ({ id: categoryId })),
           },
-          price: input.price,
+          price: helper.calculateMonetaryValueInCents(input.price),
           numberOfInfluencers: input.numberOfInfluencers,
           country: { connect: { id: input.countryId } },
           minFollowers: input.minFollowers,
