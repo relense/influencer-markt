@@ -379,8 +379,8 @@ model Order {
   orderDetails           String           @db.Text
   orderValuePacks        OrderValuePack[]
   orderInfluencerCountry Country?         @relation(fields: [countryId], references: [id])
-  orderBasePrice         Decimal          @db.Decimal(10, 2)
-  orderTotalPrice        Decimal          @db.Decimal(10, 2)
+  orderBasePrice         Int          
+  orderTotalPrice        Int          
   orderTaxPercentage     Int
   orderServicePercentage Int
   orderStatus            OrderStatus?     @relation(fields: [orderStatusId], references: [id])
@@ -421,7 +421,7 @@ model OrderValuePack {
   id          Int         @id @default(autoincrement())
   contentType ContentType @relation(fields: [contentTypeId], references: [id])
   amount      Int
-  price       String
+  price       Int
   Order       Order?      @relation(fields: [orderId], references: [id])
 
   contentTypeId Int
@@ -542,11 +542,11 @@ model Invoice {
   billing                   Billing     @relation(fields: [billingId], references: [id])
   name                      String?
   tin                       String?
-  saleBaseValue             Decimal     @db.Decimal(10, 2)
-  saleTotalValue            Decimal     @db.Decimal(10, 2)
-  influencerMarktCutValue   Decimal?    @db.Decimal(10, 2)
+  saleBaseValue             Int     
+  saleTotalValue            Int     
+  influencerMarktCutValue   Int?    
   influencerMarktPercentage Int?
-  taxValue                  Decimal     @db.Decimal(10, 2)
+  taxValue                  Int     
   taxPercentage             Int
   paid                      Boolean     @default(false)
   invoiceType               InvoiceType @relation(fields: [invoiceTypeId], references: [id])
@@ -573,7 +573,7 @@ model InvoiceType {
 model Payment {
   id            String  @id @default(cuid())
   paymentIntent String
-  amount        Decimal @db.Decimal(10, 2)
+  amount        Int 
   order         Order   @relation(fields: [orderId], references: [id])
 
   createdAt DateTime @default(now())
@@ -586,7 +586,7 @@ model Payment {
 
 model Refund {
   id                String             @id @default(cuid())
-  refundValue       Decimal            @db.Decimal(10, 2)
+  refundValue       Int            
   order             Order              @relation(fields: [orderId], references: [id])
   isCredit          Boolean
   creditTransaction CreditTransaction?
@@ -611,7 +611,7 @@ model Credit {
 
 model CreditTransaction {
   id         String  @id @default(cuid())
-  amount     Decimal @db.Decimal(10, 2)
+  amount     Int 
   isWithdraw Boolean @default(false)
   credit     Credit  @relation(fields: [creditId], references: [id])
   refund     Refund? @relation(fields: [refundId], references: [id])

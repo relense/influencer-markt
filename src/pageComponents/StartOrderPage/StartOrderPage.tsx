@@ -140,11 +140,11 @@ const StartOrderPage = (params: {
     createOrder({
       influencerId: params.orderProfileId,
       orderDetails: data.orderDetails,
-      orderPrice: valuePacksSum.toString(),
+      orderPrice: valuePacksSum,
       orderValuePacks: contentTypesList.map((valuePack) => {
         return {
           amount: valuePack.amount,
-          price: valuePack.price.toString(),
+          price: valuePack.price,
           contentTypeId: valuePack.contentType.id,
         };
       }),

@@ -414,11 +414,11 @@ const ManageJobDetailsPage = (params: {
       createOrder({
         influencerId: applicant.id,
         orderDetails: job.JobDetails,
-        orderPrice: job.price.toString(),
+        orderPrice: job.price,
         orderValuePacks: job.contentTypeWithQuantity.map((valuePack) => {
           return {
             amount: valuePack.amount,
-            price: "0",
+            price: 0,
             contentTypeId: valuePack.contentType.id,
           };
         }),

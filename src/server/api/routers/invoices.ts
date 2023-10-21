@@ -27,15 +27,11 @@ const createInvoice = async (params: { orderId: number }) => {
 
   if (order) {
     //create Buyer invoice
-    const taxValue = (
-      Number(order.orderBasePrice) *
-      (order.orderTaxPercentage / 100)
-    ).toFixed(2);
+    const taxValue =
+      order.orderBasePrice * (order.orderTaxPercentage / 100) * 100;
 
-    const ourCutValue = (
-      Number(order.orderBasePrice) *
-      (order.orderServicePercentage / 100)
-    ).toFixed(2);
+    const ourCutValue =
+      order.orderBasePrice * (order.orderServicePercentage / 100) * 100;
 
     await prisma.invoice.create({
       data: {

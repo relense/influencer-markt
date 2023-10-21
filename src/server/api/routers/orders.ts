@@ -23,12 +23,12 @@ export const OrdersRouter = createTRPCRouter({
       z.object({
         influencerId: z.number(),
         orderDetails: z.string(),
-        orderPrice: z.string(),
+        orderPrice: z.number(),
         orderValuePacks: z.array(
           z.object({
             contentTypeId: z.number(),
             amount: z.number(),
-            price: z.string(),
+            price: z.number(),
           })
         ),
         platformId: z.number(),
@@ -60,20 +60,15 @@ export const OrdersRouter = createTRPCRouter({
       });
 
       if (profile) {
-        const taxValue = (
-          Number(input.orderPrice) *
-          ((influencerProfile?.country?.countryTax || 0) / 100)
-        ).toFixed(2);
+        const taxValue =
+          input.orderPrice *
+          ((influencerProfile?.country?.countryTax || 0) / 100) *
+          100;
 
-        const ourCutValue = (
-          Number(input.orderPrice) * helper.calculateServiceFee()
-        ).toFixed(2);
+        const ourCutValue =
+          input.orderPrice * 100 * helper.calculateServiceFee();
 
-        const saleValue = (
-          Number(input.orderPrice) +
-          parseFloat(ourCutValue) +
-          parseFloat(taxValue)
-        ).toFixed(2);
+        const saleValue = input.orderPrice * 100 + ourCutValue + taxValue;
 
         const order = await ctx.prisma.order.create({
           data: {
@@ -130,12 +125,12 @@ export const OrdersRouter = createTRPCRouter({
       z.object({
         influencerId: z.number(),
         orderDetails: z.string(),
-        orderPrice: z.string(),
+        orderPrice: z.number(),
         orderValuePacks: z.array(
           z.object({
             contentTypeId: z.number(),
             amount: z.number(),
-            price: z.string(),
+            price: z.number(),
           })
         ),
         platformId: z.number(),
@@ -156,20 +151,15 @@ export const OrdersRouter = createTRPCRouter({
       });
 
       if (profile) {
-        const taxValue = (
-          Number(input.orderPrice) *
-          ((influencerProfile?.country?.countryTax || 0) / 100)
-        ).toFixed(2);
+        const taxValue =
+          input.orderPrice *
+          ((influencerProfile?.country?.countryTax || 0) / 100) *
+          100;
 
-        const ourCutValue = (
-          Number(input.orderPrice) * helper.calculateServiceFee()
-        ).toFixed(2);
+        const ourCutValue =
+          input.orderPrice * 100 * helper.calculateServiceFee();
 
-        const saleValue = (
-          Number(input.orderPrice) +
-          parseFloat(ourCutValue) +
-          parseFloat(taxValue)
-        ).toFixed(2);
+        const saleValue = input.orderPrice + ourCutValue + taxValue;
 
         const order = await ctx.prisma.order.create({
           data: {
