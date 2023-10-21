@@ -49,7 +49,7 @@ const SavedPage = (params: { roleId: number; loggedInProfileId: number }) => {
                       id: valuePack.contentType?.id || -1,
                       name: valuePack.contentType?.name || "",
                     },
-                    valuePackPrice: valuePack.valuePackPrice.toString(),
+                    valuePackPrice: valuePack.valuePackPrice,
                   };
                 }),
               };

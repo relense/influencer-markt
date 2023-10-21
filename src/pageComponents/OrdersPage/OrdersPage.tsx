@@ -23,8 +23,7 @@ type Order = {
   influencerName: string;
   socialMediaName: string;
   orderValuePacks: OrderValuePack[];
-  orderPrice: string;
-  orderTaxPercentage: number;
+  orderPrice: number;
 };
 
 type OrderValuePack = {
@@ -93,7 +92,7 @@ const OrdersPage = () => {
             influencerUsername: order.influencer?.user?.username || "",
             createdAt: order.createdAt,
             id: order.id,
-            orderPrice: order.orderTotalPrice.toString(),
+            orderPrice: order.orderTotalPrice,
             orderStatusName: order.orderStatus?.name || "",
             orderValuePacks: order.orderValuePacks.map((valuePack) => {
               return {
@@ -103,7 +102,6 @@ const OrdersPage = () => {
               };
             }),
             socialMediaName: order.socialMedia?.name || "",
-            orderTaxPercentage: order.orderTaxPercentage,
           };
         })
       );
@@ -127,7 +125,7 @@ const OrdersPage = () => {
           influencerUsername: order.influencer?.user?.username || "",
           createdAt: order.createdAt,
           id: order.id,
-          orderPrice: order.orderTotalPrice.toString(),
+          orderPrice: order.orderTotalPrice,
           orderStatusName: order.orderStatus?.name || "",
           orderValuePacks: order.orderValuePacks.map((valuePack) => {
             return {
@@ -137,7 +135,6 @@ const OrdersPage = () => {
             };
           }),
           socialMediaName: order.socialMedia?.name || "",
-          orderTaxPercentage: order.orderTaxPercentage,
         });
       });
 
@@ -237,11 +234,8 @@ const OrdersPage = () => {
                 {t("pages.orders.orderTotal")}
               </div>
               <div>
-                {helper.formatNumberWithDecimalValue(
-                  parseFloat(order.orderPrice) +
-                    parseFloat(order.orderPrice) *
-                      (order.orderTaxPercentage / 100) +
-                    parseFloat(order.orderPrice) * helper.calculateServiceFee()
+                {helper.formatNumber(
+                  helper.calculerMonetaryValue(order.orderPrice)
                 ) || 0}
                 €
               </div>

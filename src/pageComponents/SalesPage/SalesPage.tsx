@@ -23,8 +23,7 @@ type Sale = {
   buyerName: string;
   socialMediaName: string;
   orderValuePacks: SaleValuePack[];
-  orderPrice: string;
-  orderTaxPercentage: number;
+  orderPrice: number;
 };
 
 type SaleValuePack = {
@@ -94,7 +93,7 @@ const SalesPage = () => {
             buyerUsername: sale.buyer?.user?.username || "",
             createdAt: sale.createdAt,
             id: sale.id,
-            orderPrice: sale.orderTotalPrice.toString(),
+            orderPrice: sale.orderTotalPrice,
             orderStatusName: sale.orderStatus?.name || "",
             orderValuePacks: sale.orderValuePacks.map((valuePack) => {
               return {
@@ -104,7 +103,6 @@ const SalesPage = () => {
               };
             }),
             socialMediaName: sale.socialMedia?.name || "",
-            orderTaxPercentage: sale.orderTaxPercentage,
           };
         })
       );
@@ -128,7 +126,7 @@ const SalesPage = () => {
           buyerUsername: sale.buyer?.user?.username || "",
           createdAt: sale.createdAt,
           id: sale.id,
-          orderPrice: sale.orderTotalPrice.toString(),
+          orderPrice: sale.orderTotalPrice,
           orderStatusName: sale.orderStatus?.name || "",
           orderValuePacks: sale.orderValuePacks.map((valuePack) => {
             return {
@@ -138,7 +136,6 @@ const SalesPage = () => {
             };
           }),
           socialMediaName: sale.socialMedia?.name || "",
-          orderTaxPercentage: sale.orderTaxPercentage,
         });
       });
 
@@ -236,11 +233,8 @@ const SalesPage = () => {
               </div>
               <div>
                 {helper.formatNumberWithDecimalValue(
-                  parseFloat(sale.orderPrice) +
-                    parseFloat(sale.orderPrice) *
-                      (sale.orderTaxPercentage / 100) +
-                    parseFloat(sale.orderPrice) * helper.calculateServiceFee()
-                ) || 0}
+                  helper.calculerMonetaryValue(sale.orderPrice)
+                )}
                 €
               </div>
             </div>

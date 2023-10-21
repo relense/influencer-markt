@@ -53,35 +53,39 @@ const SocialMediaCard = (params: {
           {params.socialMedia.valuePacks && (
             <div className="flex flex-wrap gap-2">
               {params.socialMedia.valuePacks.map((valuePack, index) => {
-                return (
-                  <div
-                    className="flex items-center gap-2"
-                    key={
-                      params.socialMedia.platform.name +
-                      valuePack.contentType.name
-                    }
-                  >
-                    <div className="flex flex-col items-start gap-2 text-sm font-medium text-gray2 lg:flex-row lg:items-center">
-                      <div className="text-base font-semibold  text-influencer">
-                        {t(
-                          `general.contentTypes.${
-                            valuePack.contentType.name.charAt(0).toLowerCase() +
-                            valuePack.contentType.name.slice(1)
-                          }`
-                        )}
+                if (valuePack.contentType.id !== -1) {
+                  return (
+                    <div
+                      className="flex items-center gap-2"
+                      key={
+                        params.socialMedia.platform.name +
+                        valuePack.contentType.name
+                      }
+                    >
+                      <div className="flex flex-col items-start gap-2 text-sm font-medium text-gray2 lg:flex-row lg:items-center">
+                        <div className="text-base font-semibold  text-influencer">
+                          {t(
+                            `general.contentTypes.${
+                              valuePack.contentType.name
+                                .charAt(0)
+                                .toLowerCase() +
+                              valuePack.contentType.name.slice(1)
+                            }`
+                          )}
+                        </div>
                       </div>
-                    </div>
-                    <div className="self-end font-medium">
-                      {helper.formatNumber(
-                        helper.calculerMonetaryValue(valuePack.valuePackPrice)
+                      <div className="self-end font-medium">
+                        {helper.formatNumber(
+                          helper.calculerMonetaryValue(valuePack.valuePackPrice)
+                        )}
+                        €
+                      </div>
+                      {params.socialMedia.valuePacks.length - 1 !== index && (
+                        <div className="h-1 w-1 rounded-full bg-black" />
                       )}
-                      €
                     </div>
-                    {params.socialMedia.valuePacks.length - 1 !== index && (
-                      <div className="h-1 w-1 rounded-full bg-black" />
-                    )}
-                  </div>
-                );
+                  );
+                }
               })}
             </div>
           )}

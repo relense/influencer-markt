@@ -38,7 +38,7 @@ const StartOrderPage = (params: {
         platform: valuePack.platform,
         contentType: valuePack.contentType,
         amount: 1,
-        price: parseFloat(valuePack.valuePackPrice),
+        price: valuePack.valuePackPrice,
       };
     })
   );
@@ -284,8 +284,10 @@ const StartOrderPage = (params: {
                     {t(`general.contentTypes.${valuePack.contentType.name}`)}
                   </div>
                   <div className="text-base font-medium">
-                    {helper.formatNumberWithDecimalValue(
-                      valuePack.price * valuePack.amount
+                    {helper.formatNumber(
+                      helper.calculerMonetaryValue(
+                        valuePack.price * valuePack.amount
+                      )
                     ) || 0}
                     €
                   </div>
@@ -320,25 +322,36 @@ const StartOrderPage = (params: {
               <div className="select-none font-semibold text-influencer">
                 {t("pages.startOrder.valuePacks")}:
               </div>
-              <div>{helper.formatNumberWithDecimalValue(valuePacksSum)}€</div>
+              <div>
+                {helper.formatNumber(
+                  helper.calculerMonetaryValue(valuePacksSum)
+                )}
+                €
+              </div>
             </div>
             <div className="flex gap-2">
               <div className="select-none font-semibold text-influencer">
                 {t("pages.startOrder.serviceFee")}:
               </div>
-              <div>{helper.formatNumberWithDecimalValue(serviceFee)}€</div>
+              <div>
+                {helper.formatNumber(helper.calculerMonetaryValue(serviceFee))}€
+              </div>
             </div>
             <div className="flex gap-2">
               <div className="select-none font-semibold text-influencer">
                 {t("pages.startOrder.fee")}:
               </div>
-              <div>{helper.formatNumberWithDecimalValue(tax)}€</div>
+              <div>
+                {helper.formatNumber(helper.calculerMonetaryValue(tax))}€
+              </div>
             </div>
             <div className="flex gap-2">
               <div className="select-none font-semibold text-influencer">
                 {t("pages.startOrder.total")}:
               </div>
-              <div>{helper.formatNumberWithDecimalValue(total)}€</div>
+              <div>
+                {helper.formatNumber(helper.calculerMonetaryValue(total))}€
+              </div>
             </div>
           </div>
         </div>

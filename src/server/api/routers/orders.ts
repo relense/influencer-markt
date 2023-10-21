@@ -62,13 +62,11 @@ export const OrdersRouter = createTRPCRouter({
       if (profile) {
         const taxValue =
           input.orderPrice *
-          ((influencerProfile?.country?.countryTax || 0) / 100) *
-          100;
+          ((influencerProfile?.country?.countryTax || 0) / 100);
 
-        const ourCutValue =
-          input.orderPrice * 100 * helper.calculateServiceFee();
+        const ourCutValue = input.orderPrice * helper.calculateServiceFee();
 
-        const saleValue = input.orderPrice * 100 + ourCutValue + taxValue;
+        const saleValue = input.orderPrice + ourCutValue + taxValue;
 
         const order = await ctx.prisma.order.create({
           data: {
@@ -153,11 +151,9 @@ export const OrdersRouter = createTRPCRouter({
       if (profile) {
         const taxValue =
           input.orderPrice *
-          ((influencerProfile?.country?.countryTax || 0) / 100) *
-          100;
+          ((influencerProfile?.country?.countryTax || 0) / 100);
 
-        const ourCutValue =
-          input.orderPrice * 100 * helper.calculateServiceFee();
+        const ourCutValue = input.orderPrice * helper.calculateServiceFee();
 
         const saleValue = input.orderPrice + ourCutValue + taxValue;
 

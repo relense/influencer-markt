@@ -483,9 +483,9 @@ const OrderDetailsPage = (params: {
             <ToolTip content={t("pages.orders.includesFees")} />
           </div>
           <div className="text-base font-semibold text-influencer">
-            {helper.formatNumberWithDecimalValue(
-              Number(order.orderTotalPrice)
-            ) || 0}
+            {helper.formatNumber(
+              helper.calculerMonetaryValue(order.orderTotalPrice) || 0
+            )}
             €
           </div>
         </div>

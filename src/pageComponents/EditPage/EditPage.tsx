@@ -123,7 +123,7 @@ const EditPage = () => {
                   id: item.socialMediaId,
                   name: item.socialMedia?.name || "",
                 },
-                valuePackPrice: valuePack.valuePackPrice.toString(),
+                valuePackPrice: valuePack.valuePackPrice,
                 contentType: {
                   id: valuePack.contentType?.id || -1,
                   name: valuePack.contentType?.name || "",
@@ -373,7 +373,7 @@ const EditPage = () => {
                       id: valuePack.contentType?.id || -1,
                       name: valuePack.contentType?.name || "",
                     },
-                    valuePackPrice: valuePack.valuePackPrice.toString(),
+                    valuePackPrice: valuePack.valuePackPrice,
                     platform: {
                       id: socialMedia.platform.id,
                       name: socialMedia.platform.name,
