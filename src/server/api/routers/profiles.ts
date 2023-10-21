@@ -590,6 +590,16 @@ export const profilesRouter = createTRPCRouter({
           },
         },
       });
+
+      await ctx.prisma.credit.create({
+        data: {
+          profile: {
+            connect: {
+              id: profile.id,
+            },
+          },
+        },
+      });
     }),
 
   getProfile: protectedProcedure.query(async ({ ctx }) => {

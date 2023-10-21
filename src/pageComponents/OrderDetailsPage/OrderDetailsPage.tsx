@@ -171,8 +171,15 @@ const OrderDetailsPage = (params: {
       });
 
       //create new credit
+      // giveCreditRefund({
+      //   isCredit: true,
+      //   orderId: params.orderId,
+      //   refundValue: order?.orderTotalPrice,
+      // });
     },
   });
+
+  const { mutate: giveCreditRefund } = api.refunds.createRefund.useMutation();
 
   const {
     mutate: updateOrderInDispute,

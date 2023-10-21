@@ -44,7 +44,7 @@ const FirstStepsPage = () => {
     },
     {
       id: StepsEnum.Final,
-      step: t("pages.firstSteps.stepIdentifier4"),
+      step: t("pages.firstSteps.stepIdentifier2"),
       title: t("pages.firstSteps.finalStep.title"),
       subTitle: t("pages.firstSteps.finalStep.subTitle"),
       mainTitle: t("pages.firstSteps.finalStep.mainTitle"),

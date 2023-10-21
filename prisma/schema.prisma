@@ -612,8 +612,8 @@ model Credit {
 model CreditTransaction {
   id         String  @id @default(cuid())
   amount     Decimal @db.Decimal(10, 2)
-  isWithdraw Boolean
-  Credit     Credit  @relation(fields: [creditId], references: [id])
+  isWithdraw Boolean @default(false)
+  credit     Credit  @relation(fields: [creditId], references: [id])
   refund     Refund? @relation(fields: [refundId], references: [id])
 
   refundId String? @unique

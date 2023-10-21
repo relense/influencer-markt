@@ -14,6 +14,7 @@ import { DisputesRouter } from "./routers/disputes";
 import { InvoicesRouter } from "./routers/invoices";
 import { BillingsRouter } from "./routers/billings";
 import { StripesRouter } from "./routers/stripes";
+import { RefundsRouter } from "./routers/refunds";
 
 /**
  * This is the primary router for your server.
@@ -36,6 +37,7 @@ export const appRouter = createTRPCRouter({
   invoices: InvoicesRouter,
   billings: BillingsRouter,
   stripes: StripesRouter,
+  refunds: RefundsRouter,
 });
 
 // export type definition of API
