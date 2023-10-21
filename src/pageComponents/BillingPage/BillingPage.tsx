@@ -221,7 +221,10 @@ const BillingPage = (params: { isBrand: boolean }) => {
         <div className="flex flex-col">
           <div className="font-medium">{t("pages.orders.orderTotal")}</div>
           <div className="text-base font-semibold text-influencer">
-            {helper.formatNumberWithDecimalValue(invoice.invoiceSaleTotal)}€
+            {helper.formatNumber(
+              helper.calculerMonetaryValue(invoice.invoiceSaleTotal)
+            )}
+            €
           </div>
         </div>
       </div>
