@@ -18,6 +18,7 @@ type Country = {
   name: string;
   languageCode: string;
   states: State[];
+  countryTax: number;
 };
 
 type Data = {
@@ -35,6 +36,7 @@ async function main() {
       data: {
         name: country.name,
         languageCode: country.languageCode,
+        countryTax: country.countryTax,
       },
     });
 
