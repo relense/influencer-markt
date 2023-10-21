@@ -2,6 +2,7 @@ import { z } from "zod";
 import { createTRPCRouter, protectedProcedure, publicProcedure } from "../trpc";
 import bloblService from "../../../services/azureBlob.service";
 import { v4 as uuidv4 } from "uuid";
+import { helper } from "../../../utils/helper";
 
 export const profilesRouter = createTRPCRouter({
   getAllInfluencerProfiles: publicProcedure
@@ -57,8 +58,14 @@ export const profilesRouter = createTRPCRouter({
                         ? input.contentTypeId
                         : undefined,
                     valuePackPrice: {
-                      gte: input.minPrice !== -1 ? input.minPrice : undefined,
-                      lte: input.maxPrice !== -1 ? input.maxPrice : undefined,
+                      gte:
+                        input.minPrice !== -1
+                          ? helper.calculateMonetaryValueInCents(input.minPrice)
+                          : undefined,
+                      lte:
+                        input.maxPrice !== -1
+                          ? helper.calculateMonetaryValueInCents(input.maxPrice)
+                          : undefined,
                     },
                   },
                 },
@@ -105,8 +112,14 @@ export const profilesRouter = createTRPCRouter({
                         ? input.contentTypeId
                         : undefined,
                     valuePackPrice: {
-                      gte: input.minPrice !== -1 ? input.minPrice : undefined,
-                      lte: input.maxPrice !== -1 ? input.maxPrice : undefined,
+                      gte:
+                        input.minPrice !== -1
+                          ? helper.calculateMonetaryValueInCents(input.minPrice)
+                          : undefined,
+                      lte:
+                        input.maxPrice !== -1
+                          ? helper.calculateMonetaryValueInCents(input.maxPrice)
+                          : undefined,
                     },
                   },
                 },
@@ -210,8 +223,14 @@ export const profilesRouter = createTRPCRouter({
                       ? input.contentTypeId
                       : undefined,
                   valuePackPrice: {
-                    gte: input.minPrice !== -1 ? input.minPrice : undefined,
-                    lte: input.maxPrice !== -1 ? input.maxPrice : undefined,
+                    gte:
+                      input.minPrice !== -1
+                        ? helper.calculateMonetaryValueInCents(input.minPrice)
+                        : undefined,
+                    lte:
+                      input.maxPrice !== -1
+                        ? helper.calculateMonetaryValueInCents(input.maxPrice)
+                        : undefined,
                   },
                 },
               },

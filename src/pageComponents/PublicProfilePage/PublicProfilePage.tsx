@@ -8,7 +8,6 @@ import {
   faGlobe,
   faPencil,
   faShareFromSquare,
-  faStar,
 } from "@fortawesome/free-solid-svg-icons";
 import { faBookmark } from "@fortawesome/free-regular-svg-icons";
 import { faBookmark as faBookmarkSolid } from "@fortawesome/free-solid-svg-icons";
@@ -19,7 +18,6 @@ import Link from "next/link";
 
 import { PictureCarrosel } from "../../components/PictureCarrosel";
 import { Button } from "../../components/Button";
-import { CustomSelect } from "../../components/CustomSelect";
 
 import { type PreloadedImage, helper } from "../../utils/helper";
 
@@ -45,6 +43,8 @@ import {
   faYoutube,
 } from "@fortawesome/free-brands-svg-icons";
 import { FinishProfileDisclaimer } from "../../components/FinishProfileDisclaimer";
+import { ValuePackChooser } from "./innerComponents/ValuePackChooser";
+import { Reviews } from "./innerComponents/Reviews";
 
 const PublicProfilePage = (params: {
   username: string;
@@ -52,7 +52,7 @@ const PublicProfilePage = (params: {
   loggedInProfileId: number;
 }) => {
   const ctx = api.useContext();
-  const { t, i18n } = useTranslation();
+  const { t } = useTranslation();
   const { status } = useSession();
 
   const [isReviewModalOpen, setIsReviewModalOpen] = useState<boolean>(false);
@@ -68,8 +68,6 @@ const PublicProfilePage = (params: {
   const [availableUserSocialMedia, setAvailableUserSocialMedia] = useState<
     SocialMediaDetails[]
   >([]);
-  const [reviews, setReviews] = useState<Review[]>([]);
-  const [reviewsCursor, setCursor] = useState<number>();
   const [jobs, setJobs] = useState<ProfileJobs[]>([]);
   const [jobsCursor, setJobsCursor] = useState<number>(-1);
   const [portfolio, setPortfolio] = useState<PreloadedImage[]>();
@@ -78,24 +76,6 @@ const PublicProfilePage = (params: {
   const { data: profile } = api.profiles.getProfileByUniqueUsername.useQuery({
     username: params.username,
   });
-
-  const { data: profileReviews } = api.reviews.getProfileReviews.useQuery({
-    profileId: profile?.id || -1,
-  });
-
-  const {
-    data: profileReviewsCursor,
-    isFetching: isFetchingReviewsCursor,
-    refetch: isRefetchingWithCursor,
-  } = api.reviews.getProfileReviewsWithCursor.useQuery(
-    {
-      profileId: profile?.id || -1,
-      cursor: reviewsCursor || -1,
-    },
-    {
-      enabled: false,
-    }
-  );
 
   const {
     data: jobsData,
@@ -183,55 +163,6 @@ const PublicProfilePage = (params: {
   }, [params.loggedInProfileId, profile]);
 
   useEffect(() => {
-    if (profileReviews) {
-      setReviews(
-        profileReviews[2].map((review) => {
-          return {
-            id: review.id,
-            authorName: review.author?.name || "",
-            profilePicture: review.author?.profilePicture || "",
-            review: review.userReview || "",
-            reviewDate: helper.formatDate(review.createdAt, i18n.language),
-            username: review.author?.user.username || "",
-          };
-        })
-      );
-
-      const lastReviewInArray = profileReviews[2][profileReviews[1].length - 1];
-
-      if (lastReviewInArray) {
-        setCursor(lastReviewInArray.id);
-      }
-    }
-  }, [i18n.language, profileReviews]);
-
-  useEffect(() => {
-    if (profileReviewsCursor) {
-      const newReviews: Review[] = [...reviews];
-
-      profileReviewsCursor.forEach((review) => {
-        newReviews.push({
-          id: review.id,
-          authorName: review.author?.name || "",
-          profilePicture: review.author?.profilePicture || "",
-          review: review.userReview || "",
-          reviewDate: helper.formatDate(review.createdAt, i18n.language),
-          username: review.author?.user.username || "",
-        });
-      });
-
-      setReviews(newReviews);
-
-      const lastReviewInArray =
-        profileReviewsCursor[profileReviewsCursor.length - 1];
-
-      if (lastReviewInArray) {
-        setCursor(lastReviewInArray.id);
-      }
-    }
-  }, [i18n.language, profileReviewsCursor, reviews]);
-
-  useEffect(() => {
     const uniqueOptions: SocialMediaDetails[] = [];
 
     if (profile?.userSocialMedia) {
@@ -246,7 +177,7 @@ const PublicProfilePage = (params: {
                 id: valuePack.contentType?.id || -1,
                 name: valuePack.contentType?.name || "",
               },
-              valuePackPrice: valuePack.valuePackPrice.toString(),
+              valuePackPrice: valuePack.valuePackPrice,
               platform: {
                 id: userSocialMedia.socialMedia?.id || -1,
                 name: userSocialMedia.socialMedia?.name || "",
@@ -277,16 +208,6 @@ const PublicProfilePage = (params: {
     }
 
     setSelectedValuePacks(newSelectedValuePacks);
-  };
-
-  const sumValuePacks = () => {
-    let totalSum = 0;
-
-    selectedValuePacks.forEach((valuePack) => {
-      totalSum += parseFloat(valuePack.valuePackPrice);
-    });
-
-    return totalSum;
   };
 
   const onChangePlatform = (platform: Option) => {
@@ -555,7 +476,17 @@ const PublicProfilePage = (params: {
       <div className="flex w-full flex-col gap-6">
         {profile?.user?.role?.name === "Influencer" && (
           <div className="flex flex-col gap-4">
-            {renderValuePackChooser("requestDesktop")}
+            <ValuePackChooser
+              availableUserSocialMedia={availableUserSocialMedia}
+              loggedInProfileId={params.loggedInProfileId}
+              onChangePlatform={onChangePlatform}
+              onSelecteValuePack={onSelecteValuePack}
+              openLoginModal={params.openLoginModal}
+              platform={platform}
+              profileCountryTax={profile.country?.countryTax || 0}
+              profileId={profile?.id}
+              selectedValuePacks={selectedValuePacks}
+            />
           </div>
         )}
 
@@ -584,209 +515,6 @@ const PublicProfilePage = (params: {
         </div>
         {renderCategories()}
       </div>
-    );
-  };
-
-  const renderValuePackChooser = (name: string) => {
-    const selectedUserSocialMedia: SocialMediaDetails | undefined =
-      availableUserSocialMedia.find((userSocialMedia) => {
-        return userSocialMedia.platform.id === platform.id;
-      });
-
-    const sumOfRatings =
-      profileReviews &&
-      profileReviews[1].reduce((total, review) => total + review.rating, 0) /
-        profileReviews[1].length;
-
-    return (
-      <>
-        <div className="flex flex-col gap-4 rounded-2xl border-[1px] border-white1 p-4 shadow-xl">
-          <div className="flex flex-1 justify-between">
-            <div className="flex items-center gap-1">
-              {selectedValuePacks.length > 0 && (
-                <div className="text-xl font-medium">{sumValuePacks()}€</div>
-              )}
-            </div>
-            {profileReviews && profileReviews[0] > 0 && (
-              <div className="flex flex-1 flex-col items-end justify-end gap-2 xs:flex-row xs:items-center">
-                <div className="flex items-center gap-1">
-                  <FontAwesomeIcon
-                    icon={faStar}
-                    className="fa-lg cursor-pointer pb-1"
-                  />
-                  <div>{sumOfRatings}</div>
-                </div>
-                <div className="hidden h-2 w-2 rounded-full bg-black xs:block" />
-                <div className="text-gray2">
-                  {t("pages.publicProfilePage.reviews", {
-                    count: profileReviews[0],
-                  })}
-                </div>
-              </div>
-            )}
-          </div>
-
-          <div className="rounded-2xl border-[1px] border-white1">
-            <div className="flex flex-col pt-4">
-              <div className="px-4 text-sm font-semibold">
-                {t("pages.publicProfilePage.platform")}
-              </div>
-
-              <CustomSelect
-                name={`platform ${name}`}
-                noBorder
-                placeholder={t("pages.publicProfilePage.platformPlaceholder")}
-                options={availableUserSocialMedia.map((userSocialMedia) => {
-                  return {
-                    id: userSocialMedia.platform.id,
-                    name: userSocialMedia.platform.name,
-                  };
-                })}
-                handleOptionSelect={onChangePlatform}
-                value={platform}
-              />
-            </div>
-            {platform.id !== -1 && (
-              <>
-                <div className="w-full border-[1px] border-white1" />
-                <div className="flex flex-wrap justify-start gap-2 p-2">
-                  {selectedUserSocialMedia &&
-                    selectedUserSocialMedia.valuePacks.map((valuePack) => {
-                      let selectedContainer = "text-black";
-
-                      if (selectedValuePacks.length > 0) {
-                        for (const selected of selectedValuePacks) {
-                          if (selected.id === valuePack.id) {
-                            selectedContainer =
-                              "bg-influencer-green text-white";
-                            break;
-                          }
-                        }
-                      }
-
-                      const containerClass = `group flex w-full lg:flex-[0_1_49%] cursor-pointer flex-col items-start gap-2 rounded-lg border p-2 text-sm font-medium hover:bg-influencer-green ${selectedContainer}`;
-
-                      return (
-                        <div
-                          key={valuePack.id}
-                          className={containerClass}
-                          onClick={() => onSelecteValuePack(valuePack)}
-                        >
-                          <div className="flex w-full flex-1 justify-between ">
-                            <div className="text-base font-medium ">
-                              {t(
-                                `general.contentTypes.${valuePack.contentType.name}`
-                              )}
-                            </div>
-                            <div className="text-base font-medium ">
-                              {helper.formatNumberWithDecimalValue(
-                                parseInt(valuePack.valuePackPrice)
-                              )}
-                              €
-                            </div>
-                          </div>
-                        </div>
-                      );
-                    })}
-                </div>
-              </>
-            )}
-          </div>
-          {status === "authenticated" ? (
-            <Link
-              href={{
-                pathname: "/start-order",
-                query: {
-                  valuePacks: JSON.stringify(selectedValuePacks),
-                  profileId: JSON.stringify(profile?.id || ""),
-                },
-              }}
-            >
-              <Button
-                title={t("pages.publicProfilePage.valuePackSubmitButton")}
-                level="primary"
-                size="large"
-                disabled={
-                  platform.id === -1 ||
-                  selectedValuePacks.length === 0 ||
-                  params.loggedInProfileId === profile?.id
-                }
-              />
-            </Link>
-          ) : (
-            <Button
-              title={t("pages.publicProfilePage.valuePackSubmitButton")}
-              level="primary"
-              size="large"
-              disabled={platform.id === -1 || selectedValuePacks.length === 0}
-              onClick={() => params.openLoginModal()}
-            />
-          )}
-          <div className="flex items-center justify-center gap-2 text-center text-gray2">
-            <div>{t("pages.publicProfilePage.disclaimer")}</div>
-          </div>
-          <div className="flex flex-col gap-4 text-lg">
-            <div className="flex flex-col gap-2">
-              <div className="flex flex-1 justify-between">
-                <div>{t("pages.publicProfilePage.subtotal")}</div>
-                {selectedValuePacks.length > 0 ? (
-                  <div>
-                    {helper.formatNumberWithDecimalValue(sumValuePacks())}€
-                  </div>
-                ) : (
-                  "-"
-                )}
-              </div>
-              <div className="flex flex-1 justify-between">
-                <div>{t("pages.publicProfilePage.serviceFee")}</div>
-                {selectedValuePacks.length > 0 &&
-                profile?.country?.countryTax ? (
-                  <div>
-                    {helper.formatNumberWithDecimalValue(
-                      sumValuePacks() * helper.calculateServiceFee()
-                    )}
-                    €
-                  </div>
-                ) : (
-                  "-"
-                )}
-              </div>
-              <div className="flex flex-1 justify-between">
-                <div>{t("pages.publicProfilePage.fee")}</div>
-                {selectedValuePacks.length > 0 &&
-                profile?.country?.countryTax ? (
-                  <div>
-                    {helper.formatNumberWithDecimalValue(
-                      sumValuePacks() *
-                        (profile?.country?.countryTax / 100 || 1)
-                    )}
-                    €
-                  </div>
-                ) : (
-                  "-"
-                )}
-              </div>
-            </div>
-            <div className="w-full border-[1px] border-white1" />
-            <div className="flex flex-1 justify-between font-semibold">
-              <div>{t("pages.publicProfilePage.total")}</div>
-              {selectedValuePacks.length > 0 && profile?.country?.countryTax ? (
-                <div>
-                  {helper.formatNumberWithDecimalValue(
-                    sumValuePacks() +
-                      sumValuePacks() *
-                        (profile?.country?.countryTax / 100 || 1) +
-                      sumValuePacks() * helper.calculateServiceFee()
-                  )}
-                  €
-                </div>
-              ) : (
-                "-"
-              )}
-            </div>
-          </div>
-        </div>
-      </>
     );
   };
 
@@ -876,70 +604,6 @@ const PublicProfilePage = (params: {
     );
   };
 
-  const renderReviews = () => {
-    if (profileReviews && profileReviews[0] > 0) {
-      const sumOfRatings =
-        profileReviews[1].reduce((total, review) => total + review.rating, 0) /
-        profileReviews[1].length;
-
-      return (
-        <>
-          <div className="w-full border-[1px] border-gray3" />
-          <div className="flex flex-1 flex-col gap-10">
-            <div className="flex flex-1 items-center gap-2">
-              <div className="flex items-center gap-1">
-                <FontAwesomeIcon
-                  icon={faStar}
-                  className="fa-lg cursor-pointer pb-1"
-                />
-                <div className="text-xl font-semibold">{sumOfRatings}</div>
-              </div>
-              <div className="h-2 w-2 rounded-full bg-black" />
-              <div className="text-xl font-semibold">
-                {profileReviews && profileReviews[0] > 0 ? (
-                  <div>
-                    {t("pages.publicProfilePage.reviews", {
-                      count: profileReviews[0],
-                    })}
-                  </div>
-                ) : (
-                  ""
-                )}
-              </div>
-            </div>
-            <div className="flex flex-wrap items-start gap-12">
-              {reviews.map((review) => {
-                return (
-                  <Review
-                    key={review.id}
-                    review={{
-                      profilePicture: review.profilePicture,
-                      authorName: review.authorName,
-                      review: review.review,
-                      reviewDate: review.reviewDate,
-                      username: review.username,
-                    }}
-                    isModal={false}
-                    onClick={openReviewModal}
-                  />
-                );
-              })}
-            </div>
-            {profileReviews[0] > reviews.length && (
-              <div className="flex items-center justify-center">
-                <Button
-                  title={t("pages.publicProfilePage.loadMore")}
-                  onClick={() => isRefetchingWithCursor()}
-                  isLoading={isFetchingReviewsCursor}
-                />
-              </div>
-            )}
-          </div>
-        </>
-      );
-    }
-  };
-
   if (isLoading) {
     return (
       <div className="flex flex-1 items-center">
@@ -961,7 +625,10 @@ const PublicProfilePage = (params: {
             )}
           {renderHeader()}
           {renderMiddleContent()}
-          {renderReviews()}
+          <Reviews
+            profileId={profile?.id || -1}
+            openReviewModal={openReviewModal}
+          />
         </div>
         {isReviewModalOpen && (
           <Modal onClose={closeReviewModal}>

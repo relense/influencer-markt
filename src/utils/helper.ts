@@ -138,6 +138,14 @@ const preloadImages = async (
   }
 };
 
+const calculerMonetaryValue = (value: number) => {
+  return Number((value / 100.0).toFixed(2));
+};
+
+const calculateMonetaryValueInCents = (paymentAmount: number) => {
+  return paymentAmount * 100; // Amount in cents (EUR)
+};
+
 const calculateServiceFee = () => {
   return 0.15;
 };
@@ -152,4 +160,6 @@ export const helper = {
   formatNumberWithKorM,
   preloadImages,
   calculateServiceFee,
+  calculerMonetaryValue,
+  calculateMonetaryValueInCents,
 };

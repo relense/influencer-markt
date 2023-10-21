@@ -124,4 +124,36 @@ export const reviewsRouter = createTRPCRouter({
         },
       });
     }),
+
+  getAverageReviewsRating: protectedProcedure
+    .input(
+      z.object({
+        profileId: z.number(),
+      })
+    )
+    .query(async ({ ctx, input }) => {
+      const profile = await ctx.prisma.profile.findFirst({
+        where: { userId: ctx.session.user.id },
+        select: {
+          id: true,
+        },
+      });
+
+      if (profile) {
+        const allReviews = await ctx.prisma.review.findMany({
+          where: { profileReviewdId: input.profileId },
+          select: {
+            rating: true,
+          },
+        });
+
+        if (allReviews) {
+          return [
+            allReviews.reduce((total, review) => total + review.rating, 0) /
+              allReviews.length,
+            allReviews.length,
+          ];
+        }
+      }
+    }),
 });

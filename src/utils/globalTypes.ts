@@ -8,7 +8,7 @@ export type ValuePack = {
   id?: number;
   platform: Option;
   contentType: Option;
-  valuePackPrice: string;
+  valuePackPrice: number;
 };
 
 export type Option = {
