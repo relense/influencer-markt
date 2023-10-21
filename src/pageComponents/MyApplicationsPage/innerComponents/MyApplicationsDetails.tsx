@@ -1,17 +1,17 @@
 import { useTranslation } from "react-i18next";
-import { type JobIncludes } from "../../../utils/globalTypes";
 import { useEffect, useRef, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBriefcase, faChevronLeft } from "@fortawesome/free-solid-svg-icons";
 import { api } from "~/utils/api";
-
-import { LoadingSpinner } from "../../../components/LoadingSpinner";
-import { helper } from "../../../utils/helper";
-import { Button } from "../../../components/Button";
 import { useSession } from "next-auth/react";
 import { toast } from "react-hot-toast";
 import Link from "next/link";
 import { type Role } from "@prisma/client";
+
+import { type JobIncludes } from "../../../utils/globalTypes";
+import { LoadingSpinner } from "../../../components/LoadingSpinner";
+import { helper } from "../../../utils/helper";
+import { Button } from "../../../components/Button";
 
 const MyApplicationsDetails = (params: {
   setSelectedJobId: () => void;
@@ -244,7 +244,9 @@ const MyApplicationsDetails = (params: {
         <div className="font-semibold text-influencer">
           {t("pages.applications.jobPay")}
         </div>
-        <div>{helper.formatNumber(job?.price || 0)}€</div>
+        <div>
+          {helper.formatNumber(helper.calculerMonetaryValue(job?.price || 0))}€
+        </div>
       </div>
     );
   };

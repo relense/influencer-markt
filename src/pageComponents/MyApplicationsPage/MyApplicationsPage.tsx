@@ -6,7 +6,6 @@ import { useWindowWidth } from "../../utils/helper";
 import type { Option, JobIncludes } from "../../utils/globalTypes";
 import { MyApplicationsList } from "./innerComponents/MyApplicationsList";
 import { MyApplicationsDetails } from "./innerComponents/MyApplicationsDetails";
-import { useTranslation } from "react-i18next";
 
 export type JobsFilterState = {
   platforms: Option[];
@@ -24,7 +23,6 @@ const MyApplicationsPage = (params: {
   scrollLayoutToPreviousPosition: () => void;
   saveScrollPosition: () => void;
 }) => {
-  const { t } = useTranslation();
   const session = useSession();
   const width = useWindowWidth();
 
@@ -36,7 +34,6 @@ const MyApplicationsPage = (params: {
     data: jobsData,
     isLoading: isLoadingJobs,
     isRefetching: isRefetchingJobs,
-    isFetching: isFetchingJobs,
   } = api.jobs.getAppliedJobs.useQuery(undefined, {
     cacheTime: 0,
   });
