@@ -1018,7 +1018,7 @@ const OrderDetailsPage = (params: {
       {renderRefundModal()}
       {openPaymentDetailsModal && order && (
         <PaymentDetailsModal
-          amount={Number(order.orderTotalPrice)}
+          amount={order.orderTotalPrice}
           orderId={order.id}
           onClose={() => setOpenPaymentDetailsModal(false)}
         />

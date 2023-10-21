@@ -402,7 +402,7 @@ function html(params: {
                                                text-align: inherit;
                                              "
                                            >
-                                             ${description}
+                                             ${params.description}
                                            </div>
                                            <div></div>
                                          </div>

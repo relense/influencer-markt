@@ -31,7 +31,7 @@ const PaymentDetailsModal = (params: {
       paymentAmount: params.amount,
       orderId: params.orderId,
     });
-  }, [createPaymentIntent, params.amount]);
+  }, [createPaymentIntent, params.amount, params.orderId]);
 
   return (
     <div className="flex justify-center ">
