@@ -143,16 +143,23 @@ const OrderDetailsPage = (params: {
     isLoading: isLoadingUpdateOrderGiveCreditsRefund,
   } = api.orders.updateOrderToConfirmedFromOnHold.useMutation({
     onSuccess: () => {
-      setShowRefundModal(false);
-      void ctx.orders.getBuyerOrder.invalidate();
-      void createNotification({
-        entityId: params.orderId,
-        senderId: order?.buyerId || -1,
-        notifierId: order?.influencerId || -1,
-        entityAction: "toInfluencerOrderOnHoldToConfirm",
-      });
+      if (order) {
+        setShowRefundModal(false);
+        void ctx.orders.getBuyerOrder.invalidate();
+        void createNotification({
+          entityId: params.orderId,
+          senderId: order?.buyerId || -1,
+          notifierId: order?.influencerId || -1,
+          entityAction: "toInfluencerOrderOnHoldToConfirm",
+        });
 
-      //give cash refund
+        //create new credit
+        giveCreditRefund({
+          isCredit: true,
+          orderId: params.orderId,
+          refundValue: order?.orderTotalPrice,
+        });
+      }
     },
   });
 
@@ -160,22 +167,19 @@ const OrderDetailsPage = (params: {
     mutate: updateOrderGiveCashRefund,
     isLoading: isLoadingUpdateOrderGiveCashRefund,
   } = api.orders.updateOrderToConfirmedFromOnHold.useMutation({
-    onSuccess: () => {
-      setShowRefundModal(false);
-      void ctx.orders.getBuyerOrder.invalidate();
-      void createNotification({
-        entityId: params.orderId,
-        senderId: order?.buyerId || -1,
-        notifierId: order?.influencerId || -1,
-        entityAction: "toInfluencerOrderOnHoldToConfirm",
-      });
+    onSuccess: (order) => {
+      if (order) {
+        setShowRefundModal(false);
+        void ctx.orders.getBuyerOrder.invalidate();
+        void createNotification({
+          entityId: params.orderId,
+          senderId: order?.buyerId || -1,
+          notifierId: order?.influencerId || -1,
+          entityAction: "toInfluencerOrderOnHoldToConfirm",
+        });
 
-      //create new credit
-      // giveCreditRefund({
-      //   isCredit: true,
-      //   orderId: params.orderId,
-      //   refundValue: order?.orderTotalPrice,
-      // });
+        //Giev cash refund
+      }
     },
   });
 
