@@ -109,7 +109,7 @@ export const OrdersRouter = createTRPCRouter({
             buyer: profile?.name,
             from: process.env.NEXT_PUBLIC_EMAIL_FROM,
             to: influencerProfile?.user.email || "",
-            language: order.influencer?.country?.name || "en",
+            language: order.influencer?.country?.languageCode || "en",
             orderId: order.id,
           });
         }
@@ -202,7 +202,7 @@ export const OrdersRouter = createTRPCRouter({
             buyer: profile?.name,
             from: process.env.NEXT_PUBLIC_EMAIL_FROM,
             to: order.influencer?.user.email || "",
-            language: order.influencer?.country?.name || "en",
+            language: order.influencer?.country?.languageCode || "en",
             orderId: order.id,
           });
         }
@@ -596,7 +596,7 @@ export const OrdersRouter = createTRPCRouter({
             buyerName: order.buyer?.name || "",
             from: process.env.NEXT_PUBLIC_EMAIL_FROM,
             to: order.influencer?.user.email || "",
-            language: order.influencer?.country?.name || "en",
+            language: order.influencer?.country?.languageCode || "en",
             orderId: order.id,
           });
         }
@@ -661,7 +661,7 @@ export const OrdersRouter = createTRPCRouter({
               influencerName: order.influencer?.name || "",
               from: process.env.NEXT_PUBLIC_EMAIL_FROM,
               to: order.buyer?.user.email || "",
-              language: order.buyer?.country?.name || "en",
+              language: order.buyer?.country?.languageCode || "en",
               orderId: order.id,
             });
           } else if (input.statusId === 5) {
@@ -669,7 +669,7 @@ export const OrdersRouter = createTRPCRouter({
               influencerName: order.influencer?.name || "",
               from: process.env.NEXT_PUBLIC_EMAIL_FROM,
               to: order.buyer?.user.email || "",
-              language: order.buyer?.country?.name || "en",
+              language: order.buyer?.country?.languageCode || "en",
               orderId: order.id,
             });
           } else if (input.statusId === 6) {
@@ -677,7 +677,7 @@ export const OrdersRouter = createTRPCRouter({
               buyerName: order.buyer?.name || "",
               from: process.env.NEXT_PUBLIC_EMAIL_FROM,
               to: order.influencer?.user.email || "",
-              language: order.influencer?.country?.name || "en",
+              language: order.influencer?.country?.languageCode || "en",
               orderId: order.id,
             });
           } else if (input.statusId === 8) {
@@ -685,7 +685,7 @@ export const OrdersRouter = createTRPCRouter({
               buyerName: order.buyer?.name || "",
               from: process.env.NEXT_PUBLIC_EMAIL_FROM,
               to: order.influencer?.user.email || "",
-              language: order.influencer?.country?.name || "en",
+              language: order.influencer?.country?.languageCode || "en",
               orderId: order.id,
             });
           } else if (input.statusId === 9) {
@@ -693,7 +693,7 @@ export const OrdersRouter = createTRPCRouter({
               buyerName: order.buyer?.name || "",
               from: process.env.NEXT_PUBLIC_EMAIL_FROM,
               to: order.influencer?.user.email || "",
-              language: order.influencer?.country?.name || "en",
+              language: order.influencer?.country?.languageCode || "en",
               orderId: order.id,
             });
           }
@@ -753,7 +753,7 @@ export const OrdersRouter = createTRPCRouter({
         influencerOrderWasRectified({
           from: process.env.NEXT_PUBLIC_EMAIL_FROM,
           to: order.influencer?.user.email || "",
-          language: order.influencer?.country?.name || "en",
+          language: order.influencer?.country?.languageCode || "en",
           orderId: order.id,
         });
 
@@ -761,7 +761,7 @@ export const OrdersRouter = createTRPCRouter({
           influencerName: order.influencer?.name || "",
           from: process.env.NEXT_PUBLIC_EMAIL_FROM,
           to: order.buyer?.user.email || "",
-          language: order.buyer?.country?.name || "en",
+          language: order.buyer?.country?.languageCode || "en",
           orderId: order.id,
         });
       }
@@ -983,7 +983,7 @@ export const OrdersRouter = createTRPCRouter({
           orderId: input.orderId,
           to: order.influencer?.user.email || "",
           from: process.env.NEXT_PUBLIC_EMAIL_FROM || "",
-          language: order.influencer?.country?.name || "en",
+          language: order.influencer?.country?.languageCode || "en",
           buyerName: order.buyer?.name || "",
         });
         //buyer email
@@ -991,7 +991,7 @@ export const OrdersRouter = createTRPCRouter({
           orderId: input.orderId,
           to: order.buyer?.user.email || "",
           from: process.env.NEXT_PUBLIC_EMAIL_FROM || "",
-          language: order.buyer?.country?.name || "en",
+          language: order.buyer?.country?.languageCode || "en",
           influencerName: order.influencer?.name || "",
         });
       } else {
@@ -1000,7 +1000,7 @@ export const OrdersRouter = createTRPCRouter({
           orderId: input.orderId,
           to: order.influencer?.user.email || "",
           from: process.env.NEXT_PUBLIC_EMAIL_FROM || "",
-          language: order.influencer?.country?.name || "en",
+          language: order.influencer?.country?.languageCode || "en",
           buyerName: order.buyer?.name || "",
         });
         //buyer email
@@ -1008,7 +1008,7 @@ export const OrdersRouter = createTRPCRouter({
           orderId: input.orderId,
           to: order.buyer?.user.email || "",
           from: process.env.NEXT_PUBLIC_EMAIL_FROM || "",
-          language: order.buyer?.country?.name || "en",
+          language: order.buyer?.country?.languageCode || "en",
           influencerName: order.influencer?.name || "",
         });
       }

@@ -409,8 +409,8 @@ const AdminManageDisputesPage = (params: { disputeId: number }) => {
                 <div className="text-lg font-medium">Order total</div>
               </div>
               <div className="text-base font-semibold text-influencer">
-                {helper.formatNumberWithDecimalValue(
-                  Number(order.orderTotalPrice)
+                {helper.formatNumber(
+                  helper.calculerMonetaryValue(order.orderTotalPrice)
                 ) || 0}
                 €
               </div>

@@ -73,7 +73,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
               buyerName: udpatedOrder.buyer?.name || "",
               from: process.env.NEXT_PUBLIC_EMAIL_FROM || "",
               to: udpatedOrder.influencer?.user.email || "",
-              language: udpatedOrder.influencer?.country?.name || "en",
+              language: udpatedOrder.influencer?.country?.languageCode || "en",
               orderId: udpatedOrder.id,
             });
             //send buyer email
@@ -81,7 +81,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
               influencerName: udpatedOrder.influencer?.name || "",
               from: process.env.NEXT_PUBLIC_EMAIL_FROM || "",
               to: udpatedOrder.buyer?.user.email || "",
-              language: udpatedOrder.buyer?.country?.name || "en",
+              language: udpatedOrder.buyer?.country?.languageCode || "en",
               orderId: udpatedOrder.id,
             });
             await createNotification({

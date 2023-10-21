@@ -60,14 +60,14 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         influencerMarktConfirmEmail({
           from: process.env.NEXT_PUBLIC_EMAIL_FROM || "",
           to: updatedOrder.influencer?.user.email || "",
-          language: updatedOrder.influencer?.country?.name || "en",
+          language: updatedOrder.influencer?.country?.languageCode || "en",
           orderId: updatedOrder.id,
         });
 
         influencerMarktConfirmEmail({
           from: process.env.NEXT_PUBLIC_EMAIL_FROM || "",
           to: updatedOrder.buyer?.user.email || "",
-          language: updatedOrder.buyer?.country?.name || "en",
+          language: updatedOrder.buyer?.country?.languageCode || "en",
           orderId: updatedOrder.id,
         });
 

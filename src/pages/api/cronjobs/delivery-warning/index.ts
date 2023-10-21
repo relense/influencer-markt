@@ -59,7 +59,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
             buyerName: order.buyer?.name || "",
             from: process.env.NEXT_PUBLIC_EMAIL_FROM || "",
             to: order.influencer?.user.email || "",
-            language: order.influencer?.country?.name || "en",
+            language: order.influencer?.country?.languageCode || "en",
             orderId: order.id,
           });
           //send buyer email
@@ -67,7 +67,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
             influencerName: order.influencer?.name || "",
             from: process.env.NEXT_PUBLIC_EMAIL_FROM || "",
             to: order.buyer?.user.email || "",
-            language: order.buyer?.country?.name || "en",
+            language: order.buyer?.country?.languageCode || "en",
             orderId: order.id,
           });
         });
