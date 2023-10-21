@@ -27,7 +27,7 @@ type Data = {
 
 async function main() {
   const response = await fetch(
-    "https://publicdevinfmarkt.blob.core.windows.net/dev-inf-market-json-files/portugalStateCitiesV2.json"
+    "https://publicdevinfmarkt.blob.core.windows.net/dev-inf-market-json-files/portugalStateCitiesV3.json"
   );
   const data: Data = await response.json();
 
