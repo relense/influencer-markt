@@ -392,117 +392,200 @@ async function main() {
 
   const users = await prisma.user.findMany({});
 
-  await prisma.profile.createMany({
-    data: [
-      {
-        about:
-          "Nike, the iconic sportswear brand, revolutionizes athletic performance with innovation. From cutting-edge footwear to high-performance apparel, Nike empowers athletes worldwide. With a rich history of inspiring athletes, the brand's relentless pursuit of excellence drives them forward. Fuel your passion with Nike's dynamic range of products and experience the embodiment of sport and style. Elevate your game and unleash your true ",
-        cityId: 3,
-        countryId: 1,
-        name: "Nike",
-        profilePicture:
-          "https://images.unsplash.com/photo-1608541737042-87a12275d313?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1722&q=80",
-        profilePictureBlobName: "exampleBlob",
-        userId: users[0]?.id || "",
-        website: "https://www.nike.com/pt/en/",
-        verifiedStatusId: 1,
+  await prisma.profile.create({
+    data: {
+      about:
+        "Nike, the iconic sportswear brand, revolutionizes athletic performance with innovation. From cutting-edge footwear to high-performance apparel, Nike empowers athletes worldwide. With a rich history of inspiring athletes, the brand's relentless pursuit of excellence drives them forward. Fuel your passion with Nike's dynamic range of products and experience the embodiment of sport and style. Elevate your game and unleash your true ",
+      cityId: 3,
+      countryId: 1,
+      name: "Nike",
+      profilePicture:
+        "https://images.unsplash.com/photo-1608541737042-87a12275d313?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1722&q=80",
+      profilePictureBlobName: "exampleBlob",
+      userId: users[0]?.id || "",
+      website: "https://www.nike.com/pt/en/",
+      verifiedStatusId: 1,
+      categories: {
+        connect: [
+          {
+            id: 1,
+          },
+          { id: 3 },
+        ],
       },
-      {
-        about:
-          "Coca-Cola, the beloved beverage brand, quenches thirst with its iconic refreshment. For over a century, Coca-Cola has delighted taste buds with its signature fizzy and timeless flavor. From its classic cola to a wide range of refreshing drinks, Coca-Cola brings people together, sparking moments of happiness and celebration. With every sip, experience the effervescent joy that Coca-Cola brings. Let the bubbly ",
-        cityId: 3,
-        countryId: 1,
-        name: "Coca Cola",
-        profilePicture:
-          "https://images.unsplash.com/photo-1535990379313-5cd271a2da2d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2064&q=80",
-        profilePictureBlobName: "exampleBlob",
-        userId: users[1]?.id || "",
-        website: "https://www.cocacolaportugal.pt/",
-        verifiedStatusId: 1,
+    },
+  });
+
+  await prisma.profile.create({
+    data: {
+      about:
+        "Coca-Cola, the beloved beverage brand, quenches thirst with its iconic refreshment. For over a century, Coca-Cola has delighted taste buds with its signature fizzy and timeless flavor. From its classic cola to a wide range of refreshing drinks, Coca-Cola brings people together, sparking moments of happiness and celebration. With every sip, experience the effervescent joy that Coca-Cola brings. Let the bubbly ",
+      cityId: 3,
+      countryId: 1,
+      name: "Coca Cola",
+      profilePicture:
+        "https://images.unsplash.com/photo-1535990379313-5cd271a2da2d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2064&q=80",
+      profilePictureBlobName: "exampleBlob",
+      userId: users[1]?.id || "",
+      website: "https://www.cocacolaportugal.pt/",
+      verifiedStatusId: 1,
+      categories: {
+        connect: [
+          {
+            id: 2,
+          },
+          { id: 5 },
+        ],
       },
-      {
-        about:
-          "Apple, the innovative tech giant, revolutionizes the way we live, work, and connect. With its sleek and cutting-edge products, Apple has redefined the world of technology. From the iconic iPhone to the powerful Mac computers and the versatile iPad, Apple devices empower users to create, communicate, and explore like never before. With a seamless integration of hardware and software, Apple",
-        cityId: 3,
-        countryId: 1,
-        name: "Apple",
-        profilePicture:
-          "https://images.unsplash.com/photo-1531554694128-c4c6665f59c2?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=774&q=80",
-        profilePictureBlobName: "exampleBlob",
-        userId: users[2]?.id || "",
-        website: "https://www.apple.com/pt/",
-        verifiedStatusId: 1,
+    },
+  });
+
+  await prisma.profile.create({
+    data: {
+      about:
+        "Apple, the innovative tech giant, revolutionizes the way we live, work, and connect. With its sleek and cutting-edge products, Apple has redefined the world of technology. From the iconic iPhone to the powerful Mac computers and the versatile iPad, Apple devices empower users to create, communicate, and explore like never before. With a seamless integration of hardware and software, Apple",
+      cityId: 3,
+      countryId: 1,
+      name: "Apple",
+      profilePicture:
+        "https://images.unsplash.com/photo-1531554694128-c4c6665f59c2?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=774&q=80",
+      profilePictureBlobName: "exampleBlob",
+      userId: users[2]?.id || "",
+      website: "https://www.apple.com/pt/",
+      verifiedStatusId: 1,
+      categories: {
+        connect: [
+          {
+            id: 8,
+          },
+          { id: 10 },
+        ],
       },
-      {
-        about:
-          "LG, a leading global technology company, brings innovation and convenience to your everyday life. With a diverse range of products, LG jobs cutting-edge solutions that enhance your home, work, and entertainment experiences. From state-of-the-art televisions and home appliances to advanced mobile devices and cutting-edge audio systems, LG combines sleek design with exceptional performance. Immerse yourself in vibrant visuals",
-        cityId: 3,
-        countryId: 1,
-        name: "LG",
-        profilePicture:
-          "https://images.unsplash.com/photo-1590664177914-9da6d6e8f0f6?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1740&q=80",
-        profilePictureBlobName: "exampleBlob",
-        userId: users[3]?.id || "",
-        website: "https://www.lg.com/pt",
-        verifiedStatusId: 1,
+    },
+  });
+
+  await prisma.profile.create({
+    data: {
+      about:
+        "LG, a leading global technology company, brings innovation and convenience to your everyday life. With a diverse range of products, LG jobs cutting-edge solutions that enhance your home, work, and entertainment experiences. From state-of-the-art televisions and home appliances to advanced mobile devices and cutting-edge audio systems, LG combines sleek design with exceptional performance. Immerse yourself in vibrant visuals",
+      cityId: 3,
+      countryId: 1,
+      name: "LG",
+      profilePicture:
+        "https://images.unsplash.com/photo-1590664177914-9da6d6e8f0f6?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1740&q=80",
+      profilePictureBlobName: "exampleBlob",
+      userId: users[3]?.id || "",
+      website: "https://www.lg.com/pt",
+      verifiedStatusId: 1,
+      categories: {
+        connect: [
+          {
+            id: 9,
+          },
+          { id: 4 },
+        ],
       },
-      {
-        about:
-          "Tomas Oliveira, a charismatic adventurer with a passion for exploration. Born with wanderlust in his veins, he seeks thrill and beauty in every corner of the world. From climbing majestic mountains to diving into deep oceans, he embraces the unknown. With a heart full of curiosity, Tomas unravels diverse cultures, tasting exotic cuisines, and connecting with people from all walks of life. Through his travels, he's ",
-        cityId: 3,
-        countryId: 1,
-        name: "Tomas Oliveira",
-        profilePicture:
-          "https://images.unsplash.com/photo-1504593811423-6dd665756598?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1770&q=80",
-        profilePictureBlobName: "exampleBlob",
-        userId: users[4]?.id || "",
-        genderId: 1,
-        website: "",
-        verifiedStatusId: 1,
+    },
+  });
+
+  await prisma.profile.create({
+    data: {
+      about:
+        "Tomas Oliveira, a charismatic adventurer with a passion for exploration. Born with wanderlust in his veins, he seeks thrill and beauty in every corner of the world. From climbing majestic mountains to diving into deep oceans, he embraces the unknown. With a heart full of curiosity, Tomas unravels diverse cultures, tasting exotic cuisines, and connecting with people from all walks of life. Through his travels, he's ",
+      cityId: 3,
+      countryId: 1,
+      name: "Tomas Oliveira",
+      profilePicture:
+        "https://images.unsplash.com/photo-1504593811423-6dd665756598?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1770&q=80",
+      profilePictureBlobName: "exampleBlob",
+      userId: users[4]?.id || "",
+      genderId: 1,
+      website: "",
+      verifiedStatusId: 1,
+      categories: {
+        connect: [
+          {
+            id: 2,
+          },
+          { id: 3 },
+        ],
       },
-      {
-        about:
-          "Andre Gomes, a charismatic adventurer with a passion for exploration. Born with wanderlust in his veins, he seeks thrill and beauty in every corner of the world. From climbing majestic mountains to diving into deep oceans, he embraces the unknown. With a heart full of curiosity, Tomas unravels diverse cultures, tasting exotic cuisines, and connecting with people from all walks of life. Through his travels, he's ",
-        cityId: 3,
-        countryId: 1,
-        name: "Andre Gomes",
-        profilePicture:
-          "https://images.unsplash.com/photo-1500048993953-d23a436266cf?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1769&q=80",
-        profilePictureBlobName: "exampleBlob",
-        userId: users[5]?.id || "",
-        genderId: 1,
-        website: "",
-        verifiedStatusId: 1,
+    },
+  });
+
+  await prisma.profile.create({
+    data: {
+      about:
+        "Andre Gomes, a charismatic adventurer with a passion for exploration. Born with wanderlust in his veins, he seeks thrill and beauty in every corner of the world. From climbing majestic mountains to diving into deep oceans, he embraces the unknown. With a heart full of curiosity, Tomas unravels diverse cultures, tasting exotic cuisines, and connecting with people from all walks of life. Through his travels, he's ",
+      cityId: 3,
+      countryId: 1,
+      name: "Andre Gomes",
+      profilePicture:
+        "https://images.unsplash.com/photo-1500048993953-d23a436266cf?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1769&q=80",
+      profilePictureBlobName: "exampleBlob",
+      userId: users[5]?.id || "",
+      genderId: 1,
+      website: "",
+      verifiedStatusId: 1,
+      categories: {
+        connect: [
+          {
+            id: 5,
+          },
+          { id: 3 },
+        ],
       },
-      {
-        about:
-          "Andreia Sofia, a charismatic adventurer with a passion for exploration. Born with wanderlust in his veins, he seeks thrill and beauty in every corner of the world. From climbing majestic mountains to diving into deep oceans, he embraces the unknown. With a heart full of curiosity, Tomas unravels diverse cultures, tasting exotic cuisines, and connecting with people from all walks of life. Through his travels, he's ",
-        cityId: 3,
-        countryId: 1,
-        name: "Andreia Sofia",
-        profilePicture:
-          "https://images.unsplash.com/photo-1499952127939-9bbf5af6c51c?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1776&q=80",
-        profilePictureBlobName: "exampleBlob",
-        userId: users[6]?.id || "",
-        genderId: 2,
-        website: "",
-        verifiedStatusId: 1,
+    },
+  });
+
+  await prisma.profile.create({
+    data: {
+      about:
+        "Andreia Sofia, a charismatic adventurer with a passion for exploration. Born with wanderlust in his veins, he seeks thrill and beauty in every corner of the world. From climbing majestic mountains to diving into deep oceans, he embraces the unknown. With a heart full of curiosity, Tomas unravels diverse cultures, tasting exotic cuisines, and connecting with people from all walks of life. Through his travels, he's ",
+      cityId: 3,
+      countryId: 1,
+      name: "Andreia Sofia",
+      profilePicture:
+        "https://images.unsplash.com/photo-1499952127939-9bbf5af6c51c?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1776&q=80",
+      profilePictureBlobName: "exampleBlob",
+      userId: users[6]?.id || "",
+      genderId: 2,
+      website: "",
+      verifiedStatusId: 1,
+      categories: {
+        connect: [
+          {
+            id: 1,
+          },
+          { id: 9 },
+        ],
       },
-      {
-        about:
-          "Ines Guerreiro, a charismatic adventurer with a passion for exploration. Born with wanderlust in his veins, he seeks thrill and beauty in every corner of the world. From climbing majestic mountains to diving into deep oceans, he embraces the unknown. With a heart full of curiosity, Tomas unravels diverse cultures, tasting exotic cuisines, and connecting with people from all walks of life. Through his travels, he's ",
-        cityId: 3,
-        countryId: 1,
-        name: "Ines Guerreiro",
-        profilePicture:
-          "https://images.unsplash.com/photo-1580489944761-15a19d654956?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=922&q=80",
-        profilePictureBlobName: "exampleBlob",
-        userId: users[7]?.id || "",
-        genderId: 2,
-        website: "",
-        verifiedStatusId: 1,
+    },
+  });
+
+  await prisma.profile.create({
+    data: {
+      about:
+        "Ines Guerreiro, a charismatic adventurer with a passion for exploration. Born with wanderlust in his veins, he seeks thrill and beauty in every corner of the world. From climbing majestic mountains to diving into deep oceans, he embraces the unknown. With a heart full of curiosity, Tomas unravels diverse cultures, tasting exotic cuisines, and connecting with people from all walks of life. Through his travels, he's ",
+      cityId: 3,
+      countryId: 1,
+      name: "Ines Guerreiro",
+      profilePicture:
+        "https://images.unsplash.com/photo-1580489944761-15a19d654956?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=922&q=80",
+      profilePictureBlobName: "exampleBlob",
+      userId: users[7]?.id || "",
+      genderId: 2,
+      website: "",
+      verifiedStatusId: 1,
+      categories: {
+        connect: [
+          {
+            id: 5,
+          },
+          { id: 3 },
+        ],
       },
-    ],
+    },
   });
 
   await prisma.userSocialMedia.createMany({
@@ -630,37 +713,37 @@ async function main() {
         contentTypeId: 1,
       },
       {
-        userSocialMediaId: 1,
+        userSocialMediaId: 2,
         valuePackPrice: 1000,
         contentTypeId: 1,
       },
       {
-        userSocialMediaId: 1,
+        userSocialMediaId: 3,
         valuePackPrice: 1000,
         contentTypeId: 1,
       },
       {
-        userSocialMediaId: 1,
+        userSocialMediaId: 4,
         valuePackPrice: 1000,
         contentTypeId: 1,
       },
       {
-        userSocialMediaId: 1,
+        userSocialMediaId: 5,
         valuePackPrice: 1000,
         contentTypeId: 1,
       },
       {
-        userSocialMediaId: 1,
+        userSocialMediaId: 6,
         valuePackPrice: 1000,
         contentTypeId: 1,
       },
       {
-        userSocialMediaId: 1,
+        userSocialMediaId: 7,
         valuePackPrice: 1000,
         contentTypeId: 1,
       },
       {
-        userSocialMediaId: 1,
+        userSocialMediaId: 8,
         valuePackPrice: 1000,
         contentTypeId: 1,
       },
