@@ -19,7 +19,7 @@ type ContactUsData = {
 };
 
 const ContactUsPage = () => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const { data: reasons } = api.allRoutes.getAllMessageReasons.useQuery();
   const { mutate: createMessage, isLoading } =
     api.contactMessage.createContactMessage.useMutation({
@@ -61,6 +61,7 @@ const ContactUsPage = () => {
       message: data.message,
       name: data.name,
       reason: data.reason.id,
+      language: i18n.language,
     });
   });
 

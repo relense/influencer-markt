@@ -11,6 +11,7 @@ export const ContactMessagesRouter = createTRPCRouter({
         name: z.string(),
         email: z.string(),
         message: z.string(),
+        language: z.string(),
       })
     )
     .mutation(async ({ ctx, input }) => {
@@ -40,6 +41,7 @@ export const ContactMessagesRouter = createTRPCRouter({
           message: input.message,
           name: input.name,
           reason: reasonText,
+          language: input.language,
         });
 
         //Email to our inbox

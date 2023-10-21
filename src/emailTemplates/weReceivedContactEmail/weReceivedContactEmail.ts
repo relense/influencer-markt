@@ -7,18 +7,31 @@ function weReceivedContactEmail(params: {
   name: string;
   email: string;
   message: string;
+  language: string;
 }) {
   const { from, to, reason, name, email, message } = params;
 
   sgMail.setApiKey(process.env.EMAIL_SMTP_KEY || "");
 
+  let subject = "Obrigado pelo teu contacto";
+  let text = "Novo contacto de ${name} com o email ${email}";
+  let description =
+    "Thank you for getting in touch with us. Your communication is vital to us no matter the case. We appreciate your engagement and want to assist you in the best way possible.";
+
+  if (params.language === "pt") {
+    subject = "Thank You for Your Contact";
+    text = `New issue from ${name} with email ${email}`;
+    description =
+      "Agradecemos por te teres dado ao trabalho de falar connosco. A tua mensagem é importante para nós, seja qual for o assunto. Valorizamos a tua interação e queremos ajudar-te da melhor forma possível.";
+  }
+
   sgMail
     .send({
       from: { email: from, name: "Influencer Markt" },
       to,
-      subject: `Thank You for Your Contact`,
-      text: `New issue from ${name} with email ${email}`,
-      html: html({ reason, name, email, message }),
+      subject: subject,
+      text: text,
+      html: html({ reason, name, email, message, description }),
     })
     .then(
       () => {
@@ -43,6 +56,7 @@ function html(params: {
   name: string;
   email: string;
   message: string;
+  description: string;
 }) {
   return `<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
  <html
@@ -388,11 +402,7 @@ function html(params: {
                                                text-align: inherit;
                                              "
                                            >
-                                             Thank you for getting in touch with
-                                             us. Your communication is vital to
-                                             us no matter the case. We appreciate
-                                             your engagement and want to assist
-                                             you in the best way possible.
+                                             ${description}
                                            </div>
                                            <div></div>
                                          </div>
