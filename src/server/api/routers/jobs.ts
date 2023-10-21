@@ -648,8 +648,14 @@ export const JobsRouter = createTRPCRouter({
               gte: input.minFollowers !== -1 ? input.minFollowers : undefined,
             },
             price: {
-              gte: input.minPrice !== -1 ? input.minPrice : undefined,
-              lte: input.maxPrice !== -1 ? input.maxPrice : undefined,
+              gte:
+                input.minPrice !== -1
+                  ? helper.calculateMonetaryValueInCents(input.minPrice)
+                  : undefined,
+              lte:
+                input.maxPrice !== -1
+                  ? helper.calculateMonetaryValueInCents(input.maxPrice)
+                  : undefined,
             },
             OR: [
               {
@@ -687,8 +693,14 @@ export const JobsRouter = createTRPCRouter({
               gte: input.minFollowers !== -1 ? input.minFollowers : undefined,
             },
             price: {
-              gte: input.minPrice !== -1 ? input.minPrice : undefined,
-              lte: input.maxPrice !== -1 ? input.maxPrice : undefined,
+              gte:
+                input.minPrice !== -1
+                  ? helper.calculateMonetaryValueInCents(input.minPrice)
+                  : undefined,
+              lte:
+                input.maxPrice !== -1
+                  ? helper.calculateMonetaryValueInCents(input.maxPrice)
+                  : undefined,
             },
             OR: [
               {
@@ -772,8 +784,14 @@ export const JobsRouter = createTRPCRouter({
             gte: input.minFollowers !== -1 ? input.minFollowers : undefined,
           },
           price: {
-            gte: input.minPrice !== -1 ? input.minPrice : undefined,
-            lte: input.maxPrice !== -1 ? input.maxPrice : undefined,
+            gte:
+              input.minPrice !== -1
+                ? helper.calculateMonetaryValueInCents(input.minPrice)
+                : undefined,
+            lte:
+              input.maxPrice !== -1
+                ? helper.calculateMonetaryValueInCents(input.maxPrice)
+                : undefined,
           },
           OR: [
             {

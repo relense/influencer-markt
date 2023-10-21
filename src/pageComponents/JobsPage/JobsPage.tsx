@@ -196,8 +196,9 @@ const JobsPage = (params: {
 
     if (activeFiltersCount > 0) {
       setSelectedJobId(-1);
-      setJobs([]);
     }
+
+    setJobs([]);
 
     setFilterState({
       ...filterState,
