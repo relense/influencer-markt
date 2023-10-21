@@ -123,8 +123,10 @@ const ValuePackChooser = (params: {
                           )}
                         </div>
                         <div className="text-base font-medium ">
-                          {helper.calculerMonetaryValue(
-                            valuePack.valuePackPrice
+                          {helper.formatNumber(
+                            helper.calculerMonetaryValue(
+                              valuePack.valuePackPrice
+                            )
                           )}
                           €
                         </div>
@@ -191,8 +193,8 @@ const ValuePackChooser = (params: {
       valuePacksTotalInCents * (params.profileCountryTax / 100)
     );
 
-    const calculateOrderTotal = Number(
-      (sumTotal + serviceTaxTotal + calculateTaxesTotal).toFixed(2)
+    const calculateOrderTotal = helper.formatNumber(
+      Number((sumTotal + serviceTaxTotal + calculateTaxesTotal).toFixed(2))
     );
 
     return (
@@ -201,7 +203,7 @@ const ValuePackChooser = (params: {
           <div className="flex flex-1 justify-between">
             <div>{t("pages.publicProfilePage.subtotal")}</div>
             {params.selectedValuePacks.length > 0 ? (
-              <div>{sumTotal}€</div>
+              <div>{helper.formatNumber(sumTotal)}€</div>
             ) : (
               "-"
             )}
@@ -210,7 +212,7 @@ const ValuePackChooser = (params: {
             <div>{t("pages.publicProfilePage.serviceFee")}</div>
             {params.selectedValuePacks.length > 0 &&
             params.profileCountryTax ? (
-              <div>{serviceTaxTotal}€</div>
+              <div>{helper.formatNumber(serviceTaxTotal)}€</div>
             ) : (
               "-"
             )}
@@ -219,7 +221,7 @@ const ValuePackChooser = (params: {
             <div>{t("pages.publicProfilePage.fee")}</div>
             {params.selectedValuePacks.length > 0 &&
             params.profileCountryTax ? (
-              <div>{calculateTaxesTotal}€</div>
+              <div>{helper.formatNumber(calculateTaxesTotal)}€</div>
             ) : (
               "-"
             )}
@@ -253,7 +255,10 @@ const ValuePackChooser = (params: {
           <div className="flex items-center gap-1">
             {params.selectedValuePacks.length > 0 && (
               <div className="text-xl font-medium">
-                {helper.calculerMonetaryValue(sumValuePacks())}€
+                {helper.formatNumber(
+                  helper.calculerMonetaryValue(sumValuePacks())
+                )}
+                €
               </div>
             )}
           </div>

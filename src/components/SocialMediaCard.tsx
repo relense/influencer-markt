@@ -72,7 +72,10 @@ const SocialMediaCard = (params: {
                       </div>
                     </div>
                     <div className="self-end font-medium">
-                      {helper.formatNumber(parseInt(valuePack.valuePackPrice))}€
+                      {helper.formatNumber(
+                        helper.calculerMonetaryValue(valuePack.valuePackPrice)
+                      )}
+                      €
                     </div>
                     {params.socialMedia.valuePacks.length - 1 !== index && (
                       <div className="h-1 w-1 rounded-full bg-black" />

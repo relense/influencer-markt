@@ -1,5 +1,6 @@
 import { z } from "zod";
 import { createTRPCRouter, protectedProcedure, publicProcedure } from "../trpc";
+import { helper } from "../../../utils/helper";
 
 export const userSocialMediasRouter = createTRPCRouter({
   createUserSocialMedia: protectedProcedure
@@ -52,7 +53,9 @@ export const userSocialMediasRouter = createTRPCRouter({
           await ctx.prisma.valuePack.createMany({
             data: input.valuePacks.map((valuePack) => {
               return {
-                valuePackPrice: valuePack.valuePackPrice,
+                valuePackPrice: helper.calculateMonetaryValueInCents(
+                  valuePack.valuePackPrice
+                ),
                 contentTypeId: valuePack.contentTypeId,
                 userSocialMediaId: userSocialMedia.id,
               };
@@ -226,7 +229,9 @@ export const userSocialMediasRouter = createTRPCRouter({
             data: {
               contentTypeId: valuePack.contentTypeId,
               userSocialMediaId: input.id,
-              valuePackPrice: valuePack.valuePackPrice,
+              valuePackPrice: helper.calculateMonetaryValueInCents(
+                valuePack.valuePackPrice
+              ),
             },
           });
         });

@@ -14,6 +14,7 @@ import type {
 } from "../../utils/globalTypes";
 import { useRouter } from "next/router";
 import { LoadingSpinner } from "../../components/LoadingSpinner";
+import { helper } from "../../utils/helper";
 
 type ContentTypeWithPrice = {
   contentType: Option;
@@ -72,7 +73,7 @@ const SocialMediaEditPage = (params: {
               id: valuePacks.contentType.id || -1,
               name: valuePacks.contentType.name || "",
             },
-            price: parseFloat(valuePacks.valuePackPrice),
+            price: valuePacks.valuePackPrice,
           };
         })
       );
@@ -101,7 +102,9 @@ const SocialMediaEditPage = (params: {
               id: userSocialMedia.socialMedia?.id || -1,
               name: userSocialMedia.socialMedia?.name || "",
             },
-            valuePackPrice: valuePack.valuePackPrice.toString(),
+            valuePackPrice: helper.calculerMonetaryValue(
+              valuePack.valuePackPrice
+            ),
           };
         })
       );
@@ -114,7 +117,7 @@ const SocialMediaEditPage = (params: {
     contentTypesList.forEach((contentType) => {
       newArrayList.push({
         contentType: contentType.contentType,
-        valuePackPrice: contentType.price.toString(),
+        valuePackPrice: contentType.price,
         platform: watch("platform"),
       });
     });
@@ -129,7 +132,7 @@ const SocialMediaEditPage = (params: {
           id: valuePack?.id || -1,
           contentTypeId: valuePack.contentType.id,
           platformId: data.platform.id,
-          valuePackPrice: parseInt(valuePack.valuePackPrice),
+          valuePackPrice: valuePack.valuePackPrice,
         };
       }),
     });
@@ -281,7 +284,7 @@ const SocialMediaEditPage = (params: {
             placeholder={t("pages.socialMediaCreate.price")}
             max="1000000000"
             min="1"
-            value={contentTypesList[index]?.price || ""}
+            value={contentTypesList[index]?.price}
             onWheel={(e) => e.currentTarget.blur()}
             onChange={(e) =>
               handleQuantityChange(index, e.target.valueAsNumber)

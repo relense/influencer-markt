@@ -84,7 +84,7 @@ const SocialMediaCreatePage = (params: {
     contentTypesList.forEach((contentType) => {
       newArrayList.push({
         contentType: contentType.contentType,
-        valuePackPrice: contentType.price.toString(),
+        valuePackPrice: contentType.price,
         platform: watch("platform"),
       });
     });
@@ -97,7 +97,7 @@ const SocialMediaCreatePage = (params: {
         return {
           contentTypeId: valuePack.contentType.id,
           platformId: data.platform.id,
-          valuePackPrice: parseInt(valuePack.valuePackPrice),
+          valuePackPrice: valuePack.valuePackPrice,
         };
       }),
     });

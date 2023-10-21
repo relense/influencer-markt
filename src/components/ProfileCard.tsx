@@ -221,8 +221,10 @@ const ProfileCard = (params: {
             usefullSocialMedia.valuePacks &&
             usefullSocialMedia.valuePacks[0] && (
               <div className="text-lg font-semibold">
-                {helper.calculerMonetaryValue(
-                  usefullSocialMedia.valuePacks[0]?.valuePackPrice
+                {helper.formatNumber(
+                  helper.calculerMonetaryValue(
+                    usefullSocialMedia.valuePacks[0]?.valuePackPrice
+                  )
                 )}
                 €
               </div>
