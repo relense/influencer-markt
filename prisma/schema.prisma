@@ -392,7 +392,7 @@ model Order {
   dateOfDelivery         DateTime
   dateItWasDelivered     DateTime?
   invoice                Invoice[]
-  payment                Payment?
+  payment                Payment[]
   refund                 Refund?
 
   influencerId  Int?
@@ -579,7 +579,7 @@ model Payment {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  orderId Int @unique
+  orderId Int
 
   @@index([orderId])
 }

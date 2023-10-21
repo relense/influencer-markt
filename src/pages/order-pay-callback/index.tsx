@@ -1,5 +1,5 @@
 import type { GetServerSideProps, NextPage } from "next";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 
 import { api } from "../../utils/api";
@@ -11,6 +11,8 @@ interface OrderPayCallbackProps {
 
 const OrderPayCallback: NextPage<OrderPayCallbackProps> = ({ orderId }) => {
   const router = useRouter();
+
+  const [hasProcessed, setHasProcessed] = useState<boolean>(false);
 
   const { mutate: createNotification } =
     api.notifications.createNotification.useMutation();
@@ -36,13 +38,14 @@ const OrderPayCallback: NextPage<OrderPayCallbackProps> = ({ orderId }) => {
       "payment_intent"
     );
 
-    if (paymentIntent) {
+    if (paymentIntent && !hasProcessed) {
+      setHasProcessed(true);
       updateOrder({
         orderId: parseInt(orderId),
         paymentIntent: paymentIntent,
       });
     }
-  }, [orderId, updateOrder]);
+  }, []);
 
   if (updateAcceptIsLoading) {
     return <LoadingSpinner />;

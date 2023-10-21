@@ -518,6 +518,7 @@ export const OrdersRouter = createTRPCRouter({
       const order = await ctx.prisma.order.findFirst({
         where: { id: input.orderId },
         select: {
+          id: true,
           orderTotalPrice: true,
         },
       });
@@ -529,7 +530,7 @@ export const OrdersRouter = createTRPCRouter({
             paymentIntent: input.paymentIntent,
             order: {
               connect: {
-                id: input.orderId,
+                id: order.id,
               },
             },
           },
@@ -537,7 +538,7 @@ export const OrdersRouter = createTRPCRouter({
 
         return await ctx.prisma.order.update({
           where: {
-            id: input.orderId,
+            id: order.id,
           },
           data: {
             orderStatusId: 10,
