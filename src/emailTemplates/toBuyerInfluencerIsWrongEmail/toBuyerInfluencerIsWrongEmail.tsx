@@ -12,13 +12,13 @@ function toBuyerInfluencerIsWrongEmail(params: {
   let title = `The order with ref:${orderId} dispute resolution`;
   let buttonTitle = "View Order";
   let subject = `Resolution for the dispute for the order with ref:${orderId}`;
-  let description = `We at Influencer Markt have investigated what happened and reached the conclusion that ${influencerName} is at fault. We will refund your money.`;
+  let description = `We at Influencer Markt have investigated what happened and reached the conclusion that ${influencerName} is at fault. You can now decide how you want to proceed.`;
 
   if (language === "pt") {
     title = `O Pedido com ref:${orderId} resolução da disputa`;
     buttonTitle = "Ver Pedido";
     subject = `Resolução da disputa para o pedido com a ref:${orderId}`;
-    description = `Nós, na Influencer Markt, investigámos o que aconteceu e chegámos à conclusão de que ${influencerName} está em falta. Vamos reembolsar o teu dinheiro.`;
+    description = `Nós, na Influencer Markt, investigámos o que aconteceu e chegámos à conclusão de que ${influencerName} está em falta. Podes decidir como pretendes proceder.`;
   }
 
   sgMail.setApiKey(process.env.EMAIL_SMTP_KEY || "");

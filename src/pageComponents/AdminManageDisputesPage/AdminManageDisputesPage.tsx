@@ -46,7 +46,7 @@ const AdminManageDisputesPage = (params: { disputeId: number }) => {
   const { mutate: updatedOrderClosed, isLoading: isLoadingOrderClosed } =
     api.orders.updateOrderAndCloseAfterDispute.useMutation({
       onSuccess: (orderData) => {
-        if (orderData && orderData.dispute?.influencerFault === false) {
+        if (orderData) {
           setOpenInfluencerIsRightModal(false);
           void createInvoice({ orderId: orderData.id });
           void createNotification({
@@ -55,7 +55,6 @@ const AdminManageDisputesPage = (params: { disputeId: number }) => {
             senderId: order?.influencerId || -1,
             entityAction: "orderBuyerLostDispute",
           });
-          //INFLUENCER NOTIFICAITON BEING TOLD HE WON
           void createNotification({
             entityId: orderData.id,
             notifierId: order?.influencerId || -1,
@@ -63,26 +62,31 @@ const AdminManageDisputesPage = (params: { disputeId: number }) => {
             entityAction: "orderInfluencerWonDispute",
           });
           void ctx.orders.getOrderByDisputeId.invalidate();
-        } else {
-          setOpenBuyerIsRightModal(false);
-          //MISSING: WHAT DO WE DO HERE. THE BUYER WON. That Means we must give him his money back
-          void createNotification({
-            entityId: orderData.id,
-            notifierId: order?.influencerId || -1,
-            senderId: order?.buyerId || -1,
-            entityAction: "orderInfluencerLostDispute",
-          });
-          //BUYER NOTIFICAITON BEING TOLD THAT HE LOST
-          void createNotification({
-            entityId: orderData.id,
-            notifierId: order?.buyerId || -1,
-            senderId: order?.influencerId || -1,
-            entityAction: "orderBuyerWonDispute",
-          });
-          void ctx.orders.getOrderByDisputeId.invalidate();
         }
       },
     });
+
+  const {
+    mutate: updateOrderAndPutOnHoldAfterDispute,
+    isLoading: isLoadingOrderOnHold,
+  } = api.orders.updateOrderAndPutOnHoldAfterDispute.useMutation({
+    onSuccess: (orderData) => {
+      setOpenBuyerIsRightModal(false);
+      void createNotification({
+        entityId: orderData.id,
+        notifierId: order?.influencerId || -1,
+        senderId: order?.buyerId || -1,
+        entityAction: "orderInfluencerLostDispute",
+      });
+      void createNotification({
+        entityId: orderData.id,
+        notifierId: order?.buyerId || -1,
+        senderId: order?.influencerId || -1,
+        entityAction: "orderBuyerWonDispute",
+      });
+      void ctx.orders.getOrderByDisputeId.invalidate();
+    },
+  });
 
   const {
     mutate: updateDisputeToProgress,
@@ -97,17 +101,13 @@ const AdminManageDisputesPage = (params: { disputeId: number }) => {
     api.disputes.resolveDispute.useMutation({
       onSuccess: (dispute) => {
         if (dispute && dispute?.influencerFault) {
-          updatedOrderClosed({
+          updateOrderAndPutOnHoldAfterDispute({
             orderId: dispute?.orderId || -1,
-            statusId: 8,
-            influencerFault: true,
             disputeId: params.disputeId,
           });
         } else {
           updatedOrderClosed({
             orderId: dispute?.orderId || -1,
-            statusId: 8,
-            influencerFault: false,
             disputeId: params.disputeId,
           });
         }
@@ -644,7 +644,11 @@ const AdminManageDisputesPage = (params: { disputeId: number }) => {
                   form="form-influencerRight"
                   title="Influencer is Right"
                   level="terciary"
-                  isLoading={isLoadingResolveDispute || isLoadingOrderClosed}
+                  isLoading={
+                    isLoadingResolveDispute ||
+                    isLoadingOrderClosed ||
+                    isLoadingOrderOnHold
+                  }
                 />
               </div>
             }

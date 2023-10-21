@@ -845,11 +845,14 @@ export const OrdersRouter = createTRPCRouter({
         },
         select: {
           id: true,
+          orderTotalPrice: true,
+          buyerId: true,
           buyer: {
             select: {
               name: true,
             },
           },
+          influencerId: true,
           influencer: {
             select: {
               country: true,
@@ -936,8 +939,6 @@ export const OrdersRouter = createTRPCRouter({
     .input(
       z.object({
         orderId: z.number(),
-        statusId: z.number(),
-        influencerFault: z.boolean(),
         disputeId: z.number(),
       })
     )
@@ -945,7 +946,7 @@ export const OrdersRouter = createTRPCRouter({
       const order = await ctx.prisma.order.update({
         where: { id: input.orderId },
         data: {
-          orderStatusId: input.statusId,
+          orderStatusId: 8,
         },
         include: {
           buyer: {
@@ -978,41 +979,86 @@ export const OrdersRouter = createTRPCRouter({
         },
       });
 
-      if (input.influencerFault) {
-        //influencer email
-        toInfluencerInfluencerIsWrongEmail({
-          orderId: input.orderId,
-          to: order.influencer?.user.email || "",
-          from: process.env.NEXT_PUBLIC_EMAIL_FROM || "",
-          language: order.influencer?.country?.languageCode || "en",
-          buyerName: order.buyer?.name || "",
-        });
-        //buyer email
-        toBuyerInfluencerIsWrongEmail({
-          orderId: input.orderId,
-          to: order.buyer?.user.email || "",
-          from: process.env.NEXT_PUBLIC_EMAIL_FROM || "",
-          language: order.buyer?.country?.languageCode || "en",
-          influencerName: order.influencer?.name || "",
-        });
-      } else {
-        //influencer email
-        toInfluencerInfluencerIsRightEmail({
-          orderId: input.orderId,
-          to: order.influencer?.user.email || "",
-          from: process.env.NEXT_PUBLIC_EMAIL_FROM || "",
-          language: order.influencer?.country?.languageCode || "en",
-          buyerName: order.buyer?.name || "",
-        });
-        //buyer email
-        toBuyerInfluencerIsRightEmail({
-          orderId: input.orderId,
-          to: order.buyer?.user.email || "",
-          from: process.env.NEXT_PUBLIC_EMAIL_FROM || "",
-          language: order.buyer?.country?.languageCode || "en",
-          influencerName: order.influencer?.name || "",
-        });
-      }
+      //influencer email
+      toInfluencerInfluencerIsRightEmail({
+        orderId: input.orderId,
+        to: order.influencer?.user.email || "",
+        from: process.env.NEXT_PUBLIC_EMAIL_FROM || "",
+        language: order.influencer?.country?.languageCode || "en",
+        buyerName: order.buyer?.name || "",
+      });
+      //buyer email
+      toBuyerInfluencerIsRightEmail({
+        orderId: input.orderId,
+        to: order.buyer?.user.email || "",
+        from: process.env.NEXT_PUBLIC_EMAIL_FROM || "",
+        language: order.buyer?.country?.languageCode || "en",
+        influencerName: order.influencer?.name || "",
+      });
+
+      return order;
+    }),
+
+  updateOrderAndPutOnHoldAfterDispute: protectedProcedure
+    .input(
+      z.object({
+        orderId: z.number(),
+        disputeId: z.number(),
+      })
+    )
+    .mutation(async ({ ctx, input }) => {
+      const order = await ctx.prisma.order.update({
+        where: { id: input.orderId },
+        data: {
+          orderStatusId: 11,
+        },
+        include: {
+          buyer: {
+            select: {
+              name: true,
+              country: true,
+              user: {
+                select: {
+                  email: true,
+                },
+              },
+            },
+          },
+          influencer: {
+            select: {
+              name: true,
+              country: true,
+              user: {
+                select: {
+                  email: true,
+                },
+              },
+            },
+          },
+          dispute: {
+            select: {
+              influencerFault: true,
+            },
+          },
+        },
+      });
+
+      //influencer email
+      toInfluencerInfluencerIsWrongEmail({
+        orderId: input.orderId,
+        to: order.influencer?.user.email || "",
+        from: process.env.NEXT_PUBLIC_EMAIL_FROM || "",
+        language: order.influencer?.country?.languageCode || "en",
+        buyerName: order.buyer?.name || "",
+      });
+      //buyer email
+      toBuyerInfluencerIsWrongEmail({
+        orderId: input.orderId,
+        to: order.buyer?.user.email || "",
+        from: process.env.NEXT_PUBLIC_EMAIL_FROM || "",
+        language: order.buyer?.country?.languageCode || "en",
+        influencerName: order.influencer?.name || "",
+      });
 
       return order;
     }),
