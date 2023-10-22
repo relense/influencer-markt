@@ -73,31 +73,6 @@ const LoginModal = ({
               : `${t("components.loginModal.signInWith")} Google`}
           </div>
         </button>
-        <button
-          className="flex h-10 w-full flex-1 cursor-pointer items-center justify-center rounded-lg border-[1px] border-gray3 py-3 pr-6 text-center hover:bg-influencer-green-super-light lg:rounded-2xl"
-          onClick={() =>
-            signIn("github", {
-              callbackUrl: `${
-                process.env.NEXTAUTH_URL || ""
-              }/login-callback?returnTo=${window.location.pathname}`,
-            })
-          }
-        >
-          <div className="py-2 pl-2 pr-6">
-            <Image
-              src={`/images/github.svg`}
-              height={32}
-              width={32}
-              alt="google logo"
-              className="object-contain"
-            />
-          </div>
-          <div className="font-roboto font-medium ">
-            {currentSignUp
-              ? `${t("components.loginModal.signUpWith")} Github`
-              : `${t("components.loginModal.signInWith")} Github`}{" "}
-          </div>
-        </button>
       </div>
     );
   };
