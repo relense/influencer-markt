@@ -15,7 +15,7 @@ const LoginModal = ({
   isSignUp: boolean;
 }) => {
   const [userEmail, setUserEmail] = useState<string>("");
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
 
   const title = isSignUp
     ? t("components.loginModal.signupButton")
@@ -45,7 +45,7 @@ const LoginModal = ({
               e.preventDefault();
 
               void signIn("email", {
-                email: userEmail,
+                email: `${userEmail}:${i18n.language}`,
                 callbackUrl: `${
                   process.env.NEXTAUTH_URL || ""
                 }/login-callback?returnTo=${window.location.pathname}`,

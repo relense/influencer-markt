@@ -10,7 +10,7 @@ import EmailProvider from "next-auth/providers/email";
 import GitHub from "next-auth/providers/github";
 import { env } from "~/env.mjs";
 import { prisma } from "~/server/db";
-import { customSendVerificationRequest } from "../utils/customVerificationEmail";
+import { customSendVerificationRequest } from "../emailTemplates/customVerificationEmail/customVerificationEmail";
 
 /**
  * Module augmentation for `next-auth` types. Allows us to add custom properties to the `session`
