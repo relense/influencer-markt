@@ -175,7 +175,7 @@
       "explore": "Explora",
       "saved": "Favoritos",
       "signIn": "Entrar",
-      "joinMarketPlace": "Junta-te ao Marketplace",
+      "joinMarketPlace": "Registar",
       "myPage": "A Minha Página",
       "editMyPage": "Editar A Minha Página",
       "signOut": "Sair",
@@ -234,11 +234,14 @@
       "and": "e",
       "termsLink": "Termos do Serviço",
       "privacyLink": "Política de Privacidade",
-      "or": "ou",
-      "signinButton": "Envia Link Seguro",
-      "signupButton": "Inscreve-te com Email",
-      "signInWith": "Entra com",
-      "signUpWith": "Inscreve-te com"
+      "orSingUp": "ou registar com email",
+      "orLogin": "ou iniciar sessão com email",
+      "signinButton": "Receber Ligação de Email Segura",
+      "signupButton": "Registar Com Email",
+      "signInWith": "Iniciar Sessão Com",
+      "signUpWith": "Registar Com",
+      "signUp": "Registar",
+      "dontHaveAccount": "Não tens uma conta?"
     },
 
     "stepsReminder": {

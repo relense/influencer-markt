@@ -1,5 +1,8 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { type IconDefinition } from "@fortawesome/free-regular-svg-icons";
+import {
+  faLifeRing,
+  type IconDefinition,
+} from "@fortawesome/free-regular-svg-icons";
 import {
   faBookmark,
   faBriefcase,
@@ -9,6 +12,9 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import Link from "next/link";
 import { useRouter } from "next/router";
+import { useEffect, useState } from "react";
+import { HelpCenter } from "./HelpCenter";
+import { useWindowWidth } from "../utils/helper";
 
 type linkItem = {
   pageUrl: string;
@@ -23,6 +29,23 @@ const BottomBar = (params: {
   loggedInProfileId: number;
 }) => {
   const router = useRouter();
+  const width = useWindowWidth();
+
+  const [openHelpCenter, setOPenHelpCenter] = useState<boolean>(false);
+
+  useEffect(() => {
+    if (openHelpCenter) {
+      setOPenHelpCenter(false);
+    }
+  }, [width]);
+
+  useEffect(() => {
+    if (openHelpCenter) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "auto";
+    }
+  }, [openHelpCenter]);
 
   const navigationLinks: linkItem[] = [
     {
@@ -58,37 +81,52 @@ const BottomBar = (params: {
   ];
 
   return (
-    <div className="fixed bottom-0 z-40 flex w-full justify-between border-t-[1px] border-gray3 bg-white pb-2 sm:hidden">
-      {navigationLinks.map((navigationItem) => {
-        const iconClass =
-          router.pathname === navigationItem.pageUrl ||
-          (router.pathname === "/[username]" &&
-            navigationItem.pageUrl === `/${params.username}`)
-            ? "fa-lg"
-            : "fa-lg text-gray1";
+    <>
+      <div className="fixed bottom-0 z-40 flex w-full justify-between border-t-[1px] border-gray3 bg-white pb-2 sm:hidden">
+        {navigationLinks.map((navigationItem) => {
+          const iconClass =
+            router.pathname === navigationItem.pageUrl ||
+            (router.pathname === "/[username]" &&
+              navigationItem.pageUrl === `/${params.username}`)
+              ? "fa-lg"
+              : "fa-lg text-gray1";
 
-        if (
-          !navigationItem.loggedIn ||
-          (params.status === "authenticated" &&
-            navigationItem.loggedIn &&
-            navigationItem.profileSetup === true &&
-            params.loggedInProfileId !== -1)
-        ) {
-          return (
-            <Link
-              key={navigationItem.pageUrl}
-              href={navigationItem.pageUrl}
-              className="flex flex-1 cursor-pointer items-center justify-center  p-4 text-center"
-            >
-              <FontAwesomeIcon
-                icon={navigationItem.icon}
-                className={iconClass}
-              />
-            </Link>
-          );
-        }
-      })}
-    </div>
+          if (
+            !navigationItem.loggedIn ||
+            (params.status === "authenticated" &&
+              navigationItem.loggedIn &&
+              navigationItem.profileSetup === true &&
+              params.loggedInProfileId !== -1)
+          ) {
+            return (
+              <Link
+                key={navigationItem.pageUrl}
+                href={navigationItem.pageUrl}
+                className="flex flex-1 cursor-pointer items-center justify-center  p-4 text-center"
+              >
+                <FontAwesomeIcon
+                  icon={navigationItem.icon}
+                  className={iconClass}
+                />
+              </Link>
+            );
+          }
+        })}
+        {params.status === "unauthenticated" && (
+          <div
+            className="flex flex-1 cursor-pointer items-center justify-center  p-4 text-center"
+            onClick={() => setOPenHelpCenter(true)}
+          >
+            <FontAwesomeIcon icon={faLifeRing} className="fa-lg text-gray1" />
+          </div>
+        )}
+      </div>
+      {openHelpCenter && (
+        <div className="absolute top-0 z-50 h-full w-full overflow-hidden bg-white">
+          <HelpCenter close={() => setOPenHelpCenter(false)} />
+        </div>
+      )}
+    </>
   );
 };
 

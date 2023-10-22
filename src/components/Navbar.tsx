@@ -7,18 +7,12 @@ import { type Session } from "next-auth";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faBell,
-  faFileLines,
   faUserCircle,
-  faAddressCard,
-  faEnvelope,
-  faCircleQuestion,
   faFolderOpen,
   faLifeRing,
 } from "@fortawesome/free-regular-svg-icons";
 import {
-  faArrowLeft,
   faArrowRightFromBracket,
-  faArrowRightToBracket,
   faBagShopping,
   faBars,
   faBookmark,
@@ -43,6 +37,7 @@ import type { Option } from "../utils/globalTypes";
 import { helper, useOutsideClick, useWindowWidth } from "../utils/helper";
 import { Notifications } from "./Notifications";
 import { Credits } from "./Credits";
+import { HelpCenter } from "./HelpCenter";
 
 export const Navbar = (params: {
   username: string;
@@ -82,13 +77,20 @@ export const Navbar = (params: {
       },
     });
 
-  const { data: totalCredit } = api.credits.calculateUserCredits.useQuery();
+  const {
+    data: totalCredit,
+    isLoading: isLoadingTotalCredit,
+    refetch: refetchTotalCredit,
+  } = api.credits.calculateUserCredits.useQuery(undefined, {
+    enabled: false,
+  });
 
   useEffect(() => {
     if (params.sessionData) {
       void refetchNotficationsRead();
+      void refetchTotalCredit();
     }
-  }, [params.sessionData, refetchNotficationsRead]);
+  }, [params.sessionData, refetchNotficationsRead, refetchTotalCredit]);
 
   useOutsideClick(() => {
     if (toggleOptions === false) return;
@@ -115,7 +117,7 @@ export const Navbar = (params: {
     }
   }, [toggleOptions, width]);
 
-  const handleJoinMarketplace = () => {
+  const handlSignup = () => {
     params.setIsSignUp(true);
     params.openLoginModal();
   };
@@ -248,36 +250,36 @@ export const Navbar = (params: {
     return (
       <div className="flex">
         {!params.sessionData && (
-          <>
-            <div className="hidden flex-row items-center justify-end lg:flex">
-              <span
-                className="cursor-pointer text-lg lg:p-2"
-                onClick={() => params.openLoginModal()}
-              >
-                {t("components.navbar.signIn")}
-              </span>
+          <div className="flex flex-row items-center justify-end gap-2">
+            <span
+              className="flex cursor-pointer text-lg"
+              onClick={() => params.openLoginModal()}
+            >
+              {t("components.navbar.signIn")}
+            </span>
+            <div className="hidden h-1 w-1 rounded-full bg-black lg:flex" />
+            <div>
               <Button
                 title={t("components.navbar.joinMarketPlace")}
                 level="primary"
-                onClick={() => handleJoinMarketplace()}
+                onClick={() => handlSignup()}
               />
             </div>
-            <div className="flex lg:hidden">
-              {renderHamburguerMenuUnauthenticated()}
-            </div>
-          </>
+          </div>
         )}
         {params.sessionData && (
           <div className="flex flex-row items-center justify-end gap-2">
-            <div
-              className="pt-1 font-medium hover:cursor-pointer hover:underline"
-              onClick={() => setCreditsMenuOpen(!creditsMenuOpen)}
-            >
-              {helper.formatNumberWithDecimalValue(
-                helper.calculerMonetaryValue(totalCredit || 0)
-              )}
-              € {t("components.navbar.imc")}
-            </div>
+            {isLoadingTotalCredit === false && (
+              <div
+                className="pt-1 font-medium hover:cursor-pointer hover:underline"
+                onClick={() => setCreditsMenuOpen(!creditsMenuOpen)}
+              >
+                {helper.formatNumberWithDecimalValue(
+                  helper.calculerMonetaryValue(totalCredit || 0)
+                )}
+                € {t("components.navbar.imc")}
+              </div>
+            )}
             {params.loggedInProfileId !== -1 && (
               <>
                 <div
@@ -341,69 +343,11 @@ export const Navbar = (params: {
         {toggleOptions &&
           params.loggedInProfileId === -1 &&
           optionsDropdownAuthenticatedWithoutProfile()}
-        {openHelpCenter && navigationHelpers()}
+        {openHelpCenter && (
+          <HelpCenter close={() => setOPenHelpCenter(false)} />
+        )}
       </div>
     );
-  };
-
-  const renderHamburguerMenuUnauthenticated = () => {
-    return (
-      <div className="flex justify-end" ref={dropdownWrapperRef}>
-        <FontAwesomeIcon
-          icon={faBars}
-          className="fa-xl cursor-pointer"
-          onClick={() => setToggleOptions(!toggleOptions)}
-        />
-        {toggleOptions && optionDropdownDataUnauthenticated()}
-        {openHelpCenter && navigationHelpers()}
-      </div>
-    );
-  };
-
-  const optionDropdownDataUnauthenticated = () => {
-    if (!params.sessionData) {
-      return (
-        <>
-          <div
-            className="absolute left-0 top-0 h-screen w-screen"
-            onClick={() => setToggleOptions(!toggleOptions)}
-          />
-          <div
-            className="absolute right-1 top-14 z-50 flex h-auto w-auto flex-col gap-4 rounded-2xl border-[1px] border-white1 bg-white p-8 shadow-lg sm:right-5 lg:top-20"
-            onClick={() => setToggleOptions(!toggleOptions)}
-          >
-            <div className="flex cursor-pointer items-center gap-6">
-              <Button
-                title={t("components.navbar.joinMarketPlace")}
-                level="primary"
-                onClick={() => handleJoinMarketplace()}
-              />
-            </div>
-            <div className="border-[1px] border-white1" />
-            <div
-              className="flex cursor-pointer items-center gap-4 hover:underline"
-              onClick={() => params.openLoginModal()}
-            >
-              <FontAwesomeIcon icon={faArrowRightToBracket} className="fa-lg" />
-              <span className="cursor-pointer lg:p-2">
-                {t("components.navbar.signIn")}
-              </span>
-            </div>
-            <div className="cursor-pointer border-[1px] border-white1" />
-            <div
-              className="group flex cursor-pointer items-center gap-4 py-2 sm:hidden"
-              onClick={() => setOPenHelpCenter(true)}
-            >
-              <FontAwesomeIcon icon={faLifeRing} className="fa-lg" />
-
-              <div className="group-hover:underline">
-                {t("components.navbar.helpCenter")}
-              </div>
-            </div>
-          </div>
-        </>
-      );
-    }
   };
 
   const optionsDropdownAuthenticated = () => {
@@ -682,84 +626,6 @@ export const Navbar = (params: {
         </>
       );
     }
-  };
-
-  const navigationHelpers = () => {
-    return (
-      <div className="absolute right-0 top-0 z-50 flex h-full w-full flex-col gap-2 bg-white p-4 lg:hidden">
-        <div
-          className="flex cursor-pointer items-center gap-4"
-          onClick={() => setOPenHelpCenter(false)}
-        >
-          <FontAwesomeIcon icon={faArrowLeft} />
-
-          <div className="font-semibold">
-            {t("components.navbar.helpCenter")}
-          </div>
-        </div>
-        <div className="px-8">
-          <Link
-            href="/about"
-            className="group flex cursor-pointer items-center gap-4 py-2"
-          >
-            <FontAwesomeIcon icon={faAddressCard} className="fa-lg" />
-
-            <div className="group-hover:underline">
-              {t("components.navbar.aboutUs")}
-            </div>
-          </Link>
-        </div>
-        <div className="px-8">
-          <Link
-            href="/contact-us"
-            className="group flex cursor-pointer items-center gap-4 py-2"
-          >
-            <FontAwesomeIcon icon={faEnvelope} className="fa-lg" />
-
-            <div className="group-hover:underline">
-              {t("components.navbar.contactUs")}
-            </div>
-          </Link>
-        </div>{" "}
-        <div className="px-8">
-          <Link
-            href="/faq"
-            className="group flex cursor-pointer items-center gap-4 py-2"
-          >
-            <FontAwesomeIcon icon={faCircleQuestion} className="fa-lg" />
-
-            <div className="group-hover:underline">
-              {t("components.navbar.faq")}
-            </div>
-          </Link>
-        </div>
-        <div className="cursor-pointer border-[1px] border-white1" />
-        <div className="px-8">
-          <Link
-            href="/terms-conditions"
-            className="group flex cursor-pointer items-center gap-4 py-2"
-          >
-            <FontAwesomeIcon icon={faFileLines} className="fa-lg" />
-
-            <div className="group-hover:underline">
-              {t("components.navbar.terms")}
-            </div>
-          </Link>
-        </div>
-        <div className="px-8">
-          <Link
-            href="/privacy-policy"
-            className="group flex cursor-pointer items-center gap-4 py-2"
-          >
-            <FontAwesomeIcon icon={faFileLines} className="fa-lg" />
-
-            <div className="group-hover:underline">
-              {t("components.navbar.privacy")}
-            </div>
-          </Link>
-        </div>
-      </div>
-    );
   };
 
   return (
