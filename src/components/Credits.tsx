@@ -248,7 +248,7 @@ const Credits = () => {
         ) : (
           <>
             <div className="p-4 ">
-              <div className="text-lg">
+              <div className="flex flex-col gap-2 text-center text-lg lg:flex-row lg:text-left">
                 <span className="font-medium ">
                   {t("components.credits.creditsTitle")}
                 </span>{" "}

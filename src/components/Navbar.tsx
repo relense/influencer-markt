@@ -77,13 +77,11 @@ export const Navbar = (params: {
       },
     });
 
-  const {
-    data: totalCredit,
-    isLoading: isLoadingTotalCredit,
-    refetch: refetchTotalCredit,
-  } = api.credits.calculateUserCredits.useQuery(undefined, {
-    enabled: false,
-  });
+  const { data: totalCredit, refetch: refetchTotalCredit } =
+    api.credits.calculateUserCredits.useQuery(undefined, {
+      enabled: false,
+      cacheTime: 0,
+    });
 
   useEffect(() => {
     if (params.sessionData) {
@@ -257,7 +255,6 @@ export const Navbar = (params: {
             >
               {t("components.navbar.signIn")}
             </span>
-            <div className="hidden h-1 w-1 rounded-full bg-black lg:flex" />
             <div>
               <Button
                 title={t("components.navbar.joinMarketPlace")}
@@ -269,17 +266,20 @@ export const Navbar = (params: {
         )}
         {params.sessionData && (
           <div className="flex flex-row items-center justify-end gap-2">
-            {isLoadingTotalCredit === false && (
-              <div
-                className="pt-1 font-medium hover:cursor-pointer hover:underline"
-                onClick={() => setCreditsMenuOpen(!creditsMenuOpen)}
-              >
+            <div
+              className="font-medium hover:cursor-pointer lg:hover:underline"
+              onClick={() => setCreditsMenuOpen(!creditsMenuOpen)}
+            >
+              <span className="hidden lg:flex">
                 {helper.formatNumberWithDecimalValue(
                   helper.calculerMonetaryValue(totalCredit || 0)
                 )}
                 € {t("components.navbar.imc")}
-              </div>
-            )}
+              </span>
+              <span className="flex rounded-full p-2 text-center text-sm hover:bg-white1 lg:hidden">
+                €{t("components.navbar.imc")}
+              </span>
+            </div>
             {params.loggedInProfileId !== -1 && (
               <>
                 <div

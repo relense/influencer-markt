@@ -45,25 +45,27 @@ export const CreditsRouter = createTRPCRouter({
       },
     });
 
-    return await ctx.prisma.$transaction([
-      ctx.prisma.creditTransaction.count({
-        where: {
-          creditId: profile?.credit?.id,
-        },
-      }),
-      ctx.prisma.creditTransaction.findMany({
-        where: {
-          creditId: profile?.credit?.id,
-        },
-        take: 10,
-        include: {
-          refund: true,
-        },
-        orderBy: {
-          createdAt: "desc",
-        },
-      }),
-    ]);
+    if (profile && profile.credit) {
+      return await ctx.prisma.$transaction([
+        ctx.prisma.creditTransaction.count({
+          where: {
+            creditId: profile?.credit?.id,
+          },
+        }),
+        ctx.prisma.creditTransaction.findMany({
+          where: {
+            creditId: profile?.credit?.id,
+          },
+          take: 10,
+          include: {
+            refund: true,
+          },
+          orderBy: {
+            createdAt: "desc",
+          },
+        }),
+      ]);
+    }
   }),
 
   getAllCreditTransactionCursor: protectedProcedure
@@ -86,19 +88,21 @@ export const CreditsRouter = createTRPCRouter({
         },
       });
 
-      return await ctx.prisma.creditTransaction.findMany({
-        where: {
-          creditId: profile?.credit?.id,
-        },
-        skip: 1,
-        take: 10,
-        cursor: { id: input.cursor },
-        include: {
-          refund: true,
-        },
-        orderBy: {
-          createdAt: "desc",
-        },
-      });
+      if (profile && profile.credit) {
+        return await ctx.prisma.creditTransaction.findMany({
+          where: {
+            creditId: profile?.credit?.id,
+          },
+          skip: 1,
+          take: 10,
+          cursor: { id: input.cursor },
+          include: {
+            refund: true,
+          },
+          orderBy: {
+            createdAt: "desc",
+          },
+        });
+      }
     }),
 });
