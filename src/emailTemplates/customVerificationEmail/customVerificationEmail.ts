@@ -4,11 +4,11 @@ import { type SendVerificationRequestParams } from "next-auth/providers";
 
 function customSendVerificationRequest(params: SendVerificationRequestParams) {
   const { identifier, url, provider, theme } = params;
-  const { host } = new URL(url);
+  const { host, searchParams } = new URL(url);
 
-  const identifierValues = identifier.split(":");
-
-  const userLang: string = identifierValues[1] || "en";
+  const callbackUrl = searchParams.get("callbackUrl");
+  const callbackUrlSearchParams = new URLSearchParams(callbackUrl || "");
+  const userLang = callbackUrlSearchParams.get("userLanguage") || "en";
 
   let subject = "Sign in to influencermarkt.com";
 
@@ -19,7 +19,7 @@ function customSendVerificationRequest(params: SendVerificationRequestParams) {
   sgMail.setApiKey(process.env.EMAIL_SMTP_KEY || "");
 
   const msg: MailDataRequired = {
-    to: identifierValues[0],
+    to: identifier,
     from: { email: provider.from, name: "Influencer Markt" },
     subject: subject,
     text: text({ url, host, userLang }),

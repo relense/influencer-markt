@@ -45,10 +45,8 @@ const LoginModal = ({
               e.preventDefault();
 
               void signIn("email", {
-                email: `${userEmail}:${i18n.language}`,
-                callbackUrl: `${
-                  process.env.NEXTAUTH_URL || ""
-                }/login-callback?returnTo=${window.location.pathname}`,
+                email: `${userEmail}`,
+                callbackUrl: `/login-callback?returnTo=${window.location.pathname}&userLanguage=${i18n.language}`,
               });
             }}
           />
