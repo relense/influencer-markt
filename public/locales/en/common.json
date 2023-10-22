@@ -410,7 +410,10 @@
 
     "credits": {
       "creditsTitle": "Influencer Markt Credits:",
-      "noCredits": "There aren't any Influencer Markt Credits"
+      "noCredits": "There aren't any Influencer Markt Credits",
+      "imc": "IMC",
+      "youHaveSpent": "You have spent:",
+      "youHaveReceived": "You have received:"
     },
 
     "whathappensNext": {

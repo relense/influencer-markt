@@ -7,12 +7,17 @@ import { LoadingSpinner } from "./LoadingSpinner";
 import { helper } from "../utils/helper";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { faEuro } from "@fortawesome/free-solid-svg-icons";
+import {
+  faEuro,
+  faMinusCircle,
+  faPlusCircle,
+} from "@fortawesome/free-solid-svg-icons";
 
 type CreditTransaction = {
   id: string;
   amount: number;
   isWithdraw: boolean;
+  transactionCreatedAt: Date;
   refund: {
     id: string;
     orderId: number;
@@ -20,7 +25,7 @@ type CreditTransaction = {
 };
 
 const Credits = () => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const containerRef = useRef<HTMLDivElement>(null);
   const router = useRouter();
 
@@ -61,6 +66,7 @@ const Credits = () => {
             amount: transaction.amount,
             id: transaction.id,
             isWithdraw: transaction.isWithdraw,
+            transactionCreatedAt: transaction.createdAt,
             refund: {
               id: transaction?.refund?.id || "",
               orderId: transaction?.refund?.orderId || -1,
@@ -89,6 +95,7 @@ const Credits = () => {
           amount: transaction.amount,
           id: transaction.id,
           isWithdraw: transaction.isWithdraw,
+          transactionCreatedAt: transaction.createdAt,
           refund: {
             id: transaction?.refund?.id || "",
             orderId: transaction?.refund?.orderId || -1,
@@ -147,26 +154,42 @@ const Credits = () => {
           <div className="flex flex-col">
             {creditTransactions?.map((transaction) => {
               const transactionDetails = (
-                <div className="flex flex-1 flex-col gap-2 text-sm">
-                  <div>
-                    {transaction.isWithdraw ? " - " : ""}
+                <div className="flex flex-1 flex-col gap-2 text-left text-sm">
+                  <div className="flex items-center gap-2">
+                    {transaction.isWithdraw ? (
+                      <FontAwesomeIcon
+                        icon={faMinusCircle}
+                        className="text-lg text-influencer"
+                      />
+                    ) : (
+                      <FontAwesomeIcon
+                        icon={faPlusCircle}
+                        className="text-lg text-influencer-green"
+                      />
+                    )}
+                    {transaction.isWithdraw
+                      ? t("components.credits.youHaveSpent")
+                      : t("components.credits.youHaveReceived")}
+                    {transaction.isWithdraw ? " -" : " +"}
                     {helper.formatNumberWithDecimalValue(
                       helper.calculerMonetaryValue(transaction.amount)
                     )}
-                    €
+                    € {t("components.credits.imc")}
+                  </div>
+                  <div className="text-gray2">
+                    {helper.formatDate(
+                      transaction.transactionCreatedAt,
+                      i18n.language
+                    )}
                   </div>
                 </div>
               );
-              if (transaction.refund.orderId) {
+              if (transaction.refund.orderId !== -1) {
                 return (
                   <Link
                     href={`/orders/${transaction.refund.orderId}`}
                     key={transaction.id}
-                    className={`flex cursor-pointer items-center gap-4 px-4 py-6 hover:bg-white1 ${
-                      transaction.isWithdraw
-                        ? "bg-influencer-super-light"
-                        : "bg-influencer-green-light"
-                    }`}
+                    className={`flex cursor-pointer items-center gap-4 border-b-[1px] border-white px-4 py-6 hover:bg-white1`}
                     onClick={() => {
                       if (
                         router.asPath ===
@@ -183,11 +206,7 @@ const Credits = () => {
                 return (
                   <div
                     key={transaction.id}
-                    className={`flex items-center gap-4 px-4 py-6 hover:bg-white1 ${
-                      transaction.isWithdraw
-                        ? "bg-influencer-super-light"
-                        : "bg-influencer-green-light"
-                    }`}
+                    className={`flex items-center gap-4 px-4 py-6`}
                   >
                     {transactionDetails}
                   </div>
@@ -235,7 +254,7 @@ const Credits = () => {
                   {helper.formatNumberWithDecimalValue(
                     helper.calculerMonetaryValue(totalCredit || 0)
                   )}
-                  €
+                  € {t("components.credits.imc")}
                 </span>
               </div>
             </div>
