@@ -154,7 +154,7 @@ const Credits = () => {
           <div className="flex flex-col">
             {creditTransactions?.map((transaction) => {
               const transactionDetails = (
-                <div className="flex flex-1 flex-col gap-2 text-left text-sm">
+                <div className="flex flex-1 gap-6 text-left">
                   <div className="flex items-center gap-2">
                     {transaction.isWithdraw ? (
                       <FontAwesomeIcon
@@ -167,6 +167,8 @@ const Credits = () => {
                         className="text-lg text-influencer-green"
                       />
                     )}
+                  </div>
+                  <div className="flex flex-1 flex-col text-left">
                     {transaction.isWithdraw
                       ? t("components.credits.youHaveSpent")
                       : t("components.credits.youHaveReceived")}
@@ -175,12 +177,12 @@ const Credits = () => {
                       helper.calculerMonetaryValue(transaction.amount)
                     )}
                     € {t("components.credits.imc")}
-                  </div>
-                  <div className="text-gray2">
-                    {helper.formatDate(
-                      transaction.transactionCreatedAt,
-                      i18n.language
-                    )}
+                    <div className="text-gray2">
+                      {helper.formatDate(
+                        transaction.transactionCreatedAt,
+                        i18n.language
+                      )}
+                    </div>
                   </div>
                 </div>
               );

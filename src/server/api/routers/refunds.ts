@@ -21,7 +21,14 @@ export const RefundsRouter = createTRPCRouter({
           },
         },
       });
-      if (profile && profile.credit) {
+
+      const payment = await ctx.prisma.payment.findFirst({
+        where: {
+          orderId: input.orderId,
+        },
+      });
+
+      if (profile && profile.credit && payment) {
         if (input.isCredit) {
           const refund = await ctx.prisma.refund.create({
             data: {
@@ -30,6 +37,11 @@ export const RefundsRouter = createTRPCRouter({
               order: {
                 connect: {
                   id: input.orderId,
+                },
+              },
+              payment: {
+                connect: {
+                  id: payment.id,
                 },
               },
             },

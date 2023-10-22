@@ -571,10 +571,11 @@ model InvoiceType {
 }
 
 model Payment {
-  id            String @id @default(cuid())
+  id            String  @id @default(cuid())
   paymentIntent String
   amount        Int
-  order         Order  @relation(fields: [orderId], references: [id])
+  order         Order   @relation(fields: [orderId], references: [id])
+  Refund        Refund?
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -590,13 +591,16 @@ model Refund {
   order             Order              @relation(fields: [orderId], references: [id])
   isCredit          Boolean
   creditTransaction CreditTransaction?
+  payment           Payment            @relation(fields: [paymentId], references: [id])
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  orderId Int @unique
+  orderId   Int    @unique
+  paymentId String @unique
 
   @@index([orderId])
+  @@index([paymentId])
 }
 
 model Credit {

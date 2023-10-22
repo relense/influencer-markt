@@ -270,7 +270,7 @@ export const Navbar = (params: {
         {params.sessionData && (
           <div className="flex flex-row items-center justify-end gap-2">
             <div
-              className="font-medium hover:cursor-pointer hover:underline"
+              className="pt-1 font-medium hover:cursor-pointer hover:underline"
               onClick={() => setCreditsMenuOpen(!creditsMenuOpen)}
             >
               {helper.formatNumberWithDecimalValue(
