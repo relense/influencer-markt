@@ -200,7 +200,8 @@
       "completeMessage": "Complete your profile to unlock all funcionalities",
       "orders": "Orders",
       "sales": "Sales",
-      "billing": "Billing"
+      "billing": "Billing",
+      "imc": "IMC"
     },
 
     "adminNavbar": {
@@ -405,6 +406,11 @@
     "notification": {
       "notifications": "Notifications",
       "noNotifications": "There aren't any notifications"
+    },
+
+    "credits": {
+      "creditsTitle": "Influencer Markt Credits:",
+      "noCredits": "There aren't any Influencer Markt Credits"
     },
 
     "whathappensNext": {

@@ -90,11 +90,11 @@ const JobsList = (params: {
           )}
           {params.jobs?.map((job, index) => {
             let jobClass =
-              "flex cursor-pointer gap-4 p-4 hover:bg-influencer-green-light";
+              "flex cursor-pointer gap-4 p-4 hover:bg-influencer-green-super-light";
 
             if (params.selectedJobId === job.id) {
               jobClass =
-                "flex cursor-pointer gap-4 p-4 hover:bg-influencer-green-light bg-influencer-green-light";
+                "flex cursor-pointer gap-4 p-4 hover:bg-influencer-green-super-light bg-influencer-green-super-light";
             }
 
             return (

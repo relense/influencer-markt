@@ -40,8 +40,9 @@ import Draggable, {
 
 import { Button } from "./Button";
 import type { Option } from "../utils/globalTypes";
-import { useOutsideClick, useWindowWidth } from "../utils/helper";
+import { helper, useOutsideClick, useWindowWidth } from "../utils/helper";
 import { Notifications } from "./Notifications";
+import { Credits } from "./Credits";
 
 export const Navbar = (params: {
   username: string;
@@ -67,6 +68,7 @@ export const Navbar = (params: {
   const [openExploreDropdown, setOpenExploreDropdown] =
     useState<boolean>(false);
   const [openSavedDropdown, setOpenSavedDropdown] = useState<boolean>(false);
+  const [creditsMenuOpen, setCreditsMenuOpen] = useState<boolean>(false);
 
   const { data: notificationsToBeReadCount, refetch: refetchNotficationsRead } =
     api.notifications.getUserToBeReadNotifications.useQuery(undefined, {
@@ -79,6 +81,8 @@ export const Navbar = (params: {
         await refetchNotficationsRead();
       },
     });
+
+  const { data: totalCredit } = api.credits.calculateUserCredits.useQuery();
 
   useEffect(() => {
     if (params.sessionData) {
@@ -265,6 +269,15 @@ export const Navbar = (params: {
         )}
         {params.sessionData && (
           <div className="flex flex-row items-center justify-end gap-2">
+            <div
+              className="font-medium hover:cursor-pointer hover:underline"
+              onClick={() => setCreditsMenuOpen(!creditsMenuOpen)}
+            >
+              {helper.formatNumberWithDecimalValue(
+                helper.calculerMonetaryValue(totalCredit || 0)
+              )}
+              € {t("components.navbar.imc")}
+            </div>
             {params.loggedInProfileId !== -1 && (
               <>
                 <div
@@ -285,6 +298,7 @@ export const Navbar = (params: {
                 </div>
               </>
             )}
+            {renderCreditsMenu()}
             {renderNotificationsMenu()}
             {renderHamburguerMenuAuthenticated()}
           </div>
@@ -651,6 +665,20 @@ export const Navbar = (params: {
             onClick={() => setNotificationsOpen(!notificationsOpen)}
           />
           <Notifications />
+        </>
+      );
+    }
+  };
+
+  const renderCreditsMenu = () => {
+    if (creditsMenuOpen) {
+      return (
+        <>
+          <div
+            className="absolute left-0 top-0 z-40 h-screen w-screen"
+            onClick={() => setCreditsMenuOpen(!creditsMenuOpen)}
+          />
+          <Credits />
         </>
       );
     }

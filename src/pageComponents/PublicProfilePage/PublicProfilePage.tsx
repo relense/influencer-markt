@@ -549,7 +549,7 @@ const PublicProfilePage = (params: {
                     <Link
                       href={`/jobs/${job.id}`}
                       key={`jobs${job.id}`}
-                      className="flex w-full cursor-pointer flex-col rounded-lg border-[1px] p-4 hover:bg-influencer-green-light"
+                      className="flex w-full cursor-pointer flex-col rounded-lg border-[1px] p-4 hover:bg-influencer-green-super-light"
                     >
                       <div className="font-semibold text-influencer">
                         {job.jobSummary}

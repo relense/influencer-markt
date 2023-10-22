@@ -64,7 +64,10 @@ const formatNumberWithDecimalValue = (value: number) => {
       maximumFractionDigits: 2,
     });
   } else {
-    return "";
+    return (0).toLocaleString(undefined, {
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2,
+    });
   }
 };
 

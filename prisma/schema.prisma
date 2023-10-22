@@ -379,8 +379,8 @@ model Order {
   orderDetails           String           @db.Text
   orderValuePacks        OrderValuePack[]
   orderInfluencerCountry Country?         @relation(fields: [countryId], references: [id])
-  orderBasePrice         Int          
-  orderTotalPrice        Int          
+  orderBasePrice         Int
+  orderTotalPrice        Int
   orderTaxPercentage     Int
   orderServicePercentage Int
   orderStatus            OrderStatus?     @relation(fields: [orderStatusId], references: [id])
@@ -542,11 +542,11 @@ model Invoice {
   billing                   Billing     @relation(fields: [billingId], references: [id])
   name                      String?
   tin                       String?
-  saleBaseValue             Int     
-  saleTotalValue            Int     
-  influencerMarktCutValue   Int?    
+  saleBaseValue             Int
+  saleTotalValue            Int
+  influencerMarktCutValue   Int?
   influencerMarktPercentage Int?
-  taxValue                  Int     
+  taxValue                  Int
   taxPercentage             Int
   paid                      Boolean     @default(false)
   invoiceType               InvoiceType @relation(fields: [invoiceTypeId], references: [id])
@@ -571,10 +571,10 @@ model InvoiceType {
 }
 
 model Payment {
-  id            String  @id @default(cuid())
+  id            String @id @default(cuid())
   paymentIntent String
-  amount        Int 
-  order         Order   @relation(fields: [orderId], references: [id])
+  amount        Int
+  order         Order  @relation(fields: [orderId], references: [id])
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -586,7 +586,7 @@ model Payment {
 
 model Refund {
   id                String             @id @default(cuid())
-  refundValue       Int            
+  refundValue       Int
   order             Order              @relation(fields: [orderId], references: [id])
   isCredit          Boolean
   creditTransaction CreditTransaction?
@@ -604,6 +604,9 @@ model Credit {
   creditTransaction CreditTransaction[]
   profile           Profile             @relation(fields: [profileId], references: [id])
 
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
   profileId Int @unique
 
   @@index([profileId])
@@ -611,10 +614,13 @@ model Credit {
 
 model CreditTransaction {
   id         String  @id @default(cuid())
-  amount     Int 
+  amount     Int
   isWithdraw Boolean @default(false)
   credit     Credit  @relation(fields: [creditId], references: [id])
   refund     Refund? @relation(fields: [refundId], references: [id])
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   refundId String? @unique
   creditId String

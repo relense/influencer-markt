@@ -199,7 +199,8 @@
       "completeMessage": "Completa o teu perfil para desbloqueares todas as funcionalidades",
       "orders": "Pedidos",
       "sales": "Vendas",
-      "billing": "Facturação"
+      "billing": "Facturação",
+      "imc": "CIM"
     },
 
     "adminNavbar": {
@@ -404,6 +405,11 @@
     "notification": {
       "notifications": "Notificações",
       "noNotifications": "Não há notificações"
+    },
+
+    "credits": {
+      "creditsTitle": "Créditos Influencer Markt:",
+      "noCredits": "Não há Créditos Influencer Markt"
     },
 
     "whathappensNext": {
