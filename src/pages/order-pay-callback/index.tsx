@@ -1,9 +1,10 @@
 import type { GetServerSideProps, NextPage } from "next";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useRouter } from "next/router";
 
 import { api } from "../../utils/api";
 import { LoadingSpinner } from "../../components/LoadingSpinner";
+import { helper } from "../../utils/helper";
 
 interface OrderPayCallbackProps {
   orderId: string;
@@ -33,7 +34,7 @@ const OrderPayCallback: NextPage<OrderPayCallbackProps> = ({ orderId }) => {
       },
     });
 
-  useEffect(() => {
+  helper.useEffectOnlyOnce(() => {
     const paymentIntent = new URLSearchParams(window.location.search).get(
       "payment_intent"
     );
@@ -45,7 +46,7 @@ const OrderPayCallback: NextPage<OrderPayCallbackProps> = ({ orderId }) => {
         paymentIntent: paymentIntent,
       });
     }
-  }, []);
+  });
 
   if (updateAcceptIsLoading) {
     return <LoadingSpinner />;

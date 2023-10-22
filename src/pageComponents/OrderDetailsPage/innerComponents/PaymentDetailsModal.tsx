@@ -3,8 +3,9 @@ import { Elements } from "@stripe/react-stripe-js";
 import { api } from "~/utils/api";
 
 import { Modal } from "../../../components/Modal";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import CheckoutForm from "./CheckoutForm";
+import { helper } from "../../../utils/helper";
 
 const stripePromise = loadStripe(
   process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY || ""
@@ -26,12 +27,12 @@ const PaymentDetailsModal = (params: {
       },
     });
 
-  useEffect(() => {
+  helper.useEffectOnlyOnce(() => {
     void createPaymentIntent({
       paymentAmount: params.amount,
       orderId: params.orderId,
     });
-  }, [createPaymentIntent, params.amount, params.orderId]);
+  });
 
   return (
     <div className="flex justify-center ">

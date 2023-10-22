@@ -153,6 +153,16 @@ const calculateServiceFee = () => {
   return 0.15;
 };
 
+const useEffectOnlyOnce = (fn: () => any) => {
+  const ref = useRef(false);
+  useEffect(() => {
+    if (!ref.current) {
+      ref.current = true;
+      fn();
+    }
+  }, [fn]);
+};
+
 export const helper = {
   formatNumber,
   formatNumberWithDecimalValue,
@@ -165,4 +175,5 @@ export const helper = {
   calculateServiceFee,
   calculerMonetaryValue,
   calculateMonetaryValueInCents,
+  useEffectOnlyOnce,
 };
