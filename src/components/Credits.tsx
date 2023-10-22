@@ -176,7 +176,7 @@ const Credits = () => {
                     {helper.formatNumberWithDecimalValue(
                       helper.calculerMonetaryValue(transaction.amount)
                     )}
-                    € {t("components.credits.imc")}
+                    €
                     <div className="text-gray2">
                       {helper.formatDate(
                         transaction.transactionCreatedAt,
@@ -256,7 +256,7 @@ const Credits = () => {
                   {helper.formatNumberWithDecimalValue(
                     helper.calculerMonetaryValue(totalCredit || 0)
                   )}
-                  € {t("components.credits.imc")}
+                  €
                 </span>
               </div>
             </div>

@@ -24,6 +24,7 @@ import {
   faBell as faBellSolid,
   faReceipt,
   faFileInvoice,
+  faCoins,
 } from "@fortawesome/free-solid-svg-icons";
 import { api } from "~/utils/api";
 import { useRouter } from "next/router";
@@ -270,15 +271,15 @@ export const Navbar = (params: {
               className="font-medium hover:cursor-pointer lg:hover:underline"
               onClick={() => setCreditsMenuOpen(!creditsMenuOpen)}
             >
-              <span className="hidden lg:flex">
+              <span className="hidden pt-1 lg:flex">
                 {helper.formatNumberWithDecimalValue(
                   helper.calculerMonetaryValue(totalCredit || 0)
                 )}
-                € {t("components.navbar.imc")}
+                €
               </span>
-              <span className="flex rounded-full p-2 text-center text-sm hover:bg-white1 lg:hidden">
-                €{t("components.navbar.imc")}
-              </span>
+              <div className="flex lg:hidden ">
+                <FontAwesomeIcon icon={faCoins} className="text-xl" />
+              </div>
             </div>
             {params.loggedInProfileId !== -1 && (
               <>
