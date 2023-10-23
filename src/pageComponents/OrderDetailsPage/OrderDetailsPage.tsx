@@ -146,6 +146,7 @@ const OrderDetailsPage = (params: {
       if (order) {
         setShowRefundModal(false);
         void ctx.orders.getBuyerOrder.invalidate();
+        void ctx.credits.calculateUserCredits.reset();
         void createNotification({
           entityId: params.orderId,
           senderId: order?.buyerId || -1,
@@ -159,26 +160,6 @@ const OrderDetailsPage = (params: {
           orderId: params.orderId,
           refundValue: order?.orderTotalPrice,
         });
-      }
-    },
-  });
-
-  const {
-    mutate: updateOrderGiveCashRefund,
-    isLoading: isLoadingUpdateOrderGiveCashRefund,
-  } = api.orders.updateOrderToConfirmedFromOnHold.useMutation({
-    onSuccess: (order) => {
-      if (order) {
-        setShowRefundModal(false);
-        void ctx.orders.getBuyerOrder.invalidate();
-        void createNotification({
-          entityId: params.orderId,
-          senderId: order?.buyerId || -1,
-          notifierId: order?.influencerId || -1,
-          entityAction: "toInfluencerOrderOnHoldToConfirm",
-        });
-
-        //Giev cash refund
       }
     },
   });
@@ -944,26 +925,12 @@ const OrderDetailsPage = (params: {
               <div className="font-playfair text-3xl">
                 {t("pages.orders.refundModalTitle")}
               </div>
-              <div>{t("pages.orders.refundModalSubtitle1")}</div>
-              <div>{t("pages.orders.refundModalSubtitle2")}</div>
-              <div>{t("pages.orders.refundModalSubtitle3")}</div>
+              <div>{t("pages.orders.refundModalSubtitle")}</div>
               <div className="flex gap-8">
                 <Button
                   form="form-onHoldDateOfDelivery"
                   level="secondary"
-                  title={t("pages.orders.refundInCash")}
-                  isLoading={isLoading || isLoadingUpdateOrderGiveCashRefund}
-                  disabled={isLoading || isLoadingUpdateOrderGiveCashRefund}
-                  onClick={() =>
-                    updateOrderGiveCashRefund({
-                      orderId: order.id,
-                    })
-                  }
-                />
-                <Button
-                  form="form-onHoldDateOfDelivery"
-                  level="terciary"
-                  title={t("pages.orders.refundInCredits")}
+                  title={t("pages.orders.getRefund")}
                   isLoading={isLoading || isLoadingUpdateOrderGiveCreditsRefund}
                   disabled={isLoading || isLoadingUpdateOrderGiveCreditsRefund}
                   onClick={() => {

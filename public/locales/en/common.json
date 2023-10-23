@@ -1036,10 +1036,8 @@
       "postponedDeliveryDateModalSubtitle": "Select a delivery date that accommodates the influencer, ensuring they won't miss the deadline.",
       "refundInCash": "Refund In Cash",
       "refundInCredits": "Refund In Credits",
-      "refundModalTitle": "How do you want your refund?",
-      "refundModalSubtitle1": "You have two options for receiving your refunds.",
-      "refundModalSubtitle2": "Cash refund option, ensures that you'll receive the full refund amount (minus the initial transaction cost) within a reasonable timeframe of 5 to 10 business days.",
-      "refundModalSubtitle3": "Credit refund option is to receive your full refund amount in the form of credits. These credits can be redeemed to avail the services of other influencers. Furthermore, these credits become instantly available for your immediate use, offering convenience and flexibility."
+      "refundModalTitle": "Are you sure?",
+      "refundModalSubtitle": "Refund option is to receive your full refund amount in the form of credits. These credits can be redeemed to avail the services of other influencers. Furthermore, these credits become instantly available for your immediate use, offering convenience and flexibility."
     },
 
     "billing": {
