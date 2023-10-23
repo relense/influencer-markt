@@ -771,6 +771,8 @@
       "jobDescription": "Descrição da Vaga",
       "categories": "Categorias:",
       "price": "Valor da Vaga",
+      "basePrice": "Valor Base da Vaga",
+      "baseValueDisclaimer": "IVA e taxa de serviço vão ser adicionados depois do pedido ao influencer ser efetuado",
       "acceptedAplicants_zero": "Candidatos Aceites",
       "acceptedAplicants_one": "{{count}} Candidato Aceite",
       "acceptedAplicants_other": "{{count}} Candidatos Aceites",

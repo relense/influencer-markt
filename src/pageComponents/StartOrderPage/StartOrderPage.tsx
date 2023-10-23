@@ -284,7 +284,7 @@ const StartOrderPage = (params: {
                     {t(`general.contentTypes.${valuePack.contentType.name}`)}
                   </div>
                   <div className="text-base font-medium">
-                    {helper.formatNumber(
+                    {helper.formatNumberWithDecimalValue(
                       helper.calculerMonetaryValue(
                         valuePack.price * valuePack.amount
                       )
@@ -308,8 +308,10 @@ const StartOrderPage = (params: {
         valuePacksSum += contentType.amount * contentType.price;
       });
 
-      const tax = valuePacksSum * ((profile?.country?.countryTax || 0) / 100);
       const serviceFee = valuePacksSum * helper.calculateServiceFee();
+      const tax =
+        (valuePacksSum + serviceFee) *
+        ((profile?.country?.countryTax || 0) / 100);
       const total = valuePacksSum + tax + serviceFee;
 
       return (
@@ -323,7 +325,7 @@ const StartOrderPage = (params: {
                 {t("pages.startOrder.valuePacks")}:
               </div>
               <div>
-                {helper.formatNumber(
+                {helper.formatNumberWithDecimalValue(
                   helper.calculerMonetaryValue(valuePacksSum)
                 )}
                 €
@@ -334,7 +336,10 @@ const StartOrderPage = (params: {
                 {t("pages.startOrder.serviceFee")}:
               </div>
               <div>
-                {helper.formatNumber(helper.calculerMonetaryValue(serviceFee))}€
+                {helper.formatNumberWithDecimalValue(
+                  helper.calculerMonetaryValue(serviceFee)
+                )}
+                €
               </div>
             </div>
             <div className="flex gap-2">
@@ -342,7 +347,10 @@ const StartOrderPage = (params: {
                 {t("pages.startOrder.fee")}:
               </div>
               <div>
-                {helper.formatNumber(helper.calculerMonetaryValue(tax))}€
+                {helper.formatNumberWithDecimalValue(
+                  helper.calculerMonetaryValue(tax)
+                )}
+                €
               </div>
             </div>
             <div className="flex gap-2">
@@ -350,7 +358,10 @@ const StartOrderPage = (params: {
                 {t("pages.startOrder.total")}:
               </div>
               <div>
-                {helper.formatNumber(helper.calculerMonetaryValue(total))}€
+                {helper.formatNumberWithDecimalValue(
+                  helper.calculerMonetaryValue(total)
+                )}
+                €
               </div>
             </div>
           </div>

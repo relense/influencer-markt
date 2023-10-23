@@ -189,11 +189,15 @@ const ValuePackChooser = (params: {
       valuePacksTotalInCents * helper.calculateServiceFee()
     );
 
+    const sumTotalPlusService =
+      valuePacksTotalInCents +
+      valuePacksTotalInCents * helper.calculateServiceFee();
+
     const calculateTaxesTotal = helper.calculerMonetaryValue(
-      valuePacksTotalInCents * (params.profileCountryTax / 100)
+      sumTotalPlusService * (params.profileCountryTax / 100)
     );
 
-    const calculateOrderTotal = helper.formatNumber(
+    const calculateOrderTotal = helper.formatNumberWithDecimalValue(
       Number((sumTotal + serviceTaxTotal + calculateTaxesTotal).toFixed(2))
     );
 
@@ -203,7 +207,7 @@ const ValuePackChooser = (params: {
           <div className="flex flex-1 justify-between">
             <div>{t("pages.publicProfilePage.subtotal")}</div>
             {params.selectedValuePacks.length > 0 ? (
-              <div>{helper.formatNumber(sumTotal)}€</div>
+              <div>{helper.formatNumberWithDecimalValue(sumTotal)}€</div>
             ) : (
               "-"
             )}
@@ -212,7 +216,7 @@ const ValuePackChooser = (params: {
             <div>{t("pages.publicProfilePage.serviceFee")}</div>
             {params.selectedValuePacks.length > 0 &&
             params.profileCountryTax ? (
-              <div>{helper.formatNumber(serviceTaxTotal)}€</div>
+              <div>{helper.formatNumberWithDecimalValue(serviceTaxTotal)}€</div>
             ) : (
               "-"
             )}
@@ -221,7 +225,9 @@ const ValuePackChooser = (params: {
             <div>{t("pages.publicProfilePage.fee")}</div>
             {params.selectedValuePacks.length > 0 &&
             params.profileCountryTax ? (
-              <div>{helper.formatNumber(calculateTaxesTotal)}€</div>
+              <div>
+                {helper.formatNumberWithDecimalValue(calculateTaxesTotal)}€
+              </div>
             ) : (
               "-"
             )}

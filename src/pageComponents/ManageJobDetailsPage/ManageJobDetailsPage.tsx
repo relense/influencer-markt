@@ -29,6 +29,7 @@ import { ProfileRow } from "../../components/ProfileRow";
 import { MyJobDropdown } from "../../components/MyJobDropdown";
 import { MyJobsActionConfirmationModal } from "../../components/MyJobsActionConfirmationModal";
 import dayjs from "dayjs";
+import { ToolTip } from "../../components/ToolTip";
 
 type ApplicantsProfile = {
   id: number;
@@ -693,36 +694,30 @@ const ManageJobDetailsPage = (params: {
               })}
             </div>
           </div>
-
-          <>
-            <div className="hidden h-1 w-1 rounded-full bg-black sm:flex"></div>
-            <div className="flex items-center gap-2">
-              <div className="font-semibold text-influencer">
-                {t("pages.manageJobs.gender")}
-              </div>
-              <div>{job.gender?.name || t("pages.manageJobs.any")}</div>
+          <div className="hidden h-1 w-1 rounded-full bg-black sm:flex"></div>
+          <div className="flex items-center gap-2">
+            <div className="font-semibold text-influencer">
+              {t("pages.manageJobs.gender")}
             </div>
-          </>
-          <>
-            <div className="hidden h-1 w-1 rounded-full bg-black sm:flex"></div>
-            <div className="flex items-center gap-2">
-              <div className="font-semibold text-influencer">
-                {t("pages.manageJobs.followers")}
-              </div>
-              <div>{helper.formatNumberWithKorM(job.minFollowers)} </div>
+            <div>{job.gender?.name || t("pages.manageJobs.any")}</div>
+          </div>
+          <div className="hidden h-1 w-1 rounded-full bg-black sm:flex"></div>
+          <div className="flex items-center gap-2">
+            <div className="font-semibold text-influencer">
+              {t("pages.manageJobs.followers")}
             </div>
-          </>
-          <>
-            <div className="hidden h-1 w-1 rounded-full bg-black sm:flex"></div>
-            <div className="flex items-center gap-2">
-              <div className="font-semibold text-influencer">
-                {t("pages.manageJobs.price")}
-              </div>
-              <div>
-                {helper.formatNumber(helper.calculerMonetaryValue(job.price))}€
-              </div>
+            <div>{helper.formatNumberWithKorM(job.minFollowers)} </div>
+          </div>
+          <div className="hidden h-1 w-1 rounded-full bg-black sm:flex"></div>
+          <div className="flex items-center gap-2">
+            <div className="font-semibold text-influencer">
+              {t("pages.manageJobs.basePrice")}
             </div>
-          </>
+            <div>
+              {helper.formatNumber(helper.calculerMonetaryValue(job.price))}€
+            </div>
+            <ToolTip content={t("pages.manageJobs.baseValueDisclaimer")} />
+          </div>
         </div>
       );
     }

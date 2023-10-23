@@ -142,7 +142,8 @@ const preloadImages = async (
 };
 
 const calculerMonetaryValue = (value: number) => {
-  return Number((value / 100.0).toFixed(2));
+  const result = Math.floor((value / 100.0) * 100) / 100;
+  return result;
 };
 
 const calculateMonetaryValueInCents = (paymentAmount: number) => {

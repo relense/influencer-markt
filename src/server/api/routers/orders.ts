@@ -60,11 +60,11 @@ export const OrdersRouter = createTRPCRouter({
       });
 
       if (profile) {
-        const taxValue =
-          input.orderPrice *
-          ((influencerProfile?.country?.countryTax || 0) / 100);
-
         const ourCutValue = input.orderPrice * helper.calculateServiceFee();
+
+        const taxValue =
+          (input.orderPrice + ourCutValue) *
+          ((influencerProfile?.country?.countryTax || 0) / 100);
 
         const saleValue = input.orderPrice + ourCutValue + taxValue;
 
@@ -149,11 +149,11 @@ export const OrdersRouter = createTRPCRouter({
       });
 
       if (profile) {
-        const taxValue =
-          input.orderPrice *
-          ((influencerProfile?.country?.countryTax || 0) / 100);
-
         const ourCutValue = input.orderPrice * helper.calculateServiceFee();
+
+        const taxValue =
+          (input.orderPrice + ourCutValue) *
+          ((influencerProfile?.country?.countryTax || 0) / 100);
 
         const saleValue = input.orderPrice + ourCutValue + taxValue;
 
