@@ -454,6 +454,36 @@
       "disclaimer1": "Assegura a tua presença no menu 'Explorar' ao adicionar imagens ao teu portfólio e ao ligares as tuas redes sociais",
       "disclaimer2": "Assegura a tua presença no menu 'Explorar' ao ligares as tuas redes sociais",
       "disclaimer3": "Assegura a tua presença no menu 'Explorar' ao adicionar imagens ao teu portfólio"
+    },
+
+    "cookiePolicy": {
+      "modal": {
+        "title1": "O que são cookies?",
+        "subtitle1": "Os cookies servem para ajudar a determinar a utilizada, interesse e o número de utilizações dos website, permitindo uma navegação mais rápida e eficiente, eliminando a necessidade de introduzir repetidamente as mesmas informações.",
+        "title2": "Que tipo de cookies existem?",
+        "subtitle2": "Existem dois grupos de cookies que podem ser utilizados.",
+        "title3": "Cookies permantes",
+        "subtitle3": "Este cookies ficam armazenados ao nível do browser nos equipamentos de accesso(PC, mobile e tablet) e que são utilizados sempre que faz uam nova visita a uma dos websites do Influencer Markt. São utilizados, geralmente, para direcionar a navegaçãos aos interesses do utilizador, permitindo prestar um serviço mais personalizado.",
+        "title4": "Cookies de sessão",
+        "subtitle4": "São cookies temporários que permanecem no arquivo de cookies do browser até sair do website. A informação obitda por estes cookies serve para analisar pradrões de tráfego na web, permitindo identificar problemas a fornecer uma melhor experiência de navegação.",
+        "title5": "Para que fins utilizamos cookies?",
+        "title6": "Cookies estritamente necessários",
+        "subtitle6": "Permitem a navegação no website e utilização das aplicações, bem como aceder a áreas seguras do website. Sem estes cookies, os serviços requeridos não podem ser prestados.",
+        "title7": "Cookies analíticos",
+        "subtitle7": "São utilizados anonimamente para efeitos de criação de análise de estatísticas, no sentido de melhorar o funcionamento do website.",
+        "title8": "Cookies de funcionalidade",
+        "subtitle8": "Guardam as preferências do utilizador relativamente à utilização do site, para que não seja necessário voltar a configurar o site cada vez que o visita.",
+        "title9": "Cookies de terceiros",
+        "subtitle9": "Medem o sucesso de aplicações e eficácia da pubilicdade de terceiros. Podem também ser utilizados no sentido de personalizar um widget com dados do utilizador.",
+        "title10": "Como pode gerir os cookies?",
+        "subtitle10": "Todos os browsers permitem ao utilizador aceitar, recusar ou apagar cookies, e ainda informar o utilizador sempre que um cookie é recebido, nomeadamente através da selecção das definições apropriadas no respetivo navegador. O utilizador pode configurar os cookies no menu ''Opções'' ou ''preferências'' do seu browser.",
+        "subtitle11": "Note-se, no entanto que, ao desactivar cookies, pode impedir que alguns serviços da web funcionem correctamente, afetando, parcial ou totalmente, a navegação no website."
+      },
+      "row": {
+        "description": "Este site utiliza cookies que permitem melhorar o desempenho e a experiência do utilizador na sua utilização.",
+        "cookiePolicy": "Política de Cookies",
+        "button": "Concordo"
+      }
     }
   },
 

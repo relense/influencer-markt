@@ -8,6 +8,7 @@ import { Footer } from "./Footer";
 import { LoadingSpinner } from "./LoadingSpinner";
 import { LoginModal } from "./LoginModal";
 import { Navbar } from "./Navbar";
+import { CookiePolicy } from "./CookiePolicy";
 
 export const Layout = (props: {
   children: (params: {
@@ -102,6 +103,7 @@ export const Layout = (props: {
             <LoginModal onClose={() => onCloseModal()} isSignUp={isSignUp} />
           )}
         </div>
+        <CookiePolicy />
       </main>
     );
   }

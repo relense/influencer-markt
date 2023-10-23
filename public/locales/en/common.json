@@ -455,6 +455,36 @@
       "disclaimer1": "Ensure your presence on the Explore menu by adding pictures to your portfolio and linking your social media",
       "disclaimer2": "Ensure your presence on the Explore menu by linking your social media",
       "disclaimer3": "Ensure your presence on the Explore menu by adding pictures to your portfolio"
+    },
+
+    "cookiePolicy": {
+      "modal": {
+        "title1": "What are cookies?",
+        "subtitle1": "Cookies are used to help determine user preferences, interests, and the number of website visits, allowing for faster and more efficient navigation and eliminating the need to repeatedly enter the same information.",
+        "title2": "What types of cookies are there?",
+        "subtitle2": "There are two groups of cookies that can be used.",
+        "title3": "Permanent cookies",
+        "subtitle3": "These cookies are stored at the browser level on access devices (PC, mobile, and tablet) and are used whenever you make a new visit to one of Influencer Markt's websites. They are generally used to tailor navigation to the user's interests, enabling a more personalized service.",
+        "title4": "Session cookies",
+        "subtitle4": "These are temporary cookies that remain in the browser's cookie file until you leave the website. The information obtained by these cookies is used to analyze web traffic patterns, allowing the identification of issues and providing a better browsing experience.",
+        "title5": "For what purposes do we use cookies?",
+        "title6": "Strictly necessary cookies",
+        "subtitle6": "These allow for website navigation and the use of applications, as well as access to secure areas of the website. Without these cookies, the required services cannot be provided.",
+        "title7": "Analytical cookies",
+        "subtitle7": "These are used anonymously for the purpose of creating statistical analyses to improve website functionality.",
+        "title8": "Functionality cookies",
+        "subtitle8": "They store user preferences regarding website usage, so there's no need to reconfigure the site every time you visit.",
+        "title9": "Third-party cookies",
+        "subtitle9": "These measure the success of third-party applications and advertising effectiveness. They can also be used to customize a widget with user data.",
+        "title10": "How can you manage cookies?",
+        "subtitle10": "All browsers allow users to accept, decline, or delete cookies, and can also inform users whenever a cookie is received, typically through the appropriate settings in the browser. Users can configure cookies in the ''Options'' or ''Preferences'' menu of their browser.",
+        "subtitle11": "Please note that by disabling cookies, you may prevent some web services from functioning correctly, partially or entirely affecting website navigation."
+      },
+      "row": {
+        "description": "This website uses cookies that allow for improving performance and the user's experience in its usage.",
+        "cookiePolicy": "Cookie Policy",
+        "button": "Agree"
+      }
     }
   },
 
