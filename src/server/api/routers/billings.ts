@@ -13,6 +13,7 @@ export const BillingsRouter = createTRPCRouter({
         tin: true,
         name: true,
         email: true,
+        iban: true,
       },
     });
   }),
