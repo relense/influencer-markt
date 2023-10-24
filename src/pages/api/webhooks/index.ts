@@ -1,15 +1,11 @@
-/* eslint-disable @typescript-eslint/no-unsafe-argument */
-/* eslint-disable @typescript-eslint/no-explicit-any */
-/* eslint-disable @typescript-eslint/no-unsafe-member-access */
-/* eslint-disable @typescript-eslint/restrict-template-expressions */
-
 import Cors from "micro-cors";
-import type { NextApiRequest, NextApiResponse } from "next";
 import type Stripe from "stripe";
+import { type NextRequest, NextResponse } from "next/server";
 
 import { stripe } from "../../../server/stripe";
 import { prisma } from "../../../server/db";
 import { buffer } from "micro";
+import type { NextApiRequest, NextApiResponse } from "next";
 
 const cors = Cors({
   allowMethods: ["POST", "HEAD"],
@@ -32,11 +28,23 @@ const webhookHandler = async (req: NextApiRequest, res: NextApiResponse) => {
     let event: Stripe.Event;
 
     try {
-      event = stripe.webhooks.constructEvent(buf, signature, webhookSecret);
+      event = stripe.webhooks.constructEvent(
+        buf.toString(),
+        signature,
+        webhookSecret
+      );
     } catch (err: any) {
       // On error, log and return the error message
       console.log(`❌ Error message: ${err.message}`);
       res.status(400).send(`Webhook Error: ${err.message}`);
+      // NextResponse.json(
+      //   {
+      //     message: `Webhook Error: ${err.message}`,
+      //   },
+      //   {
+      //     status: 400,
+      //   }
+      // );
       return;
     }
 
@@ -77,7 +85,16 @@ const webhookHandler = async (req: NextApiRequest, res: NextApiResponse) => {
         console.log(`Unhandled event type ${event.type}`);
     }
 
-    return res.status(200).send("Success");
+    // return NextResponse.json(
+    //   {
+    //     message: `Success`,
+    //   },
+    //   {
+    //     status: 200,
+    //   }
+    // );
+
+    return res.status(200).send(`success`);
   }
 };
 
