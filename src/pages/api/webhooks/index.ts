@@ -5,11 +5,7 @@ import { prisma } from "../../../server/db";
 import { buffer } from "micro";
 import type { NextApiRequest, NextApiResponse } from "next";
 
-// const cors = Cors({
-//   allowMethods: ["POST", "HEAD"],
-// });
-
-const webhookSecret: string = process.env.STRIPE_WEBHOOK_SECRET!;
+const webhookSecret: string = process.env.STRIPE_WEBHOOK_SECRET as string;
 
 export const config = {
   api: {
@@ -20,7 +16,7 @@ export const config = {
 const webhookHandler = async (req: NextApiRequest, res: NextApiResponse) => {
   if (req.method === "POST") {
     const buf = await buffer(req);
-    const sig = req.headers["stripe-signature"]!;
+    const sig = req.headers["stripe-signature"] as string;
 
     let event: Stripe.Event;
 
