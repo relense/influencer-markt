@@ -30,7 +30,11 @@ const webhookHandler = async (req: NextApiRequest, res: NextApiResponse) => {
     let event: Stripe.Event;
 
     try {
-      event = stripe.webhooks.constructEvent(buf, signature, webhookSecret);
+      event = stripe.webhooks.constructEvent(
+        buf.toString(),
+        signature,
+        webhookSecret
+      );
     } catch (err: any) {
       // On error, log and return the error message
       console.log(`❌ Error message: ${err.message}`);
