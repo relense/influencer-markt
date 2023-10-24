@@ -7,7 +7,6 @@ import Cors from "micro-cors";
 import type { NextApiRequest, NextApiResponse } from "next";
 import type Stripe from "stripe";
 import { stripe } from "../../../server/stripe";
-import { buffer } from "stream/consumers";
 import { prisma } from "../../../server/db";
 
 const cors = Cors({
@@ -24,17 +23,12 @@ export const config = {
 
 const webhookHandler = async (req: NextApiRequest, res: NextApiResponse) => {
   if (req.method === "POST") {
-    const buf = await buffer(req);
     const sig = req.headers["stripe-signature"]!;
 
     let event: Stripe.Event;
 
     try {
-      event = stripe.webhooks.constructEvent(
-        buf.toString(),
-        sig,
-        webhookSecret
-      );
+      event = stripe.webhooks.constructEvent(req.body, sig, webhookSecret);
     } catch (err: any) {
       // On error, log and return the error message
       console.log(`❌ Error message: ${err.message}`);
@@ -78,6 +72,12 @@ const webhookHandler = async (req: NextApiRequest, res: NextApiResponse) => {
       default:
         console.log(`Unhandled event type ${event.type}`);
     }
+
+    return res.status(200).send({
+      data: {
+        status: "sucess",
+      },
+    });
   }
 };
 

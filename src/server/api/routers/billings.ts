@@ -40,7 +40,7 @@ export const BillingsRouter = createTRPCRouter({
           },
           data: {
             email: input.email,
-            name: input.email,
+            name: input.name,
             tin: input.tin,
           },
         });
