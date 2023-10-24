@@ -19,16 +19,12 @@ const webhookSecret: string = process.env.STRIPE_WEBHOOK_SECRET!;
 const webhookHandler = async (req: NextApiRequest, res: NextApiResponse) => {
   if (req.method === "POST") {
     const signature = req.headers["stripe-signature"] || "";
-    const buf = await buffer(req);
+    const buf = await buffer(req.body);
 
     let event: Stripe.Event;
 
     try {
-      event = stripe.webhooks.constructEvent(
-        buf.toString(),
-        signature,
-        webhookSecret
-      );
+      event = stripe.webhooks.constructEvent(buf, signature, webhookSecret);
     } catch (err: any) {
       // On error, log and return the error message
       console.log(`❌ Error message: ${err.message}`);
