@@ -66,7 +66,7 @@ const SalesDetailsPage = (params: { orderId: number }) => {
     });
 
   const { mutate: updateCancelOrder, isLoading: isLoadingUpdateCancelOrder } =
-    api.orders.updateOrder.useMutation({
+    api.orders.cancelOrder.useMutation({
       onSuccess: () => {
         void createNotification({
           entityId: params.orderId,
@@ -462,7 +462,6 @@ const SalesDetailsPage = (params: { orderId: number }) => {
                 setDisabledCancel(true);
                 updateCancelOrder({
                   orderId: sale.id,
-                  statusId: 7,
                 });
               }}
               id="form-cancel"

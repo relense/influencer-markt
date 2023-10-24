@@ -67,7 +67,7 @@ const OrderDetailsPage = (params: {
   });
 
   const { mutate: updateCancelOrder, isLoading: isLoadingUpdateCancelOrder } =
-    api.orders.updateOrder.useMutation({
+    api.orders.cancelOrder.useMutation({
       onSuccess: () => {
         void createNotification({
           entityId: params.orderId,
@@ -76,6 +76,7 @@ const OrderDetailsPage = (params: {
           entityAction: "orderCanceled",
         });
         void ctx.orders.getBuyerOrder.invalidate();
+        void ctx.credits.calculateUserCredits.invalidate();
       },
     });
 
@@ -868,7 +869,6 @@ const OrderDetailsPage = (params: {
                 setShowCancelModal(false);
                 updateCancelOrder({
                   orderId: order.id,
-                  statusId: 7,
                 });
               }}
               id="form-cancel"
