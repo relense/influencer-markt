@@ -23,12 +23,16 @@ export const config = {
 
 const webhookHandler = async (req: NextApiRequest, res: NextApiResponse) => {
   if (req.method === "POST") {
-    const sig = req.headers["stripe-signature"]!;
+    const signature = req.headers["stripe-signature"] || "";
 
     let event: Stripe.Event;
 
     try {
-      event = stripe.webhooks.constructEvent(req.body, sig, webhookSecret);
+      event = stripe.webhooks.constructEvent(
+        req.body,
+        signature,
+        webhookSecret
+      );
     } catch (err: any) {
       // On error, log and return the error message
       console.log(`❌ Error message: ${err.message}`);
@@ -73,11 +77,7 @@ const webhookHandler = async (req: NextApiRequest, res: NextApiResponse) => {
         console.log(`Unhandled event type ${event.type}`);
     }
 
-    return res.status(200).send({
-      data: {
-        status: "sucess",
-      },
-    });
+    return res.status(200).send("Success");
   }
 };
 
