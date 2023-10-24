@@ -6,9 +6,10 @@
 import Cors from "micro-cors";
 import type { NextApiRequest, NextApiResponse } from "next";
 import type Stripe from "stripe";
+import { type Readable } from "stream";
+
 import { stripe } from "../../../server/stripe";
 import { prisma } from "../../../server/db";
-import { buffer } from "micro";
 
 const cors = Cors({
   allowMethods: ["POST", "HEAD"],
@@ -25,16 +26,12 @@ export const config = {
 const webhookHandler = async (req: NextApiRequest, res: NextApiResponse) => {
   if (req.method === "POST") {
     const signature = req.headers["stripe-signature"] as string;
-    const buf = await buffer(req);
+    const rawBody = await getRawBody(req);
 
     let event: Stripe.Event;
 
     try {
-      event = stripe.webhooks.constructEvent(
-        buf.toString(),
-        signature,
-        webhookSecret
-      );
+      event = stripe.webhooks.constructEvent(rawBody, signature, webhookSecret);
     } catch (err: any) {
       // On error, log and return the error message
       console.log(`❌ Error message: ${err.message}`);
@@ -82,5 +79,13 @@ const webhookHandler = async (req: NextApiRequest, res: NextApiResponse) => {
     return res.status(200).send("Success");
   }
 };
+
+async function getRawBody(readable: Readable): Promise<Buffer> {
+  const chunks = [];
+  for await (const chunk of readable) {
+    chunks.push(typeof chunk === "string" ? Buffer.from(chunk) : chunk);
+  }
+  return Buffer.concat(chunks);
+}
 
 export default cors(webhookHandler as any);
