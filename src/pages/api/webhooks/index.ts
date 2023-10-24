@@ -8,6 +8,7 @@ import type { NextApiRequest, NextApiResponse } from "next";
 import type Stripe from "stripe";
 import { stripe } from "../../../server/stripe";
 import { prisma } from "../../../server/db";
+import { buffer } from "stream/consumers";
 
 const cors = Cors({
   allowMethods: ["POST", "HEAD"],
@@ -18,12 +19,13 @@ const webhookSecret: string = process.env.STRIPE_WEBHOOK_SECRET!;
 const webhookHandler = async (req: NextApiRequest, res: NextApiResponse) => {
   if (req.method === "POST") {
     const signature = req.headers["stripe-signature"] || "";
+    const buf = await buffer(req);
 
     let event: Stripe.Event;
 
     try {
       event = stripe.webhooks.constructEvent(
-        req.body,
+        buf.toString(),
         signature,
         webhookSecret
       );
