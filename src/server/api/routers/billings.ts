@@ -9,6 +9,40 @@ export const BillingsRouter = createTRPCRouter({
           userId: ctx.session.user.id,
         },
       },
+      select: {
+        tin: true,
+        name: true,
+        email: true,
+      },
     });
   }),
+
+  updateBillingInfo: protectedProcedure
+    .input(
+      z.object({
+        email: z.string(),
+        name: z.string(),
+        tin: z.string(),
+      })
+    )
+    .mutation(async ({ ctx, input }) => {
+      const profile = await ctx.prisma.profile.findFirst({
+        where: {
+          userId: ctx.session.user.id,
+        },
+      });
+
+      if (profile) {
+        return await ctx.prisma.billing.update({
+          where: {
+            profileId: profile.id,
+          },
+          data: {
+            email: input.email,
+            name: input.email,
+            tin: input.tin,
+          },
+        });
+      }
+    }),
 });

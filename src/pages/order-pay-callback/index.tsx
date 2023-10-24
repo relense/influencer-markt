@@ -19,7 +19,7 @@ const OrderPayCallback: NextPage<OrderPayCallbackProps> = ({ orderId }) => {
     api.notifications.createNotification.useMutation();
 
   const { mutate: updateOrder, isLoading: updateAcceptIsLoading } =
-    api.orders.updateOrderAddPaymentIntent.useMutation({
+    api.orders.updateOrderToProcessing.useMutation({
       onSuccess: (order) => {
         if (order) {
           void createNotification({
@@ -43,7 +43,6 @@ const OrderPayCallback: NextPage<OrderPayCallbackProps> = ({ orderId }) => {
       setHasProcessed(true);
       updateOrder({
         orderId: parseInt(orderId),
-        paymentIntent: paymentIntent,
       });
     }
   });

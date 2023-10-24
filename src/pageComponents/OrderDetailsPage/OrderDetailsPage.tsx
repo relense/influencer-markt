@@ -17,7 +17,7 @@ import { Button } from "../../components/Button";
 import { Modal } from "../../components/Modal";
 import { MessageBoard } from "../../components/MessageBoard";
 import { ToolTip } from "../../components/ToolTip";
-import { PaymentDetailsModal } from "./innerComponents/PaymentDetailsModal";
+import { useRouter } from "next/router";
 
 type ReviewForm = {
   review: string;
@@ -33,6 +33,7 @@ const OrderDetailsPage = (params: {
 }) => {
   const { t, i18n } = useTranslation();
   const ctx = api.useContext();
+  const router = useRouter();
 
   const [openReviewModal, setOpenReviewModal] = useState<boolean>(false);
   const [starReviewsCount, setStarReviewsCount] = useState<number>(1);
@@ -41,8 +42,6 @@ const OrderDetailsPage = (params: {
     useState<boolean>(false);
   const [openDisputeModal, setOpenDisputeModal] = useState<boolean>(false);
   const [openConfirmOrderModal, setOpenConfirmOrderModal] =
-    useState<boolean>(false);
-  const [openPaymentDetailsModal, setOpenPaymentDetailsModal] =
     useState<boolean>(false);
   const [showCancelModal, setShowCancelModal] = useState<boolean>(false);
   const [showPosponeDeliveryModal, setShowPosponeDeliveryModal] =
@@ -250,7 +249,16 @@ const OrderDetailsPage = (params: {
           position: "bottom-left",
         });
       } else {
-        setOpenPaymentDetailsModal(true);
+        void router.push(
+          {
+            pathname: "/order-payment",
+            query: {
+              orderId: order.id,
+              amount: order.orderTotalPrice,
+            },
+          },
+          "/order-payment"
+        );
       }
     }
   };
@@ -987,13 +995,6 @@ const OrderDetailsPage = (params: {
       {renderCancelModal()}
       {renderPostponeDeliveryModal()}
       {renderRefundModal()}
-      {openPaymentDetailsModal && order && (
-        <PaymentDetailsModal
-          amount={order.orderTotalPrice}
-          orderId={order.id}
-          onClose={() => setOpenPaymentDetailsModal(false)}
-        />
-      )}
     </>
   );
 };

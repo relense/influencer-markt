@@ -11,7 +11,7 @@ export const StripesRouter = createTRPCRouter({
       })
     )
     .mutation(async ({ ctx, input }) => {
-      return await stripe.paymentIntents.create({
+      const paymentIntent = await stripe.paymentIntents.create({
         amount: input.paymentAmount,
         currency: "eur",
         // In the latest version of the API, specifying the `automatic_payment_methods` parameter is optional because Stripe enables its functionality by default.
@@ -23,5 +23,19 @@ export const StripesRouter = createTRPCRouter({
         },
         receipt_email: ctx.session.user.email || "",
       });
+
+      await ctx.prisma.payment.create({
+        data: {
+          amount: input.paymentAmount,
+          paymentIntent: paymentIntent.id,
+          order: {
+            connect: {
+              id: input.orderId,
+            },
+          },
+        },
+      });
+
+      return paymentIntent;
     }),
 });

@@ -523,6 +523,7 @@ model DisputeStatus {
 model Billing {
   id       Int       @id @default(autoincrement())
   name     String?
+  email    String?
   tin      String?
   iban     String?
   invoices Invoice[]
@@ -575,6 +576,7 @@ model Payment {
   paymentIntent String
   amount        Int
   order         Order   @relation(fields: [orderId], references: [id])
+  status        String  @default("Initiated")
   Refund        Refund?
 
   createdAt DateTime @default(now())
