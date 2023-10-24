@@ -65,6 +65,7 @@ export const Navbar = (params: {
     useState<boolean>(false);
   const [openSavedDropdown, setOpenSavedDropdown] = useState<boolean>(false);
   const [creditsMenuOpen, setCreditsMenuOpen] = useState<boolean>(false);
+  const [credits, setCredits] = useState<number>(-1);
 
   const { data: notificationsToBeReadCount, refetch: refetchNotficationsRead } =
     api.notifications.getUserToBeReadNotifications.useQuery(undefined, {
@@ -115,6 +116,12 @@ export const Navbar = (params: {
       document.body.style.overflow = "auto";
     }
   }, [toggleOptions, width]);
+
+  useEffect(() => {
+    if (totalCredit) {
+      setCredits(totalCredit);
+    }
+  }, [totalCredit]);
 
   const handlSignup = () => {
     params.setIsSignUp(true);
@@ -267,20 +274,22 @@ export const Navbar = (params: {
         )}
         {params.sessionData && (
           <div className="flex flex-row items-center justify-end gap-2">
-            <div
-              className="font-medium hover:cursor-pointer lg:hover:underline"
-              onClick={() => setCreditsMenuOpen(!creditsMenuOpen)}
-            >
-              <span className="hidden pt-1 lg:flex">
-                {helper.formatNumberWithDecimalValue(
-                  helper.calculerMonetaryValue(totalCredit || 0)
-                )}
-                €
-              </span>
-              <div className="flex lg:hidden ">
-                <FontAwesomeIcon icon={faCoins} className="text-xl" />
+            {credits && credits !== -1 && (
+              <div
+                className="font-medium hover:cursor-pointer lg:hover:underline"
+                onClick={() => setCreditsMenuOpen(!creditsMenuOpen)}
+              >
+                <span className="hidden pt-1 lg:flex">
+                  {helper.formatNumberWithDecimalValue(
+                    helper.calculerMonetaryValue(credits)
+                  )}
+                  €
+                </span>
+                <div className="flex lg:hidden ">
+                  <FontAwesomeIcon icon={faCoins} className="text-xl" />
+                </div>
               </div>
-            </div>
+            )}
             {params.loggedInProfileId !== -1 && (
               <>
                 <div

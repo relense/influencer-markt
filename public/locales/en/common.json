@@ -919,7 +919,10 @@
       "continuePayments": "Continue Payment Details",
       "viewOrder": "View Order Details",
       "dateDelivery": "Date of Delivery",
-      "dateDisclaimer": "The deadline can be postponed in the future after placing the order"
+      "dateDisclaimer": "The deadline can be postponed in the future after placing the order",
+      "applyDiscount": "Use credits",
+      "howManyCredits": "How many credits do you want to use?",
+      "totalAfterDiscount": "Total with Discount"
     },
 
     "sales": {

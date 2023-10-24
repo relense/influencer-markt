@@ -105,4 +105,46 @@ export const CreditsRouter = createTRPCRouter({
         });
       }
     }),
+
+  spendCredits: protectedProcedure
+    .input(
+      z.object({
+        credits: z.number(),
+      })
+    )
+    .mutation(async ({ ctx, input }) => {
+      const profile = await ctx.prisma.profile.findFirst({
+        where: {
+          userId: ctx.session.user.id,
+        },
+        select: {
+          id: true,
+        },
+      });
+
+      if (profile) {
+        const credit = await ctx.prisma.credit.findFirst({
+          where: {
+            profileId: profile.id,
+          },
+          select: {
+            id: true,
+          },
+        });
+
+        if (credit) {
+          return await ctx.prisma.creditTransaction.create({
+            data: {
+              amount: input.credits * 100,
+              isWithdraw: true,
+              credit: {
+                connect: {
+                  id: credit.id,
+                },
+              },
+            },
+          });
+        }
+      }
+    }),
 });

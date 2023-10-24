@@ -920,7 +920,10 @@
       "continuePayments": "Continuar os Detalhes de Pagamento",
       "viewOrder": "Ver Detalhes do Pedido",
       "dateDelivery": "Data de Entrega",
-      "dateDisclaimer": "A data limite pode ser adiada no futuro depois de fazer a encomenda"
+      "dateDisclaimer": "A data limite pode ser adiada no futuro depois de fazer a encomenda",
+      "applyDiscount": "Usar créditos",
+      "howManyCredits": "Quantos créditos queres usar?",
+      "totalAfterDiscount": "Total com Desconto"
     },
 
     "sales": {

@@ -1,6 +1,6 @@
 import { useTranslation } from "react-i18next";
 import { useForm } from "react-hook-form";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { api } from "~/utils/api";
 
@@ -44,10 +44,16 @@ const StartOrderPage = (params: {
   );
   const [disableSubmitButton, setDisableSubmitButton] =
     useState<boolean>(false);
+  const [applyDiscount, setApplyDiscount] = useState<boolean>(false);
+  const [creditsUsed, setCreditsUsed] = useState<string>("");
+  const [basePrice, setBasePrice] = useState<number>(0);
 
   const { data: profile } = api.profiles.getProfileById.useQuery({
     profileId: params.orderProfileId,
   });
+
+  const { data: totalCredits } = api.credits.calculateUserCredits.useQuery();
+  const { mutate: spendCredits } = api.credits.spendCredits.useMutation();
 
   const { mutate: createOrder, isLoading } = api.orders.createOrder.useMutation(
     {
@@ -66,6 +72,10 @@ const StartOrderPage = (params: {
             entityAction: "awaitingOrderReply",
             notifierId: params.orderProfileId,
           });
+
+          spendCredits({
+            credits: Number(creditsUsed),
+          });
         }
       },
     }
@@ -79,6 +89,16 @@ const StartOrderPage = (params: {
     handleSubmit,
     formState: { errors },
   } = useForm<OrderData>();
+
+  useEffect(() => {
+    let valuePacksSum = 0;
+
+    contentTypesList.forEach((contentType) => {
+      valuePacksSum += contentType.amount * contentType.price;
+    });
+
+    setBasePrice(valuePacksSum);
+  }, [contentTypesList]);
 
   const handleAmountChange = (index: number, value: number) => {
     let newValue = 0;
@@ -152,6 +172,22 @@ const StartOrderPage = (params: {
       dateOfDelivery: dayjs(data.dateOfDelivery).toDate(),
     });
   });
+
+  const validateCredits = (value: string) => {
+    if (isNaN(Number(value))) return;
+
+    const splitValue = value.split(".")[1];
+    if (splitValue && splitValue.length > 2) return;
+
+    if (totalCredits) {
+      if (
+        Number(value) <= totalCredits / 100 &&
+        Number(value) <= basePrice / 100
+      ) {
+        setCreditsUsed(value);
+      }
+    }
+  };
 
   const stepperTitle = () => {
     return (
@@ -257,7 +293,7 @@ const StartOrderPage = (params: {
                     type="number"
                     max={10}
                     min={1}
-                    className="w-12 rounded-lg border-[1px] p-1 text-center"
+                    className="w-12 rounded-lg border-[1px] p-1 text-center focus:border-[1px] focus:border-black focus:outline-none"
                     onChange={(e) =>
                       handleAmountChange(index, parseInt(e.target.value))
                     }
@@ -302,17 +338,13 @@ const StartOrderPage = (params: {
 
   const renderTotalPay = () => {
     if (profile) {
-      let valuePacksSum = 0;
-
-      contentTypesList.forEach((contentType) => {
-        valuePacksSum += contentType.amount * contentType.price;
-      });
-
-      const serviceFee = valuePacksSum * helper.calculateServiceFee();
+      const serviceFee = basePrice * helper.calculateServiceFee();
       const tax =
-        (valuePacksSum + serviceFee) *
-        ((profile?.country?.countryTax || 0) / 100);
-      const total = valuePacksSum + tax + serviceFee;
+        (basePrice + serviceFee) * ((profile?.country?.countryTax || 0) / 100);
+
+      const total = basePrice + tax + serviceFee;
+      const totalAfterDiscount =
+        basePrice + tax + serviceFee - Number(creditsUsed) * 100;
 
       return (
         <div className="flex flex-col gap-2">
@@ -326,7 +358,7 @@ const StartOrderPage = (params: {
               </div>
               <div>
                 {helper.formatNumberWithDecimalValue(
-                  helper.calculerMonetaryValue(valuePacksSum)
+                  helper.calculerMonetaryValue(basePrice)
                 )}
                 €
               </div>
@@ -364,6 +396,63 @@ const StartOrderPage = (params: {
                 €
               </div>
             </div>
+            {applyDiscount && Number(creditsUsed) > 0 && (
+              <div className="flex gap-2">
+                <div className="select-none font-semibold text-influencer">
+                  {t("pages.startOrder.totalAfterDiscount")}:
+                </div>
+                <div>
+                  {helper.formatNumberWithDecimalValue(
+                    helper.calculerMonetaryValue(totalAfterDiscount)
+                  )}
+                  €
+                </div>
+              </div>
+            )}
+          </div>
+        </div>
+      );
+    }
+  };
+
+  const renderDiscount = () => {
+    if (totalCredits && totalCredits > 0) {
+      return (
+        <div>
+          <div className="flex items-center gap-2">
+            <label className="relative mr-5 inline-flex cursor-pointer items-center">
+              <input
+                type="checkbox"
+                className="peer sr-only"
+                readOnly
+                defaultChecked={applyDiscount}
+              />
+              <div
+                onClick={() => {
+                  if (!applyDiscount) {
+                    setApplyDiscount(true);
+                  } else {
+                    setApplyDiscount(false);
+                    setCreditsUsed("");
+                  }
+                }}
+                className="peer h-6 w-11 rounded-full bg-gray-200 after:absolute after:left-[2px] after:top-0.5 after:h-5 after:w-5 after:rounded-full after:border after:border-gray-300 after:bg-white after:transition-all after:content-[''] peer-checked:bg-influencer-green-dark peer-checked:after:translate-x-full peer-checked:after:border-white peer-focus:ring-influencer-green-super-light"
+              />
+              <span className="ml-2 font-medium text-gray-900">
+                {t(`pages.startOrder.applyDiscount`)}
+              </span>
+            </label>
+            <input
+              placeholder={t(`pages.startOrder.howManyCredits`)}
+              type="text"
+              disabled={!applyDiscount}
+              max={totalCredits}
+              value={creditsUsed}
+              onChange={(e) => {
+                validateCredits(e.target.value);
+              }}
+              className="w-4/12 rounded-lg border-[1px] p-2 focus:border-[1px] focus:border-black focus:outline-none"
+            />
           </div>
         </div>
       );
@@ -404,6 +493,7 @@ const StartOrderPage = (params: {
       {renderPlatform()}
       {renderValuePacks()}
       {renderTotalPay()}
+      {renderDiscount()}
       {renderDeliveryDate()}
       <div className="w-full border-[1px] border-white1" />
 

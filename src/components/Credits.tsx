@@ -169,14 +169,19 @@ const Credits = () => {
                     )}
                   </div>
                   <div className="flex flex-1 flex-col text-left">
-                    {transaction.isWithdraw
-                      ? t("components.credits.youHaveSpent")
-                      : t("components.credits.youHaveReceived")}
-                    {transaction.isWithdraw ? " -" : " +"}
-                    {helper.formatNumberWithDecimalValue(
-                      helper.calculerMonetaryValue(transaction.amount)
-                    )}
-                    €
+                    <div className="flex flex-1 gap-1">
+                      <span>
+                        {transaction.isWithdraw
+                          ? t("components.credits.youHaveSpent")
+                          : t("components.credits.youHaveReceived")}
+                      </span>
+                      <span>
+                        {helper.formatNumberWithDecimalValue(
+                          helper.calculerMonetaryValue(transaction.amount)
+                        )}
+                        €
+                      </span>
+                    </div>
                     <div className="text-gray2">
                       {helper.formatDate(
                         transaction.transactionCreatedAt,
