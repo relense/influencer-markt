@@ -1,9 +1,8 @@
-import Cors from "micro-cors";
 import type Stripe from "stripe";
 
 import { stripe } from "../../../server/stripe";
 import { prisma } from "../../../server/db";
-import { RequestHandler, buffer } from "micro";
+import { buffer } from "micro";
 import type { NextApiRequest, NextApiResponse } from "next";
 
 // const cors = Cors({
