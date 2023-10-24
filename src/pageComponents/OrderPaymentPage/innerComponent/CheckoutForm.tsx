@@ -11,6 +11,7 @@ import { api } from "~/utils/api";
 import { Button } from "../../../components/Button";
 import { helper } from "../../../utils/helper";
 import { nifValidator } from "../../../utils/nifValidators";
+import { useTranslation } from "react-i18next";
 
 export default function CheckoutForm(params: {
   orderId: number;
@@ -21,6 +22,7 @@ export default function CheckoutForm(params: {
 }) {
   const stripe = useStripe();
   const elements = useElements();
+  const { t } = useTranslation();
 
   const [email, setEmail] = useState<string>(params.email);
   const [message, setMessage] = useState<string>("");
@@ -62,7 +64,7 @@ export default function CheckoutForm(params: {
       if (error.type === "card_error" || error.type === "validation_error") {
         setMessage(error.message || "error");
       } else {
-        setMessage("An unexpected error occurred.");
+        setMessage(t("pages.orderPayment.unexpectedError"));
       }
 
       setIsLoading(false);
@@ -72,13 +74,15 @@ export default function CheckoutForm(params: {
   const contactInfo = () => {
     return (
       <div className="flex flex-col gap-4">
-        <div className="text-xl">Contact Info</div>
+        <div className="text-xl">{t("pages.orderPayment.contactInfo")}</div>
         <div className="flex flex-1 flex-col gap-6 rounded-xl border-[1px] p-4">
           <div className="flex select-none flex-col">
-            <label className="font-base text-sm font-light">Name</label>
+            <label className="font-base text-sm font-light">
+              {t("pages.orderPayment.name")}
+            </label>
             <input
               required
-              placeholder="Name"
+              placeholder={t("pages.orderPayment.name")}
               className="rounded-[4px] border-[1px] p-3 font-light text-[#30313d] shadow-sm placeholder:font-normal placeholder:text-[#77787e]"
               onChange={(e) => setName(e.target.value)}
               value={name}
@@ -99,13 +103,15 @@ export default function CheckoutForm(params: {
   const billingInfo = () => {
     return (
       <div className="flex flex-col gap-4">
-        <div className="text-xl">Billing Info</div>
+        <div className="text-xl">{t("pages.orderPayment.billingInfo")}</div>
         <div className="flex flex-1 flex-col gap-6 rounded-xl border-[1px] p-4">
           <div className="flex select-none flex-col ">
-            <label className="font-base text-sm font-light">TIN</label>
+            <label className="font-base text-sm font-light">
+              {t("pages.orderPayment.tin")}
+            </label>
 
             <input
-              placeholder="TIN"
+              placeholder={t("pages.orderPayment.tin")}
               type="number"
               required
               className={`rounded-[4px] border-[1px] p-3 font-light text-[#30313d] shadow-sm placeholder:font-normal placeholder:text-[#77787e] ${
@@ -120,7 +126,7 @@ export default function CheckoutForm(params: {
                   e.target.value.length > 0 &&
                   !nifValidator.validatePortugueseNIF(e.target.value)
                 ) {
-                  setNifError("O teu NIF é inválido");
+                  setNifError(t("pages.orderPayment.invalidTin"));
                 }
               }}
               value={tin}
@@ -138,8 +144,8 @@ export default function CheckoutForm(params: {
 
   const paymentInfo = () => {
     return (
-      <div className="flex flex-col gap-4">
-        <div className="text-xl">Payment Info</div>
+      <div className="flex flex-1 flex-col gap-4">
+        <div className="text-xl">{t("pages.orderPayment.paymentInfo")}</div>
         <div className="flex flex-col gap-4 rounded-xl border-[1px] p-4">
           <div className="flex flex-1 flex-col gap-4">
             <PaymentElement
@@ -159,14 +165,21 @@ export default function CheckoutForm(params: {
       onSubmit={handleSubmit}
       className="flex flex-col justify-center gap-8 p-8 text-sm font-medium"
     >
-      {contactInfo()}
-      {billingInfo()}
-      {paymentInfo()}
+      <div className="flex w-full flex-1 flex-col items-center justify-center gap-6 lg:flex-row">
+        <div className="flex w-full flex-1 flex-col">
+          {contactInfo()}
+          {billingInfo()}
+        </div>
+        <div className="flex w-full flex-1">{paymentInfo()}</div>
+      </div>
+
       <div className="flex justify-center">
         <Button
-          title={`Pay ${helper.formatNumberWithDecimalValue(
-            helper.calculerMonetaryValue(params.orderAmount)
-          )}€`}
+          title={`${t("pages.orderPayment.pay", {
+            money: helper.formatNumberWithDecimalValue(
+              helper.calculerMonetaryValue(params.orderAmount)
+            ),
+          })}€`}
           isLoading={isLoading}
           disabled={isLoading || !stripe || !elements}
           id="submit"

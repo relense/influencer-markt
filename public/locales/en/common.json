@@ -1070,6 +1070,17 @@
       "button": "Save Social Media",
       "contentTypesTitle": "Platform Content Types",
       "contentTypePlaceholder": "Content Type"
+    },
+
+    "orderPayment": {
+      "contactInfo": "Contact Info",
+      "name": "Name",
+      "billingInfo": "Billing Info",
+      "tin": "TIN",
+      "paymentInfo": "Payment Info",
+      "pay": "Pay {{money}}",
+      "unexpectedError": "An unexpected error occurred",
+      "invalidTin": "Your TIN is invalid"
     }
   },
 

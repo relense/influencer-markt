@@ -1071,6 +1071,17 @@
       "button": "Guarda Rede Social",
       "contentTypesTitle": "Tipos de Conteúdo da Plataforma",
       "contentTypePlaceholder": "Tipo de conteúdo"
+    },
+
+    "orderPayment": {
+      "contactInfo": "Informação de Contacto",
+      "name": "Nome",
+      "billingInfo": "Informação de Faturação",
+      "tin": "NIF",
+      "paymentInfo": "Informação de Pagamento",
+      "pay": "Pagar {{money}}",
+      "unexpectedError": "Ocorreu um erro inesperado",
+      "invalidTin": "O teu NIF é inválido"
     }
   },
 
