@@ -1,15 +1,14 @@
 import Cors from "micro-cors";
 import type Stripe from "stripe";
-import { type NextRequest, NextResponse } from "next/server";
 
 import { stripe } from "../../../server/stripe";
 import { prisma } from "../../../server/db";
-import { buffer } from "micro";
+import { RequestHandler, buffer } from "micro";
 import type { NextApiRequest, NextApiResponse } from "next";
 
-const cors = Cors({
-  allowMethods: ["POST", "HEAD"],
-});
+// const cors = Cors({
+//   allowMethods: ["POST", "HEAD"],
+// });
 
 const webhookSecret: string = process.env.STRIPE_WEBHOOK_SECRET!;
 
@@ -22,29 +21,26 @@ export const config = {
 const webhookHandler = async (req: NextApiRequest, res: NextApiResponse) => {
   if (req.method === "POST") {
     const buf = await buffer(req);
-
-    const signature = req.headers["stripe-signature"] as string;
+    const sig = req.headers["stripe-signature"]!;
 
     let event: Stripe.Event;
 
     try {
       event = stripe.webhooks.constructEvent(
         buf.toString(),
-        signature,
+        sig,
         webhookSecret
       );
-    } catch (err: any) {
-      // On error, log and return the error message
-      console.log(`❌ Error message: ${err.message}`);
-      res.status(400).send(`Webhook Error: ${err.message}`);
-      // NextResponse.json(
-      //   {
-      //     message: `Webhook Error: ${err.message}`,
-      //   },
-      //   {
-      //     status: 400,
-      //   }
-      // );
+    } catch (err: unknown) {
+      if (err instanceof Error) {
+        // Check if err is an instance of Error
+        console.log(`❌ Error message: ${err.message}`);
+        res.status(400).send(`Webhook Error: ${err.message}`);
+      } else {
+        // Handle other types of errors
+        console.log(`❌ Unknown error: ${err as string}`);
+        res.status(500).send("Internal Server Error");
+      }
       return;
     }
 
@@ -85,17 +81,8 @@ const webhookHandler = async (req: NextApiRequest, res: NextApiResponse) => {
         console.log(`Unhandled event type ${event.type}`);
     }
 
-    // return NextResponse.json(
-    //   {
-    //     message: `Success`,
-    //   },
-    //   {
-    //     status: 200,
-    //   }
-    // );
-
     return res.status(200).send(`success`);
   }
 };
 
-export default cors(webhookHandler as any);
+export default webhookHandler;
