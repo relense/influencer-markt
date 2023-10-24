@@ -237,6 +237,7 @@ export const OrdersRouter = createTRPCRouter({
             },
           },
           review: true,
+          discount: true,
         },
       });
     }),
@@ -324,6 +325,7 @@ export const OrdersRouter = createTRPCRouter({
                 },
               },
               socialMedia: true,
+              discount: true,
             },
             orderBy: {
               createdAt: "desc",
@@ -375,6 +377,7 @@ export const OrdersRouter = createTRPCRouter({
               },
             },
             socialMedia: true,
+            discount: true,
           },
           orderBy: {
             createdAt: "desc",

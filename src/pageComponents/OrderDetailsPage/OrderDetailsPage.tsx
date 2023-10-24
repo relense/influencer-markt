@@ -249,12 +249,18 @@ const OrderDetailsPage = (params: {
           position: "bottom-left",
         });
       } else {
+        let saleTotal = order.orderTotalPrice;
+
+        if (order.discount) {
+          saleTotal = order.orderTotalPrice - order.discount.amount;
+        }
+
         void router.push(
           {
             pathname: "/order-payment",
             query: {
               orderId: order.id,
-              amount: order.orderTotalPrice,
+              amount: saleTotal,
             },
           },
           "/order-payment"
@@ -467,6 +473,12 @@ const OrderDetailsPage = (params: {
 
   const renderTotalPrice = () => {
     if (order) {
+      let totalValue = order.orderTotalPrice;
+
+      if (order.discount) {
+        totalValue = order.orderTotalPrice - (order?.discount?.amount || 0);
+      }
+
       return (
         <div className="flex flex-col gap-1">
           <div className="flex justify-center gap-2">
@@ -476,9 +488,7 @@ const OrderDetailsPage = (params: {
             <ToolTip content={t("pages.orders.includesFees")} />
           </div>
           <div className="text-base font-semibold text-influencer">
-            {helper.formatNumber(
-              helper.calculerMonetaryValue(order.orderTotalPrice) || 0
-            )}
+            {helper.formatNumber(helper.calculerMonetaryValue(totalValue) || 0)}
             €
           </div>
         </div>

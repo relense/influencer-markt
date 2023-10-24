@@ -75,6 +75,7 @@ const StartOrderPage = (params: {
 
           spendCredits({
             credits: Number(creditsUsed),
+            orderId: order.id,
           });
         }
       },

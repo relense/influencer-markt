@@ -373,20 +373,20 @@ model VerifiedStatus {
 }
 
 model Order {
-  id                     Int              @id @default(autoincrement())
-  influencer             Profile?         @relation("influencer", fields: [influencerId], references: [id])
-  buyer                  Profile?         @relation("buyer", fields: [buyerId], references: [id])
-  orderDetails           String           @db.Text
+  id                     Int                @id @default(autoincrement())
+  influencer             Profile?           @relation("influencer", fields: [influencerId], references: [id])
+  buyer                  Profile?           @relation("buyer", fields: [buyerId], references: [id])
+  orderDetails           String             @db.Text
   orderValuePacks        OrderValuePack[]
-  orderInfluencerCountry Country?         @relation(fields: [countryId], references: [id])
+  orderInfluencerCountry Country?           @relation(fields: [countryId], references: [id])
   orderBasePrice         Int
   orderTotalPrice        Int
   orderTaxPercentage     Int
   orderServicePercentage Int
-  orderStatus            OrderStatus?     @relation(fields: [orderStatusId], references: [id])
-  socialMedia            SocialMedia?     @relation(fields: [socialMediaId], references: [id])
-  review                 Review?          @relation(fields: [reviewId], references: [id])
-  job                    Job?             @relation(fields: [jobId], references: [id])
+  orderStatus            OrderStatus?       @relation(fields: [orderStatusId], references: [id])
+  socialMedia            SocialMedia?       @relation(fields: [socialMediaId], references: [id])
+  review                 Review?            @relation(fields: [reviewId], references: [id])
+  job                    Job?               @relation(fields: [jobId], references: [id])
   messages               Message[]
   dispute                Dispute?
   dateOfDelivery         DateTime
@@ -394,6 +394,7 @@ model Order {
   invoice                Invoice[]
   payment                Payment[]
   refund                 Refund?
+  discount               CreditTransaction?
 
   influencerId  Int?
   buyerId       Int?
@@ -619,17 +620,19 @@ model Credit {
 }
 
 model CreditTransaction {
-  id         String  @id @default(cuid())
-  amount     Int
-  isWithdraw Boolean @default(false)
-  credit     Credit  @relation(fields: [creditId], references: [id])
-  refund     Refund? @relation(fields: [refundId], references: [id])
+  id            String  @id @default(cuid())
+  amount        Int
+  isWithdraw    Boolean @default(false)
+  credit        Credit  @relation(fields: [creditId], references: [id])
+  refund        Refund? @relation(fields: [refundId], references: [id])
+  orderDiscount Order?  @relation(fields: [orderId], references: [id])
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
   refundId String? @unique
   creditId String
+  orderId  Int?     @unique
 
   @@index([refundId])
   @@index([creditId])

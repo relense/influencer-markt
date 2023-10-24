@@ -24,6 +24,7 @@ type Order = {
   socialMediaName: string;
   orderValuePacks: OrderValuePack[];
   orderPrice: number;
+  discountPrice: number;
 };
 
 type OrderValuePack = {
@@ -102,6 +103,7 @@ const OrdersPage = () => {
               };
             }),
             socialMediaName: order.socialMedia?.name || "",
+            discountPrice: order?.discount?.amount || 0,
           };
         })
       );
@@ -135,6 +137,7 @@ const OrdersPage = () => {
             };
           }),
           socialMediaName: order.socialMedia?.name || "",
+          discountPrice: order?.discount?.amount || 0,
         });
       });
 
@@ -235,7 +238,9 @@ const OrdersPage = () => {
               </div>
               <div>
                 {helper.formatNumber(
-                  helper.calculerMonetaryValue(order.orderPrice)
+                  helper.calculerMonetaryValue(
+                    order.orderPrice - order.discountPrice
+                  )
                 ) || 0}
                 €
               </div>

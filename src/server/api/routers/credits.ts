@@ -110,6 +110,7 @@ export const CreditsRouter = createTRPCRouter({
     .input(
       z.object({
         credits: z.number(),
+        orderId: z.number(),
       })
     )
     .mutation(async ({ ctx, input }) => {
@@ -133,7 +134,7 @@ export const CreditsRouter = createTRPCRouter({
         });
 
         if (credit) {
-          return await ctx.prisma.creditTransaction.create({
+          const creditTransaction = await ctx.prisma.creditTransaction.create({
             data: {
               amount: input.credits * 100,
               isWithdraw: true,
@@ -144,6 +145,21 @@ export const CreditsRouter = createTRPCRouter({
               },
             },
           });
+
+          await ctx.prisma.order.update({
+            where: {
+              id: input.orderId,
+            },
+            data: {
+              discount: {
+                connect: {
+                  id: creditTransaction.id,
+                },
+              },
+            },
+          });
+
+          return creditTransaction;
         }
       }
     }),
