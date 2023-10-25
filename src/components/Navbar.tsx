@@ -79,11 +79,14 @@ export const Navbar = (params: {
       },
     });
 
-  const { data: totalCredit, refetch: refetchTotalCredit } =
-    api.credits.calculateUserCredits.useQuery(undefined, {
-      enabled: false,
-      cacheTime: 0,
-    });
+  const {
+    data: totalCredit,
+    refetch: refetchTotalCredit,
+    isLoading: isLoadingTotalCredits,
+  } = api.credits.calculateUserCredits.useQuery(undefined, {
+    enabled: false,
+    cacheTime: 0,
+  });
 
   useEffect(() => {
     if (params.sessionData) {
@@ -118,8 +121,8 @@ export const Navbar = (params: {
   }, [toggleOptions, width]);
 
   useEffect(() => {
-    if (totalCredit) {
-      setCredits(totalCredit);
+    if (isLoadingTotalCredits === false) {
+      setCredits(totalCredit || 0);
     }
   }, [totalCredit]);
 
@@ -274,16 +277,13 @@ export const Navbar = (params: {
         )}
         {params.sessionData && (
           <div className="flex flex-row items-center justify-end gap-2">
-            {credits && credits !== -1 && (
+            {credits !== -1 && (
               <div
                 className="font-medium hover:cursor-pointer lg:hover:underline"
                 onClick={() => setCreditsMenuOpen(!creditsMenuOpen)}
               >
                 <span className="hidden pt-1 lg:flex">
-                  {helper.formatNumberWithDecimalValue(
-                    helper.calculerMonetaryValue(credits)
-                  )}
-                  €
+                  {helper.calculerMonetaryValue(credits)}€
                 </span>
                 <div className="flex lg:hidden ">
                   <FontAwesomeIcon icon={faCoins} className="text-xl" />

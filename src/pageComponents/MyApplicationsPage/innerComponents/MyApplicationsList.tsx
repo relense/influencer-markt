@@ -102,10 +102,7 @@ const MyApplicationsList = (params: {
                         {t("pages.applications.jobPay")}
                       </div>
                       <div className="font-semibold text-black">
-                        {helper.formatNumber(
-                          helper.calculerMonetaryValue(job?.price || 0)
-                        )}
-                        €
+                        {helper.calculerMonetaryValue(job?.price || 0)}€
                       </div>
                     </div>
                   </div>

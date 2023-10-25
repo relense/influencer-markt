@@ -92,7 +92,7 @@ const CreateJobPage = (params: { edit: boolean; jobId: number }) => {
       setValue("numberOfInfluencers", job.numberOfInfluencers);
       setValue("jobDetails", job.JobDetails);
       setValue("jobSummary", job.jobSummary);
-      setValue("jobPrice", helper.calculerMonetaryValue(job.price));
+      setValue("jobPrice", job.price / 100);
       setValue("platform", job.socialMedia);
       setIsPublished(job.published);
       setContentTypesList(job.contentTypeWithQuantity);
@@ -460,7 +460,7 @@ const CreateJobPage = (params: { edit: boolean; jobId: number }) => {
             {...register("jobPrice", { valueAsNumber: true })}
             required
             type="number"
-            className="flex h-14 flex-1 cursor-pointer rounded-lg border-[1px] border-gray3 bg-transparent p-4 placeholder-gray2 placeholder:w-11/12"
+            className="flex h-14 flex-1 cursor-pointer rounded-lg border-[1px] border-gray3 bg-transparent p-4 placeholder-gray2 placeholder:w-11/12 focus:border-black focus:outline-none"
             placeholder={t("pages.manageJobs.pricePlaceholder")}
             autoComplete="off"
             min="0"
@@ -484,7 +484,7 @@ const CreateJobPage = (params: { edit: boolean; jobId: number }) => {
             {...register("numberOfInfluencers", { valueAsNumber: true })}
             required
             type="number"
-            className="flex h-14 flex-1 cursor-pointer rounded-lg border-[1px] border-gray3 bg-transparent p-4 placeholder-gray2 placeholder:w-11/12"
+            className="flex h-14 flex-1 cursor-pointer rounded-lg border-[1px] border-gray3 bg-transparent p-4 placeholder-gray2 placeholder:w-11/12 focus:border-black focus:outline-none"
             placeholder={t("pages.manageJobs.numberOfInfluencersPlaceholder")}
             autoComplete="off"
             min="1"

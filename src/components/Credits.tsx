@@ -176,10 +176,7 @@ const Credits = () => {
                           : t("components.credits.youHaveReceived")}
                       </span>
                       <span>
-                        {helper.formatNumberWithDecimalValue(
-                          helper.calculerMonetaryValue(transaction.amount)
-                        )}
-                        €
+                        {helper.calculerMonetaryValue(transaction.amount)}€
                       </span>
                     </div>
                     <div className="text-gray2">
@@ -257,12 +254,7 @@ const Credits = () => {
                 <span className="font-medium ">
                   {t("components.credits.creditsTitle")}
                 </span>{" "}
-                <span>
-                  {helper.formatNumberWithDecimalValue(
-                    helper.calculerMonetaryValue(totalCredit || 0)
-                  )}
-                  €
-                </span>
+                <span>{helper.calculerMonetaryValue(totalCredit || 0)}€</span>
               </div>
             </div>
             <div className="w-full border-[1px] border-white1" />

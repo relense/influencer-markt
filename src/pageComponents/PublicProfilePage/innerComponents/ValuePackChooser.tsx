@@ -123,10 +123,8 @@ const ValuePackChooser = (params: {
                           )}
                         </div>
                         <div className="text-base font-medium ">
-                          {helper.formatNumber(
-                            helper.calculerMonetaryValue(
-                              valuePack.valuePackPrice
-                            )
+                          {helper.calculerMonetaryValue(
+                            valuePack.valuePackPrice
                           )}
                           €
                         </div>
@@ -197,8 +195,9 @@ const ValuePackChooser = (params: {
       sumTotalPlusService * (params.profileCountryTax / 100)
     );
 
-    const calculateOrderTotal = helper.formatNumberWithDecimalValue(
-      Number((sumTotal + serviceTaxTotal + calculateTaxesTotal).toFixed(2))
+    const calculateOrderTotal = helper.calculerMonetaryValue(
+      sumTotalPlusService +
+        sumTotalPlusService * (params.profileCountryTax / 100)
     );
 
     return (
@@ -207,7 +206,7 @@ const ValuePackChooser = (params: {
           <div className="flex flex-1 justify-between">
             <div>{t("pages.publicProfilePage.subtotal")}</div>
             {params.selectedValuePacks.length > 0 ? (
-              <div>{helper.formatNumberWithDecimalValue(sumTotal)}€</div>
+              <div>{sumTotal}€</div>
             ) : (
               "-"
             )}
@@ -216,7 +215,7 @@ const ValuePackChooser = (params: {
             <div>{t("pages.publicProfilePage.serviceFee")}</div>
             {params.selectedValuePacks.length > 0 &&
             params.profileCountryTax ? (
-              <div>{helper.formatNumberWithDecimalValue(serviceTaxTotal)}€</div>
+              <div>{serviceTaxTotal}€</div>
             ) : (
               "-"
             )}
@@ -225,9 +224,7 @@ const ValuePackChooser = (params: {
             <div>{t("pages.publicProfilePage.fee")}</div>
             {params.selectedValuePacks.length > 0 &&
             params.profileCountryTax ? (
-              <div>
-                {helper.formatNumberWithDecimalValue(calculateTaxesTotal)}€
-              </div>
+              <div>{calculateTaxesTotal}€</div>
             ) : (
               "-"
             )}
@@ -261,10 +258,7 @@ const ValuePackChooser = (params: {
           <div className="flex items-center gap-1">
             {params.selectedValuePacks.length > 0 && (
               <div className="text-xl font-medium">
-                {helper.formatNumber(
-                  helper.calculerMonetaryValue(sumValuePacks())
-                )}
-                €
+                {helper.calculerMonetaryValue(sumValuePacks())}€
               </div>
             )}
           </div>

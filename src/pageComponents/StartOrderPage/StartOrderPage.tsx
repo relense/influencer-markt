@@ -112,7 +112,7 @@ const StartOrderPage = (params: {
     setBasePrice(valuePacksSum);
     setServiceFee(serviceFee);
     setTaxValue(tax);
-    setTotalPrice(total);
+    setTotalPrice(Number(total));
   }, [basePrice, contentTypesList, profile?.country?.countryTax]);
 
   const handleAmountChange = (index: number, value: number) => {
@@ -333,10 +333,8 @@ const StartOrderPage = (params: {
                     {t(`general.contentTypes.${valuePack.contentType.name}`)}
                   </div>
                   <div className="text-base font-medium">
-                    {helper.formatNumberWithDecimalValue(
-                      helper.calculerMonetaryValue(
-                        valuePack.price * valuePack.amount
-                      )
+                    {helper.calculerMonetaryValue(
+                      valuePack.price * valuePack.amount
                     ) || 0}
                     €
                   </div>
@@ -361,45 +359,25 @@ const StartOrderPage = (params: {
               <div className="select-none font-semibold text-influencer">
                 {t("pages.startOrder.valuePacks")}:
               </div>
-              <div>
-                {helper.formatNumberWithDecimalValue(
-                  helper.calculerMonetaryValue(basePrice)
-                )}
-                €
-              </div>
+              <div>{helper.calculerMonetaryValue(basePrice)}€</div>
             </div>
             <div className="flex gap-2">
               <div className="select-none font-semibold text-influencer">
                 {t("pages.startOrder.serviceFee")}:
               </div>
-              <div>
-                {helper.formatNumberWithDecimalValue(
-                  helper.calculerMonetaryValue(serviceFee)
-                )}
-                €
-              </div>
+              <div>{helper.calculerMonetaryValue(serviceFee)}€</div>
             </div>
             <div className="flex gap-2">
               <div className="select-none font-semibold text-influencer">
                 {t("pages.startOrder.fee")}:
               </div>
-              <div>
-                {helper.formatNumberWithDecimalValue(
-                  helper.calculerMonetaryValue(taxValue)
-                )}
-                €
-              </div>
+              <div>{helper.calculerMonetaryValue(taxValue)}€</div>
             </div>
             <div className="flex gap-2">
               <div className="select-none font-semibold text-influencer">
                 {t("pages.startOrder.total")}:
               </div>
-              <div>
-                {helper.formatNumberWithDecimalValue(
-                  helper.calculerMonetaryValue(totalPrice)
-                )}
-                €
-              </div>
+              <div>{helper.calculerMonetaryValue(totalPrice)}€</div>
             </div>
             {applyDiscount && Number(creditsUsed) > 0 && (
               <div className="flex gap-2">
@@ -407,10 +385,8 @@ const StartOrderPage = (params: {
                   {t("pages.startOrder.totalAfterDiscount")}:
                 </div>
                 <div>
-                  {helper.formatNumberWithDecimalValue(
-                    helper.calculerMonetaryValue(
-                      totalPrice - Number(creditsUsed) * 100
-                    )
+                  {helper.calculerMonetaryValue(
+                    totalPrice - Number(creditsUsed) * 100
                   )}
                   €
                 </div>

@@ -713,9 +713,7 @@ const ManageJobDetailsPage = (params: {
             <div className="font-semibold text-influencer">
               {t("pages.manageJobs.basePrice")}
             </div>
-            <div>
-              {helper.formatNumber(helper.calculerMonetaryValue(job.price))}€
-            </div>
+            <div>{helper.calculerMonetaryValue(job.price)}€</div>
             <ToolTip content={t("pages.manageJobs.baseValueDisclaimer")} />
           </div>
         </div>

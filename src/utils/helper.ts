@@ -142,7 +142,9 @@ const preloadImages = async (
 };
 
 const calculerMonetaryValue = (value: number) => {
-  const result = Math.floor((value / 100.0) * 100) / 100;
+  const result = Number(
+    (Math.round((value / 100.0) * 100) / 100).toFixed(2)
+  ).toLocaleString(undefined, { minimumFractionDigits: 2 });
   return result;
 };
 

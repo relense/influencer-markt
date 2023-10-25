@@ -244,9 +244,7 @@ const MyApplicationsDetails = (params: {
         <div className="font-semibold text-influencer">
           {t("pages.applications.jobPay")}
         </div>
-        <div>
-          {helper.formatNumber(helper.calculerMonetaryValue(job?.price || 0))}€
-        </div>
+        <div>{helper.calculerMonetaryValue(job?.price || 0)}€</div>
       </div>
     );
   };

@@ -231,12 +231,7 @@ const SalesPage = () => {
               <div className="font-semibold text-influencer">
                 {t("pages.sales.saleTotal")}
               </div>
-              <div>
-                {helper.formatNumberWithDecimalValue(
-                  helper.calculerMonetaryValue(sale.orderPrice)
-                )}
-                €
-              </div>
+              <div>{helper.calculerMonetaryValue(sale.orderPrice)}€</div>
             </div>
           </div>
           <div className="flex flex-1 justify-end p-4">

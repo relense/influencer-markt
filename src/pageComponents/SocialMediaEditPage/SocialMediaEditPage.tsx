@@ -102,9 +102,7 @@ const SocialMediaEditPage = (params: {
               id: userSocialMedia.socialMedia?.id || -1,
               name: userSocialMedia.socialMedia?.name || "",
             },
-            valuePackPrice: helper.calculerMonetaryValue(
-              valuePack.valuePackPrice
-            ),
+            valuePackPrice: valuePack.valuePackPrice / 100,
           };
         })
       );

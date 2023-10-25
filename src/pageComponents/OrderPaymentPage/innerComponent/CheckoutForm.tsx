@@ -176,9 +176,7 @@ export default function CheckoutForm(params: {
       <div className="flex justify-center">
         <Button
           title={`${t("pages.orderPayment.pay", {
-            money: helper.formatNumberWithDecimalValue(
-              helper.calculerMonetaryValue(params.orderAmount)
-            ),
+            money: helper.calculerMonetaryValue(params.orderAmount),
           })}€`}
           isLoading={isLoading}
           disabled={isLoading || !stripe || !elements}
