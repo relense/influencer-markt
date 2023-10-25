@@ -15,20 +15,10 @@ const OrderPayCallback: NextPage<OrderPayCallbackProps> = ({ orderId }) => {
 
   const [hasProcessed, setHasProcessed] = useState<boolean>(false);
 
-  const { mutate: createNotification } =
-    api.notifications.createNotification.useMutation();
-
   const { mutate: updateOrder, isLoading: updateAcceptIsLoading } =
     api.orders.updateOrderToProcessing.useMutation({
       onSuccess: (order) => {
         if (order) {
-          void createNotification({
-            entityId: order.id,
-            senderId: order.buyerId || -1,
-            notifierId: order?.influencerId || -1,
-            entityAction: "orderPaymentsAdded",
-          });
-
           void router.push(`/orders/${order.id}`);
         }
       },

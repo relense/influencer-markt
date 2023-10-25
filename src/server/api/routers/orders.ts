@@ -527,65 +527,6 @@ export const OrdersRouter = createTRPCRouter({
       });
     }),
 
-  updateOrderStatusToInProgress: protectedProcedure
-    .input(
-      z.object({
-        orderId: z.number(),
-        statusId: z.number(),
-      })
-    )
-    .mutation(async ({ ctx, input }) => {
-      const beforeUpdateOrder = await ctx.prisma.order.findFirst({
-        where: {
-          id: input.orderId,
-        },
-      });
-
-      if (beforeUpdateOrder?.orderStatusId === 10) {
-        const order = await ctx.prisma.order.update({
-          where: { id: input.orderId },
-          data: {
-            orderStatusId: input.statusId,
-          },
-          include: {
-            buyer: {
-              select: {
-                name: true,
-                user: {
-                  select: {
-                    email: true,
-                  },
-                },
-              },
-            },
-            influencer: {
-              select: {
-                name: true,
-                country: true,
-                user: {
-                  select: {
-                    email: true,
-                  },
-                },
-              },
-            },
-          },
-        });
-
-        if (process.env.NEXT_PUBLIC_EMAIL_FROM) {
-          buyerAddDetailsEmail({
-            buyerName: order.buyer?.name || "",
-            from: process.env.NEXT_PUBLIC_EMAIL_FROM,
-            to: order.influencer?.user.email || "",
-            language: order.influencer?.country?.languageCode || "en",
-            orderId: order.id,
-          });
-        }
-
-        return order;
-      }
-    }),
-
   cancelOrder: protectedProcedure
     .input(
       z.object({

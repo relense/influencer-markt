@@ -4,6 +4,8 @@ import { stripe } from "../../../server/stripe";
 import { prisma } from "../../../server/db";
 import { buffer } from "micro";
 import type { NextApiRequest, NextApiResponse } from "next";
+import { createNotification } from "../../../server/api/routers/notifications";
+import { buyerAddDetailsEmail } from "../../../emailTemplates/buyerAddDetailsEmail/buyerAddDetailsEmail";
 
 const webhookSecret: string = process.env.STRIPE_WEBHOOK_SECRET as string;
 
@@ -56,14 +58,49 @@ const webhookHandler = async (req: NextApiRequest, res: NextApiResponse) => {
           },
         });
 
-        if (payment && payment.order.orderStatusId === 10) {
-          await prisma.order.update({
+        if (payment) {
+          const order = await prisma.order.update({
             where: {
               id: payment.orderId,
             },
             data: {
               orderStatusId: 4,
             },
+            select: {
+              id: true,
+              buyerId: true,
+              influencerId: true,
+              buyer: {
+                select: {
+                  name: true,
+                },
+              },
+              influencer: {
+                select: {
+                  country: true,
+                  user: {
+                    select: {
+                      email: true,
+                    },
+                  },
+                },
+              },
+            },
+          });
+
+          await createNotification({
+            entityId: order.id,
+            senderId: order.buyerId || -1,
+            notifierId: order?.influencerId || -1,
+            entityAction: "orderPaymentsAdded",
+          });
+
+          buyerAddDetailsEmail({
+            buyerName: order.buyer?.name || "",
+            from: process.env.NEXT_PUBLIC_EMAIL_FROM || "",
+            to: order.influencer?.user.email || "",
+            language: order.influencer?.country?.languageCode || "en",
+            orderId: order.id,
           });
         }
 
