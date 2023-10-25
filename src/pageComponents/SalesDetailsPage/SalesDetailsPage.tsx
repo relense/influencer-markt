@@ -53,7 +53,7 @@ const SalesDetailsPage = (params: { orderId: number }) => {
     });
 
   const { mutate: updateOrderReject, isLoading: updateRejectIsLoading } =
-    api.orders.updateOrder.useMutation({
+    api.orders.updateOrderReject.useMutation({
       onSuccess: () => {
         void createNotification({
           entityId: params.orderId,
@@ -104,7 +104,6 @@ const SalesDetailsPage = (params: { orderId: number }) => {
     } else {
       updateOrderReject({
         orderId: params.orderId,
-        statusId: 2,
       });
     }
 

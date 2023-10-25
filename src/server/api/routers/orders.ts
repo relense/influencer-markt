@@ -564,6 +564,33 @@ export const OrdersRouter = createTRPCRouter({
       }
     }),
 
+  updateOrderReject: protectedProcedure
+    .input(
+      z.object({
+        orderId: z.number(),
+      })
+    )
+    .mutation(async ({ ctx, input }) => {
+      const order = await ctx.prisma.order.update({
+        where: { id: input.orderId },
+        data: {
+          orderStatusId: 2,
+        },
+        select: {
+          id: true,
+          discount: true,
+        },
+      });
+
+      if (order.discount) {
+        await ctx.prisma.creditTransaction.delete({
+          where: {
+            orderId: order.id,
+          },
+        });
+      }
+    }),
+
   updateOrder: protectedProcedure
     .input(
       z.object({
