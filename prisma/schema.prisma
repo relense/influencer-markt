@@ -543,6 +543,7 @@ model Invoice {
   order                     Order       @relation(fields: [orderId], references: [id])
   billing                   Billing     @relation(fields: [billingId], references: [id])
   name                      String?
+  email                     String?
   tin                       String?
   saleBaseValue             Int
   saleTotalValue            Int
@@ -632,7 +633,7 @@ model CreditTransaction {
 
   refundId String? @unique
   creditId String
-  orderId  Int?     @unique
+  orderId  Int?    @unique
 
   @@index([refundId])
   @@index([creditId])

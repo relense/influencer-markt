@@ -1049,6 +1049,7 @@
       "confirmBilling": "Confirm Billing Details",
       "billingModalTitle": "Billing",
       "billingName": "Name",
+      "billingEmail": "Email",
       "billingTaxNumber": "National Insurance Number",
       "billingInformation": "Billing Information",
       "balanceInformation": "Balance Information",
@@ -1057,7 +1058,8 @@
       "update": "Update",
       "withdraw": "Withdraw",
       "salesInvoices": "Sales Invoices",
-      "purchasesInvoices": "Purchases Invoices"
+      "purchasesInvoices": "Purchases Invoices",
+      "invalidTin": "The TIN is invalid"
     },
 
     "socialMediaCreate": {

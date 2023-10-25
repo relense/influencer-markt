@@ -10,10 +10,13 @@ import { helper } from "../../utils/helper";
 import Image from "next/image";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCircleCheck, faCirclePlus } from "@fortawesome/free-solid-svg-icons";
+import { LoadingSpinner } from "../../components/LoadingSpinner";
+import { nifValidator } from "../../utils/nifValidators";
 
 type BillingForm = {
   name: string;
-  TIN: string;
+  email: string;
+  tin: string;
 };
 
 type Invoice = {
@@ -42,6 +45,8 @@ type Invoice = {
 
 const BillingPage = (params: { isBrand: boolean }) => {
   const { t, i18n } = useTranslation();
+  const ctx = api.useContext();
+
   const [purchasesInvoices, setPurchasesInvoices] = useState<Invoice[]>([]);
   const [purchasesInvoicesCursor, setPurchasesInvoicesCursor] =
     useState<number>(-1);
@@ -54,10 +59,28 @@ const BillingPage = (params: { isBrand: boolean }) => {
   const { data: purchasesInvoicesData, isLoading: isLoadingPurchasesInvoices } =
     api.invoices.getPurchasesInvoices.useQuery();
 
+  const { mutate: updateBillingInfo, isLoading: isLoadingUpdateBillingInfo } =
+    api.billings.updateBillingInfo.useMutation({
+      onSuccess: () => {
+        void ctx.billings.getBillingInfo.invalidate();
+        setOpenBillingDetailsModal(false);
+      },
+    });
+
   const {
     register: registerBillingForm,
     handleSubmit: handleSubmitBillingForm,
+    setValue: setBillingValue,
+    formState: { errors },
   } = useForm<BillingForm>();
+
+  useEffect(() => {
+    if (billingInfo) {
+      setBillingValue("email", billingInfo?.email || "");
+      setBillingValue("name", billingInfo?.name || "");
+      setBillingValue("tin", billingInfo?.tin || "");
+    }
+  }, [billingInfo, setBillingValue]);
 
   useEffect(() => {
     if (purchasesInvoicesData) {
@@ -110,7 +133,11 @@ const BillingPage = (params: { isBrand: boolean }) => {
   }, [i18n.language, purchasesInvoicesData]);
 
   const submitBilling = handleSubmitBillingForm((data) => {
-    console.log(data);
+    updateBillingInfo({
+      email: data.email,
+      name: data.name,
+      tin: data.tin,
+    });
   });
 
   const billingInformation = () => {
@@ -126,6 +153,12 @@ const BillingPage = (params: { isBrand: boolean }) => {
                 {t("pages.billing.billingName")}
               </div>
               <div>{billingInfo.name || "No Information"}</div>
+            </div>
+            <div className="flex flex-col gap-2">
+              <div className="text-lg font-medium">
+                {t("pages.billing.billingEmail")}
+              </div>
+              <div>{billingInfo.email || "No Information"}</div>
             </div>
             <div className="flex flex-col gap-2">
               <div className="text-lg font-medium">
@@ -337,7 +370,8 @@ const BillingPage = (params: { isBrand: boolean }) => {
                   title={t("pages.billing.addBilling")}
                   level="terciary"
                   form="form-billing"
-                  isLoading={false}
+                  isLoading={isLoadingUpdateBillingInfo}
+                  disabled={isLoadingUpdateBillingInfo}
                 />
               </div>
             }
@@ -357,7 +391,21 @@ const BillingPage = (params: { isBrand: boolean }) => {
                     {...registerBillingForm("name", { maxLength: 50 })}
                     required
                     type="text"
-                    className="flex h-14 flex-1 cursor-pointer rounded-lg border-[1px] border-gray3 bg-transparent p-4 placeholder-gray2 placeholder:w-11/12"
+                    className="flex h-14 flex-1 cursor-pointer rounded-lg border-[1px] border-gray3 bg-transparent p-4 placeholder-gray2 placeholder:w-11/12 focus:border-[1px] focus:border-black focus:outline-none"
+                    autoComplete="off"
+                  />
+                </div>
+              </div>
+              <div className="flex flex-col gap-4">
+                <div className="text-xl font-medium">
+                  {t("pages.billing.billingEmail")}
+                </div>
+                <div className="flex w-full flex-col">
+                  <input
+                    {...registerBillingForm("email", { maxLength: 200 })}
+                    required
+                    type="text"
+                    className="flex h-14 flex-1 cursor-pointer rounded-lg border-[1px] border-gray3 bg-transparent p-4 placeholder-gray2 placeholder:w-11/12 focus:border-[1px] focus:border-black focus:outline-none"
                     autoComplete="off"
                   />
                 </div>
@@ -368,12 +416,21 @@ const BillingPage = (params: { isBrand: boolean }) => {
                 </div>
                 <div className="flex w-full flex-col">
                   <input
-                    {...registerBillingForm("TIN", { maxLength: 50 })}
+                    {...registerBillingForm("tin", {
+                      maxLength: 9,
+                      validate: (value) =>
+                        nifValidator.validatePortugueseNIF(value),
+                    })}
                     required
                     type="text"
-                    className="flex h-14 flex-1 cursor-pointer rounded-lg border-[1px] border-gray3 bg-transparent p-4 placeholder-gray2 placeholder:w-11/12"
+                    className="flex h-14 flex-1 cursor-pointer rounded-lg border-[1px] border-gray3 bg-transparent p-4 placeholder-gray2 placeholder:w-11/12 focus:border-[1px] focus:border-black focus:outline-none"
                     autoComplete="off"
                   />
+                  {errors.tin && errors.tin.type === "validate" && (
+                    <div className="px-4 py-1 text-red-600">
+                      {t("pages.billing.invalidTin")}
+                    </div>
+                  )}
                 </div>
               </div>
             </form>
@@ -383,21 +440,29 @@ const BillingPage = (params: { isBrand: boolean }) => {
     }
   };
 
-  return (
-    <>
-      <div className="flex w-full cursor-default flex-col justify-center gap-6 self-center px-4 pb-10 sm:px-12 lg:w-full xl:w-10/12 2xl:w-3/4 3xl:w-3/4 4xl:w-7/12 5xl:w-2/4">
-        <div className="flex flex-1 flex-col gap-6 lg:flex-row">
-          {billingInformation()}
-          {!params.isBrand && balanceInfo()}
-        </div>
-        <div className="flex flex-1 flex-col gap-6 lg:flex-row">
-          {renderPurchasesInvoices()}
-          {!params.isBrand && renderSalesInvoices()}
-        </div>
+  if (isLoadingBillingInfo || isLoadingPurchasesInvoices) {
+    return (
+      <div className="flex justify-center">
+        <LoadingSpinner />
       </div>
-      {renderBillingDetailsModal()}
-    </>
-  );
+    );
+  } else {
+    return (
+      <>
+        <div className="flex w-full cursor-default flex-col justify-center gap-6 self-center px-4 pb-10 sm:px-12 lg:w-full xl:w-10/12 2xl:w-3/4 3xl:w-3/4 4xl:w-7/12 5xl:w-2/4">
+          <div className="flex flex-1 flex-col gap-6 lg:flex-row">
+            {billingInformation()}
+            {!params.isBrand && balanceInfo()}
+          </div>
+          <div className="flex flex-1 flex-col gap-6 lg:flex-row">
+            {renderPurchasesInvoices()}
+            {!params.isBrand && renderSalesInvoices()}
+          </div>
+        </div>
+        {renderBillingDetailsModal()}
+      </>
+    );
+  }
 };
 
 export { BillingPage };

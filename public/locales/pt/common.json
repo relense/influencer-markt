@@ -1050,6 +1050,7 @@
       "confirmBilling": "Confirmar Detalhes de Faturação",
       "billingModalTitle": "Facturação",
       "billingName": "Nome",
+      "billingEmail": "Email",
       "billingTaxNumber": "Número de Identificação Fiscal",
       "billingInformation": "Informação de Facturação",
       "balanceInformation": "Informação de Saldo",
@@ -1058,7 +1059,8 @@
       "update": "Actualizar",
       "withdraw": "Retirar",
       "salesInvoices": "Faturas de Vendas",
-      "purchasesInvoices": "Faturas de Compras"
+      "purchasesInvoices": "Faturas de Compras",
+      "invalidTin": "O NIF é inválido"
     },
 
     "socialMediaCreate": {

@@ -51,6 +51,7 @@ const createInvoice = async (params: { orderId: number }) => {
         saleTotalValue: order.orderTotalPrice,
         taxValue: taxValue,
         name: order.buyer?.billing?.name || "",
+        email: order.buyer?.billing?.email || "",
         tin: order.buyer?.billing?.tin || "",
         invoiceType: {
           connect: {
@@ -80,6 +81,7 @@ const createInvoice = async (params: { orderId: number }) => {
         saleTotalValue: order.orderTotalPrice,
         taxValue: taxValue,
         name: order.influencer?.billing?.name || "",
+        email: order.influencer?.billing?.email || "",
         tin: order.influencer?.billing?.tin || "",
         invoiceType: {
           connect: {
