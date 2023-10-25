@@ -57,10 +57,20 @@ export const authOptions: NextAuthOptions = {
     GitHub({
       clientId: env.GITHUB_ID,
       clientSecret: env.GITHUB_SECRET,
+      authorization: {
+        params: {
+          prompt: "consent",
+        },
+      },
     }),
     GoogleProvider({
       clientId: env.GOOGLE_CLIENT_ID,
       clientSecret: env.GOOGLE_CLIENT_SECRET,
+      authorization: {
+        params: {
+          prompt: "consent",
+        },
+      },
     }),
     EmailProvider({
       server: env.EMAIL_SERVER,

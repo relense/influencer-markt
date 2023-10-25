@@ -55,8 +55,16 @@ const LoginModal = ({
     return (
       <div className="flex w-full flex-col gap-4">
         <button
-          className="flex h-10 w-full flex-1 cursor-pointer items-center justify-center rounded-lg border-[1px] border-gray3 py-3 pr-6 text-center hover:bg-influencer-green-super-light lg:rounded-2xl"
-          onClick={() => signIn("google")}
+          className="flex h-10 w-full flex-1 cursor-pointer items-center justify-center rounded-lg border-[1px] border-gray3 py-3 pr-6 text-center  lg:rounded-2xl"
+          onClick={() =>
+            signIn("google", {
+              callbackUrl: `${
+                process.env.NEXTAUTH_URL || ""
+              }/login-callback?returnTo=${
+                window.location.pathname
+              }&userLanguage=${i18n.language}`,
+            })
+          }
         >
           <div className="py-2 pl-2 pr-6">
             <Image
