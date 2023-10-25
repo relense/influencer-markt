@@ -13,6 +13,7 @@ import {
   faCircleCheck,
   faCircleMinus,
   faCirclePlus,
+  faInfoCircle,
 } from "@fortawesome/free-solid-svg-icons";
 import { LoadingSpinner } from "../../components/LoadingSpinner";
 import { nifValidator } from "../../utils/nifValidators";
@@ -262,15 +263,25 @@ const BillingPage = (params: { isBrand: boolean }) => {
     if (billingInfo) {
       return (
         <div className="flex flex-1 flex-col gap-6 rounded-xl border-[1px] p-6 shadow-md">
-          <div className="text-xl font-semibold">
-            {t("pages.billing.balanceInformation")}
+          <div className="flex justify-between">
+            <div className="text-xl font-semibold">
+              {t("pages.billing.balanceInformation")}
+            </div>
+            <FontAwesomeIcon
+              icon={faInfoCircle}
+              className="cursor-pointer text-xl text-gray4"
+            />
           </div>
           <div className="flex flex-1 flex-col gap-6">
-            <div className="flex flex-col gap-2">
-              <div className="text-lg font-medium">
-                {t("pages.billing.currentBalance")}
+            <div className="flex flex-col gap-2 hover:cursor-pointer hover:underline">
+              <div>
+                <div className="text-3xl font-medium">Saldo Disponível</div>
               </div>
-              <div>0</div>
+              <div className="text-3xl">{helper.calculerMonetaryValue(0)}€</div>
+            </div>
+            <div className="flex flex-col gap-2 hover:cursor-pointer hover:underline">
+              <div className="text-3xl font-medium">Saldo Pendente</div>
+              <div className="text-3xl">{helper.calculerMonetaryValue(0)}€</div>
             </div>
           </div>
           <div className="flex justify-center">
@@ -423,29 +434,29 @@ const BillingPage = (params: { isBrand: boolean }) => {
     );
   };
 
-  const renderSalesInvoices = () => {
-    return (
-      <div className="flex flex-1 flex-col gap-4 rounded-xl border-[1px] p-6 shadow-md">
-        <div className="flex items-center justify-between">
-          <div className="text-xl font-semibold">
-            {t("pages.billing.salesInvoices")}
-          </div>
-          <FontAwesomeIcon
-            icon={hideSaleInvoiceMenu ? faCirclePlus : faCircleMinus}
-            onClick={() => setHideSaleInvoiceMenu(!hideSaleInvoiceMenu)}
-            className="text-lg text-gray4"
-          />
-        </div>
-        {!hideSaleInvoiceMenu && (
-          <div className="flex flex-col gap-4">
-            {salesInvoices?.map((invoice) => {
-              return renderInvoice(invoice);
-            })}
-          </div>
-        )}
-      </div>
-    );
-  };
+  // const renderSalesInvoices = () => {
+  //   return (
+  //     <div className="flex flex-1 flex-col gap-4 rounded-xl border-[1px] p-6 shadow-md">
+  //       <div className="flex items-center justify-between">
+  //         <div className="text-xl font-semibold">
+  //           {t("pages.billing.salesInvoices")}
+  //         </div>
+  //         <FontAwesomeIcon
+  //           icon={hideSaleInvoiceMenu ? faCirclePlus : faCircleMinus}
+  //           onClick={() => setHideSaleInvoiceMenu(!hideSaleInvoiceMenu)}
+  //           className="text-lg text-gray4"
+  //         />
+  //       </div>
+  //       {!hideSaleInvoiceMenu && (
+  //         <div className="flex flex-col gap-4">
+  //           {salesInvoices?.map((invoice) => {
+  //             return renderInvoice(invoice);
+  //           })}
+  //         </div>
+  //       )}
+  //     </div>
+  //   );
+  // };
 
   const renderBillingDetailsModal = () => {
     if (openBillingDetailsModal) {
@@ -567,7 +578,7 @@ const BillingPage = (params: { isBrand: boolean }) => {
           </div>
           <div className="flex flex-1 flex-col gap-6">
             {renderPurchasesInvoices()}
-            {!params.isBrand && renderSalesInvoices()}
+            {/* {!params.isBrand && renderSalesInvoices()} */}
           </div>
         </div>
         {renderBillingDetailsModal()}

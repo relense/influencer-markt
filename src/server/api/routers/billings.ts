@@ -24,7 +24,7 @@ export const BillingsRouter = createTRPCRouter({
         email: z.string(),
         name: z.string(),
         tin: z.string(),
-        iban: z.string(),
+        iban: z.string().optional(),
       })
     )
     .mutation(async ({ ctx, input }) => {
@@ -43,7 +43,7 @@ export const BillingsRouter = createTRPCRouter({
             email: input.email,
             name: input.name,
             tin: input.tin,
-            iban: input.iban,
+            iban: input.iban || "",
           },
         });
       }

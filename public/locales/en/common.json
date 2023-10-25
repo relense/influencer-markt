@@ -1053,7 +1053,6 @@
       "billingTaxNumber": "National Insurance Number",
       "billingInformation": "Billing Information",
       "balanceInformation": "Balance Information",
-      "currentBalance": "Current Balance Amount",
       "iban": "IBAN",
       "update": "Update",
       "withdraw": "Withdraw",
