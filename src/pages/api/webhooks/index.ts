@@ -102,13 +102,15 @@ const webhookHandler = async (req: NextApiRequest, res: NextApiResponse) => {
             entityAction: "orderPaymentsAdded",
           });
 
-          buyerAddDetailsEmail({
-            buyerName: order.buyer?.name || "",
-            from: process.env.NEXT_PUBLIC_EMAIL_FROM || "",
-            to: order.influencer?.user.email || "",
-            language: order.influencer?.country?.languageCode || "en",
-            orderId: order.id,
-          });
+          if (process.env.NEXT_PUBLIC_EMAIL_FROM) {
+            buyerAddDetailsEmail({
+              buyerName: order.buyer?.name || "",
+              from: process.env.NEXT_PUBLIC_EMAIL_FROM,
+              to: order.influencer?.user.email || "",
+              language: order.influencer?.country?.languageCode || "en",
+              orderId: order.id,
+            });
+          }
         }
 
         break;
