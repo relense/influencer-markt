@@ -517,14 +517,24 @@ export const OrdersRouter = createTRPCRouter({
       })
     )
     .mutation(async ({ ctx, input }) => {
-      return await ctx.prisma.order.update({
+      const beforeUpdate = await ctx.prisma.order.findFirst({
         where: {
           id: input.orderId,
         },
-        data: {
-          orderStatusId: 10,
-        },
       });
+
+      if (beforeUpdate?.orderStatusId === 3) {
+        return await ctx.prisma.order.update({
+          where: {
+            id: input.orderId,
+          },
+          data: {
+            orderStatusId: 10,
+          },
+        });
+      }
+
+      return beforeUpdate;
     }),
 
   cancelOrder: protectedProcedure
