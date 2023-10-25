@@ -3,7 +3,6 @@ import { createTRPCRouter, protectedProcedure, publicProcedure } from "../trpc";
 import { newOrderEmail } from "../../../emailTemplates/newOrderEmail/newOrderEmail";
 import { influencerAcceptedOrderEmail } from "../../../emailTemplates/influencerAcceptedOrderEmail/influencerAcceptedOrderEmail";
 import { buyerConfirmedEmail } from "../../../emailTemplates/buyerConfirmOrderEmail/buyerConfirmOrderEmail";
-import { buyerAddDetailsEmail } from "../../../emailTemplates/buyerAddDetailsEmail/buyerAddDetailsEmail";
 import { influencerDeliveredOrderEmail } from "../../../emailTemplates/influencerDeliveredEmail/influencerDeliveredEmail";
 import { buyerReviewedOrderEmail } from "../../../emailTemplates/buyerReviewedOrderEmail/buyerReviewedOrderEmail";
 import { buyerOpensDisputeToInfluencerEmail } from "../../../emailTemplates/buyerOpensDisputeToInfluencerEmail/buyerOpensDisputeToInfluencerEmail";

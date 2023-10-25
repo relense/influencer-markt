@@ -76,10 +76,12 @@ const StartOrderPage = (params: {
             notifierId: params.orderProfileId,
           });
 
-          spendCredits({
-            credits: Number(creditsUsed),
-            orderId: order.id,
-          });
+          if (Number(creditsUsed) * 100 > 0) {
+            spendCredits({
+              credits: Number(creditsUsed),
+              orderId: order.id,
+            });
+          }
         }
       },
     }
