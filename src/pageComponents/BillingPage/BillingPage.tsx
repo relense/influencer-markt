@@ -9,7 +9,11 @@ import Link from "next/link";
 import { helper } from "../../utils/helper";
 import Image from "next/image";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCircleCheck, faCirclePlus } from "@fortawesome/free-solid-svg-icons";
+import {
+  faCircleCheck,
+  faCircleMinus,
+  faCirclePlus,
+} from "@fortawesome/free-solid-svg-icons";
 import { LoadingSpinner } from "../../components/LoadingSpinner";
 import { nifValidator } from "../../utils/nifValidators";
 
@@ -17,6 +21,7 @@ type BillingForm = {
   name: string;
   email: string;
   tin: string;
+  iban: string;
 };
 
 type Invoice = {
@@ -50,6 +55,15 @@ const BillingPage = (params: { isBrand: boolean }) => {
   const [purchasesInvoices, setPurchasesInvoices] = useState<Invoice[]>([]);
   const [purchasesInvoicesCursor, setPurchasesInvoicesCursor] =
     useState<number>(-1);
+
+  const [salesInvoices, setSalesInvoices] = useState<Invoice[]>([]);
+  const [salesInvoicesCursor, setSalesInvoicesCursor] = useState<number>(-1);
+
+  const [hidePurchaseInvoiceMenu, setHidePurchaseInvoiceMenu] =
+    useState<boolean>(false);
+  const [hideSaleInvoiceMenu, setHideSaleInvoiceMenu] =
+    useState<boolean>(false);
+
   const [openBillingDetailsModal, setOpenBillingDetailsModal] =
     useState<boolean>(false);
 
@@ -57,7 +71,14 @@ const BillingPage = (params: { isBrand: boolean }) => {
     api.billings.getBillingInfo.useQuery();
 
   const { data: purchasesInvoicesData, isLoading: isLoadingPurchasesInvoices } =
-    api.invoices.getPurchasesInvoices.useQuery();
+    api.invoices.getInvoices.useQuery({
+      invoiceType: 1,
+    });
+
+  const { data: salesInvoicesData, isLoading: isLoadingSalesInvoices } =
+    api.invoices.getInvoices.useQuery({
+      invoiceType: 2,
+    });
 
   const { mutate: updateBillingInfo, isLoading: isLoadingUpdateBillingInfo } =
     api.billings.updateBillingInfo.useMutation({
@@ -132,11 +153,62 @@ const BillingPage = (params: { isBrand: boolean }) => {
     }
   }, [i18n.language, purchasesInvoicesData]);
 
+  useEffect(() => {
+    if (salesInvoicesData) {
+      setSalesInvoices([]);
+      setSalesInvoices(
+        salesInvoicesData[1].map((invoice) => {
+          return {
+            id: invoice.id,
+            orderId: invoice.orderId,
+            socialMediaOrderName: invoice.order.socialMedia?.name || "",
+            orderValuePacks: invoice.order.orderValuePacks.map((valuePack) => {
+              return {
+                contentTypeId: valuePack.contentTypeId,
+                contentTypeName: valuePack.contentType.name,
+                amount: valuePack.amount,
+              };
+            }),
+            invoiceSaleTotal: Number(invoice.saleTotalValue),
+            invoiceInfluencerMarktCut: Number(invoice.influencerMarktCutValue),
+            invoiceInfluencerMaketPercentage: Number(
+              invoice.influencerMarktPercentage
+            ),
+            invoicetaxValue: Number(invoice.taxValue),
+            invoiceTaxPercentage: Number(invoice.taxPercentage),
+            invoiceOrderDetails: invoice.order.orderDetails,
+            influencer: {
+              influencerName: invoice.order.influencer?.name || "",
+              influencerUsername:
+                invoice.order?.influencer?.user.username || "",
+              influencerEmail: invoice.order.influencer?.user.email || "",
+              influencerProfilePicture:
+                invoice.order?.influencer?.profilePicture || "",
+            },
+            invoiceDateOfDelivery:
+              helper.formatFullDateWithTime(
+                invoice.order.dateItWasDelivered || Date.now(),
+                i18n.language
+              ) || "",
+          };
+        })
+      );
+
+      const lastInvoiceInArray =
+        salesInvoicesData[1][salesInvoicesData[1].length - 1];
+
+      if (lastInvoiceInArray) {
+        setSalesInvoicesCursor(lastInvoiceInArray.id);
+      }
+    }
+  }, [i18n.language, salesInvoicesData]);
+
   const submitBilling = handleSubmitBillingForm((data) => {
     updateBillingInfo({
       email: data.email,
       name: data.name,
       tin: data.tin,
+      iban: data.iban,
     });
   });
 
@@ -166,6 +238,12 @@ const BillingPage = (params: { isBrand: boolean }) => {
               </div>
               <div>{billingInfo.tin || "No Information"}</div>
             </div>
+            <div className="flex flex-col gap-2">
+              <div className="text-lg font-medium">
+                {t("pages.billing.iban")}
+              </div>
+              <div>{billingInfo?.iban || "No Information"}</div>
+            </div>
           </div>
           <div className="flex justify-center">
             <Button
@@ -193,12 +271,6 @@ const BillingPage = (params: { isBrand: boolean }) => {
                 {t("pages.billing.currentBalance")}
               </div>
               <div>0</div>
-            </div>
-            <div className="flex flex-col gap-2">
-              <div className="text-lg font-medium">
-                {t("pages.billing.iban")}
-              </div>
-              <div>{billingInfo?.iban || "No Information"}</div>
             </div>
           </div>
           <div className="flex justify-center">
@@ -302,55 +374,75 @@ const BillingPage = (params: { isBrand: boolean }) => {
     );
   };
 
+  const renderInvoice = (invoice: Invoice) => {
+    return (
+      <div
+        key={invoice.id}
+        className="flex flex-col gap-6 rounded-xl border-[1px]"
+      >
+        <div>
+          <div className="flex justify-between gap-4 p-4">
+            <span className="font-semibold">Invoice Ref: {invoice.id}</span>
+          </div>
+          <div className="flex flex-col lg:flex-row">
+            <div className="flex flex-1 flex-col border-[1px] border-white1 p-4">
+              {renderDeliveredMenu(invoice)}
+            </div>
+            {renderInvoiceDetails(invoice)}
+          </div>
+          <div className="flex justify-between p-4">
+            <div className="font-semibold">Billing Details For Invoice</div>
+            <FontAwesomeIcon icon={faCirclePlus} className="fa-xl text-gray3" />
+          </div>
+        </div>
+      </div>
+    );
+  };
+
   const renderPurchasesInvoices = () => {
     return (
       <div className="flex flex-1 flex-col gap-4 rounded-xl border-[1px] p-6 shadow-md">
-        <div className="text-xl font-semibold">
-          {t("pages.billing.purchasesInvoices")}
+        <div className="flex items-center justify-between">
+          <div className="text-xl font-semibold">
+            {t("pages.billing.purchasesInvoices")}
+          </div>
+          <FontAwesomeIcon
+            icon={hidePurchaseInvoiceMenu ? faCirclePlus : faCircleMinus}
+            onClick={() => setHidePurchaseInvoiceMenu(!hidePurchaseInvoiceMenu)}
+            className="text-lg text-gray4"
+          />
         </div>
-        <div>
-          {purchasesInvoices?.map((invoice) => {
-            return (
-              <div
-                key={invoice.id}
-                className="flex flex-col gap-6 rounded-xl border-[1px]"
-              >
-                <div>
-                  <div className="flex justify-between gap-4 p-4">
-                    <span className="font-semibold">
-                      Invoice Ref: {invoice.id}
-                    </span>
-                  </div>
-                  <div className="flex flex-col lg:flex-row">
-                    <div className="flex flex-1 flex-col border-[1px] border-white1 p-4">
-                      {renderDeliveredMenu(invoice)}
-                    </div>
-                    {renderInvoiceDetails(invoice)}
-                  </div>
-                  <div className="flex justify-between p-4">
-                    <div className="font-semibold">
-                      Billing Details For Invoice
-                    </div>
-                    <FontAwesomeIcon
-                      icon={faCirclePlus}
-                      className="fa-xl text-gray3"
-                    />
-                  </div>
-                </div>
-              </div>
-            );
-          })}
-        </div>
+        {!hidePurchaseInvoiceMenu && (
+          <div className="flex flex-col gap-4">
+            {purchasesInvoices?.map((invoice) => {
+              return renderInvoice(invoice);
+            })}
+          </div>
+        )}
       </div>
     );
   };
 
   const renderSalesInvoices = () => {
     return (
-      <div className="flex flex-1 flex-col rounded-xl border-[1px] p-6 shadow-md">
-        <div className="text-xl font-semibold">
-          {t("pages.billing.salesInvoices")}
+      <div className="flex flex-1 flex-col gap-4 rounded-xl border-[1px] p-6 shadow-md">
+        <div className="flex items-center justify-between">
+          <div className="text-xl font-semibold">
+            {t("pages.billing.salesInvoices")}
+          </div>
+          <FontAwesomeIcon
+            icon={hideSaleInvoiceMenu ? faCirclePlus : faCircleMinus}
+            onClick={() => setHideSaleInvoiceMenu(!hideSaleInvoiceMenu)}
+            className="text-lg text-gray4"
+          />
         </div>
+        {!hideSaleInvoiceMenu && (
+          <div className="flex flex-col gap-4">
+            {salesInvoices?.map((invoice) => {
+              return renderInvoice(invoice);
+            })}
+          </div>
+        )}
       </div>
     );
   };
@@ -430,6 +522,28 @@ const BillingPage = (params: { isBrand: boolean }) => {
                   )}
                 </div>
               </div>
+              <div className="flex flex-col gap-4">
+                <div className="text-xl font-medium">
+                  {t("pages.billing.iban")}
+                </div>
+                <div className="flex w-full flex-col">
+                  <input
+                    {...registerBillingForm("iban", {
+                      maxLength: 50,
+                      validate: (value) => true,
+                    })}
+                    required
+                    type="text"
+                    className="flex h-14 flex-1 cursor-pointer rounded-lg border-[1px] border-gray3 bg-transparent p-4 placeholder-gray2 placeholder:w-11/12 focus:border-[1px] focus:border-black focus:outline-none"
+                    autoComplete="off"
+                  />
+                  {errors.tin && errors.tin.type === "validate" && (
+                    <div className="px-4 py-1 text-red-600">
+                      {t("pages.billing.invalidIban")}
+                    </div>
+                  )}
+                </div>
+              </div>
             </form>
           </Modal>
         </div>
@@ -451,7 +565,7 @@ const BillingPage = (params: { isBrand: boolean }) => {
             {billingInformation()}
             {!params.isBrand && balanceInfo()}
           </div>
-          <div className="flex flex-1 flex-col gap-6 lg:flex-row">
+          <div className="flex flex-1 flex-col gap-6">
             {renderPurchasesInvoices()}
             {!params.isBrand && renderSalesInvoices()}
           </div>

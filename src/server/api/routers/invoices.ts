@@ -104,57 +104,63 @@ export const InvoicesRouter = createTRPCRouter({
       await createInvoice({ orderId: input.orderId });
     }),
 
-  getPurchasesInvoices: protectedProcedure.query(async ({ ctx }) => {
-    const billing = await ctx.prisma.billing.findFirst({
-      where: {
-        profile: {
-          userId: ctx.session.user.id,
+  getInvoices: protectedProcedure
+    .input(
+      z.object({
+        invoiceType: z.number(),
+      })
+    )
+    .query(async ({ ctx, input }) => {
+      const billing = await ctx.prisma.billing.findFirst({
+        where: {
+          profile: {
+            userId: ctx.session.user.id,
+          },
         },
-      },
-    });
+      });
 
-    if (billing) {
-      return await ctx.prisma.$transaction([
-        ctx.prisma.invoice.count({
-          where: { invoiceTypeId: 1, billingId: billing.id },
-          take: 10,
-        }),
-        ctx.prisma.invoice.findMany({
-          where: { invoiceTypeId: 1, billingId: billing.id },
-          take: 10,
-          include: {
-            order: {
-              select: {
-                socialMedia: {
-                  select: { name: true },
-                },
-                orderDetails: true,
-                orderValuePacks: {
-                  select: {
-                    contentTypeId: true,
-                    amount: true,
-                    contentType: {
-                      select: { name: true },
+      if (billing) {
+        return await ctx.prisma.$transaction([
+          ctx.prisma.invoice.count({
+            where: { invoiceTypeId: input.invoiceType, billingId: billing.id },
+            take: 10,
+          }),
+          ctx.prisma.invoice.findMany({
+            where: { invoiceTypeId: input.invoiceType, billingId: billing.id },
+            take: 10,
+            include: {
+              order: {
+                select: {
+                  socialMedia: {
+                    select: { name: true },
+                  },
+                  orderDetails: true,
+                  orderValuePacks: {
+                    select: {
+                      contentTypeId: true,
+                      amount: true,
+                      contentType: {
+                        select: { name: true },
+                      },
                     },
                   },
-                },
-                influencer: {
-                  select: {
-                    user: {
-                      select: { email: true, username: true },
+                  influencer: {
+                    select: {
+                      user: {
+                        select: { email: true, username: true },
+                      },
+                      profilePicture: true,
+                      name: true,
                     },
-                    profilePicture: true,
-                    name: true,
                   },
+                  dateItWasDelivered: true,
                 },
-                dateItWasDelivered: true,
               },
             },
-          },
-        }),
-      ]);
-    }
-  }),
+          }),
+        ]);
+      }
+    }),
 });
 
 export { createInvoice };

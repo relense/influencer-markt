@@ -137,7 +137,7 @@
       "orderCanceled": "{{actor}} canceled the order",
       "saleCanceled": "{{actor}} canceled the order",
       "orderPaymentsAdded": "{{actor}} added payment details. You can now work on your order",
-      "orderConfirmed": "{{actor}} confirmed the order. Your payment is available in the billing menu",
+      "orderConfirmed": "{{actor}} confirmed the order. Your balance was updated in the billing menu",
       "orderReviewed": "{{actor}} gave a review to your order",
       "orderDeliveryDateUpdate": "{{actor}} updated the order delivery date",
       "orderInDispute": "{{actor}} opened a dispute for your order delivery. Influencer Markt will analyze the situation",
@@ -1059,7 +1059,8 @@
       "withdraw": "Withdraw",
       "salesInvoices": "Sales Invoices",
       "purchasesInvoices": "Purchases Invoices",
-      "invalidTin": "The TIN is invalid"
+      "invalidTin": "The TIN is invalid",
+      "invalidIban": "The IBAN is invalid"
     },
 
     "socialMediaCreate": {

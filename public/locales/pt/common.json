@@ -137,7 +137,7 @@
       "orderCanceled": "{{actor}} cancelou o pedido",
       "saleCanceled": "{{actor}} cancelou o pedido",
       "orderPaymentsAdded": "{{actor}} adicionou os detalhes de pagamento. Podes trabalhar no pedido",
-      "orderConfirmed": "{{actor}} confirmou o pedido. O teu pagamento está disponível no menu de facturação",
+      "orderConfirmed": "{{actor}} confirmou o pedido. O teu saldo foi actualizado no menu de facturação",
       "orderReviewed": "{{actor}} deu uma avaliação ao teu pedido",
       "orderDeliveryDateUpdate": "{{actor}} actualizou a data de entrega do pedido",
       "orderInDispute": "{{actor}} abriu uma disputa para o pedido entregue. O Influencer Markt vai analisar a situação",
@@ -1060,7 +1060,8 @@
       "withdraw": "Retirar",
       "salesInvoices": "Faturas de Vendas",
       "purchasesInvoices": "Faturas de Compras",
-      "invalidTin": "O NIF é inválido"
+      "invalidTin": "O NIF é inválido",
+      "invalidIban": "O IBAN é inválido"
     },
 
     "socialMediaCreate": {
