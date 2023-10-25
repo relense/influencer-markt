@@ -18,13 +18,13 @@ model Account {
   type                     String
   provider                 String
   providerAccountId        String
-  refresh_token            String?  @db.Text
-  access_token             String?  @db.Text
+  refresh_token            String? @db.Text
+  access_token             String? @db.Text
   refresh_token_expires_in String?
   expires_at               Int?
   token_type               String?
   scope                    String?
-  id_token                 String?  @db.Text
+  id_token                 String? @db.Text
   session_state            String?
   user                     User    @relation(fields: [userId], references: [id], onDelete: Cascade)
 
@@ -373,28 +373,29 @@ model VerifiedStatus {
 }
 
 model Order {
-  id                     Int                @id @default(autoincrement())
-  influencer             Profile?           @relation("influencer", fields: [influencerId], references: [id])
-  buyer                  Profile?           @relation("buyer", fields: [buyerId], references: [id])
-  orderDetails           String             @db.Text
-  orderValuePacks        OrderValuePack[]
-  orderInfluencerCountry Country?           @relation(fields: [countryId], references: [id])
-  orderBasePrice         Int
-  orderTotalPrice        Int
-  orderTaxPercentage     Int
-  orderServicePercentage Int
-  orderStatus            OrderStatus?       @relation(fields: [orderStatusId], references: [id])
-  socialMedia            SocialMedia?       @relation(fields: [socialMediaId], references: [id])
-  review                 Review?            @relation(fields: [reviewId], references: [id])
-  job                    Job?               @relation(fields: [jobId], references: [id])
-  messages               Message[]
-  dispute                Dispute?
-  dateOfDelivery         DateTime
-  dateItWasDelivered     DateTime?
-  invoice                Invoice[]
-  payment                Payment[]
-  refund                 Refund?
-  discount               CreditTransaction?
+  id                          Int                @id @default(autoincrement())
+  influencer                  Profile?           @relation("influencer", fields: [influencerId], references: [id])
+  buyer                       Profile?           @relation("buyer", fields: [buyerId], references: [id])
+  orderDetails                String             @db.Text
+  orderValuePacks             OrderValuePack[]
+  orderInfluencerCountry      Country?           @relation(fields: [countryId], references: [id])
+  orderBasePrice              Int
+  orderTotalPrice             Int
+  orderTotalPriceWithDiscount Int?
+  orderTaxPercentage          Int
+  orderServicePercentage      Int
+  orderStatus                 OrderStatus?       @relation(fields: [orderStatusId], references: [id])
+  socialMedia                 SocialMedia?       @relation(fields: [socialMediaId], references: [id])
+  review                      Review?            @relation(fields: [reviewId], references: [id])
+  job                         Job?               @relation(fields: [jobId], references: [id])
+  messages                    Message[]
+  dispute                     Dispute?
+  dateOfDelivery              DateTime
+  dateItWasDelivered          DateTime?
+  invoice                     Invoice[]
+  payment                     Payment[]
+  refund                      Refund?
+  discount                    CreditTransaction?
 
   influencerId  Int?
   buyerId       Int?

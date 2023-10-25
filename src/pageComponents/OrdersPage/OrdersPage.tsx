@@ -237,7 +237,7 @@ const OrdersPage = () => {
                 {t("pages.orders.orderTotal")}
               </div>
               <div>
-                {helper.formatNumber(
+                {helper.formatNumberWithDecimalValue(
                   helper.calculerMonetaryValue(
                     order.orderPrice - order.discountPrice
                   )

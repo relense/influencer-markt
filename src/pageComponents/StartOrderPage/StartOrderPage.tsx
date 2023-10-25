@@ -47,6 +47,9 @@ const StartOrderPage = (params: {
   const [applyDiscount, setApplyDiscount] = useState<boolean>(false);
   const [creditsUsed, setCreditsUsed] = useState<string>("");
   const [basePrice, setBasePrice] = useState<number>(0);
+  const [taxValue, setTaxValue] = useState<number>(0);
+  const [serviceFee, setServiceFee] = useState<number>(0);
+  const [totalPrice, setTotalPrice] = useState<number>(0);
 
   const { data: profile } = api.profiles.getProfileById.useQuery({
     profileId: params.orderProfileId,
@@ -98,8 +101,17 @@ const StartOrderPage = (params: {
       valuePacksSum += contentType.amount * contentType.price;
     });
 
+    const serviceFee = basePrice * helper.calculateServiceFee();
+    const tax =
+      (basePrice + serviceFee) * ((profile?.country?.countryTax || 0) / 100);
+
+    const total = basePrice + tax + serviceFee;
+
     setBasePrice(valuePacksSum);
-  }, [contentTypesList]);
+    setServiceFee(serviceFee);
+    setTaxValue(tax);
+    setTotalPrice(total);
+  }, [basePrice, contentTypesList, profile?.country?.countryTax]);
 
   const handleAmountChange = (index: number, value: number) => {
     let newValue = 0;
@@ -175,15 +187,13 @@ const StartOrderPage = (params: {
   });
 
   const validateCredits = (value: string) => {
-    if (isNaN(Number(value))) return;
-
     const splitValue = value.split(".")[1];
     if (splitValue && splitValue.length > 2) return;
 
     if (totalCredits) {
       if (
-        Number(value) <= totalCredits / 100 &&
-        Number(value) <= basePrice / 100
+        Number(value) * 100 <= totalCredits &&
+        Number(value) * 100 <= totalPrice
       ) {
         setCreditsUsed(value);
       }
@@ -339,14 +349,6 @@ const StartOrderPage = (params: {
 
   const renderTotalPay = () => {
     if (profile) {
-      const serviceFee = basePrice * helper.calculateServiceFee();
-      const tax =
-        (basePrice + serviceFee) * ((profile?.country?.countryTax || 0) / 100);
-
-      const total = basePrice + tax + serviceFee;
-      const totalAfterDiscount =
-        basePrice + tax + serviceFee - Number(creditsUsed) * 100;
-
       return (
         <div className="flex flex-col gap-2">
           <div className="select-none text-xl font-medium">
@@ -381,7 +383,7 @@ const StartOrderPage = (params: {
               </div>
               <div>
                 {helper.formatNumberWithDecimalValue(
-                  helper.calculerMonetaryValue(tax)
+                  helper.calculerMonetaryValue(taxValue)
                 )}
                 €
               </div>
@@ -392,7 +394,7 @@ const StartOrderPage = (params: {
               </div>
               <div>
                 {helper.formatNumberWithDecimalValue(
-                  helper.calculerMonetaryValue(total)
+                  helper.calculerMonetaryValue(totalPrice)
                 )}
                 €
               </div>
@@ -404,7 +406,9 @@ const StartOrderPage = (params: {
                 </div>
                 <div>
                   {helper.formatNumberWithDecimalValue(
-                    helper.calculerMonetaryValue(totalAfterDiscount)
+                    helper.calculerMonetaryValue(
+                      totalPrice - Number(creditsUsed) * 100
+                    )
                   )}
                   €
                 </div>
@@ -427,25 +431,24 @@ const StartOrderPage = (params: {
                 className="peer sr-only"
                 readOnly
                 defaultChecked={applyDiscount}
-              />
-              <div
-                onClick={() => {
-                  if (!applyDiscount) {
-                    setApplyDiscount(true);
-                  } else {
+                onChange={() => {
+                  if (applyDiscount) {
                     setApplyDiscount(false);
                     setCreditsUsed("");
+                  } else {
+                    setApplyDiscount(true);
                   }
                 }}
-                className="peer h-6 w-11 rounded-full bg-gray-200 after:absolute after:left-[2px] after:top-0.5 after:h-5 after:w-5 after:rounded-full after:border after:border-gray-300 after:bg-white after:transition-all after:content-[''] peer-checked:bg-influencer-green-dark peer-checked:after:translate-x-full peer-checked:after:border-white peer-focus:ring-influencer-green-super-light"
               />
+              <div className="peer h-6 w-11 rounded-full bg-gray-200 after:absolute after:left-[2px] after:top-0.5 after:h-5 after:w-5 after:rounded-full after:border after:border-gray-300 after:bg-white after:transition-all after:content-[''] peer-checked:bg-influencer-green-dark peer-checked:after:translate-x-full peer-checked:after:border-white peer-focus:ring-influencer-green-super-light" />
               <span className="ml-2 font-medium text-gray-900">
                 {t(`pages.startOrder.applyDiscount`)}
               </span>
             </label>
             <input
               placeholder={t(`pages.startOrder.howManyCredits`)}
-              type="text"
+              type="number"
+              step="0.01"
               disabled={!applyDiscount}
               max={totalCredits}
               value={creditsUsed}
