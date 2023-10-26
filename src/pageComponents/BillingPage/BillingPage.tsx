@@ -345,7 +345,7 @@ const BillingPage = (params: { isBrand: boolean }) => {
       >
         <div>
           <div className="flex justify-between gap-4 p-4">
-            <span className="font-semibold">Invoice Ref: {invoice.id}</span>
+            <span className="font-semibold">Invoice Ref: #{invoice.id}</span>
           </div>
           <div className="flex flex-col lg:flex-row">
             <div className="flex flex-1 flex-col border-[1px] border-white1 p-4">
