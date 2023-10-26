@@ -6,6 +6,7 @@ import { buffer } from "micro";
 import type { NextApiRequest, NextApiResponse } from "next";
 import { createNotification } from "../../../server/api/routers/notifications";
 import { buyerAddDetailsEmail } from "../../../emailTemplates/buyerAddDetailsEmail/buyerAddDetailsEmail";
+import { createInvoice } from "../../../server/api/routers/invoices";
 
 const webhookSecret: string = process.env.STRIPE_WEBHOOK_SECRET as string;
 
@@ -93,6 +94,10 @@ const webhookHandler = async (req: NextApiRequest, res: NextApiResponse) => {
                 },
               },
             },
+          });
+
+          await createInvoice({
+            orderId: order.id,
           });
 
           await createNotification({

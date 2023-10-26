@@ -2,20 +2,13 @@ import { z } from "zod";
 import { createTRPCRouter, protectedProcedure } from "../trpc";
 import { prisma } from "../../db";
 
-const createInvoice = async (params: { orderId: number }) => {
-  const { orderId } = params;
-
+const createPayout = async (params: { orderId: number }) => {
   const order = await prisma.order.findFirst({
     where: {
-      id: orderId,
+      id: params.orderId,
     },
     include: {
       orderInfluencerCountry: true,
-      buyer: {
-        include: {
-          billing: true,
-        },
-      },
       influencer: {
         include: {
           billing: true,
@@ -26,51 +19,45 @@ const createInvoice = async (params: { orderId: number }) => {
   });
 
   if (order) {
-    const ourCutValue =
-      order.orderBasePrice * (order.orderServicePercentage / 100);
+    const taxValue = order.orderBasePrice * (order.orderTaxPercentage / 100);
 
-    const taxValue =
-      order.orderBasePrice + ourCutValue * (order.orderTaxPercentage / 100);
-
-    await prisma.invoice.create({
+    await prisma.payout.create({
       data: {
         order: {
           connect: {
-            id: orderId,
+            id: params.orderId,
           },
         },
         profile: {
           connect: {
-            id: order.buyer?.id,
+            id: order.influencer?.id,
           },
         },
-        taxPercentage: order.orderTaxPercentage,
-        influencerMarktPercentage: order.orderServicePercentage,
-        influencerMarktCutValue: ourCutValue,
-        saleBaseValue: order.orderBasePrice,
-        saleTotalValue: order.orderTotalPrice,
-        taxValue: taxValue,
-        name: order.buyer?.billing?.name || "",
-        email: order.buyer?.billing?.email || "",
-        tin: order.buyer?.billing?.tin || "",
-        discountValue: order?.discount?.amount || 0,
+        taxesPercentage: order.orderTaxPercentage,
+        payoutValue: order.orderBasePrice,
+        taxesValue: taxValue,
+        name: order.influencer?.billing?.name || "",
+        email: order.influencer?.billing?.email || "",
+        tin: order.influencer?.billing?.tin || "",
+        isentOfTaxes: false,
+        paid: false,
       },
     });
   }
 };
 
-export const InvoicesRouter = createTRPCRouter({
-  createInvoice: protectedProcedure
+export const PayoutsRouter = createTRPCRouter({
+  createPayout: protectedProcedure
     .input(
       z.object({
         orderId: z.number(),
       })
     )
     .mutation(async ({ input }) => {
-      await createInvoice({ orderId: input.orderId });
+      await createPayout({ orderId: input.orderId });
     }),
 
-  getInvoices: protectedProcedure.query(async ({ ctx }) => {
+  getPayouts: protectedProcedure.query(async ({ ctx }) => {
     const profile = await ctx.prisma.profile.findFirst({
       where: {
         userId: ctx.session.user.id,
@@ -79,11 +66,11 @@ export const InvoicesRouter = createTRPCRouter({
 
     if (profile) {
       return await ctx.prisma.$transaction([
-        ctx.prisma.invoice.count({
+        ctx.prisma.payout.count({
           where: { profileId: profile.id },
           take: 10,
         }),
-        ctx.prisma.invoice.findMany({
+        ctx.prisma.payout.findMany({
           where: { profileId: profile.id },
           take: 10,
           include: {
@@ -121,4 +108,4 @@ export const InvoicesRouter = createTRPCRouter({
   }),
 });
 
-export { createInvoice };
+export { createPayout };

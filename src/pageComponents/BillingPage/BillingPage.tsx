@@ -17,6 +17,9 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { LoadingSpinner } from "../../components/LoadingSpinner";
 import { nifValidator } from "../../utils/nifValidators";
+import { AvailableBalanceModal } from "./innerComponents/AvailableBalanceModal";
+import { PendingBalanceModal } from "./innerComponents/PendingBalanceModal";
+import { InfoBalanceModal } from "./innerComponents/InfoBalanceModal";
 
 type BillingForm = {
   name: string;
@@ -26,7 +29,7 @@ type BillingForm = {
 };
 
 type Invoice = {
-  id: number;
+  id: string;
   orderId: number;
   socialMediaOrderName: string;
   orderValuePacks: {
@@ -55,31 +58,23 @@ const BillingPage = (params: { isBrand: boolean }) => {
 
   const [purchasesInvoices, setPurchasesInvoices] = useState<Invoice[]>([]);
   const [purchasesInvoicesCursor, setPurchasesInvoicesCursor] =
-    useState<number>(-1);
-
-  const [salesInvoices, setSalesInvoices] = useState<Invoice[]>([]);
-  const [salesInvoicesCursor, setSalesInvoicesCursor] = useState<number>(-1);
-
+    useState<string>("");
   const [hidePurchaseInvoiceMenu, setHidePurchaseInvoiceMenu] =
     useState<boolean>(false);
-  const [hideSaleInvoiceMenu, setHideSaleInvoiceMenu] =
-    useState<boolean>(false);
-
   const [openBillingDetailsModal, setOpenBillingDetailsModal] =
+    useState<boolean>(false);
+  const [openBalanceInfoModal, setOpenBalanceInfoModal] =
+    useState<boolean>(false);
+  const [openAvailableBalanceModal, setOpenAvailableBalanceModal] =
+    useState<boolean>(false);
+  const [openPendingBalanceModal, setOpenPendingBalanceModal] =
     useState<boolean>(false);
 
   const { data: billingInfo, isLoading: isLoadingBillingInfo } =
     api.billings.getBillingInfo.useQuery();
 
   const { data: purchasesInvoicesData, isLoading: isLoadingPurchasesInvoices } =
-    api.invoices.getInvoices.useQuery({
-      invoiceType: 1,
-    });
-
-  const { data: salesInvoicesData, isLoading: isLoadingSalesInvoices } =
-    api.invoices.getInvoices.useQuery({
-      invoiceType: 2,
-    });
+    api.invoices.getInvoices.useQuery();
 
   const { mutate: updateBillingInfo, isLoading: isLoadingUpdateBillingInfo } =
     api.billings.updateBillingInfo.useMutation({
@@ -154,56 +149,6 @@ const BillingPage = (params: { isBrand: boolean }) => {
     }
   }, [i18n.language, purchasesInvoicesData]);
 
-  useEffect(() => {
-    if (salesInvoicesData) {
-      setSalesInvoices([]);
-      setSalesInvoices(
-        salesInvoicesData[1].map((invoice) => {
-          return {
-            id: invoice.id,
-            orderId: invoice.orderId,
-            socialMediaOrderName: invoice.order.socialMedia?.name || "",
-            orderValuePacks: invoice.order.orderValuePacks.map((valuePack) => {
-              return {
-                contentTypeId: valuePack.contentTypeId,
-                contentTypeName: valuePack.contentType.name,
-                amount: valuePack.amount,
-              };
-            }),
-            invoiceSaleTotal: Number(invoice.saleTotalValue),
-            invoiceInfluencerMarktCut: Number(invoice.influencerMarktCutValue),
-            invoiceInfluencerMaketPercentage: Number(
-              invoice.influencerMarktPercentage
-            ),
-            invoicetaxValue: Number(invoice.taxValue),
-            invoiceTaxPercentage: Number(invoice.taxPercentage),
-            invoiceOrderDetails: invoice.order.orderDetails,
-            influencer: {
-              influencerName: invoice.order.influencer?.name || "",
-              influencerUsername:
-                invoice.order?.influencer?.user.username || "",
-              influencerEmail: invoice.order.influencer?.user.email || "",
-              influencerProfilePicture:
-                invoice.order?.influencer?.profilePicture || "",
-            },
-            invoiceDateOfDelivery:
-              helper.formatFullDateWithTime(
-                invoice.order.dateItWasDelivered || Date.now(),
-                i18n.language
-              ) || "",
-          };
-        })
-      );
-
-      const lastInvoiceInArray =
-        salesInvoicesData[1][salesInvoicesData[1].length - 1];
-
-      if (lastInvoiceInArray) {
-        setSalesInvoicesCursor(lastInvoiceInArray.id);
-      }
-    }
-  }, [i18n.language, salesInvoicesData]);
-
   const submitBilling = handleSubmitBillingForm((data) => {
     updateBillingInfo({
       email: data.email,
@@ -270,16 +215,23 @@ const BillingPage = (params: { isBrand: boolean }) => {
             <FontAwesomeIcon
               icon={faInfoCircle}
               className="cursor-pointer text-xl text-gray4"
+              onClick={() => setOpenBalanceInfoModal(true)}
             />
           </div>
           <div className="flex flex-1 flex-col gap-6">
-            <div className="flex flex-col gap-2 hover:cursor-pointer hover:underline">
+            <div
+              className="flex flex-col gap-2 hover:cursor-pointer hover:underline"
+              onClick={() => setOpenAvailableBalanceModal(true)}
+            >
               <div>
                 <div className="text-3xl font-medium">Saldo Disponível</div>
               </div>
               <div className="text-3xl">{helper.calculerMonetaryValue(0)}€</div>
             </div>
-            <div className="flex flex-col gap-2 hover:cursor-pointer hover:underline">
+            <div
+              className="flex flex-col gap-2 hover:cursor-pointer hover:underline"
+              onClick={() => setOpenPendingBalanceModal(true)}
+            >
               <div className="text-3xl font-medium">Saldo Pendente</div>
               <div className="text-3xl">{helper.calculerMonetaryValue(0)}€</div>
             </div>
@@ -434,30 +386,6 @@ const BillingPage = (params: { isBrand: boolean }) => {
     );
   };
 
-  // const renderSalesInvoices = () => {
-  //   return (
-  //     <div className="flex flex-1 flex-col gap-4 rounded-xl border-[1px] p-6 shadow-md">
-  //       <div className="flex items-center justify-between">
-  //         <div className="text-xl font-semibold">
-  //           {t("pages.billing.salesInvoices")}
-  //         </div>
-  //         <FontAwesomeIcon
-  //           icon={hideSaleInvoiceMenu ? faCirclePlus : faCircleMinus}
-  //           onClick={() => setHideSaleInvoiceMenu(!hideSaleInvoiceMenu)}
-  //           className="text-lg text-gray4"
-  //         />
-  //       </div>
-  //       {!hideSaleInvoiceMenu && (
-  //         <div className="flex flex-col gap-4">
-  //           {salesInvoices?.map((invoice) => {
-  //             return renderInvoice(invoice);
-  //           })}
-  //         </div>
-  //       )}
-  //     </div>
-  //   );
-  // };
-
   const renderBillingDetailsModal = () => {
     if (openBillingDetailsModal) {
       return (
@@ -578,10 +506,22 @@ const BillingPage = (params: { isBrand: boolean }) => {
           </div>
           <div className="flex flex-1 flex-col gap-6">
             {renderPurchasesInvoices()}
-            {/* {!params.isBrand && renderSalesInvoices()} */}
           </div>
         </div>
         {renderBillingDetailsModal()}
+        {openAvailableBalanceModal && (
+          <AvailableBalanceModal
+            onClose={() => setOpenAvailableBalanceModal(false)}
+          />
+        )}
+        {openPendingBalanceModal && (
+          <PendingBalanceModal
+            onClose={() => setOpenPendingBalanceModal(false)}
+          />
+        )}
+        {openBalanceInfoModal && (
+          <InfoBalanceModal onClose={() => setOpenBalanceInfoModal(false)} />
+        )}
       </>
     );
   }

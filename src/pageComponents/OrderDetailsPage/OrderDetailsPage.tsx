@@ -80,6 +80,8 @@ const OrderDetailsPage = (params: {
       },
     });
 
+  const { mutate: createPayout } = api.payouts.createPayout.useMutation();
+
   const { mutate: updateOrderConfirmed, isLoading: isLoadingUpdateConfirmed } =
     api.orders.updateOrder.useMutation({
       onSuccess: () => {
@@ -90,7 +92,7 @@ const OrderDetailsPage = (params: {
           notifierId: order?.influencerId || -1,
           entityAction: "orderConfirmed",
         });
-        void createInvoice({ orderId: params.orderId });
+        void createPayout({ orderId: params.orderId });
         void ctx.orders.getBuyerOrder.invalidate();
       },
     });
@@ -213,8 +215,6 @@ const OrderDetailsPage = (params: {
         setOpenDisputeModal(false);
       },
     });
-
-  const { mutate: createInvoice } = api.invoices.createInvoice.useMutation();
 
   useEffect(() => {
     if (order) {

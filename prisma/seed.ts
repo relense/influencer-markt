@@ -18,7 +18,7 @@ type Country = {
   name: string;
   languageCode: string;
   states: State[];
-  countryTax: number;
+  countryTax: string;
 };
 
 type Data = {
@@ -36,7 +36,7 @@ async function main() {
       data: {
         name: country.name,
         languageCode: country.languageCode,
-        countryTax: country.countryTax,
+        countryTax: parseInt(country.countryTax),
       },
     });
 
@@ -147,10 +147,6 @@ async function main() {
 
   await prisma.contactMessageState.createMany({
     data: [{ name: "open" }, { name: "progress" }, { name: "closed" }],
-  });
-
-  await prisma.invoiceType.createMany({
-    data: [{ name: "buy" }, { name: "sale" }],
   });
 
   await prisma.verifiedStatus.createMany({

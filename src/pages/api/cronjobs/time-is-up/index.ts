@@ -5,7 +5,7 @@ import dayjs from "dayjs";
 import { prisma } from "../../../../server/db";
 import { influencerMarktConfirmEmail } from "../../../../emailTemplates/influencerMarktConfirmEmail/influencerMarktConfirmEmail";
 import { createNotification } from "../../../../server/api/routers/notifications";
-import { createInvoice } from "../../../../server/api/routers/invoices";
+import { createPayout } from "../../../../server/api/routers/payouts";
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const sig = req.headers["signature"];
@@ -85,7 +85,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
           entityAction: "toBuyerConfirmByInfluencerMakrt",
         });
 
-        await createInvoice({
+        await createPayout({
           orderId: updatedOrder.id,
         });
       }

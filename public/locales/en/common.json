@@ -147,7 +147,7 @@
       "orderInfluencerLostDispute": "We have come to a decision that {{actor}} did not receive what he requested. The order is now on hold until {{actor}} decides how to proceed",
       "orderInfluencerWonDispute": "We have come to a decision that you delivered what {{actor}} requested",
       "orderBuyerWonDispute": "We have come to a decision that {{actor}} did not fulfill what was requested. You can now decide the best course of action",
-      "toBuyerConfirmByInfluencerMakrt": "The 96-hour window for order confirmation has passed. We have now confirmed the order and issued the relevant invoice",
+      "toBuyerConfirmByInfluencerMakrt": "The 96-hour window for order confirmation has passed. We have now confirmed the order and issued the relevant payout",
       "toInfluencerConfirmByInfluencerMakrt": "The 96-hour window for order confirmation has passed. We have now confirmed the order and issued the relevant invoice",
       "toBuyerOrderOnHold": "The delivery deadline has been missed. You now have the opportunity to choose how you wish to proceed",
       "toInfluencerOrderOnHold": "The delivery deadline has not been met. The order is currently on hold, awaiting {{actor}} decision",

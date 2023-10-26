@@ -289,7 +289,7 @@ const SalesDetailsPage = (params: { orderId: number }) => {
             <ToolTip content={t("pages.sales.includesFees")} />
           </div>
           <div className="text-base font-semibold text-influencer">
-            {helper.calculerMonetaryValue(sale.orderTotalPrice) || 0}€
+            {helper.calculerMonetaryValue(sale.orderBasePrice) || 0}€
           </div>
         </div>
       );

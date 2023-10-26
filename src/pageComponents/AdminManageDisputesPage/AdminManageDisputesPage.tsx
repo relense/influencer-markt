@@ -38,7 +38,7 @@ const AdminManageDisputesPage = (params: { disputeId: number }) => {
       disputeId: params.disputeId,
     });
 
-  const { mutate: createInvoice } = api.invoices.createInvoice.useMutation();
+  const { mutate: createPayout } = api.payouts.createPayout.useMutation();
 
   const { mutate: createNotification } =
     api.notifications.createNotification.useMutation();
@@ -48,7 +48,7 @@ const AdminManageDisputesPage = (params: { disputeId: number }) => {
       onSuccess: (orderData) => {
         if (orderData) {
           setOpenInfluencerIsRightModal(false);
-          void createInvoice({ orderId: orderData.id });
+          void createPayout({ orderId: orderData.id });
           void createNotification({
             entityId: orderData.id,
             notifierId: order?.buyerId || -1,

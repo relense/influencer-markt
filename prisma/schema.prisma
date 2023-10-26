@@ -93,6 +93,8 @@ model Profile {
   portfolio              Portfolio[]
   verifiedStatus         VerifiedStatus?   @relation(fields: [verifiedStatusId], references: [id])
   billing                Billing?
+  invoices               Invoice[]
+  payouts                Payout[]
 
   createdJobs        Job[] @relation("jobCreator")
   appliedJobs        Job[] @relation("jobApplicants")
@@ -392,7 +394,8 @@ model Order {
   dispute                     Dispute?
   dateOfDelivery              DateTime
   dateItWasDelivered          DateTime?
-  invoice                     Invoice[]
+  invoice                     Invoice?
+  payout                      Payout?
   payment                     Payment[]
   refund                      Refund?
   discount                    CreditTransaction?
@@ -523,13 +526,12 @@ model DisputeStatus {
 }
 
 model Billing {
-  id       Int       @id @default(autoincrement())
-  name     String?
-  email    String?
-  tin      String?
-  iban     String?
-  invoices Invoice[]
-  profile  Profile   @relation(fields: [profileId], references: [id])
+  id      String  @id @default(cuid())
+  name    String?
+  email   String?
+  tin     String?
+  iban    String?
+  profile Profile @relation(fields: [profileId], references: [id])
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -540,38 +542,52 @@ model Billing {
 }
 
 model Invoice {
-  id                        Int         @id @default(autoincrement())
-  order                     Order       @relation(fields: [orderId], references: [id])
-  billing                   Billing     @relation(fields: [billingId], references: [id])
-  name                      String?
-  email                     String?
-  tin                       String?
+  id                        String  @id @default(cuid())
+  profile                   Profile @relation(fields: [profileId], references: [id])
+  order                     Order   @relation(fields: [orderId], references: [id])
+  name                      String
+  email                     String
+  tin                       String
   saleBaseValue             Int
   saleTotalValue            Int
   influencerMarktCutValue   Int?
   influencerMarktPercentage Int?
   taxValue                  Int
   taxPercentage             Int
-  paid                      Boolean     @default(false)
-  invoiceType               InvoiceType @relation(fields: [invoiceTypeId], references: [id])
+  discountValue             Int
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  billingId     Int
-  orderId       Int
-  invoiceTypeId Int
+  orderId   Int @unique
+  profileId Int
 
-  @@index([billingId])
   @@index([orderId])
-  @@index([invoiceTypeId])
+  @@index([profileId])
 }
 
-model InvoiceType {
-  id   Int    @id @default(autoincrement())
-  name String
+model Payout {
+  id                String  @id @default(cuid())
+  profile           Profile @relation(fields: [profileId], references: [id])
+  order             Order   @relation(fields: [orderId], references: [id])
+  name              String
+  email             String
+  tin               String
+  payoutValue       Int
+  taxesValue        Int
+  taxesPercentage   Int
+  isentOfTaxes      Boolean
+  paid              Boolean @default(false)
+  influencerInvoice String?  @db.Text
 
-  invoice Invoice[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  orderId   Int @unique
+  profileId Int
+
+  @@index([orderId])
+  @@index([profileId])
 }
 
 model Payment {

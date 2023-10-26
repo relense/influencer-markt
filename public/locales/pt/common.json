@@ -147,7 +147,7 @@
       "orderInfluencerLostDispute": "Chegámos à conclusão de que {{actor}} não recebeu o que pediu. O pedido está suspenso até {{actor}} decidir como proceder.",
       "orderInfluencerWonDispute": "Chegámos à conclusão de que entregas-te o que foi pedido a {{actor}}",
       "orderBuyerWonDispute": "Chegámos à conclusão de que {{actor}} não entregou o que foi pedido. Podes decidir como pretendes proceder",
-      "toBuyerConfirmByInfluencerMakrt": "O período de 96 horas para confirmação da encomenda expirou. Confirmámos a encomenda e emitimos a fatura relevante",
+      "toBuyerConfirmByInfluencerMakrt": "O período de 96 horas para confirmação da encomenda expirou. Confirmámos a encomenda e emitimos o pagamento",
       "toInfluencerConfirmByInfluencerMakrt": "O período de 96 horas para confirmação da encomenda expirou. Confirmámos a encomenda e emitimos a fatura relevante",
       "toBuyerOrderOnHold": "O prazo de entrega não foi cumprido. Agora, tem a oportunidade de escolher como deseja proceder",
       "toInfluencerOrderOnHold": "O prazo de entrega não foi cumprido. O pedido encontra-se atualmente em espera, aguardando a decisão de {{actor}}",
