@@ -57,7 +57,7 @@ export const PayoutsRouter = createTRPCRouter({
       await createPayout({ orderId: input.orderId });
     }),
 
-  getPayouts: protectedProcedure.query(async ({ ctx }) => {
+  getCurrentMonthPayouts: protectedProcedure.query(async ({ ctx }) => {
     const profile = await ctx.prisma.profile.findFirst({
       where: {
         userId: ctx.session.user.id,
@@ -65,13 +65,37 @@ export const PayoutsRouter = createTRPCRouter({
     });
 
     if (profile) {
+      const currentDate = new Date();
+      const startOfMonth = new Date(
+        currentDate.getFullYear(),
+        currentDate.getMonth(),
+        1
+      );
+      const endOfMonth = new Date(
+        currentDate.getFullYear(),
+        currentDate.getMonth() + 1,
+        0
+      );
+
       return await ctx.prisma.$transaction([
         ctx.prisma.payout.count({
-          where: { profileId: profile.id },
+          where: {
+            profileId: profile.id,
+            createdAt: {
+              gte: startOfMonth,
+              lte: endOfMonth,
+            },
+          },
           take: 10,
         }),
         ctx.prisma.payout.findMany({
-          where: { profileId: profile.id },
+          where: {
+            profileId: profile.id,
+            createdAt: {
+              gte: startOfMonth,
+              lte: endOfMonth,
+            },
+          },
           take: 10,
           include: {
             order: {
@@ -104,6 +128,147 @@ export const PayoutsRouter = createTRPCRouter({
           },
         }),
       ]);
+    }
+  }),
+
+  getBeforeCurrentMonthPayouts: protectedProcedure.query(async ({ ctx }) => {
+    const profile = await ctx.prisma.profile.findFirst({
+      where: {
+        userId: ctx.session.user.id,
+      },
+    });
+
+    if (profile) {
+      const currentDate = new Date();
+      const startOfMonth = new Date(
+        currentDate.getFullYear(),
+        currentDate.getMonth(),
+        1
+      );
+
+      return await ctx.prisma.$transaction([
+        ctx.prisma.payout.count({
+          where: {
+            profileId: profile.id,
+            createdAt: {
+              lte: startOfMonth,
+            },
+          },
+          take: 10,
+        }),
+        ctx.prisma.payout.findMany({
+          where: {
+            profileId: profile.id,
+            createdAt: {
+              lte: startOfMonth,
+            },
+          },
+          take: 10,
+          include: {
+            order: {
+              select: {
+                socialMedia: {
+                  select: { name: true },
+                },
+                orderDetails: true,
+                orderValuePacks: {
+                  select: {
+                    contentTypeId: true,
+                    amount: true,
+                    contentType: {
+                      select: { name: true },
+                    },
+                  },
+                },
+                influencer: {
+                  select: {
+                    user: {
+                      select: { email: true, username: true },
+                    },
+                    profilePicture: true,
+                    name: true,
+                  },
+                },
+                dateItWasDelivered: true,
+              },
+            },
+          },
+        }),
+      ]);
+    }
+  }),
+
+  availablePayoutsSum: protectedProcedure.query(async ({ ctx }) => {
+    const profile = await ctx.prisma.profile.findFirst({
+      where: {
+        userId: ctx.session.user.id,
+      },
+    });
+
+    if (profile) {
+      const currentDate = new Date();
+      const startOfMonth = new Date(
+        currentDate.getFullYear(),
+        currentDate.getMonth(),
+        1
+      );
+
+      const availablePayouts = await ctx.prisma.payout.findMany({
+        where: {
+          profileId: profile.id,
+          createdAt: {
+            lte: startOfMonth,
+          },
+          paid: false,
+        },
+        select: {
+          payoutValue: true,
+        },
+      });
+
+      return availablePayouts.reduce((total, payout) => {
+        return total + payout.payoutValue;
+      }, 0);
+    }
+  }),
+
+  pendingPayoutsSum: protectedProcedure.query(async ({ ctx }) => {
+    const profile = await ctx.prisma.profile.findFirst({
+      where: {
+        userId: ctx.session.user.id,
+      },
+    });
+
+    if (profile) {
+      const currentDate = new Date();
+      const startOfMonth = new Date(
+        currentDate.getFullYear(),
+        currentDate.getMonth(),
+        1
+      );
+      const endOfMonth = new Date(
+        currentDate.getFullYear(),
+        currentDate.getMonth() + 1,
+        0
+      );
+
+      const availablePayouts = await ctx.prisma.payout.findMany({
+        where: {
+          profileId: profile.id,
+          createdAt: {
+            gte: startOfMonth,
+            lte: endOfMonth,
+          },
+          paid: false,
+        },
+        select: {
+          payoutValue: true,
+        },
+      });
+
+      return availablePayouts.reduce((total, payout) => {
+        return total + payout.payoutValue;
+      }, 0);
     }
   }),
 });

@@ -2,10 +2,10 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import { useTranslation } from "react-i18next";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { api } from "~/utils/api";
 
 import { LoadingSpinner } from "../../../components/LoadingSpinner";
 import { Modal } from "../../../components/Modal";
-import { api } from "~/utils/api";
 import { helper } from "../../../utils/helper";
 import { faCheckCircle } from "@fortawesome/free-regular-svg-icons";
 
@@ -18,14 +18,14 @@ type Payout = {
 };
 
 const AvailableBalanceModal = (params: { onClose: () => void }) => {
+  const { i18n } = useTranslation();
+
   const [availablePayouts, setAvailablePayouts] = useState<Payout[]>([]);
   const [availablePayoutsCursor, setAvailablePayoutsCursor] =
     useState<string>("");
 
-  const { i18n } = useTranslation();
-
   const { data: availablePayoutsData, isLoading: isLoadingSalesInvoices } =
-    api.payouts.getPayouts.useQuery();
+    api.payouts.getBeforeCurrentMonthPayouts.useQuery();
 
   useEffect(() => {
     if (availablePayoutsData) {

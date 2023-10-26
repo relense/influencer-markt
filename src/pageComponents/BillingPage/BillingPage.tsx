@@ -28,6 +28,11 @@ const BillingPage = (params: { isBrand: boolean }) => {
   const { data: billingInfo, isLoading: isLoadingBillingInfo } =
     api.billings.getBillingInfo.useQuery();
 
+  const { data: availablePayoutsSum } =
+    api.payouts.availablePayoutsSum.useQuery();
+
+  const { data: pendingPayoutsSum } = api.payouts.pendingPayoutsSum.useQuery();
+
   const billingInformation = () => {
     if (billingInfo) {
       return (
@@ -98,7 +103,9 @@ const BillingPage = (params: { isBrand: boolean }) => {
                   {t("pages.billing.availableBalance")}
                 </div>
               </div>
-              <div className="text-2xl">{helper.calculerMonetaryValue(0)}€</div>
+              <div className="text-2xl">
+                {helper.calculerMonetaryValue(availablePayoutsSum || 0)}€
+              </div>
             </div>
             <div
               className="flex flex-col gap-2 hover:cursor-pointer hover:underline"
@@ -107,7 +114,9 @@ const BillingPage = (params: { isBrand: boolean }) => {
               <div className="text-2xl font-medium">
                 {t("pages.billing.pendingBalance")}
               </div>
-              <div className="text-2xl">{helper.calculerMonetaryValue(0)}€</div>
+              <div className="text-2xl">
+                {helper.calculerMonetaryValue(pendingPayoutsSum || 0)}€
+              </div>
             </div>
           </div>
           <div className="flex justify-center">
