@@ -1060,7 +1060,9 @@
       "salesInvoices": "Faturas de Vendas",
       "purchasesInvoices": "Faturas de Compras",
       "invalidTin": "O NIF é inválido",
-      "invalidIban": "O IBAN é inválido"
+      "invalidIban": "O IBAN é inválido",
+      "availableBalance": "Saldo Disponível",
+      "pendingBalance": "Saldo Pendente"
     },
 
     "socialMediaCreate": {

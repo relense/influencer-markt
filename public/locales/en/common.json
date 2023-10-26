@@ -1059,7 +1059,9 @@
       "salesInvoices": "Sales Invoices",
       "purchasesInvoices": "Purchases Invoices",
       "invalidTin": "The TIN is invalid",
-      "invalidIban": "The IBAN is invalid"
+      "invalidIban": "The IBAN is invalid",
+      "availableBalance": "Available Balance",
+      "pendingBalance": "Pending Balance"
     },
 
     "socialMediaCreate": {
