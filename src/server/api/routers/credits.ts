@@ -1,5 +1,73 @@
 import { z } from "zod";
 import { createTRPCRouter, protectedProcedure } from "../trpc";
+import { prisma } from "../../db";
+
+const spendCredits = async (params: {
+  userId: string;
+  orderId: number;
+  credits: number;
+}) => {
+  const profile = await prisma.profile.findFirst({
+    where: {
+      userId: params.userId,
+    },
+    select: {
+      id: true,
+    },
+  });
+
+  if (profile) {
+    const credit = await prisma.credit.findFirst({
+      where: {
+        profileId: profile.id,
+      },
+      select: {
+        id: true,
+      },
+    });
+
+    if (credit) {
+      const creditTransaction = await prisma.creditTransaction.create({
+        data: {
+          amount: params.credits,
+          isWithdraw: true,
+          credit: {
+            connect: {
+              id: credit.id,
+            },
+          },
+        },
+      });
+
+      const order = await prisma.order.findFirst({
+        where: {
+          id: params.orderId,
+        },
+        select: {
+          orderTotalPrice: true,
+        },
+      });
+
+      if (order) {
+        await prisma.order.update({
+          where: {
+            id: params.orderId,
+          },
+          data: {
+            orderTotalPriceWithDiscount: order.orderTotalPrice - params.credits,
+            discount: {
+              connect: {
+                id: creditTransaction.id,
+              },
+            },
+          },
+        });
+      }
+
+      return creditTransaction;
+    }
+  }
+};
 
 export const CreditsRouter = createTRPCRouter({
   calculateUserCredits: protectedProcedure.query(async ({ ctx }) => {
@@ -114,66 +182,12 @@ export const CreditsRouter = createTRPCRouter({
       })
     )
     .mutation(async ({ ctx, input }) => {
-      const profile = await ctx.prisma.profile.findFirst({
-        where: {
-          userId: ctx.session.user.id,
-        },
-        select: {
-          id: true,
-        },
+      return await spendCredits({
+        credits: input.credits,
+        orderId: input.orderId,
+        userId: ctx.session.user.id,
       });
-
-      if (profile) {
-        const credit = await ctx.prisma.credit.findFirst({
-          where: {
-            profileId: profile.id,
-          },
-          select: {
-            id: true,
-          },
-        });
-
-        if (credit) {
-          const creditTransaction = await ctx.prisma.creditTransaction.create({
-            data: {
-              amount: input.credits * 100,
-              isWithdraw: true,
-              credit: {
-                connect: {
-                  id: credit.id,
-                },
-              },
-            },
-          });
-
-          const order = await ctx.prisma.order.findFirst({
-            where: {
-              id: input.orderId,
-            },
-            select: {
-              orderTotalPrice: true,
-            },
-          });
-
-          if (order) {
-            await ctx.prisma.order.update({
-              where: {
-                id: input.orderId,
-              },
-              data: {
-                orderTotalPriceWithDiscount:
-                  order.orderTotalPrice - input.credits * 100,
-                discount: {
-                  connect: {
-                    id: creditTransaction.id,
-                  },
-                },
-              },
-            });
-          }
-
-          return creditTransaction;
-        }
-      }
     }),
 });
+
+export { spendCredits };

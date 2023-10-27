@@ -26,11 +26,13 @@ const createInvoice = async (params: { orderId: number }) => {
   });
 
   if (order) {
-    const ourCutValue =
-      order.orderBasePrice * (order.orderServicePercentage / 100);
+    const ourCutValue = Math.floor(
+      order.orderBasePrice * (order.orderServicePercentage / 100)
+    );
 
-    const taxValue =
-      (order.orderBasePrice + ourCutValue) * (order.orderTaxPercentage / 100);
+    const taxValue = Math.floor(
+      (order.orderBasePrice + ourCutValue) * (order.orderTaxPercentage / 100)
+    );
 
     let totalValue = order.orderTotalPrice;
 

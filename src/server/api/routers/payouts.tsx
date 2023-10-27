@@ -19,7 +19,9 @@ const createPayout = async (params: { orderId: number }) => {
   });
 
   if (order) {
-    const taxValue = order.orderBasePrice * (order.orderTaxPercentage / 100);
+    const taxValue = Math.floor(
+      order.orderBasePrice * (order.orderTaxPercentage / 100)
+    );
 
     await prisma.payout.create({
       data: {

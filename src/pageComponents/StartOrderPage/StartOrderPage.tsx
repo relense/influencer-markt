@@ -56,19 +56,11 @@ const StartOrderPage = (params: {
   });
 
   const { data: totalCredits } = api.credits.calculateUserCredits.useQuery();
-  const { mutate: spendCredits } = api.credits.spendCredits.useMutation();
 
   const { mutate: createOrder, isLoading } = api.orders.createOrder.useMutation(
     {
       onSuccess: (order) => {
         if (order) {
-          void router.push({
-            pathname: `/orders/${order.id}`,
-            query: {
-              redirect: true,
-            },
-          });
-
           createNotification({
             entityId: order.id,
             senderId: order.buyerId || -1,
@@ -76,12 +68,12 @@ const StartOrderPage = (params: {
             notifierId: params.orderProfileId,
           });
 
-          if (Number(creditsUsed) * 100 > 0) {
-            spendCredits({
-              credits: Number(creditsUsed),
-              orderId: order.id,
-            });
-          }
+          void router.push({
+            pathname: `/orders/${order.id}`,
+            query: {
+              redirect: true,
+            },
+          });
         }
       },
     }
@@ -104,8 +96,9 @@ const StartOrderPage = (params: {
     });
 
     const serviceFee = basePrice * helper.calculateServiceFee();
-    const tax =
-      (basePrice + serviceFee) * ((profile?.country?.countryTax || 0) / 100);
+    const tax = Math.floor(
+      (basePrice + serviceFee) * ((profile?.country?.countryTax || 0) / 100)
+    );
 
     const total = basePrice + tax + serviceFee;
 
@@ -185,6 +178,7 @@ const StartOrderPage = (params: {
       }),
       platformId: params.valuePacks[0]?.platform?.id || -1,
       dateOfDelivery: dayjs(data.dateOfDelivery).toDate(),
+      discountValue: Number(creditsUsed) * 100,
     });
   });
 
@@ -194,8 +188,8 @@ const StartOrderPage = (params: {
 
     if (totalCredits) {
       if (
-        Number(value) * 100 <= totalCredits &&
-        Number(value) * 100 <= totalPrice
+        Math.floor(Number(value) * 100) <= Math.floor(totalCredits) &&
+        Math.floor(Number(value) * 100) <= Math.floor(totalPrice)
       ) {
         setCreditsUsed(value);
       }
@@ -379,19 +373,6 @@ const StartOrderPage = (params: {
               </div>
               <div>{helper.calculerMonetaryValue(totalPrice)}€</div>
             </div>
-            {applyDiscount && Number(creditsUsed) > 0 && (
-              <div className="flex gap-2">
-                <div className="select-none font-semibold text-influencer">
-                  {t("pages.startOrder.totalAfterDiscount")}:
-                </div>
-                <div>
-                  {helper.calculerMonetaryValue(
-                    totalPrice - Number(creditsUsed) * 100
-                  )}
-                  €
-                </div>
-              </div>
-            )}
           </div>
         </div>
       );
@@ -401,7 +382,7 @@ const StartOrderPage = (params: {
   const renderDiscount = () => {
     if (totalCredits && totalCredits > 0) {
       return (
-        <div>
+        <div className="flex flex-col gap-2">
           <div className="flex items-center gap-2">
             <label className="relative mr-5 inline-flex cursor-pointer items-center">
               <input
@@ -426,7 +407,7 @@ const StartOrderPage = (params: {
             <input
               placeholder={t(`pages.startOrder.howManyCredits`)}
               type="number"
-              step="0.01"
+              step="any"
               disabled={!applyDiscount}
               max={totalCredits}
               value={creditsUsed}
@@ -436,6 +417,19 @@ const StartOrderPage = (params: {
               className="w-4/12 rounded-lg border-[1px] p-2 focus:border-[1px] focus:border-black focus:outline-none"
             />
           </div>
+          {applyDiscount && Number(creditsUsed) > 0 && (
+            <div className="flex gap-2">
+              <div className="select-none font-semibold text-influencer">
+                {t("pages.startOrder.totalAfterDiscount")}:
+              </div>
+              <div>
+                {helper.calculerMonetaryValue(
+                  totalPrice - Number(creditsUsed) * 100
+                )}
+                €
+              </div>
+            </div>
+          )}
         </div>
       );
     }

@@ -45,28 +45,38 @@ const HomePage = (params: {
   const { t } = useTranslation();
   const session = useSession();
   const router = useRouter();
+  const ctx = api.useContext();
 
   const [showWelcomeModal, setShowWelcomeModal] = useState<boolean>(false);
+  const [toEditMenu, setToEditMenu] = useState<boolean>(false);
 
-  const { data: user } = api.users.getUserUsername.useQuery();
+  const { data: user } = api.users.getUserInfo.useQuery(undefined, {
+    cacheTime: 0,
+  });
+  const { mutate: updateShowWelcomeModal } =
+    api.users.updateUserShowWelcomeModal.useMutation({
+      onSuccess: () => {
+        void ctx.users.getUserInfo.invalidate();
+        if (toEditMenu && user && user.username) {
+          void router.push(`/${user.username}/edit`);
+        }
+      },
+    });
 
   useEffect(() => {
     if (
-      !localStorage.getItem("showWelcomeModal") &&
+      user?.showWelcomeModal === true &&
       session.status === "authenticated" &&
       params.profileId
     ) {
       setShowWelcomeModal(true);
     }
-  }, [params.profileId, session.status]);
+  }, [params.profileId, session.status, user?.showWelcomeModal]);
 
-  const setWelcomeModal = (toEditMenu: boolean) => {
+  const setWelcomeModal = (goToEdit: boolean) => {
     setShowWelcomeModal(false);
-    localStorage.setItem("showWelcomeModal", "false");
-
-    if (toEditMenu && user && user.username) {
-      void router.push(`/${user.username}/edit`);
-    }
+    setToEditMenu(goToEdit);
+    void updateShowWelcomeModal();
   };
 
   const offers: Offer[] = [

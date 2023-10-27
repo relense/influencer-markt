@@ -166,7 +166,7 @@ export default function CheckoutForm(params: {
       className="flex flex-col justify-center gap-8 p-8 text-sm font-medium"
     >
       <div className="flex w-full flex-1 flex-col items-center justify-center gap-6 lg:flex-row">
-        <div className="flex w-full flex-1 flex-col">
+        <div className="flex w-full flex-1 flex-col gap-4">
           {contactInfo()}
           {billingInfo()}
         </div>

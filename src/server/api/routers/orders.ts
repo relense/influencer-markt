@@ -16,6 +16,7 @@ import { influencerOrderWasRectified } from "../../../emailTemplates/influencerO
 import { toInfluencerOnHoldtoPostponed } from "../../../emailTemplates/toInfluencerOnHoldtoPostponed/toInfluencerOnHoldtoPostponed";
 import { toInfluencerOrderOnHoldToRefund } from "../../../emailTemplates/toInfluencerOrderOnHoldToRefund/toInfluencerOrderOnHoldToRefund";
 import { createInvoice } from "./invoices";
+import { spendCredits } from "./credits";
 
 export const OrdersRouter = createTRPCRouter({
   createOrder: protectedProcedure
@@ -33,6 +34,7 @@ export const OrdersRouter = createTRPCRouter({
         ),
         platformId: z.number(),
         dateOfDelivery: z.date(),
+        discountValue: z.number(),
       })
     )
     .mutation(async ({ ctx, input }) => {
@@ -60,11 +62,14 @@ export const OrdersRouter = createTRPCRouter({
       });
 
       if (profile) {
-        const ourCutValue = input.orderPrice * helper.calculateServiceFee();
+        const ourCutValue = Math.floor(
+          input.orderPrice * helper.calculateServiceFee()
+        );
 
-        const taxValue =
+        const taxValue = Math.floor(
           (input.orderPrice + ourCutValue) *
-          ((influencerProfile?.country?.countryTax || 0) / 100);
+            ((influencerProfile?.country?.countryTax || 0) / 100)
+        );
 
         const saleValue = input.orderPrice + ourCutValue + taxValue;
 
@@ -101,6 +106,12 @@ export const OrdersRouter = createTRPCRouter({
               orderId: order.id,
             };
           }),
+        });
+
+        await spendCredits({
+          credits: input.discountValue,
+          orderId: order.id,
+          userId: ctx.session.user.id,
         });
 
         //Email influencer to let him know he has an order
@@ -149,11 +160,14 @@ export const OrdersRouter = createTRPCRouter({
       });
 
       if (profile) {
-        const ourCutValue = input.orderPrice * helper.calculateServiceFee();
+        const ourCutValue = Math.floor(
+          input.orderPrice * helper.calculateServiceFee()
+        );
 
-        const taxValue =
+        const taxValue = Math.floor(
           (input.orderPrice + ourCutValue) *
-          ((influencerProfile?.country?.countryTax || 0) / 100);
+            ((influencerProfile?.country?.countryTax || 0) / 100)
+        );
 
         const saleValue = input.orderPrice + ourCutValue + taxValue;
 
@@ -611,13 +625,21 @@ export const OrdersRouter = createTRPCRouter({
         select: {
           orderStatusId: true,
           discount: true,
+          orderTotalPrice: true,
+          orderTotalPriceWithDiscount: true,
         },
       });
+
+      const isDiscount =
+        beforeUpdateOrder?.discount &&
+        beforeUpdateOrder.orderTotalPrice -
+          beforeUpdateOrder?.discount.amount ===
+          0;
 
       const order = await ctx.prisma.order.update({
         where: { id: input.orderId },
         data: {
-          orderStatusId: beforeUpdateOrder?.discount ? 4 : 3,
+          orderStatusId: isDiscount ? 4 : 3,
         },
         include: {
           buyer: {

@@ -1,5 +1,6 @@
 import { useTranslation } from "react-i18next";
 import { api } from "~/utils/api";
+import { electronicFormatIBAN, isValidIBAN } from "ibantools";
 
 import { Button } from "../../../components/Button";
 import { Modal } from "../../../components/Modal";
@@ -28,6 +29,7 @@ const BillingDetailsInfluencerModal = (params: {
     register: registerBillingForm,
     handleSubmit: handleSubmitBillingForm,
     setValue: setBillingValue,
+    watch: watchBilling,
     formState: { errors },
   } = useForm<BillingForm>();
 
@@ -55,6 +57,19 @@ const BillingDetailsInfluencerModal = (params: {
     });
   });
 
+  const submitButtonTitle = () => {
+    if (
+      watchBilling("email") === "" ||
+      watchBilling("name") === "" ||
+      watchBilling("tin") === "" ||
+      watchBilling("iban") === ""
+    ) {
+      return t("pages.billing.addBilling");
+    } else {
+      return t("pages.billing.updateBilling");
+    }
+  };
+
   return (
     <div className="flex justify-center ">
       <Modal
@@ -62,7 +77,7 @@ const BillingDetailsInfluencerModal = (params: {
         button={
           <div className="flex justify-center p-4">
             <Button
-              title={t("pages.billing.addBilling")}
+              title={submitButtonTitle()}
               level="terciary"
               form="form-billing"
               isLoading={isLoadingUpdateBillingInfo}
@@ -135,14 +150,21 @@ const BillingDetailsInfluencerModal = (params: {
               <input
                 {...registerBillingForm("iban", {
                   maxLength: 50,
-                  validate: (value) => true,
+                  validate: (value) => {
+                    const iban = electronicFormatIBAN(value) as string;
+                    if (isValidIBAN(iban)) {
+                      return true;
+                    } else {
+                      return false;
+                    }
+                  },
                 })}
                 required
                 type="text"
                 className="flex h-14 flex-1 cursor-pointer rounded-lg border-[1px] border-gray3 bg-transparent p-4 placeholder-gray2 placeholder:w-11/12 focus:border-[1px] focus:border-black focus:outline-none"
                 autoComplete="off"
               />
-              {errors.tin && errors.tin.type === "validate" && (
+              {errors.iban && errors.iban.type === "validate" && (
                 <div className="px-4 py-1 text-red-600">
                   {t("pages.billing.invalidIban")}
                 </div>

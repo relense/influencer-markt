@@ -193,7 +193,7 @@ const PurchasedInvoices = () => {
               icon={faCircleCheck}
               className="fa-2xl text-influencer-green-dark"
             />
-            {t("pages.billing.completed")}
+            {t("pages.billing.complete")}
           </div>
         )}
         {invoice.orderRefunded && (

@@ -16,11 +16,12 @@ export const usersRouter = createTRPCRouter({
     });
   }),
 
-  getUserUsername: protectedProcedure.query(async ({ ctx }) => {
+  getUserInfo: protectedProcedure.query(async ({ ctx }) => {
     return await ctx.prisma.user.findUnique({
       where: { id: ctx.session.user.id },
       select: {
         username: true,
+        showWelcomeModal: true,
       },
     });
   }),
@@ -30,6 +31,17 @@ export const usersRouter = createTRPCRouter({
       where: { id: ctx.session.user.id },
       select: {
         role: true,
+      },
+    });
+  }),
+
+  updateUserShowWelcomeModal: protectedProcedure.mutation(async ({ ctx }) => {
+    await ctx.prisma.user.update({
+      where: {
+        id: ctx.session.user.id,
+      },
+      data: {
+        showWelcomeModal: false,
       },
     });
   }),

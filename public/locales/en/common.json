@@ -1046,6 +1046,7 @@
 
     "billing": {
       "addBilling": "Add Billing Details",
+      "updateBilling": "Update Billing Details",
       "confirmBilling": "Confirm Billing Details",
       "billingModalTitle": "Billing",
       "billingName": "Name",
@@ -1074,7 +1075,8 @@
       "orderDeliveredBy": "Order Delivered By",
       "dateOfDelivery": "Date of Delivery",
       "invoiceRef": "Invoice Ref:",
-      "billingDetailsForInvoice": "Billing Details For Invoice"
+      "billingDetailsForInvoice": "Billing Details For Invoice",
+      "availableCredits": "Available Credits"
     },
 
     "socialMediaCreate": {
