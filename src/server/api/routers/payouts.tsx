@@ -126,6 +126,9 @@ export const PayoutsRouter = createTRPCRouter({
               },
             },
           },
+          orderBy: {
+            createdAt: "desc",
+          },
         }),
       ]);
     }
@@ -192,6 +195,9 @@ export const PayoutsRouter = createTRPCRouter({
                 dateItWasDelivered: true,
               },
             },
+          },
+          orderBy: {
+            createdAt: "desc",
           },
         }),
       ]);

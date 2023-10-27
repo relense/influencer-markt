@@ -28,6 +28,8 @@ type Invoice = {
   invoiceTaxPercentage: number;
   invoiceOrderDetails: string;
   invoiceDateOfDelivery: string;
+  orderRefunded?: boolean;
+  orderRefundAmount?: number;
   influencer: {
     influencerName: string;
     influencerUsername: string;
@@ -85,6 +87,8 @@ const PurchasedInvoices = () => {
                 invoice.order.dateItWasDelivered || Date.now(),
                 i18n.language
               ) || "",
+            orderRefunded: !!invoice.order.refund,
+            orderRefundAmount: invoice.order.refund?.refundValue,
           };
         })
       );
@@ -142,6 +146,14 @@ const PurchasedInvoices = () => {
             {helper.calculerMonetaryValue(invoice.invoiceSaleTotal)}€
           </div>
         </div>
+        {invoice.orderRefunded && (
+          <div className="flex flex-col">
+            <div className="font-medium">Refunded</div>
+            <div className="text-base font-semibold text-influencer">
+              {helper.calculerMonetaryValue(invoice.orderRefundAmount || 0)}€
+            </div>
+          </div>
+        )}
       </div>
     );
   };

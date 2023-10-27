@@ -242,12 +242,22 @@ const SalesDetailsPage = (params: { orderId: number }) => {
   };
 
   const renderSaleDetails = () => {
+    let userSocialMediaLink = "";
+
+    sale?.influencer?.userSocialMedia.forEach((socialMedia) => {
+      if (socialMedia.socialMediaId === sale.socialMediaId) {
+        userSocialMediaLink = socialMedia.url;
+      }
+    });
     return (
       <div className="flex flex-col gap-1">
         <div className="text-lg font-medium">{t("pages.sales.platform")}</div>
-        <div className="font-semibold text-influencer">
+        <Link
+          href={userSocialMediaLink}
+          className="font-semibold text-influencer hover:cursor-pointer hover:underline"
+        >
           {sale?.socialMedia?.name || ""}
-        </div>
+        </Link>
       </div>
     );
   };

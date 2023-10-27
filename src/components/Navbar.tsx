@@ -146,11 +146,11 @@ export const Navbar = (params: {
     }
   };
 
-  const handleOpenNotificationsMenu = async () => {
+  const handleOpenNotificationsMenu = () => {
     setNotificationsOpen(!notificationsOpen);
     if (notificationsCount) {
       setNotificationsCount(0);
-      await notificationUpdate();
+      void notificationUpdate();
     }
   };
 

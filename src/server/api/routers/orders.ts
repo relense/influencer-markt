@@ -233,6 +233,7 @@ export const OrdersRouter = createTRPCRouter({
           orderStatus: true,
           influencer: {
             include: {
+              userSocialMedia: true,
               user: true,
             },
           },
@@ -262,6 +263,11 @@ export const OrdersRouter = createTRPCRouter({
           },
 
           socialMedia: true,
+          influencer: {
+            select: {
+              userSocialMedia: true,
+            },
+          },
           buyer: {
             include: {
               user: {

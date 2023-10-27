@@ -25,6 +25,7 @@ const Notifications = () => {
   const { t, i18n } = useTranslation();
   const containerRef = useRef<HTMLDivElement>(null);
   const router = useRouter();
+  const ctx = api.useContext();
 
   const [notifications, setNotifications] = useState<Notification[]>([]);
   const [notificationsTotal, setNotificationsTotal] = useState<number>(0);
@@ -48,6 +49,14 @@ const Notifications = () => {
     { cursor: notificationsCursor },
     { enabled: false }
   );
+
+  const { mutateAsync: notificationUpdate } =
+    api.notifications.updateNotificationsToRead.useMutation({
+      onSuccess: () => {
+        void ctx.notifications.getUserToBeReadNotifications.invalidate();
+      },
+    });
+
   useEffect(() => {
     if (notificationsData) {
       setNotificationsTotal(notificationsData[0]);
@@ -105,7 +114,8 @@ const Notifications = () => {
 
   useEffect(() => {
     void refetchNotificationsData();
-  }, [refetchNotificationsData]);
+    void notificationUpdate();
+  }, [notificationUpdate, refetchNotificationsData]);
 
   useEffect(() => {
     const container = containerRef.current;

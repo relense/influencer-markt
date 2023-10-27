@@ -98,6 +98,7 @@ export const InvoicesRouter = createTRPCRouter({
                 socialMedia: {
                   select: { name: true },
                 },
+                refund: true,
                 orderDetails: true,
                 orderValuePacks: {
                   select: {
@@ -120,6 +121,9 @@ export const InvoicesRouter = createTRPCRouter({
                 dateItWasDelivered: true,
               },
             },
+          },
+          orderBy: {
+            createdAt: "desc",
           },
         }),
       ]);

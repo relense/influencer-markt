@@ -36,7 +36,7 @@ const OrderDetailsPage = (params: {
   const router = useRouter();
 
   const [openReviewModal, setOpenReviewModal] = useState<boolean>(false);
-  const [starReviewsCount, setStarReviewsCount] = useState<number>(1);
+  const [starReviewsCount, setStarReviewsCount] = useState<number>(5);
   const [dateOfDelivery, setDateOfDelivery] = useState<string>();
   const [showEditDateOfDelivery, setShowEditDateOfDelivery] =
     useState<boolean>(false);
@@ -435,12 +435,23 @@ const OrderDetailsPage = (params: {
   };
 
   const renderOrderPlatform = () => {
+    let userSocialMediaLink = "";
+
+    order?.influencer?.userSocialMedia.forEach((socialMedia) => {
+      if (socialMedia.socialMediaId === order.socialMediaId) {
+        userSocialMediaLink = socialMedia.url;
+      }
+    });
+
     return (
       <div className="flex flex-col gap-1">
         <div className="text-lg font-medium">{t("pages.orders.platform")}</div>
-        <div className="font-semibold text-influencer">
+        <Link
+          href={userSocialMediaLink}
+          className="font-semibold text-influencer hover:cursor-pointer hover:underline"
+        >
           {order?.socialMedia?.name || ""}
-        </div>
+        </Link>
       </div>
     );
   };
