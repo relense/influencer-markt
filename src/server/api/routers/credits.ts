@@ -146,18 +146,31 @@ export const CreditsRouter = createTRPCRouter({
             },
           });
 
-          await ctx.prisma.order.update({
+          const order = await ctx.prisma.order.findFirst({
             where: {
               id: input.orderId,
             },
-            data: {
-              discount: {
-                connect: {
-                  id: creditTransaction.id,
-                },
-              },
+            select: {
+              orderTotalPrice: true,
             },
           });
+
+          if (order) {
+            await ctx.prisma.order.update({
+              where: {
+                id: input.orderId,
+              },
+              data: {
+                orderTotalPriceWithDiscount:
+                  order.orderTotalPrice - input.credits * 100,
+                discount: {
+                  connect: {
+                    id: creditTransaction.id,
+                  },
+                },
+              },
+            });
+          }
 
           return creditTransaction;
         }

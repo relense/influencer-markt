@@ -32,6 +32,12 @@ const createInvoice = async (params: { orderId: number }) => {
     const taxValue =
       (order.orderBasePrice + ourCutValue) * (order.orderTaxPercentage / 100);
 
+    let totalValue = order.orderTotalPrice;
+
+    if (order.orderTotalPriceWithDiscount && order.discount) {
+      totalValue = order.orderTotalPriceWithDiscount;
+    }
+
     await prisma.invoice.create({
       data: {
         order: {
@@ -48,7 +54,7 @@ const createInvoice = async (params: { orderId: number }) => {
         influencerMarktPercentage: order.orderServicePercentage,
         influencerMarktCutValue: ourCutValue,
         saleBaseValue: order.orderBasePrice,
-        saleTotalValue: order.orderTotalPrice,
+        saleTotalValue: totalValue,
         taxValue: taxValue,
         name: order.buyer?.billing?.name || "",
         email: order.buyer?.billing?.email || "",

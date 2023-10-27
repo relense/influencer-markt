@@ -15,6 +15,7 @@ import { buyerOrderWasRectified } from "../../../emailTemplates/buyerOrderWasRec
 import { influencerOrderWasRectified } from "../../../emailTemplates/influencerOrderWasRectified/influencerOrderWasRectified";
 import { toInfluencerOnHoldtoPostponed } from "../../../emailTemplates/toInfluencerOnHoldtoPostponed/toInfluencerOnHoldtoPostponed";
 import { toInfluencerOrderOnHoldToRefund } from "../../../emailTemplates/toInfluencerOrderOnHoldToRefund/toInfluencerOrderOnHoldToRefund";
+import { createInvoice } from "./invoices";
 
 export const OrdersRouter = createTRPCRouter({
   createOrder: protectedProcedure
@@ -590,6 +591,71 @@ export const OrdersRouter = createTRPCRouter({
       }
     }),
 
+  updateOrderAccept: protectedProcedure
+    .input(
+      z.object({
+        orderId: z.number(),
+      })
+    )
+    .mutation(async ({ ctx, input }) => {
+      const beforeUpdateOrder = await ctx.prisma.order.findFirst({
+        where: {
+          id: input.orderId,
+        },
+        select: {
+          orderStatusId: true,
+          discount: true,
+        },
+      });
+
+      const order = await ctx.prisma.order.update({
+        where: { id: input.orderId },
+        data: {
+          orderStatusId: beforeUpdateOrder?.discount ? 4 : 3,
+        },
+        include: {
+          buyer: {
+            select: {
+              name: true,
+              country: true,
+              user: {
+                select: {
+                  email: true,
+                },
+              },
+            },
+          },
+          influencer: {
+            select: {
+              name: true,
+              country: true,
+              user: {
+                select: {
+                  email: true,
+                },
+              },
+            },
+          },
+        },
+      });
+
+      if (process.env.NEXT_PUBLIC_EMAIL_FROM) {
+        influencerAcceptedOrderEmail({
+          influencerName: order.influencer?.name || "",
+          from: process.env.NEXT_PUBLIC_EMAIL_FROM,
+          to: order.buyer?.user.email || "",
+          language: order.buyer?.country?.languageCode || "en",
+          orderId: order.id,
+        });
+      }
+
+      if (order.orderStatusId === 4) {
+        await createInvoice({
+          orderId: order.id,
+        });
+      }
+    }),
+
   updateOrder: protectedProcedure
     .input(
       z.object({
@@ -641,15 +707,7 @@ export const OrdersRouter = createTRPCRouter({
         });
 
         if (process.env.NEXT_PUBLIC_EMAIL_FROM) {
-          if (input.statusId === 3) {
-            influencerAcceptedOrderEmail({
-              influencerName: order.influencer?.name || "",
-              from: process.env.NEXT_PUBLIC_EMAIL_FROM,
-              to: order.buyer?.user.email || "",
-              language: order.buyer?.country?.languageCode || "en",
-              orderId: order.id,
-            });
-          } else if (input.statusId === 5) {
+          if (input.statusId === 5) {
             influencerDeliveredOrderEmail({
               influencerName: order.influencer?.name || "",
               from: process.env.NEXT_PUBLIC_EMAIL_FROM,

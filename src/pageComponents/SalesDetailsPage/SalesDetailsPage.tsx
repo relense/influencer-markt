@@ -35,7 +35,7 @@ const SalesDetailsPage = (params: { orderId: number }) => {
   });
 
   const { mutate: updateOrderAccept, isLoading: updateAcceptIsLoading } =
-    api.orders.updateOrder.useMutation({
+    api.orders.updateOrderAccept.useMutation({
       onSuccess: () => {
         void createNotification({
           entityId: params.orderId,
@@ -99,7 +99,6 @@ const SalesDetailsPage = (params: { orderId: number }) => {
     if (type === "accept") {
       updateOrderAccept({
         orderId: params.orderId,
-        statusId: 3,
       });
     } else {
       updateOrderReject({
