@@ -617,8 +617,8 @@ model Refund {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  orderId   Int    @unique
-  paymentId String @unique
+  orderId   Int     @unique
+  paymentId String? @unique
 
   @@index([orderId])
   @@index([paymentId])

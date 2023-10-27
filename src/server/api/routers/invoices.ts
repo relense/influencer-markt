@@ -98,6 +98,11 @@ export const InvoicesRouter = createTRPCRouter({
                 socialMedia: {
                   select: { name: true },
                 },
+                discount: {
+                  select: {
+                    amount: true,
+                  },
+                },
                 refund: true,
                 orderDetails: true,
                 orderValuePacks: {

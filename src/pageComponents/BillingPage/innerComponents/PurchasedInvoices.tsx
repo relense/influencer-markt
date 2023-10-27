@@ -30,6 +30,7 @@ type Invoice = {
   invoiceDateOfDelivery: string;
   orderRefunded?: boolean;
   orderRefundAmount?: number;
+  orderCredits?: number;
   influencer: {
     influencerName: string;
     influencerUsername: string;
@@ -89,6 +90,7 @@ const PurchasedInvoices = () => {
               ) || "",
             orderRefunded: !!invoice.order.refund,
             orderRefundAmount: invoice.order.refund?.refundValue,
+            orderCredits: invoice.order.discount?.amount,
           };
         })
       );
@@ -146,6 +148,14 @@ const PurchasedInvoices = () => {
             {helper.calculerMonetaryValue(invoice.invoiceSaleTotal)}€
           </div>
         </div>
+        {!!invoice.orderCredits && (
+          <div className="flex flex-col">
+            <div className="font-medium">Credits Used</div>
+            <div className="text-base font-semibold text-influencer">
+              {helper.calculerMonetaryValue(invoice.orderCredits || 0)}€
+            </div>
+          </div>
+        )}
         {invoice.orderRefunded && (
           <div className="flex flex-col">
             <div className="font-medium">Refunded</div>
