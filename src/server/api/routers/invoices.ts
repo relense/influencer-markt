@@ -34,8 +34,8 @@ const createInvoice = async (params: { orderId: number }) => {
 
     let totalValue = order.orderTotalPrice;
 
-    if (order.orderTotalPriceWithDiscount && order.discount) {
-      totalValue = order.orderTotalPriceWithDiscount;
+    if (order.discount) {
+      totalValue = order.orderTotalPriceWithDiscount || 0;
     }
 
     await prisma.invoice.create({
