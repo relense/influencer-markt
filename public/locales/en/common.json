@@ -1076,7 +1076,8 @@
       "dateOfDelivery": "Date of Delivery",
       "invoiceRef": "Invoice Ref:",
       "billingDetailsForInvoice": "Billing Details For Invoice",
-      "availableCredits": "Available Credits"
+      "availableCredits": "Available Credits",
+      "updateIban": "Update IBAN before withdrawing available balance"
     },
 
     "socialMediaCreate": {

@@ -152,11 +152,7 @@ const BillingDetailsInfluencerModal = (params: {
                   maxLength: 50,
                   validate: (value) => {
                     const iban = electronicFormatIBAN(value) as string;
-                    if (isValidIBAN(iban)) {
-                      return true;
-                    } else {
-                      return false;
-                    }
+                    return isValidIBAN(iban);
                   },
                 })}
                 required

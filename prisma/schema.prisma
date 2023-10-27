@@ -556,6 +556,7 @@ model Invoice {
   taxValue                  Int
   taxPercentage             Int
   discountValue             Int
+  financialInvoiceUrl       String? @db.Text
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt

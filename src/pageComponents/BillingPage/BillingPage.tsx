@@ -1,11 +1,11 @@
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { api } from "~/utils/api";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faInfoCircle } from "@fortawesome/free-solid-svg-icons";
 
 import { Button } from "../../components/Button";
 import { helper } from "../../utils/helper";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faInfoCircle } from "@fortawesome/free-solid-svg-icons";
 import { LoadingSpinner } from "../../components/LoadingSpinner";
 import { AvailableBalanceModal } from "./innerComponents/AvailableBalanceModal";
 import { PendingBalanceModal } from "./innerComponents/PendingBalanceModal";
@@ -13,6 +13,8 @@ import { InfoBalanceModal } from "./innerComponents/InfoBalanceModal";
 import { BillingDetailsInfluencerModal } from "./innerComponents/BillingDetailsInfluencerModal";
 import { PurchasedInvoices } from "./innerComponents/PurchasedInvoices";
 import { BillingDetailsBrandModal } from "./innerComponents/BillingDetailsBrandModal";
+import { WithdrawMoneyModal } from "./innerComponents/WithdrawMoneyModal";
+import toast from "react-hot-toast";
 
 const BillingPage = (params: { isBrand: boolean }) => {
   const { t } = useTranslation();
@@ -25,6 +27,8 @@ const BillingPage = (params: { isBrand: boolean }) => {
     useState<boolean>(false);
   const [openPendingBalanceModal, setOpenPendingBalanceModal] =
     useState<boolean>(false);
+  const [openWithdrawMoneyModal, setOpenWithdrawMoneyModal] =
+    useState<boolean>(false);
 
   const { data: billingInfo, isLoading: isLoadingBillingInfo } =
     api.billings.getBillingInfo.useQuery();
@@ -35,6 +39,16 @@ const BillingPage = (params: { isBrand: boolean }) => {
   const { data: pendingPayoutsSum } = api.payouts.pendingPayoutsSum.useQuery();
 
   const { data: totalCredit } = api.credits.calculateUserCredits.useQuery();
+
+  const handleOpenWithdrawModal = () => {
+    if (billingInfo?.iban !== null) {
+      setOpenWithdrawMoneyModal(true);
+    } else {
+      toast.success(t("pages.billing.updateIban"), {
+        position: "bottom-left",
+      });
+    }
+  };
 
   const billingInformation = () => {
     if (billingInfo) {
@@ -137,6 +151,7 @@ const BillingPage = (params: { isBrand: boolean }) => {
               level="primary"
               size="regular"
               title={t("pages.billing.withdraw")}
+              onClick={() => handleOpenWithdrawModal()}
             />
           </div>
         </div>
@@ -189,6 +204,11 @@ const BillingPage = (params: { isBrand: boolean }) => {
         )}
         {openBalanceInfoModal && (
           <InfoBalanceModal onClose={() => setOpenBalanceInfoModal(false)} />
+        )}
+        {openWithdrawMoneyModal && (
+          <WithdrawMoneyModal
+            onClose={() => setOpenWithdrawMoneyModal(false)}
+          />
         )}
       </>
     );

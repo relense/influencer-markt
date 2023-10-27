@@ -1057,7 +1057,7 @@
       "balanceInformation": "Informação de Saldo",
       "iban": "IBAN",
       "update": "Actualizar",
-      "withdraw": "Retirar",
+      "withdraw": "Levantar",
       "salesInvoices": "Faturas de Vendas",
       "purchasesInvoices": "Faturas de Compras",
       "invalidTin": "O NIF é inválido",
@@ -1077,7 +1077,8 @@
       "dateOfDelivery": "Date de Entrega",
       "invoiceRef": "Fatura Ref:",
       "billingDetailsForInvoice": "Detalhes de Faturação",
-      "availableCredits": "Créditos Disponíveis"
+      "availableCredits": "Créditos Disponíveis",
+      "updateIban": "Actualiza o IBAN antes de levantar o saldo disponível"
     },
 
     "socialMediaCreate": {
