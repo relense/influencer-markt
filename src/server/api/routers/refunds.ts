@@ -28,7 +28,7 @@ export const RefundsRouter = createTRPCRouter({
         },
       });
 
-      if (profile && profile.credit && payment) {
+      if (profile && profile.credit) {
         if (input.isCredit) {
           const refund = await ctx.prisma.refund.create({
             data: {
@@ -37,11 +37,6 @@ export const RefundsRouter = createTRPCRouter({
               order: {
                 connect: {
                   id: input.orderId,
-                },
-              },
-              payment: {
-                connect: {
-                  id: payment.id,
                 },
               },
             },
@@ -76,7 +71,24 @@ export const RefundsRouter = createTRPCRouter({
                 },
               },
             },
+            select: { id: true },
           });
+
+          if (payment) {
+            await ctx.prisma.refund.update({
+              where: {
+                id: refund.id,
+              },
+              data: {
+                payment: {
+                  connect: {
+                    id: payment.id,
+                  },
+                },
+              },
+              select: { id: true },
+            });
+          }
         } else {
           return null;
         }

@@ -578,7 +578,7 @@ model Payout {
   taxesPercentage   Int
   isentOfTaxes      Boolean
   paid              Boolean @default(false)
-  influencerInvoice String?  @db.Text
+  influencerInvoice String? @db.Text
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -612,7 +612,7 @@ model Refund {
   order             Order              @relation(fields: [orderId], references: [id])
   isCredit          Boolean
   creditTransaction CreditTransaction?
-  payment           Payment            @relation(fields: [paymentId], references: [id])
+  payment           Payment?           @relation(fields: [paymentId], references: [id])
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
