@@ -10,8 +10,9 @@ import { LoadingSpinner } from "../../components/LoadingSpinner";
 import { AvailableBalanceModal } from "./innerComponents/AvailableBalanceModal";
 import { PendingBalanceModal } from "./innerComponents/PendingBalanceModal";
 import { InfoBalanceModal } from "./innerComponents/InfoBalanceModal";
-import { BillingDetailsModal } from "./innerComponents/BillingDetailsModal";
+import { BillingDetailsInfluencerModal } from "./innerComponents/BillingDetailsInfluencerModal";
 import { PurchasedInvoices } from "./innerComponents/PurchasedInvoices";
+import { BillingDetailsBrandModal } from "./innerComponents/BillingDetailsBrandModal";
 
 const BillingPage = (params: { isBrand: boolean }) => {
   const { t } = useTranslation();
@@ -59,12 +60,14 @@ const BillingPage = (params: { isBrand: boolean }) => {
               </div>
               <div>{billingInfo.tin || "No Information"}</div>
             </div>
-            <div className="flex flex-col gap-2">
-              <div className="text-lg font-medium">
-                {t("pages.billing.iban")}
+            {!params.isBrand && (
+              <div className="flex flex-col gap-2">
+                <div className="text-lg font-medium">
+                  {t("pages.billing.iban")}
+                </div>
+                <div>{billingInfo?.iban || "No Information"}</div>
               </div>
-              <div>{billingInfo?.iban || "No Information"}</div>
-            </div>
+            )}
           </div>
           <div className="flex justify-center">
             <Button
@@ -147,15 +150,23 @@ const BillingPage = (params: { isBrand: boolean }) => {
           </div>
           <PurchasedInvoices />
         </div>
-        {openBillingDetailsModal && (
-          <BillingDetailsModal
-            name={billingInfo?.name || ""}
-            email={billingInfo?.email || ""}
-            tin={billingInfo?.tin || ""}
-            iban={billingInfo?.iban || ""}
-            onClose={() => setOpenBillingDetailsModal(false)}
-          />
-        )}
+        {openBillingDetailsModal &&
+          (params.isBrand ? (
+            <BillingDetailsBrandModal
+              name={billingInfo?.name || ""}
+              email={billingInfo?.email || ""}
+              tin={billingInfo?.tin || ""}
+              onClose={() => setOpenBillingDetailsModal(false)}
+            />
+          ) : (
+            <BillingDetailsInfluencerModal
+              name={billingInfo?.name || ""}
+              email={billingInfo?.email || ""}
+              tin={billingInfo?.tin || ""}
+              iban={billingInfo?.iban || ""}
+              onClose={() => setOpenBillingDetailsModal(false)}
+            />
+          ))}
         {openAvailableBalanceModal && (
           <AvailableBalanceModal
             onClose={() => setOpenAvailableBalanceModal(false)}

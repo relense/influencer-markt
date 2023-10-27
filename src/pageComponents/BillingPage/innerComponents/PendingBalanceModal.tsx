@@ -2,8 +2,6 @@ import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { api } from "~/utils/api";
 import Link from "next/link";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCheckCircle } from "@fortawesome/free-regular-svg-icons";
 
 import { LoadingSpinner } from "../../../components/LoadingSpinner";
 import { Modal } from "../../../components/Modal";
@@ -18,7 +16,7 @@ type Payout = {
 };
 
 const PendingBalanceModal = (params: { onClose: () => void }) => {
-  const { i18n } = useTranslation();
+  const { t, i18n } = useTranslation();
 
   const [availablePayouts, setAvailablePayouts] = useState<Payout[]>([]);
   const [availablePayoutsCursor, setAvailablePayoutsCursor] =
@@ -64,29 +62,31 @@ const PendingBalanceModal = (params: { onClose: () => void }) => {
   } else {
     return (
       <div className="flex justify-center">
-        <Modal onClose={() => params.onClose()} title="Pending Balance">
+        <Modal
+          onClose={() => params.onClose()}
+          title={t("pages.billing.pendingBalance")}
+        >
           <div className="flex flex-col gap-4 p-6">
             {availablePayouts.map((payout) => {
               return (
-                <Link
-                  href={`/sales/${payout.orderId}`}
+                <div
                   key={payout.id}
-                  className="hover: flex cursor-pointer gap-4 rounded-lg border-[1px] p-2 shadow-md hover:shadow-none"
+                  className="flex flex-col items-center gap-2 rounded-lg border-[1px] p-2 shadow-md"
                 >
-                  {payout.paid && (
-                    <FontAwesomeIcon
-                      icon={faCheckCircle}
-                      className="text-lg text-influencer-green"
-                    />
-                  )}
-                  <div className="text-influencer">
-                    Order Ref #{payout.orderId}:
+                  <Link
+                    href={`/sales/${payout.orderId}`}
+                    className="text-influencer hover:cursor-pointer hover:underline"
+                  >
+                    {t("pages.billing.orderRef")} #{payout.orderId}:
+                  </Link>
+                  <div className="flex gap-4">
+                    <div>{payout.payoutCreated}</div>
+                    <div>
+                      {t("pages.billing.sale")}{" "}
+                      {helper.calculerMonetaryValue(payout.payoutValue)}€
+                    </div>
                   </div>
-                  <div>Completed At {payout.payoutCreated}</div>
-                  <div>
-                    Sale: {helper.calculerMonetaryValue(payout.payoutValue)}€
-                  </div>
-                </Link>
+                </div>
               );
             })}
           </div>

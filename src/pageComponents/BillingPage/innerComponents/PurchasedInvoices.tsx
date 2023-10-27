@@ -6,6 +6,7 @@ import {
   faCircleCheck,
   faCircleMinus,
   faCirclePlus,
+  faXmarkCircle,
 } from "@fortawesome/free-solid-svg-icons";
 import { helper } from "../../../utils/helper";
 import { useEffect, useState } from "react";
@@ -31,6 +32,7 @@ type Invoice = {
   orderRefunded?: boolean;
   orderRefundAmount?: number;
   orderCredits?: number;
+  orderStatusId: number;
   influencer: {
     influencerName: string;
     influencerUsername: string;
@@ -91,6 +93,7 @@ const PurchasedInvoices = () => {
             orderRefunded: !!invoice.order.refund,
             orderRefundAmount: invoice.order.refund?.refundValue,
             orderCredits: invoice.order.discount?.amount,
+            orderStatusId: invoice.order?.orderStatusId || 1,
           };
         })
       );
@@ -111,19 +114,19 @@ const PurchasedInvoices = () => {
           href={`/orders/${invoice.orderId}`}
           className="flex flex-col hover:underline"
         >
-          <div className="font-medium">Order Ref</div>
+          <div className="font-medium">{t("pages.billing.orderRef")}</div>
           <div className="font-semibold text-influencer">
             #{invoice.orderId}
           </div>
         </Link>
         <div className="flex flex-col">
-          <div className="font-medium">{t("pages.orders.platform")}</div>
+          <div className="font-medium">{t("pages.billing.platform")}</div>
           <div className="font-semibold text-influencer">
             {invoice.socialMediaOrderName}
           </div>
         </div>
         <div className="flex flex-col">
-          <div className="font-medium">{t("pages.orders.valuePacks")}</div>
+          <div className="font-medium">{t("pages.billing.valuePacks")}</div>
           <div className="flex flex-col items-center justify-center gap-4 lg:flex-row">
             {invoice.orderValuePacks.map((valuePack) => {
               return (
@@ -143,14 +146,14 @@ const PurchasedInvoices = () => {
           </div>
         </div>
         <div className="flex flex-col">
-          <div className="font-medium">{t("pages.orders.orderTotal")}</div>
+          <div className="font-medium">{t("pages.billing.orderTotal")}</div>
           <div className="text-base font-semibold text-influencer">
             {helper.calculerMonetaryValue(invoice.invoiceSaleTotal)}€
           </div>
         </div>
         {!!invoice.orderCredits && (
           <div className="flex flex-col">
-            <div className="font-medium">Credits Used</div>
+            <div className="font-medium">{t("pages.billing.creditsUsed")}</div>
             <div className="text-base font-semibold text-influencer">
               {helper.calculerMonetaryValue(invoice.orderCredits || 0)}€
             </div>
@@ -158,7 +161,7 @@ const PurchasedInvoices = () => {
         )}
         {invoice.orderRefunded && (
           <div className="flex flex-col">
-            <div className="font-medium">Refunded</div>
+            <div className="font-medium">{t("pages.billing.refunded")}</div>
             <div className="text-base font-semibold text-influencer">
               {helper.calculerMonetaryValue(invoice.orderRefundAmount || 0)}€
             </div>
@@ -184,23 +187,37 @@ const PurchasedInvoices = () => {
             className="h-24 w-24 rounded-full object-cover"
           />
         </Link>
-        <FontAwesomeIcon
-          icon={faCircleCheck}
-          className="fa-2xl text-influencer-green-dark"
-        />
+        {invoice.orderStatusId === 6 && !invoice.orderRefunded && (
+          <div className="flex items-center gap-2">
+            <FontAwesomeIcon
+              icon={faCircleCheck}
+              className="fa-2xl text-influencer-green-dark"
+            />
+            {t("pages.billing.completed")}
+          </div>
+        )}
+        {invoice.orderRefunded && (
+          <div className="flex items-center gap-2">
+            <FontAwesomeIcon
+              icon={faXmarkCircle}
+              className="fa-2xl text-influencer"
+            />
+            <span>{t("pages.billing.refunded")}</span>
+          </div>
+        )}
         <Link
           href={`/${invoice.influencer?.influencerUsername || ""}`}
           className="flex flex-col gap-2"
         >
           <div className="flex flex-col justify-center text-center font-medium">
-            Order Delivered By
+            {t("pages.billing.orderDeliveredBy")}
             <span className="text-influencer">
               {invoice.influencer?.influencerName || ""}
             </span>
           </div>
         </Link>
         <div className="flex flex-col justify-center text-center font-medium">
-          Date Of Delivery
+          {t("pages.billing.dateOfDelivery")}
           <span className="text-influencer">
             {invoice.invoiceDateOfDelivery}
           </span>
@@ -217,7 +234,9 @@ const PurchasedInvoices = () => {
       >
         <div>
           <div className="flex justify-between gap-4 p-4">
-            <span className="font-semibold">Invoice Ref: #{invoice.id}</span>
+            <span className="font-semibold">
+              {t("pages.billing.invoiceRef")} #{invoice.id}
+            </span>
           </div>
           <div className="flex flex-col lg:flex-row">
             <div className="flex flex-1 flex-col border-[1px] border-white1 p-4">
@@ -226,7 +245,9 @@ const PurchasedInvoices = () => {
             {renderInvoiceDetails(invoice)}
           </div>
           <div className="flex justify-between p-4">
-            <div className="font-semibold">Billing Details For Invoice</div>
+            <div className="font-semibold">
+              {t("pages.billing.billingDetailsForInvoice")}
+            </div>
             <FontAwesomeIcon icon={faCirclePlus} className="fa-xl text-gray3" />
           </div>
         </div>

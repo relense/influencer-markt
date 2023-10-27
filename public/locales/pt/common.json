@@ -1062,7 +1062,20 @@
       "invalidTin": "O NIF é inválido",
       "invalidIban": "O IBAN é inválido",
       "availableBalance": "Saldo Disponível",
-      "pendingBalance": "Saldo Pendente"
+      "pendingBalance": "Saldo Pendente",
+      "orderRef": "Pedido Ref",
+      "sale": "Venda:",
+      "downloadInvoice": "Descarregar Fatura",
+      "platform": "Plataforma",
+      "valuePacks": "Packs de Valor",
+      "orderTotal": "Total do Pedido",
+      "creditsUsed": "Créditos Usados",
+      "refunded": "Reembolsado",
+      "complete": "Completo",
+      "orderDeliveredBy": "Pedido Entregue Por",
+      "dateOfDelivery": "Date de Entrega",
+      "invoiceRef": "Fatura Ref:",
+      "billingDetailsForInvoice": "Detalhes de Faturação"
     },
 
     "socialMediaCreate": {

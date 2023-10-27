@@ -95,6 +95,7 @@ export const InvoicesRouter = createTRPCRouter({
           include: {
             order: {
               select: {
+                orderStatusId: true,
                 socialMedia: {
                   select: { name: true },
                 },

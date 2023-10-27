@@ -1061,7 +1061,20 @@
       "invalidTin": "The TIN is invalid",
       "invalidIban": "The IBAN is invalid",
       "availableBalance": "Available Balance",
-      "pendingBalance": "Pending Balance"
+      "pendingBalance": "Pending Balance",
+      "orderRef": "Order Ref",
+      "sale": "Sale:",
+      "downloadInvoice": "Download Invoice",
+      "platform": "Platform",
+      "valuePacks": "Value Packs",
+      "orderTotal": "Order Total",
+      "creditsUsed": "Credits Used",
+      "refunded": "Refunded",
+      "complete": "Complete",
+      "orderDeliveredBy": "Order Delivered By",
+      "dateOfDelivery": "Date of Delivery",
+      "invoiceRef": "Invoice Ref:",
+      "billingDetailsForInvoice": "Billing Details For Invoice"
     },
 
     "socialMediaCreate": {
