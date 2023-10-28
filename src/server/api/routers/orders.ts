@@ -15,7 +15,7 @@ import { buyerOrderWasRectified } from "../../../emailTemplates/buyerOrderWasRec
 import { influencerOrderWasRectified } from "../../../emailTemplates/influencerOrderWasRectified/influencerOrderWasRectified";
 import { toInfluencerOnHoldtoPostponed } from "../../../emailTemplates/toInfluencerOnHoldtoPostponed/toInfluencerOnHoldtoPostponed";
 import { toInfluencerOrderOnHoldToRefund } from "../../../emailTemplates/toInfluencerOrderOnHoldToRefund/toInfluencerOrderOnHoldToRefund";
-import { createInvoice } from "./invoices";
+import { createInvoiceCall } from "./invoices";
 import { spendCredits } from "./credits";
 
 export const OrdersRouter = createTRPCRouter({
@@ -678,7 +678,7 @@ export const OrdersRouter = createTRPCRouter({
       }
 
       if (order.orderStatusId === 4) {
-        await createInvoice({
+        await createInvoiceCall({
           orderId: order.id,
         });
       }

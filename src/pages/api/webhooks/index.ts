@@ -1,12 +1,12 @@
 import type Stripe from "stripe";
+import { buffer } from "micro";
+import type { NextApiRequest, NextApiResponse } from "next";
 
 import { stripe } from "../../../server/stripe";
 import { prisma } from "../../../server/db";
-import { buffer } from "micro";
-import type { NextApiRequest, NextApiResponse } from "next";
 import { createNotification } from "../../../server/api/routers/notifications";
 import { buyerAddDetailsEmail } from "../../../emailTemplates/buyerAddDetailsEmail/buyerAddDetailsEmail";
-import { createInvoice } from "../../../server/api/routers/invoices";
+import { createInvoiceCall } from "../../../server/api/routers/invoices";
 
 const webhookSecret: string = process.env.STRIPE_WEBHOOK_SECRET as string;
 
@@ -96,7 +96,7 @@ const webhookHandler = async (req: NextApiRequest, res: NextApiResponse) => {
             },
           });
 
-          await createInvoice({
+          await createInvoiceCall({
             orderId: order.id,
           });
 
