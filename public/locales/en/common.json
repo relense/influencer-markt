@@ -1080,7 +1080,9 @@
       "updateIban": "Update IBAN before withdrawing available balance",
       "payoutBeingProcessed": "Payout is being processed",
       "payoutApproved": "Payout was approved and processed",
-      "loadMore": "Load More"
+      "loadMore": "Load More",
+      "dateInvoiceAdded": "Invoice uploaded date.",
+      "dateProofEmited": "Proof issuance date"
     },
 
     "withdraw": {

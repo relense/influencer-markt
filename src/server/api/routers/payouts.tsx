@@ -201,6 +201,7 @@ export const PayoutsRouter = createTRPCRouter({
             payoutBlobData: {
               select: {
                 influencerInvoice: true,
+                createdAt: true,
               },
             },
           },
@@ -276,6 +277,7 @@ export const PayoutsRouter = createTRPCRouter({
             payoutBlobData: {
               select: {
                 influencerInvoice: true,
+                createdAt: true,
               },
             },
           },

@@ -1081,7 +1081,9 @@
       "updateIban": "Actualiza o IBAN antes de levantar o saldo disponível",
       "payoutBeingProcessed": "Pagamento está a ser processado",
       "payoutApproved": "Pagamento foi aprovado e processado",
-      "loadMore": "Carregar Mais"
+      "loadMore": "Carregar Mais",
+      "dateInvoiceAdded": "Data de carregamento da fatura",
+      "dateProofEmited": "Data de emissão do comprovativo"
     },
 
     "withdraw": {

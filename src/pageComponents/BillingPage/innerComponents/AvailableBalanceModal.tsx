@@ -3,13 +3,13 @@ import Link from "next/link";
 import { useTranslation } from "react-i18next";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { api } from "~/utils/api";
+import { faCheckCircle } from "@fortawesome/free-regular-svg-icons";
+import { faArrowsRotate } from "@fortawesome/free-solid-svg-icons";
 
 import { LoadingSpinner } from "../../../components/LoadingSpinner";
 import { Modal } from "../../../components/Modal";
 import { helper } from "../../../utils/helper";
-import { faCheckCircle } from "@fortawesome/free-regular-svg-icons";
 import { Button } from "../../../components/Button";
-import { faArrowsRotate } from "@fortawesome/free-solid-svg-icons";
 
 type Payout = {
   id: string;
@@ -18,6 +18,7 @@ type Payout = {
   payoutCreated: string;
   paid: boolean;
   influencerInvoice: string;
+  invoiceUploadedAt: string | undefined;
 };
 
 const AvailableBalanceModal = (params: { onClose: () => void }) => {
@@ -60,6 +61,12 @@ const AvailableBalanceModal = (params: { onClose: () => void }) => {
               ) || "",
             paid: payout.paid,
             influencerInvoice: payout.payoutBlobData?.influencerInvoice || "",
+            invoiceUploadedAt: payout?.payoutBlobData
+              ? helper.formatFullDateWithTime(
+                  payout?.payoutBlobData?.createdAt,
+                  i18n.language
+                )
+              : undefined,
           };
         })
       );
@@ -89,6 +96,12 @@ const AvailableBalanceModal = (params: { onClose: () => void }) => {
             ) || "",
           paid: payout.paid,
           influencerInvoice: payout.payoutBlobData?.influencerInvoice || "",
+          invoiceUploadedAt: payout?.payoutBlobData
+            ? helper.formatFullDateWithTime(
+                payout?.payoutBlobData?.createdAt,
+                i18n.language
+              )
+            : undefined,
         });
       });
 
@@ -129,10 +142,10 @@ const AvailableBalanceModal = (params: { onClose: () => void }) => {
             {availablePayouts.map((payout) => {
               return (
                 <div key={payout.id} className="flex flex-1 gap-2">
-                  <div className="flex flex-1 flex-col items-center gap-2 rounded-lg border-[1px] p-4 shadow-md">
+                  <div className="flex flex-1 flex-col items-center gap-3 rounded-lg border-[1px] p-4 shadow-md">
                     <Link
                       href={`/sales/${payout.orderId}`}
-                      className="text-influencer hover:cursor-pointer hover:underline"
+                      className="font-semibold text-influencer hover:cursor-pointer hover:underline"
                     >
                       {t("pages.billing.orderRef")} #{payout.orderId}:
                     </Link>
@@ -154,10 +167,25 @@ const AvailableBalanceModal = (params: { onClose: () => void }) => {
                         <div>{t("pages.billing.payoutApproved")}</div>
                       </div>
                     )}
-                    <div className="flex gap-2">
+                    {payout.invoiceUploadedAt && (
+                      <div className="flex flex-col text-center">
+                        <div className="font-semibold text-influencer">
+                          {t("pages.billing.dateInvoiceAdded")}
+                        </div>
+                        <div>{payout.invoiceUploadedAt}</div>
+                      </div>
+                    )}
+                    <div className="flex flex-col text-center">
+                      <div className="font-semibold text-influencer">
+                        {t("pages.billing.dateProofEmited")}
+                      </div>
                       <div>{payout.payoutCreated}</div>
+                    </div>
+                    <div className="flex flex-col text-center">
+                      <div className="font-semibold text-influencer">
+                        {t("pages.billing.sale")}
+                      </div>
                       <div>
-                        {t("pages.billing.sale")}{" "}
                         {helper.calculerMonetaryValue(payout.payoutValue)}€
                       </div>
                     </div>
