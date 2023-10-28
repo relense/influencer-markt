@@ -563,7 +563,7 @@ model Invoice {
 
   orderId           Int    @unique
   profileId         Int
-  invoiceBlobDataId String @unique
+  invoiceBlobDataId String? @unique
 
   @@index([orderId])
   @@index([profileId])
