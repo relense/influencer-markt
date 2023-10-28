@@ -85,8 +85,6 @@ const webhookHandler = async (req: NextApiRequest, res: NextApiResponse) => {
               influencerId: true,
               buyer: {
                 select: {
-                  billing: true,
-                  id: true,
                   name: true,
                 },
               },
@@ -100,12 +98,6 @@ const webhookHandler = async (req: NextApiRequest, res: NextApiResponse) => {
                   },
                 },
               },
-              orderBasePrice: true,
-              orderServicePercentage: true,
-              orderTaxPercentage: true,
-              orderTotalPrice: true,
-              discount: true,
-              orderTotalPriceWithDiscount: true,
             },
           });
 
@@ -113,38 +105,6 @@ const webhookHandler = async (req: NextApiRequest, res: NextApiResponse) => {
             await createInvoiceCall({
               orderId: order.id,
             });
-            // const ourCutValue = Math.floor(
-            //   order.orderBasePrice * (order.orderServicePercentage / 100)
-            // );
-
-            // const taxValue = Math.floor(
-            //   (order.orderBasePrice + ourCutValue) *
-            //     (order.orderTaxPercentage / 100)
-            // );
-
-            // let totalValue = order.orderTotalPrice;
-
-            // if (order.discount) {
-            //   totalValue = order.orderTotalPriceWithDiscount || 0;
-            // }
-
-            // await prisma.invoice.create({
-            //   data: {
-            //     orderId: order.id,
-            //     profileId: order.buyer?.id,
-            //     taxPercentage: order.orderTaxPercentage,
-            //     influencerMarktPercentage: order.orderServicePercentage,
-            //     influencerMarktCutValue: ourCutValue,
-            //     saleBaseValue: order.orderBasePrice,
-            //     saleTotalValue: totalValue,
-            //     taxValue: taxValue,
-            //     name: order.buyer?.billing?.name || "",
-            //     email: order.buyer?.billing?.email || "",
-            //     tin: order.buyer?.billing?.tin || "",
-            //     discountValue: order?.discount?.amount || 0,
-
-            //   },
-            // });
 
             await createNotification({
               entityId: order.id,
@@ -177,7 +137,7 @@ const webhookHandler = async (req: NextApiRequest, res: NextApiResponse) => {
 
     return res.status(200).send(`success`);
   } else {
-    return res.status(500).send("DEU ERRO AQUI");
+    return res.status(500).send("failed");
   }
 };
 
