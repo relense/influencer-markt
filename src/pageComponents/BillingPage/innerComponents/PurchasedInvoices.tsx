@@ -184,7 +184,7 @@ const PurchasedInvoices = () => {
             width={1000}
             height={1000}
             quality={100}
-            className="h-24 w-24 rounded-full object-cover"
+            className="pointer-events-none h-24 w-24 rounded-full object-cover"
           />
         </Link>
         {invoice.orderStatusId === 6 && !invoice.orderRefunded && (

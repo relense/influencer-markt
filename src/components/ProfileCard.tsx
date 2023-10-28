@@ -160,7 +160,7 @@ const ProfileCard = (params: {
             width={1000}
             quality={100}
             alt={params.name}
-            className="flex h-80 w-full cursor-pointer rounded-xl object-cover transition-all duration-1000 hover:scale-125 lg:w-80"
+            className="pointer-events-none flex h-80 w-full cursor-pointer rounded-xl object-cover transition-all duration-1000 hover:scale-125 lg:w-80"
             priority
           />
         </Link>

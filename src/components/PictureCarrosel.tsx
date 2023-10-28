@@ -282,7 +282,7 @@ export const PictureCarrosel = (params: {
                 width={540}
                 height={430}
                 quality={100}
-                className="h-full rounded-lg object-cover"
+                className="pointer-events-none h-full rounded-lg object-cover"
                 priority
               />
             )}
@@ -310,7 +310,7 @@ export const PictureCarrosel = (params: {
                       alt="Uploaded Image"
                       width={100}
                       height={56}
-                      className="h-14 rounded-lg object-cover"
+                      className="pointer-events-none h-14 rounded-lg object-cover"
                       priority
                     />
                   )}

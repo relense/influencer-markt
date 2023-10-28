@@ -189,7 +189,7 @@ const SalesPage = () => {
               width={1000}
               height={1000}
               quality={100}
-              className="h-24 w-24 rounded-full object-cover"
+              className="pointer-events-none h-24 w-24 rounded-full object-cover"
             />
           </Link>
           <div className="flex-2 flex flex-col items-center p-2 text-base lg:items-start">

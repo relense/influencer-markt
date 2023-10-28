@@ -295,7 +295,7 @@ const PublicProfilePage = (params: {
               width={1000}
               height={1000}
               quality={100}
-              className="h-24 w-24 rounded-full object-cover"
+              className="pointer-events-none h-24 w-24 rounded-full object-cover"
             />
           ) : (
             <div className="flex h-24 w-24 cursor-pointer flex-col items-center justify-center rounded-full border-[1px] border-gray3">
