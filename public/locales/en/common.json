@@ -1079,13 +1079,21 @@
       "availableCredits": "Available Credits",
       "updateIban": "Update IBAN before withdrawing available balance",
       "payoutBeingProcessed": "Payout is being processed",
-      "payoutApproved": "Payout was approved and processed",
+      "payoutApproved": "Payout was approved and processed"
+    },
+
+    "withdraw": {
       "withdrawModalTitle": "Initiate Withdraw Available Balance Process",
       "withdawModalSubtitle1": "Prior to processing a payment, it is essential for us to ensure the accuracy and validity of the invoice you provide.",
       "withdawModalSubtitle2": "We kindly request that you upload the invoice so that we can initiate the meticulous verification process to confirm the correctness of all details.",
       "withdawModalSubtitle3": "We will promptly notify you as soon as the invoice has been thoroughly verified and the payment has been successfully processed.",
       "withdawModalAvailablePayout": "Available Payout Amount",
-      "uploadInvoice": "Upload Invoice"
+      "uploadInvoice": "Upload Invoice",
+      "uploadNewInvoice": "Upload New Invoice",
+      "uploadedInvoice": "Uploaded Invoice",
+      "withdraw": "Initiate Withdraw Process",
+      "fileIsNotPdf": "Uploaded file is not of type PDF",
+      "uploadedSuccessfully": "Invoice upload successfully"
     },
 
     "socialMediaCreate": {

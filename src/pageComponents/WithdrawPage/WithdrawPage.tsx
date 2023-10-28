@@ -3,7 +3,10 @@ import { api } from "~/utils/api";
 import toast from "react-hot-toast";
 import { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faArrowUpFromBracket } from "@fortawesome/free-solid-svg-icons";
+import {
+  faArrowUpFromBracket,
+  faClose,
+} from "@fortawesome/free-solid-svg-icons";
 import { useRouter } from "next/router";
 import { helper } from "../../utils/helper";
 import { Button } from "../../components/Button";
@@ -27,14 +30,15 @@ const WithdrawPage = () => {
     api.payouts.availablePayoutsSum.useQuery();
 
   const onChangeUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files && e.target.files?.[0]?.name.includes(".pdf")) {
+    if (e.target.files && e.target.files?.[0]?.type === "application/pdf") {
+      setInfluencerInvoice(null);
       setInfluencerInvoice(e.target.files?.[0]);
-      toast.success("Invoice upload successfully", {
+      toast.success(t("pages.withdraw.uploadedSuccessfully"), {
         duration: 5000,
         position: "bottom-left",
       });
     } else {
-      toast.error("File is not a pdf file", {
+      toast.error(t("pages.withdraw.fileIsNotPdf"), {
         duration: 5000,
         position: "bottom-left",
       });
@@ -56,62 +60,95 @@ const WithdrawPage = () => {
     }
   };
 
-  return (
-    <div className="flex w-full cursor-default flex-col gap-6 self-center px-4 pb-10 sm:px-12 lg:w-full xl:w-10/12 2xl:w-3/4 3xl:w-3/4 4xl:w-7/12 5xl:w-2/4">
+  const renderIntoInfo = () => {
+    return (
       <div className="flex flex-col gap-4">
         <div className="text-center text-2xl font-semibold lg:text-3xl">
-          {t("pages.billing.withdrawModalTitle")}
+          {t("pages.withdraw.withdrawModalTitle")}
         </div>
         <div className="flex  flex-1 flex-col items-center justify-center gap-2 px-4 text-sm lg:text-base">
           <div className="w-full lg:w-8/12">
-            {t("pages.billing.withdawModalSubtitle1")}
+            {t("pages.withdraw.withdawModalSubtitle1")}
           </div>
           <div className="w-full lg:w-8/12">
-            {t("pages.billing.withdawModalSubtitle2")}
+            {t("pages.withdraw.withdawModalSubtitle2")}
           </div>
           <div className="w-full lg:w-8/12">
-            {t("pages.billing.withdawModalSubtitle3")}
+            {t("pages.withdraw.withdawModalSubtitle3")}
           </div>
         </div>
       </div>
+    );
+  };
+
+  const renderUploadInfo = () => {
+    return (
       <div className="flex flex-col">
         <div className="flex flex-1 flex-col justify-start gap-2 text-center text-2xl">
           <div className="font-semibold">
-            {t("pages.billing.withdawModalAvailablePayout")}
+            {t("pages.withdraw.withdawModalAvailablePayout")}
           </div>
           <div className="font-semibold text-influencer">
             {helper.calculerMonetaryValue(availablePayoutsSum || 0)}€
           </div>
         </div>
-        <div className="relative flex h-12 flex-col items-center gap-3 lg:h-24">
-          <input
-            required={true}
-            type="file"
-            onChange={onChangeUpload}
-            title="uploadButton"
-            className="absolute z-50 h-full w-full cursor-pointer text-[0px] opacity-0"
-          />
-          <div className="flex flex-1 items-center justify-center gap-2 text-center text-xl text-influencer sm:gap-4">
-            <div className="">
-              <FontAwesomeIcon icon={faArrowUpFromBracket} />
+        {availablePayoutsSum && availablePayoutsSum > 0 && (
+          <div className="relative flex h-12 flex-col items-center gap-3 lg:h-24">
+            <input
+              required={true}
+              type="file"
+              onChange={onChangeUpload}
+              title="uploadButton"
+              className="absolute z-50 h-full w-full cursor-pointer text-[0px] opacity-0"
+            />
+            <div className="flex flex-1 items-center justify-center gap-2 text-center text-xl text-influencer sm:gap-4">
+              <div className="">
+                <FontAwesomeIcon icon={faArrowUpFromBracket} />
+              </div>
+              <div>
+                {!influencerInvoice
+                  ? t("pages.withdraw.uploadInvoice")
+                  : t("pages.withdraw.uploadNewInvoice")}
+              </div>
             </div>
-            <div>{t("pages.billing.uploadInvoice")}</div>
           </div>
-        </div>
-        <div className="flex justify-center p-4">
-          <Button
-            title={t("pages.billing.withdraw")}
-            level="terciary"
-            form="form-withdraw"
-            onClick={() => handleFileUpload()}
-            isLoading={isLoadingUploadInvoice}
-            disabled={
-              isLoadingUploadInvoice ||
-              !influencerInvoice ||
-              availablePayoutsSum === 0
-            }
-          />
-        </div>
+        )}
+        {influencerInvoice && (
+          <div className="flex flex-1 flex-col items-center justify-center gap-2">
+            <div className="text-xl font-semibold text-influencer">
+              {t("pages.withdraw.uploadedInvoice")}
+            </div>
+            <div className="flex items-center gap-2 text-lg">
+              <FontAwesomeIcon
+                icon={faClose}
+                className="cursor-pointer text-xl text-influencer"
+                onClick={() => setInfluencerInvoice(null)}
+              />
+              <div>{influencerInvoice?.name || ""}</div>
+            </div>
+          </div>
+        )}
+      </div>
+    );
+  };
+
+  return (
+    <div className="flex w-full cursor-default flex-col gap-6 self-center px-4 pb-10 sm:px-12 lg:w-full xl:w-10/12 2xl:w-3/4 3xl:w-3/4 4xl:w-7/12 5xl:w-2/4">
+      {renderIntoInfo()}
+      {renderUploadInfo()}
+      <div className="flex justify-center p-4">
+        <Button
+          title={t("pages.withdraw.withdraw")}
+          level="terciary"
+          form="form-withdraw"
+          onClick={() => handleFileUpload()}
+          isLoading={isLoadingUploadInvoice}
+          disabled={
+            isLoadingUploadInvoice ||
+            !influencerInvoice ||
+            availablePayoutsSum === 0
+          }
+        />
       </div>
     </div>
   );

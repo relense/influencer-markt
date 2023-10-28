@@ -1080,13 +1080,21 @@
       "availableCredits": "Créditos Disponíveis",
       "updateIban": "Actualiza o IBAN antes de levantar o saldo disponível",
       "payoutBeingProcessed": "Pagamento está a ser processado",
-      "payoutApproved": "Pagamento foi aprovado e processado",
+      "payoutApproved": "Pagamento foi aprovado e processado"
+    },
+
+    "withdraw": {
       "withdrawModalTitle": "Iniciar Processo de Pagamento de Saldo Disponível",
       "withdawModalSubtitle1": "Antes de efetuarmos o pagamento, é fundamental garantirmos a exatidão e validade da fatura que nos fornece.",
       "withdawModalSubtitle2": "Pedimos gentilmente que carregue a fatura para que possamos iniciar o processo minucioso de verificação a fim de confirmar a correção de todos os detalhes.",
       "withdawModalSubtitle3": "Iremos avisar-te prontamente assim que a fatura tenha sido minuciosamente verificada e o pagamento tenha sido processado com sucesso.",
       "withdawModalAvailablePayout": "Valor Disponível para Pagamento",
-      "uploadInvoice": "Carregar Fatura"
+      "uploadInvoice": "Carregar Fatura",
+      "uploadNewInvoice": "Carregar Nova Fatura",
+      "uploadedInvoice": "Fatura Carregada",
+      "withdraw": "Iniciar Procresso de Pagamento",
+      "fileIsNotPdf": "O ficheiro carregado não é um PDF",
+      "uploadedSuccessfully": "Fatura carregada com sucesso"
     },
 
     "socialMediaCreate": {

@@ -596,10 +596,14 @@ model Payout {
 }
 
 model PayoutBlobData {
-  id                        String   @id @default(cuid())
-  influencerInvoice         String   @db.Text
-  influencerInvoiceBlobName String   @db.Text
-  payouts                   Payout[]
+  id                        String @id @default(cuid())
+  influencerInvoice         String @db.Text
+  influencerInvoiceBlobName String @db.Text
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  payouts Payout[]
 }
 
 model Payment {
