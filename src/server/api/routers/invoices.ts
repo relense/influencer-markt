@@ -40,7 +40,7 @@ const createInvoiceCall = async (params: { orderId: number }) => {
       totalValue = order.orderTotalPriceWithDiscount || 0;
     }
 
-    await prisma.invoice.create({
+    return await prisma.invoice.create({
       data: {
         order: {
           connect: {
