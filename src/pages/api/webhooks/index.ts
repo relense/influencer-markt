@@ -1,11 +1,17 @@
 import type Stripe from "stripe";
 import { buffer } from "micro";
 import type { NextApiRequest, NextApiResponse } from "next";
+import Cors from "micro-cors";
 
 import { stripe } from "../../../server/stripe";
 import { prisma } from "../../../server/db";
 import { createNotification } from "../../../server/api/routers/notifications";
 import { buyerAddDetailsEmail } from "../../../emailTemplates/buyerAddDetailsEmail/buyerAddDetailsEmail";
+import { createInvoiceCall } from "../../../server/api/routers/invoices";
+
+const cors = Cors({
+  allowMethods: ["POST", "HEAD"],
+});
 
 const webhookSecret: string = process.env.STRIPE_WEBHOOK_SECRET as string;
 
@@ -79,9 +85,7 @@ const webhookHandler = async (req: NextApiRequest, res: NextApiResponse) => {
               influencerId: true,
               buyer: {
                 select: {
-                  id: true,
                   name: true,
-                  billing: true,
                 },
               },
               influencer: {
@@ -94,54 +98,12 @@ const webhookHandler = async (req: NextApiRequest, res: NextApiResponse) => {
                   },
                 },
               },
-              orderBasePrice: true,
-              orderServicePercentage: true,
-              orderTaxPercentage: true,
-              orderTotalPrice: true,
-              discount: true,
-              orderTotalPriceWithDiscount: true,
             },
           });
 
           if (order) {
-            const ourCutValue = Math.floor(
-              order.orderBasePrice * (order.orderServicePercentage / 100)
-            );
-
-            const taxValue = Math.floor(
-              (order.orderBasePrice + ourCutValue) *
-                (order.orderTaxPercentage / 100)
-            );
-
-            let totalValue = order.orderTotalPrice;
-
-            if (order.discount) {
-              totalValue = order.orderTotalPriceWithDiscount || 0;
-            }
-
-            await prisma.invoice.create({
-              data: {
-                order: {
-                  connect: {
-                    id: order.id,
-                  },
-                },
-                profile: {
-                  connect: {
-                    id: order.buyer?.id,
-                  },
-                },
-                taxPercentage: order.orderTaxPercentage,
-                influencerMarktPercentage: order.orderServicePercentage,
-                influencerMarktCutValue: ourCutValue,
-                saleBaseValue: order.orderBasePrice,
-                saleTotalValue: totalValue,
-                taxValue: taxValue,
-                name: order.buyer?.billing?.name || "",
-                email: order.buyer?.billing?.email || "",
-                tin: order.buyer?.billing?.tin || "",
-                discountValue: order?.discount?.amount || 0,
-              },
+            await createInvoiceCall({
+              orderId: order.id,
             });
 
             await createNotification({
@@ -176,4 +138,4 @@ const webhookHandler = async (req: NextApiRequest, res: NextApiResponse) => {
   }
 };
 
-export default webhookHandler;
+export default cors(webhookHandler as never);
