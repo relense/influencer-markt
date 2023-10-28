@@ -58,9 +58,9 @@ const ProfileForm = (params: {
 
     if (
       file &&
-      (file.name.includes("jpeg") ||
-        file.name.includes("png") ||
-        file.name.includes("jpg")) &&
+      (file.type === "image/jpeg" ||
+        file.type === "image/png" ||
+        file.type === "image/jpg") &&
       file.size <= 2000000
     ) {
       const reader = new FileReader();
