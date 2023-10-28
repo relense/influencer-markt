@@ -6,7 +6,6 @@ import { stripe } from "../../../server/stripe";
 import { prisma } from "../../../server/db";
 import { createNotification } from "../../../server/api/routers/notifications";
 import { buyerAddDetailsEmail } from "../../../emailTemplates/buyerAddDetailsEmail/buyerAddDetailsEmail";
-import { createInvoiceCall } from "../../../server/api/routers/invoices";
 
 const webhookSecret: string = process.env.STRIPE_WEBHOOK_SECRET as string;
 
@@ -80,7 +79,9 @@ const webhookHandler = async (req: NextApiRequest, res: NextApiResponse) => {
               influencerId: true,
               buyer: {
                 select: {
+                  id: true,
                   name: true,
+                  billing: true,
                 },
               },
               influencer: {
@@ -93,28 +94,72 @@ const webhookHandler = async (req: NextApiRequest, res: NextApiResponse) => {
                   },
                 },
               },
+              orderBasePrice: true,
+              orderServicePercentage: true,
+              orderTaxPercentage: true,
+              orderTotalPrice: true,
+              discount: true,
+              orderTotalPriceWithDiscount: true,
             },
           });
 
-          await createInvoiceCall({
-            orderId: order.id,
-          });
+          if (order) {
+            const ourCutValue = Math.floor(
+              order.orderBasePrice * (order.orderServicePercentage / 100)
+            );
 
-          await createNotification({
-            entityId: order.id,
-            senderId: order.buyerId || -1,
-            notifierId: order?.influencerId || -1,
-            entityAction: "orderPaymentsAdded",
-          });
+            const taxValue = Math.floor(
+              (order.orderBasePrice + ourCutValue) *
+                (order.orderTaxPercentage / 100)
+            );
 
-          if (process.env.NEXT_PUBLIC_EMAIL_FROM) {
-            buyerAddDetailsEmail({
-              buyerName: order.buyer?.name || "",
-              from: process.env.NEXT_PUBLIC_EMAIL_FROM,
-              to: order.influencer?.user.email || "",
-              language: order.influencer?.country?.languageCode || "en",
-              orderId: order.id,
+            let totalValue = order.orderTotalPrice;
+
+            if (order.discount) {
+              totalValue = order.orderTotalPriceWithDiscount || 0;
+            }
+
+            await prisma.invoice.create({
+              data: {
+                order: {
+                  connect: {
+                    id: order.id,
+                  },
+                },
+                profile: {
+                  connect: {
+                    id: order.buyer?.id,
+                  },
+                },
+                taxPercentage: order.orderTaxPercentage,
+                influencerMarktPercentage: order.orderServicePercentage,
+                influencerMarktCutValue: ourCutValue,
+                saleBaseValue: order.orderBasePrice,
+                saleTotalValue: totalValue,
+                taxValue: taxValue,
+                name: order.buyer?.billing?.name || "",
+                email: order.buyer?.billing?.email || "",
+                tin: order.buyer?.billing?.tin || "",
+                discountValue: order?.discount?.amount || 0,
+              },
             });
+
+            await createNotification({
+              entityId: order.id,
+              senderId: order.buyerId || -1,
+              notifierId: order?.influencerId || -1,
+              entityAction: "orderPaymentsAdded",
+            });
+
+            if (process.env.NEXT_PUBLIC_EMAIL_FROM) {
+              buyerAddDetailsEmail({
+                buyerName: order.buyer?.name || "",
+                from: process.env.NEXT_PUBLIC_EMAIL_FROM,
+                to: order.influencer?.user.email || "",
+                language: order.influencer?.country?.languageCode || "en",
+                orderId: order.id,
+              });
+            }
           }
         }
 
