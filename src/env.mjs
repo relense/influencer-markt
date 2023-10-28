@@ -33,6 +33,7 @@ export const env = createEnv({
 
     AZURE_STORAGE_ACCOUNT_NAME: z.string(),
     AZURE_CONTAINER_NAME: z.string(),
+    AZURE_IFLUENCER_INVOICES_CONTAINER_NAME: z.string(),
     AZURE_CLIENT_ID: z.string(),
     AZURE_TENANT_ID: z.string(),
     AZURE_CLIENT_SECRET: z.string(),
@@ -74,6 +75,8 @@ export const env = createEnv({
 
     AZURE_STORAGE_ACCOUNT_NAME: process.env.AZURE_STORAGE_ACCOUNT_NAME,
     AZURE_CONTAINER_NAME: process.env.AZURE_CONTAINER_NAME,
+    AZURE_IFLUENCER_INVOICES_CONTAINER_NAME:
+      process.env.AZURE_IFLUENCER_INVOICES_CONTAINER_NAME,
     AZURE_CLIENT_ID: process.env.AZURE_CLIENT_ID,
     AZURE_TENANT_ID: process.env.AZURE_TENANT_ID,
     AZURE_CLIENT_SECRET: process.env.AZURE_CLIENT_SECRET,

@@ -82,7 +82,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   } else {
     return res.status(404).send({
       data: {
-        status: "unathorised",
+        status: "NOT FOUND",
       },
     });
   }

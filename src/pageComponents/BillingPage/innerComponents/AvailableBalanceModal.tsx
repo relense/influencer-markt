@@ -9,6 +9,7 @@ import { Modal } from "../../../components/Modal";
 import { helper } from "../../../utils/helper";
 import { faCheckCircle } from "@fortawesome/free-regular-svg-icons";
 import { Button } from "../../../components/Button";
+import { faArrowsRotate } from "@fortawesome/free-solid-svg-icons";
 
 type Payout = {
   id: string;
@@ -44,7 +45,7 @@ const AvailableBalanceModal = (params: { onClose: () => void }) => {
                 i18n.language
               ) || "",
             paid: payout.paid,
-            influencerInvoice: payout.influencerInvoice || "",
+            influencerInvoice: payout.payoutBlobData?.influencerInvoice || "",
           };
         })
       );
@@ -76,20 +77,30 @@ const AvailableBalanceModal = (params: { onClose: () => void }) => {
               return (
                 <div key={payout.id} className="flex flex-1 gap-2">
                   <div className="flex flex-1 flex-col items-center gap-2 rounded-lg border-[1px] p-4 shadow-md">
-                    <div className="flex gap-4">
-                      {payout.paid && (
+                    <Link
+                      href={`/sales/${payout.orderId}`}
+                      className="text-influencer hover:cursor-pointer hover:underline"
+                    >
+                      {t("pages.billing.orderRef")} #{payout.orderId}:
+                    </Link>
+                    {!!payout.influencerInvoice && !payout.paid && (
+                      <div className="flex items-center gap-2">
+                        <FontAwesomeIcon
+                          icon={faArrowsRotate}
+                          className="text-lg text-influencer"
+                        />
+                        <div>{t("pages.billing.payoutBeingProcessed")}</div>
+                      </div>
+                    )}
+                    {payout.influencerInvoice && payout.paid && (
+                      <div className="flex items-center gap-2">
                         <FontAwesomeIcon
                           icon={faCheckCircle}
                           className="text-lg text-influencer-green"
                         />
-                      )}
-                      <Link
-                        href={`/sales/${payout.orderId}`}
-                        className="text-influencer hover:cursor-pointer hover:underline"
-                      >
-                        {t("pages.billing.orderRef")} #{payout.orderId}:
-                      </Link>
-                    </div>
+                        <div>{t("pages.billing.payoutApproved")}</div>
+                      </div>
+                    )}
                     <div className="flex gap-2">
                       <div>{payout.payoutCreated}</div>
                       <div>
@@ -98,12 +109,17 @@ const AvailableBalanceModal = (params: { onClose: () => void }) => {
                       </div>
                     </div>
                     {payout.influencerInvoice && (
-                      <Link href={payout.influencerInvoice} className="flex ">
+                      <a
+                        target="_blank"
+                        href={payout.influencerInvoice}
+                        rel="noopener noreferrer"
+                        className="flex"
+                      >
                         <Button
                           level="primary"
                           title={t("pages.billing.downloadInvoice")}
                         />
-                      </Link>
+                      </a>
                     )}
                   </div>
                 </div>

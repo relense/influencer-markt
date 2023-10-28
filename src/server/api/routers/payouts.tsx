@@ -1,4 +1,7 @@
 import { z } from "zod";
+import { v4 as uuidv4 } from "uuid";
+
+import bloblService from "../../../services/azureBlob.service";
 import { createTRPCRouter, protectedProcedure } from "../trpc";
 import { prisma } from "../../db";
 
@@ -197,6 +200,11 @@ export const PayoutsRouter = createTRPCRouter({
                 dateItWasDelivered: true,
               },
             },
+            payoutBlobData: {
+              select: {
+                influencerInvoice: true,
+              },
+            },
           },
           orderBy: {
             createdAt: "desc",
@@ -228,6 +236,7 @@ export const PayoutsRouter = createTRPCRouter({
             lte: startOfMonth,
           },
           paid: false,
+          payoutBlobData: null,
         },
         select: {
           payoutValue: true,
@@ -279,6 +288,91 @@ export const PayoutsRouter = createTRPCRouter({
       }, 0);
     }
   }),
+
+  addInvoice: protectedProcedure
+    .input(
+      z.object({
+        uploadedInvoice: z.string(),
+      })
+    )
+    .mutation(async ({ ctx, input }) => {
+      const profile = await ctx.prisma.profile.findFirst({
+        where: {
+          userId: ctx.session.user.id,
+        },
+      });
+
+      if (profile) {
+        const currentDate = new Date();
+        const startOfMonth = new Date(
+          currentDate.getFullYear(),
+          currentDate.getMonth(),
+          1
+        );
+
+        const availablePayouts = await ctx.prisma.payout.findMany({
+          where: {
+            profileId: profile.id,
+            createdAt: {
+              lte: startOfMonth,
+            },
+            paid: false,
+            payoutBlobData: null,
+          },
+          select: {
+            id: true,
+          },
+        });
+
+        if (availablePayouts.length > 0) {
+          try {
+            const containerClient = bloblService.getContainerClient(
+              process.env.AZURE_IFLUENCER_INVOICES_CONTAINER_NAME || ""
+            );
+
+            const blobName = `${Date.now()}-${uuidv4()}-influencer-invoice.pdf`;
+            const blockBlobClient =
+              containerClient.getBlockBlobClient(blobName);
+
+            const base64Data = input.uploadedInvoice;
+            const pdfBuffer = Buffer.from(base64Data, "base64");
+
+            await blockBlobClient.uploadData(pdfBuffer, {
+              blobHTTPHeaders: {
+                blobContentType: "application/pdf",
+              },
+            });
+
+            const payoutBlobData = await ctx.prisma.payoutBlobData.create({
+              data: {
+                influencerInvoice: blockBlobClient.url,
+                influencerInvoiceBlobName: blobName,
+              },
+            });
+
+            if (payoutBlobData) {
+              for (const payout of availablePayouts) {
+                await ctx.prisma.payout.update({
+                  where: {
+                    id: payout.id,
+                  },
+                  data: {
+                    payoutBlobData: {
+                      connect: {
+                        id: payoutBlobData.id,
+                      },
+                    },
+                  },
+                });
+              }
+            }
+          } catch (error) {
+            console.error("Error uploading file:", error);
+            throw new Error("Error uploading file");
+          }
+        }
+      }
+    }),
 });
 
 export { createPayout };

@@ -543,20 +543,21 @@ model Billing {
 }
 
 model Invoice {
-  id                        String  @id @default(cuid())
-  profile                   Profile @relation(fields: [profileId], references: [id])
-  order                     Order   @relation(fields: [orderId], references: [id])
-  name                      String
-  email                     String
-  tin                       String
-  saleBaseValue             Int
-  saleTotalValue            Int
-  influencerMarktCutValue   Int?
-  influencerMarktPercentage Int?
-  taxValue                  Int
-  taxPercentage             Int
-  discountValue             Int
-  financialInvoiceUrl       String? @db.Text
+  id                          String  @id @default(cuid())
+  profile                     Profile @relation(fields: [profileId], references: [id])
+  order                       Order   @relation(fields: [orderId], references: [id])
+  name                        String
+  email                       String
+  tin                         String
+  saleBaseValue               Int
+  saleTotalValue              Int
+  influencerMarktCutValue     Int?
+  influencerMarktPercentage   Int?
+  taxValue                    Int
+  taxPercentage               Int
+  discountValue               Int
+  financialInvoiceUrl         String? @db.Text
+  financialInvoiceUrlBlobName String? @db.Text
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -569,27 +570,36 @@ model Invoice {
 }
 
 model Payout {
-  id                String  @id @default(cuid())
-  profile           Profile @relation(fields: [profileId], references: [id])
-  order             Order   @relation(fields: [orderId], references: [id])
-  name              String
-  email             String
-  tin               String
-  payoutValue       Int
-  taxesValue        Int
-  taxesPercentage   Int
-  isentOfTaxes      Boolean
-  paid              Boolean @default(false)
-  influencerInvoice String? @db.Text
+  id              String          @id @default(cuid())
+  profile         Profile         @relation(fields: [profileId], references: [id])
+  order           Order           @relation(fields: [orderId], references: [id])
+  name            String
+  email           String
+  tin             String
+  payoutValue     Int
+  taxesValue      Int
+  taxesPercentage Int
+  isentOfTaxes    Boolean
+  paid            Boolean         @default(false)
+  payoutBlobData  PayoutBlobData? @relation(fields: [payoutBlolbDataId], references: [id])
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  orderId   Int @unique
-  profileId Int
+  orderId           Int     @unique
+  profileId         Int
+  payoutBlolbDataId String?
 
   @@index([orderId])
   @@index([profileId])
+  @@index([payoutBlolbDataId])
+}
+
+model PayoutBlobData {
+  id                        String   @id @default(cuid())
+  influencerInvoice         String   @db.Text
+  influencerInvoiceBlobName String   @db.Text
+  payouts                   Payout[]
 }
 
 model Payment {

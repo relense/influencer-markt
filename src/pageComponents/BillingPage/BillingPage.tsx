@@ -3,6 +3,7 @@ import { useTranslation } from "react-i18next";
 import { api } from "~/utils/api";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faInfoCircle } from "@fortawesome/free-solid-svg-icons";
+import toast from "react-hot-toast";
 
 import { Button } from "../../components/Button";
 import { helper } from "../../utils/helper";
@@ -13,11 +14,11 @@ import { InfoBalanceModal } from "./innerComponents/InfoBalanceModal";
 import { BillingDetailsInfluencerModal } from "./innerComponents/BillingDetailsInfluencerModal";
 import { PurchasedInvoices } from "./innerComponents/PurchasedInvoices";
 import { BillingDetailsBrandModal } from "./innerComponents/BillingDetailsBrandModal";
-import { WithdrawMoneyModal } from "./innerComponents/WithdrawMoneyModal";
-import toast from "react-hot-toast";
+import { useRouter } from "next/router";
 
 const BillingPage = (params: { isBrand: boolean }) => {
   const { t } = useTranslation();
+  const router = useRouter();
 
   const [openBillingDetailsModal, setOpenBillingDetailsModal] =
     useState<boolean>(false);
@@ -26,8 +27,6 @@ const BillingPage = (params: { isBrand: boolean }) => {
   const [openAvailableBalanceModal, setOpenAvailableBalanceModal] =
     useState<boolean>(false);
   const [openPendingBalanceModal, setOpenPendingBalanceModal] =
-    useState<boolean>(false);
-  const [openWithdrawMoneyModal, setOpenWithdrawMoneyModal] =
     useState<boolean>(false);
 
   const { data: billingInfo, isLoading: isLoadingBillingInfo } =
@@ -42,7 +41,7 @@ const BillingPage = (params: { isBrand: boolean }) => {
 
   const handleOpenWithdrawModal = () => {
     if (billingInfo?.iban !== null) {
-      setOpenWithdrawMoneyModal(true);
+      void router.push("/withdraw");
     } else {
       toast.success(t("pages.billing.updateIban"), {
         position: "bottom-left",
@@ -152,6 +151,7 @@ const BillingPage = (params: { isBrand: boolean }) => {
               size="regular"
               title={t("pages.billing.withdraw")}
               onClick={() => handleOpenWithdrawModal()}
+              disabled={availablePayoutsSum === 0}
             />
           </div>
         </div>
@@ -204,11 +204,6 @@ const BillingPage = (params: { isBrand: boolean }) => {
         )}
         {openBalanceInfoModal && (
           <InfoBalanceModal onClose={() => setOpenBalanceInfoModal(false)} />
-        )}
-        {openWithdrawMoneyModal && (
-          <WithdrawMoneyModal
-            onClose={() => setOpenWithdrawMoneyModal(false)}
-          />
         )}
       </>
     );
