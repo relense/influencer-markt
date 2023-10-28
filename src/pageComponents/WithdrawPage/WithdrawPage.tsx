@@ -92,7 +92,7 @@ const WithdrawPage = () => {
             {helper.calculerMonetaryValue(availablePayoutsSum || 0)}€
           </div>
         </div>
-        {availablePayoutsSum && availablePayoutsSum > 0 && (
+        {!!availablePayoutsSum && availablePayoutsSum > 0 && (
           <div className="relative flex h-12 flex-col items-center gap-3 lg:h-24">
             <input
               required={true}
