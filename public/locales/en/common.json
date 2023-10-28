@@ -1079,7 +1079,8 @@
       "availableCredits": "Available Credits",
       "updateIban": "Update IBAN before withdrawing available balance",
       "payoutBeingProcessed": "Payout is being processed",
-      "payoutApproved": "Payout was approved and processed"
+      "payoutApproved": "Payout was approved and processed",
+      "loadMore": "Load More"
     },
 
     "withdraw": {

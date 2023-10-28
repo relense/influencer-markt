@@ -22,17 +22,31 @@ type Payout = {
 
 const AvailableBalanceModal = (params: { onClose: () => void }) => {
   const { t, i18n } = useTranslation();
+  const ctx = api.useContext();
 
   const [availablePayouts, setAvailablePayouts] = useState<Payout[]>([]);
   const [availablePayoutsCursor, setAvailablePayoutsCursor] =
     useState<string>("");
+  const [payoutsCount, setPayoutsCount] = useState<number>(0);
 
   const { data: availablePayoutsData, isLoading: isLoadingSalesInvoices } =
     api.payouts.getBeforeCurrentMonthPayouts.useQuery();
 
+  const {
+    data: availablePayoutsDataCursor,
+    isFetching: isFetchingAvailablePayoutsDataCursor,
+    refetch: refetchPayouts,
+  } = api.payouts.getBeforeCurrentMonthPayoutsCursor.useQuery(
+    {
+      cursor: availablePayoutsCursor,
+    },
+    { enabled: false }
+  );
+
   useEffect(() => {
     if (availablePayoutsData) {
       setAvailablePayouts([]);
+      setPayoutsCount(availablePayoutsData[0]);
       setAvailablePayouts(
         availablePayoutsData[1].map((payout) => {
           return {
@@ -59,6 +73,45 @@ const AvailableBalanceModal = (params: { onClose: () => void }) => {
     }
   }, [i18n.language, availablePayoutsData]);
 
+  useEffect(() => {
+    if (availablePayoutsDataCursor) {
+      const newPayouts: Payout[] = [...availablePayouts];
+
+      availablePayoutsDataCursor.forEach((payout) => {
+        newPayouts.push({
+          id: payout.id,
+          orderId: payout.orderId,
+          payoutValue: Number(payout.payoutValue),
+          payoutCreated:
+            helper.formatFullDateWithTime(
+              payout.createdAt || Date.now(),
+              i18n.language
+            ) || "",
+          paid: payout.paid,
+          influencerInvoice: payout.payoutBlobData?.influencerInvoice || "",
+        });
+      });
+
+      setAvailablePayouts(newPayouts);
+
+      const lastPayoutInArray =
+        availablePayoutsDataCursor[availablePayoutsDataCursor.length - 1];
+
+      if (lastPayoutInArray) {
+        setAvailablePayoutsCursor(lastPayoutInArray.id);
+      }
+    }
+  }, [availablePayouts, availablePayoutsDataCursor, i18n.language]);
+
+  const onCloseHandle = () => {
+    setAvailablePayouts([]);
+    setAvailablePayoutsCursor("");
+    setPayoutsCount(0);
+    void ctx.payouts.getBeforeCurrentMonthPayouts.reset();
+    void ctx.payouts.getBeforeCurrentMonthPayoutsCursor.reset();
+    params.onClose();
+  };
+
   if (isLoadingSalesInvoices) {
     return (
       <div className="flex justify-center">
@@ -69,7 +122,7 @@ const AvailableBalanceModal = (params: { onClose: () => void }) => {
     return (
       <div className="flex justify-center">
         <Modal
-          onClose={() => params.onClose()}
+          onClose={() => onCloseHandle()}
           title={t("pages.billing.availableBalance")}
         >
           <div className="flex flex-col gap-4 p-6">
@@ -125,6 +178,16 @@ const AvailableBalanceModal = (params: { onClose: () => void }) => {
                 </div>
               );
             })}
+            {payoutsCount > availablePayouts.length && (
+              <div className="flex items-center justify-center">
+                <Button
+                  title={t("pages.billing.loadMore")}
+                  onClick={() => refetchPayouts()}
+                  isLoading={isFetchingAvailablePayoutsDataCursor}
+                  disabled={isFetchingAvailablePayoutsDataCursor}
+                />
+              </div>
+            )}
           </div>
         </Modal>
       </div>

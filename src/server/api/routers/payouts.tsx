@@ -91,7 +91,6 @@ export const PayoutsRouter = createTRPCRouter({
               lte: endOfMonth,
             },
           },
-          take: 10,
         }),
         ctx.prisma.payout.findMany({
           where: {
@@ -162,7 +161,6 @@ export const PayoutsRouter = createTRPCRouter({
               lte: startOfMonth,
             },
           },
-          take: 10,
         }),
         ctx.prisma.payout.findMany({
           where: {
@@ -213,6 +211,80 @@ export const PayoutsRouter = createTRPCRouter({
       ]);
     }
   }),
+
+  getBeforeCurrentMonthPayoutsCursor: protectedProcedure
+    .input(
+      z.object({
+        cursor: z.string(),
+      })
+    )
+    .query(async ({ ctx, input }) => {
+      const profile = await ctx.prisma.profile.findFirst({
+        where: {
+          userId: ctx.session.user.id,
+        },
+      });
+
+      if (profile) {
+        const currentDate = new Date();
+        const startOfMonth = new Date(
+          currentDate.getFullYear(),
+          currentDate.getMonth(),
+          1
+        );
+
+        return await ctx.prisma.payout.findMany({
+          where: {
+            profileId: profile.id,
+            createdAt: {
+              lte: startOfMonth,
+            },
+          },
+          take: 10,
+          skip: 1,
+          cursor: {
+            id: input.cursor,
+          },
+          include: {
+            order: {
+              select: {
+                socialMedia: {
+                  select: { name: true },
+                },
+                orderDetails: true,
+                orderValuePacks: {
+                  select: {
+                    contentTypeId: true,
+                    amount: true,
+                    contentType: {
+                      select: { name: true },
+                    },
+                  },
+                },
+                influencer: {
+                  select: {
+                    user: {
+                      select: { email: true, username: true },
+                    },
+                    profilePicture: true,
+                    name: true,
+                  },
+                },
+                dateItWasDelivered: true,
+              },
+            },
+            payoutBlobData: {
+              select: {
+                influencerInvoice: true,
+              },
+            },
+          },
+          orderBy: {
+            createdAt: "desc",
+          },
+        });
+      }
+    }),
 
   availablePayoutsSum: protectedProcedure.query(async ({ ctx }) => {
     const profile = await ctx.prisma.profile.findFirst({
