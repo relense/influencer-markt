@@ -131,10 +131,12 @@ const webhookHandler = async (req: NextApiRequest, res: NextApiResponse) => {
         // Then define and call a function to handle the event payment_intent.payment_failed
         break;
       default:
-        console.log(`Unhandled event type ${event.type}`);
+        return res.status(500).send(`Unhandled event type ${event.type}`);
     }
 
     return res.status(200).send(`success`);
+  } else {
+    return res.status(500).send("DEU ERRO AQUI");
   }
 };
 
