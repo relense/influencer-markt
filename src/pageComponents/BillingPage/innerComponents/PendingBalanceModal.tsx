@@ -6,6 +6,7 @@ import Link from "next/link";
 import { LoadingSpinner } from "../../../components/LoadingSpinner";
 import { Modal } from "../../../components/Modal";
 import { helper } from "../../../utils/helper";
+import { Button } from "../../../components/Button";
 
 type Payout = {
   id: string;
@@ -17,19 +18,34 @@ type Payout = {
 
 const PendingBalanceModal = (params: { onClose: () => void }) => {
   const { t, i18n } = useTranslation();
+  const ctx = api.useContext();
 
-  const [availablePayouts, setAvailablePayouts] = useState<Payout[]>([]);
-  const [availablePayoutsCursor, setAvailablePayoutsCursor] =
-    useState<string>("");
+  const [pendingPayouts, setPendingPayouts] = useState<Payout[]>([]);
+  const [pendingPayoutsCursor, setPendingPayoutsCursor] = useState<string>("");
+  const [payoutsCount, setPayoutsCount] = useState<number>(0);
 
-  const { data: availablePayoutsData, isLoading: isLoadingSalesInvoices } =
+  const { data: pendingPayoutData, isLoading: isLoadingPendingPayouts } =
     api.payouts.getCurrentMonthPayouts.useQuery();
 
+  const {
+    data: pendingPayoutDataCursor,
+    isFetching: isFetchingPendingPayoutsCursor,
+    refetch: refetchPayouts,
+  } = api.payouts.getCurrentMonthPayoutsCursor.useQuery(
+    {
+      cursor: pendingPayoutsCursor,
+    },
+    {
+      enabled: false,
+    }
+  );
+
   useEffect(() => {
-    if (availablePayoutsData) {
-      setAvailablePayouts([]);
-      setAvailablePayouts(
-        availablePayoutsData[1].map((payout) => {
+    if (pendingPayoutData) {
+      setPendingPayouts([]);
+      setPayoutsCount(pendingPayoutData[0]);
+      setPendingPayouts(
+        pendingPayoutData[1].map((payout) => {
           return {
             id: payout.id,
             orderId: payout.orderId,
@@ -44,16 +60,54 @@ const PendingBalanceModal = (params: { onClose: () => void }) => {
         })
       );
 
-      const lastInvoiceInArray =
-        availablePayoutsData[1][availablePayoutsData[1].length - 1];
+      const lastPayoutInArray =
+        pendingPayoutData[1][pendingPayoutData[1].length - 1];
 
-      if (lastInvoiceInArray) {
-        setAvailablePayoutsCursor(lastInvoiceInArray.id);
+      if (lastPayoutInArray) {
+        setPendingPayoutsCursor(lastPayoutInArray.id);
       }
     }
-  }, [i18n.language, availablePayoutsData]);
+  }, [i18n.language, pendingPayoutData]);
 
-  if (isLoadingSalesInvoices) {
+  useEffect(() => {
+    if (pendingPayoutDataCursor) {
+      const newPayouts: Payout[] = [...pendingPayouts];
+
+      pendingPayoutDataCursor.forEach((payout) => {
+        newPayouts.push({
+          id: payout.id,
+          orderId: payout.orderId,
+          payoutValue: Number(payout.payoutValue),
+          payoutCreated:
+            helper.formatFullDateWithTime(
+              payout.createdAt || Date.now(),
+              i18n.language
+            ) || "",
+          paid: payout.paid,
+        });
+      });
+
+      setPendingPayouts(newPayouts);
+
+      const lastPayoutInArray =
+        pendingPayoutDataCursor[pendingPayoutDataCursor.length - 1];
+
+      if (lastPayoutInArray) {
+        setPendingPayoutsCursor(lastPayoutInArray.id);
+      }
+    }
+  }, [pendingPayouts, pendingPayoutDataCursor, i18n.language]);
+
+  const onCloseHandle = () => {
+    setPendingPayouts([]);
+    setPendingPayoutsCursor("");
+    setPayoutsCount(0);
+    void ctx.payouts.getCurrentMonthPayouts.reset();
+    void ctx.payouts.getCurrentMonthPayoutsCursor.reset();
+    params.onClose();
+  };
+
+  if (isLoadingPendingPayouts) {
     return (
       <div className="flex justify-center">
         <LoadingSpinner />
@@ -63,11 +117,11 @@ const PendingBalanceModal = (params: { onClose: () => void }) => {
     return (
       <div className="flex justify-center">
         <Modal
-          onClose={() => params.onClose()}
+          onClose={() => onCloseHandle()}
           title={t("pages.billing.pendingBalance")}
         >
           <div className="flex flex-col gap-4 p-6">
-            {availablePayouts.map((payout) => {
+            {pendingPayouts.map((payout) => {
               return (
                 <div
                   key={payout.id}
@@ -89,6 +143,16 @@ const PendingBalanceModal = (params: { onClose: () => void }) => {
                 </div>
               );
             })}
+            {payoutsCount > pendingPayouts.length && (
+              <div className="flex items-center justify-center">
+                <Button
+                  title={t("pages.billing.loadMore")}
+                  onClick={() => refetchPayouts()}
+                  isLoading={isFetchingPendingPayoutsCursor}
+                  disabled={isFetchingPendingPayoutsCursor}
+                />
+              </div>
+            )}
           </div>
         </Modal>
       </div>
