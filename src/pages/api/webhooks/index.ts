@@ -101,28 +101,30 @@ const webhookHandler = async (req: NextApiRequest, res: NextApiResponse) => {
             },
           });
 
-          if (order) {
-            await createInvoiceCall({
-              orderId: order.id,
-            });
+          return res.status(200).send(`success`);
 
-            await createNotification({
-              entityId: order.id,
-              senderId: order.buyerId || -1,
-              notifierId: order?.influencerId || -1,
-              entityAction: "orderPaymentsAdded",
-            });
+          // if (order) {
+          //   await createInvoiceCall({
+          //     orderId: order.id,
+          //   });
 
-            if (process.env.NEXT_PUBLIC_EMAIL_FROM) {
-              buyerAddDetailsEmail({
-                buyerName: order.buyer?.name || "",
-                from: process.env.NEXT_PUBLIC_EMAIL_FROM,
-                to: order.influencer?.user.email || "",
-                language: order.influencer?.country?.languageCode || "en",
-                orderId: order.id,
-              });
-            }
-          }
+          //   await createNotification({
+          //     entityId: order.id,
+          //     senderId: order.buyerId || -1,
+          //     notifierId: order?.influencerId || -1,
+          //     entityAction: "orderPaymentsAdded",
+          //   });
+
+          //   if (process.env.NEXT_PUBLIC_EMAIL_FROM) {
+          //     buyerAddDetailsEmail({
+          //       buyerName: order.buyer?.name || "",
+          //       from: process.env.NEXT_PUBLIC_EMAIL_FROM,
+          //       to: order.influencer?.user.email || "",
+          //       language: order.influencer?.country?.languageCode || "en",
+          //       orderId: order.id,
+          //     });
+          //   }
+          // }
         }
 
         break;
