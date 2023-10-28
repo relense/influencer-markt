@@ -6,6 +6,7 @@ import {
   faCircleCheck,
   faCircleMinus,
   faCirclePlus,
+  faFileArrowDown,
   faXmarkCircle,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -43,6 +44,7 @@ type InvoiceType = {
     email: string;
     tin: string;
   };
+  orderInvoice: string;
 };
 
 const Invoice = (params: { invoice: InvoiceType }) => {
@@ -155,14 +157,14 @@ const Invoice = (params: { invoice: InvoiceType }) => {
         >
           <div className="flex flex-col justify-center text-center font-medium">
             {t("pages.billing.orderDeliveredBy")}
-            <span className="text-influencer hover:underline">
+            <span className="font-semibold text-influencer hover:underline">
               {invoice.influencer?.influencerName || ""}
             </span>
           </div>
         </Link>
         <div className="flex flex-col justify-center text-center font-medium">
           {t("pages.billing.dateOfDelivery")}
-          <span className="text-influencer">
+          <span className="font-semibold text-influencer">
             {invoice.invoiceDateOfDelivery}
           </span>
         </div>
@@ -197,6 +199,50 @@ const Invoice = (params: { invoice: InvoiceType }) => {
     );
   };
 
+  const renderBillingDetails = (invoice: InvoiceType) => {
+    return (
+      <div className="flex flex-1 select-none flex-col items-center gap-2 border-[1px] border-white1 p-4 px-4 text-center">
+        <div className="flex flex-col gap-2">
+          <div className="font-medium">{t("pages.billing.billingName")}</div>
+          <div className="font-semibold text-influencer">
+            {invoice.billing.name}
+          </div>
+        </div>
+        <div className="flex flex-col gap-2">
+          <div className="font-medium">{t("pages.billing.billingEmail")}</div>
+          <div className="font-semibold text-influencer">
+            {invoice.billing.email}
+          </div>
+        </div>
+        <div className="flex flex-col gap-2">
+          <div className="font-medium">
+            {t("pages.billing.billingTaxNumber")}
+          </div>
+          <div className="font-semibold text-influencer">
+            {invoice.billing.tin}
+          </div>
+        </div>
+      </div>
+    );
+  };
+
+  const renderGetInvoiceButton = (invoice: InvoiceType) => {
+    return (
+      <a
+        target="_blank"
+        href={invoice.orderInvoice}
+        rel="noopener noreferrer"
+        className="flex flex-1 select-none flex-col items-center justify-center gap-8 border-[1px] border-white1 p-4 px-4 text-center"
+      >
+        <FontAwesomeIcon
+          icon={faFileArrowDown}
+          className="text-5xl text-influencer"
+        />
+        <div className="text-xl font-semibold">Ver Fatura</div>
+      </a>
+    );
+  };
+
   const renderInvoiceBillingDetails = (invoice: InvoiceType) => {
     return (
       <div className="flex flex-col">
@@ -214,9 +260,8 @@ const Invoice = (params: { invoice: InvoiceType }) => {
         </div>
         {showBillingDetails && (
           <div className="flex flex-col lg:flex-row">
-            <div className="flex flex-1 select-none flex-col items-center gap-2 border-[1px] border-white1 p-4 px-4">
-              dadas
-            </div>
+            {renderBillingDetails(invoice)}
+            {renderGetInvoiceButton(invoice)}
           </div>
         )}
       </div>

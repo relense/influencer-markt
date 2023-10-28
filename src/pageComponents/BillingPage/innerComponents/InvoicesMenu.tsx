@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 import { api } from "~/utils/api";
 import { LoadingSpinner } from "../../../components/LoadingSpinner";
 import { Invoice } from "./Invoice";
+import { Button } from "../../../components/Button";
 
 type InvoiceType = {
   id: string;
@@ -38,6 +39,7 @@ type InvoiceType = {
     email: string;
     tin: string;
   };
+  orderInvoice: string;
 };
 
 const InvoicesMenu = () => {
@@ -46,15 +48,30 @@ const InvoicesMenu = () => {
   const [purchasesInvoices, setPurchasesInvoices] = useState<InvoiceType[]>([]);
   const [purchasesInvoicesCursor, setPurchasesInvoicesCursor] =
     useState<string>("");
+  const [purchaseInvoicesCount, setPurchaseInvoicesCount] = useState<number>(0);
   const [hidePurchaseInvoiceMenu, setHidePurchaseInvoiceMenu] =
     useState<boolean>(false);
 
   const { data: purchasesInvoicesData, isLoading: isLoadingPurchasesInvoices } =
     api.invoices.getInvoices.useQuery();
 
+  const {
+    data: purchasesInvoicesDataCursor,
+    isFetching: isFetchingPurchasedInvoices,
+    refetch: refetchInvoices,
+  } = api.invoices.getInvoicesCursor.useQuery(
+    {
+      cursor: purchasesInvoicesCursor,
+    },
+    {
+      enabled: false,
+    }
+  );
+
   useEffect(() => {
     if (purchasesInvoicesData) {
       setPurchasesInvoices([]);
+      setPurchaseInvoicesCount(purchasesInvoicesData[0]);
       setPurchasesInvoices(
         purchasesInvoicesData[1].map((invoice) => {
           return {
@@ -98,6 +115,7 @@ const InvoicesMenu = () => {
               email: invoice.email,
               tin: invoice.tin,
             },
+            orderInvoice: invoice.invoiceBlobData?.influencerInvoice || "",
           };
         })
       );
@@ -110,6 +128,66 @@ const InvoicesMenu = () => {
       }
     }
   }, [i18n.language, purchasesInvoicesData]);
+
+  useEffect(() => {
+    if (purchasesInvoicesDataCursor) {
+      const newInvoices: InvoiceType[] = [...purchasesInvoices];
+
+      purchasesInvoicesDataCursor.forEach((invoice) => {
+        newInvoices.push({
+          id: invoice.id,
+          orderId: invoice.orderId,
+          socialMediaOrderName: invoice.order.socialMedia?.name || "",
+          orderValuePacks: invoice.order.orderValuePacks.map((valuePack) => {
+            return {
+              contentTypeId: valuePack.contentTypeId,
+              contentTypeName: valuePack.contentType.name,
+              amount: valuePack.amount,
+            };
+          }),
+          invoiceSaleTotal: Number(invoice.saleTotalValue),
+          invoiceInfluencerMarktCut: Number(invoice.influencerMarktCutValue),
+          invoiceInfluencerMaketPercentage: Number(
+            invoice.influencerMarktPercentage
+          ),
+          invoicetaxValue: Number(invoice.taxValue),
+          invoiceTaxPercentage: Number(invoice.taxPercentage),
+          invoiceOrderDetails: invoice.order.orderDetails,
+          influencer: {
+            influencerName: invoice.order.influencer?.name || "",
+            influencerUsername: invoice.order?.influencer?.user.username || "",
+            influencerEmail: invoice.order.influencer?.user.email || "",
+            influencerProfilePicture:
+              invoice.order?.influencer?.profilePicture || "",
+          },
+          invoiceDateOfDelivery:
+            helper.formatFullDateWithTime(
+              invoice.order.dateItWasDelivered || Date.now(),
+              i18n.language
+            ) || "",
+          orderRefunded: !!invoice.order.refund,
+          orderRefundAmount: invoice.order.refund?.refundValue,
+          orderCredits: invoice.order.discount?.amount,
+          orderStatusId: invoice.order?.orderStatusId || 1,
+          billing: {
+            name: invoice.name,
+            email: invoice.email,
+            tin: invoice.tin,
+          },
+          orderInvoice: invoice.invoiceBlobData?.influencerInvoice || "",
+        });
+      });
+
+      setPurchasesInvoices(newInvoices);
+
+      const lastInvoiceInArray =
+        purchasesInvoicesDataCursor[purchasesInvoicesDataCursor.length - 1];
+
+      if (lastInvoiceInArray) {
+        setPurchasesInvoicesCursor(lastInvoiceInArray.id);
+      }
+    }
+  }, [purchasesInvoices, purchasesInvoicesDataCursor, i18n.language]);
 
   const renderTitle = () => {
     return (
@@ -138,10 +216,20 @@ const InvoicesMenu = () => {
         <div className="flex flex-1 flex-col gap-4 rounded-xl border-[1px] p-6 shadow-md">
           {renderTitle()}
           {!hidePurchaseInvoiceMenu && (
-            <div className="flex flex-col gap-4">
+            <div className="flex flex-col gap-16">
               {purchasesInvoices?.map((invoice) => {
                 return <Invoice key={invoice.id} invoice={invoice} />;
               })}
+              {purchaseInvoicesCount > purchasesInvoices.length && (
+                <div className="flex items-center justify-center">
+                  <Button
+                    title={t("pages.billing.loadMore")}
+                    onClick={() => refetchInvoices()}
+                    isLoading={isFetchingPurchasedInvoices}
+                    disabled={isFetchingPurchasedInvoices}
+                  />
+                </div>
+              )}
             </div>
           )}
         </div>

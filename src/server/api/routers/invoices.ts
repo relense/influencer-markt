@@ -89,12 +89,12 @@ export const InvoicesRouter = createTRPCRouter({
       return await ctx.prisma.$transaction([
         ctx.prisma.invoice.count({
           where: { profileId: profile.id },
-          take: 10,
         }),
         ctx.prisma.invoice.findMany({
           where: { profileId: profile.id },
           take: 10,
           include: {
+            invoiceBlobData: true,
             order: {
               select: {
                 orderStatusId: true,
@@ -137,6 +137,71 @@ export const InvoicesRouter = createTRPCRouter({
       ]);
     }
   }),
+
+  getInvoicesCursor: protectedProcedure
+    .input(
+      z.object({
+        cursor: z.string(),
+      })
+    )
+    .query(async ({ ctx, input }) => {
+      const profile = await ctx.prisma.profile.findFirst({
+        where: {
+          userId: ctx.session.user.id,
+        },
+      });
+
+      if (profile) {
+        return await ctx.prisma.invoice.findMany({
+          where: { profileId: profile.id },
+          take: 10,
+          skip: 1,
+          cursor: {
+            id: input.cursor,
+          },
+          include: {
+            invoiceBlobData: true,
+            order: {
+              select: {
+                orderStatusId: true,
+                socialMedia: {
+                  select: { name: true },
+                },
+                discount: {
+                  select: {
+                    amount: true,
+                  },
+                },
+                refund: true,
+                orderDetails: true,
+                orderValuePacks: {
+                  select: {
+                    contentTypeId: true,
+                    amount: true,
+                    contentType: {
+                      select: { name: true },
+                    },
+                  },
+                },
+                influencer: {
+                  select: {
+                    user: {
+                      select: { email: true, username: true },
+                    },
+                    profilePicture: true,
+                    name: true,
+                  },
+                },
+                dateItWasDelivered: true,
+              },
+            },
+          },
+          orderBy: {
+            createdAt: "desc",
+          },
+        });
+      }
+    }),
 });
 
 export { createInvoiceCall };
