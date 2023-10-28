@@ -543,30 +543,42 @@ model Billing {
 }
 
 model Invoice {
-  id                          String  @id @default(cuid())
-  profile                     Profile @relation(fields: [profileId], references: [id])
-  order                       Order   @relation(fields: [orderId], references: [id])
-  name                        String
-  email                       String
-  tin                         String
-  saleBaseValue               Int
-  saleTotalValue              Int
-  influencerMarktCutValue     Int?
-  influencerMarktPercentage   Int?
-  taxValue                    Int
-  taxPercentage               Int
-  discountValue               Int
-  financialInvoiceUrl         String? @db.Text
-  financialInvoiceUrlBlobName String? @db.Text
+  id                        String           @id @default(cuid())
+  profile                   Profile          @relation(fields: [profileId], references: [id])
+  order                     Order            @relation(fields: [orderId], references: [id])
+  name                      String
+  email                     String
+  tin                       String
+  saleBaseValue             Int
+  saleTotalValue            Int
+  influencerMarktCutValue   Int?
+  influencerMarktPercentage Int?
+  taxValue                  Int
+  taxPercentage             Int
+  discountValue             Int
+  invoiceBlobData           InvoiceBlobData? @relation(fields: [invoiceBlobDataId], references: [id])
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  orderId   Int @unique
-  profileId Int
+  orderId           Int    @unique
+  profileId         Int
+  invoiceBlobDataId String @unique
 
   @@index([orderId])
   @@index([profileId])
+  @@index([invoiceBlobDataId])
+}
+
+model InvoiceBlobData {
+  id                        String @id @default(cuid())
+  influencerInvoice         String @db.Text
+  influencerInvoiceBlobName String @db.Text
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  Invoice Invoice?
 }
 
 model Payout {

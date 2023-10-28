@@ -4,6 +4,7 @@ import { api } from "~/utils/api";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faInfoCircle } from "@fortawesome/free-solid-svg-icons";
 import toast from "react-hot-toast";
+import { useRouter } from "next/router";
 
 import { Button } from "../../components/Button";
 import { helper } from "../../utils/helper";
@@ -12,9 +13,8 @@ import { AvailableBalanceModal } from "./innerComponents/AvailableBalanceModal";
 import { PendingBalanceModal } from "./innerComponents/PendingBalanceModal";
 import { InfoBalanceModal } from "./innerComponents/InfoBalanceModal";
 import { BillingDetailsInfluencerModal } from "./innerComponents/BillingDetailsInfluencerModal";
-import { PurchasedInvoices } from "./innerComponents/PurchasedInvoices";
 import { BillingDetailsBrandModal } from "./innerComponents/BillingDetailsBrandModal";
-import { useRouter } from "next/router";
+import { InvoicesMenu } from "./innerComponents/InvoicesMenu";
 
 const BillingPage = (params: { isBrand: boolean }) => {
   const { t } = useTranslation();
@@ -173,7 +173,7 @@ const BillingPage = (params: { isBrand: boolean }) => {
             {billingInformation()}
             {!params.isBrand && balanceInfo()}
           </div>
-          <PurchasedInvoices />
+          <InvoicesMenu />
         </div>
         {openBillingDetailsModal &&
           (params.isBrand ? (
