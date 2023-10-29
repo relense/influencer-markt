@@ -238,7 +238,9 @@ const Invoice = (params: { invoice: InvoiceType }) => {
           icon={faFileArrowDown}
           className="text-5xl text-influencer"
         />
-        <div className="text-xl font-semibold">Ver Fatura</div>
+        <div className="text-xl font-semibold">
+          {t("pages.billing.downloadInvoice")}
+        </div>
       </a>
     );
   };

@@ -1066,7 +1066,7 @@
       "pendingBalance": "Saldo Pendente",
       "orderRef": "Pedido Ref",
       "sale": "Venda:",
-      "downloadInvoice": "Descarregar Fatura",
+      "downloadInvoice": "Obter Fatura",
       "platform": "Plataforma",
       "valuePacks": "Packs de Valor",
       "orderTotal": "Total do Pedido",
