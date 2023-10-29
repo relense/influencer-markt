@@ -1144,7 +1144,7 @@
     "adminPayout": {
       "all": "All Invoices",
       "uploaded": "Open Invoice",
-      "processing": "Pressing Invoice",
+      "processing": "Processing Invoice",
       "rejected": "Rejected Invoice",
       "paid": "Closed Invoice"
     }

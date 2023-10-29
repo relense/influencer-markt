@@ -24,7 +24,7 @@ const CookiePolicy = () => {
 
   const renderCookiePolicy = () => {
     return (
-      <div className="fixed bottom-14 z-50 flex h-auto w-full flex-1 flex-col items-center justify-center gap-4 border-t-[1px] bg-white p-4 lg:bottom-0 lg:flex-row lg:gap-2">
+      <div className="fixed bottom-14 z-50 flex h-auto w-full flex-1 flex-col items-center justify-center gap-4 border-t-[1px] bg-white p-4 text-center lg:bottom-0 lg:flex-row lg:gap-2">
         {t("components.cookiePolicy.row.description")}{" "}
         <span
           className="cursor-pointer font-semibold underline"

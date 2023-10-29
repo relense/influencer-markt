@@ -7,6 +7,7 @@ export const PayoutInvoicesRouter = createTRPCRouter({
     .input(
       z.object({
         payoutInvoiceStatusId: z.number(),
+        profileId: z.number(),
       })
     )
     .query(async ({ ctx, input }) => {
@@ -17,6 +18,11 @@ export const PayoutInvoicesRouter = createTRPCRouter({
               input.payoutInvoiceStatusId !== -1
                 ? input.payoutInvoiceStatusId
                 : undefined,
+            payouts: {
+              every: {
+                profileId: input.profileId !== -1 ? input.profileId : undefined,
+              },
+            },
           },
         }),
         ctx.prisma.payoutInvoice.findMany({
@@ -25,6 +31,11 @@ export const PayoutInvoicesRouter = createTRPCRouter({
               input.payoutInvoiceStatusId !== -1
                 ? input.payoutInvoiceStatusId
                 : undefined,
+            payouts: {
+              every: {
+                profileId: input.profileId !== -1 ? input.profileId : undefined,
+              },
+            },
           },
           take: 10,
 
@@ -46,7 +57,7 @@ export const PayoutInvoicesRouter = createTRPCRouter({
                 payoutValue: true,
                 profile: {
                   select: {
-                    name: true,
+                    id: true,
                     user: {
                       select: {
                         username: true,
@@ -69,6 +80,7 @@ export const PayoutInvoicesRouter = createTRPCRouter({
       z.object({
         cursor: z.string(),
         payoutInvoiceStatusId: z.number(),
+        profileId: z.number(),
       })
     )
     .query(async ({ ctx, input }) => {
@@ -78,6 +90,11 @@ export const PayoutInvoicesRouter = createTRPCRouter({
             input.payoutInvoiceStatusId !== -1
               ? input.payoutInvoiceStatusId
               : undefined,
+          payouts: {
+            every: {
+              profileId: input.profileId !== -1 ? input.profileId : undefined,
+            },
+          },
         },
         take: 10,
         skip: 1,
@@ -102,7 +119,7 @@ export const PayoutInvoicesRouter = createTRPCRouter({
               payoutValue: true,
               profile: {
                 select: {
-                  name: true,
+                  id: true,
                   user: {
                     select: {
                       username: true,

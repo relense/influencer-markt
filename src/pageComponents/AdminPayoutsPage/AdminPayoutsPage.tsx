@@ -1,9 +1,12 @@
-import { faFileArrowDown } from "@fortawesome/free-solid-svg-icons";
+import {
+  faClose,
+  faFileArrowDown,
+  faSearch,
+} from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { api } from "~/utils/api";
-import Link from "next/link";
 import { Controller, useForm } from "react-hook-form";
 
 import { Button } from "../../components/Button";
@@ -13,6 +16,7 @@ import { CustomSelect } from "../../components/CustomSelect";
 import { type Option } from "../../utils/globalTypes";
 
 type PayoutsInvoiceSearch = {
+  searchProfileId: number;
   payoutsInvoiceStatus: Option;
 };
 
@@ -22,32 +26,41 @@ type PayoutsInvoice = {
   invoiceUploadedAt: string | undefined;
   verficator: string;
   influencerUsername: string;
-  influencerName: string;
+  influencerId: number;
   status: string;
 };
 
 const AdminPayoutsPage = () => {
   const { t, i18n } = useTranslation();
+  const ctx = api.useContext();
 
   const [payoutsInvoice, setPayoutsInvoiceData] = useState<PayoutsInvoice[]>(
     []
   );
   const [payoutsInvoiceCount, setPayoutsInvoiceCount] = useState<number>(0);
   const [payoutsInvoiceCursor, setPayoutsInvoiceCursor] = useState<string>("");
+  const [profileId, setProfileId] = useState<number>(-1);
 
   const { data: payoutsInvoiceStatusData } =
     api.allRoutes.getAllPayoutsInvoiceStatus.useQuery();
 
-  const { register, watch, control, setValue } = useForm<PayoutsInvoiceSearch>({
-    defaultValues: {
-      payoutsInvoiceStatus: { id: -1, name: "all" },
-    },
-  });
+  const { register, watch, handleSubmit, control, setValue, resetField } =
+    useForm<PayoutsInvoiceSearch>({
+      defaultValues: {
+        payoutsInvoiceStatus: { id: -1, name: t("adminPages.adminPayout.all") },
+      },
+    });
 
   const { data: payoutsInvoiceData, isLoading: isLoadingPayoutsInvoice } =
-    api.payoutInvoices.getPayoutsInvoice.useQuery({
-      payoutInvoiceStatusId: watch("payoutsInvoiceStatus").id,
-    });
+    api.payoutInvoices.getPayoutsInvoice.useQuery(
+      {
+        payoutInvoiceStatusId: watch("payoutsInvoiceStatus").id,
+        profileId: profileId,
+      },
+      {
+        cacheTime: 0,
+      }
+    );
 
   const {
     data: payoutsInvoiceDataCursor,
@@ -57,6 +70,7 @@ const AdminPayoutsPage = () => {
     {
       cursor: payoutsInvoiceCursor,
       payoutInvoiceStatusId: watch("payoutsInvoiceStatus").id,
+      profileId: profileId,
     },
     {
       cacheTime: 0,
@@ -80,8 +94,8 @@ const AdminPayoutsPage = () => {
               i18n.language
             ),
             verficator: invoice.payoutSolver?.username || "",
-            influencerName: invoice.payouts[0]?.profile.name || "",
             influencerUsername: invoice.payouts[0]?.profile.user.username || "",
+            influencerId: invoice.payouts[0]?.profile.id || -1,
             status: invoice?.payoutInvoiceStatus?.name || "",
           };
         })
@@ -111,8 +125,8 @@ const AdminPayoutsPage = () => {
             i18n.language
           ),
           verficator: invoice.payoutSolver?.username || "",
-          influencerName: invoice.payouts[0]?.profile.name || "",
           influencerUsername: invoice.payouts[0]?.profile.user.username || "",
+          influencerId: invoice.payouts[0]?.profile.id || -1,
           status: invoice?.payoutInvoiceStatus?.name || "",
         });
       });
@@ -127,6 +141,17 @@ const AdminPayoutsPage = () => {
       }
     }
   }, [i18n.language, payoutsInvoice, payoutsInvoiceDataCursor]);
+
+  const clearFilters = () => {
+    void ctx.payoutInvoices.getPayoutsInvoice.reset();
+    void ctx.payoutInvoices.getPayoutsInvoiceCursor.reset();
+    setProfileId(-1);
+    resetField("searchProfileId");
+  };
+
+  const handleSearch = handleSubmit((data) => {
+    setProfileId(Number(data.searchProfileId));
+  });
 
   const renderPayouts = () => {
     if (payoutsInvoice.length === 0) {
@@ -147,7 +172,7 @@ const AdminPayoutsPage = () => {
               return (
                 <div
                   key={invoice.id}
-                  className={`flex w-full flex-1 flex-col items-center gap-2 rounded-xl rounded-tl-none rounded-tr-none border-[1px] p-4 text-sm md:flex-row md:rounded-tl-none md:rounded-tr-none ${
+                  className={`flex w-full flex-1 flex-col items-center gap-2 rounded-xl border-[1px] p-4 text-sm md:flex-row md:rounded-tl-none md:rounded-tr-none ${
                     index === 0
                       ? `md:rounded-b-none md:rounded-t-xl`
                       : "md:rounded-b-none md:rounded-t-none"
@@ -177,17 +202,28 @@ const AdminPayoutsPage = () => {
                       {helper.calculerMonetaryValue(invoice.payoutValue)}€
                     </div>
                   </div>
-                  <Link
-                    target="_blank"
-                    href={`/${invoice.influencerUsername}`}
-                    rel="noopener noreferrer"
-                    className="line-clamp-1 flex w-full flex-col gap-1 border-b-[1px] p-2 hover:underline md:w-1/4 md:border-none md:text-left"
+                  <div
+                    className="flex w-full cursor-pointer items-center gap-2 border-b-[1px] p-2 md:w-1/4 md:border-none"
+                    onClick={() => {
+                      setValue("searchProfileId", invoice.influencerId);
+                      setProfileId(invoice.influencerId);
+                    }}
                   >
-                    <div className="font-semibold text-influencer">
-                      Influencer
+                    <FontAwesomeIcon
+                      icon={faSearch}
+                      className="hidden md:flex"
+                    />
+                    <div className="line-clamp-1 flex w-full flex-col gap-1 md:text-left">
+                      <div className="font-semibold text-influencer">
+                        Influencer
+                      </div>
+                      <div>{invoice.influencerUsername}</div>
                     </div>
-                    <div>{invoice.influencerName}</div>
-                  </Link>
+                    <FontAwesomeIcon
+                      icon={faSearch}
+                      className="flex md:hidden"
+                    />
+                  </div>
                   <div className="line-clamp-1 flex w-full flex-col gap-1 border-b-[1px] p-2 md:w-1/4 md:border-none md:text-left">
                     <div className="font-semibold text-influencer">
                       Invoice Solver
@@ -214,6 +250,18 @@ const AdminPayoutsPage = () => {
         </div>
       );
     }
+  };
+
+  const renderFiltersRow = () => {
+    return (
+      <div
+        className="flex cursor-pointer items-center justify-end gap-2"
+        onClick={() => clearFilters()}
+      >
+        <FontAwesomeIcon icon={faClose} />
+        <div>Clear Filters</div>
+      </div>
+    );
   };
 
   const renderCustomSelect = () => {
@@ -302,27 +350,53 @@ const AdminPayoutsPage = () => {
     }
   };
 
-  return (
-    <div className="flex w-full flex-col self-center p-4 md:w-10/12">
-      {renderTabs()}
-      {renderCustomSelect()}
-      {isLoadingPayoutsInvoice ? (
-        <div className="flex justify-center">
-          <LoadingSpinner />
-        </div>
-      ) : (
-        renderPayouts()
-      )}
-      {payoutsInvoiceCount > payoutsInvoice.length && (
-        <div className="flex items-center justify-center p-4">
-          <Button
-            title="Load More"
-            onClick={() => refetchPayoutsInvoiceCursor()}
-            isLoading={isFetchingPayoutsInvoiceCursor}
-            disabled={isFetchingPayoutsInvoiceCursor}
+  const renderSearchInputs = () => {
+    return (
+      <div className="flex  flex-1 flex-col items-end gap-2 md:flex-row">
+        <div className="flex w-full flex-col">
+          <span className="font-semibold">Profile ID Search</span>
+          <input
+            {...register("searchProfileId")}
+            type="text"
+            className="flex h-full w-full flex-1 rounded-lg border-[1px] p-4"
           />
         </div>
-      )}
+        <div className="flex w-full flex-1">
+          <Button
+            title="Search"
+            level="primary"
+            onClick={() => handleSearch()}
+          />
+        </div>
+      </div>
+    );
+  };
+
+  return (
+    <div className="flex w-full flex-col gap-4 self-center p-4 md:w-10/12">
+      {renderSearchInputs()}
+      {renderFiltersRow()}
+      {renderCustomSelect()}
+      <div>
+        {renderTabs()}
+        {isLoadingPayoutsInvoice ? (
+          <div className="flex justify-center">
+            <LoadingSpinner />
+          </div>
+        ) : (
+          renderPayouts()
+        )}
+        {payoutsInvoiceCount > payoutsInvoice.length && (
+          <div className="flex items-center justify-center p-4">
+            <Button
+              title="Load More"
+              onClick={() => refetchPayoutsInvoiceCursor()}
+              isLoading={isFetchingPayoutsInvoiceCursor}
+              disabled={isFetchingPayoutsInvoiceCursor}
+            />
+          </div>
+        )}
+      </div>
     </div>
   );
 };
