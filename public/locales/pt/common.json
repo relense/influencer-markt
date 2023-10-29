@@ -1100,6 +1100,19 @@
       "uploadedSuccessfully": "Fatura carregada com sucesso"
     },
 
+    "settings": {
+      "generalSettings": "Configurações Gerais",
+      "updateUsername": "Actualizar username",
+      "pageNameAvailable": "Username está disponível",
+      "pageNameUnavailable": "Username não está disponível",
+      "pageNameIsYours": "Esse é o teu noem de utilizador actual",
+      "save": "Guardar",
+      "notificationsSettings": "Configurações de Notificações",
+      "disableEmailNotifications": "Desactivar Notificações de Email",
+      "disableAppNotifications": "Desactivar Notificações de App",
+      "updateNotificationsSuccess": "Configurações de notificações actualizadas com sucesso"
+    },
+
     "socialMediaCreate": {
       "characterWarning": "Máximo de {{count}} caracteres",
       "modalTitle": "Adiciona detalhes da rede social",

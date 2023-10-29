@@ -1099,6 +1099,19 @@
       "uploadedSuccessfully": "Invoice upload successfully"
     },
 
+    "settings": {
+      "generalSettings": "General Settings",
+      "updateUsername": "Update Username",
+      "pageNameAvailable": "Username is available",
+      "pageNameUnavailable": "Username is unavailable",
+      "pageNameIsYours": "That is your current username",
+      "save": "Save",
+      "notificationsSettings": "Notifications Settings",
+      "disableEmailNotifications": "Disable Email Notifications",
+      "disableAppNotifications": "Disable App Notifications",
+      "updateNotificationsSuccess": "Notifications settings updated successfully"
+    },
+
     "socialMediaCreate": {
       "characterWarning": "Max is {{count}} characters",
       "modalTitle": "Social Media Details",

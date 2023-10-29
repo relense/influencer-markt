@@ -51,20 +51,22 @@ model VerificationToken {
 }
 
 model User {
-  id               String    @id @default(cuid())
-  name             String?
-  email            String?   @unique
-  emailVerified    DateTime?
-  image            String?
-  firstSteps       Boolean?  @default(false)
-  username         String?   @unique
-  role             Role?     @relation(fields: [roleId], references: [id])
-  userType         String    @default("user")
-  isOver18         Boolean   @default(false)
-  showWelcomeModal Boolean   @default(true)
-  accounts         Account[]
-  sessions         Session[]
-  profile          Profile?
+  id                        String    @id @default(cuid())
+  name                      String?
+  email                     String?   @unique
+  emailVerified             DateTime?
+  image                     String?
+  firstSteps                Boolean?  @default(false)
+  username                  String?   @unique
+  role                      Role?     @relation(fields: [roleId], references: [id])
+  userType                  String    @default("user")
+  isOver18                  Boolean   @default(false)
+  showWelcomeModal          Boolean   @default(true)
+  disableEmailNotifications Boolean   @default(false)
+  disableAppNotifications   Boolean   @default(false)
+  accounts                  Account[]
+  sessions                  Session[]
+  profile                   Profile?
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -561,7 +563,7 @@ model Invoice {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  orderId           Int    @unique
+  orderId           Int     @unique
   profileId         Int
   invoiceBlobDataId String? @unique
 

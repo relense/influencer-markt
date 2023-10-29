@@ -22,6 +22,8 @@ export const usersRouter = createTRPCRouter({
       select: {
         username: true,
         showWelcomeModal: true,
+        disableAppNotifications: true,
+        disableEmailNotifications: true,
       },
     });
   }),
@@ -86,6 +88,38 @@ export const usersRouter = createTRPCRouter({
       },
     });
   }),
+
+  updateUserName: protectedProcedure
+    .input(z.object({ username: z.string() }))
+    .mutation(async ({ ctx, input }) => {
+      await ctx.prisma.user.update({
+        where: {
+          id: ctx.session.user.id,
+        },
+        data: {
+          username: input.username,
+        },
+      });
+    }),
+
+  updateEmailNotifications: protectedProcedure
+    .input(
+      z.object({
+        disableEmail: z.boolean(),
+        disableApp: z.boolean(),
+      })
+    )
+    .mutation(async ({ ctx, input }) => {
+      return await ctx.prisma.user.update({
+        where: {
+          id: ctx.session.user.id,
+        },
+        data: {
+          disableEmailNotifications: input.disableEmail,
+          disableAppNotifications: input.disableApp,
+        },
+      });
+    }),
 
   usernameExists: publicProcedure
     .input(z.object({ username: z.string() }))
