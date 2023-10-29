@@ -46,11 +46,6 @@ const createPayout = async (params: { orderId: number }) => {
         tin: order.influencer?.billing?.tin || "",
         isentOfTaxes: false,
         paid: false,
-        payoutStatus: {
-          connect: {
-            id: 1,
-          },
-        },
       },
     });
   }
@@ -278,7 +273,7 @@ export const PayoutsRouter = createTRPCRouter({
                 dateItWasDelivered: true,
               },
             },
-            payoutBlobData: {
+            payoutInvoice: {
               select: {
                 influencerInvoice: true,
                 createdAt: true,
@@ -354,7 +349,7 @@ export const PayoutsRouter = createTRPCRouter({
                 dateItWasDelivered: true,
               },
             },
-            payoutBlobData: {
+            payoutInvoice: {
               select: {
                 influencerInvoice: true,
                 createdAt: true,
@@ -390,7 +385,7 @@ export const PayoutsRouter = createTRPCRouter({
             lte: startOfMonth,
           },
           paid: false,
-          payoutBlobData: null,
+          payoutInvoice: null,
         },
         select: {
           payoutValue: true,
@@ -431,6 +426,7 @@ export const PayoutsRouter = createTRPCRouter({
             lte: endOfMonth,
           },
           paid: false,
+          payoutInvoice: null,
         },
         select: {
           payoutValue: true,
@@ -471,7 +467,7 @@ export const PayoutsRouter = createTRPCRouter({
               lte: startOfMonth,
             },
             paid: false,
-            payoutBlobData: null,
+            payoutInvoice: null,
           },
           select: {
             id: true,
@@ -497,24 +493,28 @@ export const PayoutsRouter = createTRPCRouter({
               },
             });
 
-            const payoutBlobData = await ctx.prisma.payoutBlobData.create({
+            const payoutInvoice = await ctx.prisma.payoutInvoice.create({
               data: {
                 influencerInvoice: blockBlobClient.url,
                 influencerInvoiceBlobName: blobName,
+                payoutInvoiceStatus: {
+                  connect: {
+                    id: 1,
+                  },
+                },
               },
             });
 
-            if (payoutBlobData) {
+            if (payoutInvoice) {
               for (const payout of availablePayouts) {
                 await ctx.prisma.payout.update({
                   where: {
                     id: payout.id,
                   },
                   data: {
-                    payoutStatus: { connect: { id: 2 } },
-                    payoutBlobData: {
+                    payoutInvoice: {
                       connect: {
-                        id: payoutBlobData.id,
+                        id: payoutInvoice.id,
                       },
                     },
                   },
@@ -527,86 +527,6 @@ export const PayoutsRouter = createTRPCRouter({
           }
         }
       }
-    }),
-
-  getPayouts: protectedProcedure
-    .input(
-      z.object({
-        payoutStatusId: z.number(),
-      })
-    )
-    .query(async ({ ctx, input }) => {
-      return await ctx.prisma.$transaction([
-        ctx.prisma.payout.count({
-          where: {
-            payoutStatusId: input.payoutStatusId,
-          },
-        }),
-        ctx.prisma.payout.findMany({
-          where: {
-            payoutStatusId: input.payoutStatusId,
-          },
-          take: 10,
-          select: {
-            payoutBlobData: {
-              select: {
-                createdAt: true,
-              },
-            },
-            payoutSolver: {
-              select: {
-                username: true,
-              },
-            },
-            id: true,
-            payoutValue: true,
-          },
-          orderBy: {
-            payoutBlobData: {
-              createdAt: "desc",
-            },
-          },
-        }),
-      ]);
-    }),
-
-  getPayoutsCursor: protectedProcedure
-    .input(
-      z.object({
-        cursor: z.string(),
-        payoutStatusId: z.number(),
-      })
-    )
-    .query(async ({ ctx, input }) => {
-      return await ctx.prisma.payout.findMany({
-        where: {
-          payoutStatusId: input.payoutStatusId,
-        },
-        take: 10,
-        skip: 1,
-        cursor: {
-          id: input.cursor,
-        },
-        select: {
-          payoutBlobData: {
-            select: {
-              createdAt: true,
-            },
-          },
-          payoutSolver: {
-            select: {
-              username: true,
-            },
-          },
-          id: true,
-          payoutValue: true,
-        },
-        orderBy: {
-          payoutBlobData: {
-            createdAt: "desc",
-          },
-        },
-      });
     }),
 });
 

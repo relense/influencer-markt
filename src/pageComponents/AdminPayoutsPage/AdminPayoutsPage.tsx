@@ -1,13 +1,13 @@
+import { faFileArrowDown } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { api } from "~/utils/api";
-import { helper } from "../../utils/helper";
 import { Button } from "../../components/Button";
 import { LoadingSpinner } from "../../components/LoadingSpinner";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faFileArrowDown } from "@fortawesome/free-solid-svg-icons";
+import { helper } from "../../utils/helper";
 
-type Payout = {
+type PayoutsInvoice = {
   id: string;
   payoutValue: number;
   invoiceUploadedAt: string | undefined;
@@ -18,33 +18,30 @@ const AdminPayoutsPage = () => {
   const { i18n } = useTranslation();
   const ctx = api.useContext();
 
-  const [payouts, setPayouts] = useState<Payout[]>([]);
-  const [payoutsCount, setPayountsCount] = useState<number>(0);
-  const [payoutsCursor, setPayoutsCursor] = useState<string>("");
-  const [tab, setTab] = useState<string>("open");
-  const [payoutStatudId, setPayoutStatudId] = useState<number>(2);
-
-  const {
-    data: openPayoutsData,
-    isLoading: isLoadingPayouts,
-    refetch: refetchPayout,
-  } = api.payouts.getPayouts.useQuery(
-    {
-      payoutStatusId: payoutStatudId,
-    },
-    {
-      cacheTime: 0,
-    }
+  const [payoutsInvoice, setPayoutsInvoiceData] = useState<PayoutsInvoice[]>(
+    []
   );
+  const [payoutsInvoiceCount, setPayoutsInvoiceCount] = useState<number>(0);
+  const [payoutsInvoiceCursor, setPayoutsInvoiceCursor] = useState<string>("");
+  const [tab, setTab] = useState<string>("open");
+  const [payoutInvoiceStatusId, setPayoutInvoiceStatusId] = useState<number>(1);
 
   const {
-    data: openPayoutsDataCursor,
-    isFetching: isFetchingPayoutCursor,
-    refetch: refetchPayoutCursor,
-  } = api.payouts.getPayoutsCursor.useQuery(
+    data: payoutsInvoiceData,
+    isLoading: isLoadingPayoutsInvoice,
+    refetch: refetchPayoutsInvoice,
+  } = api.payoutInvoices.getPayoutsInvoice.useQuery({
+    payoutInvoiceStatusId: payoutInvoiceStatusId,
+  });
+
+  const {
+    data: payoutsInvoiceDataCursor,
+    isFetching: isFetchingPayoutsInvoiceCursor,
+    refetch: refetchPayoutsInvoiceCursor,
+  } = api.payoutInvoices.getPayoutsInvoiceCursor.useQuery(
     {
-      cursor: payoutsCursor,
-      payoutStatusId: payoutStatudId,
+      cursor: payoutsInvoiceCursor,
+      payoutInvoiceStatusId: payoutInvoiceStatusId,
     },
     {
       cacheTime: 0,
@@ -53,87 +50,91 @@ const AdminPayoutsPage = () => {
   );
 
   useEffect(() => {
-    if (openPayoutsData) {
-      setPayouts([]);
-      setPayountsCount(openPayoutsData[0]);
-      setPayouts(
-        openPayoutsData[1].map((payout) => {
+    void refetchPayoutsInvoice();
+  }, [refetchPayoutsInvoice, tab]);
+
+  useEffect(() => {
+    if (payoutsInvoiceData) {
+      setPayoutsInvoiceData([]);
+      setPayoutsInvoiceCount(payoutsInvoiceData[0]);
+      setPayoutsInvoiceData(
+        payoutsInvoiceData[1].map((invoice) => {
           return {
-            id: payout.id,
-            payoutValue: Number(payout.payoutValue),
-            invoiceUploadedAt: payout?.payoutBlobData
-              ? helper.formatFullDateWithTime(
-                  payout?.payoutBlobData?.createdAt,
-                  i18n.language
-                )
-              : undefined,
-            verficator: payout.payoutSolver?.username || "",
+            id: invoice.id,
+            payoutValue: invoice.payouts.reduce((total, payout) => {
+              return total + payout.payoutValue;
+            }, 0),
+            invoiceUploadedAt: helper.formatFullDateWithTime(
+              invoice.createdAt,
+              i18n.language
+            ),
+            verficator: invoice.payoutSolver?.username || "",
           };
         })
       );
 
-      const lastPayoutInArray =
-        openPayoutsData[1][openPayoutsData[1].length - 1];
+      const lastPayoutsInvoiceInArray =
+        payoutsInvoiceData[1][payoutsInvoiceData[1].length - 1];
 
-      if (lastPayoutInArray) {
-        setPayoutsCursor(lastPayoutInArray.id);
+      if (lastPayoutsInvoiceInArray) {
+        setPayoutsInvoiceCursor(lastPayoutsInvoiceInArray.id);
       }
     }
-  }, [i18n.language, openPayoutsData]);
+  }, [i18n.language, payoutsInvoiceData]);
 
   useEffect(() => {
-    if (openPayoutsDataCursor) {
-      const newPayouts: Payout[] = [...payouts];
+    if (payoutsInvoiceDataCursor) {
+      const newPayouts: PayoutsInvoice[] = [...payoutsInvoice];
 
-      openPayoutsDataCursor.forEach((payout) => {
+      payoutsInvoiceDataCursor.forEach((invoice) => {
         newPayouts.push({
-          id: payout.id,
-          payoutValue: Number(payout.payoutValue),
-          invoiceUploadedAt: payout?.payoutBlobData
-            ? helper.formatFullDateWithTime(
-                payout?.payoutBlobData?.createdAt,
-                i18n.language
-              )
-            : undefined,
-          verficator: payout.payoutSolver?.username || "",
+          id: invoice.id,
+          payoutValue: invoice.payouts.reduce((total, payout) => {
+            return total + payout.payoutValue;
+          }, 0),
+          invoiceUploadedAt: helper.formatFullDateWithTime(
+            invoice.createdAt,
+            i18n.language
+          ),
+          verficator: invoice.payoutSolver?.username || "",
         });
       });
 
-      setPayouts(newPayouts);
+      setPayoutsInvoiceData(newPayouts);
 
-      const lastPayoutInArray =
-        openPayoutsDataCursor[openPayoutsDataCursor.length - 1];
+      const lastPayoutsInvoiceInArray =
+        payoutsInvoiceDataCursor[payoutsInvoiceDataCursor.length - 1];
 
-      if (lastPayoutInArray) {
-        setPayoutsCursor(lastPayoutInArray.id);
+      if (lastPayoutsInvoiceInArray) {
+        setPayoutsInvoiceCursor(lastPayoutsInvoiceInArray.id);
       }
     }
-  }, [i18n.language, openPayoutsDataCursor, payouts]);
+  }, [i18n.language, payoutsInvoice, payoutsInvoiceDataCursor]);
 
-  const handleChangeTab = (tab: "open" | "processed" | "rejected") => {
-    void ctx.payouts.getPayouts.reset();
-    void ctx.payouts.getPayoutsCursor.reset();
-    setPayouts([]);
-    setPayountsCount(0);
-    setPayoutsCursor("");
+  const handleChangeTab = (
+    tab: "open" | "processing" | "processed" | "rejected"
+  ) => {
+    void ctx.payoutInvoices.getPayoutsInvoice.reset();
+    void ctx.payoutInvoices.getPayoutsInvoiceCursor.reset();
+    setPayoutsInvoiceData([]);
+    setPayoutsInvoiceCount(0);
+    setPayoutsInvoiceCursor("");
 
     if (tab === "open") {
-      setPayoutStatudId(2);
+      setPayoutInvoiceStatusId(1);
+    } else if (tab === "processing") {
+      setPayoutInvoiceStatusId(2);
     } else if (tab === "rejected") {
-      setPayoutStatudId(3);
+      setPayoutInvoiceStatusId(3);
     } else if (tab === "processed") {
-      setPayoutStatudId(4);
+      setPayoutInvoiceStatusId(4);
     }
 
     setTab(tab);
   };
 
-  useEffect(() => {
-    void refetchPayout();
-  }, [refetchPayout, tab]);
-
   const renderPayouts = () => {
-    if (payouts.length === 0) {
+    if (payoutsInvoice.length === 0) {
       return (
         <div className="mt-10 flex flex-col items-center justify-center gap-4">
           <FontAwesomeIcon
@@ -146,50 +147,46 @@ const AdminPayoutsPage = () => {
     } else {
       return (
         <div className="flex flex-col gap-4 md:gap-0 [&>*:nth-child(odd)]:bg-influencer-green-super-light ">
-          {payouts &&
-            payouts.map((payout, index) => {
+          {payoutsInvoice &&
+            payoutsInvoice.map((invoice, index) => {
               return (
                 <div
-                  key={payout.id}
-                  className={`flex w-full flex-1 flex-col items-center gap-2 rounded-xl border-[1px] p-4 text-sm md:flex-row  ${
+                  key={invoice.id}
+                  className={`flex w-full flex-1 flex-col items-center gap-2 rounded-xl rounded-tl-none rounded-tr-none border-[1px] p-4 text-sm md:flex-row md:rounded-tl-none md:rounded-tr-none ${
                     index === 0
-                      ? `md:rounded-b-none md:rounded-t-xl ${
-                          tab === "open"
-                            ? "md:rounded-tl-none"
-                            : "md:rounded-tr-none"
-                        }`
+                      ? `md:rounded-b-none md:rounded-t-xl`
                       : "md:rounded-b-none md:rounded-t-none"
                   } ${
-                    payouts.length - 1 === index
+                    payoutsInvoice.length - 1 === index
                       ? "md:rounded-b-xl md:rounded-t-none"
                       : ""
                   }`}
                 >
                   <div className="line-clamp-1 flex w-full flex-col gap-1 border-b-[1px] p-2 md:w-1/4 md:border-none md:text-left">
                     <div className="font-semibold text-influencer">
-                      Payout Ref
+                      Payout Invoice Ref
                     </div>
-                    <div>#{payout.id}</div>
+                    <div>#{invoice.id}</div>
                   </div>
                   <div className="line-clamp-1 flex w-full flex-col gap-1 border-b-[1px] p-2 md:w-1/4 md:border-none md:text-left">
                     <div className="font-semibold text-influencer">
                       Invoice Uploaded Date
                     </div>
-                    <div>{payout.invoiceUploadedAt}</div>
+                    <div>{invoice.invoiceUploadedAt}</div>
                   </div>
                   <div className="line-clamp-1 flex w-full flex-col gap-1 border-b-[1px] p-2 md:w-1/4 md:border-none md:text-left">
                     <div className="font-semibold text-influencer">
-                      Payout Value
+                      Invoice Value
                     </div>
                     <div>
-                      {helper.calculerMonetaryValue(payout.payoutValue)}€
+                      {helper.calculerMonetaryValue(invoice.payoutValue)}€
                     </div>
                   </div>
                   <div className="line-clamp-1 flex w-full flex-col gap-1 p-2 md:w-1/4 md:text-left">
                     <div className="font-semibold text-influencer">
                       Payout Solver
                     </div>
-                    <div>{payout.verficator || "Not Atributed"}</div>
+                    <div>{invoice.verficator || "Not Atributed"}</div>
                   </div>
                   <div className="line-clamp-1 flex w-full flex-col gap-1 p-2 md:w-1/4 md:text-left">
                     <a
@@ -198,11 +195,7 @@ const AdminPayoutsPage = () => {
                       rel="noopener noreferrer"
                       className="flex"
                     >
-                      <Button
-                        title="Initiate Verification"
-                        level="secondary"
-                        size="large"
-                      />
+                      <Button title="Initiate" level="secondary" size="large" />
                     </a>
                   </div>
                 </div>
@@ -215,36 +208,46 @@ const AdminPayoutsPage = () => {
 
   const renderTabs = () => {
     return (
-      <div className="flex">
+      <div className="flex rounded-t-xl border-[1px] border-gray3">
         <div
-          className={`flex flex-1 cursor-pointer items-center p-4 text-base font-semibold md:text-3xl  ${
+          className={`flex flex-1 cursor-pointer items-center p-4 text-base font-semibold md:text-xl  ${
             tab === "open"
               ? "rounded-t-xl border-l-[1px] border-t-[1px] bg-influencer-green text-white"
               : "border-none"
           }`}
           onClick={() => handleChangeTab("open")}
         >
-          Open Payouts
+          Open Invoices
         </div>
         <div
-          className={`flex flex-1 cursor-pointer items-center rounded-tr-xl border-[1px] border-r-[1px] border-t-[1px]  p-4 text-base font-semibold md:text-3xl ${
+          className={`flex flex-1 cursor-pointer items-center p-4 text-base font-semibold md:text-xl  ${
+            tab === "processing"
+              ? "rounded-t-xl border-l-[1px] border-t-[1px] bg-influencer-green text-white"
+              : "border-none"
+          }`}
+          onClick={() => handleChangeTab("processing")}
+        >
+          Processing Invoices
+        </div>
+        <div
+          className={`flex flex-1 cursor-pointer items-center rounded-tr-xl border-[1px] border-r-[1px] border-t-[1px]  p-4 text-base font-semibold md:text-xl ${
             tab === "rejected"
               ? "rounded-t-xl border-l-[1px] border-t-[1px] bg-influencer-green text-white"
               : "border-none"
           }`}
           onClick={() => handleChangeTab("rejected")}
         >
-          Rejected Payouts
+          Rejected Invoices
         </div>
         <div
-          className={`flex flex-1 cursor-pointer items-center rounded-tr-xl border-[1px] border-r-[1px] border-t-[1px]  p-4 text-base font-semibold md:text-3xl ${
+          className={`flex flex-1 cursor-pointer items-center rounded-tr-xl border-[1px] border-r-[1px] border-t-[1px]  p-4 text-base font-semibold md:text-xl ${
             tab === "processed"
               ? "rounded-t-xl border-l-[1px] border-t-[1px] bg-influencer-green text-white"
               : "border-none"
           }`}
           onClick={() => handleChangeTab("processed")}
         >
-          Processed Payouts
+          Processed Invoices
         </div>
       </div>
     );
@@ -253,20 +256,20 @@ const AdminPayoutsPage = () => {
   return (
     <div className="flex w-full flex-col self-center p-4 md:w-10/12">
       {renderTabs()}
-      {isLoadingPayouts ? (
+      {isLoadingPayoutsInvoice ? (
         <div className="flex justify-center">
           <LoadingSpinner />
         </div>
       ) : (
         renderPayouts()
       )}
-      {payoutsCount > payouts.length && (
+      {payoutsInvoiceCount > payoutsInvoice.length && (
         <div className="flex items-center justify-center p-4">
           <Button
             title="Load More"
-            onClick={() => refetchPayoutCursor()}
-            isLoading={isFetchingPayoutCursor}
-            disabled={isFetchingPayoutCursor}
+            onClick={() => refetchPayoutsInvoiceCursor()}
+            isLoading={isFetchingPayoutsInvoiceCursor}
+            disabled={isFetchingPayoutsInvoiceCursor}
           />
         </div>
       )}

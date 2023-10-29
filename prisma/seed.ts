@@ -157,9 +157,9 @@ async function main() {
     ],
   });
 
-  await prisma.payoutStatus.createMany({
+  await prisma.payoutInvoiceStatus.createMany({
     data: [
-      { name: "emitted" },
+      { name: "uploaded" },
       { name: "processing" },
       { name: "rejected" },
       { name: "paid" },

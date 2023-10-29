@@ -60,10 +60,10 @@ const AvailableBalanceModal = (params: { onClose: () => void }) => {
                 i18n.language
               ) || "",
             paid: payout.paid,
-            influencerInvoice: payout.payoutBlobData?.influencerInvoice || "",
-            invoiceUploadedAt: payout?.payoutBlobData
+            influencerInvoice: payout.payoutInvoice?.influencerInvoice || "",
+            invoiceUploadedAt: payout?.payoutInvoice
               ? helper.formatFullDateWithTime(
-                  payout?.payoutBlobData?.createdAt,
+                  payout?.payoutInvoice?.createdAt,
                   i18n.language
                 )
               : undefined,
@@ -95,10 +95,10 @@ const AvailableBalanceModal = (params: { onClose: () => void }) => {
               i18n.language
             ) || "",
           paid: payout.paid,
-          influencerInvoice: payout.payoutBlobData?.influencerInvoice || "",
-          invoiceUploadedAt: payout?.payoutBlobData
+          influencerInvoice: payout.payoutInvoice?.influencerInvoice || "",
+          invoiceUploadedAt: payout?.payoutInvoice
             ? helper.formatFullDateWithTime(
-                payout?.payoutBlobData?.createdAt,
+                payout?.payoutInvoice?.createdAt,
                 i18n.language
               )
             : undefined,
@@ -141,13 +141,13 @@ const AvailableBalanceModal = (params: { onClose: () => void }) => {
           <div className="flex flex-col gap-4 p-6">
             {availablePayouts.map((payout) => {
               return (
-                <div key={payout.id} className="flex flex-1 gap-2">
+                <div key={payout.id} className="flex flex-1 flex-col gap-2">
                   <div className="flex flex-1 flex-col items-center gap-3 rounded-lg border-[1px] p-4 shadow-md">
                     <Link
                       href={`/sales/${payout.orderId}`}
                       className="font-semibold text-influencer hover:cursor-pointer hover:underline"
                     >
-                      {t("pages.billing.orderRef")} #{payout.orderId}:
+                      {t("pages.billing.orderRef")} #{payout.orderId}
                     </Link>
                     {!!payout.influencerInvoice && !payout.paid && (
                       <div className="flex items-center gap-2">

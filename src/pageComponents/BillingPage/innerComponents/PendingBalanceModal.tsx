@@ -129,9 +129,9 @@ const PendingBalanceModal = (params: { onClose: () => void }) => {
                 >
                   <Link
                     href={`/sales/${payout.orderId}`}
-                    className="text-influencer hover:cursor-pointer hover:underline"
+                    className="font-semibold text-influencer hover:cursor-pointer hover:underline"
                   >
-                    {t("pages.billing.orderRef")} #{payout.orderId}:
+                    {t("pages.billing.orderRef")} #{payout.orderId}
                   </Link>
                   <div className="flex gap-4">
                     <div>{payout.payoutCreated}</div>

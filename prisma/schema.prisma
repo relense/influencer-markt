@@ -51,23 +51,23 @@ model VerificationToken {
 }
 
 model User {
-  id                        String    @id @default(cuid())
+  id                        String          @id @default(cuid())
   name                      String?
-  email                     String?   @unique
+  email                     String?         @unique
   emailVerified             DateTime?
   image                     String?
-  firstSteps                Boolean?  @default(false)
-  username                  String?   @unique
-  role                      Role?     @relation(fields: [roleId], references: [id])
-  userType                  String    @default("user")
-  isOver18                  Boolean   @default(false)
-  showWelcomeModal          Boolean   @default(true)
-  disableEmailNotifications Boolean   @default(false)
-  disableAppNotifications   Boolean   @default(false)
+  firstSteps                Boolean?        @default(false)
+  username                  String?         @unique
+  role                      Role?           @relation(fields: [roleId], references: [id])
+  userType                  String          @default("user")
+  isOver18                  Boolean         @default(false)
+  showWelcomeModal          Boolean         @default(true)
+  disableEmailNotifications Boolean         @default(false)
+  disableAppNotifications   Boolean         @default(false)
   accounts                  Account[]
   sessions                  Session[]
   profile                   Profile?
-  payoutsResolved           Payout[]
+  payoutsResolved           PayoutInvoice[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -585,9 +585,9 @@ model InvoiceBlobData {
 }
 
 model Payout {
-  id              String          @id @default(cuid())
-  profile         Profile         @relation(fields: [profileId], references: [id])
-  order           Order           @relation(fields: [orderId], references: [id])
+  id              String         @id @default(cuid())
+  profile         Profile        @relation(fields: [profileId], references: [id])
+  order           Order          @relation(fields: [orderId], references: [id])
   name            String
   email           String
   tin             String
@@ -595,43 +595,45 @@ model Payout {
   taxesValue      Int
   taxesPercentage Int
   isentOfTaxes    Boolean
-  paid            Boolean         @default(false)
-  payoutBlobData  PayoutBlobData? @relation(fields: [payoutBlolbDataId], references: [id])
-  payoutSolver    User?           @relation(fields: [userId], references: [id])
-  payoutStatus    PayoutStatus?   @relation(fields: [payoutStatusId], references: [id])
+  paid            Boolean        @default(false)
+  payoutInvoice   PayoutInvoice? @relation(fields: [payoutInvoiceId], references: [id])
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
   orderId           Int     @unique
   profileId         Int
-  payoutBlolbDataId String?
-  userId            String?
-  payoutStatusId    Int?
+  payoutInvoiceId String?
 
   @@index([orderId])
   @@index([profileId])
-  @@index([payoutBlolbDataId])
-  @@index([userId])
-  @@index([payoutStatusId])
+  @@index([payoutInvoiceId])
 }
 
-model PayoutStatus {
+model PayoutInvoiceStatus {
   id   Int    @id @default(autoincrement())
   name String
 
-  payouts Payout[]
+  payouts PayoutInvoice[]
 }
 
-model PayoutBlobData {
-  id                        String @id @default(cuid())
-  influencerInvoice         String @db.Text
-  influencerInvoiceBlobName String @db.Text
+model PayoutInvoice {
+  id                        String               @id @default(cuid())
+  influencerInvoice         String               @db.Text
+  influencerInvoiceBlobName String               @db.Text
+  payoutSolver              User?                @relation(fields: [userId], references: [id])
+  payoutInvoiceStatus       PayoutInvoiceStatus? @relation(fields: [payoutInvoiceStatusId], references: [id])
+
+  payouts Payout[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  payouts Payout[]
+  userId                String?
+  payoutInvoiceStatusId Int?
+
+  @@index([userId])
+  @@index([payoutInvoiceStatusId])
 }
 
 model Payment {
