@@ -46,6 +46,11 @@ const createPayout = async (params: { orderId: number }) => {
         tin: order.influencer?.billing?.tin || "",
         isentOfTaxes: false,
         paid: false,
+        payoutStatus: {
+          connect: {
+            id: 1,
+          },
+        },
       },
     });
   }
@@ -506,6 +511,7 @@ export const PayoutsRouter = createTRPCRouter({
                     id: payout.id,
                   },
                   data: {
+                    payoutStatus: { connect: { id: 2 } },
                     payoutBlobData: {
                       connect: {
                         id: payoutBlobData.id,
@@ -521,6 +527,86 @@ export const PayoutsRouter = createTRPCRouter({
           }
         }
       }
+    }),
+
+  getPayouts: protectedProcedure
+    .input(
+      z.object({
+        payoutStatusId: z.number(),
+      })
+    )
+    .query(async ({ ctx, input }) => {
+      return await ctx.prisma.$transaction([
+        ctx.prisma.payout.count({
+          where: {
+            payoutStatusId: input.payoutStatusId,
+          },
+        }),
+        ctx.prisma.payout.findMany({
+          where: {
+            payoutStatusId: input.payoutStatusId,
+          },
+          take: 10,
+          select: {
+            payoutBlobData: {
+              select: {
+                createdAt: true,
+              },
+            },
+            payoutSolver: {
+              select: {
+                username: true,
+              },
+            },
+            id: true,
+            payoutValue: true,
+          },
+          orderBy: {
+            payoutBlobData: {
+              createdAt: "desc",
+            },
+          },
+        }),
+      ]);
+    }),
+
+  getPayoutsCursor: protectedProcedure
+    .input(
+      z.object({
+        cursor: z.string(),
+        payoutStatusId: z.number(),
+      })
+    )
+    .query(async ({ ctx, input }) => {
+      return await ctx.prisma.payout.findMany({
+        where: {
+          payoutStatusId: input.payoutStatusId,
+        },
+        take: 10,
+        skip: 1,
+        cursor: {
+          id: input.cursor,
+        },
+        select: {
+          payoutBlobData: {
+            select: {
+              createdAt: true,
+            },
+          },
+          payoutSolver: {
+            select: {
+              username: true,
+            },
+          },
+          id: true,
+          payoutValue: true,
+        },
+        orderBy: {
+          payoutBlobData: {
+            createdAt: "desc",
+          },
+        },
+      });
     }),
 });
 

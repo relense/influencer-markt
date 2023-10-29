@@ -2,12 +2,12 @@ import { api } from "~/utils/api";
 import { useEffect, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faFilter, faSearch } from "@fortawesome/free-solid-svg-icons";
+import { useTranslation } from "react-i18next";
+
 import { ProfileCard } from "../../components/ProfileCard";
 import { Button } from "../../components/Button";
-
 import { ComplexSearchBar } from "../../components/ComplexSearchBar";
 import { InfluencersFilterModal } from "./innerComponents/InfluencersFilterModal";
-import { useTranslation } from "react-i18next";
 import { LoadingSpinner } from "../../components/LoadingSpinner";
 import type { Option, UserProfiles } from "../../utils/globalTypes";
 

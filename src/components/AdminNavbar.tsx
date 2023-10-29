@@ -22,6 +22,9 @@ const AdminNavbar = () => {
         <Link href="/admin/disputes" className="cursor-pointer px-2 text-lg">
           {t("components.adminNavbar.disputes")}
         </Link>
+        <Link href="/admin/payouts" className="cursor-pointer px-2 text-lg">
+          {t("components.adminNavbar.payouts")}
+        </Link>
       </div>
     );
   };

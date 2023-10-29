@@ -15,7 +15,7 @@ export const AdminLayout = (props: { children: ReactElement }) => {
       <main className="flex h-screen w-full flex-1 flex-col">
         <AdminNavbar />
         <div className="mb-12 flex w-full flex-1 flex-col overflow-y-auto sm:mb-0">
-          <div className="flex flex-1 flex-col">{props.children}</div>
+          {props.children}
         </div>
       </main>
     );

@@ -67,6 +67,7 @@ model User {
   accounts                  Account[]
   sessions                  Session[]
   profile                   Profile?
+  payoutsResolved           Payout[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -596,6 +597,8 @@ model Payout {
   isentOfTaxes    Boolean
   paid            Boolean         @default(false)
   payoutBlobData  PayoutBlobData? @relation(fields: [payoutBlolbDataId], references: [id])
+  payoutSolver    User?           @relation(fields: [userId], references: [id])
+  payoutStatus    PayoutStatus?   @relation(fields: [payoutStatusId], references: [id])
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -603,10 +606,21 @@ model Payout {
   orderId           Int     @unique
   profileId         Int
   payoutBlolbDataId String?
+  userId            String?
+  payoutStatusId    Int?
 
   @@index([orderId])
   @@index([profileId])
   @@index([payoutBlolbDataId])
+  @@index([userId])
+  @@index([payoutStatusId])
+}
+
+model PayoutStatus {
+  id   Int    @id @default(autoincrement())
+  name String
+
+  payouts Payout[]
 }
 
 model PayoutBlobData {

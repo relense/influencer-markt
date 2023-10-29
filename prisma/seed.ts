@@ -157,6 +157,15 @@ async function main() {
     ],
   });
 
+  await prisma.payoutStatus.createMany({
+    data: [
+      { name: "emitted" },
+      { name: "processing" },
+      { name: "rejected" },
+      { name: "paid" },
+    ],
+  });
+
   await prisma.category.createMany({
     data: [
       { name: "Lifestyle" },
