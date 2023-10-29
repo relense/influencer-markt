@@ -277,15 +277,6 @@ const FirstStepsPage = () => {
                 form="form-hook"
               />
             )}
-
-          {stepsCount === steps.length - 1 && (
-            <Link href="/" className="flex flex-1 justify-center sm:hidden">
-              <Button
-                title={t("pages.firstSteps.getStarted")}
-                level="primary"
-              />
-            </Link>
-          )}
         </div>
       </div>
     );

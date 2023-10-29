@@ -111,7 +111,7 @@ export const PictureCarrosel = (params: {
       (file.type === "image/jpeg" ||
         file.type === "image/png" ||
         file.type === "image/jpg") &&
-      file.size <= 2000000
+      file.size <= 4000000
     ) {
       const reader = new FileReader();
 

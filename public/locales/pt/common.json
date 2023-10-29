@@ -296,7 +296,7 @@
     },
 
     "pictureCarrosel": {
-      "invalidPictureWarning": "Images têm de ser jpeg, jpg ou png e não podem exceder 2mbs",
+      "invalidPictureWarning": "Images têm de ser jpeg, jpg ou png e não podem exceder 4mbs",
       "addPicture": "Adiciona a tua imagem de perfil",
       "deleteButton": "Apagar Foto",
       "areYouSure": "Tens a certeza?",
@@ -566,7 +566,7 @@
 
       "defineUserStep": {
         "title": "Cria a tua identidade",
-        "subTitle": "Bem-vindo! Vamos Começar: Establece o teu utilizador e reivindica a tua página",
+        "subTitle": "Bem-vindo! Vamos Começar: Estabelece o teu utilizador e reivindica a tua página",
         "button": "Começa a tua jornada",
         "roleInputPLaceholder": "Escolhe o teu papel: Influencer ou Marca",
         "claimInputPlaceholder": "nome-da-tua-página",
@@ -580,8 +580,8 @@
       "setupProfileStep": {
         "title": "Presença online",
         "subTitle": "Define o teu perfil de identidade online",
-        "mainTitle": "Establece a tua presença online",
-        "mainSubTitle": "Vamos establecer quem tu és e o que define a tua identidade online"
+        "mainTitle": "Estabelece a tua presença online",
+        "mainSubTitle": "Vamos estabelecer quem tu és e o que define a tua identidade online"
       },
 
       "finalStep": {
