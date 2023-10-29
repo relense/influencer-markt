@@ -3,8 +3,7 @@ import type { NextApiRequest, NextApiResponse } from "next";
 
 import { prisma } from "../../../../server/db";
 import { createNotification } from "../../../../server/api/routers/notifications";
-import { toBuyerOrderOnHoldEmail } from "../../../../emailTemplates/toBuyerOrderOnHoldEmail/toBuyerOrderOnHoldEmail";
-import { toInfluencerOrderOnHoldEmail } from "../../../../emailTemplates/toInfluencerOrderOnHoldEmail/toInfluencerOrderOnHoldEmail";
+import { sendEmail } from "../../../../services/email.service";
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const sig = req.headers["signature"]!;
@@ -69,20 +68,25 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
           });
           if (udpatedOrder) {
             //send influencer email
-            toInfluencerOrderOnHoldEmail({
+            await sendEmail({
+              action: "toInfluencerOrderOnHoldEmail",
               buyerName: udpatedOrder.buyer?.name || "",
-              from: process.env.NEXT_PUBLIC_EMAIL_FROM || "",
-              to: udpatedOrder.influencer?.user.email || "",
-              language: udpatedOrder.influencer?.country?.languageCode || "en",
+              fromUs: process.env.NEXT_PUBLIC_EMAIL_FROM || "",
+              toInfluencerEmail: udpatedOrder.influencer?.user.email || "",
+              influencerLanguage:
+                udpatedOrder.influencer?.country?.languageCode || "en",
               orderId: udpatedOrder.id,
+              receiverProfileId: udpatedOrder.influencerId || -1,
             });
             //send buyer email
-            toBuyerOrderOnHoldEmail({
+            await sendEmail({
+              action: "toBuyerOrderOnHoldEmail",
               influencerName: udpatedOrder.influencer?.name || "",
-              from: process.env.NEXT_PUBLIC_EMAIL_FROM || "",
-              to: udpatedOrder.buyer?.user.email || "",
-              language: udpatedOrder.buyer?.country?.languageCode || "en",
+              fromUs: process.env.NEXT_PUBLIC_EMAIL_FROM || "",
+              toBuyer: udpatedOrder.buyer?.user.email || "",
+              buyerLanguage: udpatedOrder.buyer?.country?.languageCode || "en",
               orderId: udpatedOrder.id,
+              receiverProfileId: udpatedOrder.buyerId || -1,
             });
             await createNotification({
               entityId: udpatedOrder.id,

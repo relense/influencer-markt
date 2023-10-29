@@ -21,6 +21,7 @@ import { toInfluencerOnHoldtoPostponed } from "../emailTemplates/toInfluencerOnH
 import { toInfluencerOrderOnHoldEmail } from "../emailTemplates/toInfluencerOrderOnHoldEmail/toInfluencerOrderOnHoldEmail";
 import { toInfluencerOrderOnHoldToRefund } from "../emailTemplates/toInfluencerOrderOnHoldToRefund/toInfluencerOrderOnHoldToRefund";
 import { weReceivedContactEmail } from "../emailTemplates/weReceivedContactEmail/weReceivedContactEmail";
+import { prisma } from "../server/db";
 
 type EmailActions =
   | {
@@ -30,6 +31,7 @@ type EmailActions =
       toInfluencerEmail: string;
       influencerLanguage: string;
       orderId: number;
+      receiverProfileId: number;
     }
   | {
       action: "buyerConfirmedEmail";
@@ -38,6 +40,7 @@ type EmailActions =
       toInfluencerEmail: string;
       influencerLanguage: string;
       orderId: number;
+      receiverProfileId: number;
     }
   | {
       action: "buyerOpensDisputeToInfluencerEmail";
@@ -46,6 +49,7 @@ type EmailActions =
       toInfluencerEmail: string;
       influencerLanguage: string;
       orderId: number;
+      receiverProfileId: number;
     }
   | {
       action: "buyerOpenedDisputeToOurInboxEmail";
@@ -62,6 +66,7 @@ type EmailActions =
       toBuyer: string;
       buyerLanguage: string;
       orderId: number;
+      receiverProfileId: number;
     }
   | {
       action: "buyerReviewedOrderEmail";
@@ -70,13 +75,14 @@ type EmailActions =
       toInfluencerEmail: string;
       influencerLanguage: string;
       orderId: number;
+      receiverProfileId: number;
     }
   | {
       action: "contactUsEmail";
       influencerMarktEmail: string;
       email: string;
       message: string;
-      messagedId: string;
+      messageId: string;
       name: string;
       reasonText: string;
     }
@@ -87,6 +93,7 @@ type EmailActions =
       toBuyer: string;
       buyerLanguage: string;
       orderId: number;
+      receiverProfileId: number;
     }
   | {
       action: "influencerDeliveredOrderEmail";
@@ -95,6 +102,7 @@ type EmailActions =
       toBuyer: string;
       buyerLanguage: string;
       orderId: number;
+      receiverProfileId: number;
     }
   | {
       action: "influencerMarktConfirmEmail";
@@ -102,6 +110,7 @@ type EmailActions =
       to: string;
       language: string;
       orderId: number;
+      receiverProfileId: number;
     }
   | {
       action: "influencerOrderWasRectified";
@@ -109,9 +118,11 @@ type EmailActions =
       toInfluencer: string;
       influencerLanguage: string;
       orderId: number;
+      receiverProfileId: number;
     }
   | {
       action: "newMessageOrderEmail";
+      receiverProfileId: number;
     }
   | {
       action: "newOrderEmail";
@@ -120,6 +131,7 @@ type EmailActions =
       toInfluencer: string;
       influencerLanguage: string;
       orderId: number;
+      receiverProfileId: number;
     }
   | {
       action: "toBuyerDeliveryIsTomorrowEmail";
@@ -128,6 +140,7 @@ type EmailActions =
       toBuyer: string;
       buyerLanguage: string;
       orderId: number;
+      receiverProfileId: number;
     }
   | {
       action: "toBuyerInfluencerIsRightEmail";
@@ -136,6 +149,7 @@ type EmailActions =
       toBuyer: string;
       buyerLanguage: string;
       orderId: number;
+      receiverProfileId: number;
     }
   | {
       action: "toBuyerInfluencerIsWrongEmail";
@@ -144,6 +158,7 @@ type EmailActions =
       toBuyer: string;
       buyerLanguage: string;
       orderId: number;
+      receiverProfileId: number;
     }
   | {
       action: "toBuyerOrderOnHoldEmail";
@@ -152,6 +167,7 @@ type EmailActions =
       toBuyer: string;
       buyerLanguage: string;
       orderId: number;
+      receiverProfileId: number;
     }
   | {
       action: "toInfluencerDeliveryIsTomorrowEmail";
@@ -160,6 +176,7 @@ type EmailActions =
       toInfluencerEmail: string;
       influencerLanguage: string;
       orderId: number;
+      receiverProfileId: number;
     }
   | {
       action: "toInfluencerInfluencerIsRightEmail";
@@ -168,6 +185,7 @@ type EmailActions =
       toInfluencerEmail: string;
       influencerLanguage: string;
       orderId: number;
+      receiverProfileId: number;
     }
   | {
       action: "toInfluencerInfluencerIsWrongEmail";
@@ -176,6 +194,7 @@ type EmailActions =
       toInfluencerEmail: string;
       influencerLanguage: string;
       orderId: number;
+      receiverProfileId: number;
     }
   | {
       action: "toInfluencerOnHoldtoPostponed";
@@ -184,6 +203,7 @@ type EmailActions =
       toInfluencerEmail: string;
       influencerLanguage: string;
       orderId: number;
+      receiverProfileId: number;
     }
   | {
       action: "toInfluencerOrderOnHoldEmail";
@@ -192,6 +212,7 @@ type EmailActions =
       toInfluencerEmail: string;
       influencerLanguage: string;
       orderId: number;
+      receiverProfileId: number;
     }
   | {
       action: "toInfluencerOrderOnHoldToRefund";
@@ -200,6 +221,7 @@ type EmailActions =
       toInfluencerEmail: string;
       influencerLanguage: string;
       orderId: number;
+      receiverProfileId: number;
     }
   | {
       action: "weReceivedContactEmail";
@@ -212,204 +234,274 @@ type EmailActions =
       language: string;
     };
 
-export const sendEmail = (params: { emailAction: EmailActions }) => {
-  if (params.emailAction.action === "buyerAddDetailsEmail") {
+const checkIfIsDisabled = async (profileId: number) => {
+  if (profileId === -1) return true;
+
+  const user = await prisma.user.findFirst({
+    where: {
+      profile: {
+        id: profileId,
+      },
+    },
+    select: {
+      disableEmailNotifications: true,
+    },
+  });
+
+  return user?.disableEmailNotifications;
+};
+
+export const sendEmail = async (emailAction: EmailActions) => {
+  if (emailAction.action === "buyerAddDetailsEmail") {
+    const isDisabled = await checkIfIsDisabled(emailAction.receiverProfileId);
+
+    if (isDisabled) return;
     buyerAddDetailsEmail({
-      buyerName: params.emailAction.buyerName,
-      from: params.emailAction.fromUs,
-      to: params.emailAction.toInfluencerEmail,
-      language: params.emailAction.influencerLanguage,
-      orderId: params.emailAction.orderId,
+      buyerName: emailAction.buyerName,
+      from: emailAction.fromUs,
+      to: emailAction.toInfluencerEmail,
+      language: emailAction.influencerLanguage,
+      orderId: emailAction.orderId,
     });
-  } else if (params.emailAction.action === "buyerConfirmedEmail") {
+  } else if (emailAction.action === "buyerConfirmedEmail") {
+    const isDisabled = await checkIfIsDisabled(emailAction.receiverProfileId);
+
+    if (isDisabled) return;
     buyerConfirmedEmail({
-      buyerName: params.emailAction.buyerName,
-      from: params.emailAction.fromUs,
-      to: params.emailAction.toInfluencerEmail,
-      language: params.emailAction.influencerLanguage,
-      orderId: params.emailAction.orderId,
+      buyerName: emailAction.buyerName,
+      from: emailAction.fromUs,
+      to: emailAction.toInfluencerEmail,
+      language: emailAction.influencerLanguage,
+      orderId: emailAction.orderId,
     });
-  } else if (
-    params.emailAction.action === "buyerOpensDisputeToInfluencerEmail"
-  ) {
+  } else if (emailAction.action === "buyerOpensDisputeToInfluencerEmail") {
+    const isDisabled = await checkIfIsDisabled(emailAction.receiverProfileId);
+
+    if (isDisabled) return;
     buyerOpensDisputeToInfluencerEmail({
-      buyerName: params.emailAction.buyerName,
-      from: params.emailAction.fromUs,
-      to: params.emailAction.toInfluencerEmail,
-      language: params.emailAction.influencerLanguage,
-      orderId: params.emailAction.orderId,
+      buyerName: emailAction.buyerName,
+      from: emailAction.fromUs,
+      to: emailAction.toInfluencerEmail,
+      language: emailAction.influencerLanguage,
+      orderId: emailAction.orderId,
     });
-  } else if (
-    params.emailAction.action === "buyerOpenedDisputeToOurInboxEmail"
-  ) {
+  } else if (emailAction.action === "buyerOpenedDisputeToOurInboxEmail") {
     buyerOpenedDisputeToOurInboxEmail({
-      buyerName: params.emailAction.buyerName,
-      buyerEmail: params.emailAction.buyerEmail,
-      from: params.emailAction.influencerMarktEmail,
-      to: params.emailAction.influencerMarktEmail,
-      issueMessage: params.emailAction.issueMessage,
-      orderId: params.emailAction.orderId.toString(),
+      buyerName: emailAction.buyerName,
+      buyerEmail: emailAction.buyerEmail,
+      from: emailAction.influencerMarktEmail,
+      to: emailAction.influencerMarktEmail,
+      issueMessage: emailAction.issueMessage,
+      orderId: emailAction.orderId.toString(),
     });
-  } else if (params.emailAction.action === "buyerOrderWasRectified") {
+  } else if (emailAction.action === "buyerOrderWasRectified") {
+    const isDisabled = await checkIfIsDisabled(emailAction.receiverProfileId);
+
+    if (isDisabled) return;
     buyerOrderWasRectified({
-      influencerName: params.emailAction.influencerName,
-      from: params.emailAction.fromUs,
-      to: params.emailAction.toBuyer,
-      language: params.emailAction.buyerLanguage,
-      orderId: params.emailAction.orderId,
+      influencerName: emailAction.influencerName,
+      from: emailAction.fromUs,
+      to: emailAction.toBuyer,
+      language: emailAction.buyerLanguage,
+      orderId: emailAction.orderId,
     });
-  } else if (params.emailAction.action === "buyerReviewedOrderEmail") {
+  } else if (emailAction.action === "buyerReviewedOrderEmail") {
+    const isDisabled = await checkIfIsDisabled(emailAction.receiverProfileId);
+
+    if (isDisabled) return;
     buyerReviewedOrderEmail({
-      buyerName: params.emailAction.buyerName,
-      from: params.emailAction.fromUs,
-      to: params.emailAction.toInfluencerEmail,
-      language: params.emailAction.influencerLanguage,
-      orderId: params.emailAction.orderId,
+      buyerName: emailAction.buyerName,
+      from: emailAction.fromUs,
+      to: emailAction.toInfluencerEmail,
+      language: emailAction.influencerLanguage,
+      orderId: emailAction.orderId,
     });
-  } else if (params.emailAction.action === "contactUsEmail") {
+  } else if (emailAction.action === "contactUsEmail") {
     contactUsEmail({
-      from: params.emailAction.influencerMarktEmail,
-      to: params.emailAction.influencerMarktEmail,
-      email: params.emailAction.email,
-      message: params.emailAction.message,
-      messageId: params.emailAction.messagedId,
-      name: params.emailAction.name,
-      reason: params.emailAction.reasonText,
+      from: emailAction.influencerMarktEmail,
+      to: emailAction.influencerMarktEmail,
+      email: emailAction.email,
+      message: emailAction.message,
+      messageId: emailAction.messageId,
+      name: emailAction.name,
+      reason: emailAction.reasonText,
     });
-  } else if (params.emailAction.action === "influencerAcceptedOrderEmail") {
+  } else if (emailAction.action === "influencerAcceptedOrderEmail") {
+    const isDisabled = await checkIfIsDisabled(emailAction.receiverProfileId);
+
+    if (isDisabled) return;
     influencerAcceptedOrderEmail({
-      influencerName: params.emailAction.influencerName,
-      from: params.emailAction.fromUs,
-      to: params.emailAction.toBuyer,
-      language: params.emailAction.buyerLanguage,
-      orderId: params.emailAction.orderId,
+      influencerName: emailAction.influencerName,
+      from: emailAction.fromUs,
+      to: emailAction.toBuyer,
+      language: emailAction.buyerLanguage,
+      orderId: emailAction.orderId,
     });
-  } else if (params.emailAction.action === "influencerDeliveredOrderEmail") {
+  } else if (emailAction.action === "influencerDeliveredOrderEmail") {
+    const isDisabled = await checkIfIsDisabled(emailAction.receiverProfileId);
+
+    if (isDisabled) return;
     influencerDeliveredOrderEmail({
-      influencerName: params.emailAction.influencerName,
-      from: params.emailAction.fromUs,
-      to: params.emailAction.toBuyer,
-      language: params.emailAction.buyerLanguage,
-      orderId: params.emailAction.orderId,
+      influencerName: emailAction.influencerName,
+      from: emailAction.fromUs,
+      to: emailAction.toBuyer,
+      language: emailAction.buyerLanguage,
+      orderId: emailAction.orderId,
     });
-  } else if (params.emailAction.action === "influencerMarktConfirmEmail") {
+  } else if (emailAction.action === "influencerMarktConfirmEmail") {
+    const isDisabled = await checkIfIsDisabled(emailAction.receiverProfileId);
+
+    if (isDisabled) return;
     influencerMarktConfirmEmail({
-      from: params.emailAction.fromUs,
-      to: params.emailAction.to,
-      language: params.emailAction.language,
-      orderId: params.emailAction.orderId,
+      from: emailAction.fromUs,
+      to: emailAction.to,
+      language: emailAction.language,
+      orderId: emailAction.orderId,
     });
-  } else if (params.emailAction.action === "influencerOrderWasRectified") {
+  } else if (emailAction.action === "influencerOrderWasRectified") {
+    const isDisabled = await checkIfIsDisabled(emailAction.receiverProfileId);
+
+    if (isDisabled) return;
     influencerOrderWasRectified({
-      from: params.emailAction.fromUs,
-      to: params.emailAction.toInfluencer,
-      language: params.emailAction.influencerLanguage,
-      orderId: params.emailAction.orderId,
+      from: emailAction.fromUs,
+      to: emailAction.toInfluencer,
+      language: emailAction.influencerLanguage,
+      orderId: emailAction.orderId,
     });
-  } else if (params.emailAction.action === "newMessageOrderEmail") {
-  } else if (params.emailAction.action === "newOrderEmail") {
+  } else if (emailAction.action === "newMessageOrderEmail") {
+    const isDisabled = await checkIfIsDisabled(emailAction.receiverProfileId);
+
+    if (isDisabled) return;
+  } else if (emailAction.action === "newOrderEmail") {
+    const isDisabled = await checkIfIsDisabled(emailAction.receiverProfileId);
+
+    if (isDisabled) return;
     newOrderEmail({
-      buyer: params.emailAction.buyerName,
-      from: params.emailAction.fromUs,
-      to: params.emailAction.toInfluencer,
-      language: params.emailAction.influencerLanguage,
-      orderId: params.emailAction.orderId,
+      buyer: emailAction.buyerName,
+      from: emailAction.fromUs,
+      to: emailAction.toInfluencer,
+      language: emailAction.influencerLanguage,
+      orderId: emailAction.orderId,
     });
-  } else if (params.emailAction.action === "toBuyerDeliveryIsTomorrowEmail") {
+  } else if (emailAction.action === "toBuyerDeliveryIsTomorrowEmail") {
+    const isDisabled = await checkIfIsDisabled(emailAction.receiverProfileId);
+
+    if (isDisabled) return;
     toBuyerDeliveryIsTomorrowEmail({
-      influencerName: params.emailAction.influencerName,
-      from: params.emailAction.fromUs,
-      to: params.emailAction.toBuyer,
-      language: params.emailAction.buyerLanguage,
-      orderId: params.emailAction.orderId,
+      influencerName: emailAction.influencerName,
+      from: emailAction.fromUs,
+      to: emailAction.toBuyer,
+      language: emailAction.buyerLanguage,
+      orderId: emailAction.orderId,
     });
-  } else if (params.emailAction.action === "toBuyerInfluencerIsRightEmail") {
+  } else if (emailAction.action === "toBuyerInfluencerIsRightEmail") {
+    const isDisabled = await checkIfIsDisabled(emailAction.receiverProfileId);
+
+    if (isDisabled) return;
     toBuyerInfluencerIsRightEmail({
-      influencerName: params.emailAction.influencerName,
-      from: params.emailAction.fromUs,
-      to: params.emailAction.toBuyer,
-      language: params.emailAction.buyerLanguage,
-      orderId: params.emailAction.orderId,
+      influencerName: emailAction.influencerName,
+      from: emailAction.fromUs,
+      to: emailAction.toBuyer,
+      language: emailAction.buyerLanguage,
+      orderId: emailAction.orderId,
     });
-  } else if (params.emailAction.action === "toBuyerInfluencerIsWrongEmail") {
+  } else if (emailAction.action === "toBuyerInfluencerIsWrongEmail") {
+    const isDisabled = await checkIfIsDisabled(emailAction.receiverProfileId);
+
+    if (isDisabled) return;
     toBuyerInfluencerIsWrongEmail({
-      influencerName: params.emailAction.influencerName,
-      from: params.emailAction.fromUs,
-      to: params.emailAction.toBuyer,
-      language: params.emailAction.buyerLanguage,
-      orderId: params.emailAction.orderId,
+      influencerName: emailAction.influencerName,
+      from: emailAction.fromUs,
+      to: emailAction.toBuyer,
+      language: emailAction.buyerLanguage,
+      orderId: emailAction.orderId,
     });
-  } else if (params.emailAction.action === "toBuyerOrderOnHoldEmail") {
+  } else if (emailAction.action === "toBuyerOrderOnHoldEmail") {
+    const isDisabled = await checkIfIsDisabled(emailAction.receiverProfileId);
+
+    if (isDisabled) return;
     toBuyerOrderOnHoldEmail({
-      influencerName: params.emailAction.influencerName,
-      from: params.emailAction.fromUs,
-      to: params.emailAction.toBuyer,
-      language: params.emailAction.buyerLanguage,
-      orderId: params.emailAction.orderId,
+      influencerName: emailAction.influencerName,
+      from: emailAction.fromUs,
+      to: emailAction.toBuyer,
+      language: emailAction.buyerLanguage,
+      orderId: emailAction.orderId,
     });
-  } else if (
-    params.emailAction.action === "toInfluencerDeliveryIsTomorrowEmail"
-  ) {
+  } else if (emailAction.action === "toInfluencerDeliveryIsTomorrowEmail") {
+    const isDisabled = await checkIfIsDisabled(emailAction.receiverProfileId);
+
+    if (isDisabled) return;
     toInfluencerDeliveryIsTomorrowEmail({
-      buyerName: params.emailAction.buyerName,
-      from: params.emailAction.fromUs,
-      to: params.emailAction.toInfluencerEmail,
-      language: params.emailAction.influencerLanguage,
-      orderId: params.emailAction.orderId,
+      buyerName: emailAction.buyerName,
+      from: emailAction.fromUs,
+      to: emailAction.toInfluencerEmail,
+      language: emailAction.influencerLanguage,
+      orderId: emailAction.orderId,
     });
-  } else if (
-    params.emailAction.action === "toInfluencerInfluencerIsRightEmail"
-  ) {
+  } else if (emailAction.action === "toInfluencerInfluencerIsRightEmail") {
+    const isDisabled = await checkIfIsDisabled(emailAction.receiverProfileId);
+
+    if (isDisabled) return;
     toInfluencerInfluencerIsRightEmail({
-      buyerName: params.emailAction.buyerName,
-      from: params.emailAction.fromUs,
-      to: params.emailAction.toInfluencerEmail,
-      language: params.emailAction.influencerLanguage,
-      orderId: params.emailAction.orderId,
+      buyerName: emailAction.buyerName,
+      from: emailAction.fromUs,
+      to: emailAction.toInfluencerEmail,
+      language: emailAction.influencerLanguage,
+      orderId: emailAction.orderId,
     });
-  } else if (
-    params.emailAction.action === "toInfluencerInfluencerIsWrongEmail"
-  ) {
+  } else if (emailAction.action === "toInfluencerInfluencerIsWrongEmail") {
+    const isDisabled = await checkIfIsDisabled(emailAction.receiverProfileId);
+
+    if (isDisabled) return;
     toInfluencerInfluencerIsWrongEmail({
-      buyerName: params.emailAction.buyerName,
-      from: params.emailAction.fromUs,
-      to: params.emailAction.toInfluencerEmail,
-      language: params.emailAction.influencerLanguage,
-      orderId: params.emailAction.orderId,
+      buyerName: emailAction.buyerName,
+      from: emailAction.fromUs,
+      to: emailAction.toInfluencerEmail,
+      language: emailAction.influencerLanguage,
+      orderId: emailAction.orderId,
     });
-  } else if (params.emailAction.action === "toInfluencerOnHoldtoPostponed") {
+  } else if (emailAction.action === "toInfluencerOnHoldtoPostponed") {
+    const isDisabled = await checkIfIsDisabled(emailAction.receiverProfileId);
+
+    if (isDisabled) return;
     toInfluencerOnHoldtoPostponed({
-      buyerName: params.emailAction.buyerName,
-      from: params.emailAction.fromUs,
-      to: params.emailAction.toInfluencerEmail,
-      language: params.emailAction.influencerLanguage,
-      orderId: params.emailAction.orderId,
+      buyerName: emailAction.buyerName,
+      from: emailAction.fromUs,
+      to: emailAction.toInfluencerEmail,
+      language: emailAction.influencerLanguage,
+      orderId: emailAction.orderId,
     });
-  } else if (params.emailAction.action === "toInfluencerOrderOnHoldEmail") {
+  } else if (emailAction.action === "toInfluencerOrderOnHoldEmail") {
+    const isDisabled = await checkIfIsDisabled(emailAction.receiverProfileId);
+
+    if (isDisabled) return;
     toInfluencerOrderOnHoldEmail({
-      buyerName: params.emailAction.buyerName,
-      from: params.emailAction.fromUs,
-      to: params.emailAction.toInfluencerEmail,
-      language: params.emailAction.influencerLanguage,
-      orderId: params.emailAction.orderId,
+      buyerName: emailAction.buyerName,
+      from: emailAction.fromUs,
+      to: emailAction.toInfluencerEmail,
+      language: emailAction.influencerLanguage,
+      orderId: emailAction.orderId,
     });
-  } else if (params.emailAction.action === "toInfluencerOrderOnHoldToRefund") {
+  } else if (emailAction.action === "toInfluencerOrderOnHoldToRefund") {
+    const isDisabled = await checkIfIsDisabled(emailAction.receiverProfileId);
+
+    if (isDisabled) return;
     toInfluencerOrderOnHoldToRefund({
-      buyerName: params.emailAction.buyerName,
-      from: params.emailAction.fromUs,
-      to: params.emailAction.toInfluencerEmail,
-      language: params.emailAction.influencerLanguage,
-      orderId: params.emailAction.orderId,
+      buyerName: emailAction.buyerName,
+      from: emailAction.fromUs,
+      to: emailAction.toInfluencerEmail,
+      language: emailAction.influencerLanguage,
+      orderId: emailAction.orderId,
     });
-  } else if (params.emailAction.action === "weReceivedContactEmail") {
+  } else if (emailAction.action === "weReceivedContactEmail") {
     weReceivedContactEmail({
-      from: params.emailAction.fromUs,
-      to: params.emailAction.email,
-      email: params.emailAction.email,
-      message: params.emailAction.message,
-      name: params.emailAction.name,
-      reason: params.emailAction.reasonText,
-      language: params.emailAction.language,
+      from: emailAction.fromUs,
+      to: emailAction.email,
+      email: emailAction.email,
+      message: emailAction.message,
+      name: emailAction.name,
+      reason: emailAction.reasonText,
+      language: emailAction.language,
     });
   }
 };

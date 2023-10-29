@@ -1100,15 +1100,15 @@
     },
 
     "settings": {
-      "generalSettings": "General Settings",
+      "generalSettings": "General settings",
       "updateUsername": "Update Username",
       "pageNameAvailable": "Username is available",
       "pageNameUnavailable": "Username is unavailable",
       "pageNameIsYours": "That is your current username",
       "save": "Save",
-      "notificationsSettings": "Notifications Settings",
-      "disableEmailNotifications": "Disable Email Notifications",
-      "disableAppNotifications": "Disable App Notifications",
+      "notificationsSettings": "Notifications settings",
+      "disableEmailNotifications": "Disable email notifications",
+      "disableAppNotifications": "Disable app notifications",
       "updateNotificationsSuccess": "Notifications settings updated successfully"
     },
 

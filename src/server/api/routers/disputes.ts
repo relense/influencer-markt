@@ -1,6 +1,6 @@
 import { z } from "zod";
 import { createTRPCRouter, protectedProcedure } from "../trpc";
-import { buyerOpenedDisputeToOurInboxEmail } from "../../../emailTemplates/buyerOpensDisputeToOurInboxEmail/buyerOpensDisputeToOurInboxEmail";
+import { sendEmail } from "../../../services/email.service";
 
 export const DisputesRouter = createTRPCRouter({
   createDispute: protectedProcedure
@@ -68,13 +68,13 @@ export const DisputesRouter = createTRPCRouter({
           });
         }
 
-        buyerOpenedDisputeToOurInboxEmail({
+        await sendEmail({
+          action: "buyerOpenedDisputeToOurInboxEmail",
           buyerName: order.buyer?.name || "",
           buyerEmail: order.buyer?.user.email || "",
-          from: process.env.NEXT_PUBLIC_EMAIL_FROM || "",
-          to: process.env.NEXT_PUBLIC_EMAIL_FROM || "",
+          influencerMarktEmail: process.env.NEXT_PUBLIC_EMAIL_FROM || "",
           issueMessage: input.disputeMessage,
-          orderId: input.orderId.toString(),
+          orderId: input.orderId,
         });
 
         return dispute;

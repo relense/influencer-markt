@@ -1,7 +1,6 @@
 import { z } from "zod";
 import { createTRPCRouter, protectedProcedure, publicProcedure } from "../trpc";
-import { contactUsEmail } from "../../../emailTemplates/contactUsEmail/contactUsEmail";
-import { weReceivedContactEmail } from "../../../emailTemplates/weReceivedContactEmail/weReceivedContactEmail";
+import { sendEmail } from "../../../services/email.service";
 
 export const ContactMessagesRouter = createTRPCRouter({
   createContactMessage: publicProcedure
@@ -34,25 +33,26 @@ export const ContactMessagesRouter = createTRPCRouter({
 
       //Mail sent to user confirming we received the issue request
       if (process.env.NEXT_PUBLIC_EMAIL_FROM) {
-        weReceivedContactEmail({
-          from: process.env.NEXT_PUBLIC_EMAIL_FROM,
+        await sendEmail({
+          action: "weReceivedContactEmail",
+          fromUs: process.env.NEXT_PUBLIC_EMAIL_FROM,
           to: input.email,
           email: input.email,
           message: input.message,
           name: input.name,
-          reason: reasonText,
+          reasonText: reasonText,
           language: input.language,
         });
 
         //Email to our inbox
-        contactUsEmail({
-          from: process.env.NEXT_PUBLIC_EMAIL_FROM,
-          to: process.env.NEXT_PUBLIC_EMAIL_FROM,
+        await sendEmail({
+          action: "contactUsEmail",
+          influencerMarktEmail: process.env.NEXT_PUBLIC_EMAIL_FROM,
           email: input.email,
           message: input.message,
           messageId: message.id.toString(),
           name: input.name,
-          reason: reasonText,
+          reasonText: reasonText,
         });
       }
     }),

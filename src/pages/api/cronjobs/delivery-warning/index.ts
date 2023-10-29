@@ -1,8 +1,7 @@
 /** The point of this cron job is to warn the influencer and the buyer that the delivery is tomorrow */
 import type { NextApiRequest, NextApiResponse } from "next";
 import { prisma } from "../../../../server/db";
-import { toBuyerDeliveryIsTomorrowEmail } from "../../../../emailTemplates/toBuyerDeliveryIsTomorrowEmail/toBuyerDeliveryIsTomorrowEmail";
-import { toInfluencerDeliveryIsTomorrowEmail } from "../../../../emailTemplates/toInfluencerDeliveryIsTomorrowEmail/toInfluencerDeliveryIsTomorrowEmail";
+import { sendEmail } from "../../../../services/email.service";
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const sig = req.headers["signature"]!;
@@ -53,24 +52,28 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       });
 
       if (orders) {
-        orders.forEach((order) => {
+        for (const order of orders) {
           //send influencer email
-          toInfluencerDeliveryIsTomorrowEmail({
+          await sendEmail({
+            action: "toInfluencerDeliveryIsTomorrowEmail",
             buyerName: order.buyer?.name || "",
-            from: process.env.NEXT_PUBLIC_EMAIL_FROM || "",
-            to: order.influencer?.user.email || "",
-            language: order.influencer?.country?.languageCode || "en",
+            fromUs: process.env.NEXT_PUBLIC_EMAIL_FROM || "",
+            toInfluencerEmail: order.influencer?.user.email || "",
+            influencerLanguage: order.influencer?.country?.languageCode || "en",
             orderId: order.id,
+            receiverProfileId: order?.influencer?.id || -1,
           });
           //send buyer email
-          toBuyerDeliveryIsTomorrowEmail({
+          await sendEmail({
+            action: "toBuyerDeliveryIsTomorrowEmail",
             influencerName: order.influencer?.name || "",
-            from: process.env.NEXT_PUBLIC_EMAIL_FROM || "",
-            to: order.buyer?.user.email || "",
-            language: order.buyer?.country?.languageCode || "en",
+            fromUs: process.env.NEXT_PUBLIC_EMAIL_FROM || "",
+            toBuyer: order.buyer?.user.email || "",
+            buyerLanguage: order.buyer?.country?.languageCode || "en",
             orderId: order.id,
+            receiverProfileId: order?.buyer?.id || -1,
           });
-        });
+        }
       }
 
       return res.status(200).send({

@@ -6,8 +6,8 @@ import Cors from "micro-cors";
 import { stripe } from "../../../server/stripe";
 import { prisma } from "../../../server/db";
 import { createNotification } from "../../../server/api/routers/notifications";
-import { buyerAddDetailsEmail } from "../../../emailTemplates/buyerAddDetailsEmail/buyerAddDetailsEmail";
 import { createInvoiceCall } from "../../../server/api/routers/invoices";
+import { sendEmail } from "../../../services/email.service";
 
 const cors = Cors({
   allowMethods: ["POST", "HEAD"],
@@ -114,12 +114,15 @@ const webhookHandler = async (req: NextApiRequest, res: NextApiResponse) => {
             });
 
             if (process.env.NEXT_PUBLIC_EMAIL_FROM) {
-              buyerAddDetailsEmail({
+              await sendEmail({
+                action: "buyerAddDetailsEmail",
                 buyerName: order.buyer?.name || "",
-                from: process.env.NEXT_PUBLIC_EMAIL_FROM,
-                to: order.influencer?.user.email || "",
-                language: order.influencer?.country?.languageCode || "en",
+                fromUs: process.env.NEXT_PUBLIC_EMAIL_FROM,
+                toInfluencerEmail: order.influencer?.user.email || "",
+                influencerLanguage:
+                  order.influencer?.country?.languageCode || "en",
                 orderId: order.id,
+                receiverProfileId: order.influencerId || -1,
               });
             }
           }

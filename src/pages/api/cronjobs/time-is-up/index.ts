@@ -3,9 +3,9 @@ import type { NextApiRequest, NextApiResponse } from "next";
 import dayjs from "dayjs";
 
 import { prisma } from "../../../../server/db";
-import { influencerMarktConfirmEmail } from "../../../../emailTemplates/influencerMarktConfirmEmail/influencerMarktConfirmEmail";
 import { createNotification } from "../../../../server/api/routers/notifications";
 import { createPayout } from "../../../../server/api/routers/payouts";
+import { sendEmail } from "../../../../services/email.service";
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const sig = req.headers["signature"];
@@ -57,18 +57,22 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
           },
         });
 
-        influencerMarktConfirmEmail({
-          from: process.env.NEXT_PUBLIC_EMAIL_FROM || "",
+        await sendEmail({
+          action: "influencerMarktConfirmEmail",
+          fromUs: process.env.NEXT_PUBLIC_EMAIL_FROM || "",
           to: updatedOrder.influencer?.user.email || "",
           language: updatedOrder.influencer?.country?.languageCode || "en",
           orderId: updatedOrder.id,
+          receiverProfileId: updatedOrder.influencerId || -1,
         });
 
-        influencerMarktConfirmEmail({
-          from: process.env.NEXT_PUBLIC_EMAIL_FROM || "",
+        await sendEmail({
+          action: "influencerMarktConfirmEmail",
+          fromUs: process.env.NEXT_PUBLIC_EMAIL_FROM || "",
           to: updatedOrder.buyer?.user.email || "",
           language: updatedOrder.buyer?.country?.languageCode || "en",
           orderId: updatedOrder.id,
+          receiverProfileId: updatedOrder.buyerId || -1,
         });
 
         await createNotification({

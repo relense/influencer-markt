@@ -1,22 +1,10 @@
 import { z } from "zod";
+
 import { createTRPCRouter, protectedProcedure, publicProcedure } from "../trpc";
-import { newOrderEmail } from "../../../emailTemplates/newOrderEmail/newOrderEmail";
-import { influencerAcceptedOrderEmail } from "../../../emailTemplates/influencerAcceptedOrderEmail/influencerAcceptedOrderEmail";
-import { buyerConfirmedEmail } from "../../../emailTemplates/buyerConfirmOrderEmail/buyerConfirmOrderEmail";
-import { influencerDeliveredOrderEmail } from "../../../emailTemplates/influencerDeliveredEmail/influencerDeliveredEmail";
-import { buyerReviewedOrderEmail } from "../../../emailTemplates/buyerReviewedOrderEmail/buyerReviewedOrderEmail";
-import { buyerOpensDisputeToInfluencerEmail } from "../../../emailTemplates/buyerOpensDisputeToInfluencerEmail/buyerOpensDisputeToInfluencerEmail";
 import { helper } from "../../../utils/helper";
-import { toBuyerInfluencerIsWrongEmail } from "../../../emailTemplates/toBuyerInfluencerIsWrongEmail/toBuyerInfluencerIsWrongEmail";
-import { toInfluencerInfluencerIsWrongEmail } from "../../../emailTemplates/toInfluencerInfluencerIsWrongEmail/toInfluencerInfluencerIsWrongEmail";
-import { toBuyerInfluencerIsRightEmail } from "../../../emailTemplates/toBuyerInfluencerIsRightEmail/toBuyerInfluencerIsRightEmail";
-import { toInfluencerInfluencerIsRightEmail } from "../../../emailTemplates/toInfluencerInfluencerIsRightEmail/toInfluencerInfluencerIsRightEmail";
-import { buyerOrderWasRectified } from "../../../emailTemplates/buyerOrderWasRectified/buyerOrderWasRectified";
-import { influencerOrderWasRectified } from "../../../emailTemplates/influencerOrderWasRectified/influencerOrderWasRectified";
-import { toInfluencerOnHoldtoPostponed } from "../../../emailTemplates/toInfluencerOnHoldtoPostponed/toInfluencerOnHoldtoPostponed";
-import { toInfluencerOrderOnHoldToRefund } from "../../../emailTemplates/toInfluencerOrderOnHoldToRefund/toInfluencerOrderOnHoldToRefund";
 import { createInvoiceCall } from "./invoices";
 import { spendCredits } from "./credits";
+import { sendEmail } from "../../../services/email.service";
 
 export const OrdersRouter = createTRPCRouter({
   createOrder: protectedProcedure
@@ -116,12 +104,14 @@ export const OrdersRouter = createTRPCRouter({
 
         //Email influencer to let him know he has an order
         if (process.env.NEXT_PUBLIC_EMAIL_FROM) {
-          newOrderEmail({
-            buyer: profile?.name,
-            from: process.env.NEXT_PUBLIC_EMAIL_FROM,
-            to: influencerProfile?.user.email || "",
-            language: order.influencer?.country?.languageCode || "en",
+          await sendEmail({
+            action: "newOrderEmail",
+            buyerName: profile?.name,
+            fromUs: process.env.NEXT_PUBLIC_EMAIL_FROM,
+            toInfluencer: influencerProfile?.user.email || "",
+            influencerLanguage: order.influencer?.country?.languageCode || "en",
             orderId: order.id,
+            receiverProfileId: influencerProfile?.id || -1,
           });
         }
 
@@ -212,12 +202,14 @@ export const OrdersRouter = createTRPCRouter({
         });
 
         if (process.env.NEXT_PUBLIC_EMAIL_FROM) {
-          newOrderEmail({
-            buyer: profile?.name,
-            from: process.env.NEXT_PUBLIC_EMAIL_FROM,
-            to: order.influencer?.user.email || "",
-            language: order.influencer?.country?.languageCode || "en",
+          await sendEmail({
+            action: "newOrderEmail",
+            buyerName: profile?.name,
+            fromUs: process.env.NEXT_PUBLIC_EMAIL_FROM,
+            toInfluencer: order.influencer?.user.email || "",
+            influencerLanguage: order.influencer?.country?.languageCode || "en",
             orderId: order.id,
+            receiverProfileId: order.influencerId || -1,
           });
         }
 
@@ -668,12 +660,14 @@ export const OrdersRouter = createTRPCRouter({
       });
 
       if (process.env.NEXT_PUBLIC_EMAIL_FROM) {
-        influencerAcceptedOrderEmail({
+        await sendEmail({
+          action: "influencerAcceptedOrderEmail",
           influencerName: order.influencer?.name || "",
-          from: process.env.NEXT_PUBLIC_EMAIL_FROM,
-          to: order.buyer?.user.email || "",
-          language: order.buyer?.country?.languageCode || "en",
+          fromUs: process.env.NEXT_PUBLIC_EMAIL_FROM,
+          toBuyer: order.buyer?.user.email || "",
+          buyerLanguage: order.buyer?.country?.languageCode || "en",
           orderId: order.id,
+          receiverProfileId: order.buyerId || -1,
         });
       }
 
@@ -736,36 +730,47 @@ export const OrdersRouter = createTRPCRouter({
 
         if (process.env.NEXT_PUBLIC_EMAIL_FROM) {
           if (input.statusId === 5) {
-            influencerDeliveredOrderEmail({
+            await sendEmail({
+              action: "influencerDeliveredOrderEmail",
               influencerName: order.influencer?.name || "",
-              from: process.env.NEXT_PUBLIC_EMAIL_FROM,
-              to: order.buyer?.user.email || "",
-              language: order.buyer?.country?.languageCode || "en",
+              fromUs: process.env.NEXT_PUBLIC_EMAIL_FROM,
+              toBuyer: order.buyer?.user.email || "",
+              buyerLanguage: order.buyer?.country?.languageCode || "en",
               orderId: order.id,
+              receiverProfileId: order.buyerId || -1,
             });
           } else if (input.statusId === 6) {
-            buyerConfirmedEmail({
+            await sendEmail({
+              action: "buyerConfirmedEmail",
               buyerName: order.buyer?.name || "",
-              from: process.env.NEXT_PUBLIC_EMAIL_FROM,
-              to: order.influencer?.user.email || "",
-              language: order.influencer?.country?.languageCode || "en",
+              fromUs: process.env.NEXT_PUBLIC_EMAIL_FROM,
+              toInfluencerEmail: order.influencer?.user.email || "",
+              influencerLanguage:
+                order.influencer?.country?.languageCode || "en",
               orderId: order.id,
+              receiverProfileId: order.influencerId || -1,
             });
           } else if (input.statusId === 8) {
-            buyerReviewedOrderEmail({
+            await sendEmail({
+              action: "buyerReviewedOrderEmail",
               buyerName: order.buyer?.name || "",
-              from: process.env.NEXT_PUBLIC_EMAIL_FROM,
-              to: order.influencer?.user.email || "",
-              language: order.influencer?.country?.languageCode || "en",
+              fromUs: process.env.NEXT_PUBLIC_EMAIL_FROM,
+              toInfluencerEmail: order.influencer?.user.email || "",
+              influencerLanguage:
+                order.influencer?.country?.languageCode || "en",
               orderId: order.id,
+              receiverProfileId: order.influencerId || -1,
             });
           } else if (input.statusId === 9) {
-            buyerOpensDisputeToInfluencerEmail({
+            await sendEmail({
+              action: "buyerOpensDisputeToInfluencerEmail",
               buyerName: order.buyer?.name || "",
-              from: process.env.NEXT_PUBLIC_EMAIL_FROM,
-              to: order.influencer?.user.email || "",
-              language: order.influencer?.country?.languageCode || "en",
+              fromUs: process.env.NEXT_PUBLIC_EMAIL_FROM,
+              toInfluencerEmail: order.influencer?.user.email || "",
+              influencerLanguage:
+                order.influencer?.country?.languageCode || "en",
               orderId: order.id,
+              receiverProfileId: order.influencerId || -1,
             });
           }
         }
@@ -821,19 +826,23 @@ export const OrdersRouter = createTRPCRouter({
       });
 
       if (process.env.NEXT_PUBLIC_EMAIL_FROM) {
-        influencerOrderWasRectified({
-          from: process.env.NEXT_PUBLIC_EMAIL_FROM,
-          to: order.influencer?.user.email || "",
-          language: order.influencer?.country?.languageCode || "en",
+        await sendEmail({
+          action: "influencerOrderWasRectified",
+          fromUs: process.env.NEXT_PUBLIC_EMAIL_FROM,
+          toInfluencer: order.influencer?.user.email || "",
+          influencerLanguage: order.influencer?.country?.languageCode || "en",
           orderId: order.id,
+          receiverProfileId: order.influencerId || -1,
         });
 
-        buyerOrderWasRectified({
+        await sendEmail({
+          action: "buyerOrderWasRectified",
           influencerName: order.influencer?.name || "",
-          from: process.env.NEXT_PUBLIC_EMAIL_FROM,
-          to: order.buyer?.user.email || "",
-          language: order.buyer?.country?.languageCode || "en",
+          fromUs: process.env.NEXT_PUBLIC_EMAIL_FROM,
+          toBuyer: order.buyer?.user.email || "",
+          buyerLanguage: order.buyer?.country?.languageCode || "en",
           orderId: order.id,
+          receiverProfileId: order.buyerId || -1,
         });
       }
 
@@ -879,6 +888,7 @@ export const OrdersRouter = createTRPCRouter({
           },
           influencer: {
             select: {
+              id: true,
               country: true,
               user: {
                 select: {
@@ -890,12 +900,14 @@ export const OrdersRouter = createTRPCRouter({
         },
       });
 
-      toInfluencerOnHoldtoPostponed({
+      await sendEmail({
+        action: "toInfluencerOnHoldtoPostponed",
         buyerName: order.buyer?.name || "",
-        from: process.env.NEXT_PUBLIC_EMAIL_FROM || "",
-        to: order.influencer?.user.email || "",
-        language: order.influencer?.country?.languageCode || "en",
+        fromUs: process.env.NEXT_PUBLIC_EMAIL_FROM || "",
+        toInfluencerEmail: order.influencer?.user.email || "",
+        influencerLanguage: order.influencer?.country?.languageCode || "en",
         orderId: order.id,
+        receiverProfileId: order?.influencer?.id || -1,
       });
 
       return order;
@@ -936,12 +948,14 @@ export const OrdersRouter = createTRPCRouter({
         },
       });
 
-      toInfluencerOrderOnHoldToRefund({
+      await sendEmail({
+        action: "toInfluencerOrderOnHoldToRefund",
         buyerName: order.buyer?.name || "",
-        from: process.env.NEXT_PUBLIC_EMAIL_FROM || "",
-        to: order.influencer?.user.email || "",
-        language: order.influencer?.country?.languageCode || "en",
+        fromUs: process.env.NEXT_PUBLIC_EMAIL_FROM || "",
+        toInfluencerEmail: order.influencer?.user.email || "",
+        influencerLanguage: order.influencer?.country?.languageCode || "en",
         orderId: order.id,
+        receiverProfileId: order.influencerId || -1,
       });
 
       return order;
@@ -1050,20 +1064,24 @@ export const OrdersRouter = createTRPCRouter({
       });
 
       //influencer email
-      toInfluencerInfluencerIsRightEmail({
-        orderId: input.orderId,
-        to: order.influencer?.user.email || "",
-        from: process.env.NEXT_PUBLIC_EMAIL_FROM || "",
-        language: order.influencer?.country?.languageCode || "en",
+      await sendEmail({
+        action: "toInfluencerInfluencerIsRightEmail",
         buyerName: order.buyer?.name || "",
+        fromUs: process.env.NEXT_PUBLIC_EMAIL_FROM || "",
+        toInfluencerEmail: order.influencer?.user.email || "",
+        influencerLanguage: order.influencer?.country?.languageCode || "en",
+        orderId: input.orderId,
+        receiverProfileId: order.influencerId || -1,
       });
       //buyer email
-      toBuyerInfluencerIsRightEmail({
-        orderId: input.orderId,
-        to: order.buyer?.user.email || "",
-        from: process.env.NEXT_PUBLIC_EMAIL_FROM || "",
-        language: order.buyer?.country?.languageCode || "en",
+      await sendEmail({
+        action: "toBuyerInfluencerIsRightEmail",
         influencerName: order.influencer?.name || "",
+        fromUs: process.env.NEXT_PUBLIC_EMAIL_FROM || "",
+        toBuyer: order.buyer?.user.email || "",
+        buyerLanguage: order.buyer?.country?.languageCode || "en",
+        orderId: input.orderId,
+        receiverProfileId: order.buyerId || -1,
       });
 
       return order;
@@ -1114,20 +1132,24 @@ export const OrdersRouter = createTRPCRouter({
       });
 
       //influencer email
-      toInfluencerInfluencerIsWrongEmail({
-        orderId: input.orderId,
-        to: order.influencer?.user.email || "",
-        from: process.env.NEXT_PUBLIC_EMAIL_FROM || "",
-        language: order.influencer?.country?.languageCode || "en",
+      await sendEmail({
+        action: "toInfluencerInfluencerIsWrongEmail",
         buyerName: order.buyer?.name || "",
+        fromUs: process.env.NEXT_PUBLIC_EMAIL_FROM || "",
+        toInfluencerEmail: order.influencer?.user.email || "",
+        influencerLanguage: order.influencer?.country?.languageCode || "en",
+        orderId: input.orderId,
+        receiverProfileId: order.influencerId || -1,
       });
       //buyer email
-      toBuyerInfluencerIsWrongEmail({
-        orderId: input.orderId,
-        to: order.buyer?.user.email || "",
-        from: process.env.NEXT_PUBLIC_EMAIL_FROM || "",
-        language: order.buyer?.country?.languageCode || "en",
+      await sendEmail({
+        action: "toBuyerInfluencerIsWrongEmail",
         influencerName: order.influencer?.name || "",
+        fromUs: process.env.NEXT_PUBLIC_EMAIL_FROM || "",
+        toBuyer: order.buyer?.user.email || "",
+        buyerLanguage: order.buyer?.country?.languageCode || "en",
+        orderId: input.orderId,
+        receiverProfileId: order.buyerId || -1,
       });
 
       return order;
