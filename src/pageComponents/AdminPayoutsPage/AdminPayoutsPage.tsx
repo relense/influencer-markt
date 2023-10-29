@@ -3,36 +3,51 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { api } from "~/utils/api";
+import Link from "next/link";
+import { Controller, useForm } from "react-hook-form";
+
 import { Button } from "../../components/Button";
-import { LoadingSpinner } from "../../components/LoadingSpinner";
 import { helper } from "../../utils/helper";
+import { LoadingSpinner } from "../../components/LoadingSpinner";
+import { CustomSelect } from "../../components/CustomSelect";
+import { type Option } from "../../utils/globalTypes";
+
+type PayoutsInvoiceSearch = {
+  payoutsInvoiceStatus: Option;
+};
 
 type PayoutsInvoice = {
   id: string;
   payoutValue: number;
   invoiceUploadedAt: string | undefined;
   verficator: string;
+  influencerUsername: string;
+  influencerName: string;
+  status: string;
 };
 
 const AdminPayoutsPage = () => {
-  const { i18n } = useTranslation();
-  const ctx = api.useContext();
+  const { t, i18n } = useTranslation();
 
   const [payoutsInvoice, setPayoutsInvoiceData] = useState<PayoutsInvoice[]>(
     []
   );
   const [payoutsInvoiceCount, setPayoutsInvoiceCount] = useState<number>(0);
   const [payoutsInvoiceCursor, setPayoutsInvoiceCursor] = useState<string>("");
-  const [tab, setTab] = useState<string>("open");
-  const [payoutInvoiceStatusId, setPayoutInvoiceStatusId] = useState<number>(1);
 
-  const {
-    data: payoutsInvoiceData,
-    isLoading: isLoadingPayoutsInvoice,
-    refetch: refetchPayoutsInvoice,
-  } = api.payoutInvoices.getPayoutsInvoice.useQuery({
-    payoutInvoiceStatusId: payoutInvoiceStatusId,
+  const { data: payoutsInvoiceStatusData } =
+    api.allRoutes.getAllPayoutsInvoiceStatus.useQuery();
+
+  const { register, watch, control, setValue } = useForm<PayoutsInvoiceSearch>({
+    defaultValues: {
+      payoutsInvoiceStatus: { id: -1, name: "all" },
+    },
   });
+
+  const { data: payoutsInvoiceData, isLoading: isLoadingPayoutsInvoice } =
+    api.payoutInvoices.getPayoutsInvoice.useQuery({
+      payoutInvoiceStatusId: watch("payoutsInvoiceStatus").id,
+    });
 
   const {
     data: payoutsInvoiceDataCursor,
@@ -41,17 +56,13 @@ const AdminPayoutsPage = () => {
   } = api.payoutInvoices.getPayoutsInvoiceCursor.useQuery(
     {
       cursor: payoutsInvoiceCursor,
-      payoutInvoiceStatusId: payoutInvoiceStatusId,
+      payoutInvoiceStatusId: watch("payoutsInvoiceStatus").id,
     },
     {
       cacheTime: 0,
       enabled: false,
     }
   );
-
-  useEffect(() => {
-    void refetchPayoutsInvoice();
-  }, [refetchPayoutsInvoice, tab]);
 
   useEffect(() => {
     if (payoutsInvoiceData) {
@@ -69,6 +80,9 @@ const AdminPayoutsPage = () => {
               i18n.language
             ),
             verficator: invoice.payoutSolver?.username || "",
+            influencerName: invoice.payouts[0]?.profile.name || "",
+            influencerUsername: invoice.payouts[0]?.profile.user.username || "",
+            status: invoice?.payoutInvoiceStatus?.name || "",
           };
         })
       );
@@ -97,6 +111,9 @@ const AdminPayoutsPage = () => {
             i18n.language
           ),
           verficator: invoice.payoutSolver?.username || "",
+          influencerName: invoice.payouts[0]?.profile.name || "",
+          influencerUsername: invoice.payouts[0]?.profile.user.username || "",
+          status: invoice?.payoutInvoiceStatus?.name || "",
         });
       });
 
@@ -110,28 +127,6 @@ const AdminPayoutsPage = () => {
       }
     }
   }, [i18n.language, payoutsInvoice, payoutsInvoiceDataCursor]);
-
-  const handleChangeTab = (
-    tab: "open" | "processing" | "processed" | "rejected"
-  ) => {
-    void ctx.payoutInvoices.getPayoutsInvoice.reset();
-    void ctx.payoutInvoices.getPayoutsInvoiceCursor.reset();
-    setPayoutsInvoiceData([]);
-    setPayoutsInvoiceCount(0);
-    setPayoutsInvoiceCursor("");
-
-    if (tab === "open") {
-      setPayoutInvoiceStatusId(1);
-    } else if (tab === "processing") {
-      setPayoutInvoiceStatusId(2);
-    } else if (tab === "rejected") {
-      setPayoutInvoiceStatusId(3);
-    } else if (tab === "processed") {
-      setPayoutInvoiceStatusId(4);
-    }
-
-    setTab(tab);
-  };
 
   const renderPayouts = () => {
     if (payoutsInvoice.length === 0) {
@@ -170,7 +165,7 @@ const AdminPayoutsPage = () => {
                   </div>
                   <div className="line-clamp-1 flex w-full flex-col gap-1 border-b-[1px] p-2 md:w-1/4 md:border-none md:text-left">
                     <div className="font-semibold text-influencer">
-                      Invoice Uploaded Date
+                      Uploaded Date
                     </div>
                     <div>{invoice.invoiceUploadedAt}</div>
                   </div>
@@ -182,11 +177,26 @@ const AdminPayoutsPage = () => {
                       {helper.calculerMonetaryValue(invoice.payoutValue)}€
                     </div>
                   </div>
-                  <div className="line-clamp-1 flex w-full flex-col gap-1 p-2 md:w-1/4 md:text-left">
+                  <Link
+                    target="_blank"
+                    href={`/${invoice.influencerUsername}`}
+                    rel="noopener noreferrer"
+                    className="line-clamp-1 flex w-full flex-col gap-1 border-b-[1px] p-2 hover:underline md:w-1/4 md:border-none md:text-left"
+                  >
                     <div className="font-semibold text-influencer">
-                      Payout Solver
+                      Influencer
+                    </div>
+                    <div>{invoice.influencerName}</div>
+                  </Link>
+                  <div className="line-clamp-1 flex w-full flex-col gap-1 border-b-[1px] p-2 md:w-1/4 md:border-none md:text-left">
+                    <div className="font-semibold text-influencer">
+                      Invoice Solver
                     </div>
                     <div>{invoice.verficator || "Not Atributed"}</div>
+                  </div>
+                  <div className="line-clamp-1 flex w-full flex-col gap-1 p-2 md:w-1/4 md:text-left">
+                    <div className="font-semibold text-influencer">Status</div>
+                    <div>{t(`adminPages.adminPayout.${invoice.status}`)}</div>
                   </div>
                   <div className="line-clamp-1 flex w-full flex-col gap-1 p-2 md:w-1/4 md:text-left">
                     <a
@@ -206,56 +216,96 @@ const AdminPayoutsPage = () => {
     }
   };
 
-  const renderTabs = () => {
+  const renderCustomSelect = () => {
+    const newPayoutInvoiceStatus: Option[] = [];
+
+    newPayoutInvoiceStatus.push({
+      id: -1,
+      name: "all",
+    });
+
+    payoutsInvoiceStatusData?.forEach((status) => {
+      newPayoutInvoiceStatus.push({
+        id: status.id,
+        name: status.name,
+      });
+    });
+
     return (
-      <div className="flex rounded-t-xl border-[1px] border-gray3">
-        <div
-          className={`flex flex-1 cursor-pointer items-center p-4 text-base font-semibold md:text-xl  ${
-            tab === "open"
-              ? "rounded-t-xl border-l-[1px] border-t-[1px] bg-influencer-green text-white"
-              : "border-none"
-          }`}
-          onClick={() => handleChangeTab("open")}
-        >
-          Open Invoices
-        </div>
-        <div
-          className={`flex flex-1 cursor-pointer items-center p-4 text-base font-semibold md:text-xl  ${
-            tab === "processing"
-              ? "rounded-t-xl border-l-[1px] border-t-[1px] bg-influencer-green text-white"
-              : "border-none"
-          }`}
-          onClick={() => handleChangeTab("processing")}
-        >
-          Processing Invoices
-        </div>
-        <div
-          className={`flex flex-1 cursor-pointer items-center rounded-tr-xl border-[1px] border-r-[1px] border-t-[1px]  p-4 text-base font-semibold md:text-xl ${
-            tab === "rejected"
-              ? "rounded-t-xl border-l-[1px] border-t-[1px] bg-influencer-green text-white"
-              : "border-none"
-          }`}
-          onClick={() => handleChangeTab("rejected")}
-        >
-          Rejected Invoices
-        </div>
-        <div
-          className={`flex flex-1 cursor-pointer items-center rounded-tr-xl border-[1px] border-r-[1px] border-t-[1px]  p-4 text-base font-semibold md:text-xl ${
-            tab === "processed"
-              ? "rounded-t-xl border-l-[1px] border-t-[1px] bg-influencer-green text-white"
-              : "border-none"
-          }`}
-          onClick={() => handleChangeTab("processed")}
-        >
-          Processed Invoices
-        </div>
+      <div className="flex flex-1 flex-col gap-4 md:hidden">
+        <span className="font-semibold">Payouts Invoice Status</span>
+
+        <Controller
+          name="payoutsInvoiceStatus"
+          control={control}
+          render={({ field: { value, onChange } }) => {
+            return (
+              <CustomSelect
+                register={register}
+                name="payoutsInvoiceStatus"
+                placeholder="Status"
+                options={newPayoutInvoiceStatus?.map((payoutInvoiceStatus) => {
+                  return {
+                    id: payoutInvoiceStatus.id,
+                    name: t(
+                      `adminPages.adminPayout.${payoutInvoiceStatus.name}`
+                    ),
+                  };
+                })}
+                value={value}
+                handleOptionSelect={onChange}
+              />
+            );
+          }}
+        />
       </div>
     );
+  };
+
+  const renderTabs = () => {
+    if (payoutsInvoiceStatusData) {
+      return (
+        <div className="hidden flex-col rounded-t-xl border-[1px] border-gray3 md:flex md:flex-row">
+          <div
+            key={`0all`}
+            className={`flex flex-1 cursor-pointer items-center p-4 text-base font-semibold md:text-xl  ${
+              watch("payoutsInvoiceStatus").id === -1
+                ? "rounded-t-xl border-l-[1px] border-t-[1px] bg-influencer-green text-white"
+                : "border-none"
+            }`}
+            onClick={() =>
+              setValue("payoutsInvoiceStatus", {
+                id: -1,
+                name: "all",
+              })
+            }
+          >
+            {t(`adminPages.adminPayout.all`)}
+          </div>
+          {payoutsInvoiceStatusData?.map((elem) => {
+            return (
+              <div
+                key={`${elem.id} ${elem?.name}`}
+                className={`flex flex-1 cursor-pointer items-center p-4 text-base font-semibold md:text-xl  ${
+                  watch("payoutsInvoiceStatus").id === elem.id
+                    ? "rounded-t-xl border-l-[1px] border-t-[1px] bg-influencer-green text-white"
+                    : "border-none"
+                }`}
+                onClick={() => setValue("payoutsInvoiceStatus", elem)}
+              >
+                {t(`adminPages.adminPayout.${elem.name}`)}
+              </div>
+            );
+          })}
+        </div>
+      );
+    }
   };
 
   return (
     <div className="flex w-full flex-col self-center p-4 md:w-10/12">
       {renderTabs()}
+      {renderCustomSelect()}
       {isLoadingPayoutsInvoice ? (
         <div className="flex justify-center">
           <LoadingSpinner />

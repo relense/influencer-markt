@@ -1140,6 +1140,16 @@
     }
   },
 
+  "adminPages": {
+    "adminPayout": {
+      "all": "All Invoices",
+      "uploaded": "Open Invoice",
+      "processing": "Pressing Invoice",
+      "rejected": "Rejected Invoice",
+      "paid": "Closed Invoice"
+    }
+  },
+
   "temp": {
     "inConstruction": "In Construction"
   }
