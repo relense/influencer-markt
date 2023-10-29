@@ -3,6 +3,20 @@ import { z } from "zod";
 import { createTRPCRouter, protectedProcedure } from "../trpc";
 
 export const PayoutInvoicesRouter = createTRPCRouter({
+  getPayoutInvoice: protectedProcedure
+    .input(
+      z.object({
+        payoutInvoiceId: z.string(),
+      })
+    )
+    .query(async ({ ctx, input }) => {
+      return await ctx.prisma.payoutInvoice.findFirst({
+        where: {
+          id: input.payoutInvoiceId,
+        },
+      });
+    }),
+
   getPayoutsInvoice: protectedProcedure
     .input(
       z.object({

@@ -237,7 +237,7 @@ const AdminPayoutsPage = () => {
                   <div className="line-clamp-1 flex w-full flex-col gap-1 p-2 md:w-1/4 md:text-left">
                     <a
                       target="_blank"
-                      href=""
+                      href={`/admin/payouts/${invoice.id}`}
                       rel="noopener noreferrer"
                       className="flex"
                     >
