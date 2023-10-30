@@ -348,49 +348,41 @@ async function main() {
     data: [
       {
         email: "nike@gmail.com",
-        firstSteps: true,
         roleId: 1,
         username: "nike",
       },
       {
         email: "cocacola@gmail.com",
-        firstSteps: true,
         roleId: 1,
         username: "cocaCola",
       },
       {
         email: "apple@gmail.com",
-        firstSteps: true,
         roleId: 1,
         username: "apple",
       },
       {
         email: "lg@gmail.com",
-        firstSteps: true,
         roleId: 1,
         username: "LG",
       },
       {
         email: "oliveraTomas@gmail.com",
-        firstSteps: true,
         roleId: 2,
         username: "tomasOliveira",
       },
       {
         email: "andreGomes@gmail.com",
-        firstSteps: true,
         roleId: 2,
         username: "andreGomes",
       },
       {
         email: "andreiaSofia@gmail.com",
-        firstSteps: true,
         roleId: 2,
         username: "andreiaSofia",
       },
       {
         email: "inesguerreiro@gmail.com",
-        firstSteps: true,
         roleId: 2,
         username: "inesGuerreiro",
       },
