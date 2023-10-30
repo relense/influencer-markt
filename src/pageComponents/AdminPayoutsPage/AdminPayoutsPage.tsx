@@ -14,6 +14,7 @@ import { helper } from "../../utils/helper";
 import { LoadingSpinner } from "../../components/LoadingSpinner";
 import { CustomSelect } from "../../components/CustomSelect";
 import { type Option } from "../../utils/globalTypes";
+import { useRouter } from "next/router";
 
 type PayoutsInvoiceSearch = {
   searchProfileId: string;
@@ -33,6 +34,7 @@ type PayoutsInvoice = {
 const AdminPayoutsPage = () => {
   const { t, i18n } = useTranslation();
   const ctx = api.useContext();
+  const router = useRouter();
 
   const [payoutsInvoice, setPayoutsInvoiceData] = useState<PayoutsInvoice[]>(
     []
@@ -43,6 +45,17 @@ const AdminPayoutsPage = () => {
 
   const { data: payoutsInvoiceStatusData } =
     api.allRoutes.getAllPayoutsInvoiceStatus.useQuery();
+
+  const {
+    mutate: initiateInvoicePayoutProcess,
+    isLoading: isLoadingInitiateInvoicePayoutProcess,
+  } = api.payoutInvoices.initiateInvoicePayoutProcess.useMutation({
+    onSuccess: (invoice) => {
+      if (invoice) {
+        void router.push(`/admin/payouts/${invoice.id}`);
+      }
+    },
+  });
 
   const { register, watch, handleSubmit, control, setValue, resetField } =
     useForm<PayoutsInvoiceSearch>({
@@ -93,7 +106,7 @@ const AdminPayoutsPage = () => {
               invoice.createdAt,
               i18n.language
             ),
-            verficator: "",
+            verficator: invoice?.payoutSolver?.name || "",
             influencerUsername: invoice.payouts[0]?.profile.user.username || "",
             influencerId: invoice.payouts[0]?.profile.id || "",
             status: invoice?.payoutInvoiceStatus?.name || "",
@@ -124,7 +137,7 @@ const AdminPayoutsPage = () => {
             invoice.createdAt,
             i18n.language
           ),
-          verficator: "",
+          verficator: invoice?.payoutSolver?.name || "",
           influencerUsername: invoice.payouts[0]?.profile.user.username || "",
           influencerId: invoice.payouts[0]?.profile.id || "",
           status: invoice?.payoutInvoiceStatus?.name || "",
@@ -152,6 +165,16 @@ const AdminPayoutsPage = () => {
   const handleSearch = handleSubmit((data) => {
     setProfileId(data.searchProfileId);
   });
+
+  const handleInitiateInvoiceProcessing = (invoice: PayoutsInvoice) => {
+    if (invoice.verficator) {
+      void router.push(`/admin/payouts/${invoice.id}`);
+    } else {
+      void initiateInvoicePayoutProcess({
+        payoutInvoiceId: invoice.id,
+      });
+    }
+  };
 
   const renderPayouts = () => {
     if (payoutsInvoice.length === 0) {
@@ -235,14 +258,16 @@ const AdminPayoutsPage = () => {
                     <div>{t(`adminPages.adminPayout.${invoice.status}`)}</div>
                   </div>
                   <div className="line-clamp-1 flex w-full flex-col gap-1 p-2 md:w-1/4 md:text-left">
-                    <a
-                      target="_blank"
-                      href={`/admin/payouts/${invoice.id}`}
-                      rel="noopener noreferrer"
-                      className="flex"
-                    >
-                      <Button title="Initiate" level="secondary" size="large" />
-                    </a>
+                    <Button
+                      title={
+                        invoice.verficator ? "View Process" : "Initiate Process"
+                      }
+                      level="secondary"
+                      size="large"
+                      isLoading={isLoadingInitiateInvoicePayoutProcess}
+                      disabled={isLoadingInitiateInvoicePayoutProcess}
+                      onClick={() => handleInitiateInvoiceProcessing(invoice)}
+                    />
                   </div>
                 </div>
               );

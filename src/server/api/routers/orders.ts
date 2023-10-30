@@ -536,7 +536,7 @@ export const OrdersRouter = createTRPCRouter({
       });
 
       if (beforeUpdate?.orderStatusId === 3) {
-        return await ctx.prisma.order.update({
+        await ctx.prisma.order.update({
           where: {
             id: input.orderId,
             updatedAt: {
@@ -549,7 +549,7 @@ export const OrdersRouter = createTRPCRouter({
         });
       }
 
-      return beforeUpdate;
+      return true;
     }),
 
   cancelOrder: protectedProcedure

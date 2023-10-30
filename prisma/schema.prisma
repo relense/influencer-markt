@@ -623,7 +623,7 @@ model PayoutInvoice {
   id                        String              @id @default(cuid())
   influencerInvoice         String              @db.Text
   influencerInvoiceBlobName String              @db.Text
-  PayoutSolver              User?               @relation(fields: [userId], references: [id])
+  payoutSolver              User?               @relation(fields: [userId], references: [id])
   payoutInvoiceStatus       PayoutInvoiceStatus @relation(fields: [payoutInvoiceStatusId], references: [id])
 
   payouts Payout[]
