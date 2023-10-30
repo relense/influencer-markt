@@ -14,6 +14,23 @@ export const PayoutInvoicesRouter = createTRPCRouter({
         where: {
           id: input.payoutInvoiceId,
         },
+        include: {
+          payoutInvoiceStatus: true,
+          payouts: {
+            include: {
+              profile: {
+                select: {
+                  country: {
+                    select: {
+                      countryTax: true,
+                    },
+                  },
+                },
+              },
+            },
+          },
+          payoutSolver: true,
+        },
       });
     }),
 
@@ -63,7 +80,7 @@ export const PayoutInvoicesRouter = createTRPCRouter({
             },
             payoutSolver: {
               select: {
-                name: true,
+                username: true,
               },
             },
             payouts: {
@@ -125,7 +142,7 @@ export const PayoutInvoicesRouter = createTRPCRouter({
           },
           payoutSolver: {
             select: {
-              name: true,
+              username: true,
             },
           },
           payouts: {
@@ -180,5 +197,35 @@ export const PayoutInvoicesRouter = createTRPCRouter({
           },
         });
       }
+    }),
+
+  updatePayoutSolver: protectedProcedure
+    .input(
+      z.object({
+        adminId: z.string(),
+        payoutsInvoiceId: z.string(),
+      })
+    )
+    .mutation(async ({ ctx, input }) => {
+      return await ctx.prisma.payoutInvoice.update({
+        where: {
+          id: input.payoutsInvoiceId,
+        },
+        data: {
+          payoutSolver: {
+            connect: {
+              id: input.adminId,
+            },
+          },
+        },
+        select: {
+          payoutSolver: {
+            select: {
+              id: true,
+              username: true,
+            },
+          },
+        },
+      });
     }),
 });

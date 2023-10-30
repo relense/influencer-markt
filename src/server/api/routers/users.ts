@@ -83,6 +83,16 @@ export const usersRouter = createTRPCRouter({
       });
     }),
 
+  getAdminUsers: protectedProcedure.query(async ({ ctx }) => {
+    return await ctx.prisma.user.findMany({
+      where: {
+        userType: {
+          equals: "admin",
+        },
+      },
+    });
+  }),
+
   usernameExists: publicProcedure
     .input(z.object({ username: z.string() }))
     .query(async ({ ctx, input }) => {

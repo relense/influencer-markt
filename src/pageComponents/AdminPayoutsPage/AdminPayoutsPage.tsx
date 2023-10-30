@@ -43,24 +43,22 @@ const AdminPayoutsPage = () => {
   const [payoutsInvoiceCursor, setPayoutsInvoiceCursor] = useState<string>("");
   const [profileId, setProfileId] = useState<string>("");
 
-  const { data: payoutsInvoiceStatusData } =
-    api.allRoutes.getAllPayoutsInvoiceStatus.useQuery();
-
-  const {
-    mutate: initiateInvoicePayoutProcess,
-    isLoading: isLoadingInitiateInvoicePayoutProcess,
-  } = api.payoutInvoices.initiateInvoicePayoutProcess.useMutation({
-    onSuccess: (invoice) => {
-      if (invoice) {
-        void router.push(`/admin/payouts/${invoice.id}`);
-      }
-    },
-  });
-
   const { register, watch, handleSubmit, control, setValue, resetField } =
     useForm<PayoutsInvoiceSearch>({
       defaultValues: {
         payoutsInvoiceStatus: { id: -1, name: t("adminPages.adminPayout.all") },
+      },
+    });
+
+  const { data: payoutsInvoiceStatusData } =
+    api.allRoutes.getAllPayoutsInvoiceStatus.useQuery();
+
+  const { mutate: initiateInvoicePayoutProcess } =
+    api.payoutInvoices.initiateInvoicePayoutProcess.useMutation({
+      onSuccess: (invoice) => {
+        if (invoice) {
+          void router.push(`/admin/payouts/${invoice.id}`);
+        }
       },
     });
 
@@ -106,7 +104,7 @@ const AdminPayoutsPage = () => {
               invoice.createdAt,
               i18n.language
             ),
-            verficator: invoice?.payoutSolver?.name || "",
+            verficator: invoice?.payoutSolver?.username || "",
             influencerUsername: invoice.payouts[0]?.profile.user.username || "",
             influencerId: invoice.payouts[0]?.profile.id || "",
             status: invoice?.payoutInvoiceStatus?.name || "",
@@ -137,7 +135,7 @@ const AdminPayoutsPage = () => {
             invoice.createdAt,
             i18n.language
           ),
-          verficator: invoice?.payoutSolver?.name || "",
+          verficator: invoice?.payoutSolver?.username || "",
           influencerUsername: invoice.payouts[0]?.profile.user.username || "",
           influencerId: invoice.payouts[0]?.profile.id || "",
           status: invoice?.payoutInvoiceStatus?.name || "",
@@ -264,8 +262,6 @@ const AdminPayoutsPage = () => {
                       }
                       level="secondary"
                       size="large"
-                      isLoading={isLoadingInitiateInvoicePayoutProcess}
-                      disabled={isLoadingInitiateInvoicePayoutProcess}
                       onClick={() => handleInitiateInvoiceProcessing(invoice)}
                     />
                   </div>
