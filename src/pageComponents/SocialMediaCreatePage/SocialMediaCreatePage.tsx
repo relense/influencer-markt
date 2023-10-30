@@ -153,15 +153,6 @@ const SocialMediaCreatePage = (params: {
             <div className="text-xl font-medium">
               {t("pages.socialMediaCreate.contentTypesTitle")}
             </div>
-            {!allContentTypesSelected && (
-              <div className="flex h-6 w-6 items-center justify-center rounded-full bg-influencer-green text-white">
-                <FontAwesomeIcon
-                  icon={faPlus}
-                  className="fa-sm cursor-pointer"
-                  onClick={() => addContentTypeInput()}
-                />
-              </div>
-            )}
           </div>
           {contentTypesList.map((contentType, index) => {
             // Create a Set to store selected content IDs, excluding the current one
@@ -181,6 +172,35 @@ const SocialMediaCreatePage = (params: {
             // Render the content type with a quantity input field
             return renderContentTypeWithPriceInput(index, availableTypes || []);
           })}
+          {!allContentTypesSelected && (
+            <div className="flex w-full flex-1 items-center gap-2">
+              <div className="flex h-6 w-6 items-center justify-center rounded-full bg-influencer-green text-white">
+                <FontAwesomeIcon
+                  icon={faPlus}
+                  className="fa-sm cursor-pointer"
+                  onClick={() => addContentTypeInput()}
+                />
+              </div>
+              <div className="flex flex-1 items-center gap-2">
+                <div className="h-14 w-full">
+                  <div className="relative flex items-center justify-between">
+                    <input
+                      className="flex h-14 w-full flex-1 rounded-lg border-[1px] border-gray3 p-4 placeholder-gray2 placeholder:w-10/12"
+                      placeholder={t(
+                        "pages.socialMediaCreate.contentTypePlaceholder"
+                      )}
+                      disabled={true}
+                    />
+                  </div>
+                </div>
+                <input
+                  className="h-14 w-full rounded-lg border-[1px] border-gray3 p-4 placeholder-gray2 focus:border-black focus:outline-none"
+                  placeholder={t("pages.socialMediaCreate.price")}
+                  disabled={true}
+                />
+              </div>
+            </div>
+          )}
         </div>
       );
     } else {
@@ -215,6 +235,9 @@ const SocialMediaCreatePage = (params: {
               onClick={() => removeContentTypeInput(index)}
             />
           </div>
+        )}
+        {contentTypesList.length === 1 && (
+          <div className="flex h-6 w-6 items-center justify-center rounded-full  text-white"></div>
         )}
         <div className="flex flex-1 items-center gap-2">
           <CustomSelect

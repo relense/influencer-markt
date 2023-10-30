@@ -1057,7 +1057,7 @@
       "balanceInformation": "Informação de Saldo",
       "iban": "IBAN",
       "update": "Actualizar",
-      "withdraw": "Iniciar Procresso de Pagamento",
+      "withdraw": "Iniciar Processo de Pagamento",
       "salesInvoices": "Faturas de Vendas",
       "purchasesInvoices": "Faturas de Compras",
       "invalidTin": "O NIF é inválido",
@@ -1104,7 +1104,7 @@
       "generalSettings": "Configurações gerais",
       "updateUsername": "Actualizar username",
       "pageNameAvailable": "Username está disponível",
-      "pageNameUnavailable": "Username não está disponível",
+      "pageNameUnavailable": "Username não está disponível, têm a certeza de que não há espaços ou caracteres especiais",
       "pageNameIsYours": "Esse é o teu noem de utilizador actual",
       "save": "Guardar",
       "notificationsSettings": "Configurações de notificações",
@@ -1124,7 +1124,7 @@
       "revisionTime": "Número de Revisões",
       "price": "Preço",
       "button": "Guarda Rede Social",
-      "contentTypesTitle": "Tipos de Conteúdo da Plataforma",
+      "contentTypesTitle": "Personalização de Conteúdo e Preço",
       "contentTypePlaceholder": "Tipo de conteúdo"
     },
 

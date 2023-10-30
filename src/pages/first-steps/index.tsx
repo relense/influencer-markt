@@ -13,12 +13,12 @@ const FirstSteps: NextPage = () => {
 
   useEffect(() => {
     if (
-      (isLoading === false && userData?.profile) ||
+      (isLoading === false && (userData?.profile || userData?.role)) ||
       status === "unauthenticated"
     ) {
       void router.push("/");
     }
-  }, [isLoading, router, status, userData?.profile]);
+  }, [isLoading, router, status, userData?.profile, userData?.role]);
 
   if (
     isLoading === false &&

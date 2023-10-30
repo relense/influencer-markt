@@ -132,6 +132,7 @@ const FirstStepsPage = () => {
       userIdentityMutation({
         role: data.role,
         username: data.username,
+        isOver18: data.is18,
       });
     }
   });

@@ -41,13 +41,18 @@ export const usersRouter = createTRPCRouter({
           id: z.number(),
           name: z.string(),
         }),
+        isOver18: z.boolean(),
         username: z.string(),
       })
     )
     .mutation(async ({ ctx, input }) => {
       return await ctx.prisma.user.upsert({
         where: { id: ctx.session.user.id },
-        update: { roleId: input.role.id, username: input.username },
+        update: {
+          roleId: input.role.id,
+          username: input.username,
+          isOver18: input.isOver18,
+        },
         create: {},
       });
     }),
@@ -112,7 +117,17 @@ export const usersRouter = createTRPCRouter({
         input.username.toUpperCase() === "influencermartk.com".toUpperCase() ||
         input.username.toUpperCase() === "influencerMartk.com".toUpperCase()
       ) {
-        return false;
+        return true;
+      }
+
+      if (
+        input.username.includes("/") ||
+        input.username.includes("<") ||
+        input.username.includes(">") ||
+        input.username.includes(";") ||
+        input.username.includes(" ")
+      ) {
+        return true;
       }
 
       const username = await ctx.prisma.user.findUnique({

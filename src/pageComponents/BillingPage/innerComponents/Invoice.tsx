@@ -176,12 +176,12 @@ const Invoice = (params: { invoice: InvoiceType }) => {
     return (
       <div className="flex flex-col">
         <div
-          className={`flex cursor-pointer justify-between gap-4 p-4 items-center${
+          className={`flex w-full cursor-pointer items-center justify-between p-4 ${
             showOrderDetails ? "" : " border-b-[1px] border-white1"
           }`}
           onClick={() => setShowOrderDetails(!showOrderDetails)}
         >
-          <span className="font-semibold">
+          <span className="line-clamp-1 flex w-10/12 font-semibold">
             {t("pages.billing.invoiceRef")} #{invoice.id}
           </span>
           <FontAwesomeIcon

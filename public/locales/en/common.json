@@ -570,12 +570,12 @@
         "subTitle": "Welcome! Let's Get Started: Establish Your User And Claim Your Page",
         "button": "Start Your Journey",
         "roleInputPLaceholder": "Choose Your Role: Influencer or Brand",
-        "claimInputPlaceholder": "your-page-name",
+        "claimInputPlaceholder": "your-username",
         "tooltip": "This input will define your unique username or handle for your profile URL. It's like your personal identity on the platform, allowing others to easily find and access your page using this custom name. Choose something catchy and easy to remember, as this username will be a permanent representation of you on the platform. Have fun picking the perfect one!",
         "disclaimer": "Please choose the options that best represent you or align with your preferences. Once selected, this information will be considered",
         "permanent": "permanent",
-        "pageNameAvailable": "Page name is available",
-        "pageNameUnavailable": "Page name is unavailable",
+        "pageNameAvailable": "Username is available",
+        "pageNameUnavailable": "Username is unavailable, make sure there are no spaces or special characters",
         "ageConfirmation": "I confirm that I am 18 years old or older."
       },
 
@@ -1104,7 +1104,7 @@
       "generalSettings": "General settings",
       "updateUsername": "Update Username",
       "pageNameAvailable": "Username is available",
-      "pageNameUnavailable": "Username is unavailable",
+      "pageNameUnavailable": "Username is unavailable, make sure there are no spaces or special characters",
       "pageNameIsYours": "That is your current username",
       "save": "Save",
       "notificationsSettings": "Notifications settings",
@@ -1124,7 +1124,7 @@
       "revisionTime": "Number of Revisions",
       "price": "Price",
       "button": "Save Social Media",
-      "contentTypesTitle": "Platform Content Types",
+      "contentTypesTitle": "Content Customization and Price",
       "contentTypePlaceholder": "Content Type"
     },
 

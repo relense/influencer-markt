@@ -22,10 +22,13 @@ const SettingsPage = () => {
   const { data: profileSettings, isLoading: isLoadingProfileSettings } =
     api.profiles.getProfileSettings.useQuery();
 
-  const { data: usernameVerification, refetch: usernameVerificationRefetch } =
-    api.users.usernameExists.useQuery({
-      username: username,
-    });
+  const {
+    data: usernameVerification,
+    isLoading: isLoadingUsernameVerification,
+    refetch: usernameVerificationRefetch,
+  } = api.users.usernameExists.useQuery({
+    username: username,
+  });
 
   const { mutate: updateEmailNotifications } =
     api.profiles.updateEmailNotifications.useMutation({
@@ -41,6 +44,7 @@ const SettingsPage = () => {
       onSuccess: () => {
         setUsername("");
         void ctx.users.getUser.invalidate();
+        void ctx.users.getUserInfo.invalidate();
       },
     });
 
@@ -123,9 +127,10 @@ const SettingsPage = () => {
             size="regular"
             isLoading={isLoadingUpdateUsername}
             disabled={
-              usernameVerification === false ||
+              usernameVerification === true ||
               userInfo?.username === username ||
-              !username
+              username.length == 0 ||
+              isLoadingUsernameVerification
             }
             onClick={() => updateUsername({ username: username })}
           />
