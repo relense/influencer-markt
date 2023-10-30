@@ -40,15 +40,11 @@ const createNotification = async (params: {
       id: notifierId,
     },
     select: {
-      user: {
-        select: {
-          disableAppNotifications: true,
-        },
-      },
+      disableAppNotifications: true,
     },
   });
 
-  if (receiver?.user.disableAppNotifications) return;
+  if (receiver?.disableAppNotifications) return;
 
   const actor = await prisma.profile.findUnique({
     where: { id: senderId },

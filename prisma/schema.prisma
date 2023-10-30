@@ -51,22 +51,19 @@ model VerificationToken {
 }
 
 model User {
-  id                        String    @id @default(cuid())
-  name                      String?
-  email                     String?   @unique
-  emailVerified             DateTime?
-  image                     String?
-  firstSteps                Boolean?  @default(false)
-  username                  String?   @unique
-  role                      Role?     @relation(fields: [roleId], references: [id])
-  userType                  String    @default("user")
-  isOver18                  Boolean   @default(false)
-  showWelcomeModal          Boolean   @default(true)
-  disableEmailNotifications Boolean   @default(false)
-  disableAppNotifications   Boolean   @default(false)
-  accounts                  Account[]
-  sessions                  Session[]
-  profile                   Profile?
+  id              String          @id @default(cuid())
+  name            String?
+  email           String?         @unique
+  emailVerified   DateTime?
+  image           String?
+  username        String?         @unique
+  role            Role?           @relation(fields: [roleId], references: [id])
+  userType        String          @default("user")
+  payoutsResolved PayoutInvoice[]
+
+  accounts Account[]
+  sessions Session[]
+  profile  Profile?
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -76,52 +73,33 @@ model User {
   @@index([roleId])
 }
 
-model AdminSession {
-  id           String   @id @default(cuid())
-  sessionToken String   @unique
-  adminId      String
-  expires      DateTime
-  admin        Admin    @relation(fields: [adminId], references: [id], onDelete: Cascade)
-
-  @@index([adminId])
-}
-
-model Admin {
-  id              String          @id @default(cuid())
-  name            String?
-  email           String?         @unique
-  emailVerified   DateTime?
-  image           String?
-  userType        String          @default("admin")
-  adminSessions   AdminSession[]
-  payoutsResolved PayoutInvoice[]
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-}
-
 //App data
 model Profile {
-  id                     String            @id @default(cuid())
-  profilePicture         String            @db.Text
-  profilePictureBlobName String            @db.Text
-  name                   String            @db.Text
-  gender                 Gender?           @relation(fields: [genderId], references: [id])
-  categories             Category[]
-  about                  String            @db.Text
-  country                Country?          @relation(fields: [countryId], references: [id])
-  city                   City?             @relation(fields: [cityId], references: [id])
-  user                   User              @relation(fields: [userId], references: [id])
-  website                String            @db.Text
-  rating                 String?
-  userSocialMedia        UserSocialMedia[]
-  profileReviews         Review[]          @relation("profileReviewd")
-  submitedReviews        Review[]          @relation("author")
-  portfolio              Portfolio[]
-  verifiedStatus         VerifiedStatus?   @relation(fields: [verifiedStatusId], references: [id])
-  billing                Billing?
-  invoices               Invoice[]
-  payouts                Payout[]
+  id                        String     @id @default(cuid())
+  profilePicture            String     @db.Text
+  profilePictureBlobName    String     @db.Text
+  name                      String     @db.Text
+  gender                    Gender?    @relation(fields: [genderId], references: [id])
+  categories                Category[]
+  about                     String     @db.Text
+  country                   Country?   @relation(fields: [countryId], references: [id])
+  city                      City?      @relation(fields: [cityId], references: [id])
+  user                      User       @relation(fields: [userId], references: [id])
+  website                   String     @db.Text
+  rating                    String?
+  disableEmailNotifications Boolean    @default(false)
+  disableAppNotifications   Boolean    @default(false)
+  isOver18                  Boolean    @default(false)
+  showWelcomeModal          Boolean    @default(true)
+
+  userSocialMedia UserSocialMedia[]
+  profileReviews  Review[]          @relation("profileReviewd")
+  submitedReviews Review[]          @relation("author")
+  portfolio       Portfolio[]
+  verifiedStatus  VerifiedStatus?   @relation(fields: [verifiedStatusId], references: [id])
+  billing         Billing?
+  invoices        Invoice[]
+  payouts         Payout[]
 
   createdJobs        Job[] @relation("jobCreator")
   appliedJobs        Job[] @relation("jobApplicants")
@@ -644,7 +622,7 @@ model PayoutInvoice {
   id                        String              @id @default(cuid())
   influencerInvoice         String              @db.Text
   influencerInvoiceBlobName String              @db.Text
-  adminPayoutSolver         Admin?              @relation(fields: [adminId], references: [id])
+  PayoutSolver              User?               @relation(fields: [userId], references: [id])
   payoutInvoiceStatus       PayoutInvoiceStatus @relation(fields: [payoutInvoiceStatusId], references: [id])
 
   payouts Payout[]
@@ -653,10 +631,10 @@ model PayoutInvoice {
   updatedAt DateTime @updatedAt
 
   payoutInvoiceStatusId Int
-  adminId               String?
+  userId                String?
 
   @@index([payoutInvoiceStatusId])
-  @@index([adminId])
+  @@index([userId])
 }
 
 model Payment {

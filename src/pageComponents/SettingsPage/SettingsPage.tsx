@@ -19,13 +19,16 @@ const SettingsPage = () => {
   const { data: userInfo, isLoading: isLoadingUserInfo } =
     api.users.getUserInfo.useQuery();
 
+  const { data: profileSettings, isLoading: isLoadingProfileSettings } =
+    api.profiles.getProfileSettings.useQuery();
+
   const { data: usernameVerification, refetch: usernameVerificationRefetch } =
     api.users.usernameExists.useQuery({
       username: username,
     });
 
   const { mutate: updateEmailNotifications } =
-    api.users.updateEmailNotifications.useMutation({
+    api.profiles.updateEmailNotifications.useMutation({
       onSuccess: () => {
         toast.success(t("pages.settings.updateNotificationsSuccess"), {
           position: "bottom-left",
@@ -42,11 +45,11 @@ const SettingsPage = () => {
     });
 
   useEffect(() => {
-    if (userInfo) {
-      setDisableAppNotifications(userInfo.disableAppNotifications);
-      setDisableEmailNotifications(userInfo.disableEmailNotifications);
+    if (profileSettings) {
+      setDisableAppNotifications(profileSettings.disableAppNotifications);
+      setDisableEmailNotifications(profileSettings.disableEmailNotifications);
     }
-  }, [userInfo]);
+  }, [profileSettings]);
 
   const handleDisableEmailNotifications = () => {
     setDisableEmailNotifications(!disableEmailNotifications);
@@ -182,7 +185,7 @@ const SettingsPage = () => {
     );
   };
 
-  if (isLoadingUserInfo) {
+  if (isLoadingUserInfo || isLoadingProfileSettings) {
     return (
       <div className="flex justify-center">
         <LoadingSpinner />

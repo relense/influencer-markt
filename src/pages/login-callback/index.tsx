@@ -7,18 +7,23 @@ import { LoadingSpinner } from "../../components/LoadingSpinner";
 
 const LoginCallback: NextPage = () => {
   const { status } = useSession();
-  const { data: userData, isLoading } = api.users.getUser.useQuery();
   const router = useRouter();
+
   const { returnTo } = router.query;
 
+  const { data: userData, isLoading } = api.users.getUser.useQuery();
+
   useEffect(() => {
-    if (userData?.firstSteps === false && status === "authenticated") {
+    if ((!userData?.profile || !userData.role) && status === "authenticated") {
       void router.push("/first-steps");
-    } else if (userData?.firstSteps === true || status === "unauthenticated") {
+    } else if (
+      (userData && userData?.profile) ||
+      status === "unauthenticated"
+    ) {
       const route = Array.isArray(returnTo) ? returnTo[0] : returnTo;
       void router.push(route?.toString() || "/");
     }
-  }, [returnTo, router, status, userData?.firstSteps]);
+  }, [returnTo, router, status, userData, userData?.profile]);
 
   if (isLoading) {
     return <LoadingSpinner />;

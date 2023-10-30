@@ -13,16 +13,16 @@ const FirstSteps: NextPage = () => {
 
   useEffect(() => {
     if (
-      (isLoading === false && userData?.firstSteps) ||
+      (isLoading === false && userData?.profile) ||
       status === "unauthenticated"
     ) {
       void router.push("/");
     }
-  }, [isLoading, router, status, userData?.firstSteps]);
+  }, [isLoading, router, status, userData?.profile]);
 
   if (
     isLoading === false &&
-    !userData?.firstSteps &&
+    (!userData?.profile || !userData?.role) &&
     status === "authenticated"
   ) {
     return <FirstStepsPage />;

@@ -21,9 +21,6 @@ export const usersRouter = createTRPCRouter({
       where: { id: ctx.session.user.id },
       select: {
         username: true,
-        showWelcomeModal: true,
-        disableAppNotifications: true,
-        disableEmailNotifications: true,
       },
     });
   }),
@@ -36,27 +33,6 @@ export const usersRouter = createTRPCRouter({
       },
     });
   }),
-
-  updateUserShowWelcomeModal: protectedProcedure.mutation(async ({ ctx }) => {
-    await ctx.prisma.user.update({
-      where: {
-        id: ctx.session.user.id,
-      },
-      data: {
-        showWelcomeModal: false,
-      },
-    });
-  }),
-
-  updateUserFirstSteps: protectedProcedure
-    .input(z.object({ firstSteps: z.boolean() }))
-    .mutation(async ({ ctx, input }) => {
-      return await ctx.prisma.user.upsert({
-        where: { id: ctx.session.user.id },
-        update: { firstSteps: input.firstSteps },
-        create: {},
-      });
-    }),
 
   updateUserIdentity: protectedProcedure
     .input(
@@ -98,25 +74,6 @@ export const usersRouter = createTRPCRouter({
         },
         data: {
           username: input.username,
-        },
-      });
-    }),
-
-  updateEmailNotifications: protectedProcedure
-    .input(
-      z.object({
-        disableEmail: z.boolean(),
-        disableApp: z.boolean(),
-      })
-    )
-    .mutation(async ({ ctx, input }) => {
-      return await ctx.prisma.user.update({
-        where: {
-          id: ctx.session.user.id,
-        },
-        data: {
-          disableEmailNotifications: input.disableEmail,
-          disableAppNotifications: input.disableApp,
         },
       });
     }),

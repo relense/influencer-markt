@@ -24,7 +24,7 @@ export const profilesRouter = createTRPCRouter({
       return await ctx.prisma.$transaction([
         ctx.prisma.profile.count({
           where: {
-            user: { roleId: 2, firstSteps: true },
+            user: { roleId: 2 },
             profilePicture: {
               not: "",
             },
@@ -78,7 +78,7 @@ export const profilesRouter = createTRPCRouter({
         }),
         ctx.prisma.profile.findMany({
           where: {
-            user: { roleId: 2, firstSteps: true },
+            user: { roleId: 2 },
             profilePicture: {
               not: "",
             },
@@ -194,7 +194,7 @@ export const profilesRouter = createTRPCRouter({
           id: input.cursor,
         },
         where: {
-          user: { roleId: 2, firstSteps: true },
+          user: { roleId: 2 },
           profilePicture: {
             not: "",
           },
@@ -293,7 +293,7 @@ export const profilesRouter = createTRPCRouter({
       return await ctx.prisma.$transaction([
         ctx.prisma.profile.count({
           where: {
-            user: { roleId: 1, firstSteps: true },
+            user: { roleId: 1 },
             profilePicture: {
               not: "",
             },
@@ -328,7 +328,7 @@ export const profilesRouter = createTRPCRouter({
         }),
         ctx.prisma.profile.findMany({
           where: {
-            user: { roleId: 1, firstSteps: true },
+            user: { roleId: 1 },
             profilePicture: {
               not: "",
             },
@@ -421,7 +421,7 @@ export const profilesRouter = createTRPCRouter({
           id: input.cursor,
         },
         where: {
-          user: { roleId: 1, firstSteps: true },
+          user: { roleId: 1 },
           profilePicture: {
             not: "",
           },
@@ -1290,6 +1290,47 @@ export const profilesRouter = createTRPCRouter({
           gender: true,
           country: true,
           city: true,
+        },
+      });
+    }),
+
+  getProfileSettings: protectedProcedure.query(async ({ ctx }) => {
+    return await ctx.prisma.profile.findUnique({
+      where: { userId: ctx.session.user.id },
+      select: {
+        disableAppNotifications: true,
+        disableEmailNotifications: true,
+        showWelcomeModal: true,
+      },
+    });
+  }),
+
+  updateUserShowWelcomeModal: protectedProcedure.mutation(async ({ ctx }) => {
+    await ctx.prisma.profile.update({
+      where: {
+        userId: ctx.session.user.id,
+      },
+      data: {
+        showWelcomeModal: false,
+      },
+    });
+  }),
+
+  updateEmailNotifications: protectedProcedure
+    .input(
+      z.object({
+        disableEmail: z.boolean(),
+        disableApp: z.boolean(),
+      })
+    )
+    .mutation(async ({ ctx, input }) => {
+      return await ctx.prisma.profile.update({
+        where: {
+          userId: ctx.session.user.id,
+        },
+        data: {
+          disableEmailNotifications: input.disableEmail,
+          disableAppNotifications: input.disableApp,
         },
       });
     }),

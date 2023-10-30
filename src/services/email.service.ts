@@ -237,11 +237,9 @@ type EmailActions =
 const checkIfIsDisabled = async (profileId: string) => {
   if (profileId === "") return true;
 
-  const user = await prisma.user.findFirst({
+  const user = await prisma.profile.findFirst({
     where: {
-      profile: {
-        id: profileId,
-      },
+      id: profileId,
     },
     select: {
       disableEmailNotifications: true,

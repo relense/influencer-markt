@@ -53,10 +53,18 @@ const HomePage = (params: {
   const { data: user } = api.users.getUserInfo.useQuery(undefined, {
     cacheTime: 0,
   });
+
+  const { data: settings } = api.profiles.getProfileSettings.useQuery(
+    undefined,
+    {
+      cacheTime: 0,
+    }
+  );
+
   const { mutate: updateShowWelcomeModal } =
-    api.users.updateUserShowWelcomeModal.useMutation({
+    api.profiles.updateUserShowWelcomeModal.useMutation({
       onSuccess: () => {
-        void ctx.users.getUserInfo.invalidate();
+        void ctx.profiles.getProfileSettings.invalidate();
         if (toEditMenu && user && user.username) {
           void router.push(`/${user.username}/edit`);
         }
@@ -65,13 +73,13 @@ const HomePage = (params: {
 
   useEffect(() => {
     if (
-      user?.showWelcomeModal === true &&
+      settings?.showWelcomeModal === true &&
       session.status === "authenticated" &&
       params.profileId
     ) {
       setShowWelcomeModal(true);
     }
-  }, [params.profileId, session.status, user?.showWelcomeModal]);
+  }, [params.profileId, session.status, settings?.showWelcomeModal]);
 
   const setWelcomeModal = (goToEdit: boolean) => {
     setShowWelcomeModal(false);

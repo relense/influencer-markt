@@ -1,7 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import { api } from "~/utils/api";
-import Link from "next/link";
 import { useTranslation } from "react-i18next";
 import { useRouter } from "next/router";
 
@@ -100,8 +99,6 @@ const FirstStepsPage = () => {
     username: userIdentityWatch("username") || "",
   });
 
-  const { mutateAsync: updateFirstSteps } =
-    api.users.updateUserFirstSteps.useMutation();
   const { mutateAsync: profileMutation } =
     api.profiles.createProfile.useMutation();
 
@@ -188,7 +185,6 @@ const FirstStepsPage = () => {
       });
     }
 
-    await updateFirstSteps({ firstSteps: true });
     await ctx.users.getUser.invalidate();
     void router.push("/");
 
