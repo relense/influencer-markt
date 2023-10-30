@@ -14,7 +14,6 @@ import type {
 } from "../../utils/globalTypes";
 import { useRouter } from "next/router";
 import { LoadingSpinner } from "../../components/LoadingSpinner";
-import { helper } from "../../utils/helper";
 
 type ContentTypeWithPrice = {
   contentType: Option;
@@ -23,7 +22,7 @@ type ContentTypeWithPrice = {
 
 const SocialMediaEditPage = (params: {
   isBrand: boolean;
-  profileId: number;
+  profileId: string;
   userSocialMediaId: number;
 }) => {
   const { t } = useTranslation();

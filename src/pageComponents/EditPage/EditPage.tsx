@@ -36,7 +36,7 @@ const EditPage = () => {
   const { data: platforms } = api.allRoutes.getAllSocialMedia.useQuery();
   const { data: profileSocialMedia, isLoading: isLoadingProfileSocialMedia } =
     api.userSocialMedias.getUserSocialMediaByProfileId.useQuery({
-      profileId: profile?.id || -1,
+      profileId: profile?.id || "",
     });
 
   const { mutate: updateProfile } = api.profiles.updateProfile.useMutation({

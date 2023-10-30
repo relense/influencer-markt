@@ -71,8 +71,8 @@ const OrderDetailsPage = (params: {
       onSuccess: () => {
         void createNotification({
           entityId: params.orderId,
-          senderId: order?.buyerId || -1,
-          notifierId: order?.influencerId || -1,
+          senderId: order?.buyerId || "",
+          notifierId: order?.influencerId || "",
           entityAction: "orderCanceled",
         });
         void ctx.orders.getBuyerOrder.invalidate();
@@ -88,8 +88,8 @@ const OrderDetailsPage = (params: {
         setOpenConfirmOrderModal(false);
         void createNotification({
           entityId: params.orderId,
-          senderId: order?.buyerId || -1,
-          notifierId: order?.influencerId || -1,
+          senderId: order?.buyerId || "",
+          notifierId: order?.influencerId || "",
           entityAction: "orderConfirmed",
         });
         void createPayout({ orderId: params.orderId });
@@ -102,8 +102,8 @@ const OrderDetailsPage = (params: {
       onSuccess: () => {
         void createNotification({
           entityId: params.orderId,
-          senderId: order?.buyerId || -1,
-          notifierId: order?.influencerId || -1,
+          senderId: order?.buyerId || "",
+          notifierId: order?.influencerId || "",
           entityAction: "orderReviewed",
         });
         void ctx.orders.getBuyerOrder.invalidate();
@@ -117,8 +117,8 @@ const OrderDetailsPage = (params: {
         void ctx.orders.getBuyerOrder.invalidate();
         void createNotification({
           entityId: params.orderId,
-          senderId: order?.buyerId || -1,
-          notifierId: order?.influencerId || -1,
+          senderId: order?.buyerId || "",
+          notifierId: order?.influencerId || "",
           entityAction: "orderDeliveryDateUpdate",
         });
       },
@@ -133,8 +133,8 @@ const OrderDetailsPage = (params: {
       void ctx.orders.getBuyerOrder.invalidate();
       void createNotification({
         entityId: params.orderId,
-        senderId: order?.buyerId || -1,
-        notifierId: order?.influencerId || -1,
+        senderId: order?.buyerId || "",
+        notifierId: order?.influencerId || "",
         entityAction: "toInfluencerOrderOnHoldToInProgress",
       });
     },
@@ -151,8 +151,8 @@ const OrderDetailsPage = (params: {
         void ctx.credits.calculateUserCredits.reset();
         void createNotification({
           entityId: params.orderId,
-          senderId: order?.buyerId || -1,
-          notifierId: order?.influencerId || -1,
+          senderId: order?.buyerId || "",
+          notifierId: order?.influencerId || "",
           entityAction: "toInfluencerOrderOnHoldToConfirm",
         });
 
@@ -176,8 +176,8 @@ const OrderDetailsPage = (params: {
       setOpenDisputeModal(false);
       void createNotification({
         entityId: params.orderId,
-        senderId: order?.buyerId || -1,
-        notifierId: order?.influencerId || -1,
+        senderId: order?.buyerId || "",
+        notifierId: order?.influencerId || "",
         entityAction: "orderInDispute",
       });
       void ctx.orders.getBuyerOrder.invalidate();
@@ -999,8 +999,8 @@ const OrderDetailsPage = (params: {
               <div className="flex flex-1 flex-col gap-4">
                 {renderOrderDetails()}
                 <MessageBoard
-                  receiverId={order?.influencerId || -1}
-                  senderId={order?.buyerId || -1}
+                  receiverId={order?.influencerId || ""}
+                  senderId={order?.buyerId || ""}
                   orderId={params.orderId}
                   orderStatusId={order?.orderStatusId || -1}
                 />

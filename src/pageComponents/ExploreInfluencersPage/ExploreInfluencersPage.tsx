@@ -27,12 +27,12 @@ export type InfluencersFilterState = {
 const ExploreInfluencersPage = (params: {
   choosenCategories: Option[];
   openLoginModal: () => void;
-  loggedInProfileId: number;
+  loggedInProfileId: string;
 }) => {
   const { t } = useTranslation();
   const ctx = api.useContext();
 
-  const [influencersCursor, setInfluencersCursor] = useState<number>(-1);
+  const [influencersCursor, setInfluencersCursor] = useState<string>("");
   const [userProfiles, setUserProfiles] = useState<UserProfiles[]>([]);
   const [isFilterModalOpen, setIsFilterModalOpen] = useState<boolean>(false);
   const [activeFiltersCount, setActiveFiltersCount] = useState<number>(0);

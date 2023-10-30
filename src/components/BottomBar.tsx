@@ -26,7 +26,7 @@ type linkItem = {
 const BottomBar = (params: {
   username: string;
   status: "authenticated" | "loading" | "unauthenticated";
-  loggedInProfileId: number;
+  loggedInProfileId: string;
 }) => {
   const router = useRouter();
   const width = useWindowWidth();
@@ -96,7 +96,7 @@ const BottomBar = (params: {
             (params.status === "authenticated" &&
               navigationItem.loggedIn &&
               navigationItem.profileSetup === true &&
-              params.loggedInProfileId !== -1)
+              params.loggedInProfileId !== "")
           ) {
             return (
               <Link

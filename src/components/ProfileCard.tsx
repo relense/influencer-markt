@@ -27,7 +27,7 @@ import {
 import { useSession } from "next-auth/react";
 
 const ProfileCard = (params: {
-  id: number;
+  id: string;
   profilePicture: string;
   socialMedia: UserSocialMedia[];
   name: string;
@@ -40,7 +40,7 @@ const ProfileCard = (params: {
   highlightSocialMediaId?: number;
   onHandleBookmark?: () => void;
   openLoginModal?: () => void;
-  loggedInProfileId: number;
+  loggedInProfileId: string;
   activeJobs?: number;
 }) => {
   const { t } = useTranslation();
@@ -73,7 +73,7 @@ const ProfileCard = (params: {
     },
   });
 
-  const onClickBookmark = (profileId: number) => {
+  const onClickBookmark = (profileId: string) => {
     if (params.onHandleBookmark) {
       params.onHandleBookmark();
     }
@@ -141,11 +141,11 @@ const ProfileCard = (params: {
   const handleClickBookmark = () => {
     if (status === "unauthenticated" && params.openLoginModal) {
       params.openLoginModal();
-    } else if (status === "authenticated" && params.loggedInProfileId === -1) {
+    } else if (status === "authenticated" && params.loggedInProfileId === "") {
       toast.error(t("components.profileCard.toastWarning"), {
         position: "bottom-left",
       });
-    } else if (status === "authenticated" && params.loggedInProfileId !== -1) {
+    } else if (status === "authenticated" && params.loggedInProfileId !== "") {
       onClickBookmark(params.id);
     }
   };

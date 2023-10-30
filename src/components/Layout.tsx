@@ -13,7 +13,7 @@ import { CookiePolicy } from "./CookiePolicy";
 export const Layout = (props: {
   children: (params: {
     openLoginModal: () => void;
-    loggedInProfileId: number;
+    loggedInProfileId: string;
     scrollLayoutToPreviousPosition: () => void;
     saveScrollPosition: () => void;
     isBrand: boolean;
@@ -78,7 +78,7 @@ export const Layout = (props: {
           sessionData={sessionData}
           openLoginModal={() => setIsModalOpen(true)}
           setIsSignUp={setIsSignUp}
-          loggedInProfileId={user?.profile?.id ? user.profile.id : -1}
+          loggedInProfileId={user?.profile?.id ? user.profile.id : ""}
         />
         <div className="mb-12 flex w-full flex-1 flex-col overflow-y-auto sm:mb-0">
           <div className="flex flex-1 flex-col pb-16">
@@ -87,7 +87,7 @@ export const Layout = (props: {
               scrollLayoutToPreviousPosition: () =>
                 scrollLayoutToPreviousPosition(),
               saveScrollPosition: () => saveScrollPosition(),
-              loggedInProfileId: user?.profile?.id ? user.profile.id : -1,
+              loggedInProfileId: user?.profile?.id ? user.profile.id : "",
               isBrand: user?.role?.id === 1 ? true : false,
             })}
           </div>
@@ -96,7 +96,7 @@ export const Layout = (props: {
         <BottomBar
           status={status}
           username={user?.username || ""}
-          loggedInProfileId={user?.profile?.id ? user.profile.id : -1}
+          loggedInProfileId={user?.profile?.id ? user.profile.id : ""}
         />
         <div className="flex justify-center">
           {isModalOpen && (

@@ -16,7 +16,7 @@ import { CustomSelect } from "../../components/CustomSelect";
 import { type Option } from "../../utils/globalTypes";
 
 type PayoutsInvoiceSearch = {
-  searchProfileId: number;
+  searchProfileId: string;
   payoutsInvoiceStatus: Option;
 };
 
@@ -26,7 +26,7 @@ type PayoutsInvoice = {
   invoiceUploadedAt: string | undefined;
   verficator: string;
   influencerUsername: string;
-  influencerId: number;
+  influencerId: string;
   status: string;
 };
 
@@ -39,7 +39,7 @@ const AdminPayoutsPage = () => {
   );
   const [payoutsInvoiceCount, setPayoutsInvoiceCount] = useState<number>(0);
   const [payoutsInvoiceCursor, setPayoutsInvoiceCursor] = useState<string>("");
-  const [profileId, setProfileId] = useState<number>(-1);
+  const [profileId, setProfileId] = useState<string>("");
 
   const { data: payoutsInvoiceStatusData } =
     api.allRoutes.getAllPayoutsInvoiceStatus.useQuery();
@@ -93,9 +93,9 @@ const AdminPayoutsPage = () => {
               invoice.createdAt,
               i18n.language
             ),
-            verficator: invoice.payoutSolver?.username || "",
+            verficator: "",
             influencerUsername: invoice.payouts[0]?.profile.user.username || "",
-            influencerId: invoice.payouts[0]?.profile.id || -1,
+            influencerId: invoice.payouts[0]?.profile.id || "",
             status: invoice?.payoutInvoiceStatus?.name || "",
           };
         })
@@ -124,9 +124,9 @@ const AdminPayoutsPage = () => {
             invoice.createdAt,
             i18n.language
           ),
-          verficator: invoice.payoutSolver?.username || "",
+          verficator: "",
           influencerUsername: invoice.payouts[0]?.profile.user.username || "",
-          influencerId: invoice.payouts[0]?.profile.id || -1,
+          influencerId: invoice.payouts[0]?.profile.id || "",
           status: invoice?.payoutInvoiceStatus?.name || "",
         });
       });
@@ -145,12 +145,12 @@ const AdminPayoutsPage = () => {
   const clearFilters = () => {
     void ctx.payoutInvoices.getPayoutsInvoice.reset();
     void ctx.payoutInvoices.getPayoutsInvoiceCursor.reset();
-    setProfileId(-1);
+    setProfileId("");
     resetField("searchProfileId");
   };
 
   const handleSearch = handleSubmit((data) => {
-    setProfileId(Number(data.searchProfileId));
+    setProfileId(data.searchProfileId);
   });
 
   const renderPayouts = () => {

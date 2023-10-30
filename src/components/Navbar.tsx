@@ -46,7 +46,7 @@ export const Navbar = (params: {
   sessionData: Session | null;
   openLoginModal: () => void;
   setIsSignUp: (isSignUp: boolean) => void;
-  loggedInProfileId: number;
+  loggedInProfileId: string;
 }) => {
   const { t } = useTranslation();
   const router = useRouter();
@@ -162,7 +162,7 @@ export const Navbar = (params: {
         </Link>
 
         <div className="group relative flex px-2">
-          {params.loggedInProfileId === -1 && (
+          {params.loggedInProfileId === "" && (
             <div className="flex items-center gap-2">
               <Link
                 href="/explore/influencers"
@@ -172,7 +172,7 @@ export const Navbar = (params: {
               </Link>
             </div>
           )}
-          {params.sessionData && params.loggedInProfileId !== -1 && (
+          {params.sessionData && params.loggedInProfileId !== "" && (
             <div
               className="flex items-center gap-2"
               onClick={() => setOpenExploreDropdown(!openExploreDropdown)}
@@ -188,7 +188,7 @@ export const Navbar = (params: {
             </div>
           )}
           {params.sessionData &&
-            params.loggedInProfileId !== -1 &&
+            params.loggedInProfileId !== "" &&
             openExploreDropdown && (
               <div className="absolute left-[-13px] top-7 z-50 flex flex-col justify-center rounded-lg bg-white shadow-md">
                 <Link
@@ -209,7 +209,7 @@ export const Navbar = (params: {
               </div>
             )}
         </div>
-        {params.sessionData && params.loggedInProfileId !== -1 && (
+        {params.sessionData && params.loggedInProfileId !== "" && (
           <>
             <div className="group relative flex px-2">
               <div
@@ -290,7 +290,7 @@ export const Navbar = (params: {
                 </div>
               </div>
             )}
-            {params.loggedInProfileId !== -1 && (
+            {params.loggedInProfileId !== "" && (
               <>
                 <div
                   className="relative"
@@ -348,10 +348,10 @@ export const Navbar = (params: {
           />
         </div>
         {toggleOptions &&
-          params.loggedInProfileId !== -1 &&
+          params.loggedInProfileId !== "" &&
           optionsDropdownAuthenticated()}
         {toggleOptions &&
-          params.loggedInProfileId === -1 &&
+          params.loggedInProfileId === "" &&
           optionsDropdownAuthenticatedWithoutProfile()}
         {openHelpCenter && (
           <HelpCenter close={() => setOPenHelpCenter(false)} />

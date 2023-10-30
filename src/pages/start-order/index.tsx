@@ -34,7 +34,7 @@ const StartOrder: NextPage<StartOrderProps> = ({ valuePacks, profileId }) => {
           {() => (
             <StartOrderPage
               valuePacks={parsedValuePacks}
-              orderProfileId={parseInt(profileId)}
+              orderProfileId={profileId}
             />
           )}
         </Layout>

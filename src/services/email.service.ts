@@ -31,7 +31,7 @@ type EmailActions =
       toInfluencerEmail: string;
       influencerLanguage: string;
       orderId: number;
-      receiverProfileId: number;
+      receiverProfileId: string;
     }
   | {
       action: "buyerConfirmedEmail";
@@ -40,7 +40,7 @@ type EmailActions =
       toInfluencerEmail: string;
       influencerLanguage: string;
       orderId: number;
-      receiverProfileId: number;
+      receiverProfileId: string;
     }
   | {
       action: "buyerOpensDisputeToInfluencerEmail";
@@ -49,7 +49,7 @@ type EmailActions =
       toInfluencerEmail: string;
       influencerLanguage: string;
       orderId: number;
-      receiverProfileId: number;
+      receiverProfileId: string;
     }
   | {
       action: "buyerOpenedDisputeToOurInboxEmail";
@@ -66,7 +66,7 @@ type EmailActions =
       toBuyer: string;
       buyerLanguage: string;
       orderId: number;
-      receiverProfileId: number;
+      receiverProfileId: string;
     }
   | {
       action: "buyerReviewedOrderEmail";
@@ -75,7 +75,7 @@ type EmailActions =
       toInfluencerEmail: string;
       influencerLanguage: string;
       orderId: number;
-      receiverProfileId: number;
+      receiverProfileId: string;
     }
   | {
       action: "contactUsEmail";
@@ -93,7 +93,7 @@ type EmailActions =
       toBuyer: string;
       buyerLanguage: string;
       orderId: number;
-      receiverProfileId: number;
+      receiverProfileId: string;
     }
   | {
       action: "influencerDeliveredOrderEmail";
@@ -102,7 +102,7 @@ type EmailActions =
       toBuyer: string;
       buyerLanguage: string;
       orderId: number;
-      receiverProfileId: number;
+      receiverProfileId: string;
     }
   | {
       action: "influencerMarktConfirmEmail";
@@ -110,7 +110,7 @@ type EmailActions =
       to: string;
       language: string;
       orderId: number;
-      receiverProfileId: number;
+      receiverProfileId: string;
     }
   | {
       action: "influencerOrderWasRectified";
@@ -118,11 +118,11 @@ type EmailActions =
       toInfluencer: string;
       influencerLanguage: string;
       orderId: number;
-      receiverProfileId: number;
+      receiverProfileId: string;
     }
   | {
       action: "newMessageOrderEmail";
-      receiverProfileId: number;
+      receiverProfileId: string;
     }
   | {
       action: "newOrderEmail";
@@ -131,7 +131,7 @@ type EmailActions =
       toInfluencer: string;
       influencerLanguage: string;
       orderId: number;
-      receiverProfileId: number;
+      receiverProfileId: string;
     }
   | {
       action: "toBuyerDeliveryIsTomorrowEmail";
@@ -140,7 +140,7 @@ type EmailActions =
       toBuyer: string;
       buyerLanguage: string;
       orderId: number;
-      receiverProfileId: number;
+      receiverProfileId: string;
     }
   | {
       action: "toBuyerInfluencerIsRightEmail";
@@ -149,7 +149,7 @@ type EmailActions =
       toBuyer: string;
       buyerLanguage: string;
       orderId: number;
-      receiverProfileId: number;
+      receiverProfileId: string;
     }
   | {
       action: "toBuyerInfluencerIsWrongEmail";
@@ -158,7 +158,7 @@ type EmailActions =
       toBuyer: string;
       buyerLanguage: string;
       orderId: number;
-      receiverProfileId: number;
+      receiverProfileId: string;
     }
   | {
       action: "toBuyerOrderOnHoldEmail";
@@ -167,7 +167,7 @@ type EmailActions =
       toBuyer: string;
       buyerLanguage: string;
       orderId: number;
-      receiverProfileId: number;
+      receiverProfileId: string;
     }
   | {
       action: "toInfluencerDeliveryIsTomorrowEmail";
@@ -176,7 +176,7 @@ type EmailActions =
       toInfluencerEmail: string;
       influencerLanguage: string;
       orderId: number;
-      receiverProfileId: number;
+      receiverProfileId: string;
     }
   | {
       action: "toInfluencerInfluencerIsRightEmail";
@@ -185,7 +185,7 @@ type EmailActions =
       toInfluencerEmail: string;
       influencerLanguage: string;
       orderId: number;
-      receiverProfileId: number;
+      receiverProfileId: string;
     }
   | {
       action: "toInfluencerInfluencerIsWrongEmail";
@@ -194,7 +194,7 @@ type EmailActions =
       toInfluencerEmail: string;
       influencerLanguage: string;
       orderId: number;
-      receiverProfileId: number;
+      receiverProfileId: string;
     }
   | {
       action: "toInfluencerOnHoldtoPostponed";
@@ -203,7 +203,7 @@ type EmailActions =
       toInfluencerEmail: string;
       influencerLanguage: string;
       orderId: number;
-      receiverProfileId: number;
+      receiverProfileId: string;
     }
   | {
       action: "toInfluencerOrderOnHoldEmail";
@@ -212,7 +212,7 @@ type EmailActions =
       toInfluencerEmail: string;
       influencerLanguage: string;
       orderId: number;
-      receiverProfileId: number;
+      receiverProfileId: string;
     }
   | {
       action: "toInfluencerOrderOnHoldToRefund";
@@ -221,7 +221,7 @@ type EmailActions =
       toInfluencerEmail: string;
       influencerLanguage: string;
       orderId: number;
-      receiverProfileId: number;
+      receiverProfileId: string;
     }
   | {
       action: "weReceivedContactEmail";
@@ -234,8 +234,8 @@ type EmailActions =
       language: string;
     };
 
-const checkIfIsDisabled = async (profileId: number) => {
-  if (profileId === -1) return true;
+const checkIfIsDisabled = async (profileId: string) => {
+  if (profileId === "") return true;
 
   const user = await prisma.user.findFirst({
     where: {

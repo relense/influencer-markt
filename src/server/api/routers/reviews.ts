@@ -5,7 +5,7 @@ export const reviewsRouter = createTRPCRouter({
   createReview: protectedProcedure
     .input(
       z.object({
-        profileReviewdId: z.number(),
+        profileReviewdId: z.string(),
         rating: z.number(),
         review: z.string(),
         orderId: z.number(),
@@ -36,7 +36,7 @@ export const reviewsRouter = createTRPCRouter({
   getProfileReviews: publicProcedure
     .input(
       z.object({
-        profileId: z.number(),
+        profileId: z.string(),
       })
     )
     .query(async ({ ctx, input }) => {
@@ -86,7 +86,7 @@ export const reviewsRouter = createTRPCRouter({
   getProfileReviewsWithCursor: publicProcedure
     .input(
       z.object({
-        profileId: z.number(),
+        profileId: z.string(),
         cursor: z.number(),
       })
     )
@@ -128,7 +128,7 @@ export const reviewsRouter = createTRPCRouter({
   getAverageReviewsRating: protectedProcedure
     .input(
       z.object({
-        profileId: z.number(),
+        profileId: z.string(),
       })
     )
     .query(async ({ ctx, input }) => {

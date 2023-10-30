@@ -51,14 +51,14 @@ const AdminManageDisputesPage = (params: { disputeId: number }) => {
           void createPayout({ orderId: orderData.id });
           void createNotification({
             entityId: orderData.id,
-            notifierId: order?.buyerId || -1,
-            senderId: order?.influencerId || -1,
+            notifierId: order?.buyerId || "",
+            senderId: order?.influencerId || "",
             entityAction: "orderBuyerLostDispute",
           });
           void createNotification({
             entityId: orderData.id,
-            notifierId: order?.influencerId || -1,
-            senderId: order?.buyerId || -1,
+            notifierId: order?.influencerId || "",
+            senderId: order?.buyerId || "",
             entityAction: "orderInfluencerWonDispute",
           });
           void ctx.orders.getOrderByDisputeId.invalidate();
@@ -74,14 +74,14 @@ const AdminManageDisputesPage = (params: { disputeId: number }) => {
       setOpenBuyerIsRightModal(false);
       void createNotification({
         entityId: orderData.id,
-        notifierId: order?.influencerId || -1,
-        senderId: order?.buyerId || -1,
+        notifierId: order?.influencerId || "",
+        senderId: order?.buyerId || "",
         entityAction: "orderInfluencerLostDispute",
       });
       void createNotification({
         entityId: orderData.id,
-        notifierId: order?.buyerId || -1,
-        senderId: order?.influencerId || -1,
+        notifierId: order?.buyerId || "",
+        senderId: order?.influencerId || "",
         entityAction: "orderBuyerWonDispute",
       });
       void ctx.orders.getOrderByDisputeId.invalidate();
@@ -134,15 +134,15 @@ const AdminManageDisputesPage = (params: { disputeId: number }) => {
       if (order) {
         void createNotification({
           entityId: order.id,
-          notifierId: order?.influencerId || -1,
-          senderId: order?.buyerId || -1,
+          notifierId: order?.influencerId || "",
+          senderId: order?.buyerId || "",
           entityAction: "orderRectifiedInfluencer",
         });
 
         void createNotification({
           entityId: order.id,
-          notifierId: order?.buyerId || -1,
-          senderId: order?.influencerId || -1,
+          notifierId: order?.buyerId || "",
+          senderId: order?.influencerId || "",
           entityAction: "orderRectifiedBuyer",
         });
 

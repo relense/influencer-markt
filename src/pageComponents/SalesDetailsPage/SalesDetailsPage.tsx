@@ -39,8 +39,8 @@ const SalesDetailsPage = (params: { orderId: number }) => {
       onSuccess: () => {
         void createNotification({
           entityId: params.orderId,
-          senderId: sale?.influencerId || -1,
-          notifierId: sale?.buyerId || -1,
+          senderId: sale?.influencerId || "",
+          notifierId: sale?.buyerId || "",
           entityAction: "orderAccepted",
         });
         void ctx.orders.getSaleOrder.invalidate().then(() => {
@@ -57,8 +57,8 @@ const SalesDetailsPage = (params: { orderId: number }) => {
       onSuccess: () => {
         void createNotification({
           entityId: params.orderId,
-          senderId: sale?.influencerId || -1,
-          notifierId: sale?.buyerId || -1,
+          senderId: sale?.influencerId || "",
+          notifierId: sale?.buyerId || "",
           entityAction: "orderRejected",
         });
         void ctx.orders.getSaleOrder.invalidate();
@@ -70,8 +70,8 @@ const SalesDetailsPage = (params: { orderId: number }) => {
       onSuccess: () => {
         void createNotification({
           entityId: params.orderId,
-          senderId: sale?.influencerId || -1,
-          notifierId: sale?.buyerId || -1,
+          senderId: sale?.influencerId || "",
+          notifierId: sale?.buyerId || "",
           entityAction: "saleCanceled",
         });
         void ctx.orders.getSaleOrder.invalidate();
@@ -83,9 +83,9 @@ const SalesDetailsPage = (params: { orderId: number }) => {
       onSuccess: () => {
         setShowDeliverModal(false);
         void createNotification({
-          senderId: sale?.influencerId || -1,
+          senderId: sale?.influencerId || "",
           entityId: params.orderId,
-          notifierId: sale?.buyerId || -1,
+          notifierId: sale?.buyerId || "",
           entityAction: "orderDelivered",
         });
         void ctx.orders.getSaleOrder.invalidate();
@@ -509,8 +509,8 @@ const SalesDetailsPage = (params: { orderId: number }) => {
             <div className="flex flex-1 flex-col gap-4">
               {renderSalesDetails()}
               <MessageBoard
-                receiverId={sale?.buyerId || -1}
-                senderId={sale?.influencerId || -1}
+                receiverId={sale?.buyerId || ""}
+                senderId={sale?.influencerId || ""}
                 orderId={params.orderId}
                 orderStatusId={sale?.orderStatusId || -1}
               />

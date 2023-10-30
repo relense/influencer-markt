@@ -51,23 +51,22 @@ model VerificationToken {
 }
 
 model User {
-  id                        String          @id @default(cuid())
+  id                        String    @id @default(cuid())
   name                      String?
-  email                     String?         @unique
+  email                     String?   @unique
   emailVerified             DateTime?
   image                     String?
-  firstSteps                Boolean?        @default(false)
-  username                  String?         @unique
-  role                      Role?           @relation(fields: [roleId], references: [id])
-  userType                  String          @default("user")
-  isOver18                  Boolean         @default(false)
-  showWelcomeModal          Boolean         @default(true)
-  disableEmailNotifications Boolean         @default(false)
-  disableAppNotifications   Boolean         @default(false)
+  firstSteps                Boolean?  @default(false)
+  username                  String?   @unique
+  role                      Role?     @relation(fields: [roleId], references: [id])
+  userType                  String    @default("user")
+  isOver18                  Boolean   @default(false)
+  showWelcomeModal          Boolean   @default(true)
+  disableEmailNotifications Boolean   @default(false)
+  disableAppNotifications   Boolean   @default(false)
   accounts                  Account[]
   sessions                  Session[]
   profile                   Profile?
-  payoutsResolved           PayoutInvoice[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -77,9 +76,33 @@ model User {
   @@index([roleId])
 }
 
+model AdminSession {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  adminId      String
+  expires      DateTime
+  admin        Admin    @relation(fields: [adminId], references: [id], onDelete: Cascade)
+
+  @@index([adminId])
+}
+
+model Admin {
+  id              String          @id @default(cuid())
+  name            String?
+  email           String?         @unique
+  emailVerified   DateTime?
+  image           String?
+  userType        String          @default("admin")
+  adminSessions   AdminSession[]
+  payoutsResolved PayoutInvoice[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
 //App data
 model Profile {
-  id                     Int               @id @default(autoincrement())
+  id                     String            @id @default(cuid())
   profilePicture         String            @db.Text
   profilePictureBlobName String            @db.Text
   name                   String            @db.Text
@@ -187,7 +210,7 @@ model Portfolio {
   blobName String   @db.Text
   profile  Profile? @relation(fields: [profileId], references: [id])
 
-  profileId Int?
+  profileId String?
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -205,7 +228,7 @@ model UserSocialMedia {
   valuePacks  ValuePack[]
 
   socialMediaId Int
-  profileId     Int?
+  profileId     String?
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -225,8 +248,8 @@ model Review {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  profileReviewdId Int?
-  authorId         Int?
+  profileReviewdId String?
+  authorId         String?
   orderId          Int?
 
   @@index([profileReviewdId])
@@ -340,8 +363,8 @@ model Job {
   countryId     Int
   genderId      Int?
   stateId       Int?
-  profileId     Int
-  jobStatusId   Int  @default(1)
+  profileId     String
+  jobStatusId   Int    @default(1)
 
   @@index([socialMediaId])
   @@index([countryId])
@@ -404,12 +427,12 @@ model Order {
   refund                      Refund?
   discount                    CreditTransaction?
 
-  influencerId  Int?
-  buyerId       Int?
+  influencerId  String?
+  buyerId       String?
   countryId     Int?
   orderStatusId Int?
   socialMediaId Int?
-  reviewId      Int? @unique
+  reviewId      Int?    @unique
   jobId         Int?
   disputeId     Int?
 
@@ -473,8 +496,8 @@ model Notification {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  actorId              Int
-  notifierId           Int
+  actorId              String
+  notifierId           String
   notificationTypeId   Int
   notificationStatusId Int
 
@@ -494,8 +517,8 @@ model Message {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  senderId   Int
-  receiverId Int
+  senderId   String
+  receiverId String
   orderId    Int
 
   @@index([senderId])
@@ -540,7 +563,7 @@ model Billing {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  profileId Int @unique
+  profileId String @unique
 
   @@index([profileId])
 }
@@ -565,7 +588,7 @@ model Invoice {
   updatedAt DateTime @updatedAt
 
   orderId           Int     @unique
-  profileId         Int
+  profileId         String
   invoiceBlobDataId String? @unique
 
   @@index([orderId])
@@ -601,8 +624,8 @@ model Payout {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  orderId           Int     @unique
-  profileId         Int
+  orderId         Int     @unique
+  profileId       String
   payoutInvoiceId String?
 
   @@index([orderId])
@@ -618,22 +641,22 @@ model PayoutInvoiceStatus {
 }
 
 model PayoutInvoice {
-  id                        String               @id @default(cuid())
-  influencerInvoice         String               @db.Text
-  influencerInvoiceBlobName String               @db.Text
-  payoutSolver              User?                @relation(fields: [userId], references: [id])
-  payoutInvoiceStatus       PayoutInvoiceStatus? @relation(fields: [payoutInvoiceStatusId], references: [id])
+  id                        String              @id @default(cuid())
+  influencerInvoice         String              @db.Text
+  influencerInvoiceBlobName String              @db.Text
+  adminPayoutSolver         Admin?              @relation(fields: [adminId], references: [id])
+  payoutInvoiceStatus       PayoutInvoiceStatus @relation(fields: [payoutInvoiceStatusId], references: [id])
 
   payouts Payout[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  userId                String?
-  payoutInvoiceStatusId Int?
+  payoutInvoiceStatusId Int
+  adminId               String?
 
-  @@index([userId])
   @@index([payoutInvoiceStatusId])
+  @@index([adminId])
 }
 
 model Payment {
@@ -678,7 +701,7 @@ model Credit {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  profileId Int @unique
+  profileId String @unique
 
   @@index([profileId])
 }

@@ -21,7 +21,7 @@ export const PayoutInvoicesRouter = createTRPCRouter({
     .input(
       z.object({
         payoutInvoiceStatusId: z.number(),
-        profileId: z.number(),
+        profileId: z.string(),
       })
     )
     .query(async ({ ctx, input }) => {
@@ -34,7 +34,7 @@ export const PayoutInvoicesRouter = createTRPCRouter({
                 : undefined,
             payouts: {
               every: {
-                profileId: input.profileId !== -1 ? input.profileId : undefined,
+                profileId: input.profileId !== "" ? input.profileId : undefined,
               },
             },
           },
@@ -47,7 +47,7 @@ export const PayoutInvoicesRouter = createTRPCRouter({
                 : undefined,
             payouts: {
               every: {
-                profileId: input.profileId !== -1 ? input.profileId : undefined,
+                profileId: input.profileId !== "" ? input.profileId : undefined,
               },
             },
           },
@@ -56,11 +56,6 @@ export const PayoutInvoicesRouter = createTRPCRouter({
           select: {
             id: true,
             createdAt: true,
-            payoutSolver: {
-              select: {
-                username: true,
-              },
-            },
             payoutInvoiceStatus: {
               select: {
                 name: true,
@@ -94,7 +89,7 @@ export const PayoutInvoicesRouter = createTRPCRouter({
       z.object({
         cursor: z.string(),
         payoutInvoiceStatusId: z.number(),
-        profileId: z.number(),
+        profileId: z.string(),
       })
     )
     .query(async ({ ctx, input }) => {
@@ -106,7 +101,7 @@ export const PayoutInvoicesRouter = createTRPCRouter({
               : undefined,
           payouts: {
             every: {
-              profileId: input.profileId !== -1 ? input.profileId : undefined,
+              profileId: input.profileId !== "" ? input.profileId : undefined,
             },
           },
         },
@@ -118,11 +113,6 @@ export const PayoutInvoicesRouter = createTRPCRouter({
         select: {
           id: true,
           createdAt: true,
-          payoutSolver: {
-            select: {
-              username: true,
-            },
-          },
           payoutInvoiceStatus: {
             select: {
               name: true,
@@ -149,4 +139,10 @@ export const PayoutInvoicesRouter = createTRPCRouter({
         },
       });
     }),
+
+  // updatePayoutAddSolver: protectedProcedure.input(z.object({
+
+  // })).mutation(async ({ctx, input}) => {
+
+  // })
 });

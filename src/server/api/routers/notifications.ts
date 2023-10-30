@@ -28,10 +28,10 @@ type Actions =
   | "toInfluencerOrderOnHoldToConfirm";
 
 const createNotification = async (params: {
-  notifierId: number;
+  notifierId: string;
   entityId: number;
   entityAction: Actions;
-  senderId?: number;
+  senderId?: string;
 }) => {
   const { notifierId, entityId, entityAction, senderId } = params;
 
@@ -103,9 +103,9 @@ export const NotificationsRouter = createTRPCRouter({
   createNotification: protectedProcedure
     .input(
       z.object({
-        notifierId: z.number(),
+        notifierId: z.string(),
         entityId: z.number(),
-        senderId: z.number().optional(),
+        senderId: z.string().optional(),
         entityAction: z.union([
           z.literal("awaitingOrderReply"),
           z.literal("orderRejected"),

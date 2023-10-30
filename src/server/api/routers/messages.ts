@@ -5,7 +5,7 @@ export const MessagesRouter = createTRPCRouter({
   createMessage: protectedProcedure
     .input(
       z.object({
-        receiverId: z.number(),
+        receiverId: z.string(),
         message: z.string(),
         orderId: z.number(),
       })

@@ -897,7 +897,7 @@ export const JobsRouter = createTRPCRouter({
     .input(
       z.object({
         jobId: z.number(),
-        profileId: z.number(),
+        profileId: z.string(),
       })
     )
     .mutation(async ({ ctx, input }) => {
@@ -914,7 +914,7 @@ export const JobsRouter = createTRPCRouter({
     .input(
       z.object({
         jobId: z.number(),
-        profileId: z.number(),
+        profileId: z.string(),
       })
     )
     .mutation(async ({ ctx, input }) => {
@@ -931,7 +931,7 @@ export const JobsRouter = createTRPCRouter({
     .input(
       z.object({
         jobId: z.number(),
-        profileId: z.number(),
+        profileId: z.string(),
       })
     )
     .mutation(async ({ ctx, input }) => {
@@ -948,7 +948,7 @@ export const JobsRouter = createTRPCRouter({
     .input(
       z.object({
         jobId: z.number(),
-        profileId: z.number(),
+        profileId: z.string(),
       })
     )
     .mutation(async ({ ctx, input }) => {
@@ -965,7 +965,7 @@ export const JobsRouter = createTRPCRouter({
     .input(
       z.object({
         jobId: z.number(),
-        profileId: z.number(),
+        profileId: z.string(),
       })
     )
     .mutation(async ({ ctx, input }) => {
@@ -993,7 +993,7 @@ export const JobsRouter = createTRPCRouter({
   getProfileJobs: publicProcedure
     .input(
       z.object({
-        profileId: z.number(),
+        profileId: z.string(),
       })
     )
     .query(async ({ ctx, input }) => {
@@ -1036,7 +1036,7 @@ export const JobsRouter = createTRPCRouter({
   getProfileJobsCursor: publicProcedure
     .input(
       z.object({
-        profileId: z.number(),
+        profileId: z.string(),
         cursor: z.number(),
       })
     )

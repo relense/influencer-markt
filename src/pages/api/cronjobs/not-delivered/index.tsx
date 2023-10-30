@@ -76,7 +76,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
               influencerLanguage:
                 udpatedOrder.influencer?.country?.languageCode || "en",
               orderId: udpatedOrder.id,
-              receiverProfileId: udpatedOrder.influencerId || -1,
+              receiverProfileId: udpatedOrder.influencerId || "",
             });
             //send buyer email
             await sendEmail({
@@ -86,18 +86,18 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
               toBuyer: udpatedOrder.buyer?.user.email || "",
               buyerLanguage: udpatedOrder.buyer?.country?.languageCode || "en",
               orderId: udpatedOrder.id,
-              receiverProfileId: udpatedOrder.buyerId || -1,
+              receiverProfileId: udpatedOrder.buyerId || "",
             });
             await createNotification({
               entityId: udpatedOrder.id,
-              senderId: udpatedOrder.buyerId || -1,
-              notifierId: udpatedOrder?.influencerId || -1,
+              senderId: udpatedOrder.buyerId || "",
+              notifierId: udpatedOrder?.influencerId || "",
               entityAction: "toInfluencerOrderOnHold",
             });
             await createNotification({
               entityId: udpatedOrder.id,
-              senderId: udpatedOrder?.influencerId || -1,
-              notifierId: udpatedOrder?.buyerId || -1,
+              senderId: udpatedOrder?.influencerId || "",
+              notifierId: udpatedOrder?.buyerId || "",
               entityAction: "toBuyerOrderOnHold",
             });
           }

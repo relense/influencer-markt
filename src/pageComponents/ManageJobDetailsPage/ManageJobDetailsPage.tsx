@@ -32,7 +32,7 @@ import dayjs from "dayjs";
 import { ToolTip } from "../../components/ToolTip";
 
 type ApplicantsProfile = {
-  id: number;
+  id: string;
   profilePicture: string;
   socialMedia: UserSocialMedia[];
   name: string;
@@ -41,14 +41,14 @@ type ApplicantsProfile = {
   country: { id: number; name: string; countryTax: number };
   username: string;
   bookmarked?: boolean;
-  favoritedBy?: number[];
+  favoritedBy?: string[];
   activeJobs?: number;
   orderId?: number;
 };
 
 const ManageJobDetailsPage = (params: {
   jobId: number;
-  loggedInProfileId: number;
+  loggedInProfileId: string;
 }) => {
   const { t, i18n } = useTranslation();
   const dropdownRef = useRef(null);
@@ -188,7 +188,7 @@ const ManageJobDetailsPage = (params: {
           createNotification({
             entityId: order.id,
             entityAction: "awaitingOrderReply",
-            senderId: order?.buyerId || -1,
+            senderId: order?.buyerId || "",
             notifierId: order.influencerId,
           });
 
@@ -456,7 +456,7 @@ const ManageJobDetailsPage = (params: {
     void deleteJobMutation({ jobId: jobId });
   };
 
-  const onAcceptedApplicant = (profileId: number) => {
+  const onAcceptedApplicant = (profileId: string) => {
     const newApplicantsArray = [...applicants];
     const newAcceptedApplicantsArray = [...acceptedApplicants];
 
@@ -480,7 +480,7 @@ const ManageJobDetailsPage = (params: {
     }
   };
 
-  const onRejectApplicant = (profileId: number) => {
+  const onRejectApplicant = (profileId: string) => {
     const newApplicantsArray = [...applicants];
     const newRejectApplicantsArray = [...rejectedApplicants];
 
@@ -508,7 +508,7 @@ const ManageJobDetailsPage = (params: {
     }
   };
 
-  const onRemoveFromAccepted = (profileId: number) => {
+  const onRemoveFromAccepted = (profileId: string) => {
     const newApplicantsArray = [...applicants];
     const newAcceptedApplicantsArray = [...acceptedApplicants];
 
@@ -535,7 +535,7 @@ const ManageJobDetailsPage = (params: {
     }
   };
 
-  const onRemoveFromRejected = (profileId: number) => {
+  const onRemoveFromRejected = (profileId: string) => {
     const newApplicantsArray = [...applicants];
     const newRejectApplicantsArray = [...rejectedApplicants];
 

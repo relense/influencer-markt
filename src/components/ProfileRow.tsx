@@ -26,7 +26,7 @@ import {
 } from "@fortawesome/free-brands-svg-icons";
 
 const ProfileRow = (params: {
-  id: number;
+  id: string;
   profilePicture: string;
   socialMedia: UserSocialMedia[];
   name: string;
@@ -68,7 +68,7 @@ const ProfileRow = (params: {
     },
   });
 
-  const onClickBookmark = (profileId: number) => {
+  const onClickBookmark = (profileId: string) => {
     if (params.onHandleBookmark) {
       params.onHandleBookmark();
     }

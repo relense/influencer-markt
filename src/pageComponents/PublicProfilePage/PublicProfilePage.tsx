@@ -49,7 +49,7 @@ import { Reviews } from "./innerComponents/Reviews";
 const PublicProfilePage = (params: {
   username: string;
   openLoginModal: () => void;
-  loggedInProfileId: number;
+  loggedInProfileId: string;
 }) => {
   const ctx = api.useContext();
   const { t } = useTranslation();
@@ -82,7 +82,7 @@ const PublicProfilePage = (params: {
     isLoading: isLoadingJobsData,
     isFetching: isFetchingJobsData,
   } = api.jobs.getProfileJobs.useQuery({
-    profileId: profile?.id || -1,
+    profileId: profile?.id || "",
   });
 
   const {
@@ -91,7 +91,7 @@ const PublicProfilePage = (params: {
     refetch: isRefetchingJobsWithCursor,
   } = api.jobs.getProfileJobsCursor.useQuery(
     {
-      profileId: profile?.id || -1,
+      profileId: profile?.id || "",
       cursor: jobsCursor,
     },
     {
@@ -153,7 +153,7 @@ const PublicProfilePage = (params: {
   }, [profile?.portfolio]);
 
   useEffect(() => {
-    if (params.loggedInProfileId !== -1) {
+    if (params.loggedInProfileId !== "") {
       const isFavorited = profile?.favoriteBy.find(
         (profile) => params.loggedInProfileId === profile.id
       );
@@ -225,14 +225,14 @@ const PublicProfilePage = (params: {
     setIsReviewModalOpen(false);
   };
 
-  const handleBookmark = (profileId: number) => {
+  const handleBookmark = (profileId: string) => {
     if (status === "unauthenticated") {
       params.openLoginModal();
-    } else if (status === "authenticated" && params.loggedInProfileId === -1) {
+    } else if (status === "authenticated" && params.loggedInProfileId === "") {
       toast.error(t("pages.publicProfilePage.bookmarkWarning"), {
         position: "bottom-left",
       });
-    } else if (status === "authenticated" && params.loggedInProfileId !== -1) {
+    } else if (status === "authenticated" && params.loggedInProfileId !== "") {
       updateFavorites({ profileId });
       setIsBookmarked(!isBookmarked);
     }
@@ -626,7 +626,7 @@ const PublicProfilePage = (params: {
           {renderHeader()}
           {renderMiddleContent()}
           <Reviews
-            profileId={profile?.id || -1}
+            profileId={profile?.id || ""}
             openReviewModal={openReviewModal}
           />
         </div>

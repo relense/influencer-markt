@@ -63,7 +63,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
           to: updatedOrder.influencer?.user.email || "",
           language: updatedOrder.influencer?.country?.languageCode || "en",
           orderId: updatedOrder.id,
-          receiverProfileId: updatedOrder.influencerId || -1,
+          receiverProfileId: updatedOrder.influencerId || "",
         });
 
         await sendEmail({
@@ -72,20 +72,20 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
           to: updatedOrder.buyer?.user.email || "",
           language: updatedOrder.buyer?.country?.languageCode || "en",
           orderId: updatedOrder.id,
-          receiverProfileId: updatedOrder.buyerId || -1,
+          receiverProfileId: updatedOrder.buyerId || "",
         });
 
         await createNotification({
           entityId: updatedOrder.id,
-          senderId: updatedOrder.buyerId || -1,
-          notifierId: updatedOrder?.influencerId || -1,
+          senderId: updatedOrder.buyerId || "",
+          notifierId: updatedOrder?.influencerId || "",
           entityAction: "toInfluencerConfirmByInfluencerMakrt",
         });
 
         await createNotification({
           entityId: updatedOrder.id,
-          senderId: updatedOrder?.influencerId || -1,
-          notifierId: updatedOrder?.buyerId || -1,
+          senderId: updatedOrder?.influencerId || "",
+          notifierId: updatedOrder?.buyerId || "",
           entityAction: "toBuyerConfirmByInfluencerMakrt",
         });
 

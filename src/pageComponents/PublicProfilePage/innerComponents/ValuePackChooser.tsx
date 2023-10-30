@@ -20,8 +20,8 @@ const ValuePackChooser = (params: {
   onChangePlatform: (option: Option) => void;
   selectedValuePacks: ValuePack[];
   onSelecteValuePack: (valuePack: ValuePack) => void;
-  profileId: number;
-  loggedInProfileId: number;
+  profileId: string;
+  loggedInProfileId: string;
   openLoginModal: () => void;
   profileCountryTax: number;
 }) => {
@@ -147,7 +147,7 @@ const ValuePackChooser = (params: {
             pathname: "/start-order",
             query: {
               valuePacks: JSON.stringify(params.selectedValuePacks),
-              profileId: JSON.stringify(params.profileId || ""),
+              profileId: params.profileId || "",
             },
           }}
         >

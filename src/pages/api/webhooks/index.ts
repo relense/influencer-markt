@@ -108,8 +108,8 @@ const webhookHandler = async (req: NextApiRequest, res: NextApiResponse) => {
 
             await createNotification({
               entityId: order.id,
-              senderId: order.buyerId || -1,
-              notifierId: order?.influencerId || -1,
+              senderId: order.buyerId || "",
+              notifierId: order?.influencerId || "",
               entityAction: "orderPaymentsAdded",
             });
 
@@ -122,7 +122,7 @@ const webhookHandler = async (req: NextApiRequest, res: NextApiResponse) => {
                 influencerLanguage:
                   order.influencer?.country?.languageCode || "en",
                 orderId: order.id,
-                receiverProfileId: order.influencerId || -1,
+                receiverProfileId: order.influencerId || "",
               });
             }
           }

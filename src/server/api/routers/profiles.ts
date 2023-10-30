@@ -173,7 +173,7 @@ export const profilesRouter = createTRPCRouter({
   getAllInfluencersProfileCursor: publicProcedure
     .input(
       z.object({
-        cursor: z.number(),
+        cursor: z.string(),
         categories: z.array(z.number()),
         socialMedia: z.array(z.number()),
         country: z.number(),
@@ -404,7 +404,7 @@ export const profilesRouter = createTRPCRouter({
   getAllBrandsProfilesCursor: publicProcedure
     .input(
       z.object({
-        cursor: z.number(),
+        cursor: z.string(),
         categories: z.array(z.number()),
         socialMedia: z.array(z.number()),
         country: z.number(),
@@ -776,36 +776,39 @@ export const profilesRouter = createTRPCRouter({
       });
 
       if (profile) {
-        const containerClient = bloblService.getContainerClient(
-          process.env.AZURE_CONTAINER_NAME || ""
-        );
-
-        if (profile.profilePictureBlobName) {
-          const blockBlobClient = containerClient.getBlockBlobClient(
-            profile.profilePictureBlobName
+        if (!input.profilePicture.includes("https")) {
+          const containerClient = bloblService.getContainerClient(
+            process.env.AZURE_CONTAINER_NAME || ""
           );
 
-          await blockBlobClient.deleteIfExists({
-            deleteSnapshots: "include",
-          });
-        }
+          if (profile.profilePictureBlobName) {
+            const blockBlobClient = containerClient.getBlockBlobClient(
+              profile.profilePictureBlobName
+            );
 
-        try {
-          const blobName = `${Date.now()}-${uuidv4()}-profile:${profile.id}`;
-          const blockBlobClient = containerClient.getBlockBlobClient(blobName);
-          const matches = input.profilePicture.match(
-            /^data:([A-Za-z-+\/]+);base64,(.+)$/
-          );
-
-          if (matches && matches[2]) {
-            const type = matches[1];
-            const base64Buffer = Buffer.from(matches[2], "base64");
-
-            await blockBlobClient.uploadData(base64Buffer, {
-              blobHTTPHeaders: {
-                blobContentType: type,
-              },
+            await blockBlobClient.deleteIfExists({
+              deleteSnapshots: "include",
             });
+          }
+
+          try {
+            const blobName = `${Date.now()}-${uuidv4()}-profilePicture`;
+            const blockBlobClient =
+              containerClient.getBlockBlobClient(blobName);
+            const matches = input.profilePicture.match(
+              /^data:([A-Za-z-+\/]+);base64,(.+)$/
+            );
+
+            if (matches && matches[2]) {
+              const type = matches[1];
+              const base64Buffer = Buffer.from(matches[2], "base64");
+
+              await blockBlobClient.uploadData(base64Buffer, {
+                blobHTTPHeaders: {
+                  blobContentType: type,
+                },
+              });
+            }
 
             await ctx.prisma.profile.update({
               where: {
@@ -828,10 +831,29 @@ export const profilesRouter = createTRPCRouter({
                 profilePictureBlobName: blobName,
               },
             });
+          } catch (error) {
+            console.error("Error uploading file:", error);
+            throw new Error("Error uploading file");
           }
-        } catch (error) {
-          console.error("Error uploading file:", error);
-          throw new Error("Error uploading file");
+        } else {
+          await ctx.prisma.profile.update({
+            where: {
+              userId: ctx.session.user.id,
+            },
+            data: {
+              about: input.about,
+              categories: {
+                set: [],
+                connect: input.categories.map((category) => ({
+                  id: category.id,
+                })),
+              },
+              cityId: input.city.id === -1 ? undefined : input.city.id,
+              countryId: input.country.id === -1 ? undefined : input.country.id,
+              name: input.name,
+              website: input.website,
+            },
+          });
         }
       }
     }),
@@ -882,7 +904,7 @@ export const profilesRouter = createTRPCRouter({
   updateFavorites: protectedProcedure
     .input(
       z.object({
-        profileId: z.number(),
+        profileId: z.string(),
       })
     )
     .mutation(async ({ ctx, input }) => {
@@ -983,7 +1005,7 @@ export const profilesRouter = createTRPCRouter({
       return await ctx.prisma.$transaction([
         ctx.prisma.profile.count({
           where: {
-            id: input.searchId ? parseInt(input.searchId) : undefined,
+            id: input.searchId ? input.searchId : undefined,
             OR: verifyId,
             user: {
               roleId: input.roleId,
@@ -994,7 +1016,7 @@ export const profilesRouter = createTRPCRouter({
         }),
         ctx.prisma.profile.findMany({
           where: {
-            id: input.searchId ? parseInt(input.searchId) : undefined,
+            id: input.searchId ? input.searchId : undefined,
             OR: verifyId,
             user: {
               roleId: input.roleId,
@@ -1069,7 +1091,7 @@ export const profilesRouter = createTRPCRouter({
   getAllProfileForAdminDashboardCursor: protectedProcedure
     .input(
       z.object({
-        cursor: z.number(),
+        cursor: z.string(),
         roleId: z.number(),
         searchId: z.string(),
         searchUsername: z.string(),
@@ -1095,7 +1117,7 @@ export const profilesRouter = createTRPCRouter({
 
       return await ctx.prisma.profile.findMany({
         where: {
-          id: input.searchId ? parseInt(input.searchId) : undefined,
+          id: input.searchId ? input.searchId : undefined,
           OR: verifyId,
           user: {
             roleId: input.roleId,
@@ -1173,7 +1195,7 @@ export const profilesRouter = createTRPCRouter({
   getSingleProfileForAdmin: protectedProcedure
     .input(
       z.object({
-        profileId: z.number(),
+        profileId: z.string(),
       })
     )
     .query(async ({ ctx, input }) => {
@@ -1243,7 +1265,7 @@ export const profilesRouter = createTRPCRouter({
   verifyProfile: protectedProcedure
     .input(
       z.object({
-        profileId: z.number(),
+        profileId: z.string(),
       })
     )
     .mutation(async ({ ctx, input }) => {
@@ -1258,7 +1280,7 @@ export const profilesRouter = createTRPCRouter({
   getProfileById: protectedProcedure
     .input(
       z.object({
-        profileId: z.number(),
+        profileId: z.string(),
       })
     )
     .query(async ({ ctx, input }) => {

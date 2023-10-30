@@ -25,7 +25,7 @@ type ContentTypeWithQuantityAndValue = {
 
 const StartOrderPage = (params: {
   valuePacks: ValuePack[];
-  orderProfileId: number;
+  orderProfileId: string;
 }) => {
   const { t } = useTranslation();
   const router = useRouter();
@@ -63,7 +63,7 @@ const StartOrderPage = (params: {
         if (order) {
           createNotification({
             entityId: order.id,
-            senderId: order.buyerId || -1,
+            senderId: order.buyerId || "",
             entityAction: "awaitingOrderReply",
             notifierId: params.orderProfileId,
           });

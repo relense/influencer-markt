@@ -257,7 +257,7 @@ export const userSocialMediasRouter = createTRPCRouter({
   getUserSocialMediaByProfileId: publicProcedure
     .input(
       z.object({
-        profileId: z.number(),
+        profileId: z.string(),
       })
     )
     .query(async ({ ctx, input }) => {

@@ -61,7 +61,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
             toInfluencerEmail: order.influencer?.user.email || "",
             influencerLanguage: order.influencer?.country?.languageCode || "en",
             orderId: order.id,
-            receiverProfileId: order?.influencer?.id || -1,
+            receiverProfileId: order?.influencer?.id || "",
           });
           //send buyer email
           await sendEmail({
@@ -71,7 +71,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
             toBuyer: order.buyer?.user.email || "",
             buyerLanguage: order.buyer?.country?.languageCode || "en",
             orderId: order.id,
-            receiverProfileId: order?.buyer?.id || -1,
+            receiverProfileId: order?.buyer?.id || "",
           });
         }
       }

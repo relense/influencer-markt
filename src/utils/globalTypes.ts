@@ -75,7 +75,7 @@ export type ProfileData = {
 };
 
 export type UserProfiles = {
-  id: number;
+  id: string;
   profilePicture: string;
   socialMedia: UserSocialMedia[];
   name: string;

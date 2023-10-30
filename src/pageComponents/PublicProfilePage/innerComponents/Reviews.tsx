@@ -9,7 +9,7 @@ import { useEffect, useState } from "react";
 import { helper } from "../../../utils/helper";
 
 const Reviews = (params: {
-  profileId: number;
+  profileId: string;
   openReviewModal: (review: Review) => void;
 }) => {
   const { t, i18n } = useTranslation();

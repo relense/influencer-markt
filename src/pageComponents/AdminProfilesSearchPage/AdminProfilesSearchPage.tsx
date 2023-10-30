@@ -89,7 +89,7 @@ const AdminProfilesSearchPage = (params: { roleId: number }) => {
     useState<boolean>(false);
   const [reverifiedProfileCheck, setReverifiedProfileCheck] =
     useState<boolean>(false);
-  const [profilesCursor, setProfilesCursor] = useState<number>(-1);
+  const [profilesCursor, setProfilesCursor] = useState<string>("");
 
   const { register, handleSubmit, reset, setValue, watch } =
     useForm<ProfilesSearch>({

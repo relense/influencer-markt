@@ -10,7 +10,7 @@ export const OrdersRouter = createTRPCRouter({
   createOrder: protectedProcedure
     .input(
       z.object({
-        influencerId: z.number(),
+        influencerId: z.string(),
         orderDetails: z.string(),
         orderPrice: z.number(),
         orderValuePacks: z.array(
@@ -111,7 +111,7 @@ export const OrdersRouter = createTRPCRouter({
             toInfluencer: influencerProfile?.user.email || "",
             influencerLanguage: order.influencer?.country?.languageCode || "en",
             orderId: order.id,
-            receiverProfileId: influencerProfile?.id || -1,
+            receiverProfileId: influencerProfile?.id || "",
           });
         }
 
@@ -122,7 +122,7 @@ export const OrdersRouter = createTRPCRouter({
   createOrderWithJob: protectedProcedure
     .input(
       z.object({
-        influencerId: z.number(),
+        influencerId: z.string(),
         orderDetails: z.string(),
         orderPrice: z.number(),
         orderValuePacks: z.array(
@@ -209,7 +209,7 @@ export const OrdersRouter = createTRPCRouter({
             toInfluencer: order.influencer?.user.email || "",
             influencerLanguage: order.influencer?.country?.languageCode || "en",
             orderId: order.id,
-            receiverProfileId: order.influencerId || -1,
+            receiverProfileId: order.influencerId || "",
           });
         }
 
@@ -667,7 +667,7 @@ export const OrdersRouter = createTRPCRouter({
           toBuyer: order.buyer?.user.email || "",
           buyerLanguage: order.buyer?.country?.languageCode || "en",
           orderId: order.id,
-          receiverProfileId: order.buyerId || -1,
+          receiverProfileId: order.buyerId || "",
         });
       }
 
@@ -737,7 +737,7 @@ export const OrdersRouter = createTRPCRouter({
               toBuyer: order.buyer?.user.email || "",
               buyerLanguage: order.buyer?.country?.languageCode || "en",
               orderId: order.id,
-              receiverProfileId: order.buyerId || -1,
+              receiverProfileId: order.buyerId || "",
             });
           } else if (input.statusId === 6) {
             await sendEmail({
@@ -748,7 +748,7 @@ export const OrdersRouter = createTRPCRouter({
               influencerLanguage:
                 order.influencer?.country?.languageCode || "en",
               orderId: order.id,
-              receiverProfileId: order.influencerId || -1,
+              receiverProfileId: order.influencerId || "",
             });
           } else if (input.statusId === 8) {
             await sendEmail({
@@ -759,7 +759,7 @@ export const OrdersRouter = createTRPCRouter({
               influencerLanguage:
                 order.influencer?.country?.languageCode || "en",
               orderId: order.id,
-              receiverProfileId: order.influencerId || -1,
+              receiverProfileId: order.influencerId || "",
             });
           } else if (input.statusId === 9) {
             await sendEmail({
@@ -770,7 +770,7 @@ export const OrdersRouter = createTRPCRouter({
               influencerLanguage:
                 order.influencer?.country?.languageCode || "en",
               orderId: order.id,
-              receiverProfileId: order.influencerId || -1,
+              receiverProfileId: order.influencerId || "",
             });
           }
         }
@@ -832,7 +832,7 @@ export const OrdersRouter = createTRPCRouter({
           toInfluencer: order.influencer?.user.email || "",
           influencerLanguage: order.influencer?.country?.languageCode || "en",
           orderId: order.id,
-          receiverProfileId: order.influencerId || -1,
+          receiverProfileId: order.influencerId || "",
         });
 
         await sendEmail({
@@ -842,7 +842,7 @@ export const OrdersRouter = createTRPCRouter({
           toBuyer: order.buyer?.user.email || "",
           buyerLanguage: order.buyer?.country?.languageCode || "en",
           orderId: order.id,
-          receiverProfileId: order.buyerId || -1,
+          receiverProfileId: order.buyerId || "",
         });
       }
 
@@ -907,7 +907,7 @@ export const OrdersRouter = createTRPCRouter({
         toInfluencerEmail: order.influencer?.user.email || "",
         influencerLanguage: order.influencer?.country?.languageCode || "en",
         orderId: order.id,
-        receiverProfileId: order?.influencer?.id || -1,
+        receiverProfileId: order?.influencer?.id || "",
       });
 
       return order;
@@ -955,7 +955,7 @@ export const OrdersRouter = createTRPCRouter({
         toInfluencerEmail: order.influencer?.user.email || "",
         influencerLanguage: order.influencer?.country?.languageCode || "en",
         orderId: order.id,
-        receiverProfileId: order.influencerId || -1,
+        receiverProfileId: order.influencerId || "",
       });
 
       return order;
@@ -1071,7 +1071,7 @@ export const OrdersRouter = createTRPCRouter({
         toInfluencerEmail: order.influencer?.user.email || "",
         influencerLanguage: order.influencer?.country?.languageCode || "en",
         orderId: input.orderId,
-        receiverProfileId: order.influencerId || -1,
+        receiverProfileId: order.influencerId || "",
       });
       //buyer email
       await sendEmail({
@@ -1081,7 +1081,7 @@ export const OrdersRouter = createTRPCRouter({
         toBuyer: order.buyer?.user.email || "",
         buyerLanguage: order.buyer?.country?.languageCode || "en",
         orderId: input.orderId,
-        receiverProfileId: order.buyerId || -1,
+        receiverProfileId: order.buyerId || "",
       });
 
       return order;
@@ -1139,7 +1139,7 @@ export const OrdersRouter = createTRPCRouter({
         toInfluencerEmail: order.influencer?.user.email || "",
         influencerLanguage: order.influencer?.country?.languageCode || "en",
         orderId: input.orderId,
-        receiverProfileId: order.influencerId || -1,
+        receiverProfileId: order.influencerId || "",
       });
       //buyer email
       await sendEmail({
@@ -1149,7 +1149,7 @@ export const OrdersRouter = createTRPCRouter({
         toBuyer: order.buyer?.user.email || "",
         buyerLanguage: order.buyer?.country?.languageCode || "en",
         orderId: input.orderId,
-        receiverProfileId: order.buyerId || -1,
+        receiverProfileId: order.buyerId || "",
       });
 
       return order;

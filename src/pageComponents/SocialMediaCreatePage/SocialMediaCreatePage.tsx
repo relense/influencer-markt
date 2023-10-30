@@ -21,7 +21,7 @@ type ContentTypeWithPrice = {
 
 const SocialMediaCreatePage = (params: {
   isBrand: boolean;
-  profileId: number;
+  profileId: string;
 }) => {
   const { t } = useTranslation();
   const router = useRouter();

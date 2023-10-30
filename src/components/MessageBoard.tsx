@@ -10,8 +10,8 @@ import dayjs from "dayjs";
 import { faArrowsRotate } from "@fortawesome/free-solid-svg-icons";
 
 type Message = {
-  senderId: number;
-  receiverId: number;
+  senderId: string;
+  receiverId: string;
   id: number;
   message: string;
   createdAt: Date;
@@ -19,8 +19,8 @@ type Message = {
 
 const MessageBoard = (params: {
   orderId: number;
-  receiverId: number;
-  senderId: number;
+  receiverId: string;
+  senderId: string;
   orderStatusId: number;
 }) => {
   const { t, i18n } = useTranslation();
@@ -209,7 +209,7 @@ const MessageBoard = (params: {
       createMessage({
         message: userMessage,
         orderId: params.orderId,
-        receiverId: params.receiverId || -1,
+        receiverId: params.receiverId || "",
       });
     }
   };

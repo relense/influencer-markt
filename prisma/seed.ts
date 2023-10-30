@@ -399,7 +399,7 @@ async function main() {
 
   const users = await prisma.user.findMany({});
 
-  await prisma.profile.create({
+  const profile1 = await prisma.profile.create({
     data: {
       about:
         "Nike, the iconic sportswear brand, revolutionizes athletic performance with innovation. From cutting-edge footwear to high-performance apparel, Nike empowers athletes worldwide. With a rich history of inspiring athletes, the brand's relentless pursuit of excellence drives them forward. Fuel your passion with Nike's dynamic range of products and experience the embodiment of sport and style. Elevate your game and unleash your true ",
@@ -423,7 +423,7 @@ async function main() {
     },
   });
 
-  await prisma.profile.create({
+  const profile2 = await prisma.profile.create({
     data: {
       about:
         "Coca-Cola, the beloved beverage brand, quenches thirst with its iconic refreshment. For over a century, Coca-Cola has delighted taste buds with its signature fizzy and timeless flavor. From its classic cola to a wide range of refreshing drinks, Coca-Cola brings people together, sparking moments of happiness and celebration. With every sip, experience the effervescent joy that Coca-Cola brings. Let the bubbly ",
@@ -447,7 +447,7 @@ async function main() {
     },
   });
 
-  await prisma.profile.create({
+  const profile3 = await prisma.profile.create({
     data: {
       about:
         "Apple, the innovative tech giant, revolutionizes the way we live, work, and connect. With its sleek and cutting-edge products, Apple has redefined the world of technology. From the iconic iPhone to the powerful Mac computers and the versatile iPad, Apple devices empower users to create, communicate, and explore like never before. With a seamless integration of hardware and software, Apple",
@@ -471,7 +471,7 @@ async function main() {
     },
   });
 
-  await prisma.profile.create({
+  const profile4 = await prisma.profile.create({
     data: {
       about:
         "LG, a leading global technology company, brings innovation and convenience to your everyday life. With a diverse range of products, LG jobs cutting-edge solutions that enhance your home, work, and entertainment experiences. From state-of-the-art televisions and home appliances to advanced mobile devices and cutting-edge audio systems, LG combines sleek design with exceptional performance. Immerse yourself in vibrant visuals",
@@ -495,7 +495,7 @@ async function main() {
     },
   });
 
-  await prisma.profile.create({
+  const profile5 = await prisma.profile.create({
     data: {
       about:
         "Tomas Oliveira, a charismatic adventurer with a passion for exploration. Born with wanderlust in his veins, he seeks thrill and beauty in every corner of the world. From climbing majestic mountains to diving into deep oceans, he embraces the unknown. With a heart full of curiosity, Tomas unravels diverse cultures, tasting exotic cuisines, and connecting with people from all walks of life. Through his travels, he's ",
@@ -520,7 +520,7 @@ async function main() {
     },
   });
 
-  await prisma.profile.create({
+  const profile6 = await prisma.profile.create({
     data: {
       about:
         "Andre Gomes, a charismatic adventurer with a passion for exploration. Born with wanderlust in his veins, he seeks thrill and beauty in every corner of the world. From climbing majestic mountains to diving into deep oceans, he embraces the unknown. With a heart full of curiosity, Tomas unravels diverse cultures, tasting exotic cuisines, and connecting with people from all walks of life. Through his travels, he's ",
@@ -545,7 +545,7 @@ async function main() {
     },
   });
 
-  await prisma.profile.create({
+  const profile7 = await prisma.profile.create({
     data: {
       about:
         "Andreia Sofia, a charismatic adventurer with a passion for exploration. Born with wanderlust in his veins, he seeks thrill and beauty in every corner of the world. From climbing majestic mountains to diving into deep oceans, he embraces the unknown. With a heart full of curiosity, Tomas unravels diverse cultures, tasting exotic cuisines, and connecting with people from all walks of life. Through his travels, he's ",
@@ -570,7 +570,7 @@ async function main() {
     },
   });
 
-  await prisma.profile.create({
+  const profile8 = await prisma.profile.create({
     data: {
       about:
         "Ines Guerreiro, a charismatic adventurer with a passion for exploration. Born with wanderlust in his veins, he seeks thrill and beauty in every corner of the world. From climbing majestic mountains to diving into deep oceans, he embraces the unknown. With a heart full of curiosity, Tomas unravels diverse cultures, tasting exotic cuisines, and connecting with people from all walks of life. Through his travels, he's ",
@@ -602,112 +602,112 @@ async function main() {
         handler: "luky",
         socialMediaId: 1,
         url: "",
-        profileId: 1,
+        profileId: profile1.id,
       },
       {
         followers: 6476,
         handler: "Boyo",
         socialMediaId: 2,
         url: "",
-        profileId: 1,
+        profileId: profile1.id,
       },
       {
         followers: 20200,
         handler: "yohyrrt",
         socialMediaId: 1,
         url: "",
-        profileId: 2,
+        profileId: profile2.id,
       },
       {
         followers: 12567,
         handler: "yugute",
         socialMediaId: 2,
         url: "",
-        profileId: 2,
+        profileId: profile2.id,
       },
       {
         followers: 88765,
         handler: "wost",
         socialMediaId: 1,
         url: "",
-        profileId: 3,
+        profileId: profile3.id,
       },
       {
         followers: 54672,
         handler: "migu",
         socialMediaId: 2,
         url: "",
-        profileId: 3,
+        profileId: profile3.id,
       },
       {
         followers: 645,
         handler: "loreal",
         socialMediaId: 1,
         url: "",
-        profileId: 4,
+        profileId: profile4.id,
       },
       {
         followers: 6525,
         handler: "puias",
         socialMediaId: 2,
         url: "",
-        profileId: 4,
+        profileId: profile4.id,
       },
       {
         followers: 45623,
         handler: "quioa",
         socialMediaId: 1,
         url: "",
-        profileId: 5,
+        profileId: profile5.id,
       },
       {
         followers: 12345,
         handler: "xcad",
         socialMediaId: 2,
         url: "",
-        profileId: 5,
+        profileId: profile5.id,
       },
       {
         followers: 15778,
         handler: "polka",
         socialMediaId: 1,
         url: "",
-        profileId: 6,
+        profileId: profile6.id,
       },
       {
         followers: 423563,
         handler: "shopt",
         socialMediaId: 2,
         url: "",
-        profileId: 6,
+        profileId: profile6.id,
       },
       {
         followers: 12376,
         handler: "tiogk",
         socialMediaId: 1,
         url: "",
-        profileId: 7,
+        profileId: profile7.id,
       },
       {
         followers: 32412,
         handler: "nagi",
         socialMediaId: 2,
         url: "",
-        profileId: 7,
+        profileId: profile7.id,
       },
       {
         followers: 5342,
         handler: "epasu",
         socialMediaId: 1,
         url: "",
-        profileId: 8,
+        profileId: profile8.id,
       },
       {
         followers: 3667,
         handler: "ugua",
         socialMediaId: 2,
         url: "",
-        profileId: 8,
+        profileId: profile8.id,
       },
     ],
   });
@@ -715,43 +715,43 @@ async function main() {
   await prisma.valuePack.createMany({
     data: [
       {
-        userSocialMediaId: 1,
-        valuePackPrice: 1000,
+        userSocialMediaId: 9,
+        valuePackPrice: 10200,
         contentTypeId: 1,
       },
       {
-        userSocialMediaId: 2,
-        valuePackPrice: 1000,
+        userSocialMediaId: 10,
+        valuePackPrice: 2941,
         contentTypeId: 1,
       },
       {
-        userSocialMediaId: 3,
-        valuePackPrice: 1000,
+        userSocialMediaId: 11,
+        valuePackPrice: 853,
         contentTypeId: 1,
       },
       {
-        userSocialMediaId: 4,
-        valuePackPrice: 1000,
+        userSocialMediaId: 12,
+        valuePackPrice: 98874,
         contentTypeId: 1,
       },
       {
-        userSocialMediaId: 5,
-        valuePackPrice: 1000,
+        userSocialMediaId: 13,
+        valuePackPrice: 13455,
         contentTypeId: 1,
       },
       {
-        userSocialMediaId: 6,
-        valuePackPrice: 1000,
+        userSocialMediaId: 14,
+        valuePackPrice: 35222,
         contentTypeId: 1,
       },
       {
-        userSocialMediaId: 7,
-        valuePackPrice: 1000,
+        userSocialMediaId: 15,
+        valuePackPrice: 50007,
         contentTypeId: 1,
       },
       {
-        userSocialMediaId: 8,
-        valuePackPrice: 1000,
+        userSocialMediaId: 16,
+        valuePackPrice: 231114,
         contentTypeId: 1,
       },
     ],
@@ -762,62 +762,62 @@ async function main() {
       {
         url: "https://images.unsplash.com/photo-1542291026-7eec264c27ff?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1770&q=80",
         blobName: "exampleBlob",
-        profileId: 1,
+        profileId: profile1.id,
       },
       {
         url: "https://images.unsplash.com/photo-1579298245158-33e8f568f7d3?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1790&q=80",
         blobName: "exampleBlob",
-        profileId: 1,
+        profileId: profile1.id,
       },
       {
         url: "https://images.unsplash.com/photo-1589423045402-6074a1bdf723?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=902&q=80",
         blobName: "exampleBlob",
-        profileId: 2,
+        profileId: profile2.id,
       },
       {
         url: "https://images.unsplash.com/photo-1561758033-48d52648ae8b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=774&q=80",
         blobName: "exampleBlob",
-        profileId: 2,
+        profileId: profile2.id,
       },
       {
         url: "https://images.unsplash.com/photo-1530018352490-c6eef07fd7e0?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=836&q=80",
         blobName: "exampleBlob",
-        profileId: 3,
+        profileId: profile3.id,
       },
       {
         url: "https://images.unsplash.com/photo-1587071292164-aa5ab1c8c706?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1770&q=80",
         blobName: "exampleBlob",
-        profileId: 3,
+        profileId: profile3.id,
       },
       {
         url: "https://images.unsplash.com/flagged/photo-1572609239482-d3a83f976aa0?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2064&q=80",
         blobName: "exampleBlob",
-        profileId: 4,
+        profileId: profile4.id,
       },
       {
         url: "https://images.unsplash.com/photo-1613280194169-6bb2f32a6bfa?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1771&q=80",
         blobName: "exampleBlob",
-        profileId: 4,
+        profileId: profile4.id,
       },
       {
         url: "https://images.unsplash.com/photo-1568602471122-7832951cc4c5?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1770&q=80",
         blobName: "exampleBlob",
-        profileId: 5,
+        profileId: profile5.id,
       },
       {
         url: "https://images.unsplash.com/photo-1590086782957-93c06ef21604?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=774&q=80",
         blobName: "exampleBlob",
-        profileId: 6,
+        profileId: profile6.id,
       },
       {
         url: "https://images.unsplash.com/photo-1521566652839-697aa473761a?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1771&q=80",
         blobName: "exampleBlob",
-        profileId: 7,
+        profileId: profile7.id,
       },
       {
         url: "https://images.unsplash.com/photo-1465429167186-266ef03d6277?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=776&q=80",
         blobName: "exampleBlob",
-        profileId: 8,
+        profileId: profile8.id,
       },
     ],
   });
@@ -826,127 +826,127 @@ async function main() {
     data: [
       {
         rating: 4,
-        authorId: 1,
+        authorId: profile1.id,
         userReview: "Really awesome job and I am very happy",
-        profileReviewdId: 5,
+        profileReviewdId: profile5.id,
       },
       {
         rating: 5,
-        authorId: 2,
+        authorId: profile2.id,
         userReview:
           "Best influencer I ever hired! Thank you so much and very recommended",
-        profileReviewdId: 5,
+        profileReviewdId: profile5.id,
       },
       {
         rating: 5,
-        authorId: 3,
+        authorId: profile3.id,
         userReview: "Vwey cool and I am really happy with the result.",
-        profileReviewdId: 5,
+        profileReviewdId: profile5.id,
       },
       {
         rating: 5,
-        authorId: 3,
+        authorId: profile3.id,
         userReview: "I will send double the review because I am really happy",
-        profileReviewdId: 5,
+        profileReviewdId: profile5.id,
       },
       {
         rating: 4,
-        authorId: 4,
+        authorId: profile4.id,
         userReview: "It was a nice job done by this person",
-        profileReviewdId: 5,
+        profileReviewdId: profile5.id,
       },
       {
         rating: 4,
-        authorId: 1,
+        authorId: profile1.id,
         userReview: "Really awesome job and I am very happy",
-        profileReviewdId: 6,
+        profileReviewdId: profile6.id,
       },
       {
         rating: 5,
-        authorId: 2,
+        authorId: profile2.id,
         userReview:
           "Best influencer I ever hired! Thank you so much and very recommended",
-        profileReviewdId: 6,
+        profileReviewdId: profile6.id,
       },
       {
         rating: 5,
-        authorId: 3,
+        authorId: profile3.id,
         userReview: "Vwey cool and I am really happy with the result.",
-        profileReviewdId: 6,
+        profileReviewdId: profile6.id,
       },
       {
         rating: 5,
-        authorId: 3,
+        authorId: profile3.id,
         userReview: "I will send double the review because I am really happy",
-        profileReviewdId: 6,
+        profileReviewdId: profile6.id,
       },
       {
         rating: 4,
-        authorId: 4,
+        authorId: profile4.id,
         userReview: "It was a nice job done by this person",
-        profileReviewdId: 6,
+        profileReviewdId: profile6.id,
       },
       {
         rating: 4,
-        authorId: 1,
+        authorId: profile1.id,
         userReview: "Really awesome job and I am very happy",
-        profileReviewdId: 7,
+        profileReviewdId: profile7.id,
       },
       {
         rating: 5,
-        authorId: 2,
+        authorId: profile2.id,
         userReview:
           "Best influencer I ever hired! Thank you so much and very recommended",
-        profileReviewdId: 7,
+        profileReviewdId: profile7.id,
       },
       {
         rating: 5,
-        authorId: 3,
+        authorId: profile3.id,
         userReview: "Vwey cool and I am really happy with the result.",
-        profileReviewdId: 7,
+        profileReviewdId: profile7.id,
       },
       {
         rating: 5,
-        authorId: 3,
+        authorId: profile3.id,
         userReview: "I will send double the review because I am really happy",
-        profileReviewdId: 7,
+        profileReviewdId: profile7.id,
       },
       {
         rating: 4,
-        authorId: 4,
+        authorId: profile4.id,
         userReview: "It was a nice job done by this person",
-        profileReviewdId: 7,
+        profileReviewdId: profile7.id,
       },
       {
         rating: 4,
-        authorId: 1,
+        authorId: profile1.id,
         userReview: "Really awesome job and I am very happy",
-        profileReviewdId: 8,
+        profileReviewdId: profile8.id,
       },
       {
         rating: 5,
-        authorId: 2,
+        authorId: profile2.id,
         userReview:
           "Best influencer I ever hired! Thank you so much and very recommended",
-        profileReviewdId: 8,
+        profileReviewdId: profile8.id,
       },
       {
         rating: 5,
-        authorId: 3,
+        authorId: profile3.id,
         userReview: "Vwey cool and I am really happy with the result.",
-        profileReviewdId: 8,
+        profileReviewdId: profile8.id,
       },
       {
         rating: 5,
-        authorId: 3,
+        authorId: profile3.id,
         userReview: "I will send double the review because I am really happy",
-        profileReviewdId: 8,
+        profileReviewdId: profile8.id,
       },
       {
         rating: 4,
-        authorId: 4,
+        authorId: profile4.id,
         userReview: "It was a nice job done by this person",
-        profileReviewdId: 8,
+        profileReviewdId: profile8.id,
       },
     ],
   });

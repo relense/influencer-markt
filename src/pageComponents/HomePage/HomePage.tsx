@@ -40,7 +40,7 @@ const brands = [
 
 const HomePage = (params: {
   openLoginModal: () => void;
-  profileId: number;
+  profileId: string;
 }) => {
   const { t } = useTranslation();
   const session = useSession();
