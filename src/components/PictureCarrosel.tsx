@@ -207,13 +207,17 @@ export const PictureCarrosel = (params: {
               <FontAwesomeIcon icon={faCamera} className="fa-2x text-gray3" />
             </div>
             {!params.visual && (
-              <div className="flex items-center justify-center gap-2 text-center text-influencer sm:gap-4">
-                <div className="hidden sm:flex">
-                  <FontAwesomeIcon icon={faArrowUpFromBracket} />
+              <div className="flex flex-col">
+                <div className="flex items-center justify-center gap-2 text-center text-influencer sm:gap-4">
+                  <div className="hidden sm:flex">
+                    <FontAwesomeIcon icon={faArrowUpFromBracket} />
+                  </div>
+                  <div className="flex flex-wrap overflow-hidden p-4">
+                    {t("components.pictureCarrosel.addPicture")}
+                  </div>
                 </div>
-
-                <div className="flex flex-wrap overflow-hidden p-4">
-                  {t("components.pictureCarrosel.addPicture")}
+                <div className="flex flex-wrap overflow-hidden text-center text-influencer">
+                  {t("components.pictureCarrosel.addPictureBestResults")}
                 </div>
               </div>
             )}
@@ -226,7 +230,7 @@ export const PictureCarrosel = (params: {
   const renderMainPicture = () => {
     if (currentPicture.id !== -1) {
       return (
-        <div className="relative flex h-[540px] w-full flex-col items-center justify-center gap-4 rounded-lg sm:w-[430px]">
+        <div className="relative flex h-[768px] w-full flex-col items-center justify-center gap-4 rounded-lg sm:w-[430px]">
           {!params.visual && (
             <div
               className="absolute right-[-10px] top-[-10px] flex h-10 w-10 cursor-pointer items-center justify-center self-end rounded-full bg-influencer-green"
@@ -240,7 +244,7 @@ export const PictureCarrosel = (params: {
               />
             </div>
           )}
-          <div className="flex h-full flex-col items-center justify-center self-center sm:h-[540px] sm:w-[430px]">
+          <div className="flex h-full flex-col items-center justify-center self-center sm:h-[768px] sm:w-[430px]">
             {params.portfolio.length > 1 && (
               <div className="absolute top-2 rounded-full bg-black px-4 py-1 text-sm text-white opacity-30">
                 {currentPictureIndex + 1} / {params.portfolio.length}
@@ -279,10 +283,10 @@ export const PictureCarrosel = (params: {
               <Image
                 src={currentPicture?.url || ""}
                 alt="Uploaded Image"
-                width={540}
-                height={430}
+                width={1080}
+                height={1920}
                 quality={100}
-                className="pointer-events-none h-full rounded-lg object-cover"
+                className="pointer-events-none h-full rounded-lg object-contain"
                 priority
               />
             )}

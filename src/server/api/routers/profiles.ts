@@ -3,6 +3,7 @@ import { createTRPCRouter, protectedProcedure, publicProcedure } from "../trpc";
 import bloblService from "../../../services/azureBlob.service";
 import { v4 as uuidv4 } from "uuid";
 import { helper } from "../../../utils/helper";
+import sharp from "sharp";
 
 export const profilesRouter = createTRPCRouter({
   getAllInfluencerProfiles: publicProcedure
@@ -572,7 +573,16 @@ export const profilesRouter = createTRPCRouter({
             const type = matches[1];
             const base64Buffer = Buffer.from(matches[2], "base64");
 
-            await blockBlobClient.uploadData(base64Buffer, {
+            const compressedBuffer = await sharp(base64Buffer)
+              .resize({
+                width: 400,
+                height: 400,
+                fit: sharp.fit.cover,
+              })
+              .rotate()
+              .toBuffer();
+
+            await blockBlobClient.uploadData(compressedBuffer, {
               blobHTTPHeaders: {
                 blobContentType: type,
               },
@@ -791,10 +801,10 @@ export const profilesRouter = createTRPCRouter({
             });
           }
 
+          const blobName = `${Date.now()}-${uuidv4()}-profilePicture`;
+          const blockBlobClient = containerClient.getBlockBlobClient(blobName);
+
           try {
-            const blobName = `${Date.now()}-${uuidv4()}-profilePicture`;
-            const blockBlobClient =
-              containerClient.getBlockBlobClient(blobName);
             const matches = input.profilePicture.match(
               /^data:([A-Za-z-+\/]+);base64,(.+)$/
             );
@@ -803,7 +813,16 @@ export const profilesRouter = createTRPCRouter({
               const type = matches[1];
               const base64Buffer = Buffer.from(matches[2], "base64");
 
-              await blockBlobClient.uploadData(base64Buffer, {
+              const compressedBuffer = await sharp(base64Buffer)
+                .resize({
+                  width: 400,
+                  height: 400,
+                  fit: sharp.fit.contain,
+                })
+                .rotate()
+                .toBuffer();
+
+              await blockBlobClient.uploadData(compressedBuffer, {
                 blobHTTPHeaders: {
                   blobContentType: type,
                 },

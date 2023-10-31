@@ -61,7 +61,7 @@ const ProfileForm = (params: {
       (file.type === "image/jpeg" ||
         file.type === "image/png" ||
         file.type === "image/jpg") &&
-      file.size <= 2000000
+      file.size <= 7000000
     ) {
       const reader = new FileReader();
 
@@ -103,8 +103,8 @@ const ProfileForm = (params: {
             <Image
               src={profilePicture}
               alt="Profile Picture"
-              width={1000}
-              height={1000}
+              width={400}
+              height={400}
               className="h-24 w-24 rounded-full object-cover"
             />
           </div>
