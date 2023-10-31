@@ -49,7 +49,7 @@ const webhookHandler = async (req: NextApiRequest, res: NextApiResponse) => {
 
     switch (event.type) {
       case "payment_intent.succeeded":
-        const paymentItent = event.data.object as Stripe.PaymentIntent;
+        const paymentItent = event.data.object;
         const paymentIntentId = paymentItent.id;
 
         const payment = await prisma.payment.findFirst({
