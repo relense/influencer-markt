@@ -129,7 +129,7 @@ const webhookHandler = async (req: NextApiRequest, res: NextApiResponse) => {
         }
         break;
       case "payment_intent.payment_failed":
-        const paymentIntentPaymentFailed = event.data.object;
+        // const paymentIntentPaymentFailed = event.data.object;
         // Then define and call a function to handle the event payment_intent.payment_failed
         break;
       default:
