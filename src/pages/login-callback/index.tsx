@@ -14,16 +14,20 @@ const LoginCallback: NextPage = () => {
   const { data: userData, isLoading } = api.users.getUser.useQuery();
 
   useEffect(() => {
-    if ((!userData?.profile || !userData.role) && status === "authenticated") {
+    if (
+      isLoading === false &&
+      (!userData?.profile || !userData.role) &&
+      status === "authenticated"
+    ) {
       void router.push("/first-steps");
     } else if (
-      (userData && userData?.profile) ||
+      (isLoading === false && userData && userData?.profile) ||
       status === "unauthenticated"
     ) {
       const route = Array.isArray(returnTo) ? returnTo[0] : returnTo;
       void router.push(route?.toString() || "/");
     }
-  }, [returnTo, router, status, userData, userData?.profile]);
+  }, [isLoading, returnTo, router, status, userData, userData?.profile]);
 
   if (isLoading) {
     return <LoadingSpinner />;

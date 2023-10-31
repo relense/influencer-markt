@@ -97,7 +97,7 @@ const StartOrderPage = (params: {
 
     const serviceFee = basePrice * helper.calculateServiceFee();
     const tax = Math.floor(
-      (basePrice + serviceFee) * ((profile?.country?.countryTax || 0) / 100)
+      (basePrice + serviceFee) * helper.calculateSalesTaxPortugal()
     );
 
     const total = basePrice + tax + serviceFee;
@@ -106,7 +106,7 @@ const StartOrderPage = (params: {
     setServiceFee(serviceFee);
     setTaxValue(tax);
     setTotalPrice(Number(total));
-  }, [basePrice, contentTypesList, profile?.country?.countryTax]);
+  }, [basePrice, contentTypesList]);
 
   const handleAmountChange = (index: number, value: number) => {
     let newValue = 0;

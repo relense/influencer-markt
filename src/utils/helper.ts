@@ -156,6 +156,10 @@ const calculateServiceFee = () => {
   return 0.15;
 };
 
+const calculateSalesTaxPortugal = () => {
+  return 0.23;
+};
+
 const useEffectOnlyOnce = (fn: () => any) => {
   const ref = useRef(false);
   useEffect(() => {
@@ -179,4 +183,5 @@ export const helper = {
   calculerMonetaryValue,
   calculateMonetaryValueInCents,
   useEffectOnlyOnce,
+  calculateSalesTaxPortugal,
 };
