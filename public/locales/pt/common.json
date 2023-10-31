@@ -1083,7 +1083,20 @@
       "payoutApproved": "Pagamento foi aprovado e processado",
       "loadMore": "Carregar Mais",
       "dateInvoiceAdded": "Data de carregamento da fatura",
-      "dateProofEmited": "Data de emissão do comprovativo"
+      "dateProofEmited": "Data de emissão do comprovativo",
+      "noPayouts": "Não há emissões de pagamentos",
+      "infoBalance": {
+        "title1": "Entenda os conceitos de Saldo Disponível, Saldo Pendente e Crédito Disponível na nossa Plataforma",
+        "subtitle1": "Na Influencer Markt, é essencial compreender as distinções entre três termos importantes: Saldo Disponível, Saldo Pendente e Crédito Disponível. Cada um deles desempenha um papel fundamental na gestão dos seus ganhos e transações. Aqui está uma explicação clara e concisa para ajudar a esclarecer esses conceitos:",
+        "title2": "Saldo Disponível: Pronto Para Levantamento",
+        "subtitle2": "O Saldo Disponível é o valor que está pronto e disponível para ser levantado por si. Este montante representa os ganhos provenientes dos serviços prestados na plataforma nos meses anteriores que já foram confirmados e estão prontos para serem transferidos para a sua conta. No entanto, para proceder ao levantamento, é necessário submeter a fatura correspondente na nossa plataforma, seguindo as diretrizes estabelecidas. Assim que a fatura for processada, o saldo será transferido para o IBAN por si indicado.",
+        "title3": "Saldo Pendente: Ganhos Agendados para o Próximo Mês",
+        "subtitle3": "O Saldo Pendente refere-se aos ganhos provenientes de trabalhos já realizados, porém, cujo saldo só estará disponível para levantamento a partir do dia 1 do mês imediatamente a seguir, respeitando o cronograma de pagamentos predefinido. A fatura do criador de conteúdo deve contemplar todas as prestações de serviço realizadas nos meses em causa.",
+        "title4": "Crédito Disponível: Montante para Utilização Interna na Plataforma",
+        "subtitle4": "O Crédito Disponível consiste em valores resultantes de devoluções ou situações semelhantes. Ao contrário do Saldo Disponível, esse montante não está disponível para ser levantado, mas sim para ser utilizado exclusivamente dentro da plataforma Influencer Markt. Pode ser utilizado para pagamento de serviços e/ou aquisição de produtos.",
+        "subtitle5": "É fundamental compreender e distinguir entre estes três tipos de saldos para uma gestão financeira eficiente na plataforma Influencer Markt. Se tiver mais dúvidas ou questões, não hesite em entrar em contato com o nosso suporte, estamos sempre disponíveis para ajudar a esclarecer quaisquer questões que possam surgir.",
+        "closeButton": "Fechar"
+      }
     },
 
     "withdraw": {
@@ -1097,7 +1110,10 @@
       "uploadedInvoice": "Fatura Carregada",
       "withdraw": "Iniciar Procresso de Pagamento",
       "fileIsNotPdf": "O ficheiro carregado não é um PDF",
-      "uploadedSuccessfully": "Fatura carregada com sucesso"
+      "uploadedSuccessfully": "Fatura carregada com sucesso",
+      "areYouIsent": "Estás isento de pagar IVA?",
+      "yes": "Sim",
+      "no": "Não"
     },
 
     "settings": {

@@ -7,6 +7,8 @@ import { LoadingSpinner } from "../../../components/LoadingSpinner";
 import { Modal } from "../../../components/Modal";
 import { helper } from "../../../utils/helper";
 import { Button } from "../../../components/Button";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faReceipt } from "@fortawesome/free-solid-svg-icons";
 
 type Payout = {
   id: string;
@@ -120,40 +122,49 @@ const PendingBalanceModal = (params: { onClose: () => void }) => {
           onClose={() => onCloseHandle()}
           title={t("pages.billing.pendingBalance")}
         >
-          <div className="flex flex-col gap-4 p-6">
-            {pendingPayouts.map((payout) => {
-              return (
-                <div
-                  key={payout.id}
-                  className="flex flex-col items-center gap-2 rounded-lg border-[1px] p-2 shadow-md"
-                >
-                  <Link
-                    href={`/sales/${payout.orderId}`}
-                    className="font-semibold text-influencer hover:cursor-pointer hover:underline"
-                  >
-                    {t("pages.billing.orderRef")} #{payout.orderId}
-                  </Link>
-                  <div className="flex gap-4">
-                    <div>{payout.payoutCreated}</div>
-                    <div>
-                      {t("pages.billing.sale")}{" "}
-                      {helper.calculerMonetaryValue(payout.payoutValue)}€
+          <>
+            {pendingPayouts.length > 0 ? (
+              <div className="flex flex-col gap-4 p-6">
+                {pendingPayouts.map((payout) => {
+                  return (
+                    <div
+                      key={payout.id}
+                      className="flex flex-col items-center gap-2 rounded-lg border-[1px] p-2 shadow-md"
+                    >
+                      <Link
+                        href={`/sales/${payout.orderId}`}
+                        className="font-semibold text-influencer hover:cursor-pointer hover:underline"
+                      >
+                        {t("pages.billing.orderRef")} #{payout.orderId}
+                      </Link>
+                      <div className="flex gap-4">
+                        <div>{payout.payoutCreated}</div>
+                        <div>
+                          {t("pages.billing.sale")}{" "}
+                          {helper.calculerMonetaryValue(payout.payoutValue)}€
+                        </div>
+                      </div>
                     </div>
+                  );
+                })}
+                {payoutsCount > pendingPayouts.length && (
+                  <div className="flex items-center justify-center">
+                    <Button
+                      title={t("pages.billing.loadMore")}
+                      onClick={() => refetchPayouts()}
+                      isLoading={isFetchingPendingPayoutsCursor}
+                      disabled={isFetchingPendingPayoutsCursor}
+                    />
                   </div>
-                </div>
-              );
-            })}
-            {payoutsCount > pendingPayouts.length && (
-              <div className="flex items-center justify-center">
-                <Button
-                  title={t("pages.billing.loadMore")}
-                  onClick={() => refetchPayouts()}
-                  isLoading={isFetchingPendingPayoutsCursor}
-                  disabled={isFetchingPendingPayoutsCursor}
-                />
+                )}
+              </div>
+            ) : (
+              <div className="flex flex-col items-center gap-4 p-6 text-gray4">
+                <FontAwesomeIcon icon={faReceipt} className="text-3xl" />
+                <div>{t("pages.billing.noPayouts")}</div>
               </div>
             )}
-          </div>
+          </>
         </Modal>
       </div>
     );

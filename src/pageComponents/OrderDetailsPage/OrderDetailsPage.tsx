@@ -62,9 +62,14 @@ const OrderDetailsPage = (params: {
     formState: { errors: errorsDisputeForm },
   } = useForm<DisputeForm>();
 
-  const { data: order, isLoading } = api.orders.getBuyerOrder.useQuery({
-    orderId: params.orderId,
-  });
+  const { data: order, isLoading } = api.orders.getBuyerOrder.useQuery(
+    {
+      orderId: params.orderId,
+    },
+    {
+      cacheTime: 0,
+    }
+  );
 
   const { mutate: updateCancelOrder, isLoading: isLoadingUpdateCancelOrder } =
     api.orders.cancelOrder.useMutation({

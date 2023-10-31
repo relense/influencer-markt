@@ -17,6 +17,7 @@ const WithdrawPage = () => {
   const router = useRouter();
 
   const [influencerInvoice, setInfluencerInvoice] = useState<File | null>();
+  const [isentOfTax, setIsentOfTax] = useState<string>("");
 
   const { mutate: uploadInvoice, isLoading: isLoadingUploadInvoice } =
     api.payouts.addInvoice.useMutation({
@@ -53,7 +54,10 @@ const WithdrawPage = () => {
         const dataURL = reader.result as string;
         const base64Data = dataURL.split(",")[1] as string;
 
-        uploadInvoice({ uploadedInvoice: base64Data });
+        uploadInvoice({
+          uploadedInvoice: base64Data,
+          isentOfTaxes: isentOfTax === "true" ? true : false,
+        });
       };
 
       reader.readAsDataURL(influencerInvoice);
@@ -83,7 +87,28 @@ const WithdrawPage = () => {
 
   const renderUploadInfo = () => {
     return (
-      <div className="flex flex-col">
+      <div className="flex flex-col gap-6">
+        <div className="flex flex-1 flex-col justify-start gap-2 text-center text-2xl">
+          <div className="font-semibold">{t("pages.withdraw.areYouIsent")}</div>
+          <div className="flex flex-row justify-center gap-6">
+            <div
+              className={`cursor-pointer rounded-xl border-[1px] p-4 hover:bg-influencer hover:text-white ${
+                isentOfTax === "true" ? "bg-influencer text-white" : ""
+              }`}
+              onClick={() => setIsentOfTax("true")}
+            >
+              {t("pages.withdraw.yes")}
+            </div>
+            <div
+              className={`cursor-pointer  rounded-xl border-[1px] p-4 hover:bg-influencer hover:text-white ${
+                isentOfTax === "false" ? "bg-influencer text-white" : ""
+              }`}
+              onClick={() => setIsentOfTax("false")}
+            >
+              {t("pages.withdraw.no")}
+            </div>
+          </div>
+        </div>
         <div className="flex flex-1 flex-col justify-start gap-2 text-center text-2xl">
           <div className="font-semibold">
             {t("pages.withdraw.withdawModalAvailablePayout")}
@@ -146,7 +171,8 @@ const WithdrawPage = () => {
           disabled={
             isLoadingUploadInvoice ||
             !influencerInvoice ||
-            availablePayoutsSum === 0
+            availablePayoutsSum === 0 ||
+            isentOfTax === ""
           }
         />
       </div>

@@ -6,6 +6,7 @@ import { faChevronDown, faChevronUp } from "@fortawesome/free-solid-svg-icons";
 type Payout = {
   id: string;
   payoutValue: number;
+  orderId: string;
 };
 
 const Payout = (params: { payout: Payout }) => {
@@ -26,7 +27,7 @@ const Payout = (params: { payout: Payout }) => {
           <div className="font-semibold text-influencer">Payout Ref</div>
           <div>#{params.payout.id}</div>
         </div>
-        <FontAwesomeIcon icon={openPayout ? faChevronDown : faChevronUp} />
+        <FontAwesomeIcon icon={!openPayout ? faChevronDown : faChevronUp} />
       </div>
       {openPayout && (
         <div>
@@ -35,6 +36,10 @@ const Payout = (params: { payout: Payout }) => {
             <div>
               {helper.calculerMonetaryValue(params.payout.payoutValue)}€
             </div>
+          </div>
+          <div className="line-clamp-1 flex flex-col gap-2 p-2">
+            <div className="font-semibold text-influencer">Payout Order Id</div>
+            <div>{params.payout.orderId}</div>
           </div>
         </div>
       )}

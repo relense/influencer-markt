@@ -4,7 +4,7 @@ import { useTranslation } from "react-i18next";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { api } from "~/utils/api";
 import { faCheckCircle } from "@fortawesome/free-regular-svg-icons";
-import { faArrowsRotate } from "@fortawesome/free-solid-svg-icons";
+import { faArrowsRotate, faReceipt } from "@fortawesome/free-solid-svg-icons";
 
 import { LoadingSpinner } from "../../../components/LoadingSpinner";
 import { Modal } from "../../../components/Modal";
@@ -138,85 +138,94 @@ const AvailableBalanceModal = (params: { onClose: () => void }) => {
           onClose={() => onCloseHandle()}
           title={t("pages.billing.availableBalance")}
         >
-          <div className="flex flex-col gap-4 p-6">
-            {availablePayouts.map((payout) => {
-              return (
-                <div key={payout.id} className="flex flex-1 flex-col gap-2">
-                  <div className="flex flex-1 flex-col items-center gap-3 rounded-lg border-[1px] p-4 shadow-md">
-                    <Link
-                      href={`/sales/${payout.orderId}`}
-                      className="font-semibold text-influencer hover:cursor-pointer hover:underline"
-                    >
-                      {t("pages.billing.orderRef")} #{payout.orderId}
-                    </Link>
-                    {!!payout.influencerInvoice && !payout.paid && (
-                      <div className="flex items-center gap-2">
-                        <FontAwesomeIcon
-                          icon={faArrowsRotate}
-                          className="text-lg text-influencer"
-                        />
-                        <div>{t("pages.billing.payoutBeingProcessed")}</div>
-                      </div>
-                    )}
-                    {payout.influencerInvoice && payout.paid && (
-                      <div className="flex items-center gap-2">
-                        <FontAwesomeIcon
-                          icon={faCheckCircle}
-                          className="text-lg text-influencer-green"
-                        />
-                        <div>{t("pages.billing.payoutApproved")}</div>
-                      </div>
-                    )}
-                    {payout.invoiceUploadedAt && (
-                      <div className="flex flex-col text-center">
-                        <div className="font-semibold text-influencer">
-                          {t("pages.billing.dateInvoiceAdded")}
+          <>
+            {availablePayouts.length > 0 ? (
+              <div className="flex flex-col gap-4 p-6">
+                {availablePayouts.map((payout) => {
+                  return (
+                    <div key={payout.id} className="flex flex-1 flex-col gap-2">
+                      <div className="flex flex-1 flex-col items-center gap-3 rounded-lg border-[1px] p-4 shadow-md">
+                        <Link
+                          href={`/sales/${payout.orderId}`}
+                          className="font-semibold text-influencer hover:cursor-pointer hover:underline"
+                        >
+                          {t("pages.billing.orderRef")} #{payout.orderId}
+                        </Link>
+                        {!!payout.influencerInvoice && !payout.paid && (
+                          <div className="flex items-center gap-2">
+                            <FontAwesomeIcon
+                              icon={faArrowsRotate}
+                              className="text-lg text-influencer"
+                            />
+                            <div>{t("pages.billing.payoutBeingProcessed")}</div>
+                          </div>
+                        )}
+                        {payout.influencerInvoice && payout.paid && (
+                          <div className="flex items-center gap-2">
+                            <FontAwesomeIcon
+                              icon={faCheckCircle}
+                              className="text-lg text-influencer-green"
+                            />
+                            <div>{t("pages.billing.payoutApproved")}</div>
+                          </div>
+                        )}
+                        {payout.invoiceUploadedAt && (
+                          <div className="flex flex-col text-center">
+                            <div className="font-semibold text-influencer">
+                              {t("pages.billing.dateInvoiceAdded")}
+                            </div>
+                            <div>{payout.invoiceUploadedAt}</div>
+                          </div>
+                        )}
+                        <div className="flex flex-col text-center">
+                          <div className="font-semibold text-influencer">
+                            {t("pages.billing.dateProofEmited")}
+                          </div>
+                          <div>{payout.payoutCreated}</div>
                         </div>
-                        <div>{payout.invoiceUploadedAt}</div>
+                        <div className="flex flex-col text-center">
+                          <div className="font-semibold text-influencer">
+                            {t("pages.billing.sale")}
+                          </div>
+                          <div>
+                            {helper.calculerMonetaryValue(payout.payoutValue)}€
+                          </div>
+                        </div>
+                        {payout.influencerInvoice && (
+                          <a
+                            target="_blank"
+                            href={payout.influencerInvoice}
+                            rel="noopener noreferrer"
+                            className="flex"
+                          >
+                            <Button
+                              level="primary"
+                              title={t("pages.billing.downloadInvoice")}
+                            />
+                          </a>
+                        )}
                       </div>
-                    )}
-                    <div className="flex flex-col text-center">
-                      <div className="font-semibold text-influencer">
-                        {t("pages.billing.dateProofEmited")}
-                      </div>
-                      <div>{payout.payoutCreated}</div>
                     </div>
-                    <div className="flex flex-col text-center">
-                      <div className="font-semibold text-influencer">
-                        {t("pages.billing.sale")}
-                      </div>
-                      <div>
-                        {helper.calculerMonetaryValue(payout.payoutValue)}€
-                      </div>
-                    </div>
-                    {payout.influencerInvoice && (
-                      <a
-                        target="_blank"
-                        href={payout.influencerInvoice}
-                        rel="noopener noreferrer"
-                        className="flex"
-                      >
-                        <Button
-                          level="primary"
-                          title={t("pages.billing.downloadInvoice")}
-                        />
-                      </a>
-                    )}
+                  );
+                })}
+                {payoutsCount > availablePayouts.length && (
+                  <div className="flex items-center justify-center">
+                    <Button
+                      title={t("pages.billing.loadMore")}
+                      onClick={() => refetchPayouts()}
+                      isLoading={isFetchingAvailablePayoutsDataCursor}
+                      disabled={isFetchingAvailablePayoutsDataCursor}
+                    />
                   </div>
-                </div>
-              );
-            })}
-            {payoutsCount > availablePayouts.length && (
-              <div className="flex items-center justify-center">
-                <Button
-                  title={t("pages.billing.loadMore")}
-                  onClick={() => refetchPayouts()}
-                  isLoading={isFetchingAvailablePayoutsDataCursor}
-                  disabled={isFetchingAvailablePayoutsDataCursor}
-                />
+                )}
+              </div>
+            ) : (
+              <div className="flex flex-col items-center gap-4 p-6 text-gray4">
+                <FontAwesomeIcon icon={faReceipt} className="text-3xl" />
+                <div>{t("pages.billing.noPayouts")}</div>
               </div>
             )}
-          </div>
+          </>
         </Modal>
       </div>
     );

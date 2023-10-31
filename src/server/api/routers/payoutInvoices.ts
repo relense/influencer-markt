@@ -228,4 +228,66 @@ export const PayoutInvoicesRouter = createTRPCRouter({
         },
       });
     }),
+
+  acceptInvoice: protectedProcedure
+    .input(
+      z.object({
+        payoutsInvoiceId: z.string(),
+        isPayoutValueCorect: z.boolean(),
+        isVATCorrect: z.boolean(),
+        isOurTinCorrect: z.boolean(),
+        isOurCountryCorrect: z.boolean(),
+        isCompanyNameCorrect: z.boolean(),
+        correctTypeOfPaymentSelected: z.boolean(),
+      })
+    )
+    .mutation(async ({ ctx, input }) => {
+      const user = await ctx.prisma.user.findFirst({
+        where: {
+          id: ctx.session.user.id,
+        },
+      });
+
+      if (user) {
+        const payoutInvoice = await ctx.prisma.payoutInvoice.update({
+          where: {
+            id: input.payoutsInvoiceId,
+            payoutSolver: {
+              id: user.id,
+            },
+          },
+          data: {
+            isPayoutValueCorect: input.isPayoutValueCorect,
+            isVATCorrect: input.isVATCorrect,
+            isOurTinCorrect: input.isOurTinCorrect,
+            isOurCountryCorrect: input.isOurCountryCorrect,
+            isCompanyNameCorrect: input.isCompanyNameCorrect,
+            correctTypeOfPaymentSelected: input.correctTypeOfPaymentSelected,
+            payoutInvoiceStatus: {
+              connect: {
+                id: 4,
+              },
+            },
+          },
+          select: {
+            payouts: {
+              select: { id: true },
+            },
+          },
+        });
+
+        if (payoutInvoice && payoutInvoice.payouts) {
+          for (const payout of payoutInvoice.payouts) {
+            await ctx.prisma.payout.update({
+              where: {
+                id: payout.id,
+              },
+              data: {
+                paid: true,
+              },
+            });
+          }
+        }
+      }
+    }),
 });

@@ -44,7 +44,6 @@ const createPayout = async (params: { orderId: number }) => {
         name: order.influencer?.billing?.name || "",
         email: order.influencer?.billing?.email || "",
         tin: order.influencer?.billing?.tin || "",
-        isentOfTaxes: false,
         paid: false,
       },
     });
@@ -79,7 +78,7 @@ export const PayoutsRouter = createTRPCRouter({
       const endOfMonth = new Date(
         currentDate.getFullYear(),
         currentDate.getMonth() + 1,
-        0
+        1
       );
 
       return await ctx.prisma.$transaction([
@@ -131,7 +130,7 @@ export const PayoutsRouter = createTRPCRouter({
             },
           },
           orderBy: {
-            createdAt: "desc",
+            createdAt: "asc",
           },
         }),
       ]);
@@ -161,7 +160,7 @@ export const PayoutsRouter = createTRPCRouter({
         const endOfMonth = new Date(
           currentDate.getFullYear(),
           currentDate.getMonth() + 1,
-          0
+          1
         );
 
         return await ctx.prisma.payout.findMany({
@@ -207,7 +206,7 @@ export const PayoutsRouter = createTRPCRouter({
             },
           },
           orderBy: {
-            createdAt: "desc",
+            createdAt: "asc",
           },
         });
       }
@@ -281,7 +280,7 @@ export const PayoutsRouter = createTRPCRouter({
             },
           },
           orderBy: {
-            createdAt: "desc",
+            createdAt: "asc",
           },
         }),
       ]);
@@ -357,7 +356,7 @@ export const PayoutsRouter = createTRPCRouter({
             },
           },
           orderBy: {
-            createdAt: "desc",
+            createdAt: "asc",
           },
         });
       }
@@ -415,7 +414,7 @@ export const PayoutsRouter = createTRPCRouter({
       const endOfMonth = new Date(
         currentDate.getFullYear(),
         currentDate.getMonth() + 1,
-        0
+        1
       );
 
       const availablePayouts = await ctx.prisma.payout.findMany({
@@ -443,6 +442,7 @@ export const PayoutsRouter = createTRPCRouter({
     .input(
       z.object({
         uploadedInvoice: z.string(),
+        isentOfTaxes: z.boolean(),
       })
     )
     .mutation(async ({ ctx, input }) => {
@@ -502,6 +502,7 @@ export const PayoutsRouter = createTRPCRouter({
                     id: 1,
                   },
                 },
+                isentOfTaxes: input.isentOfTaxes,
               },
             });
 

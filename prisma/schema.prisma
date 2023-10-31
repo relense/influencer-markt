@@ -596,7 +596,6 @@ model Payout {
   payoutValue     Int
   taxesValue      Int
   taxesPercentage Int
-  isentOfTaxes    Boolean
   paid            Boolean        @default(false)
   payoutInvoice   PayoutInvoice? @relation(fields: [payoutInvoiceId], references: [id])
 
@@ -625,8 +624,15 @@ model PayoutInvoice {
   influencerInvoiceBlobName String              @db.Text
   payoutSolver              User?               @relation(fields: [userId], references: [id])
   payoutInvoiceStatus       PayoutInvoiceStatus @relation(fields: [payoutInvoiceStatusId], references: [id])
+  payouts                   Payout[]
 
-  payouts Payout[]
+  isentOfTaxes                 Boolean @default(false)
+  isPayoutValueCorect          Boolean @default(false)
+  isVATCorrect                 Boolean @default(false)
+  isOurTinCorrect              Boolean @default(false)
+  isOurCountryCorrect          Boolean @default(false)
+  isCompanyNameCorrect         Boolean @default(false)
+  correctTypeOfPaymentSelected Boolean @default(false)
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt

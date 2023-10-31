@@ -1083,7 +1083,21 @@
       "payoutApproved": "Payout was approved and processed",
       "loadMore": "Load More",
       "dateInvoiceAdded": "Invoice uploaded date.",
-      "dateProofEmited": "Proof issuance date"
+      "dateProofEmited": "Proof issuance date",
+      "noPayouts": "There are no payments being issued",
+
+      "infoBalance": {
+        "title1": "Understand the concepts of Available Balance, Pending Balance and Available Credit on our Platform",
+        "subtitle1": "At Influencer Markt, it is essential to understand the distinctions between three important terms: Available Balance, Pending Balance and Available Credit. Each plays a key role in managing your earnings and transactions. Here is a clear and concise explanation to help clarify these concepts:",
+        "title2": "Available Balance: Ready For Withdrawal",
+        "subtitle2": "The Available Balance is the amount that is ready and available for you to withdraw. This amount represents the earnings from the services provided on the platform from previous months that have already been confirmed and are ready to be transferred to your account. However, in order to proceed with the withdrawal, you must submit the corresponding invoice on our platform, following the established guidelines. Once the invoice has been processed, the balance will be transferred to the IBAN you have indicated.",
+        "title3": "Pending Balance: Earnings Scheduled for Next Month",
+        "subtitle3": "The Pending Balance refers to earnings from work that has already been done, but whose balance will only be available for withdrawal on the 1st day of the following month, respecting the predefined payment schedule. The content creator's invoice must include all the services provided during the months in question.",
+        "title4": "Available Credit: Amount for Internal Use on the Platform",
+        "subtitle4": "Available Credit consists of amounts resulting from returns or similar situations. Unlike the Available Balance, this amount is not available to be withdrawn, but to be used exclusively within the Influencer Markt platform. It can be used to pay for services and/or purchase products.",
+        "subtitle5": "It is essential to understand and distinguish between these three types of balances for efficient financial management on the Influencer Markt platform. If you have any further questions or queries, please do not hesitate to contact our support team, we are always happy to help with any questions you may have.",
+        "closeButton": "Close"
+      }
     },
 
     "withdraw": {
@@ -1097,7 +1111,10 @@
       "uploadedInvoice": "Uploaded Invoice",
       "withdraw": "Initiate Withdraw Process",
       "fileIsNotPdf": "Uploaded file is not of type PDF",
-      "uploadedSuccessfully": "Invoice upload successfully"
+      "uploadedSuccessfully": "Invoice upload successfully",
+      "areYouIsent": "Are you exempt of paying tax?",
+      "yes": "Yes",
+      "no": "No"
     },
 
     "settings": {

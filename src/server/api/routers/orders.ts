@@ -536,17 +536,21 @@ export const OrdersRouter = createTRPCRouter({
       });
 
       if (beforeUpdate?.orderStatusId === 3) {
-        await ctx.prisma.order.update({
-          where: {
-            id: input.orderId,
-            updatedAt: {
-              lt: beforeUpdate.updatedAt,
+        try {
+          await ctx.prisma.order.update({
+            where: {
+              id: input.orderId,
+              updatedAt: {
+                lt: beforeUpdate.updatedAt,
+              },
             },
-          },
-          data: {
-            orderStatusId: 10,
-          },
-        });
+            data: {
+              orderStatusId: 10,
+            },
+          });
+        } catch (err) {
+          return true;
+        }
       }
 
       return true;
