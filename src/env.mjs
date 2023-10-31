@@ -43,6 +43,7 @@ export const env = createEnv({
     STRIPE_WEBHOOK_SECRET: z.string(),
 
     NEXT_PUBLIC_CURRENT_ENV: z.string(),
+    NEXT_SHARP_PATH: z.string(),
   },
 
   /**
@@ -87,6 +88,7 @@ export const env = createEnv({
     STRIPE_WEBHOOK_SECRET: process.env.STRIPE_WEBHOOK_SECRET,
 
     NEXT_PUBLIC_CURRENT_ENV: process.env.NEXT_PUBLIC_BASE_URL,
+    NEXT_SHARP_PATH: process.env.NEXT_SHARP_PATH,
   },
   /**
    * Run `build` or `dev` with `SKIP_ENV_VALIDATION` to skip env validation.
