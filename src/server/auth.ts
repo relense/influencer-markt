@@ -7,7 +7,6 @@ import {
 } from "next-auth";
 import GoogleProvider from "next-auth/providers/google";
 import EmailProvider from "next-auth/providers/email";
-import GitHub from "next-auth/providers/github";
 import { env } from "~/env.mjs";
 import { prisma } from "~/server/db";
 import { customSendVerificationRequest } from "../emailTemplates/customVerificationEmail/customVerificationEmail";
@@ -54,15 +53,6 @@ export const authOptions: NextAuthOptions = {
   },
   adapter: PrismaAdapter(prisma),
   providers: [
-    GitHub({
-      clientId: env.GITHUB_ID,
-      clientSecret: env.GITHUB_SECRET,
-      authorization: {
-        params: {
-          prompt: "consent",
-        },
-      },
-    }),
     GoogleProvider({
       clientId: env.GOOGLE_CLIENT_ID,
       clientSecret: env.GOOGLE_CLIENT_SECRET,
