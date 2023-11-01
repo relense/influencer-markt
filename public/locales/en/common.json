@@ -152,7 +152,9 @@
       "toBuyerOrderOnHold": "The delivery deadline has been missed. You now have the opportunity to choose how you wish to proceed",
       "toInfluencerOrderOnHold": "The delivery deadline has not been met. The order is currently on hold, awaiting {{actor}} decision",
       "toInfluencerOrderOnHoldToInProgress": "The delivery deadline has been extended. We kindly urge you to ensure the punctual delivery of the items originally requested",
-      "toInfluencerOrderOnHoldToConfirm": "{{actor}} decided not to continue with the order."
+      "toInfluencerOrderOnHoldToConfirm": "{{actor}} decided not to continue with the order.",
+      "toInfluencerNewMessage": "{{actor}} send a new message",
+      "toBuyerNewMessage": "{{actor}} send a new message"
     },
 
     "orderStatus": {

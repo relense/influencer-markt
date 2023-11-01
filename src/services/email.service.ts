@@ -9,6 +9,7 @@ import { influencerAcceptedOrderEmail } from "../emailTemplates/influencerAccept
 import { influencerDeliveredOrderEmail } from "../emailTemplates/influencerDeliveredEmail/influencerDeliveredEmail";
 import { influencerMarktConfirmEmail } from "../emailTemplates/influencerMarktConfirmEmail/influencerMarktConfirmEmail";
 import { influencerOrderWasRectified } from "../emailTemplates/influencerOrderWasRectified/influencerOrderWasRectified";
+import { newMessageOrderEmail } from "../emailTemplates/newMessageOrderEmail/newMessageOrderEmail";
 import { newOrderEmail } from "../emailTemplates/newOrderEmail/newOrderEmail";
 import { toBuyerDeliveryIsTomorrowEmail } from "../emailTemplates/toBuyerDeliveryIsTomorrowEmail/toBuyerDeliveryIsTomorrowEmail";
 import { toBuyerInfluencerIsRightEmail } from "../emailTemplates/toBuyerInfluencerIsRightEmail/toBuyerInfluencerIsRightEmail";
@@ -122,6 +123,12 @@ type EmailActions =
     }
   | {
       action: "newMessageOrderEmail";
+      fromUs: string;
+      to: string;
+      orderId: number;
+      senderName: string;
+      language: string;
+      orderType: string;
       receiverProfileId: string;
     }
   | {
@@ -370,6 +377,14 @@ export const sendEmail = async (emailAction: EmailActions) => {
     const isDisabled = await checkIfIsDisabled(emailAction.receiverProfileId);
 
     if (isDisabled) return;
+    newMessageOrderEmail({
+      senderName: emailAction.senderName,
+      from: emailAction.fromUs,
+      to: emailAction.to,
+      orderId: emailAction.orderId,
+      orderType: emailAction.orderType,
+      language: emailAction.language,
+    });
   } else if (emailAction.action === "newOrderEmail") {
     const isDisabled = await checkIfIsDisabled(emailAction.receiverProfileId);
 

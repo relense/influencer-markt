@@ -7,7 +7,11 @@ import { api } from "~/utils/api";
 import { helper } from "../utils/helper";
 import { LoadingSpinner } from "./LoadingSpinner";
 import dayjs from "dayjs";
-import { faArrowsRotate } from "@fortawesome/free-solid-svg-icons";
+import {
+  faArrowsRotate,
+  faCheck,
+  faCheckDouble,
+} from "@fortawesome/free-solid-svg-icons";
 
 type Message = {
   senderId: string;
@@ -15,6 +19,7 @@ type Message = {
   id: number;
   message: string;
   createdAt: Date;
+  isRead: boolean;
 };
 
 const MessageBoard = (params: {
@@ -43,9 +48,14 @@ const MessageBoard = (params: {
     isLoading: isLoadingMessages,
     isRefetching: isRefetchingMessagesData,
     refetch: refetchMessagesData,
-  } = api.messages.getOrderMessages.useQuery({
-    orderId: params.orderId,
-  });
+  } = api.messages.getOrderMessages.useQuery(
+    {
+      orderId: params.orderId,
+    },
+    {
+      enabled: false,
+    }
+  );
 
   const { data: messagesDataCursor, refetch: refetchMessagesCursor } =
     api.messages.getOrderMessagesWithCursor.useQuery(
@@ -58,6 +68,16 @@ const MessageBoard = (params: {
       }
     );
 
+  const { mutate: updateIsReadMessages } =
+    api.messages.updateReadMessages.useMutation({
+      onSuccess: () => {
+        void refetchMessagesData();
+      },
+    });
+
+  const { mutate: sendNewMessageNotificationAndEmail } =
+    api.messages.sendNewMessaNotification.useMutation();
+
   const { mutate: createMessage } = api.messages.createMessage.useMutation({
     onSuccess: (message) => {
       if (message) {
@@ -69,14 +89,25 @@ const MessageBoard = (params: {
           message: message?.message,
           receiverId: message?.receiverId,
           senderId: message?.senderId,
+          isRead: message?.isRead,
         });
 
         setMessages(newMessages);
         setUserAddedNewMessages(true);
+        void sendNewMessageNotificationAndEmail({
+          orderId: params.orderId,
+          receiverId: message.receiverId,
+        });
       }
       setMessage("");
     },
   });
+
+  useEffect(() => {
+    updateIsReadMessages({
+      orderId: params.orderId,
+    });
+  }, [updateIsReadMessages, params.orderId]);
 
   useEffect(() => {
     if (messagesData) {
@@ -105,6 +136,7 @@ const MessageBoard = (params: {
             message: message.message,
             receiverId: message.receiverId,
             senderId: message.senderId,
+            isRead: message.isRead,
           })),
         ];
       });
@@ -248,10 +280,10 @@ const MessageBoard = (params: {
                   key={`${message.id}message`}
                   className="flex w-full flex-col items-start text-left"
                 >
-                  <div className="m-2 max-w-[75%] whitespace-pre-line rounded-xl bg-boxShadow p-4 text-white">
+                  <div className="m-2 max-w-[75%] whitespace-pre-line rounded-xl bg-gray5 p-4 ">
                     {message.message}
                   </div>
-                  <div className="flex text-sm text-gray2">
+                  <div className="ml-3 flex text-sm text-gray2">
                     {helper.formatShowtime(message.createdAt, i18n.language)}
                   </div>
                 </div>
@@ -268,8 +300,16 @@ const MessageBoard = (params: {
                   <div className="m-2 max-w-[75%] whitespace-pre-line rounded-xl bg-influencer-green-dark p-4 text-white">
                     {message.message}
                   </div>
-                  <div className="flex text-sm text-gray2">
-                    {helper.formatShowtime(message.createdAt, i18n.language)}
+                  <div className="mr-3 flex items-center gap-1 text-sm text-gray2">
+                    <div className="flex text-sm text-gray2">
+                      {helper.formatShowtime(message.createdAt, i18n.language)}
+                    </div>
+                    <FontAwesomeIcon
+                      icon={message.isRead ? faCheckDouble : faCheck}
+                      className={
+                        message.isRead ? "text-influencer-green-dark" : ""
+                      }
+                    />
                   </div>
                 </div>
               );
@@ -310,12 +350,14 @@ const MessageBoard = (params: {
           className="fa-xl cursor-pointer text-influencer"
           onClick={() => {
             void ctx.messages.getOrderMessagesWithCursor.reset();
-            void refetchMessagesData();
+            void updateIsReadMessages({
+              orderId: params.orderId,
+            });
           }}
         />
       </div>
       <div
-        className="flex max-h-[500px] min-h-[500px] w-full flex-1 overflow-y-auto p-4 lg:min-h-[500px]"
+        className="mb-1 flex max-h-[500px] min-h-[500px] w-full flex-1 overflow-y-auto lg:min-h-[500px]"
         ref={messagesRef}
       >
         {isLoadingMessages || isRefetchingMessagesData ? (
@@ -323,7 +365,7 @@ const MessageBoard = (params: {
             <LoadingSpinner />
           </div>
         ) : (
-          <div className="flex flex-1">{renderMessages()}</div>
+          <div className="flex h-full flex-1">{renderMessages()}</div>
         )}
       </div>
       <div className="flex w-full items-center gap-2 border-t-[1px] p-4">

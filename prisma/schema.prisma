@@ -492,6 +492,7 @@ model Message {
   receiver Profile @relation("receiver", fields: [receiverId], references: [id])
   order    Order   @relation(fields: [orderId], references: [id])
   message  String  @db.Text
+  isRead   Boolean @default(false)
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt

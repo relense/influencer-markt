@@ -152,7 +152,9 @@
       "toBuyerOrderOnHold": "O prazo de entrega não foi cumprido. Agora, tem a oportunidade de escolher como deseja proceder",
       "toInfluencerOrderOnHold": "O prazo de entrega não foi cumprido. O pedido encontra-se atualmente em espera, aguardando a decisão de {{actor}}",
       "toInfluencerOrderOnHoldToInProgress": "O prazo de entrega foi prorrogado. Pedimos que assegures a entrega pontual dos itens originalmente solicitados",
-      "toInfluencerOrderOnHoldToConfirm": "{{actor}} decidiu não dar continuidade ao pedido"
+      "toInfluencerOrderOnHoldToConfirm": "{{actor}} decidiu não dar continuidade ao pedido",
+      "toInfluencerNewMessage": "{{actor}} enviou uma nova mensagem",
+      "toBuyerNewMessage": "{{actor}} enviou uma nova mensagem"
     },
 
     "orderStatus": {

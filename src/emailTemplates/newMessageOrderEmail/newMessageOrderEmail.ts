@@ -6,8 +6,9 @@ function newMessageOrderEmail(params: {
   orderId: number;
   senderName: string;
   language: string;
+  orderType: string;
 }) {
-  const { orderId, language, from, to, senderName } = params;
+  const { orderId, language, from, to, senderName, orderType } = params;
 
   let title = `${senderName} Sent A New Message`;
   let buttonTitle = "View Order";
@@ -27,7 +28,12 @@ function newMessageOrderEmail(params: {
       to,
       subject,
       text: text({ title }),
-      html: html({ title, orderId: orderId.toString(), buttonTitle }),
+      html: html({
+        title,
+        orderId: orderId.toString(),
+        buttonTitle,
+        orderType,
+      }),
     })
     .then(
       () => {
@@ -47,8 +53,13 @@ function newMessageOrderEmail(params: {
  *
  * @note We don't add the email address to avoid needing to escape it, if you do, remember to sanitize it!
  */
-function html(params: { title: string; orderId: string; buttonTitle: string }) {
-  const { title, orderId, buttonTitle } = params;
+function html(params: {
+  title: string;
+  orderId: string;
+  buttonTitle: string;
+  orderType: string;
+}) {
+  const { title, orderId, buttonTitle, orderType } = params;
 
   return `<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -146,7 +157,7 @@ function html(params: { title: string; orderId: string; buttonTitle: string }) {
                   <h3 class="title">${title}</h3>
 
                   <a
-                    href="https://influencermarkt.com/sales/${orderId}"
+                    href="https://influencermarkt.com/${orderType}/${orderId}"
                     class="button"
                     ><span style="color: #fff">${buttonTitle}</span></a
                   >
