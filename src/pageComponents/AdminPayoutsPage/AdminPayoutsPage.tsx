@@ -97,16 +97,14 @@ const AdminPayoutsPage = () => {
         payoutsInvoiceData[1].map((invoice) => {
           return {
             id: invoice.id,
-            payoutValue: invoice.payouts.reduce((total, payout) => {
-              return total + payout.payoutValue;
-            }, 0),
+            payoutValue: invoice.invoiceValue,
             invoiceUploadedAt: helper.formatFullDateWithTime(
               invoice.createdAt,
               i18n.language
             ),
             verficator: invoice?.payoutSolver?.username || "",
-            influencerUsername: invoice.payouts[0]?.profile.user.username || "",
-            influencerId: invoice.payouts[0]?.profile.id || "",
+            influencerUsername: invoice?.influencer?.user.username || "",
+            influencerId: invoice?.influencer?.id || "",
             status: invoice?.payoutInvoiceStatus?.name || "",
           };
         })
@@ -128,16 +126,14 @@ const AdminPayoutsPage = () => {
       payoutsInvoiceDataCursor.forEach((invoice) => {
         newPayouts.push({
           id: invoice.id,
-          payoutValue: invoice.payouts.reduce((total, payout) => {
-            return total + payout.payoutValue;
-          }, 0),
+          payoutValue: invoice.invoiceValue,
           invoiceUploadedAt: helper.formatFullDateWithTime(
             invoice.createdAt,
             i18n.language
           ),
           verficator: invoice?.payoutSolver?.username || "",
-          influencerUsername: invoice.payouts[0]?.profile.user.username || "",
-          influencerId: invoice.payouts[0]?.profile.id || "",
+          influencerUsername: invoice?.influencer?.user.username || "",
+          influencerId: invoice?.influencer?.id || "",
           status: invoice?.payoutInvoiceStatus?.name || "",
         });
       });

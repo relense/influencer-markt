@@ -30,6 +30,21 @@ export const PayoutInvoicesRouter = createTRPCRouter({
             },
           },
           payoutSolver: true,
+          influencer: {
+            select: {
+              name: true,
+              country: {
+                select: {
+                  countryTax: true,
+                },
+              },
+              user: {
+                select: {
+                  email: true,
+                },
+              },
+            },
+          },
         },
       });
     }),
@@ -83,19 +98,20 @@ export const PayoutInvoicesRouter = createTRPCRouter({
                 username: true,
               },
             },
+            influencer: {
+              select: {
+                id: true,
+                user: {
+                  select: {
+                    username: true,
+                  },
+                },
+              },
+            },
+            invoiceValue: true,
             payouts: {
               select: {
                 payoutValue: true,
-                profile: {
-                  select: {
-                    id: true,
-                    user: {
-                      select: {
-                        username: true,
-                      },
-                    },
-                  },
-                },
               },
             },
           },
@@ -145,19 +161,20 @@ export const PayoutInvoicesRouter = createTRPCRouter({
               username: true,
             },
           },
+          invoiceValue: true,
+          influencer: {
+            select: {
+              id: true,
+              user: {
+                select: {
+                  username: true,
+                },
+              },
+            },
+          },
           payouts: {
             select: {
               payoutValue: true,
-              profile: {
-                select: {
-                  id: true,
-                  user: {
-                    select: {
-                      username: true,
-                    },
-                  },
-                },
-              },
             },
           },
         },

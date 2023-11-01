@@ -1084,7 +1084,7 @@
       "updateIban": "Actualiza o IBAN antes de levantar o saldo disponível",
       "payoutBeingProcessed": "Pagamento está a ser processado",
       "payoutApproved": "Pagamento foi aprovado e processado",
-      "payoutRejected": "A fatura foi rejeitado. Por favor actualize com uma nova",
+      "payoutRejected": "A fatura foi rejeitado. Inicie novo processo de pagamento",
       "loadMore": "Carregar Mais",
       "dateInvoiceAdded": "Data de carregamento da fatura",
       "dateProofEmited": "Data de emissão do comprovativo",

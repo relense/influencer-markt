@@ -374,7 +374,14 @@ export const PayoutsRouter = createTRPCRouter({
             lte: startOfMonth,
           },
           paid: false,
-          payoutInvoice: null,
+          OR: [
+            { payoutInvoice: null },
+            {
+              payoutInvoice: {
+                payoutInvoiceStatusId: 3,
+              },
+            },
+          ],
         },
         select: {
           payoutValue: true,
@@ -457,10 +464,18 @@ export const PayoutsRouter = createTRPCRouter({
               lte: startOfMonth,
             },
             paid: false,
-            payoutInvoice: null,
+            OR: [
+              { payoutInvoice: null },
+              {
+                payoutInvoice: {
+                  payoutInvoiceStatusId: 3,
+                },
+              },
+            ],
           },
           select: {
             id: true,
+            payoutValue: true,
           },
         });
 
@@ -483,10 +498,23 @@ export const PayoutsRouter = createTRPCRouter({
               },
             });
 
+            const invoicetotalValue = availablePayouts.reduce(
+              (total, payout) => {
+                return total + payout.payoutValue;
+              },
+              0
+            );
+
             const payoutInvoice = await ctx.prisma.payoutInvoice.create({
               data: {
                 influencerInvoice: blockBlobClient.url,
                 influencerInvoiceBlobName: blobName,
+                invoiceValue: invoicetotalValue,
+                influencer: {
+                  connect: {
+                    id: profile.id,
+                  },
+                },
                 payoutInvoiceStatus: {
                   connect: {
                     id: 1,

@@ -101,6 +101,7 @@ model Profile {
   billing         Billing?
   invoices        Invoice[]
   payouts         Payout[]
+  payoutsInvoice PayoutInvoice[]
 
   createdJobs        Job[] @relation("jobCreator")
   appliedJobs        Job[] @relation("jobApplicants")
@@ -626,6 +627,8 @@ model PayoutInvoice {
   payoutSolver              User?               @relation(fields: [userId], references: [id])
   payoutInvoiceStatus       PayoutInvoiceStatus @relation(fields: [payoutInvoiceStatusId], references: [id])
   payouts                   Payout[]
+  invoiceValue              Int
+  influencer                Profile?            @relation(fields: [profileId], references: [id])
 
   isentOfTaxes                 Boolean @default(false)
   isPayoutValueCorect          Boolean @default(false)
@@ -640,9 +643,11 @@ model PayoutInvoice {
 
   payoutInvoiceStatusId Int
   userId                String?
+  profileId             String?
 
   @@index([payoutInvoiceStatusId])
   @@index([userId])
+  @@index([profileId])
 }
 
 model Payment {

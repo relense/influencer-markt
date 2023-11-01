@@ -226,12 +226,7 @@ const AdminPayoutManagesPage = (params: { payoutInvoiceId: string }) => {
 
   const renderPayoutInvoiceDetails = () => {
     if (payoutInvoice && payoutInvoice.payouts) {
-      const totalPayoutsValue = payoutInvoice.payouts.reduce(
-        (total, payout) => {
-          return total + payout.payoutValue;
-        },
-        0
-      );
+      const totalPayoutsValue = payoutInvoice.invoiceValue;
 
       const totalPayoutsValueWithTax =
         totalPayoutsValue +
@@ -305,13 +300,13 @@ const AdminPayoutManagesPage = (params: { payoutInvoiceId: string }) => {
           </div>
           <div className="line-clamp-1 flex flex-col gap-2 border-b-[1px] p-2">
             <div className="font-semibold text-influencer">Influencer</div>
-            <div>{payoutInvoice?.payouts[0]?.name || ""}</div>
+            <div>{payoutInvoice?.influencer?.name || ""}</div>
           </div>
           <div className="line-clamp-1 flex flex-col gap-2 p-2">
             <div className="font-semibold text-influencer">
               Influencer Email
             </div>
-            <div>{payoutInvoice?.payouts[0]?.email || ""}</div>
+            <div>{payoutInvoice?.influencer?.user.email || ""}</div>
           </div>
         </div>
       );

@@ -1084,7 +1084,7 @@
       "updateIban": "Update IBAN before withdrawing available balance",
       "payoutBeingProcessed": "Payout is being processed",
       "payoutApproved": "Payout was approved and processed",
-      "payoutRejected": "Invoice for payout was rejected. Please upload the correct one",
+      "payoutRejected": "Invoice for payout was rejected. Initiate a new withdraw process",
       "loadMore": "Load More",
       "dateInvoiceAdded": "Invoice uploaded date.",
       "dateProofEmited": "Proof issuance date",
