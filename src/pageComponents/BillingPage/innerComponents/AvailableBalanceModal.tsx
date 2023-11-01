@@ -3,7 +3,10 @@ import Link from "next/link";
 import { useTranslation } from "react-i18next";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { api } from "~/utils/api";
-import { faCheckCircle } from "@fortawesome/free-regular-svg-icons";
+import {
+  faCheckCircle,
+  faCircleXmark,
+} from "@fortawesome/free-regular-svg-icons";
 import { faArrowsRotate, faReceipt } from "@fortawesome/free-solid-svg-icons";
 
 import { LoadingSpinner } from "../../../components/LoadingSpinner";
@@ -18,7 +21,17 @@ type Payout = {
   payoutCreated: string;
   paid: boolean;
   influencerInvoice: string;
+  invoiceStatusId: number;
   invoiceUploadedAt: string | undefined;
+  exemptOfTaxes: boolean;
+  payoutInvoiceObjetivesList: {
+    isTinCorrect: boolean;
+    isCompanyCorrect: boolean;
+    isCompanyCountryCorrect: boolean;
+    isTaxCorrect: boolean;
+    isTotalValueCorrect: boolean;
+    isTypeOfPaymentCorrect: boolean;
+  };
 };
 
 const AvailableBalanceModal = (params: { onClose: () => void }) => {
@@ -67,6 +80,20 @@ const AvailableBalanceModal = (params: { onClose: () => void }) => {
                   i18n.language
                 )
               : undefined,
+            invoiceStatusId: payout.payoutInvoice?.payoutInvoiceStatusId || -1,
+            exemptOfTaxes: payout.payoutInvoice?.isentOfTaxes || false,
+            payoutInvoiceObjetivesList: {
+              isTinCorrect: payout.payoutInvoice?.isOurTinCorrect || false,
+              isCompanyCorrect:
+                payout.payoutInvoice?.isCompanyNameCorrect || false,
+              isCompanyCountryCorrect:
+                payout.payoutInvoice?.isOurCountryCorrect || false,
+              isTaxCorrect: payout.payoutInvoice?.isVATCorrect || false,
+              isTotalValueCorrect:
+                payout.payoutInvoice?.isPayoutValueCorect || false,
+              isTypeOfPaymentCorrect:
+                payout.payoutInvoice?.correctTypeOfPaymentSelected || false,
+            },
           };
         })
       );
@@ -102,6 +129,20 @@ const AvailableBalanceModal = (params: { onClose: () => void }) => {
                 i18n.language
               )
             : undefined,
+          invoiceStatusId: payout.payoutInvoice?.payoutInvoiceStatusId || -1,
+          exemptOfTaxes: payout.payoutInvoice?.isentOfTaxes || false,
+          payoutInvoiceObjetivesList: {
+            isTinCorrect: payout.payoutInvoice?.isOurTinCorrect || false,
+            isCompanyCorrect:
+              payout.payoutInvoice?.isCompanyNameCorrect || false,
+            isCompanyCountryCorrect:
+              payout.payoutInvoice?.isOurCountryCorrect || false,
+            isTaxCorrect: payout.payoutInvoice?.isVATCorrect || false,
+            isTotalValueCorrect:
+              payout.payoutInvoice?.isPayoutValueCorect || false,
+            isTypeOfPaymentCorrect:
+              payout.payoutInvoice?.correctTypeOfPaymentSelected || false,
+          },
         });
       });
 
@@ -151,7 +192,8 @@ const AvailableBalanceModal = (params: { onClose: () => void }) => {
                         >
                           {t("pages.billing.orderRef")} #{payout.orderId}
                         </Link>
-                        {!!payout.influencerInvoice && !payout.paid && (
+                        {(payout.invoiceStatusId === 1 ||
+                          payout.invoiceStatusId === 2) && (
                           <div className="flex items-center gap-2">
                             <FontAwesomeIcon
                               icon={faArrowsRotate}
@@ -160,13 +202,90 @@ const AvailableBalanceModal = (params: { onClose: () => void }) => {
                             <div>{t("pages.billing.payoutBeingProcessed")}</div>
                           </div>
                         )}
-                        {payout.influencerInvoice && payout.paid && (
+                        {payout.invoiceStatusId === 4 && (
                           <div className="flex items-center gap-2">
                             <FontAwesomeIcon
                               icon={faCheckCircle}
                               className="text-lg text-influencer-green"
                             />
                             <div>{t("pages.billing.payoutApproved")}</div>
+                          </div>
+                        )}
+                        {payout.invoiceStatusId === 3 && (
+                          <div className="flex flex-col items-center">
+                            <div className="flex items-center gap-2">
+                              <FontAwesomeIcon
+                                icon={faCircleXmark}
+                                className="text-lg text-influencer"
+                              />
+                              <div className="font-semibold">
+                                {t("pages.billing.payoutRejected")}
+                              </div>
+                            </div>
+                            {!payout.payoutInvoiceObjetivesList
+                              .isCompanyCorrect && (
+                              <div className="flex items-center gap-2">
+                                <FontAwesomeIcon
+                                  icon={faCircleXmark}
+                                  className="text-lg text-influencer"
+                                />
+                                <div>{t("pages.billing.companyIncorrect")}</div>
+                              </div>
+                            )}
+                            {!payout.payoutInvoiceObjetivesList
+                              .isCompanyCountryCorrect && (
+                              <div className="flex items-center gap-2">
+                                <FontAwesomeIcon
+                                  icon={faCircleXmark}
+                                  className="text-lg text-influencer"
+                                />
+                                <div>{t("pages.billing.countryIncorrect")}</div>
+                              </div>
+                            )}
+                            {!payout.payoutInvoiceObjetivesList.isTaxCorrect &&
+                              !payout.exemptOfTaxes && (
+                                <div className="flex items-center gap-2">
+                                  <FontAwesomeIcon
+                                    icon={faCircleXmark}
+                                    className="text-lg text-influencer"
+                                  />
+                                  <div>{t("pages.billing.taxIncorrect")}</div>
+                                </div>
+                              )}
+                            {!payout.payoutInvoiceObjetivesList
+                              .isTinCorrect && (
+                              <div className="flex items-center gap-2">
+                                <FontAwesomeIcon
+                                  icon={faCircleXmark}
+                                  className="text-lg text-influencer"
+                                />
+                                <div>{t("pages.billing.tinIncorrect")}</div>
+                              </div>
+                            )}
+                            {!payout.payoutInvoiceObjetivesList
+                              .isTotalValueCorrect && (
+                              <div className="flex items-center gap-2">
+                                <FontAwesomeIcon
+                                  icon={faCircleXmark}
+                                  className="text-lg text-influencer"
+                                />
+                                <div>
+                                  {t("pages.billing.finalValueIncorrect")}
+                                </div>
+                              </div>
+                            )}
+                            {!payout.payoutInvoiceObjetivesList
+                              .isTypeOfPaymentCorrect && (
+                              <div className="flex items-center gap-2">
+                                <FontAwesomeIcon
+                                  icon={faCircleXmark}
+                                  className="text-lg text-influencer"
+                                />
+                                <div>
+                                  {t("pages.billing.incorrectPaymentType")}
+                                </div>
+                              </div>
+                            )}
                           </div>
                         )}
                         {payout.invoiceUploadedAt && (

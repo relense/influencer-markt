@@ -1084,6 +1084,7 @@
       "updateIban": "Actualiza o IBAN antes de levantar o saldo disponível",
       "payoutBeingProcessed": "Pagamento está a ser processado",
       "payoutApproved": "Pagamento foi aprovado e processado",
+      "payoutRejected": "A fatura foi rejeitado. Por favor actualize com uma nova",
       "loadMore": "Carregar Mais",
       "dateInvoiceAdded": "Data de carregamento da fatura",
       "dateProofEmited": "Data de emissão do comprovativo",
@@ -1099,7 +1100,13 @@
         "subtitle4": "O Crédito Disponível consiste em valores resultantes de devoluções ou situações semelhantes. Ao contrário do Saldo Disponível, esse montante não está disponível para ser levantado, mas sim para ser utilizado exclusivamente dentro da plataforma Influencer Markt. Pode ser utilizado para pagamento de serviços e/ou aquisição de produtos.",
         "subtitle5": "É fundamental compreender e distinguir entre estes três tipos de saldos para uma gestão financeira eficiente na plataforma Influencer Markt. Se tiver mais dúvidas ou questões, não hesite em entrar em contato com o nosso suporte, estamos sempre disponíveis para ajudar a esclarecer quaisquer questões que possam surgir.",
         "closeButton": "Fechar"
-      }
+      },
+      "companyIncorrect": "O nome da empresa Influencer Markt LDA está incorreto.",
+      "countryIncorrect": "O país onde a Influencer Markt opera está incorreto",
+      "taxIncorrect": "O valor do IVA está incorreto",
+      "tinIncorrect": "O NIF da Influencer Markt está incorreto",
+      "finalValueIncorrect": "O valor final da fatura está incorreto",
+      "incorrectPaymentType": "O tipo de pagamento está incorreto"
     },
 
     "withdraw": {

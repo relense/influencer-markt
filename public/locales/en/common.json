@@ -1084,11 +1084,11 @@
       "updateIban": "Update IBAN before withdrawing available balance",
       "payoutBeingProcessed": "Payout is being processed",
       "payoutApproved": "Payout was approved and processed",
+      "payoutRejected": "Invoice for payout was rejected. Please upload the correct one",
       "loadMore": "Load More",
       "dateInvoiceAdded": "Invoice uploaded date.",
       "dateProofEmited": "Proof issuance date",
       "noPayouts": "There are no payments being issued",
-
       "infoBalance": {
         "title1": "Understand the concepts of Available Balance, Pending Balance and Available Credit on our Platform",
         "subtitle1": "At Influencer Markt, it is essential to understand the distinctions between three important terms: Available Balance, Pending Balance and Available Credit. Each plays a key role in managing your earnings and transactions. Here is a clear and concise explanation to help clarify these concepts:",
@@ -1100,7 +1100,13 @@
         "subtitle4": "Available Credit consists of amounts resulting from returns or similar situations. Unlike the Available Balance, this amount is not available to be withdrawn, but to be used exclusively within the Influencer Markt platform. It can be used to pay for services and/or purchase products.",
         "subtitle5": "It is essential to understand and distinguish between these three types of balances for efficient financial management on the Influencer Markt platform. If you have any further questions or queries, please do not hesitate to contact our support team, we are always happy to help with any questions you may have.",
         "closeButton": "Close"
-      }
+      },
+      "companyIncorrect": "Influencer Markt LDA, company name is incorrect",
+      "countryIncorrect": "The country where Influencer Markt operates is incorrect",
+      "taxIncorrect": "The tax value is incorrect",
+      "tinIncorrect": "Influencer Markt's TIN is incorrect",
+      "finalValueIncorrect": "The final value of the invoice is incorrect",
+      "incorrectPaymentType": "The payment type is incorrect"
     },
 
     "withdraw": {

@@ -272,15 +272,10 @@ export const PayoutsRouter = createTRPCRouter({
                 dateItWasDelivered: true,
               },
             },
-            payoutInvoice: {
-              select: {
-                influencerInvoice: true,
-                createdAt: true,
-              },
-            },
+            payoutInvoice: true,
           },
           orderBy: {
-            createdAt: "asc",
+            createdAt: "desc",
           },
         }),
       ]);
@@ -348,15 +343,10 @@ export const PayoutsRouter = createTRPCRouter({
                 dateItWasDelivered: true,
               },
             },
-            payoutInvoice: {
-              select: {
-                influencerInvoice: true,
-                createdAt: true,
-              },
-            },
+            payoutInvoice: true,
           },
           orderBy: {
-            createdAt: "asc",
+            createdAt: "desc",
           },
         });
       }

@@ -290,4 +290,48 @@ export const PayoutInvoicesRouter = createTRPCRouter({
         }
       }
     }),
+
+  rejectInvoice: protectedProcedure
+    .input(
+      z.object({
+        payoutsInvoiceId: z.string(),
+        isPayoutValueCorect: z.boolean(),
+        isVATCorrect: z.boolean(),
+        isOurTinCorrect: z.boolean(),
+        isOurCountryCorrect: z.boolean(),
+        isCompanyNameCorrect: z.boolean(),
+        correctTypeOfPaymentSelected: z.boolean(),
+      })
+    )
+    .mutation(async ({ ctx, input }) => {
+      const user = await ctx.prisma.user.findFirst({
+        where: {
+          id: ctx.session.user.id,
+        },
+      });
+
+      if (user) {
+        return await ctx.prisma.payoutInvoice.update({
+          where: {
+            id: input.payoutsInvoiceId,
+            payoutSolver: {
+              id: user.id,
+            },
+          },
+          data: {
+            isPayoutValueCorect: input.isPayoutValueCorect,
+            isVATCorrect: input.isVATCorrect,
+            isOurTinCorrect: input.isOurTinCorrect,
+            isOurCountryCorrect: input.isOurCountryCorrect,
+            isCompanyNameCorrect: input.isCompanyNameCorrect,
+            correctTypeOfPaymentSelected: input.correctTypeOfPaymentSelected,
+            payoutInvoiceStatus: {
+              connect: {
+                id: 3,
+              },
+            },
+          },
+        });
+      }
+    }),
 });

@@ -19,7 +19,6 @@ type ObjectisList = {
   isCompanyCorrect: boolean;
   isTinCorrect: boolean;
   isCompanyCountryCorrect: boolean;
-  isInvoiceBaseValueCorrect: boolean;
   isTaxCorrect: boolean;
   isTotalValueCorrect: boolean;
   isTypeOfPaymentCorrect: boolean;
@@ -38,12 +37,11 @@ const AdminPayoutManagesPage = (params: { payoutInvoiceId: string }) => {
   const [currentAssignAdminId, setCurrentAssingAdminId] = useState<string>("");
   const [openRejectModal, setOpenRejectModal] = useState<boolean>(false);
 
-  const { register, handleSubmit, watch } = useForm<ObjectisList>({
+  const { register, handleSubmit, watch, setValue } = useForm<ObjectisList>({
     defaultValues: {
       isCompanyCorrect: false,
       isTinCorrect: false,
       isCompanyCountryCorrect: false,
-      isInvoiceBaseValueCorrect: false,
       isTaxCorrect: false,
       isTotalValueCorrect: false,
       isTypeOfPaymentCorrect: false,
@@ -83,12 +81,38 @@ const AdminPayoutManagesPage = (params: { payoutInvoiceId: string }) => {
       },
     });
 
+  const { mutate: rejectInvoice } =
+    api.payoutInvoices.rejectInvoice.useMutation({
+      onSuccess: () => {
+        void router.push("/admin/payouts");
+      },
+    });
+
   useEffect(() => {
     if (payoutInvoice) {
       setCurrentAssingAdminId(payoutInvoice?.payoutSolver?.id || "");
       setCurrentAssignedAdminName(payoutInvoice?.payoutSolver?.username || "");
+
+      setValue(
+        "isTotalValueCorrect",
+        payoutInvoice?.isPayoutValueCorect || false
+      );
+      setValue("isTaxCorrect", payoutInvoice?.isVATCorrect || false);
+      setValue("isTinCorrect", payoutInvoice?.isOurTinCorrect || false);
+      setValue(
+        "isCompanyCountryCorrect",
+        payoutInvoice?.isOurCountryCorrect || false
+      );
+      setValue(
+        "isCompanyCorrect",
+        payoutInvoice?.isCompanyNameCorrect || false
+      );
+      setValue(
+        "isTypeOfPaymentCorrect",
+        payoutInvoice?.correctTypeOfPaymentSelected || false
+      );
     }
-  }, [payoutInvoice]);
+  }, [payoutInvoice, setValue]);
 
   const handleAdminChange = (adminId: string) => {
     if (payoutInvoice) {
@@ -99,17 +123,12 @@ const AdminPayoutManagesPage = (params: { payoutInvoiceId: string }) => {
     }
   };
 
-  const handleRejectInvoice = () => {
-    setOpenRejectModal(false);
-  };
-
   const rejectButtonDisable = () => {
     if (payoutInvoice?.isentOfTaxes) {
       if (
         watch("isCompanyCorrect") &&
         watch("isTinCorrect") &&
         watch("isCompanyCountryCorrect") &&
-        watch("isInvoiceBaseValueCorrect") &&
         watch("isTotalValueCorrect")
       ) {
         return true;
@@ -121,7 +140,6 @@ const AdminPayoutManagesPage = (params: { payoutInvoiceId: string }) => {
         watch("isCompanyCorrect") &&
         watch("isTinCorrect") &&
         watch("isCompanyCountryCorrect") &&
-        watch("isInvoiceBaseValueCorrect") &&
         watch("isTaxCorrect") &&
         watch("isTotalValueCorrect")
       ) {
@@ -138,7 +156,6 @@ const AdminPayoutManagesPage = (params: { payoutInvoiceId: string }) => {
         !watch("isCompanyCorrect") ||
         !watch("isTinCorrect") ||
         !watch("isCompanyCountryCorrect") ||
-        !watch("isInvoiceBaseValueCorrect") ||
         !watch("isTotalValueCorrect") ||
         sessionData?.user.id !== payoutInvoice?.payoutSolver?.id
       ) {
@@ -151,7 +168,6 @@ const AdminPayoutManagesPage = (params: { payoutInvoiceId: string }) => {
         !watch("isCompanyCorrect") ||
         !watch("isTinCorrect") ||
         !watch("isCompanyCountryCorrect") ||
-        !watch("isInvoiceBaseValueCorrect") ||
         !watch("isTaxCorrect") ||
         !watch("isTotalValueCorrect") ||
         sessionData?.user.id !== payoutInvoice?.payoutSolver?.id
@@ -179,6 +195,24 @@ const AdminPayoutManagesPage = (params: { payoutInvoiceId: string }) => {
       });
     }
   });
+
+  const handleRejectInvoice = () => {
+    if (
+      sessionData?.user.id === payoutInvoice?.payoutSolver?.id &&
+      payoutInvoice
+    ) {
+      setOpenRejectModal(false);
+      rejectInvoice({
+        payoutsInvoiceId: payoutInvoice.id,
+        isPayoutValueCorect: watch("isTotalValueCorrect"),
+        isVATCorrect: watch("isTaxCorrect"),
+        isOurTinCorrect: watch("isTinCorrect"),
+        isOurCountryCorrect: watch("isCompanyCountryCorrect"),
+        isCompanyNameCorrect: watch("isCompanyCorrect"),
+        correctTypeOfPaymentSelected: watch("isTypeOfPaymentCorrect"),
+      });
+    }
+  };
 
   const handleClickUsernameAssigned = () => {
     if (
@@ -362,20 +396,6 @@ const AdminPayoutManagesPage = (params: { payoutInvoiceId: string }) => {
               Is our company country correct?
             </span>
           </div>
-          <div className="flex items-center gap-2">
-            <label className="relative inline-flex cursor-pointer items-center">
-              <input
-                {...register("isInvoiceBaseValueCorrect")}
-                type="checkbox"
-                className="peer sr-only"
-                readOnly
-              />
-              <div className="peer h-6 w-11 rounded-full bg-gray-200 after:absolute after:left-[2px] after:top-0.5 after:h-5 after:w-5 after:rounded-full after:border after:border-gray-300 after:bg-white after:transition-all after:content-[''] peer-checked:bg-influencer-green-dark peer-checked:after:translate-x-full peer-checked:after:border-white peer-focus:ring-influencer-green-super-light" />
-            </label>
-            <span className="ml-2 text-xl font-medium text-gray-900">
-              Is invoice base value correct?
-            </span>
-          </div>
           {!payoutInvoice?.isentOfTaxes && (
             <div className="flex items-center gap-2">
               <label className="relative inline-flex cursor-pointer items-center">
@@ -428,20 +448,22 @@ const AdminPayoutManagesPage = (params: { payoutInvoiceId: string }) => {
           </div>
         </form>
 
-        <div className="flex gap-4">
-          <Button
-            title="Reject Invoice"
-            level="primary"
-            onClick={() => setOpenRejectModal(true)}
-            disabled={rejectButtonDisable()}
-          />
-          <Button
-            title="Accept Payout"
-            level="terciary"
-            disabled={acceptButtonDisable()}
-            form="objectives-form"
-          />
-        </div>
+        {payoutInvoice?.payoutInvoiceStatusId === 2 && (
+          <div className="flex gap-4">
+            <Button
+              title="Reject Invoice"
+              level="primary"
+              onClick={() => setOpenRejectModal(true)}
+              disabled={rejectButtonDisable()}
+            />
+            <Button
+              title="Accept Payout"
+              level="terciary"
+              disabled={acceptButtonDisable()}
+              form="objectives-form"
+            />
+          </div>
+        )}
       </div>
     );
   };
@@ -562,8 +584,7 @@ const AdminPayoutManagesPage = (params: { payoutInvoiceId: string }) => {
           <div className="">{renderPayoutInvoiceDetails()}</div>
           <div>
             <div className="mb-4 flex flex-1">
-              {payoutInvoice?.payoutInvoiceStatusId === 2 &&
-                renderDecisionAndObjectivesMenu()}
+              {renderDecisionAndObjectivesMenu()}
             </div>
           </div>
           <div>
