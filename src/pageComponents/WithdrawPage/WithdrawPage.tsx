@@ -117,6 +117,30 @@ const WithdrawPage = () => {
             {helper.calculerMonetaryValue(availablePayoutsSum || 0)}€
           </div>
         </div>
+        {isentOfTax === "false" && (
+          <div className="flex flex-1 flex-col justify-start gap-2 text-center text-2xl">
+            <div className="font-semibold">23% Tax Value</div>
+            <div className="font-semibold text-influencer">
+              {helper.calculerMonetaryValue(
+                (availablePayoutsSum || 0) * helper.calculateSalesTaxPortugal()
+              )}
+              €
+            </div>
+          </div>
+        )}
+        {isentOfTax === "false" && (
+          <div className="flex flex-1 flex-col justify-start gap-2 text-center text-2xl">
+            <div className="font-semibold">Total Value with 23% Tax</div>
+            <div className="font-semibold text-influencer">
+              {helper.calculerMonetaryValue(
+                (availablePayoutsSum || 0) +
+                  (availablePayoutsSum || 0) *
+                    helper.calculateSalesTaxPortugal()
+              )}
+              €
+            </div>
+          </div>
+        )}
         {!!availablePayoutsSum && availablePayoutsSum > 0 && (
           <div className="relative flex h-12 flex-col items-center gap-3 lg:h-24">
             <input
