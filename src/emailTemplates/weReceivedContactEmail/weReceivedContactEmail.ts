@@ -324,7 +324,7 @@ function html(params: {
                                            alt=""
                                            data-proportionally-constrained="true"
                                            data-responsive="true"
-                                           src="https://publicdevinfmarkt.blob.core.windows.net/inf-markt-assets/logo.png"
+                                           src="https://prodinfmarkt.blob.core.windows.net/inf-markt-assets/logo.png"
                                          />
                                        </td>
                                      </tr>

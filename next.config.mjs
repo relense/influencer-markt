@@ -8,7 +8,12 @@ await import("./src/env.mjs");
 const config = {
   reactStrictMode: true,
   images: {
-    domains: ["images.unsplash.com", "publicdevinfmarkt.blob.core.windows.net"],
+    domains: [
+      "images.unsplash.com",
+      "publicdevinfmarkt.blob.core.windows.net",
+      "prodinfmarkt.blob.core.windows.net",
+      "devinfmarkt.blob.core.windows.net",
+    ],
   },
   /**
    * If you have `experimental: { appDir: true }` set, then you must comment the below `i18n` config

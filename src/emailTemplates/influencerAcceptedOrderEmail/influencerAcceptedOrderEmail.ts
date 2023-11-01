@@ -123,7 +123,7 @@ function html(params: { title: string; orderId: string; buttonTitle: string }) {
                        font-family: Lobster;
                      "
                      ><img
-                       src="https://publicdevinfmarkt.blob.core.windows.net/inf-markt-assets/logo.png"
+                       src="https://prodinfmarkt.blob.core.windows.net/inf-markt-assets/logo.png"
                        alt="logo"
                        width="600"
                    /></a>

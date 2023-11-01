@@ -94,7 +94,7 @@ function html(params: { url: string; theme: Theme; userLang: string }) {
                   font-family: Lobster;
                 "
                 ><img
-                  src="https://publicdevinfmarkt.blob.core.windows.net/inf-markt-assets/logo.png"
+                  src="https://prodinfmarkt.blob.core.windows.net/inf-markt-assets/logo.png"
                   alt="logo"
                   width="600"
               /></a>
