@@ -5,6 +5,7 @@ import { Button } from "../../components/Button";
 import { useTranslation } from "react-i18next";
 import { LoadingSpinner } from "../../components/LoadingSpinner";
 import toast from "react-hot-toast";
+import { Modal } from "../../components/Modal";
 
 const SettingsPage = () => {
   const { t } = useTranslation();
@@ -14,6 +15,8 @@ const SettingsPage = () => {
   const [disableEmailNotifications, setDisableEmailNotifications] =
     useState<boolean>(false);
   const [disableAppNotifications, setDisableAppNotifications] =
+    useState<boolean>(false);
+  const [openDeleteAccountModal, setOpenDeleteAccountModal] =
     useState<boolean>(false);
 
   const { data: userInfo, isLoading: isLoadingUserInfo } =
@@ -181,11 +184,53 @@ const SettingsPage = () => {
     );
   };
 
-  const mobileView = () => {
+  const renderDangerouMenu = () => {
     return (
-      <div className="flex h-full flex-1 flex-col gap-12">
-        {renderGeneralSettingsMenu()}
-        {renderNotificationsMenu()}
+      <div className="flex flex-col gap-6">
+        <div className="text-4xl font-semibold">
+          {t("pages.settings.accountManagementSettings")}
+        </div>
+        <div>
+          <Button
+            title={t("pages.settings.retrieveAccountInfo")}
+            size="regular"
+          />
+        </div>
+        <div>
+          <Button
+            title={t("pages.settings.deleteAccount")}
+            size="regular"
+            onClick={() => setOpenDeleteAccountModal(true)}
+          />
+        </div>
+      </div>
+    );
+  };
+
+  const renderDeleteAccountModal = () => {
+    return (
+      <div className="flex justify-center">
+        <Modal
+          title={t("pages.settings.deleteAccount")}
+          onClose={() => setOpenDeleteAccountModal(false)}
+        >
+          <div className="flex flex-col items-center justify-center p-4">
+            <div className="font-playfair text-3xl font-semibold">
+              {t("pages.settings.deleteAccountModal.title")}
+            </div>
+            <div className="font-lg flex flex-col gap-6 p-6">
+              <div>{t("pages.settings.deleteAccountModal.subtitle1")}</div>
+              <div>{t("pages.settings.deleteAccountModal.subtitle2")}</div>
+            </div>
+            <div className="flex justify-center p-4">
+              <Button
+                title={t("pages.settings.deleteAccount")}
+                size="regular"
+                onClick={() => setOpenDeleteAccountModal(true)}
+              />
+            </div>
+          </div>
+        </Modal>
       </div>
     );
   };
@@ -198,9 +243,16 @@ const SettingsPage = () => {
     );
   } else {
     return (
-      <div className="flex w-full flex-1 cursor-default flex-col gap-6 self-center px-4 pb-10 sm:px-12 lg:w-full xl:w-10/12 2xl:w-3/4 3xl:w-3/4 4xl:w-7/12 5xl:w-2/4">
-        {mobileView()}
-      </div>
+      <>
+        <div className="flex w-full flex-1 cursor-default flex-col gap-6 self-center px-4 pb-10 sm:px-12 lg:w-full xl:w-10/12 2xl:w-3/4 3xl:w-3/4 4xl:w-7/12 5xl:w-2/4">
+          <div className="flex h-full flex-1 flex-col gap-12">
+            {renderGeneralSettingsMenu()}
+            {renderNotificationsMenu()}
+            {renderDangerouMenu()}
+          </div>
+        </div>
+        {openDeleteAccountModal && renderDeleteAccountModal()}
+      </>
     );
   }
 };

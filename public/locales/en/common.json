@@ -1130,7 +1130,15 @@
       "notificationsSettings": "Notifications settings",
       "disableEmailNotifications": "Disable email notifications",
       "disableAppNotifications": "Disable app notifications",
-      "updateNotificationsSuccess": "Notifications settings updated successfully"
+      "updateNotificationsSuccess": "Notifications settings updated successfully",
+      "accountManagementSettings": "Account Management",
+      "retrieveAccountInfo": "Request Account Data",
+      "deleteAccount": "Delete Account",
+      "deleteAccountModal": {
+        "title": "Are you sure you want to delete your account?",
+        "subtitle1": "To delete your account, you must ensure that all orders are closed, all jobs have been concluded, and all pending payouts have been paid. If there is any pending activity associated with your account, we will be unable to close it.",
+        "subtitle2": "After deleting your account, please note that the action is irreversible, and you will not be able to recover it. We will remove all associations linked to your profile. Your profile will be completely wiped, ensuring that any personal information related to you remains unidentifiable."
+      }
     },
 
     "socialMediaCreate": {
