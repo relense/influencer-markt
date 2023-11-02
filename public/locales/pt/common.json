@@ -1256,6 +1256,7 @@
     "stepbyStepInvoice": {
       "title": "Guia de emissão de fatura",
       "subtitle": "Este guia detalhado torna o processo de emissão de recibos verdes mais acessível, assegurando conformidade com as normas fiscais e evitando complicações desnecessárias com o Fisco.",
+      "quickLinks": "Ligações Rápidas",
       "step1": "1. Acesso ao Portal das Finanças",
       "step1Info": "Acesse ao Portal das Finanças",
       "step1Info2": "aqui.",

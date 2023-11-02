@@ -81,6 +81,8 @@ const WithdrawPage = () => {
           <div className="w-full lg:w-8/12">
             {t("pages.withdraw.withdawModalSubtitle3")}
             <Link
+              target="_blank"
+              rel="noopener noreferrer"
               href="/step-by-step-invoice-guide"
               className="cursor-pointer font-bold underline"
             >

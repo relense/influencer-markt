@@ -1500,6 +1500,7 @@
     "stepbyStepInvoice": {
       "title": "Invoice Issuance Guide",
       "subtitle": "This detailed guide makes the process of issuing green receipts more accessible, ensuring compliance with tax regulations and avoiding unnecessary complications with the Tax Office.",
+      "quickLinks": "Quick Links",
       "step1": "1. Access the Finance Portal",
       "step1Info": "Access the Finance Portal",
       "step1Info2": "here.",
