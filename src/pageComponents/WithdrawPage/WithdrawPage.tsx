@@ -10,6 +10,7 @@ import {
 import { useRouter } from "next/router";
 import { helper } from "../../utils/helper";
 import { Button } from "../../components/Button";
+import Link from "next/link";
 
 const WithdrawPage = () => {
   const { t } = useTranslation();
@@ -79,6 +80,15 @@ const WithdrawPage = () => {
           </div>
           <div className="w-full lg:w-8/12">
             {t("pages.withdraw.withdawModalSubtitle3")}
+            <Link
+              href="/step-by-step-invoice-guide"
+              className="cursor-pointer font-bold underline"
+            >
+              {t("pages.withdraw.here")}
+            </Link>
+          </div>
+          <div className="w-full lg:w-8/12">
+            {t("pages.withdraw.withdawModalSubtitle4")}
           </div>
         </div>
       </div>

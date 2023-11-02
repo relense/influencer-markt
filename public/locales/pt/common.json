@@ -1114,7 +1114,8 @@
       "withdrawModalTitle": "Iniciar Processo de Pagamento de Saldo Disponível",
       "withdawModalSubtitle1": "Antes de efetuarmos o pagamento, é fundamental garantirmos a exatidão e validade da fatura que nos fornece.",
       "withdawModalSubtitle2": "Pedimos gentilmente que carregue a fatura para que possamos iniciar o processo minucioso de verificação a fim de confirmar a correção de todos os detalhes.",
-      "withdawModalSubtitle3": "Iremos avisar-te prontamente assim que a fatura tenha sido minuciosamente verificada e o pagamento tenha sido processado com sucesso.",
+      "withdawModalSubtitle3": "Se tiver dúvidas ou não souber como emitir uma fatura, convidamo-lo a consultar o nosso guia passo a passo abrangente sobre o processo de faturação, disponível aqui.",
+      "withdawModalSubtitle4": "Iremos avisar-te prontamente assim que a fatura tenha sido minuciosamente verificada e o pagamento tenha sido processado com sucesso.",
       "withdawModalAvailablePayout": "Valor Disponível para Pagamento",
       "uploadInvoice": "Carregar Fatura",
       "uploadNewInvoice": "Carregar Nova Fatura",
@@ -1124,7 +1125,8 @@
       "uploadedSuccessfully": "Fatura carregada com sucesso",
       "areYouIsent": "Estás isento de pagar IVA?",
       "yes": "Sim",
-      "no": "Não"
+      "no": "Não",
+      "here": "aqui."
     },
 
     "settings": {
