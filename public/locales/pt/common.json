@@ -256,7 +256,7 @@
       "Female": "Feminino",
       "Other": "Outro",
       "characterWarning": "Máximo de {{count}} caracteres",
-      "invalidPictureAlert": "Images têm de ser jpeg, jpg ou png e não podem exceder 7mbs",
+      "invalidPictureAlert": "Images têm de ser jpeg, jpg ou png e não podem exceder 4mbs",
       "addProfilePicture": "Adiciona a tua imagem de perfil",
       "displayNamePlaceholder": "Adiciona o teu nome: Como gostarias de ser reconhecido?",
       "genderPlaceholder": "Escolhe o teu género: Masculino, Feminino, Outro",
@@ -298,7 +298,7 @@
     },
 
     "pictureCarrosel": {
-      "invalidPictureWarning": "Images têm de ser jpeg, jpg ou png e não podem exceder 7mbs",
+      "invalidPictureWarning": "Images têm de ser jpeg, jpg ou png e não podem exceder 4mbs",
       "addPicture": "Adiciona a tua imagem de perfil",
       "deleteButton": "Apagar Foto",
       "areYouSure": "Tens a certeza?",
