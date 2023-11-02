@@ -1171,6 +1171,83 @@
       "pay": "Pagar {{money}}",
       "unexpectedError": "Ocorreu um erro inesperado",
       "invalidTin": "O teu NIF é inválido"
+    },
+
+    "privacyPolicy": {
+      "title": "Política de privacidade",
+      "date": "Última atualização: 2 de novembro de 2023",
+      "introduction": {
+        "title": "Introdução",
+        "subtitle": "Esta política de privacidade descreve a forma como a Influencer Markt em Portugal (''Empresa'', ''nós'' e ''nosso'') processa, recolhe, utiliza e partilha dados pessoais quando utiliza este website https://influencermarkt.com (o ''Website''). Por favor, leia atentamente as seguintes informações para compreender as nossas práticas relativamente aos seus dados pessoais e a forma como processamos os dados."
+      },
+      "purposeOfProcessing": {
+        "title1": "Objectivos do tratamento",
+        "title2": "O que são dados pessoais?",
+        "subtitle2": "Recolhemos vários tipos de informação, incluindo dados pessoais. Na presente política de privacidade, ''dados pessoais'' referem-se a quaisquer informações que, isoladamente ou em combinação com outros dados que processamos sobre o utilizador, o identifique como indivíduo. Isto pode incluir o seu nome, endereço postal, endereço de correio eletrónico e número de telefone.",
+        "title3": "Porque precisamos dos seus dados pessoais?",
+        "subtitle3": "Processamos os seus dados pessoais em conformidade com a legislação aplicável em matéria de proteção de dados e privacidade. Para lhe conceder acesso ao website, necessitamos de dados pessoais específicos. Quando se registou connosco, consentiu em fornecer estas informações para poder utilizar os nossos serviços, comprar produtos ou visualizar conteúdos. Este consentimento constitui a base jurídica para o tratamento dos seus dados. O utilizador tem o direito de retirar o seu consentimento em qualquer altura. Se não concordar com a utilização dos seus dados pessoais descrita na presente política de privacidade, não utilize o nosso sítio website."
+      },
+      "collectionYourPersonalData": {
+        "title1": "Recolha dos seus dados pessoais",
+        "title2": "Recolhemos informações sobre o utilizador através dos seguintes métodos:",
+        "subtitle2": "Informações fornecidas pelo utilizador: Isto inclui dados pessoais que fornece quando se regista no nosso website, como o seu nome, morada, endereço de e-mail, número de telefone, nome de utilizador, palavra-passe e informações demográficas (como o sexo). Inclui também quaisquer dados pessoais incluídos em vídeos, comentários ou outros envios que carregue ou publique no sítio website. Além disso, recolhemos dados pessoais que o utilizador fornece quando comunica problemas com o nosso website, quando efectua compras ou quando se corresponde connosco por telefone, e-mail ou outros meios.",
+        "subtitle3": "Informações de sítios de redes sociais: O nosso website inclui interfaces que lhe permitem ligar-se a sites de redes sociais (SNS). Se o utilizador se ligar a um SNS através do nosso website, autoriza-nos a aceder, utilizar e armazenar as informações permitidas pelo SNS com base nas suas definições. Iremos tratar estas informações de acordo com esta política de privacidade. Pode revogar o nosso acesso às suas informações do SNS em qualquer altura.",
+        "subtitle4": "Informações recolhidas automaticamente: Quando o utilizador acede ao nosso website, registamos automaticamente informações sobre o utilizador e o seu dispositivo. Estas incluem o sistema operativo, o fabricante e o modelo do seu dispositivo, o tipo de browser, o idioma, a resolução do ecrã, o website que visitou antes do nosso, as páginas visualizadas, o tempo passado em cada página, os tempos de acesso e as suas acções no nosso sítio Web. Recolhemos estas informações através de cookies.",
+        "subtitle5": "Tomada de decisões automatizada e definição de perfis: Não utilizamos os seus dados pessoais para fins de tomada de decisões automatizadas, exceto quando exigido por lei. Se esse processamento for necessário, notificá-lo-emos e dar-lhe-emos a oportunidade de se opor.",
+        "subtitle6": "Perfis de utilizador e envios: Determinadas informações do perfil do utilizador, incluindo o seu nome, localização e quaisquer vídeos ou imagens carregados, podem ser visíveis para outros utilizadores para facilitar a interação nos serviços ou responder aos seus pedidos de serviço. Tenha em atenção que o conteúdo que carregar para o seu perfil de utilizador público, juntamente com qualquer informação pessoal ou conteúdo divulgado publicamente (por exemplo, fóruns de discussão, mensagens, áreas de conversação), fica disponível publicamente e pode ser recolhido e utilizado por qualquer pessoa. O seu nome de utilizador também pode ser apresentado a outros utilizadores quando envia mensagens, comentários ou carrega conteúdos. Se iniciar sessão através de um site de rede social de terceiros, a sua lista de amigos desse site pode ser importada para os nossos serviços e os seus amigos que também são utilizadores registados podem aceder a determinadas informações não públicas do seu perfil. Não controlamos as políticas e práticas de websites ou serviços de terceiros."
+      },
+      "cookies": {
+        "title1": "Cookies",
+        "title2": "O que são Cookies?",
+        "subtitle2": "Podemos recolher informações utilizando ''cookies'', que são pequenos ficheiros de dados armazenados no seu computador ou dispositivo móvel por um website. Utilizamos cookies de sessão (que expiram quando fecha o browser) e cookies persistentes (que permanecem no seu computador ou dispositivo até serem eliminadas) para proporcionar uma experiência personalizada e interactiva no nosso website.",
+        "title3": "Como é que utilizamos os cookies?",
+        "subtitle3": "Utilizamos cookies para vários fins, incluindo:",
+        "subtitle4": "Autenticação e segurança: Os cookies ajudam a autenticar o seu acesso ao nosso website e a impedir a utilização não autorizada. Ajudam também a implementar funcionalidades de segurança e a detetar qualquer atividade fraudulenta.",
+        "subtitle5": "Preferências: Os cookies permitem-nos recordar as suas preferências, tais como definições de idioma e opções de visualização, para melhorar a sua experiência de navegação e personalizar o conteúdo que vê.",
+        "subtitle6": "Análises: Utilizamos cookies para recolher informações sobre a forma como os visitantes interagem com o nosso website, tais como as páginas que são visitadas com mais frequência, o tempo que os utilizadores passam em cada página e as ligações em que clicam. Estes dados ajudam-nos a analisar e a melhorar o desempenho e a usabilidade do nosso website.",
+        "subtitle7": "Publicidade: Os cookies permitem-nos apresentar anúncios direcionados com base nos seus interesses e comportamento de navegação. Ajudam-nos a controlar a eficácia das nossas campanhas publicitárias e a limitar o número de vezes que vê um determinado anúncio.",
+        "subtitle8": "Integração de redes sociais: O nosso website pode incluir funcionalidades de redes sociais ou ligações que lhe permitem partilhar conteúdos em plataformas de redes sociais. Estas funcionalidades podem utilizar cookies para acompanhar a sua interação com a respectiva plataforma ou para personalizar o conteúdo que lhe é apresentado."
+      },
+      "managingCookies": {
+        "title": "Gerir cookies",
+        "subtitle1": "O utilizador tem a opção de aceitar ou recusar cookies. A maioria dos browsers aceita automaticamente os cookies, mas o utilizador pode modificar as definições do seu browser para recusar os cookies, se preferir. No entanto, tenha em atenção que a desativação de cookies pode limitar a sua capacidade de usufruir plenamente das características e funcionalidades do nosso website.",
+        "subtitle2": "Para gerir os cookies, pode normalmente ajustar as definições do seu browser. A secção ''Ajuda'' do seu browser deve fornecer instruções sobre como bloquear, eliminar ou desativar cookies. Também pode visitar www.allaboutcookies.org para obter mais informações sobre a gestão de cookies em diferentes browsers.",
+        "subtitle3": "Tenha em atenção que, se optar por desativar os cookies, algumas funcionalidades do nosso sítio Web poderão não funcionar corretamente e as suas preferências poderão não ser guardadas."
+      },
+      "securityMeasures": {
+        "title": "Medidas de segurança",
+        "subtitle": "Implementámos medidas de segurança adequadas para proteger os seus dados pessoais contra o acesso, alteração, divulgação ou destruição não autorizados. Estas medidas incluem encriptação, firewalls, controlos de acesso e avaliações de segurança regulares. No entanto, tenha em atenção que nenhum método de transmissão através da Internet ou de armazenamento eletrónico é 100% seguro e não podemos garantir uma segurança absoluta."
+      },
+      "dataRetention": {
+        "title": "Armazenamento de dados",
+        "subtitle": "Conservamos os seus dados pessoais durante o tempo necessário para cumprir as finalidades descritas nesta política de privacidade, exceto se for exigido ou permitido por lei um período de armazenagem mais longo. Os critérios utilizados para determinar o período de retenção adequado incluem a natureza dos dados, as finalidades para as quais são processados e quaisquer obrigações legais ou regulamentares."
+      },
+      "policyOnChildren": {
+        "title": "A nossa política de privacidade relativa às crianças",
+        "subtitle": "O nosso website não se destina a menores de 18 anos. Se um pai ou tutor tiver conhecimento de que o seu filho nos forneceu informações sem o seu consentimento, deve contactar-nos. Eliminaremos essas informações dos nossos ficheiros logo que seja razoavelmente possível."
+      },
+      "yourRight": {
+        "title1": "Os seus direitos",
+        "subtitle1": "O utilizador tem determinados direitos relativamente aos seus dados pessoais, sujeitos às leis e regulamentos aplicáveis. Estes direitos podem incluir:",
+        "title2": "Direito de acesso:",
+        "subtitle2": "Pode solicitar o acesso aos dados pessoais que temos sobre si e receber uma cópia dos mesmos.",
+        "title3": "Direito de retificação:",
+        "subtitle3": "Pode solicitar a correção de dados pessoais inexatos ou incompletos que tenhamos sobre si.",
+        "title4": "Direito de apagamento:",
+        "subtitle4": "YPode solicitar que apaguemos os seus dados pessoais em determinadas circunstâncias, por exemplo, quando já não forem necessários para os fins para que foram recolhidos.",
+        "title5": "Direito de restringir o processamento:",
+        "subtitle5": "O utilizador pode solicitar a restrição do processamento dos seus dados pessoais em determinadas circunstâncias, como quando a exatidão dos dados é contestada ou o processamento é ilegal.",
+        "title6": "Direito à portabilidade dos dados:",
+        "subtitle6": "O utilizador pode solicitar uma cópia dos seus dados pessoais num formato comumente utilizado e legível, ou pode pedir-nos que os transmitamos a outro responsável pelo tratamento, se tal for tecnicamente viável.",
+        "title7": "Direito de objeção:",
+        "subtitle7": "Pode opor-se ao tratamento dos seus dados pessoais em determinadas circunstâncias, como para fins de marketing direto ou quando o tratamento se baseia em interesses legítimos.",
+        "title8": "Direito de retirar o consentimento:",
+        "subtitle8": "e nos basearmos no seu consentimento para processar os seus dados pessoais, tem o direito de retirar esse consentimento em qualquer altura.",
+        "subtitle9": "Para exercer os seus direitos ou se tiver quaisquer questões ou preocupações relacionadas com a privacidade, contacte-nos utilizando os dados de contacto fornecidos no nosso website."
+      },
+      "final": {
+        "subtitle": "Esperamos que esta informação lhe dê uma visão global dos cookies e da sua utilização no nosso website. Se tiver mais alguma questão, não hesite em perguntar!"
+      }
     }
   },
 
