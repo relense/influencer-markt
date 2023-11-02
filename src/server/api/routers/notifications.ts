@@ -27,7 +27,8 @@ type Actions =
   | "toInfluencerOrderOnHoldToInProgress"
   | "toInfluencerOrderOnHoldToConfirm"
   | "toInfluencerNewMessage"
-  | "toBuyerNewMessage";
+  | "toBuyerNewMessage"
+  | "orderPaymentFailed";
 
 const createNotification = async (params: {
   notifierId: string;
@@ -130,6 +131,7 @@ export const NotificationsRouter = createTRPCRouter({
           z.literal("toInfluencerOrderOnHoldToConfirm"),
           z.literal("toInfluencerNewMessage"),
           z.literal("toBuyerNewMessage"),
+          z.literal("orderPaymentFailed"),
         ]),
       })
     )

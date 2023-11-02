@@ -3,6 +3,7 @@ import { buyerConfirmedEmail } from "../emailTemplates/buyerConfirmOrderEmail/bu
 import { buyerOpensDisputeToInfluencerEmail } from "../emailTemplates/buyerOpensDisputeToInfluencerEmail/buyerOpensDisputeToInfluencerEmail";
 import { buyerOpenedDisputeToOurInboxEmail } from "../emailTemplates/buyerOpensDisputeToOurInboxEmail/buyerOpensDisputeToOurInboxEmail";
 import { buyerOrderWasRectified } from "../emailTemplates/buyerOrderWasRectified/buyerOrderWasRectified";
+import { buyerPaymentFailed } from "../emailTemplates/buyerPaymentFailed/buyerPaymentFailed";
 import { buyerReviewedOrderEmail } from "../emailTemplates/buyerReviewedOrderEmail/buyerReviewedOrderEmail";
 import { contactUsEmail } from "../emailTemplates/contactUsEmail/contactUsEmail";
 import { influencerAcceptedOrderEmail } from "../emailTemplates/influencerAcceptedOrderEmail/influencerAcceptedOrderEmail";
@@ -239,6 +240,14 @@ type EmailActions =
       name: string;
       reasonText: string;
       language: string;
+    }
+  | {
+      action: "buyerPaymentFailed";
+      fromUs: string;
+      toBuyer: string;
+      buyerLanguage: string;
+      orderId: number;
+      receiverProfileId: string;
     };
 
 const checkIfIsDisabled = async (profileId: string) => {
@@ -516,5 +525,17 @@ export const sendEmail = async (emailAction: EmailActions) => {
       reason: emailAction.reasonText,
       language: emailAction.language,
     });
+  } else if (emailAction.action === "buyerPaymentFailed") {
+    if (emailAction.action === "buyerPaymentFailed") {
+      const isDisabled = await checkIfIsDisabled(emailAction.receiverProfileId);
+
+      if (isDisabled) return;
+      buyerPaymentFailed({
+        from: emailAction.fromUs,
+        to: emailAction.toBuyer,
+        language: emailAction.buyerLanguage,
+        orderId: emailAction.orderId,
+      });
+    }
   }
 };

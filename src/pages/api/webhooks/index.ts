@@ -49,16 +49,16 @@ const webhookHandler = async (req: NextApiRequest, res: NextApiResponse) => {
 
     switch (event.type) {
       case "payment_intent.succeeded":
-        const paymentItent = event.data.object;
-        const paymentIntentId = paymentItent.id;
+        const paymentItentSuccess = event.data.object;
+        const paymentIntentSuccessId = paymentItentSuccess.id;
 
-        const payment = await prisma.payment.findFirst({
-          where: { paymentIntent: paymentIntentId },
+        const paymentSuccess = await prisma.payment.findFirst({
+          where: { paymentIntent: paymentIntentSuccessId },
         });
 
-        if (payment) {
+        if (paymentSuccess) {
           await prisma.payment.update({
-            where: { id: payment.id },
+            where: { id: paymentSuccess.id },
             data: {
               status: "processed",
             },
@@ -74,7 +74,7 @@ const webhookHandler = async (req: NextApiRequest, res: NextApiResponse) => {
 
           const order = await prisma.order.update({
             where: {
-              id: payment.orderId,
+              id: paymentSuccess.orderId,
             },
             data: {
               orderStatusId: 4,
@@ -129,8 +129,111 @@ const webhookHandler = async (req: NextApiRequest, res: NextApiResponse) => {
         }
         break;
       case "payment_intent.payment_failed":
-        // const paymentIntentPaymentFailed = event.data.object;
-        // Then define and call a function to handle the event payment_intent.payment_failed
+        const paymentIntentPaymentFailed = event.data.object;
+        const paymentIntentFailedId = paymentIntentPaymentFailed.id;
+        const paymentFailed = await prisma.payment.findFirst({
+          where: { paymentIntent: paymentIntentFailedId },
+        });
+
+        if (paymentFailed) {
+          await prisma.payment.update({
+            where: { id: paymentFailed.id },
+            data: {
+              status: "failed",
+            },
+            select: {
+              orderId: true,
+            },
+          });
+
+          const order = await prisma.order.update({
+            where: {
+              id: paymentFailed.orderId,
+            },
+            data: {
+              orderStatusId: 3,
+            },
+            select: {
+              id: true,
+              buyerId: true,
+              influencerId: true,
+              buyer: {
+                select: {
+                  country: true,
+                  user: {
+                    select: {
+                      email: true,
+                    },
+                  },
+                },
+              },
+            },
+          });
+
+          await createNotification({
+            entityId: order.id,
+            senderId: order.influencerId || "",
+            notifierId: order?.buyerId || "",
+            entityAction: "orderPaymentFailed",
+          });
+
+          if (process.env.NEXT_PUBLIC_EMAIL_FROM) {
+            await sendEmail({
+              action: "buyerPaymentFailed",
+              fromUs: process.env.NEXT_PUBLIC_EMAIL_FROM,
+              toBuyer: order.buyer?.user.email || "",
+              buyerLanguage: order.buyer?.country?.languageCode || "en",
+              orderId: order.id,
+              receiverProfileId: order.buyerId || "",
+            });
+          }
+        }
+
+        break;
+
+      case "payment_intent.processing":
+        const paymentIntentPaymentProcessing = event.data.object;
+        const paymentIntentProcessingId = paymentIntentPaymentProcessing.id;
+        const paymentProcessing = await prisma.payment.findFirst({
+          where: { paymentIntent: paymentIntentProcessingId },
+        });
+
+        if (paymentProcessing) {
+          await prisma.payment.update({
+            where: { id: paymentProcessing.id },
+            data: {
+              status: "processing",
+            },
+            select: {
+              orderId: true,
+            },
+          });
+
+          await prisma.order.update({
+            where: {
+              id: paymentProcessing.orderId,
+            },
+            data: {
+              orderStatusId: 10,
+            },
+            select: {
+              id: true,
+              buyerId: true,
+              influencerId: true,
+              buyer: {
+                select: {
+                  country: true,
+                  user: {
+                    select: {
+                      email: true,
+                    },
+                  },
+                },
+              },
+            },
+          });
+        }
+
         break;
       default:
         return res.status(500).send(`Unhandled event type ${event.type}`);

@@ -136,6 +136,7 @@ async function main() {
       { entityType: "sales", entityAction: "toInfluencerOrderOnHoldToConfirm" },
       { entityType: "sales", entityAction: "toInfluencerNewMessage" },
       { entityType: "orders", entityAction: "toBuyerNewMessage" },
+      { entityType: "orders", entityAction: "orderPaymentFailed" },
     ],
   });
 
