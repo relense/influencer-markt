@@ -14,13 +14,14 @@ import {
   type UseFormSetValue,
   type UseFormWatch,
 } from "react-hook-form";
+import imageCompression from "browser-image-compression";
+import toast from "react-hot-toast";
 import { api } from "~/utils/api";
 
 import { CustomSelect } from "./CustomSelect";
 import { CustomMultiSelect } from "./CustomMultiSelect";
 import type { ProfileData } from "../utils/globalTypes";
 import { CustomSelectWithInput } from "./CustomSelectWithInput";
-import toast from "react-hot-toast";
 
 const ProfileForm = (params: {
   submit: () => void;
@@ -53,7 +54,7 @@ const ProfileForm = (params: {
     }
   }, [params]);
 
-  const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
 
     if (
@@ -61,20 +62,33 @@ const ProfileForm = (params: {
       (file.type === "image/jpeg" ||
         file.type === "image/png" ||
         file.type === "image/jpg") &&
-      file.size <= 4000000
+      file.size <= 8000000
     ) {
-      const reader = new FileReader();
-
-      reader.onload = () => {
-        const dataURL = reader.result as string;
-        if (profilePicture !== dataURL) {
-          setProfilePicture(dataURL);
-
-          params.setValue("profilePicture", dataURL, { shouldDirty: true });
-        }
+      const options = {
+        maxSizeMB: 1,
+        maxWidthOrHeight: 400,
+        useWebWorker: true,
       };
 
-      reader.readAsDataURL(file);
+      try {
+        const compressedFile = await imageCompression(file, options);
+        const reader = new FileReader();
+
+        reader.onload = () => {
+          const dataURL = reader.result as string;
+          if (profilePicture !== dataURL) {
+            setProfilePicture(dataURL);
+
+            params.setValue("profilePicture", dataURL, { shouldDirty: true });
+          }
+        };
+
+        reader.readAsDataURL(file);
+
+        reader.readAsDataURL(compressedFile);
+      } catch (error) {
+        console.log(error);
+      }
     } else {
       toast.error(t("components.profileForm.invalidPictureAlert"), {
         duration: 5000,

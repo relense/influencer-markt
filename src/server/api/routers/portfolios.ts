@@ -1,6 +1,5 @@
 import { z } from "zod";
 import { v4 as uuidv4 } from "uuid";
-import sharp from "sharp";
 
 import { createTRPCRouter, protectedProcedure } from "../trpc";
 import bloblService from "../../../services/azureBlob.service";
@@ -36,20 +35,10 @@ export const portfoliosRouter = createTRPCRouter({
           const type = matches[1];
           const base64Buffer = Buffer.from(matches[2], "base64");
 
-          // Compress the image using sharp
-          const compressedBuffer = await sharp(base64Buffer)
-            .resize({
-              width: 1080,
-              height: 1920,
-              fit: sharp.fit.cover,
-            })
-            .rotate()
-            .toBuffer();
-
           const blobName = `${Date.now()}-${uuidv4()}-profile:portfolio-picture`;
           const blockBlobClient = containerClient.getBlockBlobClient(blobName);
 
-          await blockBlobClient.uploadData(compressedBuffer, {
+          await blockBlobClient.uploadData(base64Buffer, {
             blobHTTPHeaders: {
               blobContentType: type,
             },

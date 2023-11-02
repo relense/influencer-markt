@@ -11,11 +11,12 @@ import {
   faCircleLeft,
   faCircleRight,
 } from "@fortawesome/free-regular-svg-icons";
-
+import imageCompression from "browser-image-compression";
 import Image from "next/image";
-import { toast } from "react-hot-toast";
-import { type PreloadedImage, usePrevious } from "../utils/helper";
 import { useTranslation } from "react-i18next";
+import { toast } from "react-hot-toast";
+
+import { type PreloadedImage, usePrevious } from "../utils/helper";
 import { Modal } from "./Modal";
 import { Button } from "./Button";
 
@@ -104,31 +105,43 @@ export const PictureCarrosel = (params: {
     prevPortfolio,
   ]);
 
-  const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (
       file &&
       (file.type === "image/jpeg" ||
         file.type === "image/png" ||
         file.type === "image/jpg") &&
-      file.size <= 4000000
+      file.size <= 8000000
     ) {
-      const reader = new FileReader();
-
-      reader.onload = () => {
-        const dataURL = reader.result as string;
-
-        if (
-          currentPicture.url !== dataURL &&
-          params.portfolio.map((picture) => picture.url).indexOf(dataURL) === -1
-        ) {
-          if (params.addPicture) {
-            params.addPicture(dataURL);
-          }
-        }
+      const options = {
+        maxSizeMB: 1,
+        maxWidthOrHeight: 1920,
+        useWebWorker: true,
       };
 
-      reader.readAsDataURL(file);
+      try {
+        const compressedFile = await imageCompression(file, options);
+        const reader = new FileReader();
+
+        reader.onload = () => {
+          const dataURL = reader.result as string;
+
+          if (
+            currentPicture.url !== dataURL &&
+            params.portfolio.map((picture) => picture.url).indexOf(dataURL) ===
+              -1
+          ) {
+            if (params.addPicture) {
+              params.addPicture(dataURL);
+            }
+          }
+        };
+
+        reader.readAsDataURL(compressedFile);
+      } catch (error) {
+        console.log(error);
+      }
     } else {
       toast.error(t("components.pictureCarrosel.invalidPictureWarning"), {
         duration: 5000,
@@ -286,7 +299,7 @@ export const PictureCarrosel = (params: {
                 width={1080}
                 height={1920}
                 quality={100}
-                className="pointer-events-none h-full rounded-lg object-contain"
+                className="pointer-events-none h-full rounded-lg object-cover"
                 priority
               />
             )}
