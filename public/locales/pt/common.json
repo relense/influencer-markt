@@ -1251,6 +1251,41 @@
       "final": {
         "subtitle": "Esperamos que esta informação lhe dê uma visão global dos cookies e da sua utilização no nosso website. Se tiver mais alguma questão, não hesite em perguntar!"
       }
+    },
+
+    "stepbyStepInvoice": {
+      "title": "Guia de emissão de fatura",
+      "subtitle": "Este guia detalhado torna o processo de emissão de recibos verdes mais acessível, assegurando conformidade com as normas fiscais e evitando complicações desnecessárias com o Fisco.",
+      "step1": "1. Acesso ao Portal das Finanças",
+      "step1Info": "Acesse o Portal das Finanças.",
+      "step2": "2. Navegação até os Serviços Tributários",
+      "step2Info": "Clique em ''Aceder aos Serviços Tributários''.",
+      "step3": "3. Seleção de Faturas e Recibos Verdes",
+      "step3Info": "No rodapé da página, escolha ''Faturas e Recibos Verdes''.",
+      "step4": "4. Login e Identificação",
+      "step4Info": "Insira o número de contribuinte e a senha correspondente.",
+      "step5": "5. Início do Processo de Emissão",
+      "step5Info": "Após o login, selecione ''Emitir''.",
+      "step6": "6. Escolha do Tipo de Documento",
+      "step6Info": "Opte por ''Fatura'' ou ''Fatura-Recibo'' com base na situação do recebimento em relação à prestação do serviço.",
+      "step7": "7. Preenchimento Automático dos Dados",
+      "step7Info": "Seus dados e informações da atividade escolhida durante a abertura de atividade são preenchidos automaticamente. No caso de múltiplas atividades econômicas, selecione em cada recibo a correspondente ao serviço prestado.",
+      "step8": "8. Detalhes do Cliente",
+      "step8Info": "Insira o NIF (XXXXXXX) e a morada (XXXXXX) do cliente Influencer Markt, Lda para quem está a emitir o recibo.",
+      "step9": "9. Natureza do Recebimento",
+      "step9Info": "Especifique se o valor recebido é por bens, serviços ou adiantamento. Forneça uma breve descrição do serviço prestado.",
+      "step10": "10. Regime de IVA",
+      "step10Info": "Se isento de IVA por não ter rendimentos da categoria B acima de 13.500 euros anuais, selecione ''IVA - Regime de Isenção [artigo 53º]''. Para isenções por outras razões profissionais, escolha ''Isento - art.º 9.º''. Caso não esteja isento, selecione a percentagem de IVA devida (a taxa normal em Portugal continental é de 23%)",
+      "step11": "11. Base de Incidência em IRS",
+      "step11Info": "Se isento por não ter ultrapassado o montante anual acumulado de 12.500 euros, escolha ''Dispensa de Retenção - art. 101º-B, nº1, al. a) e b), do CIRS''. Se não isento, escolha a base de incidência a 100%. Situações especiais têm bases distintas, como categorias profissionais diferentes (50%) ou incapacidade superior a 60% (25%).",
+      "step12": "12. Taxa de Retenção na Fonte de IRS",
+      "step12Info": "Caso tenha escolhido ''Dispensa de Retenção'' anteriormente, o campo correspondente ficará bloqueado. Caso contrário, escolha a taxa de retenção aplicável.",
+      "step13": "13. Inserção do Valor Base do Serviço Prestado",
+      "step13Info": "Insira o valor base do serviço. O campo ''Imposto do Selo'' é geralmente deixado em branco, exceto para atos notariais.",
+      "step14": "14. Emissão do Recibo Verde",
+      "step14Info": "Após preencher todos os campos necessários, clique em ''Emitir'' no canto superior direito da página.",
+      "step15": "15. Após a Emissão",
+      "step15Info": "O recibo pode ser impresso, salvo em formato digital e submeter na área de faturação da Influencer Markt."
     }
   },
 

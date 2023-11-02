@@ -1495,6 +1495,41 @@
         "subtitle2": "Influencer Markt",
         "subtitle3": "XXXX"
       }
+    },
+
+    "stepbyStepInvoice": {
+      "title": "Invoice Issuance Guide",
+      "subtitle": "This detailed guide makes the process of issuing green receipts more accessible, ensuring compliance with tax regulations and avoiding unnecessary complications with the Tax Office.",
+      "step1": "1. Access the Finance Portal",
+      "step1Info": "Access the Finance Portal.",
+      "step2": "2. Navigate to Tax Services",
+      "step2Info": "Click on 'Access Tax Services'.",
+      "step3": "3. Selection of Invoices and Green Receipts",
+      "step3Info": "At the bottom of the page, choose 'Invoices and Green Receipts'.",
+      "step4": "4. Login and Identification",
+      "step4Info": "Enter the taxpayer number and the corresponding password.",
+      "step5": "5. Start the Issuance Process",
+      "step5Info": "After logging in, select 'Issue'.",
+      "step6": "6. Choose the Type of Document",
+      "step6Info": "Choose 'Invoice' or 'Invoice-Receipt' based on the payment situation in relation to the service provided.",
+      "step7": "7. Automatic Data Entry",
+      "step7Info": "Your data and information about the chosen activity during the activity opening are automatically filled in. In the case of multiple economic activities, select the one corresponding to the service provided on each receipt.",
+      "step8": "8. Customer Details",
+      "step8Info": "Enter the NIF (XXXXXXX) and address (XXXXXX) of the customer Influencer Markt, Lda for whom the receipt is being issued.",
+      "step9": "9. Nature of Receipt",
+      "step9Info": "Specify whether the amount received is for goods, services, or an advance. Provide a brief description of the service provided.",
+      "step10": "10. VAT Regime",
+      "step10Info": "If exempt from VAT due to not having category B income above 13,500 euros annually, select 'VAT - Exemption Regime [Article 53]'. For exemptions for other professional reasons, choose 'Exempt - Article 9'. If not exempt, select the applicable VAT rate (the standard rate in mainland Portugal is 23%).",
+      "step11": "11. Income Tax Base",
+      "step11Info": "If exempt due to not exceeding the annual cumulative amount of 12,500 euros, choose 'Exemption from Withholding - Article 101-B, no. 1, al. a) and b), of the CIRS'. If not exempt, choose a 100% incidence base. Special situations have different bases, such as different professional categories (50%) or disability greater than 60% (25%).",
+      "step12": "12. IRS Withholding Rate",
+      "step12Info": "If you have chosen 'Exemption from Withholding' earlier, the corresponding field will be blocked. Otherwise, choose the applicable withholding rate.",
+      "step13": "13. Enter the Base Value of the Service Provided",
+      "step13Info": "Enter the base value of the service. The 'Stamp Duty' field is generally left blank, except for notarial acts.",
+      "step14": "14. Issue the Green Receipt",
+      "step14Info": "After filling in all the necessary fields, click 'Issue' in the upper right corner of the page.",
+      "step15": "15. After Issuance",
+      "step15Info": "The receipt can be printed, saved in digital format, and submitted in the billing area of Influencer Markt."
     }
   },
 
