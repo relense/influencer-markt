@@ -21,11 +21,12 @@ const StepByStepInvoiceGuidePage = () => {
               {t("pages.stepbyStepInvoice.step1")}
             </div>
             <div className="pl-4 text-lg">
-              {t("pages.stepbyStepInvoice.step1Info")}
+              {t("pages.stepbyStepInvoice.step1Info")}{" "}
               <Link
                 href={"https://www.portaldasfinancas.gov.pt/at/html/index.html"}
+                className="font-semibold underline"
               >
-                aqui
+                {t("pages.stepbyStepInvoice.step1Info2")}
               </Link>
             </div>
           </div>
