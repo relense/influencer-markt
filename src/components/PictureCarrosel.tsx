@@ -140,7 +140,10 @@ export const PictureCarrosel = (params: {
 
         reader.readAsDataURL(compressedFile);
       } catch (error) {
-        console.log(error);
+        toast.error(t("components.pictureCarrosel.invalidPictureWarning"), {
+          duration: 5000,
+          position: "bottom-left",
+        });
       }
     } else {
       toast.error(t("components.pictureCarrosel.invalidPictureWarning"), {

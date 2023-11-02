@@ -5,6 +5,7 @@ import { Question } from "./innerComponents/Questions";
 import Link from "next/link";
 import { Button } from "../../components/Button";
 import { type QuestionType } from "../../utils/globalTypes";
+import { helper } from "../../utils/helper";
 
 const FAQPage = () => {
   const [showInfluencerQuestions, setShowInfluencerQuestions] =
@@ -23,7 +24,9 @@ const FAQPage = () => {
     },
     {
       question: t("pages.faq.questions.influencers.question3"),
-      answer: t("pages.faq.answer.influencers.answer3", { fee: 10 }),
+      answer: t("pages.faq.answer.influencers.answer3", {
+        fee: helper.calculateServiceFee() * 100,
+      }),
     },
     {
       question: t("pages.faq.questions.influencers.question4"),
@@ -79,10 +82,6 @@ const FAQPage = () => {
     {
       question: t("pages.faq.questions.brands.question7"),
       answer: t("pages.faq.answer.brands.answer7"),
-    },
-    {
-      question: t("pages.faq.questions.brands.question8"),
-      answer: t("pages.faq.answer.brands.answer8"),
     },
   ];
 
