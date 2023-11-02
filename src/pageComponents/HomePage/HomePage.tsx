@@ -118,7 +118,7 @@ const HomePage = (params: {
           return (
             <div
               key={offer.subTitleOne}
-              className="pointer-events-none my-5 px-4"
+              className="pointer-events-none my-5 w-full px-4 lg:w-1/3"
             >
               <div className="hidden lg:block">
                 <FontAwesomeIcon icon={offer.icon} className="fa-3x" />

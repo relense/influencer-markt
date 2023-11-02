@@ -502,8 +502,8 @@
       "section3.buttonTitle": "Começa Aqui",
 
       "offers": {
-        "offer1.title1": "Paga na Entrega",
-        "offer1.subTitle1": "Encontra influencers. Planea campanhas, paga só quando o trabalho está feito",
+        "offer1.title1": "Maximiza o teu retorno",
+        "offer1.subTitle1": "Adapta as campanhas ao teu orçamento e público-alvo",
         "offer1.title2": "15% Taxa de Mercado",
         "offer1.subTitle2": "Não há planos, não há subscrições, só 15% Taxa de Mercado",
 
@@ -513,31 +513,31 @@
         "offer2.subTitle2": "Cria uma lista com os teus contatos mais importantes",
 
         "offer3.title1": "Transações Seguras",
-        "offer3.subTitle1": "Proteção completa de pagamento até dares aprovação final",
-        "offer3.title2": "Influencers Verificados",
-        "offer3.subTitle2": "Processo de verificação garante conteúdo profissional de todos os influencers"
+        "offer3.subTitle1": "Proteção completa de pagamento até à conclusão da campanha",
+        "offer3.title2": "Rede diversificada de Influencers",
+        "offer3.subTitle2": "Criadores de Conteúdo especializados em diversas áreas e nichos. Amplia o teu alcance de forma fácil, rápida e segura."
       },
 
       "positivesBoards": {
         "brands.title": "Para Marcas",
-        "brands.positive1": "Pesquisas ilimitadas dos melhores influencers para ti",
-        "brands.positive2": "Capacidade de criar ofertas para o influencer que queres",
+        "brands.positive1": "Pesquisas ilimitadas dos melhores criadores de conteúdo para o teu target",
+        "brands.positive2": "Capacidade de criar ofertas personalizadas às tuas necessidades",
         "brands.positive3": "Guarda influencers para campanhas futuras",
-        "brands.positive4": "Campanhas ilimitadas",
-        "brands.positive5": "Influencers ilimitados podem candidatar-se à tua campanha",
+        "brands.positive4": "Executa campanhas ilimitadas em qualquer altura",
+        "brands.positive5": "Recebe candidaturas às tuas ofertas e escolhe as que mais se adequam ao teus objetivos",
         "brands.positive6": "Avalia Influencers",
-        "brands.positive7": "Conversa com influencers antes de trabalharem juntos",
-        "brands.positive8": "Influencers recomendados para as tuas necessidades",
+        "brands.positive7": "Conversa com criadores de conteúdo para juntos aperfeiçoarem a campanha",
+        "brands.positive8": "Seleção criteriosa de criadores de conteúdo que atendem aos teus requisitos",
 
         "influencers.title": "Para Influencers",
-        "influencers.positive1": "Faz parte de uma comunidade",
+        "influencers.positive1": "Faz parte de uma comunidade relevante e em crescimento constante",
         "influencers.positive2": "Segue outros influencers e troca ideias",
-        "influencers.positive3": "Página profissional dedicada para partilhar com marcas",
-        "influencers.positive4": "Página de ofertas adaptadas às tuas necessidades",
-        "influencers.positive5": "Recompensas baseadas em performance",
-        "influencers.positive6": "Capacidade de avaliar as ofertas",
-        "influencers.positive7": "Página de ofertas adaptadas às tuas necessities",
-        "influencers.positive8": "Encontra a melhor marca para ti e apresenta-te"
+        "influencers.positive3": "Página profissional exclusiva para interagir com marcas",
+        "influencers.positive4": "Acesse a ofertas criadas especificamente para criadores de conteúdo",
+        "influencers.positive5": "Expande o teu perfil a nível internacional",
+        "influencers.positive6": "Escolhe as ofertas que me se adequam ao teu perfil",
+        "influencers.positive7": "Canal privado para falar com marcas e/ ou outros criadores de conteúdo",
+        "influencers.positive8": "Encontra a marca com que mais te identificas e apresenta a tua candidatura"
       },
 
       "welcomeModal": {

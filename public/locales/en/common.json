@@ -504,42 +504,42 @@
       "section3.buttonTitle": "Get Started",
 
       "offers": {
-        "offer1.title1": "Pay on Delivery",
-        "offer1.subTitle1": "Find influencers. Plan campaigns, only pay when the work is done",
-        "offer1.title2": "15% Marketplace Fee",
-        "offer1.subTitle2": "No plans, no subscriptions, only 15% transaction fee",
+        "offer1.title1": "Maximize your return",
+        "offer1.subTitle1": "Adapt campaigns to your budget and target audience",
+        "offer1.title2": "15% Market Fee",
+        "offer1.subTitle2": "No plans, no subscriptions, just a 15% Market Fee",
 
         "offer2.title1": "Messaging System",
-        "offer2.subTitle1": "Communication is key for success, the chat is always available",
-        "offer2.title2": "List of Favorites",
+        "offer2.subTitle1": "Communication is the key to success, chat is always available",
+        "offer2.title2": "Favorites List",
         "offer2.subTitle2": "Create a list of your most important contacts",
 
-        "offer3.title1": "Safe Transactions",
-        "offer3.subTitle1": "Complete payment protection until you give final approval",
-        "offer3.title2": "Verified Influencers",
-        "offer3.subTitle2": "Vetting process ensures professional content from all influencers"
+        "offer3.title1": "Secure Transactions",
+        "offer3.subTitle1": "Complete payment protection until the campaign is concluded",
+        "offer3.title2": "Diverse Network of Influencers",
+        "offer3.subTitle2": "Content creators specialized in various areas and niches. Expand your reach easily, quickly, and safely."
       },
 
       "positivesBoards": {
         "brands.title": "For Brands",
-        "brands.positive1": "Unlimited searches of the best influencers for you",
-        "brands.positive2": "Ability to create jobs for the influencer you want",
+        "brands.positive1": "Unlimited searches for the best content creators for your target",
+        "brands.positive2": "Ability to create customized offers to your needs",
         "brands.positive3": "Save influencers for future campaigns",
-        "brands.positive4": "Unlimited campaigns",
-        "brands.positive5": "Unlimited influencers can apply to your campaign",
-        "brands.positive6": "Rate Influencers",
-        "brands.positive7": "Chat with influencers before working together",
-        "brands.positive8": "Recommended influencers for your needs",
+        "brands.positive4": "Run unlimited campaigns at any time",
+        "brands.positive5": "Receive applications for your offers and choose the ones that best fit your goals",
+        "brands.positive6": "Evaluate Influencers",
+        "brands.positive7": "Talk to content creators to improve the campaign together",
+        "brands.positive8": "Careful selection of content creators that meet your requirements",
 
         "influencers.title": "For Influencers",
-        "influencers.positive1": "Be part of a community",
-        "influencers.positive2": "Follow other influencers and trade ideas",
-        "influencers.positive3": "Dedicated profile page to share with brands",
-        "influencers.positive4": "Jobs page tailored to your needs",
-        "influencers.positive5": "Rewards based on performance",
-        "influencers.positive6": "Ability to review the job",
-        "influencers.positive7": "Offers page tailored",
-        "influencers.positive8": "Find the best brand for you and apply to a job offer"
+        "influencers.positive1": "Be part of a relevant and constantly growing community",
+        "influencers.positive2": "Follow other influencers and exchange ideas",
+        "influencers.positive3": "Exclusive professional page to interact with brands",
+        "influencers.positive4": "Access offers created specifically for content creators",
+        "influencers.positive5": "Expand your profile internationally",
+        "influencers.positive6": "Choose offers that fit your profile",
+        "influencers.positive7": "Private channel to communicate with brands and/or other content creators",
+        "influencers.positive8": "Find the brand that resonates with you the most and submit your application"
       },
 
       "welcomeModal": {
