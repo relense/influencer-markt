@@ -1114,7 +1114,7 @@
       "withdrawModalTitle": "Iniciar Processo de Pagamento de Saldo Disponível",
       "withdawModalSubtitle1": "Antes de efetuarmos o pagamento, é fundamental garantirmos a exatidão e validade da fatura que nos fornece.",
       "withdawModalSubtitle2": "Pedimos gentilmente que carregue a fatura para que possamos iniciar o processo minucioso de verificação a fim de confirmar a correção de todos os detalhes.",
-      "withdawModalSubtitle3": "Se tiver dúvidas ou não souber como emitir uma fatura, convidamo-lo a consultar o nosso guia passo a passo abrangente sobre o processo de faturação, disponível aqui.",
+      "withdawModalSubtitle3": "Se tiver dúvidas ou não souber como emitir uma fatura, convidamo-lo a consultar o nosso guia passo a passo abrangente sobre o processo de faturação, disponível",
       "withdawModalSubtitle4": "Iremos avisar-te prontamente assim que a fatura tenha sido minuciosamente verificada e o pagamento tenha sido processado com sucesso.",
       "withdawModalAvailablePayout": "Valor Disponível para Pagamento",
       "uploadInvoice": "Carregar Fatura",
@@ -1126,7 +1126,7 @@
       "areYouIsent": "Estás isento de pagar IVA?",
       "yes": "Sim",
       "no": "Não",
-      "here": "aqui."
+      "here": " aqui."
     },
 
     "settings": {
@@ -1257,7 +1257,7 @@
       "title": "Guia de emissão de fatura",
       "subtitle": "Este guia detalhado torna o processo de emissão de recibos verdes mais acessível, assegurando conformidade com as normas fiscais e evitando complicações desnecessárias com o Fisco.",
       "step1": "1. Acesso ao Portal das Finanças",
-      "step1Info": "Acesse o Portal das Finanças",
+      "step1Info": "Acesse ao Portal das Finanças",
       "step1Info2": "aqui.",
       "step2": "2. Navegação até os Serviços Tributários",
       "step2Info": "Clique em ''Aceder aos Serviços Tributários''.",
