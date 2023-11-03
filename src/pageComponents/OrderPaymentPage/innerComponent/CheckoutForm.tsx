@@ -7,11 +7,12 @@ import {
 import { type StripeLinkAuthenticationElementChangeEvent } from "@stripe/stripe-js";
 import { useState } from "react";
 import { api } from "~/utils/api";
+import { useTranslation } from "react-i18next";
+import toast from "react-hot-toast";
 
 import { Button } from "../../../components/Button";
 import { helper } from "../../../utils/helper";
 import { nifValidator } from "../../../utils/nifValidators";
-import { useTranslation } from "react-i18next";
 
 export default function CheckoutForm(params: {
   orderId: number;
@@ -32,7 +33,13 @@ export default function CheckoutForm(params: {
   const [nifError, setNifError] = useState<string>("");
 
   const { mutate: updateBillingInfo } =
-    api.billings.updateBillingInfo.useMutation();
+    api.billings.updateBillingInfo.useMutation({
+      onError: () => {
+        toast.error(t("general.error.generalErrorMessage"), {
+          position: "bottom-left",
+        });
+      },
+    });
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();

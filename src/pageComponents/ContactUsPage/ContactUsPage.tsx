@@ -29,6 +29,11 @@ const ContactUsPage = () => {
         });
         reset();
       },
+      onError: () => {
+        toast.error(t("general.error.generalErrorMessage"), {
+          position: "bottom-left",
+        });
+      },
     });
   const [showFirstTimeModal, setShowFirstTimeModal] = useState<boolean>(false);
 

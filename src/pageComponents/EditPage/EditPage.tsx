@@ -50,6 +50,9 @@ const EditPage = () => {
     },
     onError: () => {
       setIsLoading(false);
+      toast.error(t("general.error.generalErrorMessage"), {
+        position: "bottom-left",
+      });
     },
   });
 
@@ -64,6 +67,9 @@ const EditPage = () => {
     },
     onError: () => {
       setIsLoading(false);
+      toast.error(t("general.error.generalErrorMessage"), {
+        position: "bottom-left",
+      });
     },
   });
 
@@ -78,11 +84,20 @@ const EditPage = () => {
     },
     onError: () => {
       setIsLoading(false);
+      toast.error(t("general.error.generalErrorMessage"), {
+        position: "bottom-left",
+      });
     },
   });
 
   const { mutate: deleteUserSocialMedia } =
-    api.userSocialMedias.deleteUserSocialMedia.useMutation();
+    api.userSocialMedias.deleteUserSocialMedia.useMutation({
+      onError: () => {
+        toast.error(t("general.error.generalErrorMessage"), {
+          position: "bottom-left",
+        });
+      },
+    });
 
   //FORMS FROM REACT HOOK
 

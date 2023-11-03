@@ -39,6 +39,7 @@ import { helper, useOutsideClick, useWindowWidth } from "../utils/helper";
 import { Notifications } from "./Notifications";
 import { Credits } from "./Credits";
 import { HelpCenter } from "./HelpCenter";
+import toast from "react-hot-toast";
 
 export const Navbar = (params: {
   username: string;
@@ -76,6 +77,11 @@ export const Navbar = (params: {
     api.notifications.updateNotificationsToRead.useMutation({
       onSuccess: async () => {
         await refetchNotficationsRead();
+      },
+      onError: () => {
+        toast.error(t("general.error.generalErrorMessage"), {
+          position: "bottom-left",
+        });
       },
     });
 

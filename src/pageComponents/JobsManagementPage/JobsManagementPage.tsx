@@ -56,17 +56,40 @@ const JobsManagementPage = () => {
 
   const { data: jobStatusData } = api.allRoutes.getAllJobStatus.useQuery();
 
-  const { mutate: publishJobMutation } = api.jobs.publishJob.useMutation();
+  const { mutate: publishJobMutation } = api.jobs.publishJob.useMutation({
+    onError: () => {
+      toast.error(t("general.error.generalErrorMessage"), {
+        position: "bottom-left",
+      });
+    },
+  });
 
-  const { mutate: archiveJobMutation } = api.jobs.archiveJob.useMutation();
+  const { mutate: archiveJobMutation } = api.jobs.archiveJob.useMutation({
+    onError: () => {
+      toast.error(t("general.error.generalErrorMessage"), {
+        position: "bottom-left",
+      });
+    },
+  });
 
-  const { mutate: deleteJobMutation } = api.jobs.deleteJob.useMutation();
+  const { mutate: deleteJobMutation } = api.jobs.deleteJob.useMutation({
+    onError: () => {
+      toast.error(t("general.error.generalErrorMessage"), {
+        position: "bottom-left",
+      });
+    },
+  });
 
   const { mutate: duplicateJobMutation, isLoading: isLoadingDuplicatingJob } =
     api.jobs.duplicateJob.useMutation({
       onSuccess: () => {
         void ctx.jobs.getAllUserJobs.invalidate();
         toast.success(t("components.myJobDropDown.jobDuplicated"), {
+          position: "bottom-left",
+        });
+      },
+      onError: () => {
+        toast.error(t("general.error.generalErrorMessage"), {
           position: "bottom-left",
         });
       },

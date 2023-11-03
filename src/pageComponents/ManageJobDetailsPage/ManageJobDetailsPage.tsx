@@ -132,16 +132,39 @@ const ManageJobDetailsPage = (params: {
     }
   );
 
-  const { mutate: acceptedApplicant } =
-    api.jobs.acceptedApplicant.useMutation();
+  const { mutate: acceptedApplicant } = api.jobs.acceptedApplicant.useMutation({
+    onError: () => {
+      toast.error(t("general.error.generalErrorMessage"), {
+        position: "bottom-left",
+      });
+    },
+  });
 
-  const { mutate: rejectApplication } = api.jobs.rejectApplicant.useMutation();
+  const { mutate: rejectApplication } = api.jobs.rejectApplicant.useMutation({
+    onError: () => {
+      toast.error(t("general.error.generalErrorMessage"), {
+        position: "bottom-left",
+      });
+    },
+  });
 
   const { mutate: removeApplicantFromAccepted } =
-    api.jobs.removeApplicantFromAccepted.useMutation();
+    api.jobs.removeApplicantFromAccepted.useMutation({
+      onError: () => {
+        toast.error(t("general.error.generalErrorMessage"), {
+          position: "bottom-left",
+        });
+      },
+    });
 
   const { mutate: removeApplicantFromRejected } =
-    api.jobs.removeApplicantFromRejected.useMutation();
+    api.jobs.removeApplicantFromRejected.useMutation({
+      onError: () => {
+        toast.error(t("general.error.generalErrorMessage"), {
+          position: "bottom-left",
+        });
+      },
+    });
 
   const {
     mutate: updateApplicantToSentList,
@@ -152,6 +175,11 @@ const ManageJobDetailsPage = (params: {
       void ctx.jobs.getAcceptedApplicants.invalidate();
       void ctx.jobs.getSentOrderApplicants.invalidate();
     },
+    onError: () => {
+      toast.error(t("general.error.generalErrorMessage"), {
+        position: "bottom-left",
+      });
+    },
   });
 
   const { mutate: startJob, isLoading: isLoadingStartJob } =
@@ -159,15 +187,37 @@ const ManageJobDetailsPage = (params: {
       onSuccess: () => {
         void ctx.jobs.getJob.invalidate();
       },
+      onError: () => {
+        toast.error(t("general.error.generalErrorMessage"), {
+          position: "bottom-left",
+        });
+      },
     });
 
-  const { mutate: publishJobMutation } = api.jobs.publishJob.useMutation();
+  const { mutate: publishJobMutation } = api.jobs.publishJob.useMutation({
+    onError: () => {
+      toast.error(t("general.error.generalErrorMessage"), {
+        position: "bottom-left",
+      });
+    },
+  });
 
-  const { mutate: archiveJobMutation } = api.jobs.archiveJob.useMutation();
+  const { mutate: archiveJobMutation } = api.jobs.archiveJob.useMutation({
+    onError: () => {
+      toast.error(t("general.error.generalErrorMessage"), {
+        position: "bottom-left",
+      });
+    },
+  });
 
   const { mutate: deleteJobMutation } = api.jobs.deleteJob.useMutation({
     onSuccess: () => {
       toast.success(t("components.myJobDropDown.jobDeleted"), {
+        position: "bottom-left",
+      });
+    },
+    onError: () => {
+      toast.error(t("general.error.generalErrorMessage"), {
         position: "bottom-left",
       });
     },
@@ -176,6 +226,11 @@ const ManageJobDetailsPage = (params: {
   const { mutate: duplicateJobMutation } = api.jobs.duplicateJob.useMutation({
     onSuccess: () => {
       toast.success(t("components.myJobDropDown.jobDuplicated"), {
+        position: "bottom-left",
+      });
+    },
+    onError: () => {
+      toast.error(t("general.error.generalErrorMessage"), {
         position: "bottom-left",
       });
     },
@@ -198,10 +253,21 @@ const ManageJobDetailsPage = (params: {
           });
         }
       },
+      onError: () => {
+        toast.error(t("general.error.generalErrorMessage"), {
+          position: "bottom-left",
+        });
+      },
     });
 
   const { mutate: createNotification } =
-    api.notifications.createNotification.useMutation();
+    api.notifications.createNotification.useMutation({
+      onError: () => {
+        toast.error(t("general.error.generalErrorMessage"), {
+          position: "bottom-left",
+        });
+      },
+    });
 
   useEffect(() => {
     if (jobApplicants) {

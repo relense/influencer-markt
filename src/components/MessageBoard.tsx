@@ -12,6 +12,7 @@ import {
   faCheck,
   faCheckDouble,
 } from "@fortawesome/free-solid-svg-icons";
+import toast from "react-hot-toast";
 
 type Message = {
   senderId: string;
@@ -73,10 +74,21 @@ const MessageBoard = (params: {
       onSuccess: () => {
         void refetchMessagesData();
       },
+      onError: () => {
+        toast.error(t("general.error.generalErrorMessage"), {
+          position: "bottom-left",
+        });
+      },
     });
 
   const { mutate: sendNewMessageNotificationAndEmail } =
-    api.messages.sendNewMessaNotification.useMutation();
+    api.messages.sendNewMessaNotification.useMutation({
+      onError: () => {
+        toast.error(t("general.error.generalErrorMessage"), {
+          position: "bottom-left",
+        });
+      },
+    });
 
   const { mutate: createMessage } = api.messages.createMessage.useMutation({
     onSuccess: (message) => {
@@ -100,6 +112,11 @@ const MessageBoard = (params: {
         });
       }
       setMessage("");
+    },
+    onError: () => {
+      toast.error(t("general.error.generalErrorMessage"), {
+        position: "bottom-left",
+      });
     },
   });
 

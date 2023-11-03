@@ -50,6 +50,11 @@ const SalesDetailsPage = (params: { orderId: number }) => {
             });
         });
       },
+      onError: () => {
+        toast.error(t("general.error.generalErrorMessage"), {
+          position: "bottom-left",
+        });
+      },
     });
 
   const { mutate: updateOrderReject, isLoading: updateRejectIsLoading } =
@@ -63,6 +68,11 @@ const SalesDetailsPage = (params: { orderId: number }) => {
         });
         void ctx.orders.getSaleOrder.invalidate();
       },
+      onError: () => {
+        toast.error(t("general.error.generalErrorMessage"), {
+          position: "bottom-left",
+        });
+      },
     });
 
   const { mutate: updateCancelOrder, isLoading: isLoadingUpdateCancelOrder } =
@@ -75,6 +85,11 @@ const SalesDetailsPage = (params: { orderId: number }) => {
           entityAction: "saleCanceled",
         });
         void ctx.orders.getSaleOrder.invalidate();
+      },
+      onError: () => {
+        toast.error(t("general.error.generalErrorMessage"), {
+          position: "bottom-left",
+        });
       },
     });
 
@@ -90,10 +105,21 @@ const SalesDetailsPage = (params: { orderId: number }) => {
         });
         void ctx.orders.getSaleOrder.invalidate();
       },
+      onError: () => {
+        toast.error(t("general.error.generalErrorMessage"), {
+          position: "bottom-left",
+        });
+      },
     });
 
   const { mutate: createNotification } =
-    api.notifications.createNotification.useMutation();
+    api.notifications.createNotification.useMutation({
+      onError: () => {
+        toast.error(t("general.error.generalErrorMessage"), {
+          position: "bottom-left",
+        });
+      },
+    });
 
   const answerOrderRequest = (type: "accept" | "reject") => {
     if (type === "accept") {

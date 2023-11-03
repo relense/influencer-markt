@@ -71,6 +71,11 @@ const ProfileCard = (params: {
         }
       );
     },
+    onError: () => {
+      toast.error(t("general.error.generalErrorMessage"), {
+        position: "bottom-left",
+      });
+    },
   });
 
   const onClickBookmark = (profileId: string) => {

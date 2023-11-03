@@ -1,11 +1,12 @@
 import { useTranslation } from "react-i18next";
 import { api } from "~/utils/api";
+import { useEffect } from "react";
+import toast from "react-hot-toast";
+import { useForm } from "react-hook-form";
 
 import { Button } from "../../../components/Button";
 import { Modal } from "../../../components/Modal";
-import { useForm } from "react-hook-form";
 import { nifValidator } from "../../../utils/nifValidators";
-import { useEffect } from "react";
 
 type BillingForm = {
   name: string;
@@ -34,6 +35,11 @@ const BillingDetailsBrandModal = (params: {
       onSuccess: () => {
         void ctx.billings.getBillingInfo.invalidate();
         params.onClose();
+      },
+      onError: () => {
+        toast.error(t("general.error.generalErrorMessage"), {
+          position: "bottom-left",
+        });
       },
     });
 

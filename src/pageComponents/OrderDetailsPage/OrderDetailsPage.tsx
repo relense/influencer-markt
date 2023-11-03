@@ -83,9 +83,20 @@ const OrderDetailsPage = (params: {
         void ctx.orders.getBuyerOrder.invalidate();
         void ctx.credits.calculateUserCredits.invalidate();
       },
+      onError: () => {
+        toast.error(t("general.error.generalErrorMessage"), {
+          position: "bottom-left",
+        });
+      },
     });
 
-  const { mutate: createPayout } = api.payouts.createPayout.useMutation();
+  const { mutate: createPayout } = api.payouts.createPayout.useMutation({
+    onError: () => {
+      toast.error(t("general.error.generalErrorMessage"), {
+        position: "bottom-left",
+      });
+    },
+  });
 
   const { mutate: updateOrderConfirmed, isLoading: isLoadingUpdateConfirmed } =
     api.orders.updateOrder.useMutation({
@@ -100,6 +111,11 @@ const OrderDetailsPage = (params: {
         void createPayout({ orderId: params.orderId });
         void ctx.orders.getBuyerOrder.invalidate();
       },
+      onError: () => {
+        toast.error(t("general.error.generalErrorMessage"), {
+          position: "bottom-left",
+        });
+      },
     });
 
   const { mutate: updateOrderReviewed, isLoading: isLoadingUpdateReviewed } =
@@ -113,6 +129,11 @@ const OrderDetailsPage = (params: {
         });
         void ctx.orders.getBuyerOrder.invalidate();
       },
+      onError: () => {
+        toast.error(t("general.error.generalErrorMessage"), {
+          position: "bottom-left",
+        });
+      },
     });
 
   const { mutate: updateDateOfDelivery, isLoading: isLoadingUpdateDelivery } =
@@ -125,6 +146,11 @@ const OrderDetailsPage = (params: {
           senderId: order?.buyerId || "",
           notifierId: order?.influencerId || "",
           entityAction: "orderDeliveryDateUpdate",
+        });
+      },
+      onError: () => {
+        toast.error(t("general.error.generalErrorMessage"), {
+          position: "bottom-left",
         });
       },
     });
@@ -141,6 +167,11 @@ const OrderDetailsPage = (params: {
         senderId: order?.buyerId || "",
         notifierId: order?.influencerId || "",
         entityAction: "toInfluencerOrderOnHoldToInProgress",
+      });
+    },
+    onError: () => {
+      toast.error(t("general.error.generalErrorMessage"), {
+        position: "bottom-left",
       });
     },
   });
@@ -169,9 +200,20 @@ const OrderDetailsPage = (params: {
         });
       }
     },
+    onError: () => {
+      toast.error(t("general.error.generalErrorMessage"), {
+        position: "bottom-left",
+      });
+    },
   });
 
-  const { mutate: giveCreditRefund } = api.refunds.createRefund.useMutation();
+  const { mutate: giveCreditRefund } = api.refunds.createRefund.useMutation({
+    onError: () => {
+      toast.error(t("general.error.generalErrorMessage"), {
+        position: "bottom-left",
+      });
+    },
+  });
 
   const {
     mutate: updateOrderInDispute,
@@ -187,6 +229,11 @@ const OrderDetailsPage = (params: {
       });
       void ctx.orders.getBuyerOrder.invalidate();
       toast.success(t("pages.orders.disputeOpenToast"), {
+        position: "bottom-left",
+      });
+    },
+    onError: () => {
+      toast.error(t("general.error.generalErrorMessage"), {
         position: "bottom-left",
       });
     },
@@ -207,6 +254,11 @@ const OrderDetailsPage = (params: {
         setOpenReviewModal(false);
         setStarReviewsCount(1);
       },
+      onError: () => {
+        toast.error(t("general.error.generalErrorMessage"), {
+          position: "bottom-left",
+        });
+      },
     });
 
   const { mutate: createDispute, isLoading: isLoadingCreateDispute } =
@@ -218,6 +270,11 @@ const OrderDetailsPage = (params: {
           deliveredDate: order?.dateItWasDelivered || undefined,
         });
         setOpenDisputeModal(false);
+      },
+      onError: () => {
+        toast.error(t("general.error.generalErrorMessage"), {
+          position: "bottom-left",
+        });
       },
     });
 

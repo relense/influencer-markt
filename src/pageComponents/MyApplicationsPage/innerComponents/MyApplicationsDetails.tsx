@@ -46,7 +46,13 @@ const MyApplicationsDetails = (params: {
           });
         });
       },
+      onError: () => {
+        toast.error(t("general.error.generalErrorMessage"), {
+          position: "bottom-left",
+        });
+      },
     });
+
   const { mutate: removeApplication, isLoading: removingIsLoading } =
     api.jobs.removeJobApplication.useMutation({
       onSuccess: () => {
@@ -55,6 +61,11 @@ const MyApplicationsDetails = (params: {
           toast.success(t("pages.applications.removedApplicationSuccess"), {
             position: "bottom-left",
           });
+        });
+      },
+      onError: () => {
+        toast.error(t("general.error.generalErrorMessage"), {
+          position: "bottom-left",
         });
       },
     });

@@ -51,13 +51,13 @@ export const api = createTRPCNext<AppRouter>({
           },
           mutations: {
             retry: (failureCount, error) => {
-              if (error instanceof TRPCClientError) {
-                if (error.data) {
-                  toast.error(`Something went wrong`, {
-                    position: "bottom-left",
-                  });
-                }
-              }
+              // if (error instanceof TRPCClientError) {
+              //   if (error.data) {
+              //     toast.error(JSON.stringify(error), {
+              //       position: "bottom-left",
+              //     });
+              //   }
+              // }
 
               return false;
             },

@@ -3,13 +3,14 @@ import { useForm } from "react-hook-form";
 import { useEffect, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { api } from "~/utils/api";
+import { useRouter } from "next/router";
+import dayjs from "dayjs";
+import toast from "react-hot-toast";
+import { faChevronDown, faChevronUp } from "@fortawesome/free-solid-svg-icons";
 
 import type { Option, ValuePack } from "../../utils/globalTypes";
 import { helper } from "../../utils/helper";
-import { faChevronDown, faChevronUp } from "@fortawesome/free-solid-svg-icons";
 import { Button } from "../../components/Button";
-import { useRouter } from "next/router";
-import dayjs from "dayjs";
 
 type OrderData = {
   orderDetails: string;
@@ -76,11 +77,22 @@ const StartOrderPage = (params: {
           });
         }
       },
+      onError: () => {
+        toast.error(t("general.error.generalErrorMessage"), {
+          position: "bottom-left",
+        });
+      },
     }
   );
 
   const { mutate: createNotification } =
-    api.notifications.createNotification.useMutation();
+    api.notifications.createNotification.useMutation({
+      onError: () => {
+        toast.error(t("general.error.generalErrorMessage"), {
+          position: "bottom-left",
+        });
+      },
+    });
 
   const {
     register,

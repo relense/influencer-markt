@@ -26,6 +26,11 @@ const WithdrawPage = () => {
         await ctx.payouts.availablePayoutsSum.invalidate();
         void router.push("/billing");
       },
+      onError: () => {
+        toast.error(t("general.error.generalErrorMessage"), {
+          position: "bottom-left",
+        });
+      },
     });
 
   const { data: availablePayoutsSum } =

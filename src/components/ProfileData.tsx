@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import { useTranslation } from "react-i18next";
 import { api } from "~/utils/api";
+import toast from "react-hot-toast";
 
 import { helper } from "../utils/helper";
 import { Button } from "../components/Button";
@@ -68,7 +69,7 @@ export type ProfileAdminIncludes = Prisma.ProfileGetPayload<{
 }>;
 
 const ProfileData = (params: { profile: ProfileAdminIncludes }) => {
-  const { i18n } = useTranslation();
+  const { t, i18n } = useTranslation();
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [profile, setProfile] = useState<ProfileAdminIncludes | undefined>(
     undefined
@@ -76,6 +77,11 @@ const ProfileData = (params: { profile: ProfileAdminIncludes }) => {
 
   const { mutate: verify, isLoading } = api.profiles.verifyProfile.useMutation({
     onSuccess: () => void refetch(),
+    onError: () => {
+      toast.error(t("general.error.generalErrorMessage"), {
+        position: "bottom-left",
+      });
+    },
   });
 
   const {

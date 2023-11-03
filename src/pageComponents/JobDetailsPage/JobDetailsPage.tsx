@@ -10,12 +10,12 @@ import { api } from "~/utils/api";
 import { useSession } from "next-auth/react";
 import { toast } from "react-hot-toast";
 import Link from "next/link";
+import Image from "next/image";
 
 import { LoadingSpinner } from "../../components/LoadingSpinner";
 import { helper } from "../../utils/helper";
 import { Button } from "../../components/Button";
 import { ShareModal } from "../../components/ShareModal";
-import Image from "next/image";
 
 const JobDetailsPage = (params: {
   jobId: number;
@@ -46,12 +46,22 @@ const JobDetailsPage = (params: {
           position: "bottom-left",
         });
       },
+      onError: () => {
+        toast.error(t("general.error.generalErrorMessage"), {
+          position: "bottom-left",
+        });
+      },
     });
   const { mutate: removeApplication, isLoading: removingIsLoading } =
     api.jobs.removeJobApplication.useMutation({
       onSuccess: () => {
         void refetcheJob();
         toast.success(t("pages.jobs.removedApplicationSuccess"), {
+          position: "bottom-left",
+        });
+      },
+      onError: () => {
+        toast.error(t("general.error.generalErrorMessage"), {
           position: "bottom-left",
         });
       },

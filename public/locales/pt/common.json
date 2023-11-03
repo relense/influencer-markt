@@ -170,6 +170,10 @@
       "reviewed": "Concluído",
       "inDispute": "Em Disputa",
       "onHold": "Suspenso"
+    },
+
+    "error": {
+      "generalErrorMessage": "Aconteceu algo errado"
     }
   },
   "components": {

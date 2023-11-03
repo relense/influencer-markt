@@ -1334,4 +1334,52 @@ export const profilesRouter = createTRPCRouter({
         },
       });
     }),
+
+  deleteProfile: protectedProcedure.mutation(async ({ ctx }) => {
+    const profile = await ctx.prisma.profile.findFirst({
+      where: {
+        userId: ctx.session.user.id,
+      },
+    });
+
+    if (profile) {
+      const boughtOrders = await ctx.prisma.order.findMany({
+        where: {
+          buyerId: profile.id,
+          OR: [
+            { orderStatusId: 4 },
+            { orderStatusId: 5 },
+            { orderStatusId: 9 },
+            { orderStatusId: 10 },
+            { orderStatusId: 11 },
+          ],
+        },
+      });
+
+      if (boughtOrders.length > 0) {
+        throw Error("boughOrdersError", {
+          cause: "boughOrdersError",
+        });
+      }
+
+      const soldOrders = await ctx.prisma.order.findMany({
+        where: {
+          influencerId: profile.id,
+          OR: [
+            { orderStatusId: 4 },
+            { orderStatusId: 5 },
+            { orderStatusId: 9 },
+            { orderStatusId: 10 },
+            { orderStatusId: 11 },
+          ],
+        },
+      });
+
+      if (soldOrders.length > 0) {
+        throw Error("soldOrdersError", {
+          cause: "soldOrdersError",
+        });
+      }
+    }
+  }),
 });

@@ -63,6 +63,11 @@ const JobDetails = (params: {
           });
         });
       },
+      onError: () => {
+        toast.error(t("general.error.generalErrorMessage"), {
+          position: "bottom-left",
+        });
+      },
     });
 
   const { mutate: removeApplication, isLoading: removingIsLoading } =
@@ -73,6 +78,11 @@ const JobDetails = (params: {
           toast.success(t("pages.jobs.removedApplicationSuccess"), {
             position: "bottom-left",
           });
+        });
+      },
+      onError: () => {
+        toast.error(t("general.error.generalErrorMessage"), {
+          position: "bottom-left",
         });
       },
     });

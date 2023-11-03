@@ -2,6 +2,8 @@ import { type Appearance, loadStripe } from "@stripe/stripe-js";
 import { Elements } from "@stripe/react-stripe-js";
 import { api } from "~/utils/api";
 import { useState } from "react";
+import toast from "react-hot-toast";
+import { useTranslation } from "react-i18next";
 
 import { helper } from "../../utils/helper";
 import CheckoutForm from "./innerComponent/CheckoutForm";
@@ -11,6 +13,7 @@ const stripePromise = loadStripe(
 );
 
 const OrderPaymentPage = (params: { orderId: number; amount: number }) => {
+  const { t } = useTranslation();
   const [clientSecret, setClientSecret] = useState<string>("");
 
   const { mutate: createPaymentIntent } =
@@ -19,6 +22,11 @@ const OrderPaymentPage = (params: { orderId: number; amount: number }) => {
         if (intent?.client_secret) {
           setClientSecret(intent.client_secret);
         }
+      },
+      onError: () => {
+        toast.error(t("general.error.generalErrorMessage"), {
+          position: "bottom-left",
+        });
       },
     });
 

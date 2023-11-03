@@ -10,6 +10,7 @@ import { FinalStep } from "./Views/FinalStep";
 import { Button } from "../../components/Button";
 import { RoleEnum, DefineUserStep } from "./Views/DefineUserStep";
 import type { ProfileData, UserIdentityData } from "../../utils/globalTypes";
+import toast from "react-hot-toast";
 
 enum StepsEnum {
   OnlinePresence,
@@ -100,7 +101,13 @@ const FirstStepsPage = () => {
   });
 
   const { mutateAsync: profileMutation } =
-    api.profiles.createProfile.useMutation();
+    api.profiles.createProfile.useMutation({
+      onError: () => {
+        toast.error(t("general.error.generalErrorMessage"), {
+          position: "bottom-left",
+        });
+      },
+    });
 
   const { mutate: userIdentityMutation } =
     api.users.updateUserIdentity.useMutation({
@@ -109,6 +116,11 @@ const FirstStepsPage = () => {
 
         setCurrentStep(generalSteps[0]);
         setSteps(generalSteps);
+      },
+      onError: () => {
+        toast.error(t("general.error.generalErrorMessage"), {
+          position: "bottom-left",
+        });
       },
     });
 

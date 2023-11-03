@@ -114,6 +114,11 @@ const CreateJobPage = (params: { edit: boolean; jobId: number }) => {
           });
         });
       },
+      onError: () => {
+        toast.error(t("general.error.generalErrorMessage"), {
+          position: "bottom-left",
+        });
+      },
     });
 
   const { mutate: jobUpdate, isLoading: isLoadingUpdate } =
@@ -126,6 +131,11 @@ const CreateJobPage = (params: { edit: boolean; jobId: number }) => {
           toast.success(t("components.myJobDropDown.jobUpdated"), {
             position: "bottom-left",
           });
+        });
+      },
+      onError: () => {
+        toast.error(t("general.error.generalErrorMessage"), {
+          position: "bottom-left",
         });
       },
     });

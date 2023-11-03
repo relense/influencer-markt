@@ -171,6 +171,10 @@
       "inDispute": "In Dispute",
       "processingPayment": "Processing Payment",
       "onHold": "On Hold"
+    },
+
+    "error": {
+      "generalErrorMessage": "Something went wrong"
     }
   },
   "components": {

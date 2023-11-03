@@ -22,9 +22,10 @@ import { useTranslation } from "react-i18next";
 import { Button } from "../../components/Button";
 import { useState } from "react";
 import { Modal } from "../../components/Modal";
+import toast from "react-hot-toast";
 
 const AdminManageDisputesPage = (params: { disputeId: number }) => {
-  const { i18n } = useTranslation();
+  const { t, i18n } = useTranslation();
   const ctx = api.useContext();
 
   const [openInfluencerIsRightModal, setOpenInfluencerIsRightModal] =
@@ -38,10 +39,22 @@ const AdminManageDisputesPage = (params: { disputeId: number }) => {
       disputeId: params.disputeId,
     });
 
-  const { mutate: createPayout } = api.payouts.createPayout.useMutation();
+  const { mutate: createPayout } = api.payouts.createPayout.useMutation({
+    onError: () => {
+      toast.error(t("general.error.generalErrorMessage"), {
+        position: "bottom-left",
+      });
+    },
+  });
 
   const { mutate: createNotification } =
-    api.notifications.createNotification.useMutation();
+    api.notifications.createNotification.useMutation({
+      onError: () => {
+        toast.error(t("general.error.generalErrorMessage"), {
+          position: "bottom-left",
+        });
+      },
+    });
 
   const { mutate: updatedOrderClosed, isLoading: isLoadingOrderClosed } =
     api.orders.updateOrderAndCloseAfterDispute.useMutation({
@@ -63,6 +76,11 @@ const AdminManageDisputesPage = (params: { disputeId: number }) => {
           });
           void ctx.orders.getOrderByDisputeId.invalidate();
         }
+      },
+      onError: () => {
+        toast.error(t("general.error.generalErrorMessage"), {
+          position: "bottom-left",
+        });
       },
     });
 
@@ -86,6 +104,11 @@ const AdminManageDisputesPage = (params: { disputeId: number }) => {
       });
       void ctx.orders.getOrderByDisputeId.invalidate();
     },
+    onError: () => {
+      toast.error(t("general.error.generalErrorMessage"), {
+        position: "bottom-left",
+      });
+    },
   });
 
   const {
@@ -94,6 +117,11 @@ const AdminManageDisputesPage = (params: { disputeId: number }) => {
   } = api.disputes.updateDisputeToProgress.useMutation({
     onSuccess: () => {
       void ctx.orders.getOrderByDisputeId.invalidate();
+    },
+    onError: () => {
+      toast.error(t("general.error.generalErrorMessage"), {
+        position: "bottom-left",
+      });
     },
   });
 
@@ -112,6 +140,11 @@ const AdminManageDisputesPage = (params: { disputeId: number }) => {
           });
         }
       },
+      onError: () => {
+        toast.error(t("general.error.generalErrorMessage"), {
+          position: "bottom-left",
+        });
+      },
     });
 
   const { mutate: rectifyDispute, isLoading: isLoadingRectifyDispute } =
@@ -123,6 +156,11 @@ const AdminManageDisputesPage = (params: { disputeId: number }) => {
             statusId: 4,
           });
         }
+      },
+      onError: () => {
+        toast.error(t("general.error.generalErrorMessage"), {
+          position: "bottom-left",
+        });
       },
     });
 
@@ -148,6 +186,11 @@ const AdminManageDisputesPage = (params: { disputeId: number }) => {
 
         void ctx.orders.getOrderByDisputeId.invalidate();
       }
+    },
+    onError: () => {
+      toast.error(t("general.error.generalErrorMessage"), {
+        position: "bottom-left",
+      });
     },
   });
 

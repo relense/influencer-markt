@@ -33,10 +33,23 @@ const SettingsPage = () => {
     username: username,
   });
 
+  const { mutate: deleteProfile } = api.profiles.deleteProfile.useMutation({
+    onError: () => {
+      toast.error(t("general.error.generalErrorMessage"), {
+        position: "bottom-left",
+      });
+    },
+  });
+
   const { mutate: updateEmailNotifications } =
     api.profiles.updateEmailNotifications.useMutation({
       onSuccess: () => {
         toast.success(t("pages.settings.updateNotificationsSuccess"), {
+          position: "bottom-left",
+        });
+      },
+      onError: () => {
+        toast.error(t("general.error.generalErrorMessage"), {
           position: "bottom-left",
         });
       },
@@ -49,6 +62,11 @@ const SettingsPage = () => {
         void ctx.users.getUser.invalidate();
         void ctx.users.getUserInfo.invalidate();
       },
+      onError: () => {
+        toast.error(t("general.error.generalErrorMessage"), {
+          position: "bottom-left",
+        });
+      },
     });
 
   useEffect(() => {
@@ -57,6 +75,13 @@ const SettingsPage = () => {
       setDisableEmailNotifications(profileSettings.disableEmailNotifications);
     }
   }, [profileSettings]);
+
+  const handleDeleteAccount = () => {
+    setOpenDeleteAccountModal(false);
+    deleteProfile();
+
+    //fazer logout ao user e enviar para o home page
+  };
 
   const handleDisableEmailNotifications = () => {
     setDisableEmailNotifications(!disableEmailNotifications);
@@ -226,7 +251,7 @@ const SettingsPage = () => {
               <Button
                 title={t("pages.settings.deleteAccount")}
                 size="regular"
-                onClick={() => setOpenDeleteAccountModal(true)}
+                onClick={() => handleDeleteAccount()}
               />
             </div>
           </div>

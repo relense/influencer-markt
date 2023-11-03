@@ -15,6 +15,7 @@ import { LoadingSpinner } from "../../components/LoadingSpinner";
 import { CustomSelect } from "../../components/CustomSelect";
 import { type Option } from "../../utils/globalTypes";
 import { useRouter } from "next/router";
+import toast from "react-hot-toast";
 
 type PayoutsInvoiceSearch = {
   searchProfileId: string;
@@ -59,6 +60,11 @@ const AdminPayoutsPage = () => {
         if (invoice) {
           void router.push(`/admin/payouts/${invoice.id}`);
         }
+      },
+      onError: () => {
+        toast.error(t("general.error.generalErrorMessage"), {
+          position: "bottom-left",
+        });
       },
     });
 

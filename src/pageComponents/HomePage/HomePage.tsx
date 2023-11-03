@@ -14,11 +14,12 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import { useSession } from "next-auth/react";
 import { api } from "~/utils/api";
+import { useRouter } from "next/router";
+import toast from "react-hot-toast";
 
 import { SimpleSearchBar } from "./innerComponents/SimpleSearchBar";
 import { Button } from "../../components/Button";
 import { Modal } from "../../components/Modal";
-import { useRouter } from "next/router";
 
 type Offer = {
   icon: IconDefinition;
@@ -68,6 +69,11 @@ const HomePage = (params: {
         if (toEditMenu && user && user.username) {
           void router.push(`/${user.username}/edit`);
         }
+      },
+      onError: () => {
+        toast.error(t("general.error.generalErrorMessage"), {
+          position: "bottom-left",
+        });
       },
     });
 

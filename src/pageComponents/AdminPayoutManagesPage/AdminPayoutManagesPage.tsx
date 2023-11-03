@@ -14,6 +14,7 @@ import { Modal } from "../../components/Modal";
 import { LoadingSpinner } from "../../components/LoadingSpinner";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
+import toast from "react-hot-toast";
 
 type ObjectisList = {
   isCompanyCorrect: boolean;
@@ -72,6 +73,11 @@ const AdminPayoutManagesPage = (params: { payoutInvoiceId: string }) => {
           void ctx.payoutInvoices.getPayoutInvoice.invalidate();
         }
       },
+      onError: () => {
+        toast.error(t("general.error.generalErrorMessage"), {
+          position: "bottom-left",
+        });
+      },
     });
 
   const { mutate: acceptInvoice } =
@@ -79,12 +85,22 @@ const AdminPayoutManagesPage = (params: { payoutInvoiceId: string }) => {
       onSuccess: () => {
         void router.push("/admin/payouts");
       },
+      onError: () => {
+        toast.error(t("general.error.generalErrorMessage"), {
+          position: "bottom-left",
+        });
+      },
     });
 
   const { mutate: rejectInvoice } =
     api.payoutInvoices.rejectInvoice.useMutation({
       onSuccess: () => {
         void router.push("/admin/payouts");
+      },
+      onError: () => {
+        toast.error(t("general.error.generalErrorMessage"), {
+          position: "bottom-left",
+        });
       },
     });
 

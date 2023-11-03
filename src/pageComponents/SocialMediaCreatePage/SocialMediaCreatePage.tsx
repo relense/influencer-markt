@@ -4,6 +4,8 @@ import { useTranslation } from "react-i18next";
 import { Controller, useForm } from "react-hook-form";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus, faSubtract } from "@fortawesome/free-solid-svg-icons";
+import { useRouter } from "next/router";
+import toast from "react-hot-toast";
 
 import { Button } from "../../components/Button";
 import { CustomSelect } from "../../components/CustomSelect";
@@ -12,7 +14,6 @@ import type {
   SocialMediaDetails,
   ValuePack,
 } from "../../utils/globalTypes";
-import { useRouter } from "next/router";
 
 type ContentTypeWithPrice = {
   contentType: Option;
@@ -46,6 +47,11 @@ const SocialMediaCreatePage = (params: {
       if (profile && profile.user && profile.user.username) {
         void router.push(`/${profile.user.username}/edit`);
       }
+    },
+    onError: () => {
+      toast.error(t("general.error.generalErrorMessage"), {
+        position: "bottom-left",
+      });
     },
   });
 

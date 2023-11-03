@@ -9,6 +9,7 @@ import { LoadingSpinner } from "./LoadingSpinner";
 import { helper } from "../utils/helper";
 import Link from "next/link";
 import { useRouter } from "next/router";
+import toast from "react-hot-toast";
 
 type Notification = {
   id: number;
@@ -54,6 +55,11 @@ const Notifications = () => {
     api.notifications.updateNotificationsToRead.useMutation({
       onSuccess: () => {
         void ctx.notifications.getUserToBeReadNotifications.invalidate();
+      },
+      onError: () => {
+        toast.error(t("general.error.generalErrorMessage"), {
+          position: "bottom-left",
+        });
       },
     });
 

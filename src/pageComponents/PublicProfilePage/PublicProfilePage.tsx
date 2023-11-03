@@ -112,6 +112,11 @@ const PublicProfilePage = (params: {
         );
       });
     },
+    onError: () => {
+      toast.error(t("general.error.generalErrorMessage"), {
+        position: "bottom-left",
+      });
+    },
   });
 
   useEffect(() => {
