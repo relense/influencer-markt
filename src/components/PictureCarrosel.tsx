@@ -115,7 +115,7 @@ export const PictureCarrosel = (params: {
       file.size <= 8000000
     ) {
       const options = {
-        maxSizeMB: 3,
+        maxSizeMB: 1,
         maxWidthOrHeight: 1920,
         useWebWorker: true,
       };
@@ -368,7 +368,7 @@ export const PictureCarrosel = (params: {
 
   return (
     <>
-      <div className="flex flex-col gap-4">
+      <div className="flex w-full flex-col gap-4">
         {renderUploadMainPicture()}
         {renderMainPicture()}
         {renderPictureCarrosel()}
