@@ -278,21 +278,6 @@
       "optional": "Opcional"
     },
 
-    "addSocialMediaModal": {
-      "characterWarning": "Máximo de {{count}} caracteres",
-      "modalTitle": "Adiciona detalhes da rede social",
-      "platformPlaceholder": "Escolhe a tua rede social: E.g. Instagram, TikTok",
-      "handlerPlaceholder": "Nome de Utilizador da rede social",
-      "podcastPlaceholder": "URL do website para o podcast",
-      "followersPlaceholder": "Quantos seguidores tens?",
-      "deliveryTime": "Tempo de Entrega",
-      "revisionTime": "Número de Revisões",
-      "price": "Preço",
-      "button": "Guarda Rede Social",
-      "contentTypesTitle": "Tipos de Conteúdo da Plataforma",
-      "contentTypePlaceholder": "Tipo de conteúdo"
-    },
-
     "addValuePackModal": {
       "characterWarning": "Máximo de {{count}} caracteres",
       "modalTitle": "Construtor de pack de valor",
@@ -745,7 +730,7 @@
       "platformPlaceholder": "Seleciona a rede social para a tua vaga",
       "jobCategories": "Categorias da Vaga",
       "categoriesPlaceholder": "Escolha as Categorias",
-      "contentTypesTitle": "Tipos de Conteúdo da Plataforma",
+      "contentTypesTitle": "Personalização de Conteúdo",
       "contentTypePlaceholder": "Tipo de conteúdo",
       "howMany": "Quantos",
       "jobPriceTitle": "Preço da Vaga",
