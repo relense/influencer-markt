@@ -18,10 +18,14 @@ const OrderPayCallback: NextPage<OrderPayCallbackProps> = ({ orderId }) => {
   const { mutate: updateOrder, isLoading: updateAcceptIsLoading } =
     api.orders.updateOrderToProcessing.useMutation({
       onSuccess: () => {
-        void router.push(`/orders/${orderId}`);
+        setTimeout(() => {
+          void router.push(`/orders/${orderId}`);
+        }, 1000);
       },
       onError: () => {
-        void router.push(`/orders/${orderId}`);
+        setTimeout(() => {
+          void router.push(`/orders/${orderId}`);
+        }, 1000);
       },
     });
 
