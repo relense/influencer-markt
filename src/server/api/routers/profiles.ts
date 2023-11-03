@@ -1380,6 +1380,19 @@ export const profilesRouter = createTRPCRouter({
           cause: "soldOrdersError",
         });
       }
+
+      const toBePaidPayout = await ctx.prisma.payout.findMany({
+        where: {
+          profileId: profile.id,
+          OR: [{ paid: false, payoutInvoice: null }, { paid: false }],
+        },
+      });
+
+      if (toBePaidPayout.length > 0) {
+        throw Error("payoutsError", {
+          cause: "payoutsError",
+        });
+      }
     }
   }),
 });

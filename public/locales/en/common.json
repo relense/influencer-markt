@@ -174,7 +174,10 @@
     },
 
     "error": {
-      "generalErrorMessage": "Something went wrong"
+      "generalErrorMessage": "Something went wrong",
+      "boughOrdersError": "There are unresolved orders",
+      "soldOrdersError": "There are unresolved sales",
+      "payoutsError": "There are unresolved payouts"
     }
   },
   "components": {

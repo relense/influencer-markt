@@ -173,7 +173,10 @@
     },
 
     "error": {
-      "generalErrorMessage": "Aconteceu algo errado"
+      "generalErrorMessage": "Aconteceu algo errado",
+      "boughOrdersError": "Há pedidos por resolver",
+      "soldOrdersError": "Há vendas por resolver",
+      "payoutsError": "Há pagamentos por resolver"
     }
   },
   "components": {

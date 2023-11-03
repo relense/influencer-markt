@@ -34,8 +34,8 @@ const SettingsPage = () => {
   });
 
   const { mutate: deleteProfile } = api.profiles.deleteProfile.useMutation({
-    onError: () => {
-      toast.error(t("general.error.generalErrorMessage"), {
+    onError: (error) => {
+      toast.error(t(`general.error.${error.message}`), {
         position: "bottom-left",
       });
     },
