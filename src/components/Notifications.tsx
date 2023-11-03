@@ -158,16 +158,22 @@ const Notifications = () => {
         return (
           <div className="flex flex-col">
             {notifications?.map((notification) => {
+              const entity = notification.notificationEntity;
+              const entityId = notification.entityId;
+
+              let url = `/${entity}/${entityId}`;
+
+              if (entity === "billing") {
+                url = `/${entity}`;
+              }
+
               return (
                 <Link
-                  href={`/${notification.notificationEntity}/${notification.entityId}`}
+                  href={url}
                   key={notification.id}
                   className="flex cursor-pointer items-center gap-4 px-4 py-6 hover:bg-white1"
                   onClick={() => {
-                    if (
-                      router.asPath ===
-                      `/${notification.notificationEntity}/${notification.entityId}`
-                    ) {
+                    if (router.asPath === url) {
                       router.reload();
                     }
                   }}

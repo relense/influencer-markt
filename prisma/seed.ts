@@ -137,6 +137,8 @@ async function main() {
       { entityType: "sales", entityAction: "toInfluencerNewMessage" },
       { entityType: "orders", entityAction: "toBuyerNewMessage" },
       { entityType: "orders", entityAction: "orderPaymentFailed" },
+      { entityType: "billing", entityAction: "payoutAccepted" },
+      { entityType: "billing", entityAction: "payoutRejected" },
     ],
   });
 
@@ -393,6 +395,31 @@ async function main() {
   });
 
   const users = await prisma.user.findMany({});
+
+  //Não pagar quando limpar o ficheiro de seed
+  const influencerMarktUser = await prisma.user.create({
+    data: {
+      email: "info@influencermarkt.com",
+      roleId: 1,
+      username: "influencerMarkt",
+    },
+  });
+
+  //Não pagar quando limpar o ficheiro de seed
+  await prisma.profile.create({
+    data: {
+      about: "Influencer Markt",
+      cityId: 259,
+      countryId: 1,
+      name: "Influencer Markt",
+      profilePicture:
+        "https://devinfmarkt.blob.core.windows.net/inf-markt-assets/IMLogo.png",
+      profilePictureBlobName: "",
+      userId: influencerMarktUser.id,
+      website: "www.influencermarkt.com",
+      verifiedStatusId: 1,
+    },
+  });
 
   const profile1 = await prisma.profile.create({
     data: {

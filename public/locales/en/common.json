@@ -155,7 +155,9 @@
       "toInfluencerOrderOnHoldToConfirm": "{{actor}} decided not to continue with the order.",
       "toInfluencerNewMessage": "{{actor}} send a new message",
       "toBuyerNewMessage": "{{actor}} send a new message",
-      "orderPaymentFailed": "The payment processing failed"
+      "orderPaymentFailed": "The payment processing failed",
+      "payoutAccepted": "Your invoice was processed and the payout was emitted",
+      "payoutRejected": "You invoice was rejected. Please initiate a new withdraw process"
     },
 
     "orderStatus": {

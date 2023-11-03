@@ -1,6 +1,8 @@
 import { z } from "zod";
 
 import { createTRPCRouter, protectedProcedure } from "../trpc";
+import { createNotification } from "./notifications";
+import { sendEmail } from "../../../services/email.service";
 
 export const PayoutInvoicesRouter = createTRPCRouter({
   getPayoutInvoice: protectedProcedure
@@ -290,6 +292,21 @@ export const PayoutInvoicesRouter = createTRPCRouter({
             payouts: {
               select: { id: true },
             },
+            profileId: true,
+            influencer: {
+              select: {
+                user: {
+                  select: {
+                    email: true,
+                  },
+                },
+                country: {
+                  select: {
+                    languageCode: true,
+                  },
+                },
+              },
+            },
           },
         });
 
@@ -302,6 +319,35 @@ export const PayoutInvoicesRouter = createTRPCRouter({
               data: {
                 paid: true,
               },
+            });
+          }
+        }
+
+        const influencerMarketProfile = await ctx.prisma.profile.findFirst({
+          where: {
+            user: {
+              email: {
+                contains: "info@influencermarkt.com",
+              },
+            },
+          },
+        });
+
+        if (influencerMarketProfile && payoutInvoice) {
+          await createNotification({
+            entityAction: "payoutAccepted",
+            entityId: -1,
+            notifierId: payoutInvoice.profileId || "",
+            senderId: influencerMarketProfile.id,
+          });
+
+          if (process.env.NEXT_PUBLIC_EMAIL_FROM) {
+            await sendEmail({
+              action: "payoutAccepted",
+              fromUs: process.env.NEXT_PUBLIC_EMAIL_FROM || "",
+              language: payoutInvoice.influencer?.country?.languageCode || "",
+              receiverProfileId: payoutInvoice.profileId || "",
+              to: payoutInvoice.influencer?.user.email || "",
             });
           }
         }
@@ -328,7 +374,7 @@ export const PayoutInvoicesRouter = createTRPCRouter({
       });
 
       if (user) {
-        return await ctx.prisma.payoutInvoice.update({
+        const payoutInvoice = await ctx.prisma.payoutInvoice.update({
           where: {
             id: input.payoutsInvoiceId,
             payoutSolver: {
@@ -348,7 +394,54 @@ export const PayoutInvoicesRouter = createTRPCRouter({
               },
             },
           },
+          include: {
+            influencer: {
+              select: {
+                user: {
+                  select: {
+                    email: true,
+                  },
+                },
+                country: {
+                  select: {
+                    languageCode: true,
+                  },
+                },
+              },
+            },
+          },
         });
+
+        const influencerMarketProfile = await ctx.prisma.profile.findFirst({
+          where: {
+            user: {
+              email: {
+                contains: "info@influencermarkt.com",
+              },
+            },
+          },
+        });
+
+        if (influencerMarketProfile && payoutInvoice) {
+          await createNotification({
+            entityAction: "payoutRejected",
+            entityId: -1,
+            notifierId: payoutInvoice.profileId || "",
+            senderId: influencerMarketProfile.id,
+          });
+
+          if (process.env.NEXT_PUBLIC_EMAIL_FROM) {
+            await sendEmail({
+              action: "payoutRejected",
+              fromUs: process.env.NEXT_PUBLIC_EMAIL_FROM || "",
+              language: payoutInvoice.influencer?.country?.languageCode || "",
+              receiverProfileId: payoutInvoice.profileId || "",
+              to: payoutInvoice.influencer?.user.email || "",
+            });
+          }
+        }
+
+        return payoutInvoice;
       }
     }),
 });

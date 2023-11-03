@@ -155,7 +155,9 @@
       "toInfluencerOrderOnHoldToConfirm": "{{actor}} decidiu não dar continuidade ao pedido",
       "toInfluencerNewMessage": "{{actor}} enviou uma nova mensagem",
       "toBuyerNewMessage": "{{actor}} enviou uma nova mensagem",
-      "orderPaymentFailed": "O processamento do pagamento falhou"
+      "orderPaymentFailed": "O processamento do pagamento falhou",
+      "payoutAccepted": "A tua fatura foi aceite e o pagamento emitido",
+      "payoutRejected": "A tua fatura foi rejeitada. Por favor inicia um novo processo de pagamento"
     },
 
     "orderStatus": {
