@@ -1,10 +1,11 @@
+import { api } from "~/utils/api";
 import type { GetServerSideProps, NextPage } from "next";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 
-import { api } from "../../utils/api";
 import { LoadingSpinner } from "../../components/LoadingSpinner";
 import { helper } from "../../utils/helper";
+import { ProcessingPaymentPage } from "../../pageComponents/ProcessingPaymentPage/ProcessingPaymentPage";
 
 interface OrderPayCallbackProps {
   orderId: string;
@@ -12,38 +13,55 @@ interface OrderPayCallbackProps {
 
 const OrderPayCallback: NextPage<OrderPayCallbackProps> = ({ orderId }) => {
   const router = useRouter();
+  const ctx = api.useUtils();
 
   const [hasProcessed, setHasProcessed] = useState<boolean>(false);
+
+  const { data: order, isLoading: isLoadingOrder } =
+    api.orders.getOrderById.useQuery({
+      orderId: parseInt(orderId),
+    });
 
   const { mutate: updateOrder, isLoading: updateAcceptIsLoading } =
     api.orders.updateOrderToProcessing.useMutation({
       onSuccess: () => {
-        setTimeout(() => {
-          void router.push(`/orders/${orderId}`);
-        }, 1000);
+        setHasProcessed(true);
+        void ctx.orders.getOrderById.reset();
+        void ctx.orders.getBuyerOrder.reset();
       },
       onError: () => {
-        setTimeout(() => {
-          void router.push(`/orders/${orderId}`);
-        }, 1000);
+        setHasProcessed(true);
+        void ctx.orders.getOrderById.reset();
+        void ctx.orders.getBuyerOrder.reset();
       },
     });
+
+  useEffect(() => {
+    if (
+      (hasProcessed &&
+        isLoadingOrder === false &&
+        order &&
+        order.orderStatusId === 4) ||
+      order?.orderStatusId === 3
+    ) {
+      void router.push(`/orders/${orderId}`);
+    }
+  }, [hasProcessed, isLoadingOrder, order, orderId, router]);
 
   helper.useEffectOnlyOnce(() => {
     const paymentIntent = new URLSearchParams(window.location.search).get(
       "payment_intent"
     );
 
-    if (paymentIntent && !hasProcessed) {
-      setHasProcessed(true);
+    if (paymentIntent) {
       updateOrder({
         orderId: parseInt(orderId),
       });
     }
   });
 
-  if (updateAcceptIsLoading) {
-    return <LoadingSpinner />;
+  if ((order && order.orderStatusId === 10) || updateAcceptIsLoading) {
+    return <ProcessingPaymentPage />;
   } else {
     return <></>;
   }

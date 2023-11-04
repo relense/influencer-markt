@@ -215,6 +215,20 @@ export const OrdersRouter = createTRPCRouter({
       }
     }),
 
+  getOrderById: protectedProcedure
+    .input(
+      z.object({
+        orderId: z.number(),
+      })
+    )
+    .query(async ({ ctx, input }) => {
+      return await ctx.prisma.order.findFirst({
+        where: {
+          id: input.orderId,
+        },
+      });
+    }),
+
   getBuyerOrder: protectedProcedure
     .input(
       z.object({
