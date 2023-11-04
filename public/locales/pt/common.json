@@ -1139,8 +1139,9 @@
       "deleteAccount": "Apagar Conta",
       "deleteAccountModal": {
         "title": "Tens a certeza de que queres apagar a tua conta?",
-        "subtitle1": "Para apagar a sua conta, é necessário assegurar que todos os pedidos estejam encerrados, todos as vagas tenham sido concluídos e todos os pagamentos pendentes tenham sido efetuados. Se houver alguma atividade pendente associada à sua conta, não poderemos encerrá-la.",
-        "subtitle2": "Depois de apagares a tua conta, lembra-te de que esta ação é irreversível, e não a podes recuperar. Vamos eliminar todas as ligações associadas ao teu perfil. O teu perfil será completamente apagado, garantindo que qualquer informação pessoal relacionada contigo permaneça anónima."
+        "subtitle1": "Para apagar a tua conta, é necessário assegurar que todos os pedidos estejam encerrados, todos as vagas tenham sido concluídos e todos os pagamentos pendentes tenham sido efetuados. Se houver alguma atividade pendente associada à tua conta, não poderemos encerrá-la.",
+        "subtitle2": "Neste momento, tens {{money}}€ de crédito na sua conta. Por favor, tem em mente que todos os créditos que possui atualmente serão perdidos.",
+        "subtitle3": "Depois de apagares a tua conta, lembra-te de que esta ação é irreversível, e não a podes recuperar. Vamos eliminar todas as ligações associadas ao teu perfil. O teu perfil será completamente apagado, garantindo que qualquer informação pessoal relacionada contigo permaneça anónima."
       }
     },
 

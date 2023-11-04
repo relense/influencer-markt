@@ -1,11 +1,13 @@
 import { useEffect, useState } from "react";
 import { api } from "~/utils/api";
+import { signOut } from "next-auth/react";
+import toast from "react-hot-toast";
+import { useTranslation } from "react-i18next";
 
 import { Button } from "../../components/Button";
-import { useTranslation } from "react-i18next";
 import { LoadingSpinner } from "../../components/LoadingSpinner";
-import toast from "react-hot-toast";
 import { Modal } from "../../components/Modal";
+import { helper } from "../../utils/helper";
 
 const SettingsPage = () => {
   const { t } = useTranslation();
@@ -33,13 +35,24 @@ const SettingsPage = () => {
     username: username,
   });
 
-  const { mutate: deleteProfile } = api.profiles.deleteProfile.useMutation({
-    onError: (error) => {
-      toast.error(t(`general.error.${error.message}`), {
-        position: "bottom-left",
-      });
-    },
-  });
+  const { data: totalCredit } = api.credits.calculateUserCredits.useQuery(
+    undefined,
+    {
+      cacheTime: 0,
+    }
+  );
+
+  const { mutate: deleteProfile, isLoading: isLoadingDeleteProfile } =
+    api.profiles.deleteProfile.useMutation({
+      onSuccess: () => {
+        void signOut();
+      },
+      onError: (error) => {
+        toast.error(t(`general.error.${error.message}`), {
+          position: "bottom-left",
+        });
+      },
+    });
 
   const { mutate: updateEmailNotifications } =
     api.profiles.updateEmailNotifications.useMutation({
@@ -219,6 +232,7 @@ const SettingsPage = () => {
           <Button
             title={t("pages.settings.retrieveAccountInfo")}
             size="regular"
+            disabled={isLoadingDeleteProfile}
           />
         </div>
         <div>
@@ -226,6 +240,8 @@ const SettingsPage = () => {
             title={t("pages.settings.deleteAccount")}
             size="regular"
             onClick={() => setOpenDeleteAccountModal(true)}
+            isLoading={isLoadingDeleteProfile}
+            disabled={isLoadingDeleteProfile}
           />
         </div>
       </div>
@@ -245,13 +261,22 @@ const SettingsPage = () => {
             </div>
             <div className="font-lg flex flex-col gap-6 p-6">
               <div>{t("pages.settings.deleteAccountModal.subtitle1")}</div>
-              <div>{t("pages.settings.deleteAccountModal.subtitle2")}</div>
+              {totalCredit !== undefined && totalCredit > 0 && (
+                <div>
+                  {t("pages.settings.deleteAccountModal.subtitle2", {
+                    money: helper.calculerMonetaryValue(totalCredit),
+                  })}
+                </div>
+              )}
+              <div>{t("pages.settings.deleteAccountModal.subtitle3")}</div>
             </div>
             <div className="flex justify-center p-4">
               <Button
                 title={t("pages.settings.deleteAccount")}
                 size="regular"
                 onClick={() => handleDeleteAccount()}
+                isLoading={isLoadingDeleteProfile}
+                disabled={isLoadingDeleteProfile}
               />
             </div>
           </div>

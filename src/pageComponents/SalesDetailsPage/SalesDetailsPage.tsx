@@ -5,7 +5,10 @@ import toast from "react-hot-toast";
 import { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faStar } from "@fortawesome/free-solid-svg-icons";
-import { faStar as faStarRegular } from "@fortawesome/free-regular-svg-icons";
+import {
+  faStar as faStarRegular,
+  faUser,
+} from "@fortawesome/free-regular-svg-icons";
 import { api } from "~/utils/api";
 
 import { LoadingSpinner } from "../../components/LoadingSpinner";
@@ -169,19 +172,26 @@ const SalesDetailsPage = (params: { orderId: number }) => {
               </div>
             </div>
             <div className="flex flex-1 flex-col items-center gap-4 px-4 py-8">
-              <Link
-                href={`/${sale.buyer?.user.username || ""}`}
-                className="flex"
-              >
-                <Image
-                  src={sale.buyer?.profilePicture || ""}
-                  alt="profile picture"
-                  width={1000}
-                  height={1000}
-                  quality={100}
-                  className="pointer-events-none h-24 w-24 rounded-full object-cover"
-                />
-              </Link>
+              {sale.buyer?.profilePicture && (
+                <Link
+                  href={`/${sale.buyer?.user.username || ""}`}
+                  className="flex"
+                >
+                  <Image
+                    src={sale.buyer?.profilePicture || ""}
+                    alt="profile picture"
+                    width={1000}
+                    height={1000}
+                    quality={100}
+                    className="pointer-events-none h-24 w-24 rounded-full object-cover"
+                  />
+                </Link>
+              )}
+              {!sale.buyer?.profilePicture && (
+                <div className="pointer-events-none flex h-24 w-24 items-center justify-center rounded-full border-[1px] object-cover">
+                  <FontAwesomeIcon icon={faUser} className="text-4xl" />
+                </div>
+              )}
               <Link
                 href={`/${sale.buyer?.user.username || ""}`}
                 className="flex flex-col gap-2"

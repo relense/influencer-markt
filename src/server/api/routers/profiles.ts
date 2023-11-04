@@ -3,6 +3,7 @@ import { createTRPCRouter, protectedProcedure, publicProcedure } from "../trpc";
 import bloblService from "../../../services/azureBlob.service";
 import { v4 as uuidv4 } from "uuid";
 import { helper } from "../../../utils/helper";
+import { deletePicture } from "./portfolios";
 
 export const profilesRouter = createTRPCRouter({
   getAllInfluencerProfiles: publicProcedure
@@ -1342,6 +1343,7 @@ export const profilesRouter = createTRPCRouter({
       },
     });
 
+    //check if there are unresolved bought orders
     if (profile) {
       const boughtOrders = await ctx.prisma.order.findMany({
         where: {
@@ -1362,6 +1364,7 @@ export const profilesRouter = createTRPCRouter({
         });
       }
 
+      //check if there are unresolved sold orders
       const soldOrders = await ctx.prisma.order.findMany({
         where: {
           influencerId: profile.id,
@@ -1381,6 +1384,7 @@ export const profilesRouter = createTRPCRouter({
         });
       }
 
+      //check if there are pending payouts
       const toBePaidPayout = await ctx.prisma.payout.findMany({
         where: {
           profileId: profile.id,
@@ -1393,6 +1397,192 @@ export const profilesRouter = createTRPCRouter({
           cause: "payoutsError",
         });
       }
+
+      //Delete Social Media and value Packs
+      const userSocialMediaData = await ctx.prisma.userSocialMedia.findMany({
+        where: {
+          profileId: profile.id,
+        },
+        select: {
+          id: true,
+        },
+      });
+
+      if (userSocialMediaData) {
+        for (const userSocialMedia of userSocialMediaData) {
+          await ctx.prisma.valuePack.deleteMany({
+            where: {
+              userSocialMediaId: userSocialMedia.id,
+            },
+          });
+          await ctx.prisma.userSocialMedia.delete({
+            where: {
+              id: userSocialMedia.id,
+            },
+          });
+        }
+      }
+
+      //delete portfolio pictures
+      const portfolioPictures = await ctx.prisma.portfolio.findMany({
+        where: {
+          profileId: profile.id,
+        },
+      });
+
+      for (const picture of portfolioPictures) {
+        await deletePicture({
+          pictureId: picture.id,
+          userId: ctx.session.user.id,
+        });
+      }
+
+      //delete notifications
+      await ctx.prisma.notification.deleteMany({
+        where: {
+          notifierId: profile.id,
+          actorId: profile.id,
+        },
+      });
+
+      //delete Jobs
+      const jobs = await ctx.prisma.job.findMany({
+        where: {
+          profileId: profile.id,
+        },
+      });
+
+      for (const job of jobs) {
+        await ctx.prisma.job.update({
+          where: {
+            id: job.id,
+          },
+          data: {
+            applicants: {
+              set: [],
+            },
+            rejectedApplicants: {
+              set: [],
+            },
+            acceptedApplicants: {
+              set: [],
+            },
+            sentApplicants: {
+              set: [],
+            },
+          },
+        });
+      }
+
+      await ctx.prisma.job.deleteMany({
+        where: {
+          profileId: profile.id,
+        },
+      });
+
+      //update billing to not have user info
+      await ctx.prisma.billing.update({
+        where: {
+          profileId: profile.id,
+        },
+        data: {
+          email: "",
+          iban: "",
+          name: "",
+          tin: "",
+        },
+      });
+
+      //update invoice to not have user info
+      await ctx.prisma.invoice.updateMany({
+        where: {
+          profileId: profile.id,
+        },
+        data: {
+          email: "",
+          name: "",
+          tin: "",
+        },
+      });
+
+      //update profile to not have user info
+      await ctx.prisma.profile.update({
+        where: {
+          id: profile.id,
+        },
+        data: {
+          name: "deleted",
+          gender: {
+            disconnect: true,
+          },
+          categories: {
+            set: [],
+          },
+          about: "",
+          country: {
+            disconnect: true,
+          },
+          city: {
+            disconnect: true,
+          },
+          website: "",
+          appliedJobs: {
+            set: [],
+          },
+        },
+      });
+
+      //delete profile picture
+      if (profile.profilePictureBlobName) {
+        const containerClient = bloblService.getContainerClient(
+          process.env.AZURE_CONTAINER_NAME || ""
+        );
+
+        const blockBlobClient = containerClient.getBlockBlobClient(
+          profile.profilePictureBlobName
+        );
+
+        await blockBlobClient.deleteIfExists({
+          deleteSnapshots: "include",
+        });
+
+        await ctx.prisma.profile.update({
+          where: {
+            id: profile.id,
+          },
+          data: {
+            profilePicture: "",
+            profilePictureBlobName: "",
+          },
+        });
+      }
+
+      await ctx.prisma.account.deleteMany({
+        where: {
+          userId: ctx.session.user.id,
+        },
+      });
+
+      await ctx.prisma.session.deleteMany({
+        where: {
+          userId: ctx.session.user.id,
+        },
+      });
+
+      await ctx.prisma.user.update({
+        where: {
+          id: ctx.session.user.id,
+        },
+        data: {
+          email: "",
+          image: "",
+          name: "",
+          username: "",
+          role: {
+            disconnect: true,
+          },
+        },
+      });
     }
   }),
 });

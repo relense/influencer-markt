@@ -5,7 +5,10 @@ import Image from "next/image";
 import { useEffect, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faClose, faPencil, faStar } from "@fortawesome/free-solid-svg-icons";
-import { faStar as faStarRegular } from "@fortawesome/free-regular-svg-icons";
+import {
+  faStar as faStarRegular,
+  faUser,
+} from "@fortawesome/free-regular-svg-icons";
 import { useForm } from "react-hook-form";
 import dayjs from "dayjs";
 import toast from "react-hot-toast";
@@ -371,19 +374,26 @@ const OrderDetailsPage = (params: {
               </div>
             </div>
             <div className="flex flex-1 flex-col items-center gap-4 px-4 py-8">
-              <Link
-                href={`/${order.influencer?.user.username || ""}`}
-                className="flex"
-              >
-                <Image
-                  src={order.influencer?.profilePicture || ""}
-                  alt="profile picture"
-                  width={1000}
-                  height={1000}
-                  quality={100}
-                  className="pointer-events-none h-24 w-24 rounded-full object-cover"
-                />
-              </Link>
+              {order.influencer?.profilePicture && (
+                <Link
+                  href={`/${order.influencer?.user.username || ""}`}
+                  className="flex"
+                >
+                  <Image
+                    src={order.influencer?.profilePicture || ""}
+                    alt="profile picture"
+                    width={1000}
+                    height={1000}
+                    quality={100}
+                    className="pointer-events-none h-24 w-24 rounded-full object-cover"
+                  />
+                </Link>
+              )}
+              {!order.influencer?.profilePicture && (
+                <div className="pointer-events-none flex h-24 w-24 items-center justify-center rounded-full border-[1px] object-cover">
+                  <FontAwesomeIcon icon={faUser} className="text-4xl" />
+                </div>
+              )}
               <Link
                 href={`/${order.influencer?.user.username || ""}`}
                 className="flex flex-col gap-2"

@@ -13,6 +13,7 @@ import { CustomSelect } from "../../components/CustomSelect";
 import { type Option } from "../../utils/globalTypes";
 import { useEffect, useState } from "react";
 import { LoadingSpinner } from "../../components/LoadingSpinner";
+import { faUser } from "@fortawesome/free-regular-svg-icons";
 
 type Order = {
   id: number;
@@ -184,19 +185,26 @@ const OrdersPage = () => {
           </div>
         </div>
         <div className="flex flex-1 flex-col items-center gap-4 rounded-b-lg border-[1px] p-4 lg:flex-row">
-          <Link
-            href={`/${order.influencerUsername || ""}`}
-            className="flex-2 flex"
-          >
-            <Image
-              src={order.influencerProfile || ""}
-              alt="profile picture"
-              width={1000}
-              height={1000}
-              quality={100}
-              className="pointer-events-none h-24 w-24 rounded-full object-cover"
-            />
-          </Link>
+          {order.influencerProfile && (
+            <Link
+              href={`/${order.influencerUsername || ""}`}
+              className="flex-2 flex"
+            >
+              <Image
+                src={order.influencerProfile || ""}
+                alt="profile picture"
+                width={1000}
+                height={1000}
+                quality={100}
+                className="pointer-events-none h-24 w-24 rounded-full object-cover"
+              />
+            </Link>
+          )}
+          {!order.influencerProfile && (
+            <div className="pointer-events-none flex h-24 w-24 items-center justify-center rounded-full border-[1px] object-cover">
+              <FontAwesomeIcon icon={faUser} className="text-4xl" />
+            </div>
+          )}
           <div className="flex-2 flex flex-col items-center p-2 text-base lg:items-start">
             <div className="flex flex-col gap-2 text-center placeholder:items-center lg:flex-row">
               <div className="font-semibold text-influencer">

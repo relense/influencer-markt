@@ -3,7 +3,7 @@ import { api } from "~/utils/api";
 import Image from "next/image";
 import Link from "next/link";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faBookmark } from "@fortawesome/free-regular-svg-icons";
+import { faBookmark, faUser } from "@fortawesome/free-regular-svg-icons";
 import {
   type IconDefinition,
   faBookmark as faBookmarkSolid,
@@ -158,17 +158,25 @@ const ProfileCard = (params: {
   return (
     <div className="flex w-full  flex-col gap-2 lg:w-80">
       <div className="relative h-80 w-full self-center overflow-hidden rounded-xl shadow-xl lg:w-80">
-        <Link href={`/${params.username}`}>
-          <Image
-            src={params.profilePicture}
-            height={1000}
-            width={1000}
-            quality={100}
-            alt={params.name}
-            className="pointer-events-none flex h-80 w-full cursor-pointer rounded-xl object-cover transition-all duration-1000 hover:scale-125 lg:w-80"
-            priority
-          />
-        </Link>
+        {params.profilePicture && (
+          <Link href={`/${params.username}`}>
+            <Image
+              src={params.profilePicture}
+              height={1000}
+              width={1000}
+              quality={100}
+              alt={params.name}
+              className="pointer-events-none flex h-80 w-full cursor-pointer rounded-xl object-cover transition-all duration-1000 hover:scale-125 lg:w-80"
+              priority
+            />
+          </Link>
+        )}
+
+        {!params.profilePicture && (
+          <div className="flex h-full flex-1 items-center justify-center self-center">
+            <FontAwesomeIcon icon={faUser} className="flex text-8xl" />
+          </div>
+        )}
 
         <Link
           href={usefullSocialMedia.url}
@@ -193,12 +201,12 @@ const ProfileCard = (params: {
             {isBookmarked ? (
               <FontAwesomeIcon
                 icon={faBookmarkSolid}
-                className="fa-xl text-white hover:text-white1 "
+                className="fa-xl rounded-md bg-black-transparent p-2 text-white hover:text-white1"
               />
             ) : (
               <FontAwesomeIcon
                 icon={faBookmark}
-                className="fa-xl text-white hover:text-white"
+                className="fa-xl rounded-md bg-black-transparent p-2 text-white hover:text-white1"
               />
             )}
           </div>

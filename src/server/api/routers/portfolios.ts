@@ -1,8 +1,46 @@
 import { z } from "zod";
 import { v4 as uuidv4 } from "uuid";
+import { prisma } from "../../db";
 
 import { createTRPCRouter, protectedProcedure } from "../trpc";
 import bloblService from "../../../services/azureBlob.service";
+
+const deletePicture = async (params: { userId: string; pictureId: number }) => {
+  const picture = await prisma.portfolio.findFirst({
+    where: { id: params.pictureId },
+  });
+
+  if (picture) {
+    try {
+      const containerClient = bloblService.getContainerClient(
+        process.env.AZURE_CONTAINER_NAME || ""
+      );
+
+      const blockBlobClient = containerClient.getBlockBlobClient(
+        picture.blobName
+      );
+
+      await blockBlobClient.deleteIfExists({ deleteSnapshots: "include" });
+      await prisma.profile.update({
+        where: { userId: params.userId },
+        data: {
+          portfolio: {
+            disconnect: {
+              id: params.pictureId,
+            },
+          },
+        },
+      });
+
+      await prisma.portfolio.delete({
+        where: { id: params.pictureId },
+      });
+    } catch (error) {
+      console.error("Error deleting file:", error);
+      throw new Error("Error deleting file");
+    }
+  }
+};
 
 export const portfoliosRouter = createTRPCRouter({
   createPicture: protectedProcedure
@@ -71,39 +109,11 @@ export const portfoliosRouter = createTRPCRouter({
       })
     )
     .mutation(async ({ ctx, input }) => {
-      const picture = await ctx.prisma.portfolio.findFirst({
-        where: { id: input.pictureId },
+      await deletePicture({
+        pictureId: input.pictureId,
+        userId: ctx.session.user.id,
       });
-
-      if (picture) {
-        try {
-          const containerClient = bloblService.getContainerClient(
-            process.env.AZURE_CONTAINER_NAME || ""
-          );
-
-          const blockBlobClient = containerClient.getBlockBlobClient(
-            picture.blobName
-          );
-
-          await blockBlobClient.deleteIfExists({ deleteSnapshots: "include" });
-          await ctx.prisma.profile.update({
-            where: { userId: ctx.session.user.id },
-            data: {
-              portfolio: {
-                disconnect: {
-                  id: input.pictureId,
-                },
-              },
-            },
-          });
-
-          await ctx.prisma.portfolio.delete({
-            where: { id: input.pictureId },
-          });
-        } catch (error) {
-          console.error("Error deleting file:", error);
-          throw new Error("Error deleting file");
-        }
-      }
     }),
 });
+
+export { deletePicture };
