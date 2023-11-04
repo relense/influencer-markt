@@ -1519,6 +1519,10 @@
       "step14Info": "After filling in all the necessary fields, click 'Issue' in the upper right corner of the page.",
       "step15": "15. After Issuance",
       "step15Info": "The receipt can be printed, saved in digital format, and submitted in the billing area of Influencer Markt."
+    },
+
+    "processingPage": {
+      "description": "Please hold while we are processing your payment"
     }
   },
 

@@ -1,52 +1,34 @@
 import { api } from "~/utils/api";
 import type { GetServerSideProps, NextPage } from "next";
-import { useEffect, useState } from "react";
-import { useRouter } from "next/router";
+import { useState } from "react";
 
-import { LoadingSpinner } from "../../components/LoadingSpinner";
 import { helper } from "../../utils/helper";
 import { ProcessingPaymentPage } from "../../pageComponents/ProcessingPaymentPage/ProcessingPaymentPage";
+import { ProtectedWrapper } from "../../components/ProtectedWrapper";
+import { Layout } from "../../components/Layout";
 
 interface OrderPayCallbackProps {
   orderId: string;
 }
 
 const OrderPayCallback: NextPage<OrderPayCallbackProps> = ({ orderId }) => {
-  const router = useRouter();
   const ctx = api.useUtils();
 
   const [hasProcessed, setHasProcessed] = useState<boolean>(false);
 
-  const { data: order, isLoading: isLoadingOrder } =
-    api.orders.getOrderById.useQuery({
-      orderId: parseInt(orderId),
-    });
-
-  const { mutate: updateOrder, isLoading: updateAcceptIsLoading } =
+  const { mutate: updateOrder } =
     api.orders.updateOrderToProcessing.useMutation({
       onSuccess: () => {
         setHasProcessed(true);
-        void ctx.orders.getOrderById.reset();
-        void ctx.orders.getBuyerOrder.reset();
+        void ctx.orders.getOrderById.invalidate();
+        void ctx.orders.getBuyerOrder.invalidate();
       },
       onError: () => {
         setHasProcessed(true);
-        void ctx.orders.getOrderById.reset();
-        void ctx.orders.getBuyerOrder.reset();
+        void ctx.orders.getOrderById.invalidate();
+        void ctx.orders.getBuyerOrder.invalidate();
       },
     });
-
-  useEffect(() => {
-    if (
-      (hasProcessed &&
-        isLoadingOrder === false &&
-        order &&
-        order.orderStatusId === 4) ||
-      order?.orderStatusId === 3
-    ) {
-      void router.push(`/orders/${orderId}`);
-    }
-  }, [hasProcessed, isLoadingOrder, order, orderId, router]);
 
   helper.useEffectOnlyOnce(() => {
     const paymentIntent = new URLSearchParams(window.location.search).get(
@@ -60,11 +42,18 @@ const OrderPayCallback: NextPage<OrderPayCallbackProps> = ({ orderId }) => {
     }
   });
 
-  if ((order && order.orderStatusId === 10) || updateAcceptIsLoading) {
-    return <ProcessingPaymentPage />;
-  } else {
-    return <></>;
-  }
+  return (
+    <ProtectedWrapper>
+      <Layout>
+        {({}) => (
+          <ProcessingPaymentPage
+            orderId={parseInt(orderId)}
+            hasProcessedAcceptOrder={hasProcessed}
+          />
+        )}
+      </Layout>
+    </ProtectedWrapper>
+  );
 };
 
 export const getServerSideProps: GetServerSideProps<OrderPayCallbackProps> = (

@@ -1275,6 +1275,10 @@
       "step14Info": "Após preencher todos os campos necessários, clique em ''Emitir'' no canto superior direito da página.",
       "step15": "15. Após a Emissão",
       "step15Info": "O recibo pode ser impresso, salvo em formato digital e submeter na área de faturação da Influencer Markt."
+    },
+
+    "processingPage": {
+      "description": "Por favor espera enquanto estamos a processar o teu pedido"
     }
   },
 

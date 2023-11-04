@@ -65,7 +65,11 @@ const OrderDetailsPage = (params: {
     formState: { errors: errorsDisputeForm },
   } = useForm<DisputeForm>();
 
-  const { data: order, isLoading } = api.orders.getBuyerOrder.useQuery(
+  const {
+    data: order,
+    isLoading,
+    isInitialLoading,
+  } = api.orders.getBuyerOrder.useQuery(
     {
       orderId: params.orderId,
     },
@@ -1057,7 +1061,7 @@ const OrderDetailsPage = (params: {
           {order?.id && `: ${order?.id}`}
         </div>
 
-        {isLoading ? (
+        {isLoading || isInitialLoading ? (
           <div className="flex justify-center">
             <LoadingSpinner />
           </div>
