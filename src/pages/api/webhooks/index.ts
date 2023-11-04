@@ -8,6 +8,7 @@ import { prisma } from "../../../server/db";
 import { createNotification } from "../../../server/api/routers/notifications";
 import { createInvoiceCall } from "../../../server/api/routers/invoices";
 import { sendEmail } from "../../../services/email.service";
+import { api } from "../../../utils/api";
 
 const cors = Cors({
   allowMethods: ["POST", "HEAD"],
@@ -23,6 +24,8 @@ export const config = {
 
 const webhookHandler = async (req: NextApiRequest, res: NextApiResponse) => {
   if (req.method === "POST") {
+    const ctx = api.useUtils();
+
     const buf = await buffer(req);
     const sig = req.headers["stripe-signature"] as string;
 
@@ -127,6 +130,9 @@ const webhookHandler = async (req: NextApiRequest, res: NextApiResponse) => {
             }
           }
         }
+        await ctx.orders.getOrderById.reset();
+        await ctx.orders.getBuyerOrder.reset();
+
         break;
       case "payment_intent.payment_failed":
         const paymentIntentPaymentFailed = event.data.object;
@@ -188,6 +194,8 @@ const webhookHandler = async (req: NextApiRequest, res: NextApiResponse) => {
             });
           }
         }
+        await ctx.orders.getOrderById.reset();
+        await ctx.orders.getBuyerOrder.reset();
 
         break;
 
@@ -233,6 +241,8 @@ const webhookHandler = async (req: NextApiRequest, res: NextApiResponse) => {
             },
           });
         }
+        await ctx.orders.getOrderById.reset();
+        await ctx.orders.getBuyerOrder.reset();
 
         break;
       default:
