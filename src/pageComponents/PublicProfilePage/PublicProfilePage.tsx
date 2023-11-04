@@ -23,7 +23,7 @@ const PublicProfilePage = (params: {
   openLoginModal: () => void;
   loggedInProfileId: string;
 }) => {
-  const ctx = api.useContext();
+  const ctx = api.useUtils();
   const { t } = useTranslation();
   const { status } = useSession();
 
@@ -41,9 +41,14 @@ const PublicProfilePage = (params: {
   const [portfolio, setPortfolio] = useState<PreloadedImage[]>();
   const [isLoading, setIsLoading] = useState<boolean>(true);
 
-  const { data: profile } = api.profiles.getProfileByUniqueUsername.useQuery({
-    username: params.username,
-  });
+  const { data: profile } = api.profiles.getProfileByUniqueUsername.useQuery(
+    {
+      username: params.username,
+    },
+    {
+      cacheTime: 0,
+    }
+  );
 
   const { mutate: updateFavorites } = api.profiles.updateFavorites.useMutation({
     onSuccess: (removed) => {
@@ -266,6 +271,10 @@ const PublicProfilePage = (params: {
           profileHeader={{
             profileUserId: profile?.userId,
             profileName: profile.name,
+            profileAbout: profile.about,
+            profileCategories: profile.categories.map((category) => {
+              return { id: category.id, name: category.name };
+            }),
             profileVerificationStatusId: profile?.verifiedStatusId || -1,
             profilePicture: profile.profilePicture,
             profileWebsite: profile.website,
