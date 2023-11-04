@@ -26,7 +26,7 @@ const Notifications = () => {
   const { t, i18n } = useTranslation();
   const containerRef = useRef<HTMLDivElement>(null);
   const router = useRouter();
-  const ctx = api.useContext();
+  const ctx = api.useUtils();
 
   const [notifications, setNotifications] = useState<Notification[]>([]);
   const [notificationsTotal, setNotificationsTotal] = useState<number>(0);

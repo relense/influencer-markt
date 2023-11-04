@@ -32,7 +32,7 @@ const MessageBoard = (params: {
   const { t, i18n } = useTranslation();
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const messagesRef = useRef<HTMLDivElement>(null);
-  const ctx = api.useContext();
+  const ctx = api.useUtils();
 
   const [message, setMessage] = useState("");
   const [messages, setMessages] = useState<Message[]>([]);

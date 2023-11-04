@@ -11,7 +11,7 @@ import { helper } from "../../utils/helper";
 
 const SettingsPage = () => {
   const { t } = useTranslation();
-  const ctx = api.useContext();
+  const ctx = api.useUtils();
 
   const [username, setUsername] = useState<string>("");
   const [disableEmailNotifications, setDisableEmailNotifications] =

@@ -31,7 +31,7 @@ type Step = {
 const FirstStepsPage = () => {
   const { t } = useTranslation();
   const router = useRouter();
-  const ctx = api.useContext();
+  const ctx = api.useUtils();
 
   const generalSteps: Step[] = [
     {

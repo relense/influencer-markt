@@ -20,7 +20,7 @@ type Payout = {
 
 const PendingBalanceModal = (params: { onClose: () => void }) => {
   const { t, i18n } = useTranslation();
-  const ctx = api.useContext();
+  const ctx = api.useUtils();
 
   const [pendingPayouts, setPendingPayouts] = useState<Payout[]>([]);
   const [pendingPayoutsCursor, setPendingPayoutsCursor] = useState<string>("");

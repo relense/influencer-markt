@@ -30,7 +30,7 @@ const ExploreInfluencersPage = (params: {
   loggedInProfileId: string;
 }) => {
   const { t } = useTranslation();
-  const ctx = api.useContext();
+  const ctx = api.useUtils();
 
   const [influencersCursor, setInfluencersCursor] = useState<string>("");
   const [userProfiles, setUserProfiles] = useState<UserProfiles[]>([]);

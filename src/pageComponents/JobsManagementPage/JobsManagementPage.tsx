@@ -16,7 +16,7 @@ import { MyJobsActionConfirmationModal } from "../../components/MyJobsActionConf
 
 const JobsManagementPage = () => {
   const { t } = useTranslation();
-  const ctx = api.useContext();
+  const ctx = api.useUtils();
   const router = useRouter();
 
   const [jobStatus, setJobStatus] = useState<Option>({

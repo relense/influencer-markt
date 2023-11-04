@@ -14,7 +14,7 @@ import Link from "next/link";
 
 const WithdrawPage = () => {
   const { t } = useTranslation();
-  const ctx = api.useContext();
+  const ctx = api.useUtils();
   const router = useRouter();
 
   const [influencerInvoice, setInfluencerInvoice] = useState<File | null>();

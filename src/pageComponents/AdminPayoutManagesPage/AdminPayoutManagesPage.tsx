@@ -27,7 +27,7 @@ type ObjectisList = {
 
 const AdminPayoutManagesPage = (params: { payoutInvoiceId: string }) => {
   const { t, i18n } = useTranslation();
-  const ctx = api.useContext();
+  const ctx = api.useUtils();
   const { data: sessionData } = useSession();
   const router = useRouter();
 

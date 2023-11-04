@@ -26,7 +26,7 @@ import toast from "react-hot-toast";
 
 const AdminManageDisputesPage = (params: { disputeId: number }) => {
   const { t, i18n } = useTranslation();
-  const ctx = api.useContext();
+  const ctx = api.useUtils();
 
   const [openInfluencerIsRightModal, setOpenInfluencerIsRightModal] =
     useState<boolean>(false);

@@ -53,7 +53,7 @@ const ManageJobDetailsPage = (params: {
   const { t, i18n } = useTranslation();
   const dropdownRef = useRef(null);
   const router = useRouter();
-  const ctx = api.useContext();
+  const ctx = api.useUtils();
 
   const [isDropdownOpen, setIsDropdownOpen] = useState<boolean>(false);
   const [isDetailsOpen, setIsDetailsOpen] = useState<boolean>(true);

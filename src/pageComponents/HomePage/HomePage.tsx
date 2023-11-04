@@ -46,7 +46,7 @@ const HomePage = (params: {
   const { t } = useTranslation();
   const session = useSession();
   const router = useRouter();
-  const ctx = api.useContext();
+  const ctx = api.useUtils();
 
   const [showWelcomeModal, setShowWelcomeModal] = useState<boolean>(false);
   const [toEditMenu, setToEditMenu] = useState<boolean>(false);

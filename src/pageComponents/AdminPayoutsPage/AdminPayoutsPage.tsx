@@ -34,7 +34,7 @@ type PayoutsInvoice = {
 
 const AdminPayoutsPage = () => {
   const { t, i18n } = useTranslation();
-  const ctx = api.useContext();
+  const ctx = api.useUtils();
   const router = useRouter();
 
   const [payoutsInvoice, setPayoutsInvoiceData] = useState<PayoutsInvoice[]>(

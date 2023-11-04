@@ -22,7 +22,7 @@ import { ToolTip } from "../../components/ToolTip";
 
 const SalesDetailsPage = (params: { orderId: number }) => {
   const { t, i18n } = useTranslation();
-  const ctx = api.useContext();
+  const ctx = api.useUtils();
 
   const [saleAnswer, setSaleAnswer] = useState<number>(-1);
   const [showDeliverModal, setShowDeliverModal] = useState<boolean>(false);

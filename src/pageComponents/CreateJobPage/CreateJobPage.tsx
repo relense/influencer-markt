@@ -35,7 +35,7 @@ type ContentTypeWithQuantity = {
 
 const CreateJobPage = (params: { edit: boolean; jobId: number }) => {
   const { t } = useTranslation();
-  const ctx = api.useContext();
+  const ctx = api.useUtils();
   const router = useRouter();
 
   const [contentTypesList, setContentTypesList] = useState<

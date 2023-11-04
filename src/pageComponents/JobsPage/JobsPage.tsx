@@ -32,7 +32,7 @@ const JobsPage = (params: {
   const { t } = useTranslation();
   const session = useSession();
   const width = useWindowWidth();
-  const ctx = api.useContext();
+  const ctx = api.useUtils();
 
   const [jobs, setJobs] = useState<JobIncludes[]>([]);
   const [jobsCursor, setJobsCursor] = useState<number>(-1);

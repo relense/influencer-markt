@@ -21,7 +21,7 @@ const BillingDetailsBrandModal = (params: {
   tin: string;
 }) => {
   const { t } = useTranslation();
-  const ctx = api.useContext();
+  const ctx = api.useUtils();
 
   const {
     register: registerBillingForm,

@@ -43,7 +43,7 @@ const JobDetails = (params: {
   const { t, i18n } = useTranslation();
   const session = useSession();
   const detailsContainer = useRef<HTMLDivElement>(null);
-  const ctx = api.useContext();
+  const ctx = api.useUtils();
 
   const [job, setJob] = useState<JobIncludes>();
   const [applied, setApplied] = useState<boolean>();
