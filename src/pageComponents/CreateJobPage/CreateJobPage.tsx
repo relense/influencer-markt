@@ -333,7 +333,7 @@ const CreateJobPage = (params: { edit: boolean; jobId: number }) => {
                   <div className="h-14 w-full">
                     <div className="relative flex items-center justify-between">
                       <input
-                        className="flex h-14 w-full flex-1 rounded-lg border-[1px] border-gray3 p-4 placeholder-gray2 placeholder:w-10/12"
+                        className="flex h-14 w-full flex-1 rounded-lg border-[1px] border-gray3 bg-white1 p-4 placeholder-gray2 placeholder:w-10/12"
                         placeholder={t(
                           "pages.manageJobs.contentTypePlaceholder"
                         )}
@@ -342,7 +342,7 @@ const CreateJobPage = (params: { edit: boolean; jobId: number }) => {
                     </div>
                   </div>
                   <input
-                    className="h-14 w-full rounded-lg border-[1px] border-gray3 p-4 placeholder-gray2 focus:border-black focus:outline-none"
+                    className="h-14 w-full rounded-lg border-[1px] border-gray3 bg-white1 p-4 placeholder-gray2 focus:border-black focus:outline-none"
                     placeholder={t("pages.manageJobs.price")}
                     disabled={true}
                   />
