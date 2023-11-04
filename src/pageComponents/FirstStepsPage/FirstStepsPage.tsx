@@ -102,6 +102,11 @@ const FirstStepsPage = () => {
 
   const { mutateAsync: profileMutation } =
     api.profiles.createProfile.useMutation({
+      onSuccess: async () => {
+        await ctx.users.getUser.invalidate();
+
+        setIsSaving(false);
+      },
       onError: () => {
         toast.error(t("general.error.generalErrorMessage"), {
           position: "bottom-left",
@@ -196,12 +201,9 @@ const FirstStepsPage = () => {
         },
         website: profileData.website,
       });
+
+      void router.push(`/${userIdentityWatch("username")}`);
     }
-
-    await ctx.users.getUser.invalidate();
-    void router.push("/");
-
-    setIsSaving(false);
   };
 
   const renderSteps = () => {

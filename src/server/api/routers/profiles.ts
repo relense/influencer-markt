@@ -1481,15 +1481,9 @@ export const profilesRouter = createTRPCRouter({
       });
 
       //update billing to not have user info
-      await ctx.prisma.billing.update({
+      await ctx.prisma.billing.delete({
         where: {
           profileId: profile.id,
-        },
-        data: {
-          email: "",
-          iban: "",
-          name: "",
-          tin: "",
         },
       });
 
@@ -1574,13 +1568,10 @@ export const profilesRouter = createTRPCRouter({
           id: ctx.session.user.id,
         },
         data: {
-          email: "",
+          email: `delete${uuidv4()}`,
           image: "",
           name: "",
-          username: "",
-          role: {
-            disconnect: true,
-          },
+          username: `delete${uuidv4()}`,
         },
       });
     }

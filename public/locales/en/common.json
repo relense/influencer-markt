@@ -534,17 +534,6 @@
         "influencers.positive6": "Choose offers that fit your profile",
         "influencers.positive7": "Private channel to communicate with brands and/or other content creators",
         "influencers.positive8": "Find the brand that resonates with you the most and submit your application"
-      },
-
-      "welcomeModal": {
-        "buttonExplore": "Explore Influencer Markt",
-        "buttonEditProfile": "Add Profile Details",
-        "title": "Welcome to Influencer Markt",
-        "subtitle1": "Unlocking the full potential of your profile requires a few essential enhancements before you can make your mark in the Explore menu.",
-        "subtitle2": "Keep in mind that even after configuring your profile, the journey to monetization is incomplete without integrating your active social media accounts and specifying the captivating content you're eager to monetize.",
-        "subtitle3": "Furthermore, don't forget to grace your portfolio with captivating images. These visuals serve as a showcase of your outstanding work, enticing potential collaborators and admirers.",
-        "subtitle4": "All these important updates can be seamlessly executed within your profile settings, empowering you to stand out and captivate your audience.",
-        "subtitle5": "You have the option to complete these enhancements later, but consider the opportunities that await when you embark on your journey in the thriving Influencer Market. You can either delay this or choose to make your profile irresistibly compelling right away."
       }
     },
 
@@ -634,7 +623,15 @@
       "valuePacks": "Value Packs",
       "noValuePacks": "No value packs have been added",
       "profileModalTitle": "Profile Update",
-      "profileModalButton": "Update Profile"
+      "profileModalButton": "Update Profile",
+      "welcomeModal": {
+        "buttoncContinue": "Continue",
+        "title": "Welcome to Influencer Markt",
+        "subtitle1": "Unlocking the full potential of your profile requires a few essential enhancements before you can make your mark in the Explore menu.",
+        "subtitle2": "Keep in mind that even after configuring your profile, the journey to monetization is incomplete without integrating your active social media accounts and specifying the captivating content you're eager to monetize.",
+        "subtitle3": "Furthermore, don't forget to grace your portfolio with captivating images. These visuals serve as a showcase of your outstanding work, enticing potential collaborators and admirers.",
+        "subtitle4": "All these important updates can be seamlessly executed within your profile."
+      }
     },
 
     "contactUs": {

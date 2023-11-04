@@ -17,6 +17,7 @@ import { Reviews } from "./innerComponents/Reviews";
 import { PublicProfileHeader } from "./innerComponents/PublicProfileHeader";
 import { PublicProfileJobs } from "./innerComponents/PublicProfileJobs";
 import { PublicProfileSocialMediaEdit } from "./innerComponents/PublicProfileSocialMediaEdit";
+import { Button } from "../../components/Button";
 
 const PublicProfilePage = (params: {
   username: string;
@@ -26,6 +27,7 @@ const PublicProfilePage = (params: {
   const ctx = api.useUtils();
   const { t } = useTranslation();
   const { status } = useSession();
+  const session = useSession();
 
   const [isReviewModalOpen, setIsReviewModalOpen] = useState<boolean>(false);
   const [isShareModalOpen, setIsShareModalOpen] = useState<boolean>(false);
@@ -36,10 +38,9 @@ const PublicProfilePage = (params: {
     id: -1,
     name: "",
   });
-  const session = useSession();
-
   const [portfolio, setPortfolio] = useState<PreloadedImage[]>();
   const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [showWelcomeModal, setShowWelcomeModal] = useState<boolean>(false);
 
   const { data: profile, isLoading: isLoadingProfile } =
     api.profiles.getProfileByUniqueUsername.useQuery(
@@ -50,6 +51,13 @@ const PublicProfilePage = (params: {
         cacheTime: 0,
       }
     );
+
+  const { data: settings } = api.profiles.getProfileSettings.useQuery(
+    undefined,
+    {
+      cacheTime: 0,
+    }
+  );
 
   const { mutate: updateFavorites } = api.profiles.updateFavorites.useMutation({
     onSuccess: (removed) => {
@@ -111,6 +119,18 @@ const PublicProfilePage = (params: {
     },
   });
 
+  const { mutate: updateShowWelcomeModal } =
+    api.profiles.updateUserShowWelcomeModal.useMutation({
+      onSuccess: () => {
+        void ctx.profiles.getProfileSettings.invalidate();
+      },
+      onError: () => {
+        toast.error(t("general.error.generalErrorMessage"), {
+          position: "bottom-left",
+        });
+      },
+    });
+
   useEffect(() => {
     if (profile?.portfolio) {
       const portfolio = profile?.portfolio.map((pictures) => {
@@ -133,6 +153,21 @@ const PublicProfilePage = (params: {
       setIsBookmarked(isFavorited ? true : false);
     }
   }, [params.loggedInProfileId, profile]);
+
+  useEffect(() => {
+    if (
+      settings?.showWelcomeModal === true &&
+      session.status === "authenticated" &&
+      profile
+    ) {
+      setShowWelcomeModal(true);
+    }
+  }, [profile, session.status, settings?.showWelcomeModal]);
+
+  const setWelcomeModal = () => {
+    setShowWelcomeModal(false);
+    void updateShowWelcomeModal();
+  };
 
   const onSelecteValuePack = (valuePack: ValuePack) => {
     const newSelectedValuePacks = [...selectedValuePacks];
@@ -414,6 +449,41 @@ const PublicProfilePage = (params: {
     }
   };
 
+  const renderWelcomeModal = () => {
+    if (showWelcomeModal) {
+      return (
+        <Modal
+          onClose={() => setWelcomeModal()}
+          button={
+            <div className="flex w-full justify-center gap-4 p-4 sm:px-8">
+              <Button
+                title={t(
+                  "pages.publicProfilePage.welcomeModal.buttoncContinue"
+                )}
+                level="primary"
+                onClick={() => setWelcomeModal()}
+              />
+            </div>
+          }
+        >
+          <div className="flex flex-col items-center justify-center gap-4 p-8 text-center">
+            <div className="font-playfair text-4xl">
+              {t("pages.publicProfilePage.welcomeModal.title")}
+            </div>
+            <div className="font-semibold">
+              {t("pages.publicProfilePage.welcomeModal.subtitle1")}
+            </div>
+            <div>{t("pages.publicProfilePage.welcomeModal.subtitle2")}</div>
+            <div>{t("pages.publicProfilePage.welcomeModal.subtitle3")}</div>
+            <div className="font-semibold">
+              {t("pages.publicProfilePage.welcomeModal.subtitle4")}
+            </div>
+          </div>
+        </Modal>
+      );
+    }
+  };
+
   if (isLoadingProfile) {
     return (
       <div className="flex flex-1 items-center">
@@ -440,6 +510,7 @@ const PublicProfilePage = (params: {
           </div>
           {renderReviewModal()}
           {renderShareModal()}
+          {renderWelcomeModal()}
         </div>
       </>
     );
