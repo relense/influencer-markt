@@ -44,9 +44,6 @@ const SettingsPage = () => {
 
   const { mutate: deleteProfile, isLoading: isLoadingDeleteProfile } =
     api.profiles.deleteProfile.useMutation({
-      onSuccess: () => {
-        void signOut();
-      },
       onError: (error) => {
         toast.error(t(`general.error.${error.message}`), {
           position: "bottom-left",
@@ -92,6 +89,7 @@ const SettingsPage = () => {
   const handleDeleteAccount = () => {
     setOpenDeleteAccountModal(false);
     deleteProfile();
+    void signOut();
 
     //fazer logout ao user e enviar para o home page
   };
