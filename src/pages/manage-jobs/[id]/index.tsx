@@ -27,7 +27,7 @@ const JobDetails: NextPage<JobDetailsProps> = ({ id }) => {
     );
 
     if (!value && isLoading === false) {
-      void router.push("/");
+      void router.push("/404");
     }
   }, [id, profileJobs, router, isLoading]);
 

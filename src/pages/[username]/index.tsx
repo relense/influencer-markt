@@ -37,7 +37,7 @@ const PublicProfile: NextPage<PublicProfileProps> = ({ username }) => {
         isLoadingUserExists === false) ||
       (isLoadingProfile === false && isLoadingUserExists === false && !profile)
     ) {
-      void router.push("/");
+      void router.push("/404");
     }
   }, [userExists, router, isLoadingProfile, isLoadingUserExists, profile]);
 

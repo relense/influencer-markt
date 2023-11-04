@@ -23,7 +23,7 @@ export const AdminProtectedWrapper = ({ children }: Props) => {
         user.userType === "user")
     ) {
       void router.push({
-        pathname: "/",
+        pathname: "/404",
       });
     }
   }, [sessionStatus, router, user?.userType, isLoading, user]);

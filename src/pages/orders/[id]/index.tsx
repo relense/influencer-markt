@@ -22,7 +22,7 @@ const OrderDetails: NextPage<OrderDetailsProps> = ({ id }) => {
     const value = !!order;
 
     if (!value && isLoading === false) {
-      void router.push("/");
+      void router.push("/404");
     }
   }, [isLoading, order, router]);
 
