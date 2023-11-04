@@ -338,7 +338,7 @@ export const userSocialMediasRouter = createTRPCRouter({
       })
     )
     .mutation(async ({ ctx, input }) => {
-      await ctx.prisma.profile.update({
+      const profile = await ctx.prisma.profile.update({
         where: { userId: ctx.session.user.id },
         data: {
           userSocialMedia: {
@@ -349,19 +349,22 @@ export const userSocialMediasRouter = createTRPCRouter({
         },
       });
 
-      // Delete the associated UserSocialMedia records
-      await ctx.prisma.valuePack.deleteMany({
-        where: {
-          userSocialMedia: {
-            id: input.id,
+      if (profile) {
+        // Delete the associated UserSocialMedia records
+        await ctx.prisma.valuePack.deleteMany({
+          where: {
+            userSocialMedia: {
+              id: input.id,
+              profileId: profile.id,
+            },
           },
-        },
-      });
+        });
 
-      return await ctx.prisma.userSocialMedia.delete({
-        where: { id: input.id },
-        include: { profile: true },
-      });
+        return await ctx.prisma.userSocialMedia.delete({
+          where: { id: input.id, profileId: profile.id },
+          include: { profile: true },
+        });
+      }
     }),
 });
 

@@ -16,6 +16,7 @@ import { ValuePackChooser } from "./innerComponents/ValuePackChooser";
 import { Reviews } from "./innerComponents/Reviews";
 import { PublicProfileHeader } from "./innerComponents/PublicProfileHeader";
 import { PublicProfileJobs } from "./innerComponents/PublicProfileJobs";
+import { PublicProfileSocialMediaEdit } from "./innerComponents/PublicProfileSocialMediaEdit";
 
 const PublicProfilePage = (params: {
   username: string;
@@ -291,6 +292,17 @@ const PublicProfilePage = (params: {
     }
   };
 
+  const renderSocialMediaEdit = () => {
+    if (profile && session.data?.user.id === profile?.userId) {
+      return (
+        <PublicProfileSocialMediaEdit
+          username={params.username}
+          profileId={profile?.id || ""}
+        />
+      );
+    }
+  };
+
   const renderReviews = () => {
     return (
       <Reviews
@@ -351,6 +363,7 @@ const PublicProfilePage = (params: {
           {renderFinishProfileDisclaimer()}
           {renderProfileHeader()}
           {renderMiddleContent()}
+          {renderSocialMediaEdit()}
           {renderReviews()}
         </div>
         {renderReviewModal()}

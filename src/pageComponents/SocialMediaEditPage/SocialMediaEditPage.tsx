@@ -46,7 +46,7 @@ const SocialMediaEditPage = (params: {
   } = api.userSocialMedias.updateUserSocialMedia.useMutation({
     onSuccess: (profile) => {
       if (profile && profile.user && profile.user.username) {
-        void router.push(`/${profile.user.username}/edit`);
+        void router.push(`/${profile.user.username}`);
       }
     },
     onError: () => {
