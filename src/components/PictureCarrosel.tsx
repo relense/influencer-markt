@@ -232,7 +232,7 @@ export const PictureCarrosel = (params: {
                     {t("components.pictureCarrosel.addPicture")}
                   </div>
                 </div>
-                <div className="flex flex-wrap overflow-hidden text-center text-influencer">
+                <div className="flex flex-wrap overflow-hidden p-4 text-center text-influencer">
                   {t("components.pictureCarrosel.addPictureBestResults")}
                 </div>
               </div>

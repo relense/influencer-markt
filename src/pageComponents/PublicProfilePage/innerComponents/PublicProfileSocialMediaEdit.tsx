@@ -94,7 +94,7 @@ const PublicProfileSocialMediaEdit = (params: {
     <div className="flex flex-1 flex-col gap-4">
       <div className="flex items-center gap-2">
         <div className="text-2xl font-semibold">
-          {t("pages.editPage.socialMedia")}
+          {t("pages.publicProfilePage.socialMedia")}
         </div>
         {platforms?.length !== userSocialMediaList?.length && (
           <div
@@ -150,7 +150,7 @@ const PublicProfileSocialMediaEdit = (params: {
             );
           })}
         {!isLoadingProfileSocialMedia && userSocialMediaList.length === 0 && (
-          <div>{t("pages.editPage.noSocialMedia")}</div>
+          <div>{t("pages.publicProfilePage.noSocialMedia")}</div>
         )}
       </div>
     </div>

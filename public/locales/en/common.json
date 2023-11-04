@@ -621,18 +621,13 @@
       "bookmarkWarning": "Complete your profile to be able to save",
       "verified": "Verified",
       "needsVerification": "Needs New Verification",
-      "serviceFee": "Service Fee"
-    },
-
-    "editPage": {
+      "serviceFee": "Service Fee",
       "toasterCreatedSocialMediaSuccess": "Created social media successfully",
       "toasterDeletedSocialMediaSuccess": "Deleted social media successfully",
       "toasterUpdatePortfolioSuccess": "Updated portfolio successfully",
       "toasterUpdateSuccessfully": "Updated social media successfully",
       "profileDescription": "Profile Description",
       "website": "Website",
-      "about": "About",
-      "categories": "Categories",
       "socialMedia": "Social Media",
       "noSocialMedia": "No social media information has been added",
       "visualPortfolio": "Visual Portfolio",

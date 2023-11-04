@@ -619,18 +619,13 @@
       "bookmarkWarning": "Completa o teu perfil para poderes guardar",
       "verified": "Verificado",
       "needsVerification": "Precisa de nova verificação",
-      "serviceFee": "Taxa de Serviço"
-    },
-
-    "editPage": {
+      "serviceFee": "Taxa de Serviço",
       "toasterCreatedSocialMediaSuccess": "Rede social criada com sucesso",
       "toasterDeletedSocialMediaSuccess": "Rede social apagada com sucesso",
       "toasterUpdatePortfolioSuccess": "Portfólio actualizado com sucesso",
       "toasterUpdateSuccessfully": "Rede social actualizada com sucesso",
       "profileDescription": "Descrição do Perfil",
       "website": "Website",
-      "about": "Sobre",
-      "categories": "Categorias",
       "socialMedia": "Redes Sociais",
       "noSocialMedia": "Informação sobre redes sociais ainda não foi adicionada",
       "visualPortfolio": "Portfólio Visual",

@@ -214,12 +214,12 @@ const PublicProfileHeader = (params: {
       return (
         <Modal
           onClose={() => setIsProfileModalOpen(false)}
-          title={t("pages.editPage.profileModalTitle")}
+          title={t("pages.publicProfilePage.profileModalTitle")}
           button={
             <div className="flex w-full justify-center p-4 sm:px-8">
               <Button
                 type="submit"
-                title={t("pages.editPage.profileModalButton")}
+                title={t("pages.publicProfilePage.profileModalButton")}
                 isLoading={isLoadingUpdateProfile}
                 disabled={isLoadingUpdateProfile || disableUpdateProfileButton}
                 level="primary"

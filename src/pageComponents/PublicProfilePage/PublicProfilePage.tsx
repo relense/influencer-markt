@@ -41,14 +41,15 @@ const PublicProfilePage = (params: {
   const [portfolio, setPortfolio] = useState<PreloadedImage[]>();
   const [isLoading, setIsLoading] = useState<boolean>(true);
 
-  const { data: profile } = api.profiles.getProfileByUniqueUsername.useQuery(
-    {
-      username: params.username,
-    },
-    {
-      cacheTime: 0,
-    }
-  );
+  const { data: profile, isLoading: isLoadingProfile } =
+    api.profiles.getProfileByUniqueUsername.useQuery(
+      {
+        username: params.username,
+      },
+      {
+        cacheTime: 0,
+      }
+    );
 
   const { mutate: updateFavorites } = api.profiles.updateFavorites.useMutation({
     onSuccess: (removed) => {
@@ -64,6 +65,46 @@ const PublicProfilePage = (params: {
       });
     },
     onError: () => {
+      toast.error(t("general.error.generalErrorMessage"), {
+        position: "bottom-left",
+      });
+    },
+  });
+
+  const { mutate: addPicture } = api.portfolios.createPicture.useMutation({
+    onSuccess: () => {
+      void ctx.profiles.getProfileByUniqueUsername.invalidate().then(() => {
+        setIsLoading(false);
+        toast.success(
+          t("pages.publicProfilePage.toasterUpdatePortfolioSuccess"),
+          {
+            position: "bottom-left",
+          }
+        );
+      });
+    },
+    onError: () => {
+      setIsLoading(false);
+      toast.error(t("general.error.generalErrorMessage"), {
+        position: "bottom-left",
+      });
+    },
+  });
+
+  const { mutate: deletePicture } = api.portfolios.deletePicture.useMutation({
+    onSuccess: () => {
+      void ctx.profiles.getProfileByUniqueUsername.invalidate().then(() => {
+        setIsLoading(false);
+        toast.success(
+          t("pages.publicProfilePage.toasterUpdatePortfolioSuccess"),
+          {
+            position: "bottom-left",
+          }
+        );
+      });
+    },
+    onError: () => {
+      setIsLoading(false);
       toast.error(t("general.error.generalErrorMessage"), {
         position: "bottom-left",
       });
@@ -121,6 +162,16 @@ const PublicProfilePage = (params: {
   const closeReviewModal = () => {
     setSelectedReview(undefined);
     setIsReviewModalOpen(false);
+  };
+
+  const onAddPicture = (picture: string) => {
+    setIsLoading(true);
+    addPicture({ picture });
+  };
+
+  const onDeletePicture = (pictureId: number) => {
+    setIsLoading(true);
+    deletePicture({ pictureId });
   };
 
   const handleBookmark = (profileId: string) => {
@@ -230,9 +281,13 @@ const PublicProfilePage = (params: {
         <div className="flex flex-col gap-6 lg:flex-row">
           <div className="flex items-start justify-center">
             <PictureCarrosel
-              showDeleteModal={false}
-              visual={true}
+              showDeleteModal={
+                session.data?.user.id === profile?.userId ? true : false
+              }
+              visual={session.data?.user.id === profile?.userId ? false : true}
               portfolio={portfolio || []}
+              addPicture={onAddPicture}
+              deletePicture={onDeletePicture}
             />
           </div>
           <div className="flex flex-1 flex-col gap-6">
@@ -359,7 +414,7 @@ const PublicProfilePage = (params: {
     }
   };
 
-  if (isLoading) {
+  if (isLoadingProfile) {
     return (
       <div className="flex flex-1 items-center">
         <LoadingSpinner />
@@ -367,17 +422,26 @@ const PublicProfilePage = (params: {
     );
   } else {
     return (
-      <div className="flex justify-center">
-        <div className="mt-2 flex w-full cursor-default flex-col gap-6 self-center px-4 pb-10 sm:px-12 lg:w-full xl:w-10/12 2xl:w-3/4 3xl:w-3/4 4xl:w-7/12 5xl:w-2/4">
-          {renderFinishProfileDisclaimer()}
-          {renderProfileHeader()}
-          {renderMiddleContent()}
-          {renderSocialMediaEdit()}
-          {renderReviews()}
+      <>
+        {isLoading && (
+          <div className="absolute flex h-full w-full">
+            <div className="relative top-0 flex flex-1 justify-center">
+              <LoadingSpinner />
+            </div>
+          </div>
+        )}
+        <div className="flex justify-center">
+          <div className="mt-2 flex w-full cursor-default flex-col gap-6 self-center px-4 pb-10 sm:px-12 lg:w-full xl:w-10/12 2xl:w-3/4 3xl:w-3/4 4xl:w-7/12 5xl:w-2/4">
+            {renderFinishProfileDisclaimer()}
+            {renderProfileHeader()}
+            {renderMiddleContent()}
+            {renderSocialMediaEdit()}
+            {renderReviews()}
+          </div>
+          {renderReviewModal()}
+          {renderShareModal()}
         </div>
-        {renderReviewModal()}
-        {renderShareModal()}
-      </div>
+      </>
     );
   }
 };
