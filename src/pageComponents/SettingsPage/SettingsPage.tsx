@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { api } from "~/utils/api";
 import { signOut } from "next-auth/react";
 import toast from "react-hot-toast";
@@ -12,6 +12,7 @@ import { helper } from "../../utils/helper";
 const SettingsPage = () => {
   const { t } = useTranslation();
   const ctx = api.useUtils();
+  const downloadRef = useRef<HTMLAnchorElement>(null);
 
   const [username, setUsername] = useState<string>("");
   const [disableEmailNotifications, setDisableEmailNotifications] =
@@ -20,6 +21,14 @@ const SettingsPage = () => {
     useState<boolean>(false);
   const [openDeleteAccountModal, setOpenDeleteAccountModal] =
     useState<boolean>(false);
+
+  const {
+    data: userJsonInfo,
+    refetch: refetchUserJsonInfo,
+    isRefetching: isRefetchingUserJsonInfo,
+  } = api.allRoutes.getAllUserInformation.useQuery(undefined, {
+    enabled: false,
+  });
 
   const { data: userInfo, isLoading: isLoadingUserInfo } =
     api.users.getUserInfo.useQuery();
@@ -108,6 +117,25 @@ const SettingsPage = () => {
       disableApp: !disableAppNotifications,
       disableEmail: disableEmailNotifications,
     });
+  };
+
+  const handleDownloadButtonClick = async () => {
+    await refetchUserJsonInfo();
+    downloadJsonData();
+  };
+
+  const downloadJsonData = () => {
+    if (userJsonInfo && downloadRef && downloadRef.current) {
+      const jsonString = JSON.stringify(userJsonInfo);
+      const blob = new Blob([jsonString], { type: "application/json" });
+      const url = URL.createObjectURL(blob);
+
+      downloadRef.current.href = url;
+      downloadRef.current.download = `ProfileData.json`;
+      downloadRef.current.click();
+
+      URL.revokeObjectURL(url);
+    }
   };
 
   const renderGeneralSettingsMenu = () => {
@@ -220,7 +248,7 @@ const SettingsPage = () => {
     );
   };
 
-  const renderDangerouMenu = () => {
+  const renderAccountManagementeMenu = () => {
     return (
       <div className="flex flex-col gap-6">
         <div className="text-4xl font-semibold">
@@ -230,8 +258,11 @@ const SettingsPage = () => {
           <Button
             title={t("pages.settings.retrieveAccountInfo")}
             size="regular"
-            disabled={isLoadingDeleteProfile}
+            onClick={() => handleDownloadButtonClick()}
+            disabled={isLoadingDeleteProfile || isRefetchingUserJsonInfo}
+            isLoading={isRefetchingUserJsonInfo}
           />
+          <a ref={downloadRef} className="hidden" />
         </div>
         <div>
           <Button
@@ -296,7 +327,7 @@ const SettingsPage = () => {
           <div className="flex h-full flex-1 flex-col gap-12">
             {renderGeneralSettingsMenu()}
             {renderNotificationsMenu()}
-            {renderDangerouMenu()}
+            {renderAccountManagementeMenu()}
           </div>
         </div>
         {openDeleteAccountModal && renderDeleteAccountModal()}
