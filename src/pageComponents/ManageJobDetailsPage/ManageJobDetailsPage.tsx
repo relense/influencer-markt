@@ -186,6 +186,8 @@ const ManageJobDetailsPage = (params: {
     api.jobs.startJob.useMutation({
       onSuccess: () => {
         void ctx.jobs.getJob.invalidate();
+        void ctx.jobs.getAcceptedApplicants.invalidate();
+        void ctx.jobs.getSentOrderApplicants.invalidate();
       },
       onError: () => {
         toast.error(t("general.error.generalErrorMessage"), {

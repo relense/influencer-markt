@@ -281,7 +281,9 @@ const MessageBoard = (params: {
               data.push(
                 <div
                   key={`${message.id}date`}
-                  className="flex w-full items-center justify-center self-end text-sm font-semibold text-gray2"
+                  className={`flex w-full items-center justify-center self-end text-sm font-semibold text-gray2 ${
+                    index === 0 ? "mt-auto" : ""
+                  }`}
                 >
                   {helper.formatOnlyDate(message.createdAt, i18n.language)}
                 </div>
@@ -295,7 +297,9 @@ const MessageBoard = (params: {
               data.push(
                 <div
                   key={`${message.id}message`}
-                  className="flex w-full flex-col items-start text-left"
+                  className={`flex w-full flex-col items-start text-left ${
+                    index === 0 ? "mt-auto" : ""
+                  }`}
                 >
                   <div className="m-2 max-w-[75%] whitespace-pre-line rounded-xl bg-gray5 p-4 ">
                     {message.message}
@@ -312,7 +316,9 @@ const MessageBoard = (params: {
               data.push(
                 <div
                   key={`${message.id}message`}
-                  className="flex w-full flex-col items-end text-left"
+                  className={`flex w-full flex-col items-end text-left ${
+                    index === 0 ? "mt-auto" : ""
+                  }`}
                 >
                   <div className="m-2 max-w-[75%] whitespace-pre-line rounded-xl bg-influencer-green-dark p-4 text-white">
                     {message.message}
