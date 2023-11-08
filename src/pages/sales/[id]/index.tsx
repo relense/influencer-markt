@@ -15,7 +15,7 @@ interface SalesDetailsProps {
 const SalesDetails: NextPage<SalesDetailsProps> = ({ id }) => {
   const router = useRouter();
   const { data: order, isLoading } = api.orders.getSaleOrder.useQuery({
-    orderId: parseInt(id),
+    orderId: id,
   });
 
   useEffect(() => {
@@ -33,7 +33,7 @@ const SalesDetails: NextPage<SalesDetailsProps> = ({ id }) => {
   } else if (isLoading === false && order !== null) {
     return (
       <ProtectedWrapper>
-        <Layout>{() => <SalesDetailsPage orderId={parseInt(id)} />}</Layout>
+        <Layout>{() => <SalesDetailsPage orderId={id} />}</Layout>
       </ProtectedWrapper>
     );
   }

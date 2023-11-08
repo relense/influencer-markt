@@ -2,7 +2,7 @@ import { z } from "zod";
 import { createTRPCRouter, protectedProcedure } from "../trpc";
 import { prisma } from "../../db";
 
-const createInvoiceCall = async (params: { orderId: number }) => {
+const createInvoiceCall = async (params: { orderId: string }) => {
   const { orderId } = params;
 
   const order = await prisma.order.findFirst({
@@ -71,7 +71,7 @@ export const InvoicesRouter = createTRPCRouter({
   createInvoice: protectedProcedure
     .input(
       z.object({
-        orderId: z.number(),
+        orderId: z.string(),
       })
     )
     .mutation(async ({ input }) => {

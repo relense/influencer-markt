@@ -24,7 +24,7 @@ type Message = {
 };
 
 const MessageBoard = (params: {
-  orderId: number;
+  orderId: string;
   receiverId: string;
   senderId: string;
   orderStatusId: number;

@@ -5,7 +5,7 @@ import bloblService from "../../../services/azureBlob.service";
 import { createTRPCRouter, protectedProcedure } from "../trpc";
 import { prisma } from "../../db";
 
-const createPayout = async (params: { orderId: number }) => {
+const createPayout = async (params: { orderId: string }) => {
   const order = await prisma.order.findFirst({
     where: {
       id: params.orderId,
@@ -54,7 +54,7 @@ export const PayoutsRouter = createTRPCRouter({
   createPayout: protectedProcedure
     .input(
       z.object({
-        orderId: z.number(),
+        orderId: z.string(),
       })
     )
     .mutation(async ({ input }) => {

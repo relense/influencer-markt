@@ -6,7 +6,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useTranslation } from "react-i18next";
 
 const ProcessingPaymentPage = (params: {
-  orderId: number;
+  orderId: string;
   hasProcessedAcceptOrder: boolean;
 }) => {
   const { t } = useTranslation();

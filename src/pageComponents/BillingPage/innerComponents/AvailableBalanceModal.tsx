@@ -16,7 +16,7 @@ import { Button } from "../../../components/Button";
 
 type Payout = {
   id: string;
-  orderId: number;
+  orderId: string;
   payoutValue: number;
   payoutCreated: string;
   paid: boolean;

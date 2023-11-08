@@ -34,7 +34,7 @@ type EmailActions =
       fromUs: string;
       toInfluencerEmail: string;
       influencerLanguage: string;
-      orderId: number;
+      orderId: string;
       receiverProfileId: string;
     }
   | {
@@ -43,7 +43,7 @@ type EmailActions =
       fromUs: string;
       toInfluencerEmail: string;
       influencerLanguage: string;
-      orderId: number;
+      orderId: string;
       receiverProfileId: string;
     }
   | {
@@ -52,7 +52,7 @@ type EmailActions =
       fromUs: string;
       toInfluencerEmail: string;
       influencerLanguage: string;
-      orderId: number;
+      orderId: string;
       receiverProfileId: string;
     }
   | {
@@ -61,7 +61,7 @@ type EmailActions =
       buyerEmail: string;
       influencerMarktEmail: string;
       issueMessage: string;
-      orderId: number;
+      orderId: string;
     }
   | {
       action: "buyerOrderWasRectified";
@@ -69,7 +69,7 @@ type EmailActions =
       fromUs: string;
       toBuyer: string;
       buyerLanguage: string;
-      orderId: number;
+      orderId: string;
       receiverProfileId: string;
     }
   | {
@@ -78,7 +78,7 @@ type EmailActions =
       fromUs: string;
       toInfluencerEmail: string;
       influencerLanguage: string;
-      orderId: number;
+      orderId: string;
       receiverProfileId: string;
     }
   | {
@@ -96,7 +96,7 @@ type EmailActions =
       fromUs: string;
       toBuyer: string;
       buyerLanguage: string;
-      orderId: number;
+      orderId: string;
       receiverProfileId: string;
     }
   | {
@@ -105,7 +105,7 @@ type EmailActions =
       fromUs: string;
       toBuyer: string;
       buyerLanguage: string;
-      orderId: number;
+      orderId: string;
       receiverProfileId: string;
     }
   | {
@@ -113,7 +113,7 @@ type EmailActions =
       fromUs: string;
       to: string;
       language: string;
-      orderId: number;
+      orderId: string;
       receiverProfileId: string;
     }
   | {
@@ -121,14 +121,14 @@ type EmailActions =
       fromUs: string;
       toInfluencer: string;
       influencerLanguage: string;
-      orderId: number;
+      orderId: string;
       receiverProfileId: string;
     }
   | {
       action: "newMessageOrderEmail";
       fromUs: string;
       to: string;
-      orderId: number;
+      orderId: string;
       senderName: string;
       language: string;
       orderType: string;
@@ -140,7 +140,7 @@ type EmailActions =
       fromUs: string;
       toInfluencer: string;
       influencerLanguage: string;
-      orderId: number;
+      orderId: string;
       receiverProfileId: string;
     }
   | {
@@ -149,7 +149,7 @@ type EmailActions =
       fromUs: string;
       toBuyer: string;
       buyerLanguage: string;
-      orderId: number;
+      orderId: string;
       receiverProfileId: string;
     }
   | {
@@ -158,7 +158,7 @@ type EmailActions =
       fromUs: string;
       toBuyer: string;
       buyerLanguage: string;
-      orderId: number;
+      orderId: string;
       receiverProfileId: string;
     }
   | {
@@ -167,7 +167,7 @@ type EmailActions =
       fromUs: string;
       toBuyer: string;
       buyerLanguage: string;
-      orderId: number;
+      orderId: string;
       receiverProfileId: string;
     }
   | {
@@ -176,7 +176,7 @@ type EmailActions =
       fromUs: string;
       toBuyer: string;
       buyerLanguage: string;
-      orderId: number;
+      orderId: string;
       receiverProfileId: string;
     }
   | {
@@ -185,7 +185,7 @@ type EmailActions =
       fromUs: string;
       toInfluencerEmail: string;
       influencerLanguage: string;
-      orderId: number;
+      orderId: string;
       receiverProfileId: string;
     }
   | {
@@ -194,7 +194,7 @@ type EmailActions =
       fromUs: string;
       toInfluencerEmail: string;
       influencerLanguage: string;
-      orderId: number;
+      orderId: string;
       receiverProfileId: string;
     }
   | {
@@ -203,7 +203,7 @@ type EmailActions =
       fromUs: string;
       toInfluencerEmail: string;
       influencerLanguage: string;
-      orderId: number;
+      orderId: string;
       receiverProfileId: string;
     }
   | {
@@ -212,7 +212,7 @@ type EmailActions =
       fromUs: string;
       toInfluencerEmail: string;
       influencerLanguage: string;
-      orderId: number;
+      orderId: string;
       receiverProfileId: string;
     }
   | {
@@ -221,7 +221,7 @@ type EmailActions =
       fromUs: string;
       toInfluencerEmail: string;
       influencerLanguage: string;
-      orderId: number;
+      orderId: string;
       receiverProfileId: string;
     }
   | {
@@ -230,7 +230,7 @@ type EmailActions =
       fromUs: string;
       toInfluencerEmail: string;
       influencerLanguage: string;
-      orderId: number;
+      orderId: string;
       receiverProfileId: string;
     }
   | {
@@ -248,7 +248,7 @@ type EmailActions =
       fromUs: string;
       toBuyer: string;
       buyerLanguage: string;
-      orderId: number;
+      orderId: string;
       receiverProfileId: string;
     }
   | {

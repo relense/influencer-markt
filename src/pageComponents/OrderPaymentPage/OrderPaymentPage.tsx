@@ -12,7 +12,7 @@ const stripePromise = loadStripe(
   process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY || ""
 );
 
-const OrderPaymentPage = (params: { orderId: number; amount: number }) => {
+const OrderPaymentPage = (params: { orderId: string; amount: number }) => {
   const { t } = useTranslation();
   const [clientSecret, setClientSecret] = useState<string>("");
 

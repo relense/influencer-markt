@@ -16,7 +16,7 @@ import { LoadingSpinner } from "../../components/LoadingSpinner";
 import { faUser } from "@fortawesome/free-regular-svg-icons";
 
 type Order = {
-  id: number;
+  id: string;
   createdAt: Date;
   orderStatusName: string;
   influencerUsername: string;
@@ -36,17 +36,17 @@ type OrderValuePack = {
 
 type OrderSearch = {
   orderStatus: Option;
-  orderId: number;
+  orderId: string;
 };
 
 const OrdersPage = () => {
   const { t, i18n } = useTranslation();
   const router = useRouter();
 
-  const [orderId, setOrderId] = useState<number>(-1);
+  const [orderId, setOrderId] = useState<string>("");
   const [orders, setOrders] = useState<Order[]>([]);
   const [ordersCount, setOrdersCount] = useState<number>(-1);
-  const [ordersCursor, setOrdersCursor] = useState<number>(-1);
+  const [ordersCursor, setOrdersCursor] = useState<string>("");
 
   const { register, handleSubmit, reset, control, watch } =
     useForm<OrderSearch>({
@@ -60,7 +60,7 @@ const OrdersPage = () => {
     isLoading: isLoadingOrders,
     isRefetching: isRefetchingOrders,
   } = api.orders.getAllUserOrders.useQuery({
-    orderId: orderId || -1,
+    orderId: orderId || "",
     orderStatusId: watch("orderStatus")?.id || -1,
   });
 
@@ -71,7 +71,7 @@ const OrdersPage = () => {
     refetch: ordersRefetchCursor,
   } = api.orders.getAllUserOrdersCursor.useQuery(
     {
-      orderId: orderId || -1,
+      orderId: orderId || "",
       orderStatusId: watch("orderStatus")?.id || -1,
       cursor: ordersCursor,
     },
@@ -158,28 +158,28 @@ const OrdersPage = () => {
 
   const clearFilters = () => {
     reset();
-    setOrderId(-1);
+    setOrderId("");
   };
 
   const renderOrder = (order: Order) => {
     return (
       <div key={order.id}>
         <div className="flex flex-1 flex-col justify-between gap-2 rounded-t-lg bg-gray3 px-4 py-2 lg:flex-row lg:gap-4">
-          <div className="block">
+          <div className="flex flex-col">
             <span className="pr-2 font-semibold">
-              {t("pages.orders.orderReference")}:
+              {t("pages.orders.orderReference")}
             </span>
-            {order.id}
+            <span>#{order.id}</span>
           </div>
-          <div className="block">
+          <div className="flex flex-col">
             <span className="pr-2 font-semibold">
-              {t("pages.orders.orderMade")}:
+              {t("pages.orders.orderMade")}
             </span>
             {helper.formatFullDateWithTime(order.createdAt, i18n.language)}
           </div>
-          <div className="block">
+          <div className="flex flex-col">
             <span className="pr-2 font-semibold">
-              {t("pages.orders.orderStatus")}:
+              {t("pages.orders.orderStatus")}
             </span>
             <span>{t(`pages.orders.${order?.orderStatusName}`)}</span>
           </div>
@@ -323,8 +323,8 @@ const OrdersPage = () => {
             <div className="flex w-full flex-col gap-2">
               <span className="font-semibold">{t("pages.orders.orderId")}</span>
               <input
-                {...register("orderId", { valueAsNumber: true })}
-                type="number"
+                {...register("orderId")}
+                type="text"
                 className="h-full w-full rounded-lg border-[1px] p-4"
                 placeholder="id"
               />
@@ -337,7 +337,7 @@ const OrdersPage = () => {
               form="form-saleId"
             />
           </div>
-          {(watch("orderStatus")?.id !== -1 || orderId !== -1) && (
+          {(watch("orderStatus")?.id !== -1 || orderId !== "") && (
             <div
               className="flex w-full cursor-pointer items-center justify-center gap-2 lg:justify-end"
               onClick={() => clearFilters()}
@@ -352,7 +352,7 @@ const OrdersPage = () => {
   };
 
   return (
-    <div className="flex w-full cursor-default flex-col gap-6 self-center px-4 pb-10 sm:px-12 xl:w-3/4 2xl:w-3/4 3xl:w-3/4 4xl:w-2/4 5xl:w-2/4">
+    <div className="flex w-full cursor-default flex-col gap-6 self-center px-4 pb-10 sm:px-12 lg:w-full 2xl:w-3/4 3xl:w-3/4 4xl:w-2/4 5xl:w-2/4">
       <div className="text-2xl font-semibold">{t("pages.orders.orders")}</div>
       {renderFilters()}
 

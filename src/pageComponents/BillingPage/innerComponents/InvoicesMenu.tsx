@@ -10,7 +10,7 @@ import { Button } from "../../../components/Button";
 
 type InvoiceType = {
   id: string;
-  orderId: number;
+  orderId: string;
   socialMediaOrderName: string;
   orderValuePacks: {
     contentTypeId: number;

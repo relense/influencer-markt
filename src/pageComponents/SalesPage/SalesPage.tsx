@@ -16,7 +16,7 @@ import { LoadingSpinner } from "../../components/LoadingSpinner";
 import { faUser } from "@fortawesome/free-regular-svg-icons";
 
 type Sale = {
-  id: number;
+  id: string;
   createdAt: Date;
   orderStatusName: string;
   buyerUsername: string;
@@ -35,17 +35,17 @@ type SaleValuePack = {
 
 type SaleSearch = {
   saleStatus: Option;
-  saleId: number;
+  saleId: string;
 };
 
 const SalesPage = () => {
   const { t, i18n } = useTranslation();
   const router = useRouter();
 
-  const [saleId, setSaleId] = useState<number>(-1);
+  const [saleId, setSaleId] = useState<string>("");
   const [sales, setSales] = useState<Sale[]>([]);
   const [salesCount, setSalesCount] = useState<number>(-1);
-  const [salesCursor, setSalesCursor] = useState<number>(-1);
+  const [salesCursor, setSalesCursor] = useState<string>("");
 
   const { register, handleSubmit, reset, control, watch } = useForm<SaleSearch>(
     {
@@ -60,7 +60,7 @@ const SalesPage = () => {
     isLoading: isLoadingSales,
     isRefetching: isRefetchingSales,
   } = api.orders.getAllInfluencerSales.useQuery({
-    saleId: saleId || -1,
+    saleId: saleId || "",
     saleStatusId: watch("saleStatus")?.id || -1,
   });
 
@@ -71,7 +71,7 @@ const SalesPage = () => {
     refetch: salesRefetchCursor,
   } = api.orders.getAllInfluencerSalesCursor.useQuery(
     {
-      saleId: saleId || -1,
+      saleId: saleId || "",
       saleStatusId: watch("saleStatus")?.id || -1,
       cursor: salesCursor,
     },
@@ -156,26 +156,26 @@ const SalesPage = () => {
 
   const clearFilters = () => {
     reset();
-    setSaleId(-1);
+    setSaleId("");
   };
 
   const renderDesktopView = (sale: Sale) => {
     return (
       <div key={sale.id}>
         <div className="flex flex-1 flex-col justify-between gap-2 rounded-t-lg bg-gray3 px-4 py-2 lg:flex-row lg:gap-4">
-          <div className="block">
+          <div className="flex flex-col">
             <span className="pr-2 font-semibold">
               {t("pages.sales.saleReference")}:
             </span>
             {sale.id}
           </div>
-          <div className="block">
+          <div className="flex flex-col">
             <span className="pr-2 font-semibold">
               {t("pages.sales.saleMade")}:
             </span>
             {helper.formatFullDateWithTime(sale.createdAt, i18n.language)}
           </div>
-          <div className="block">
+          <div className="flex flex-col">
             <span className="pr-2 font-semibold">
               {t("pages.sales.saleStatus")}:
             </span>
@@ -313,8 +313,8 @@ const SalesPage = () => {
             <div className="flex w-full flex-col gap-2">
               <span className="font-semibold">{t("pages.sales.saleId")}</span>
               <input
-                {...register("saleId", { valueAsNumber: true })}
-                type="number"
+                {...register("saleId")}
+                type="text"
                 className="h-full w-full rounded-lg border-[1px] p-4"
                 placeholder="id"
                 onKeyDown={(e) => {
@@ -322,7 +322,7 @@ const SalesPage = () => {
                     e.key === "Backspace" &&
                     e.currentTarget.value.length === 1
                   ) {
-                    setSaleId(-1);
+                    setSaleId("");
                   }
                 }}
               />
@@ -335,7 +335,7 @@ const SalesPage = () => {
               form="form-saleId"
             />
           </div>
-          {(watch("saleStatus")?.id !== -1 || saleId !== -1) && (
+          {(watch("saleStatus")?.id !== -1 || saleId !== "") && (
             <div
               className="flex w-full cursor-pointer items-center justify-center gap-2 lg:justify-end"
               onClick={() => clearFilters()}

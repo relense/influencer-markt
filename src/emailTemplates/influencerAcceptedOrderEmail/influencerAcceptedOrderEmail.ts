@@ -3,7 +3,7 @@ import sgMail from "@sendgrid/mail";
 function influencerAcceptedOrderEmail(params: {
   from: string;
   to: string;
-  orderId: number;
+  orderId: string;
   influencerName: string;
   language: string;
 }) {

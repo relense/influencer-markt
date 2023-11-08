@@ -15,7 +15,7 @@ import { helper } from "../../../utils/helper";
 
 type InvoiceType = {
   id: string;
-  orderId: number;
+  orderId: string;
   socialMediaOrderName: string;
   orderValuePacks: {
     contentTypeId: number;

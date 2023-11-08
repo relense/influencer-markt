@@ -314,7 +314,7 @@ model City {
 }
 
 model Job {
-  id                       String  @id @default(cuid())
+  id                      String                    @id @default(cuid())
   jobSummary              String
   JobDetails              String                    @db.Text
   socialMedia             SocialMedia               @relation(fields: [socialMediaId], references: [id])
@@ -383,7 +383,7 @@ model VerifiedStatus {
 }
 
 model Order {
-  id                          Int                @id @default(autoincrement())
+  id                          String             @id @default(cuid())
   influencer                  Profile?           @relation("influencer", fields: [influencerId], references: [id])
   buyer                       Profile?           @relation("buyer", fields: [buyerId], references: [id])
   orderDetails                String             @db.Text
@@ -438,7 +438,7 @@ model OrderValuePack {
   Order       Order?      @relation(fields: [orderId], references: [id])
 
   contentTypeId Int
-  orderId       Int?
+  orderId       String?
 
   @@index([contentTypeId])
   @@index([orderId])
@@ -472,7 +472,7 @@ model Notification {
   notifier           Profile            @relation("notifier", fields: [notifierId], references: [id])
   notificationType   NotificationType   @relation(fields: [notificationTypeId], references: [id])
   notificationStatus NotificationStatus @relation(fields: [notificationStatusId], references: [id])
-  entityId           Int
+  entityId           String
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -501,7 +501,7 @@ model Message {
 
   senderId   String
   receiverId String
-  orderId    Int
+  orderId    String
 
   @@index([senderId])
   @@index([receiverId])
@@ -520,7 +520,7 @@ model Dispute {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  orderId         Int @unique
+  orderId         String @unique
   disputeStatusId Int
 
   @@index([orderId])
@@ -569,7 +569,7 @@ model Invoice {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  orderId           Int     @unique
+  orderId           String  @unique
   profileId         String
   invoiceBlobDataId String? @unique
 
@@ -605,7 +605,7 @@ model Payout {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  orderId         Int     @unique
+  orderId         String  @unique
   profileId       String
   payoutInvoiceId String?
 
@@ -662,7 +662,7 @@ model Payment {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  orderId Int
+  orderId String
 
   @@index([orderId])
 }
@@ -678,7 +678,7 @@ model Refund {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  orderId   Int     @unique
+  orderId   String  @unique
   paymentId String? @unique
 
   @@index([orderId])
@@ -711,7 +711,7 @@ model CreditTransaction {
 
   refundId String? @unique
   creditId String
-  orderId  Int?    @unique
+  orderId  String? @unique
 
   @@index([refundId])
   @@index([creditId])

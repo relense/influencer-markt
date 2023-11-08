@@ -8,7 +8,7 @@ export const StripesRouter = createTRPCRouter({
     .input(
       z.object({
         paymentAmount: z.number(),
-        orderId: z.number(),
+        orderId: z.string(),
       })
     )
     .mutation(async ({ ctx, input }) => {

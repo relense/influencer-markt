@@ -6,7 +6,7 @@ export const DisputesRouter = createTRPCRouter({
   createDispute: protectedProcedure
     .input(
       z.object({
-        orderId: z.number(),
+        orderId: z.string(),
         disputeMessage: z.string(),
       })
     )

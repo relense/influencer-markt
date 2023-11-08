@@ -3,7 +3,7 @@ import sgMail from "@sendgrid/mail";
 function toBuyerDeliveryIsTomorrowEmail(params: {
   from: string;
   to: string;
-  orderId: number;
+  orderId: string;
   language: string;
   influencerName: string;
 }) {

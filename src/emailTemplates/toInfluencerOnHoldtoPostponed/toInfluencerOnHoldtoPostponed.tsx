@@ -3,7 +3,7 @@ import sgMail from "@sendgrid/mail";
 function toInfluencerOnHoldtoPostponed(params: {
   from: string;
   to: string;
-  orderId: number;
+  orderId: string;
   language: string;
   buyerName: string;
 }) {

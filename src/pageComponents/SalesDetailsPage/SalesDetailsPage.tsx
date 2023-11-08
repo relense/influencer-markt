@@ -20,7 +20,7 @@ import { MessageBoard } from "../../components/MessageBoard";
 import dayjs from "dayjs";
 import { ToolTip } from "../../components/ToolTip";
 
-const SalesDetailsPage = (params: { orderId: number }) => {
+const SalesDetailsPage = (params: { orderId: string }) => {
   const { t, i18n } = useTranslation();
   const ctx = api.useUtils();
 
@@ -527,7 +527,7 @@ const SalesDetailsPage = (params: { orderId: number }) => {
     <div className="flex w-full cursor-default flex-col gap-6 self-center px-4 pb-10 sm:px-12 lg:w-full 2xl:w-10/12 3xl:w-3/4 4xl:w-8/12">
       <div className="text-2xl font-semibold">
         {t("pages.sales.sale")}
-        {sale?.id && `: ${sale?.id}`}
+        {sale?.id && `: #${sale?.id}`}
       </div>
 
       {isLoading ? (

@@ -3,7 +3,7 @@ import sgMail from "@sendgrid/mail";
 function influencerOrderWasRectified(params: {
   from: string;
   to: string;
-  orderId: number;
+  orderId: string;
   language: string;
 }) {
   const { orderId, language, from, to } = params;

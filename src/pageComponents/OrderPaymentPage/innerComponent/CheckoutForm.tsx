@@ -15,7 +15,7 @@ import { helper } from "../../../utils/helper";
 import { nifValidator } from "../../../utils/nifValidators";
 
 export default function CheckoutForm(params: {
-  orderId: number;
+  orderId: string;
   orderAmount: number;
   name: string;
   tin: string;

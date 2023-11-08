@@ -37,7 +37,7 @@ const OrderPayCallback: NextPage<OrderPayCallbackProps> = ({ orderId }) => {
 
     if (paymentIntent) {
       updateOrder({
-        orderId: parseInt(orderId),
+        orderId: orderId,
       });
     }
   });
@@ -47,7 +47,7 @@ const OrderPayCallback: NextPage<OrderPayCallbackProps> = ({ orderId }) => {
       <Layout>
         {({}) => (
           <ProcessingPaymentPage
-            orderId={parseInt(orderId)}
+            orderId={orderId}
             hasProcessedAcceptOrder={hasProcessed}
           />
         )}

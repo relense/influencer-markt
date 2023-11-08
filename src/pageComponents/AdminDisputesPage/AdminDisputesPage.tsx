@@ -23,7 +23,7 @@ type DisputeType = {
   message: string;
   createdAt: Date;
   updatedAt: Date;
-  orderId: number;
+  orderId: string;
   disputeStatusId: number;
   disputeStatus: Option;
   reviewerName: string;

@@ -20,7 +20,7 @@ type CreditTransaction = {
   transactionCreatedAt: Date;
   refund: {
     id: string;
-    orderId: number;
+    orderId: string;
   };
 };
 
@@ -69,7 +69,7 @@ const Credits = () => {
             transactionCreatedAt: transaction.createdAt,
             refund: {
               id: transaction?.refund?.id || "",
-              orderId: transaction?.refund?.orderId || -1,
+              orderId: transaction?.refund?.orderId || "",
             },
           };
         })
@@ -98,7 +98,7 @@ const Credits = () => {
           transactionCreatedAt: transaction.createdAt,
           refund: {
             id: transaction?.refund?.id || "",
-            orderId: transaction?.refund?.orderId || -1,
+            orderId: transaction?.refund?.orderId || "",
           },
         });
       });
@@ -188,7 +188,7 @@ const Credits = () => {
                   </div>
                 </div>
               );
-              if (transaction.refund.orderId !== -1) {
+              if (transaction.refund.orderId !== "") {
                 return (
                   <Link
                     href={`/orders/${transaction.refund.orderId}`}

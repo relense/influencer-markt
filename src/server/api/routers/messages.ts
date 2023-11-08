@@ -9,7 +9,7 @@ export const MessagesRouter = createTRPCRouter({
       z.object({
         receiverId: z.string(),
         message: z.string(),
-        orderId: z.number(),
+        orderId: z.string(),
       })
     )
     .mutation(async ({ ctx, input }) => {
@@ -34,7 +34,7 @@ export const MessagesRouter = createTRPCRouter({
   sendNewMessaNotification: protectedProcedure
     .input(
       z.object({
-        orderId: z.number(),
+        orderId: z.string(),
         receiverId: z.string(),
       })
     )
@@ -160,7 +160,7 @@ export const MessagesRouter = createTRPCRouter({
   updateReadMessages: protectedProcedure
     .input(
       z.object({
-        orderId: z.number(),
+        orderId: z.string(),
       })
     )
     .mutation(async ({ ctx, input }) => {
@@ -189,7 +189,7 @@ export const MessagesRouter = createTRPCRouter({
   getOrderMessages: protectedProcedure
     .input(
       z.object({
-        orderId: z.number(),
+        orderId: z.string(),
       })
     )
     .query(async ({ ctx, input }) => {
@@ -214,7 +214,7 @@ export const MessagesRouter = createTRPCRouter({
   getOrderMessagesWithCursor: protectedProcedure
     .input(
       z.object({
-        orderId: z.number(),
+        orderId: z.string(),
         cursor: z.number(),
       })
     )

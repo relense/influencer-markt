@@ -20,12 +20,7 @@ const OrderPayment: NextPage<OrderPaymentProps> = ({ orderId, amount }) => {
 
   return (
     <Layout>
-      {() => (
-        <OrderPaymentPage
-          orderId={parseInt(orderId)}
-          amount={parseInt(amount)}
-        />
-      )}
+      {() => <OrderPaymentPage orderId={orderId} amount={parseInt(amount)} />}
     </Layout>
   );
 };

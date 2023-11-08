@@ -31,7 +31,7 @@ type DisputeForm = {
 };
 
 const OrderDetailsPage = (params: {
-  orderId: number;
+  orderId: string;
   isRedirected: boolean;
 }) => {
   const { t, i18n } = useTranslation();
@@ -1058,7 +1058,7 @@ const OrderDetailsPage = (params: {
 
         <div className="text-2xl font-semibold">
           {t("pages.orders.order")}
-          {order?.id && `: ${order?.id}`}
+          {order?.id && `: #${order?.id}`}
         </div>
 
         {isLoading || isInitialLoading ? (

@@ -3,7 +3,7 @@ import sgMail from "@sendgrid/mail";
 function buyerOpensDisputeToInfluencerEmail(params: {
   from: string;
   to: string;
-  orderId: number;
+  orderId: string;
   buyerName: string;
   language: string;
 }) {

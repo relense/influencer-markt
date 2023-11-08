@@ -15,7 +15,7 @@ interface OrderDetailsProps {
 const OrderDetails: NextPage<OrderDetailsProps> = ({ id }) => {
   const router = useRouter();
   const { data: order, isLoading } = api.orders.getBuyerOrder.useQuery({
-    orderId: parseInt(id),
+    orderId: id,
   });
 
   useEffect(() => {
@@ -37,10 +37,7 @@ const OrderDetails: NextPage<OrderDetailsProps> = ({ id }) => {
       <ProtectedWrapper>
         <Layout>
           {() => (
-            <OrderDetailsPage
-              orderId={parseInt(id)}
-              isRedirected={isRedirect || false}
-            />
+            <OrderDetailsPage orderId={id} isRedirected={isRedirect || false} />
           )}
         </Layout>
       </ProtectedWrapper>

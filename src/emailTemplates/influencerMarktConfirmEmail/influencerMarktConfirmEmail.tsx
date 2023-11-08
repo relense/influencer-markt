@@ -3,7 +3,7 @@ import sgMail from "@sendgrid/mail";
 function influencerMarktConfirmEmail(params: {
   from: string;
   to: string;
-  orderId: number;
+  orderId: string;
   language: string;
 }) {
   const { orderId, language, from, to } = params;

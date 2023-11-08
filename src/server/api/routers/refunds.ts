@@ -6,7 +6,7 @@ export const RefundsRouter = createTRPCRouter({
     .input(
       z.object({
         refundValue: z.number(),
-        orderId: z.number(),
+        orderId: z.string(),
         isCredit: z.boolean(),
       })
     )

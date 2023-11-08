@@ -218,7 +218,7 @@ export const OrdersRouter = createTRPCRouter({
   getOrderById: protectedProcedure
     .input(
       z.object({
-        orderId: z.number(),
+        orderId: z.string(),
       })
     )
     .query(async ({ ctx, input }) => {
@@ -232,7 +232,7 @@ export const OrdersRouter = createTRPCRouter({
   getBuyerOrder: protectedProcedure
     .input(
       z.object({
-        orderId: z.number(),
+        orderId: z.string(),
       })
     )
     .query(async ({ ctx, input }) => {
@@ -264,7 +264,7 @@ export const OrdersRouter = createTRPCRouter({
   getSaleOrder: protectedProcedure
     .input(
       z.object({
-        orderId: z.number(),
+        orderId: z.string(),
       })
     )
     .query(async ({ ctx, input }) => {
@@ -304,7 +304,7 @@ export const OrdersRouter = createTRPCRouter({
   getAllUserOrders: protectedProcedure
     .input(
       z.object({
-        orderId: z.number(),
+        orderId: z.string(),
         orderStatusId: z.number(),
       })
     )
@@ -320,7 +320,7 @@ export const OrdersRouter = createTRPCRouter({
               buyerId: profile.id,
               orderStatusId:
                 input.orderStatusId !== -1 ? input.orderStatusId : undefined,
-              id: input.orderId !== -1 ? input.orderId : undefined,
+              id: input.orderId !== "" ? input.orderId : undefined,
             },
           }),
           ctx.prisma.order.findMany({
@@ -328,7 +328,7 @@ export const OrdersRouter = createTRPCRouter({
               buyerId: profile.id,
               orderStatusId:
                 input.orderStatusId !== -1 ? input.orderStatusId : undefined,
-              id: input.orderId !== -1 ? input.orderId : undefined,
+              id: input.orderId !== "" ? input.orderId : undefined,
             },
             take: 10,
             include: {
@@ -362,9 +362,9 @@ export const OrdersRouter = createTRPCRouter({
   getAllUserOrdersCursor: protectedProcedure
     .input(
       z.object({
-        orderId: z.number(),
+        orderId: z.string(),
         orderStatusId: z.number(),
-        cursor: z.number(),
+        cursor: z.string(),
       })
     )
     .query(async ({ ctx, input }) => {
@@ -378,7 +378,7 @@ export const OrdersRouter = createTRPCRouter({
             buyerId: profile.id,
             orderStatusId:
               input.orderStatusId !== -1 ? input.orderStatusId : undefined,
-            id: input.orderId !== -1 ? input.orderId : undefined,
+            id: input.orderId !== "" ? input.orderId : undefined,
           },
           take: 10,
           skip: 1,
@@ -413,7 +413,7 @@ export const OrdersRouter = createTRPCRouter({
   getAllInfluencerSales: protectedProcedure
     .input(
       z.object({
-        saleId: z.number(),
+        saleId: z.string(),
         saleStatusId: z.number(),
       })
     )
@@ -429,7 +429,7 @@ export const OrdersRouter = createTRPCRouter({
               influencerId: profile.id,
               orderStatusId:
                 input.saleStatusId !== -1 ? input.saleStatusId : undefined,
-              id: input.saleId !== -1 ? input.saleId : undefined,
+              id: input.saleId !== "" ? input.saleId : undefined,
             },
           }),
           ctx.prisma.order.findMany({
@@ -437,7 +437,7 @@ export const OrdersRouter = createTRPCRouter({
               influencerId: profile.id,
               orderStatusId:
                 input.saleStatusId !== -1 ? input.saleStatusId : undefined,
-              id: input.saleId !== -1 ? input.saleId : undefined,
+              id: input.saleId !== "" ? input.saleId : undefined,
             },
             take: 10,
             include: {
@@ -470,9 +470,9 @@ export const OrdersRouter = createTRPCRouter({
   getAllInfluencerSalesCursor: protectedProcedure
     .input(
       z.object({
-        saleId: z.number(),
+        saleId: z.string(),
         saleStatusId: z.number(),
-        cursor: z.number(),
+        cursor: z.string(),
       })
     )
     .query(async ({ ctx, input }) => {
@@ -486,7 +486,7 @@ export const OrdersRouter = createTRPCRouter({
             influencerId: profile.id,
             orderStatusId:
               input.saleStatusId !== -1 ? input.saleStatusId : undefined,
-            id: input.saleId !== -1 ? input.saleId : undefined,
+            id: input.saleId !== "" ? input.saleId : undefined,
           },
           take: 10,
           skip: 1,
@@ -537,7 +537,7 @@ export const OrdersRouter = createTRPCRouter({
   updateOrderToProcessing: protectedProcedure
     .input(
       z.object({
-        orderId: z.number(),
+        orderId: z.string(),
       })
     )
     .mutation(async ({ ctx, input }) => {
@@ -571,7 +571,7 @@ export const OrdersRouter = createTRPCRouter({
   cancelOrder: protectedProcedure
     .input(
       z.object({
-        orderId: z.number(),
+        orderId: z.string(),
       })
     )
     .mutation(async ({ ctx, input }) => {
@@ -598,7 +598,7 @@ export const OrdersRouter = createTRPCRouter({
   updateOrderReject: protectedProcedure
     .input(
       z.object({
-        orderId: z.number(),
+        orderId: z.string(),
       })
     )
     .mutation(async ({ ctx, input }) => {
@@ -625,7 +625,7 @@ export const OrdersRouter = createTRPCRouter({
   updateOrderAccept: protectedProcedure
     .input(
       z.object({
-        orderId: z.number(),
+        orderId: z.string(),
       })
     )
     .mutation(async ({ ctx, input }) => {
@@ -700,7 +700,7 @@ export const OrdersRouter = createTRPCRouter({
   updateOrder: protectedProcedure
     .input(
       z.object({
-        orderId: z.number(),
+        orderId: z.string(),
         statusId: z.number(),
         deliveredDate: z.date().optional(),
       })
@@ -803,7 +803,7 @@ export const OrdersRouter = createTRPCRouter({
   updateOrderStatusToRectify: protectedProcedure
     .input(
       z.object({
-        orderId: z.number(),
+        orderId: z.string(),
         statusId: z.number(),
       })
     )
@@ -871,7 +871,7 @@ export const OrdersRouter = createTRPCRouter({
   updateOrderDateOfDelivery: protectedProcedure
     .input(
       z.object({
-        orderId: z.number(),
+        orderId: z.string(),
         dateOfDelivery: z.date(),
       })
     )
@@ -887,7 +887,7 @@ export const OrdersRouter = createTRPCRouter({
   updateOrderDateOfDeliveryFromOnHold: protectedProcedure
     .input(
       z.object({
-        orderId: z.number(),
+        orderId: z.string(),
         dateOfDelivery: z.date(),
       })
     )
@@ -935,7 +935,7 @@ export const OrdersRouter = createTRPCRouter({
   updateOrderToConfirmedFromOnHold: protectedProcedure
     .input(
       z.object({
-        orderId: z.number(),
+        orderId: z.string(),
       })
     )
     .mutation(async ({ ctx, input }) => {
@@ -1041,7 +1041,7 @@ export const OrdersRouter = createTRPCRouter({
   updateOrderAndCloseAfterDispute: protectedProcedure
     .input(
       z.object({
-        orderId: z.number(),
+        orderId: z.string(),
         disputeId: z.number(),
       })
     )
@@ -1109,7 +1109,7 @@ export const OrdersRouter = createTRPCRouter({
   updateOrderAndPutOnHoldAfterDispute: protectedProcedure
     .input(
       z.object({
-        orderId: z.number(),
+        orderId: z.string(),
         disputeId: z.number(),
       })
     )

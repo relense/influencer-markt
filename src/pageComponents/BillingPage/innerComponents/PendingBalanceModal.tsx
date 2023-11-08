@@ -12,7 +12,7 @@ import { faReceipt } from "@fortawesome/free-solid-svg-icons";
 
 type Payout = {
   id: string;
-  orderId: number;
+  orderId: string;
   payoutValue: number;
   payoutCreated: string;
   paid: boolean;

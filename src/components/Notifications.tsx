@@ -19,7 +19,7 @@ type Notification = {
   actorName: string;
   notificationCreatedAt: Date;
   notificationTypeAction: string;
-  entityId: number;
+  entityId: string;
 };
 
 const Notifications = () => {

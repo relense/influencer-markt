@@ -43,7 +43,7 @@ type ApplicantsProfile = {
   bookmarked?: boolean;
   favoritedBy?: string[];
   activeJobs?: number;
-  orderId?: number;
+  orderId?: string;
 };
 
 const ManageJobDetailsPage = (params: {

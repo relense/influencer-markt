@@ -3,7 +3,7 @@ import sgMail from "@sendgrid/mail";
 function newOrderEmail(params: {
   from: string;
   to: string;
-  orderId: number;
+  orderId: string;
   language: string;
   buyer: string;
 }) {

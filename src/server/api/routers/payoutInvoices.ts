@@ -359,7 +359,7 @@ export const PayoutInvoicesRouter = createTRPCRouter({
         if (influencerMarketProfile && payoutInvoice) {
           await createNotification({
             entityAction: "payoutAccepted",
-            entityId: -1,
+            entityId: "",
             notifierId: payoutInvoice.profileId || "",
             senderId: influencerMarketProfile.id,
           });
@@ -448,7 +448,7 @@ export const PayoutInvoicesRouter = createTRPCRouter({
         if (influencerMarketProfile && payoutInvoice) {
           await createNotification({
             entityAction: "payoutRejected",
-            entityId: -1,
+            entityId: "",
             notifierId: payoutInvoice.profileId || "",
             senderId: influencerMarketProfile.id,
           });

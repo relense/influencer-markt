@@ -130,12 +130,12 @@ const AdminManageDisputesPage = (params: { disputeId: number }) => {
       onSuccess: (dispute) => {
         if (dispute && dispute?.influencerFault) {
           updateOrderAndPutOnHoldAfterDispute({
-            orderId: dispute?.orderId || -1,
+            orderId: dispute?.orderId || "",
             disputeId: params.disputeId,
           });
         } else {
           updatedOrderClosed({
-            orderId: dispute?.orderId || -1,
+            orderId: dispute?.orderId || "",
             disputeId: params.disputeId,
           });
         }
@@ -152,7 +152,7 @@ const AdminManageDisputesPage = (params: { disputeId: number }) => {
       onSuccess: (dispute) => {
         if (dispute) {
           updateOrderStatusToRectify({
-            orderId: dispute.orderId || -1,
+            orderId: dispute.orderId || "",
             statusId: 4,
           });
         }

@@ -4,7 +4,7 @@ import { prisma } from "../../db";
 
 const spendCredits = async (params: {
   userId: string;
-  orderId: number;
+  orderId: string;
   credits: number;
 }) => {
   const profile = await prisma.profile.findFirst({
@@ -178,7 +178,7 @@ export const CreditsRouter = createTRPCRouter({
     .input(
       z.object({
         credits: z.number(),
-        orderId: z.number(),
+        orderId: z.string(),
       })
     )
     .mutation(async ({ ctx, input }) => {

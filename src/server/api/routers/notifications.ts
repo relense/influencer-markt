@@ -34,7 +34,7 @@ type Actions =
 
 const createNotification = async (params: {
   notifierId: string;
-  entityId: number;
+  entityId: string;
   entityAction: Actions;
   senderId?: string;
 }) => {
@@ -105,7 +105,7 @@ export const NotificationsRouter = createTRPCRouter({
     .input(
       z.object({
         notifierId: z.string(),
-        entityId: z.number(),
+        entityId: z.string(),
         senderId: z.string().optional(),
         entityAction: z.union([
           z.literal("awaitingOrderReply"),
