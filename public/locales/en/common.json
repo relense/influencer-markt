@@ -1048,6 +1048,7 @@
       "billingInformation": "Billing Information",
       "balanceInformation": "Balance Information",
       "payoutPartner": "Payout Partner Dashboard",
+      "registerWithPartner": "Register with payout partner",
       "update": "Update",
       "withdraw": "Initiate Withdraw Process",
       "accessDashboard": "Access Dashboard",

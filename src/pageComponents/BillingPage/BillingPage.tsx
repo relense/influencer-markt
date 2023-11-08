@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { api } from "~/utils/api";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -42,6 +42,17 @@ const BillingPage = (params: { isBrand: boolean }) => {
   const { data: pendingPayoutsSum } = api.payouts.pendingPayoutsSum.useQuery();
 
   const { data: totalCredit } = api.credits.calculateUserCredits.useQuery();
+
+  const { data: getStripeLoginLink, refetch: refetchGetStripeLoginLink } =
+    api.stripes.getAccountLoginLink.useQuery(undefined, {
+      enabled: false,
+    });
+
+  useEffect(() => {
+    if (billingInfo?.payoutEnabled === true) {
+      void refetchGetStripeLoginLink();
+    }
+  }, [billingInfo?.payoutEnabled, refetchGetStripeLoginLink]);
 
   const handleOpenWithdrawModal = () => {
     if (billingInfo?.payoutEnabled === true) {
@@ -188,15 +199,30 @@ const BillingPage = (params: { isBrand: boolean }) => {
               </div>
             </div>
           </div>
-          <div className="flex justify-center">
-            <Button
-              level="terciary"
-              size="regular"
-              title={t("pages.billing.accessDashboard")}
-              onClick={() => void router.push("/stripe-onboarding")}
-              disabled={availablePayoutsSum === 0}
-            />
-          </div>
+          {!billingInfo?.payoutEnabled ? (
+            <div className="flex justify-center">
+              <Button
+                level="terciary"
+                size="regular"
+                title={t("pages.billing.registerWithPartner")}
+                onClick={() => void router.push("/stripe-onboarding")}
+              />
+            </div>
+          ) : (
+            <div className="flex justify-center">
+              <a
+                target="_blank"
+                href={getStripeLoginLink}
+                rel="noopener noreferrer"
+              >
+                <Button
+                  level="terciary"
+                  size="regular"
+                  title={t("pages.billing.accessDashboard")}
+                />
+              </a>
+            </div>
+          )}
         </div>
       </div>
     );

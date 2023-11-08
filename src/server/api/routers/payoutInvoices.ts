@@ -3,6 +3,7 @@ import { z } from "zod";
 import { createTRPCRouter, protectedProcedure } from "../trpc";
 import { createNotification } from "./notifications";
 import { sendEmail } from "../../../services/email.service";
+import { stripe } from "../../stripe";
 
 export const PayoutInvoicesRouter = createTRPCRouter({
   getPayoutInvoice: protectedProcedure
@@ -289,6 +290,8 @@ export const PayoutInvoicesRouter = createTRPCRouter({
             },
           },
           select: {
+            invoiceValue: true,
+            isentOfTaxes: true,
             payouts: {
               select: { id: true },
             },
@@ -297,11 +300,13 @@ export const PayoutInvoicesRouter = createTRPCRouter({
               select: {
                 user: {
                   select: {
+                    stripeAccountId: true,
                     email: true,
                   },
                 },
                 country: {
                   select: {
+                    countryTax: true,
                     languageCode: true,
                   },
                 },
@@ -310,7 +315,25 @@ export const PayoutInvoicesRouter = createTRPCRouter({
           },
         });
 
-        if (payoutInvoice && payoutInvoice.payouts) {
+        if (
+          payoutInvoice &&
+          payoutInvoice.payouts &&
+          payoutInvoice.influencer?.user.stripeAccountId
+        ) {
+          let payValue = payoutInvoice.invoiceValue;
+          if (payoutInvoice.isentOfTaxes === false) {
+            payValue =
+              payoutInvoice.invoiceValue +
+              payoutInvoice.invoiceValue *
+                ((payoutInvoice.influencer.country?.countryTax || 0) / 100);
+          }
+
+          await stripe.transfers.create({
+            amount: payValue,
+            currency: "eur",
+            destination: payoutInvoice.influencer?.user.stripeAccountId,
+          });
+
           for (const payout of payoutInvoice.payouts) {
             await ctx.prisma.payout.update({
               where: {

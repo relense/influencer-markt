@@ -1,6 +1,7 @@
 import { z } from "zod";
 import { createTRPCRouter, protectedProcedure } from "../trpc";
 import { stripe } from "../../stripe";
+import { env } from "../../../env.mjs";
 
 export const StripesRouter = createTRPCRouter({
   createPaymentIntent: protectedProcedure
@@ -50,12 +51,10 @@ export const StripesRouter = createTRPCRouter({
     });
 
     if (accountId && accountId.stripeAccountId !== null) {
-      const stripeAccountId = accountId.stripeAccountId as string;
-
       const accountLink = await stripe.accountLinks.create({
-        account: stripeAccountId,
-        refresh_url: "http://localhost:3000/stripe-onboarding",
-        return_url: "http://localhost:3000/billing",
+        account: accountId.stripeAccountId,
+        refresh_url: `${env.NEXT_PUBLIC_BASE_URL}/stripe-onboarding`,
+        return_url: `${env.NEXT_PUBLIC_BASE_URL}/billing`,
         type: "account_onboarding",
       });
 
@@ -80,7 +79,7 @@ export const StripesRouter = createTRPCRouter({
     });
 
     if (accountId && accountId.stripeAccountId !== null && profile) {
-      const stripeAccountId = accountId.stripeAccountId as string;
+      const stripeAccountId = accountId.stripeAccountId;
 
       const account = await stripe.accounts.retrieve(stripeAccountId);
 
@@ -98,6 +97,25 @@ export const StripesRouter = createTRPCRouter({
           },
         });
       }
+    }
+  }),
+
+  getAccountLoginLink: protectedProcedure.query(async ({ ctx }) => {
+    const accountId = await ctx.prisma.user.findFirst({
+      where: {
+        id: ctx.session.user.id,
+      },
+      select: {
+        stripeAccountId: true,
+      },
+    });
+
+    if (accountId && accountId.stripeAccountId !== null) {
+      const loginLinks = await stripe.accounts.createLoginLink(
+        accountId?.stripeAccountId
+      );
+
+      return loginLinks.url;
     }
   }),
 });

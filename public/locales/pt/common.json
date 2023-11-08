@@ -1046,6 +1046,7 @@
       "billingInformation": "Informação de Facturação",
       "balanceInformation": "Informação de Saldo",
       "payoutPartner": "Painel do Parceiro de Pagamentos",
+      "registerWithPartner": "Registar com o parceiro de pagamentos",
       "update": "Actualizar",
       "withdraw": "Iniciar Processo de Pagamento",
       "accessDashboard": "Aceder ao Painel",
