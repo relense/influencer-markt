@@ -19,6 +19,7 @@ import {
   faCircleCheck,
   faCircleXmark,
 } from "@fortawesome/free-regular-svg-icons";
+import { StripeInfoModal } from "./innerComponents/stripeInfoModal";
 
 const BillingPage = (params: { isBrand: boolean }) => {
   const { t } = useTranslation();
@@ -31,6 +32,8 @@ const BillingPage = (params: { isBrand: boolean }) => {
   const [openAvailableBalanceModal, setOpenAvailableBalanceModal] =
     useState<boolean>(false);
   const [openPendingBalanceModal, setOpenPendingBalanceModal] =
+    useState<boolean>(false);
+  const [openStripeInfoModal, setOpenStripeInfoModal] =
     useState<boolean>(false);
 
   const { data: billingInfo, isLoading: isLoadingBillingInfo } =
@@ -174,10 +177,17 @@ const BillingPage = (params: { isBrand: boolean }) => {
             <div className="text-xl font-semibold">
               {t("pages.billing.payoutPartner")}
             </div>
+            <FontAwesomeIcon
+              icon={faInfoCircle}
+              className="cursor-pointer text-xl text-gray4"
+              onClick={() => setOpenStripeInfoModal(true)}
+            />
           </div>
           <div className="flex flex-1 flex-col gap-6">
             <div className="flex flex-col gap-2">
-              <div className="text-lg font-medium">Status</div>
+              <div className="text-lg font-medium">
+                {t("pages.billing.status")}
+              </div>
               <div>
                 {billingInfo?.payoutEnabled ? (
                   <div className="flex items-center gap-2">
@@ -277,6 +287,9 @@ const BillingPage = (params: { isBrand: boolean }) => {
         )}
         {openBalanceInfoModal && (
           <InfoBalanceModal onClose={() => setOpenBalanceInfoModal(false)} />
+        )}
+        {openStripeInfoModal && (
+          <StripeInfoModal onClose={() => setOpenStripeInfoModal(false)} />
         )}
       </>
     );

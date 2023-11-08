@@ -1045,8 +1045,8 @@
       "billingTaxNumber": "Número de Identificação Fiscal",
       "billingInformation": "Informação de Facturação",
       "balanceInformation": "Informação de Saldo",
-      "payoutPartner": "Painel do Parceiro de Pagamentos",
-      "registerWithPartner": "Registar com o parceiro de pagamentos",
+      "payoutPartner": "Painel do Stripe",
+      "registerWithPartner": "Registar com o Stripe",
       "update": "Actualizar",
       "withdraw": "Iniciar Processo de Pagamento",
       "accessDashboard": "Aceder ao Painel",
@@ -1070,7 +1070,7 @@
       "invoiceRef": "Fatura Ref:",
       "billingDetailsForInvoice": "Detalhes de Faturação",
       "availableCredits": "Créditos Disponíveis",
-      "updatePartnerConnection": "Liga-te ao nosso parceiro de pagamentos antes de iniciares o processo de levantamento",
+      "updatePartnerConnection": "Liga-te ao Stripe antes de iniciares o processo de levantamento",
       "payoutBeingProcessed": "Pagamento está a ser processado",
       "payoutApproved": "Pagamento foi aprovado e processado",
       "payoutRejected": "A fatura foi rejeitado. Inicie novo processo de pagamento",
@@ -1097,7 +1097,8 @@
       "finalValueIncorrect": "O valor final da fatura está incorreto",
       "incorrectPaymentType": "O tipo de pagamento está incorreto",
       "active": "Activo",
-      "inactive": "Inactivo"
+      "inactive": "Inactivo",
+      "status": "Estado"
     },
 
     "withdraw": {

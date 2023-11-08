@@ -1047,8 +1047,8 @@
       "billingTaxNumber": "National Insurance Number",
       "billingInformation": "Billing Information",
       "balanceInformation": "Balance Information",
-      "payoutPartner": "Payout Partner Dashboard",
-      "registerWithPartner": "Register with payout partner",
+      "payoutPartner": "Stripe Dashboard",
+      "registerWithPartner": "Register with Stripe",
       "update": "Update",
       "withdraw": "Initiate Withdraw Process",
       "accessDashboard": "Access Dashboard",
@@ -1072,7 +1072,7 @@
       "invoiceRef": "Invoice Ref:",
       "billingDetailsForInvoice": "Billing Details For Invoice",
       "availableCredits": "Available Credits",
-      "updatePartnerConnection": "Connect with our payouts partner before initiating withdraw process",
+      "updatePartnerConnection": "Connect with Stripe before initiating withdraw process",
       "payoutBeingProcessed": "Payout is being processed",
       "payoutApproved": "Payout was approved and processed",
       "payoutRejected": "Invoice for payout was rejected. Initiate a new withdraw process",
@@ -1099,7 +1099,8 @@
       "finalValueIncorrect": "The final value of the invoice is incorrect",
       "incorrectPaymentType": "The payment type is incorrect",
       "active": "Active",
-      "inactive": "Inactive"
+      "inactive": "Inactive",
+      "status": "Status"
     },
 
     "withdraw": {

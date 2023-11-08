@@ -2,7 +2,7 @@ import { useTranslation } from "react-i18next";
 import { Modal } from "../../../components/Modal";
 import { Button } from "../../../components/Button";
 
-const InfoBalanceModal = (params: { onClose: () => void }) => {
+const StripeInfoModal = (params: { onClose: () => void }) => {
   const { t } = useTranslation();
 
   return (
@@ -51,4 +51,4 @@ const InfoBalanceModal = (params: { onClose: () => void }) => {
   );
 };
 
-export { InfoBalanceModal };
+export { StripeInfoModal };
