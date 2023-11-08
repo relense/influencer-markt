@@ -1047,13 +1047,14 @@
       "billingTaxNumber": "National Insurance Number",
       "billingInformation": "Billing Information",
       "balanceInformation": "Balance Information",
-      "iban": "IBAN",
+      "payoutPartner": "Payout Partner Dashboard",
       "update": "Update",
       "withdraw": "Initiate Withdraw Process",
+      "accessDashboard": "Access Dashboard",
+      "noInformation": "No information",
       "salesInvoices": "Sales Invoices",
       "purchasesInvoices": "Purchases Invoices",
       "invalidTin": "The TIN is invalid",
-      "invalidIban": "The IBAN is invalid",
       "availableBalance": "Available Balance",
       "pendingBalance": "Pending Balance",
       "orderRef": "Order Ref",
@@ -1070,7 +1071,7 @@
       "invoiceRef": "Invoice Ref:",
       "billingDetailsForInvoice": "Billing Details For Invoice",
       "availableCredits": "Available Credits",
-      "updateIban": "Update IBAN before withdrawing available balance",
+      "updatePartnerConnection": "Connect with our payouts partner before initiating withdraw process",
       "payoutBeingProcessed": "Payout is being processed",
       "payoutApproved": "Payout was approved and processed",
       "payoutRejected": "Invoice for payout was rejected. Initiate a new withdraw process",
@@ -1095,7 +1096,9 @@
       "taxIncorrect": "The tax value is incorrect",
       "tinIncorrect": "Influencer Markt's TIN is incorrect",
       "finalValueIncorrect": "The final value of the invoice is incorrect",
-      "incorrectPaymentType": "The payment type is incorrect"
+      "incorrectPaymentType": "The payment type is incorrect",
+      "active": "Active",
+      "inactive": "Inactive"
     },
 
     "withdraw": {

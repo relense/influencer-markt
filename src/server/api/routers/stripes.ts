@@ -38,4 +38,66 @@ export const StripesRouter = createTRPCRouter({
 
       return paymentIntent;
     }),
+
+  createAccountLink: protectedProcedure.mutation(async ({ ctx }) => {
+    const accountId = await ctx.prisma.user.findFirst({
+      where: {
+        id: ctx.session.user.id,
+      },
+      select: {
+        stripeAccountId: true,
+      },
+    });
+
+    if (accountId && accountId.stripeAccountId !== null) {
+      const stripeAccountId = accountId.stripeAccountId as string;
+
+      const accountLink = await stripe.accountLinks.create({
+        account: stripeAccountId,
+        refresh_url: "http://localhost:3000/stripe-onboarding",
+        return_url: "http://localhost:3000/billing",
+        type: "account_onboarding",
+      });
+
+      return accountLink;
+    }
+  }),
+
+  verifyAccountInfo: protectedProcedure.mutation(async ({ ctx }) => {
+    const accountId = await ctx.prisma.user.findFirst({
+      where: {
+        id: ctx.session.user.id,
+      },
+      select: {
+        stripeAccountId: true,
+      },
+    });
+
+    const profile = await ctx.prisma.profile.findFirst({
+      where: {
+        userId: ctx.session.user.id,
+      },
+    });
+
+    if (accountId && accountId.stripeAccountId !== null && profile) {
+      const stripeAccountId = accountId.stripeAccountId as string;
+
+      const account = await stripe.accounts.retrieve(stripeAccountId);
+
+      if (
+        account.individual?.verification?.status === "verified" &&
+        account.payouts_enabled &&
+        account.details_submitted
+      ) {
+        await ctx.prisma.billing.update({
+          where: {
+            profileId: profile.id,
+          },
+          data: {
+            payoutEnabled: true,
+          },
+        });
+      }
+    }
+  }),
 });

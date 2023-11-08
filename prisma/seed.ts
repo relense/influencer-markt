@@ -355,41 +355,49 @@ async function main() {
         email: "nike@gmail.com",
         roleId: 1,
         username: "nike",
+        stripeAccountId: "",
       },
       {
         email: "cocacola@gmail.com",
         roleId: 1,
         username: "cocaCola",
+        stripeAccountId: "",
       },
       {
         email: "apple@gmail.com",
         roleId: 1,
         username: "apple",
+        stripeAccountId: "",
       },
       {
         email: "lg@gmail.com",
         roleId: 1,
         username: "LG",
+        stripeAccountId: "",
       },
       {
         email: "oliveraTomas@gmail.com",
         roleId: 2,
         username: "tomasOliveira",
+        stripeAccountId: "",
       },
       {
         email: "andreGomes@gmail.com",
         roleId: 2,
         username: "andreGomes",
+        stripeAccountId: "",
       },
       {
         email: "andreiaSofia@gmail.com",
         roleId: 2,
         username: "andreiaSofia",
+        stripeAccountId: "",
       },
       {
         email: "inesguerreiro@gmail.com",
         roleId: 2,
         username: "inesGuerreiro",
+        stripeAccountId: "",
       },
     ],
   });
@@ -402,6 +410,7 @@ async function main() {
       email: "info@influencermarkt.com",
       roleId: 1,
       username: "influencerMarkt",
+      stripeAccountId: "",
     },
   });
 

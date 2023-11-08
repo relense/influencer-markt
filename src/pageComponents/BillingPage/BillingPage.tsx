@@ -15,6 +15,10 @@ import { InfoBalanceModal } from "./innerComponents/InfoBalanceModal";
 import { BillingDetailsInfluencerModal } from "./innerComponents/BillingDetailsInfluencerModal";
 import { BillingDetailsBrandModal } from "./innerComponents/BillingDetailsBrandModal";
 import { InvoicesMenu } from "./innerComponents/InvoicesMenu";
+import {
+  faCircleCheck,
+  faCircleXmark,
+} from "@fortawesome/free-regular-svg-icons";
 
 const BillingPage = (params: { isBrand: boolean }) => {
   const { t } = useTranslation();
@@ -40,10 +44,10 @@ const BillingPage = (params: { isBrand: boolean }) => {
   const { data: totalCredit } = api.credits.calculateUserCredits.useQuery();
 
   const handleOpenWithdrawModal = () => {
-    if (billingInfo?.iban !== null) {
+    if (billingInfo?.payoutEnabled === true) {
       void router.push("/withdraw");
     } else {
-      toast.success(t("pages.billing.updateIban"), {
+      toast.error(t("pages.billing.updatePartnerConnection"), {
         position: "bottom-left",
       });
     }
@@ -61,32 +65,24 @@ const BillingPage = (params: { isBrand: boolean }) => {
               <div className="text-lg font-medium">
                 {t("pages.billing.billingName")}
               </div>
-              <div>{billingInfo.name || "No Information"}</div>
+              <div>{billingInfo.name || t("pages.billing.noInformation")}</div>
             </div>
             <div className="flex flex-col gap-2">
               <div className="text-lg font-medium">
                 {t("pages.billing.billingEmail")}
               </div>
-              <div>{billingInfo.email || "No Information"}</div>
+              <div>{billingInfo.email || t("pages.billing.billingName")}</div>
             </div>
             <div className="flex flex-col gap-2">
               <div className="text-lg font-medium">
                 {t("pages.billing.billingTaxNumber")}
               </div>
-              <div>{billingInfo.tin || "No Information"}</div>
+              <div>{billingInfo.tin || t("pages.billing.billingName")}</div>
             </div>
-            {!params.isBrand && (
-              <div className="flex flex-col gap-2">
-                <div className="text-lg font-medium">
-                  {t("pages.billing.iban")}
-                </div>
-                <div>{billingInfo?.iban || "No Information"}</div>
-              </div>
-            )}
           </div>
           <div className="flex justify-center">
             <Button
-              level="primary"
+              level="terciary"
               size="regular"
               title={t("pages.billing.update")}
               onClick={() => setOpenBillingDetailsModal(true)}
@@ -147,7 +143,7 @@ const BillingPage = (params: { isBrand: boolean }) => {
           </div>
           <div className="flex justify-center">
             <Button
-              level="primary"
+              level="terciary"
               size="regular"
               title={t("pages.billing.withdraw")}
               onClick={() => handleOpenWithdrawModal()}
@@ -157,6 +153,53 @@ const BillingPage = (params: { isBrand: boolean }) => {
         </div>
       );
     }
+  };
+
+  const stripeAccessMenu = () => {
+    return (
+      <div>
+        <div className="flex flex-1 flex-col gap-6 rounded-xl border-[1px] p-6 shadow-md">
+          <div className="flex justify-between">
+            <div className="text-xl font-semibold">
+              {t("pages.billing.payoutPartner")}
+            </div>
+          </div>
+          <div className="flex flex-1 flex-col gap-6">
+            <div className="flex flex-col gap-2">
+              <div className="text-lg font-medium">Status</div>
+              <div>
+                {billingInfo?.payoutEnabled ? (
+                  <div className="flex items-center gap-2">
+                    <FontAwesomeIcon
+                      icon={faCircleCheck}
+                      className="cursor-pointer text-xl text-influencer-green-dark"
+                    />
+                    {t("pages.billing.active")}
+                  </div>
+                ) : (
+                  <div className="flex items-center gap-2">
+                    <FontAwesomeIcon
+                      icon={faCircleXmark}
+                      className="cursor-pointer text-xl text-influencer"
+                    />
+                    {t("pages.billing.inactive")}
+                  </div>
+                )}
+              </div>
+            </div>
+          </div>
+          <div className="flex justify-center">
+            <Button
+              level="terciary"
+              size="regular"
+              title={t("pages.billing.accessDashboard")}
+              onClick={() => void router.push("/stripe-onboarding")}
+              disabled={availablePayoutsSum === 0}
+            />
+          </div>
+        </div>
+      </div>
+    );
   };
 
   if (isLoadingBillingInfo) {
@@ -171,7 +214,12 @@ const BillingPage = (params: { isBrand: boolean }) => {
         <div className="flex w-full cursor-default flex-col justify-center gap-6 self-center px-4 pb-10 sm:px-12 lg:w-full xl:w-10/12 2xl:w-3/4 3xl:w-3/4 4xl:w-7/12 5xl:w-2/4">
           <div className="flex flex-1 flex-col gap-6 lg:flex-row">
             {billingInformation()}
-            {!params.isBrand && balanceInfo()}
+            {!params.isBrand && (
+              <>
+                {balanceInfo()}
+                {stripeAccessMenu()}
+              </>
+            )}
           </div>
           <InvoicesMenu />
         </div>
@@ -188,7 +236,6 @@ const BillingPage = (params: { isBrand: boolean }) => {
               name={billingInfo?.name || ""}
               email={billingInfo?.email || ""}
               tin={billingInfo?.tin || ""}
-              iban={billingInfo?.iban || ""}
               onClose={() => setOpenBillingDetailsModal(false)}
             />
           ))}

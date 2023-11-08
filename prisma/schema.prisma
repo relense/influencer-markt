@@ -51,15 +51,16 @@ model VerificationToken {
 }
 
 model User {
-  id            String    @id @default(cuid())
-  name          String?
-  email         String?   @unique
-  emailVerified DateTime?
-  image         String?
-  username      String?   @unique
-  role          Role?     @relation(fields: [roleId], references: [id])
-  userType      String    @default("user")
-  isOver18      Boolean   @default(false)
+  id              String    @id @default(cuid())
+  name            String?
+  email           String?   @unique
+  emailVerified   DateTime?
+  image           String?
+  username        String?   @unique
+  role            Role?     @relation(fields: [roleId], references: [id])
+  userType        String    @default("user")
+  isOver18        Boolean   @default(false)
+  stripeAccountId String?
 
   payoutsResolved PayoutInvoice[]
 
@@ -101,7 +102,7 @@ model Profile {
   billing         Billing?
   invoices        Invoice[]
   payouts         Payout[]
-  payoutsInvoice PayoutInvoice[]
+  payoutsInvoice  PayoutInvoice[]
 
   createdJobs        Job[] @relation("jobCreator")
   appliedJobs        Job[] @relation("jobApplicants")
@@ -534,12 +535,12 @@ model DisputeStatus {
 }
 
 model Billing {
-  id      String  @id @default(cuid())
-  name    String?
-  email   String?
-  tin     String?
-  iban    String?
-  profile Profile @relation(fields: [profileId], references: [id])
+  id            String  @id @default(cuid())
+  name          String?
+  email         String?
+  tin           String?
+  payoutEnabled Boolean @default(false)
+  profile       Profile @relation(fields: [profileId], references: [id])
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt

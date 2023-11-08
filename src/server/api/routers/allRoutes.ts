@@ -268,7 +268,6 @@ export const allRouter = createTRPCRouter({
             }),
             billing: {
               name: profile.billing?.name || "",
-              iban: profile.billing?.iban || "",
               email: profile.billing?.email || "",
               tin: profile.billing?.tin || "",
             },

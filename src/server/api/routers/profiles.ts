@@ -4,6 +4,7 @@ import bloblService from "../../../services/azureBlob.service";
 import { v4 as uuidv4 } from "uuid";
 import { helper } from "../../../utils/helper";
 import { deletePicture } from "./portfolios";
+import { stripe } from "../../stripe";
 
 export const profilesRouter = createTRPCRouter({
   getAllInfluencerProfiles: publicProcedure
@@ -620,6 +621,19 @@ export const profilesRouter = createTRPCRouter({
               id: profile.id,
             },
           },
+        },
+      });
+
+      const stripeAccount = await stripe.accounts.create({
+        type: "express",
+      });
+
+      await ctx.prisma.user.update({
+        where: {
+          id: ctx.session.user.id,
+        },
+        data: {
+          stripeAccountId: stripeAccount.id,
         },
       });
     }),

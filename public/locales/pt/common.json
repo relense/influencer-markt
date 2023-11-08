@@ -1045,13 +1045,14 @@
       "billingTaxNumber": "Número de Identificação Fiscal",
       "billingInformation": "Informação de Facturação",
       "balanceInformation": "Informação de Saldo",
-      "iban": "IBAN",
+      "payoutPartner": "Painel do Parceiro de Pagamentos",
       "update": "Actualizar",
       "withdraw": "Iniciar Processo de Pagamento",
+      "accessDashboard": "Aceder ao Painel",
+      "noInformation": "Sem informação",
       "salesInvoices": "Faturas de Vendas",
       "purchasesInvoices": "Faturas de Compras",
       "invalidTin": "O NIF é inválido",
-      "invalidIban": "O IBAN é inválido",
       "availableBalance": "Saldo Disponível",
       "pendingBalance": "Saldo Pendente",
       "orderRef": "Pedido Ref",
@@ -1068,7 +1069,7 @@
       "invoiceRef": "Fatura Ref:",
       "billingDetailsForInvoice": "Detalhes de Faturação",
       "availableCredits": "Créditos Disponíveis",
-      "updateIban": "Actualiza o IBAN antes de levantar o saldo disponível",
+      "updatePartnerConnection": "Liga-te ao nosso parceiro de pagamentos antes de iniciares o processo de levantamento",
       "payoutBeingProcessed": "Pagamento está a ser processado",
       "payoutApproved": "Pagamento foi aprovado e processado",
       "payoutRejected": "A fatura foi rejeitado. Inicie novo processo de pagamento",
@@ -1093,7 +1094,9 @@
       "taxIncorrect": "O valor do IVA está incorreto",
       "tinIncorrect": "O NIF da Influencer Markt está incorreto",
       "finalValueIncorrect": "O valor final da fatura está incorreto",
-      "incorrectPaymentType": "O tipo de pagamento está incorreto"
+      "incorrectPaymentType": "O tipo de pagamento está incorreto",
+      "active": "Activo",
+      "inactive": "Inactivo"
     },
 
     "withdraw": {
