@@ -9,15 +9,15 @@ function toInfluencerDeliveryIsTomorrowEmail(params: {
 }) {
   const { orderId, language, from, to, buyerName } = params;
 
-  let title = `The order with ref:${orderId} is scheduled to be delivered tomorrow`;
+  let title = `The order with ref: #${orderId} is scheduled to be delivered tomorrow`;
   let buttonTitle = "View Order";
-  let subject = `Delivery for the order with ref:${orderId} is scheduled for tomorrow`;
+  let subject = `Delivery for the order with ref: #${orderId} is scheduled for tomorrow`;
   let description = `Tomorrow is the day of delivery for the ${buyerName} order. Please ensure that everything is as per ${buyerName}'s requirements. If you require more time, kindly get in touch with ${buyerName} so that they can update the delivery date to a later time.`;
 
   if (language === "pt") {
-    title = `O pedido com a ref:${orderId} está agendado para ser entregue amanhã`;
+    title = `O pedido com a ref: #${orderId} está agendado para ser entregue amanhã`;
     buttonTitle = "Ver Pedido";
-    subject = `Entrega do pedido com ref:${orderId} está agendado para amanhã`;
+    subject = `Entrega do pedido com ref: #${orderId} está agendado para amanhã`;
     description = `Amanhã é o dia de entrega do pedido de ${buyerName}. Certifica-te de que tudo está de acordo com as necessidades do ${buyerName}. Se precisares de mais tempo, entra em contato com ${buyerName} para que possam atualizar a data de entrega para um momento posterior.`;
   }
 

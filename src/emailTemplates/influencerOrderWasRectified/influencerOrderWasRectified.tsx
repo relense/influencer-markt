@@ -8,15 +8,15 @@ function influencerOrderWasRectified(params: {
 }) {
   const { orderId, language, from, to } = params;
 
-  let title = `The order with ref:${orderId} can be rectified`;
+  let title = `The order with ref: #${orderId} can be rectified`;
   let buttonTitle = "View Order";
-  let subject = `Decision for the order with ref:${orderId}`;
+  let subject = `Decision for the order with ref: #${orderId}`;
   let description = `We at Influencer Markt have investigated what happened and reached the conclusion there is a chance for you to rectify the order. We have given you the oportunity to rectify and two days to deliver what was required initially.`;
 
   if (language === "pt") {
-    title = `O Pedido com ref:${orderId} pode ser rectificada`;
+    title = `O Pedido com ref: #${orderId} pode ser rectificada`;
     buttonTitle = "Ver Pedido";
-    subject = `Decisão para o pedido com a ref:${orderId}`;
+    subject = `Decisão para o pedido com a ref: #${orderId}`;
     description = `Nós, na Influencer Markt, investigámos o que aconteceu e chegámos à conclusão de que podes rectificar o pedido. Damos-te a oportunidade de rectificar e dois dias para entregar o que foi pedido inicialmente.`;
   }
 

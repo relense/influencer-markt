@@ -8,15 +8,15 @@ function buyerPaymentFailed(params: {
 }) {
   const { orderId, language, from, to } = params;
 
-  let title = `The payment for the order with ref:${orderId} failed`;
+  let title = `The payment for the order with ref: #${orderId} failed`;
   let buttonTitle = "View Order";
-  let subject = `The pament for the order with ref:${orderId} failed`;
+  let subject = `The pament for the order with ref: #${orderId} failed`;
   let description = `Something went wrong with the payment and it failed. Please try again if you wish to continue with your order.`;
 
   if (language === "pt") {
-    title = `O pagamento para o pedido com ref:${orderId} falhou`;
+    title = `O pagamento para o pedido com ref: #${orderId} falhou`;
     buttonTitle = "Ver Pedido";
-    subject = `O pagamento para o pedido com ref:${orderId} falhou`;
+    subject = `O pagamento para o pedido com ref: #${orderId} falhou`;
     description = `Alguma coisa de errado aconteceu com o teu pagamento e por isso falhou. Por favor tenta outra vez se desejas continuar com o teu pedido.`;
   }
 

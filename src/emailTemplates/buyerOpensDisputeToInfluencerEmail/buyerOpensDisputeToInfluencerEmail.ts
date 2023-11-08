@@ -9,15 +9,15 @@ function buyerOpensDisputeToInfluencerEmail(params: {
 }) {
   const { orderId, language, from, to, buyerName } = params;
 
-  let title = `The order with ref:${orderId} is in dispute`;
+  let title = `The order with ref: #${orderId} is in dispute`;
   let buttonTitle = "View Order";
-  let subject = `${buyerName} opened a dispute for the order with ref:${orderId}`;
+  let subject = `${buyerName} opened a dispute for the order with ref: #${orderId}`;
   let description = `We at influencer markt will investigate what happened and why ${buyerName} opened a dispute. After the dispute is settled, we will let you know.`;
 
   if (language === "pt") {
-    title = `O Pedido com ref:${orderId} está em disputa `;
+    title = `O Pedido com ref: #${orderId} está em disputa `;
     buttonTitle = "Ver Pedido";
-    subject = `${buyerName} abriu uma disputa para o pedido com a ref:${orderId}`;
+    subject = `${buyerName} abriu uma disputa para o pedido com a ref: #${orderId}`;
     description = `Nós, na Influencer Markt, vamos investigar o que aconteceu e por que razão o ${buyerName} abriu uma disputa. Após a disputa estar resolvida, vamos informar-te.`;
   }
 

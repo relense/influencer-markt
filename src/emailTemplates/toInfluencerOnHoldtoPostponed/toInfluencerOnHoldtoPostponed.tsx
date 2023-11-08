@@ -9,15 +9,15 @@ function toInfluencerOnHoldtoPostponed(params: {
 }) {
   const { orderId, language, from, to, buyerName } = params;
 
-  let title = `The order with ref:${orderId} was postponed`;
+  let title = `The order with ref: #${orderId} was postponed`;
   let buttonTitle = "View Order";
-  let subject = `The order with ref:${orderId} was postponed`;
+  let subject = `The order with ref: #${orderId} was postponed`;
   let description = `${buyerName} has decided to postpone the order. We kindly request that you ensure the timely delivery of the originally requested items."`;
 
   if (language === "pt") {
-    title = `O Pedido com ref:${orderId} foi adiado`;
+    title = `O Pedido com ref: #${orderId} foi adiado`;
     buttonTitle = "Ver Pedido";
-    subject = `O pedido com a ref:${orderId} foi adiado`;
+    subject = `O pedido com a ref: #${orderId} foi adiado`;
     description = `${buyerName} decidiu adiar a entrega do pedido. Pedimos que assegures a entrega atempada dos itens originalmente solicitados.`;
   }
 

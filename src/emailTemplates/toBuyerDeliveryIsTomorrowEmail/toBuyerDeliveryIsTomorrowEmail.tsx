@@ -9,15 +9,15 @@ function toBuyerDeliveryIsTomorrowEmail(params: {
 }) {
   const { orderId, language, from, to, influencerName } = params;
 
-  let title = `The order with ref:${orderId} will be delivered tomorrow`;
+  let title = `The order with ref: #${orderId} will be delivered tomorrow`;
   let buttonTitle = "View Order";
-  let subject = `Delivery for the order with ref:${orderId} is tomorrow`;
+  let subject = `Delivery for the order with ref: #${orderId} is tomorrow`;
   let description = `Tomorrow is the day of delivery for your order. Please make sure to contact ${influencerName} and ensure that everything is as you requested.`;
 
   if (language === "pt") {
-    title = `O Pedido com ref:${orderId} vai ser entregue amanhã`;
+    title = `O Pedido com ref: #${orderId} vai ser entregue amanhã`;
     buttonTitle = "Ver Pedido";
-    subject = `Entrega do pedido com ref:${orderId} é amanhã`;
+    subject = `Entrega do pedido com ref: #${orderId} é amanhã`;
     description = `Amanhã é o dia de entrega do teu pedido. Certifica-te de entrar em contato com ${influencerName} e garantir que tudo esteja conforme o solicitado.`;
   }
 

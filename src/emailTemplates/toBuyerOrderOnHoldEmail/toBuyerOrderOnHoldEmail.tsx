@@ -9,15 +9,15 @@ function toBuyerOrderOnHoldEmail(params: {
 }) {
   const { orderId, language, from, to, influencerName } = params;
 
-  let title = `The order with ref:${orderId} is on hold`;
+  let title = `The order with ref: #${orderId} is on hold`;
   let buttonTitle = "View Order";
-  let subject = `The order with ref:${orderId} is on hold`;
+  let subject = `The order with ref: #${orderId} is on hold`;
   let description = `Unfortunately, the delivery deadline has been missed by ${influencerName}. You now have the opportunity to choose how you wish to proceed.`;
 
   if (language === "pt") {
-    title = `O Pedido com ref:${orderId} está suspenso`;
+    title = `O Pedido com ref: #${orderId} está suspenso`;
     buttonTitle = "Ver Pedido";
-    subject = `O pedido com a ref:${orderId} está suspenso`;
+    subject = `O pedido com a ref: #${orderId} está suspenso`;
     description = `Lamentávelmente, o prazo de entrega não foi cumprido por ${influencerName}. Agora, tens a oportunidade de escolher como desejas proceder.`;
   }
 

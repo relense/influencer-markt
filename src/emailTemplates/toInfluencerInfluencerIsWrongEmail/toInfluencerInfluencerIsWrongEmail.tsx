@@ -9,15 +9,15 @@ function toInfluencerInfluencerIsWrongEmail(params: {
 }) {
   const { orderId, language, from, to, buyerName } = params;
 
-  let title = `The order with ref:${orderId} dispute resolution`;
+  let title = `The order with ref: #${orderId} dispute resolution`;
   let buttonTitle = "View Order";
-  let subject = `Resolution for the dispute for the order with ref:${orderId}`;
+  let subject = `Resolution for the dispute for the order with ref: #${orderId}`;
   let description = `We at Influencer Markt have investigated what happened and reached the conclusion that you did not meet the requirements ${buyerName} asked. ${buyerName} will decide how to proceed.`;
 
   if (language === "pt") {
-    title = `O Pedido com ref:${orderId} resolução da disputa`;
+    title = `O Pedido com ref: #${orderId} resolução da disputa`;
     buttonTitle = "Ver Pedido";
-    subject = `Resolução da disputa para o pedido com a ref:${orderId}`;
+    subject = `Resolução da disputa para o pedido com a ref: #${orderId}`;
     description = `Nós, na Influencer Markt, investigámos o que aconteceu e chegámos à conclusão de que não cumpriste os requisitos que ${buyerName} pediu. ${buyerName} vai decidir como proceder.`;
   }
 

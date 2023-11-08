@@ -9,15 +9,15 @@ function toInfluencerOrderOnHoldToRefund(params: {
 }) {
   const { orderId, language, from, to, buyerName } = params;
 
-  let title = `The order with Ref:${orderId} will not proceed`;
+  let title = `The order with Ref: #${orderId} will not proceed`;
   let buttonTitle = "View Order";
-  let subject = `The order with Ref:${orderId} will not proceed`;
+  let subject = `The order with Ref: #${orderId} will not proceed`;
   let description = `${buyerName} has decided to not proceed with the order."`;
 
   if (language === "pt") {
-    title = `O Pedido com Ref:${orderId} não vai continuar`;
+    title = `O Pedido com Ref: #${orderId} não vai continuar`;
     buttonTitle = "Ver Pedido";
-    subject = `O pedido com a Ref:${orderId} não vai continuar`;
+    subject = `O pedido com a Ref: #${orderId} não vai continuar`;
     description = `${buyerName} decidiu não continuar com o pedido.`;
   }
 
