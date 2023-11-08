@@ -1100,7 +1100,8 @@
       "incorrectPaymentType": "The payment type is incorrect",
       "active": "Active",
       "inactive": "Inactive",
-      "status": "Status"
+      "status": "Status",
+      "noInvoices": "There are no invoices"
     },
 
     "withdraw": {

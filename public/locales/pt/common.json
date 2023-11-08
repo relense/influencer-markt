@@ -1098,7 +1098,8 @@
       "incorrectPaymentType": "O tipo de pagamento está incorreto",
       "active": "Activo",
       "inactive": "Inactivo",
-      "status": "Estado"
+      "status": "Estado",
+      "noInvoices": "Não há faturas"
     },
 
     "withdraw": {

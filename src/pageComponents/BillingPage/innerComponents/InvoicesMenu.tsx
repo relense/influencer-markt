@@ -1,6 +1,10 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useTranslation } from "react-i18next";
-import { faCircleMinus, faCirclePlus } from "@fortawesome/free-solid-svg-icons";
+import {
+  faCircleMinus,
+  faCirclePlus,
+  faFileInvoice,
+} from "@fortawesome/free-solid-svg-icons";
 import { helper } from "../../../utils/helper";
 import { useEffect, useState } from "react";
 import { api } from "~/utils/api";
@@ -195,11 +199,13 @@ const InvoicesMenu = () => {
         <div className="text-xl font-semibold">
           {t("pages.billing.purchasesInvoices")}
         </div>
-        <FontAwesomeIcon
-          icon={hidePurchaseInvoiceMenu ? faCirclePlus : faCircleMinus}
-          onClick={() => setHidePurchaseInvoiceMenu(!hidePurchaseInvoiceMenu)}
-          className="text-lg text-gray4"
-        />
+        {purchasesInvoices.length > 0 && (
+          <FontAwesomeIcon
+            icon={hidePurchaseInvoiceMenu ? faCirclePlus : faCircleMinus}
+            onClick={() => setHidePurchaseInvoiceMenu(!hidePurchaseInvoiceMenu)}
+            className="text-lg text-gray4"
+          />
+        )}
       </div>
     );
   };
@@ -228,6 +234,14 @@ const InvoicesMenu = () => {
                     isLoading={isFetchingPurchasedInvoices}
                     disabled={isFetchingPurchasedInvoices}
                   />
+                </div>
+              )}
+              {purchasesInvoices.length === 0 && (
+                <div className="flex flex-col items-center justify-center gap-4 text-gray4">
+                  <FontAwesomeIcon icon={faFileInvoice} className="text-4xl " />
+                  <div className="font-medium">
+                    {t("pages.billing.noInvoices")}
+                  </div>
                 </div>
               )}
             </div>
