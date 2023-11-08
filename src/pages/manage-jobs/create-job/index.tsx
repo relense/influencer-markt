@@ -13,9 +13,7 @@ const CreateJob: NextPage<CreateJobProps> = ({ edit, jobId }) => {
   return (
     <ProtectedWrapper>
       <Layout>
-        {() => (
-          <CreateJobPage edit={!edit ? false : true} jobId={parseInt(jobId)} />
-        )}
+        {() => <CreateJobPage edit={!edit ? false : true} jobId={jobId} />}
       </Layout>
     </ProtectedWrapper>
   );

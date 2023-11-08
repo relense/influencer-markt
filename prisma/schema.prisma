@@ -314,7 +314,7 @@ model City {
 }
 
 model Job {
-  id                      Int                       @id @default(autoincrement())
+  id                       String  @id @default(cuid())
   jobSummary              String
   JobDetails              String                    @db.Text
   socialMedia             SocialMedia               @relation(fields: [socialMediaId], references: [id])
@@ -362,7 +362,7 @@ model ContentTypeWithQuantity {
   Job         Job?        @relation(fields: [jobId], references: [id])
 
   contentTypeId Int
-  jobId         Int?
+  jobId         String?
 
   @@index([contentTypeId])
   @@index([jobId])
@@ -414,7 +414,7 @@ model Order {
   orderStatusId Int?
   socialMediaId Int?
   reviewId      Int?    @unique
-  jobId         Int?
+  jobId         String?
   disputeId     Int?
 
   createdAt DateTime @default(now())

@@ -47,7 +47,7 @@ type ApplicantsProfile = {
 };
 
 const ManageJobDetailsPage = (params: {
-  jobId: number;
+  jobId: string;
   loggedInProfileId: string;
 }) => {
   const { t, i18n } = useTranslation();
@@ -68,7 +68,7 @@ const ManageJobDetailsPage = (params: {
   const [warningModalType, setWarningModalType] = useState<
     "archive" | "delete" | "publish"
   >("archive");
-  const [warningModalJobId, setWarningModalJobId] = useState<number>(-1);
+  const [warningModalJobId, setWarningModalJobId] = useState<string>("");
   const [applicants, setApplicants] = useState<ApplicantsProfile[]>([]);
   const [acceptedApplicants, setAcceptedApplicants] = useState<
     ApplicantsProfile[]
@@ -496,7 +496,7 @@ const ManageJobDetailsPage = (params: {
     }
   };
 
-  const publishJob = (jobId: number) => {
+  const publishJob = (jobId: string) => {
     if (job) {
       const newJob = job;
       newJob.published = true;
@@ -507,7 +507,7 @@ const ManageJobDetailsPage = (params: {
     }
   };
 
-  const archiveJob = (jobId: number) => {
+  const archiveJob = (jobId: string) => {
     if (job) {
       const newJob = job;
       newJob.jobStatus = { id: 3, name: "closed" };
@@ -517,7 +517,7 @@ const ManageJobDetailsPage = (params: {
     }
   };
 
-  const deleteJob = (jobId: number) => {
+  const deleteJob = (jobId: string) => {
     void router.push("/manage-jobs");
     void deleteJobMutation({ jobId: jobId });
   };
@@ -631,7 +631,7 @@ const ManageJobDetailsPage = (params: {
 
   const openWarningModal = (
     type: "archive" | "delete" | "publish",
-    jobId: number
+    jobId: string
   ) => {
     setIsWarningModalOpen(true);
     setWarningModalType(type);

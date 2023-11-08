@@ -5,11 +5,11 @@ import { Button } from "./Button";
 const MyJobsActionConfirmationModal = (params: {
   onClose: () => void;
   type: "archive" | "delete" | "publish";
-  jobId: number;
+  jobId: string;
   isJobDetails: boolean;
-  publishJob: (jobId: number) => void;
-  archiveJob: (jobId: number) => void;
-  deleteJob: (jobId: number) => void;
+  publishJob: (jobId: string) => void;
+  archiveJob: (jobId: string) => void;
+  deleteJob: (jobId: string) => void;
 }) => {
   const { t } = useTranslation();
 

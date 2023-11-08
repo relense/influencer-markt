@@ -17,7 +17,7 @@ const MyJob = (params: {
   openJobModal: () => void;
   openWarningModal: (
     type: "archive" | "delete" | "publish",
-    jobId: number
+    jobId: string
   ) => void;
   duplicateJob: () => void;
 }) => {

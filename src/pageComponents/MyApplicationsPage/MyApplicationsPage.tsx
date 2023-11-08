@@ -27,8 +27,8 @@ const MyApplicationsPage = (params: {
   const width = useWindowWidth();
 
   const [jobs, setJobs] = useState<JobIncludes[]>([]);
-  const [jobsCursor, setJobsCursor] = useState<number>(-1);
-  const [selectedJobId, setSelectedJobId] = useState<number>(-1);
+  const [jobsCursor, setJobsCursor] = useState<string>("");
+  const [selectedJobId, setSelectedJobId] = useState<string>("");
 
   const {
     data: jobsData,
@@ -81,7 +81,7 @@ const MyApplicationsPage = (params: {
   }, [jobsWithCursorData]);
 
   useEffect(() => {
-    if (jobsData && jobsData[1][0] && width > 1024 && selectedJobId === -1) {
+    if (jobsData && jobsData[1][0] && width > 1024 && selectedJobId === "") {
       setSelectedJobId(jobsData[1][0].id);
     }
   }, [jobsData, selectedJobId, width]);
@@ -104,7 +104,7 @@ const MyApplicationsPage = (params: {
     return (
       <>
         <div className="flex w-full pb-4 lg:hidden lg:h-[70vh] lg:p-0">
-          {selectedJobId === -1 && (
+          {selectedJobId === "" && (
             <MyApplicationsList
               jobsCount={jobsData ? jobsData[0] : 0}
               isRefetchingJobsWithCursor={isRefetchingJobsWithCursor}
@@ -116,13 +116,13 @@ const MyApplicationsPage = (params: {
               key={"jobsListMobile"}
             />
           )}
-          {selectedJobId !== -1 && (
+          {selectedJobId !== "" && (
             <MyApplicationsDetails
               type="mobile"
               key={`jobDetailDesktop${selectedJobId || ""}`}
               userRole={userRole?.role || undefined}
               selectedJobId={selectedJobId}
-              setSelectedJobId={() => setSelectedJobId(-1)}
+              setSelectedJobId={() => setSelectedJobId("")}
             />
           )}
         </div>
@@ -150,7 +150,7 @@ const MyApplicationsPage = (params: {
               key={`jobDetailDesktop${selectedJobId || ""}`}
               userRole={userRole?.role || undefined}
               selectedJobId={selectedJobId}
-              setSelectedJobId={() => setSelectedJobId(-1)}
+              setSelectedJobId={() => setSelectedJobId("")}
             />
           )}
         </div>

@@ -35,8 +35,8 @@ const JobsPage = (params: {
   const ctx = api.useUtils();
 
   const [jobs, setJobs] = useState<JobIncludes[]>([]);
-  const [jobsCursor, setJobsCursor] = useState<number>(-1);
-  const [selectedJobId, setSelectedJobId] = useState<number>(-1);
+  const [jobsCursor, setJobsCursor] = useState<string>("");
+  const [selectedJobId, setSelectedJobId] = useState<string>("");
   const [isShareModalOpen, setIsShareModalOpen] = useState<boolean>();
   const [activeFiltersCount, setActiveFiltersCount] = useState<number>(0);
   const [isFilterModalOpen, setIsFilterModalOpen] = useState<boolean>(false);
@@ -132,7 +132,7 @@ const JobsPage = (params: {
   }, [jobsWithCursorData]);
 
   useEffect(() => {
-    if (jobsData && jobsData[1][0] && width > 1024 && selectedJobId === -1) {
+    if (jobsData && jobsData[1][0] && width > 1024 && selectedJobId === "") {
       setSelectedJobId(jobsData[1][0].id);
     }
   }, [jobsData, selectedJobId, width]);
@@ -195,7 +195,7 @@ const JobsPage = (params: {
     countActiveFilters(params);
 
     if (activeFiltersCount > 0) {
-      setSelectedJobId(-1);
+      setSelectedJobId("");
     }
 
     setJobs([]);
@@ -235,7 +235,7 @@ const JobsPage = (params: {
     setFilterPlatforms([]);
 
     if (activeFiltersCount > 0) {
-      setSelectedJobId(-1);
+      setSelectedJobId("");
       setJobs([]);
     }
 
@@ -324,7 +324,7 @@ const JobsPage = (params: {
     return (
       <>
         <div className="flex w-full pb-4 lg:hidden lg:h-[70vh] lg:p-0">
-          {selectedJobId === -1 && (
+          {selectedJobId === "" && (
             <JobsList
               jobsCount={jobsData ? jobsData[0] : 0}
               isRefetchingJobsWithCursor={isFetchingJobsWithCursor}
@@ -332,13 +332,13 @@ const JobsPage = (params: {
               jobs={jobs}
               isLoading={isLoadingJobs || isRefetchingJobs}
               onChangeJob={onChangeJob}
-              selectedJobId={-1}
+              selectedJobId={""}
               key={"jobsListMobile"}
               profile={profile || undefined}
               userRole={userRole?.role || undefined}
             />
           )}
-          {selectedJobId !== -1 && (
+          {selectedJobId !== "" && (
             <JobDetails
               openShareModal={() => setIsShareModalOpen(true)}
               type="mobile"
@@ -346,7 +346,7 @@ const JobsPage = (params: {
               openLoginModal={params.openLoginModal}
               userRole={userRole?.role || undefined}
               selectedJobId={selectedJobId}
-              setSelectedJobId={() => setSelectedJobId(-1)}
+              setSelectedJobId={() => setSelectedJobId("")}
               profile={profile || undefined}
             />
           )}
@@ -379,7 +379,7 @@ const JobsPage = (params: {
               openLoginModal={params.openLoginModal}
               userRole={userRole?.role || undefined}
               selectedJobId={selectedJobId}
-              setSelectedJobId={() => setSelectedJobId(-1)}
+              setSelectedJobId={() => setSelectedJobId("")}
               profile={profile || undefined}
             />
           )}
@@ -391,7 +391,7 @@ const JobsPage = (params: {
   return (
     <>
       <div className="mt-2 flex w-full cursor-default flex-col gap-8 self-center px-2 sm:px-12 xl:w-3/4 2xl:w-3/4 3xl:w-3/4 4xl:w-3/4 5xl:w-2/4">
-        {(width > 1024 || (width < 1024 && selectedJobId === -1)) &&
+        {(width > 1024 || (width < 1024 && selectedJobId === "")) &&
           filterBar()}
         {jobs.length === 0 &&
           !isLoadingJobs &&
@@ -409,7 +409,7 @@ const JobsPage = (params: {
         {renderDesktop()}
       </div>
       <div className="flex justify-center">
-        {isShareModalOpen && selectedJobId !== -1 && (
+        {isShareModalOpen && selectedJobId !== "" && (
           <ShareModal
             modalTitle={t("pages.jobs.shareModalTitle")}
             onClose={() => setIsShareModalOpen(false)}

@@ -33,7 +33,7 @@ export type ProfileIncludes = Prisma.ProfileGetPayload<{
 
 const JobDetails = (params: {
   setSelectedJobId: () => void;
-  selectedJobId: number;
+  selectedJobId: string;
   openLoginModal: () => void;
   openShareModal: () => void;
   type: "mobile" | "desktop";
@@ -50,7 +50,7 @@ const JobDetails = (params: {
   const [disableApply, setDisableApply] = useState<boolean>(false);
 
   const { data: jobsData, isLoading } = api.jobs.getSimpleJob.useQuery({
-    jobId: params?.selectedJobId || -1,
+    jobId: params?.selectedJobId || "",
   });
 
   const { mutate: applyToJob, isLoading: applicationIsLoading } =

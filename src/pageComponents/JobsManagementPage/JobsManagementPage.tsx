@@ -25,12 +25,12 @@ const JobsManagementPage = () => {
   });
   const [isWarningModalOpen, setIsWarningModalOpen] = useState<boolean>(false);
   const [jobs, setJobs] = useState<JobWithAllData[]>([]);
-  const [jobsCursor, setJobsCursor] = useState<number>(-1);
+  const [jobsCursor, setJobsCursor] = useState<string>("");
   const [jobsCount, setJobsCount] = useState<number>(0);
   const [warningModalType, setWarningModalType] = useState<
     "archive" | "delete" | "publish"
   >("archive");
-  const [warningModalJobId, setWarningModalJobId] = useState<number>(-1);
+  const [warningModalJobId, setWarningModalJobId] = useState<string>("");
   const [showFirstTimeModal, setShowFirstTimeModal] = useState<boolean>(false);
 
   const {
@@ -128,7 +128,7 @@ const JobsManagementPage = () => {
     }
   }, []);
 
-  const publishJob = (jobId: number) => {
+  const publishJob = (jobId: string) => {
     const newJobs = [...jobs];
 
     for (const job of newJobs) {
@@ -141,7 +141,7 @@ const JobsManagementPage = () => {
     void publishJobMutation({ jobId: jobId });
   };
 
-  const archiveJob = (jobId: number) => {
+  const archiveJob = (jobId: string) => {
     const newJobs = [...jobs];
 
     const index = newJobs.findIndex((job) => job.id === jobId);
@@ -153,7 +153,7 @@ const JobsManagementPage = () => {
     void archiveJobMutation({ jobId: jobId });
   };
 
-  const deleteJob = (jobId: number) => {
+  const deleteJob = (jobId: string) => {
     const newJobs = [...jobs];
 
     const index = newJobs.findIndex((job) => job.id === jobId);
@@ -182,7 +182,7 @@ const JobsManagementPage = () => {
 
   const openWarningModal = (
     type: "archive" | "delete" | "publish",
-    jobId: number
+    jobId: string
   ) => {
     setIsWarningModalOpen(true);
     setWarningModalType(type);

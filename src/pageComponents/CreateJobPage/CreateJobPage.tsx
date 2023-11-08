@@ -33,7 +33,7 @@ type ContentTypeWithQuantity = {
   amount: number;
 };
 
-const CreateJobPage = (params: { edit: boolean; jobId: number }) => {
+const CreateJobPage = (params: { edit: boolean; jobId: string }) => {
   const { t } = useTranslation();
   const ctx = api.useUtils();
   const router = useRouter();
@@ -147,7 +147,7 @@ const CreateJobPage = (params: { edit: boolean; jobId: number }) => {
       prevGender !== data.gender
     ) {
       const payload = {
-        jobId: params.jobId || -1,
+        jobId: params.jobId || "",
         jobSummary: data.jobSummary,
         jobDetails: data.jobDetails,
         socialMediaId: data.platform.id,

@@ -11,7 +11,7 @@ const PublicProfileJobs = (params: { profileId: string }) => {
   const { t } = useTranslation();
 
   const [jobs, setJobs] = useState<ProfileJobs[]>([]);
-  const [jobsCursor, setJobsCursor] = useState<number>(-1);
+  const [jobsCursor, setJobsCursor] = useState<string>("");
 
   const {
     data: jobsData,

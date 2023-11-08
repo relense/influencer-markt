@@ -28,7 +28,7 @@ const JobsList = (params: {
   jobsCount: number;
   jobs: JobIncludes[];
   onChangeJob: (job: JobIncludes) => void;
-  selectedJobId: number;
+  selectedJobId: string;
   fetchMoreJobs: () => void;
   isRefetchingJobsWithCursor: boolean;
   isLoading: boolean;

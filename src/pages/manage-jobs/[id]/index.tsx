@@ -22,9 +22,7 @@ const JobDetails: NextPage<JobDetailsProps> = ({ id }) => {
   );
 
   useEffect(() => {
-    const value = !!profileJobs?.createdJobs.find(
-      (job) => job.id === parseInt(id)
-    );
+    const value = !!profileJobs?.createdJobs.find((job) => job.id === id);
 
     if (!value && isLoading === false) {
       void router.push("/404");
@@ -41,7 +39,7 @@ const JobDetails: NextPage<JobDetailsProps> = ({ id }) => {
         <Layout>
           {({ loggedInProfileId }) => (
             <ManageJobDetailsPage
-              jobId={parseInt(id)}
+              jobId={id}
               loggedInProfileId={loggedInProfileId}
             />
           )}

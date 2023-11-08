@@ -132,7 +132,7 @@ export const OrdersRouter = createTRPCRouter({
           })
         ),
         platformId: z.number(),
-        jobId: z.number(),
+        jobId: z.string(),
         dateOfDelivery: z.date(),
       })
     )

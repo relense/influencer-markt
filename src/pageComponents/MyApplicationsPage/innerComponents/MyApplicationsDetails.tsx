@@ -15,7 +15,7 @@ import { Button } from "../../../components/Button";
 
 const MyApplicationsDetails = (params: {
   setSelectedJobId: () => void;
-  selectedJobId: number;
+  selectedJobId: string;
   type: "mobile" | "desktop";
   userRole: Role | undefined;
 }) => {
@@ -29,7 +29,7 @@ const MyApplicationsDetails = (params: {
 
   const { data: jobData, isLoading } = api.jobs.getSimpleJob.useQuery(
     {
-      jobId: params?.selectedJobId || -1,
+      jobId: params?.selectedJobId || "",
     },
     {
       cacheTime: 0,

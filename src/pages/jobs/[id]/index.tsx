@@ -14,7 +14,7 @@ const JobsDetails: NextPage<JobDetailsProps> = ({ id }) => {
   const router = useRouter();
 
   const { data: jobExists, isLoading } = api.jobs.verifyJobExists.useQuery({
-    jobId: parseInt(id),
+    jobId: id,
   });
 
   useEffect(() => {
@@ -27,10 +27,7 @@ const JobsDetails: NextPage<JobDetailsProps> = ({ id }) => {
     return (
       <Layout>
         {({ openLoginModal }) => (
-          <JobDetailsPage
-            jobId={parseInt(id)}
-            openLoginModal={openLoginModal}
-          />
+          <JobDetailsPage jobId={id} openLoginModal={openLoginModal} />
         )}
       </Layout>
     );

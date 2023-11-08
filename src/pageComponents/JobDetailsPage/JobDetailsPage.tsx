@@ -18,7 +18,7 @@ import { Button } from "../../components/Button";
 import { ShareModal } from "../../components/ShareModal";
 
 const JobDetailsPage = (params: {
-  jobId: number;
+  jobId: string;
   openLoginModal: () => void;
 }) => {
   const { t, i18n } = useTranslation();
@@ -35,7 +35,7 @@ const JobDetailsPage = (params: {
     refetch: refetcheJob,
     isLoading,
   } = api.jobs.getSimpleJob.useQuery({
-    jobId: params.jobId || -1,
+    jobId: params.jobId || "",
   });
 
   const { mutate: applyToJob, isLoading: applicationIsLoading } =
