@@ -19,7 +19,7 @@ import {
   faCircleCheck,
   faCircleXmark,
 } from "@fortawesome/free-regular-svg-icons";
-import { StripeInfoModal } from "./innerComponents/stripeInfoModal";
+import { InfoStripeModal } from "./innerComponents/InfoStripeModal";
 
 const BillingPage = (params: { isBrand: boolean }) => {
   const { t } = useTranslation();
@@ -289,7 +289,7 @@ const BillingPage = (params: { isBrand: boolean }) => {
           <InfoBalanceModal onClose={() => setOpenBalanceInfoModal(false)} />
         )}
         {openStripeInfoModal && (
-          <StripeInfoModal onClose={() => setOpenStripeInfoModal(false)} />
+          <InfoStripeModal onClose={() => setOpenStripeInfoModal(false)} />
         )}
       </>
     );
