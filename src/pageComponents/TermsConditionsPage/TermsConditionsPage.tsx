@@ -99,6 +99,7 @@ const TermsConditionsPage = () => {
         <div>{t("pages.termsConditions.purchasesAndPayments2.subtitle1")}</div>
         <div>{t("pages.termsConditions.purchasesAndPayments2.subtitle2")}</div>
         <div>{t("pages.termsConditions.purchasesAndPayments2.subtitle3")}</div>
+        <div>{t("pages.termsConditions.purchasesAndPayments2.subtitle4")}</div>
       </div>
     );
   };
@@ -342,6 +343,7 @@ const TermsConditionsPage = () => {
         <div>{t("pages.termsConditions.noticePolicy.subtitle6")}</div>
         <div>{t("pages.termsConditions.noticePolicy.subtitle7")}</div>
         <div>{t("pages.termsConditions.noticePolicy.subtitle8")}</div>
+        <div>{t("pages.termsConditions.noticePolicy.subtitle9")}</div>
       </div>
     );
   };
@@ -433,13 +435,13 @@ const TermsConditionsPage = () => {
     );
   };
 
-  const renderIndemification = () => {
+  const renderIndemnification = () => {
     return (
       <div className="flex flex-col gap-4 text-justify lg:text-left">
         <div className="text-center text-2xl font-semibold lg:text-left">
-          {t("pages.termsConditions.idemification.title")}
+          {t("pages.termsConditions.indemnification.title")}
         </div>
-        <div>{t("pages.termsConditions.idemification.subtitle")}</div>
+        <div>{t("pages.termsConditions.indemnification.subtitle")}</div>
       </div>
     );
   };
@@ -472,88 +474,6 @@ const TermsConditionsPage = () => {
     );
   };
 
-  const renderReferralAffiliateProgram = () => {
-    return (
-      <div className="flex flex-col gap-4 text-justify lg:text-left">
-        <div className="text-center text-2xl font-semibold lg:text-left">
-          {t("pages.termsConditions.referralAffiliateProgram.title")}
-        </div>
-        <div>
-          <strong>
-            {t("pages.termsConditions.referralAffiliateProgram.subtitle1")}
-          </strong>{" "}
-          {t("pages.termsConditions.referralAffiliateProgram.subtitle2")}
-        </div>
-        <div>
-          <strong>
-            {t("pages.termsConditions.referralAffiliateProgram.subtitle3")}
-          </strong>{" "}
-          {t("pages.termsConditions.referralAffiliateProgram.subtitle4")}
-        </div>
-        <div>
-          {t("pages.termsConditions.referralAffiliateProgram.subtitle5")}
-        </div>
-        <div>
-          {t("pages.termsConditions.referralAffiliateProgram.subtitle6")}
-        </div>
-        <div>
-          <strong>
-            {t("pages.termsConditions.referralAffiliateProgram.subtitle7")}
-          </strong>{" "}
-          {t("pages.termsConditions.referralAffiliateProgram.subtitle8")}
-        </div>
-        <div>
-          <strong>
-            {t("pages.termsConditions.referralAffiliateProgram.subtitle9")}
-          </strong>
-        </div>
-        <div>
-          {t("pages.termsConditions.referralAffiliateProgram.subtitle10")}{" "}
-          <strong>
-            {t("pages.termsConditions.referralAffiliateProgram.subtitle11")}
-          </strong>
-          {t("pages.termsConditions.referralAffiliateProgram.subtitle12")}
-        </div>
-        <div>
-          <strong>
-            {t("pages.termsConditions.referralAffiliateProgram.subtitle13")}
-          </strong>
-        </div>
-        <div>
-          {t("pages.termsConditions.referralAffiliateProgram.subtitle14")}
-        </div>
-        <div>
-          <strong>
-            {t("pages.termsConditions.referralAffiliateProgram.subtitle15")}
-          </strong>
-          {t("pages.termsConditions.referralAffiliateProgram.subtitle16")}
-        </div>
-        <div>
-          <strong>
-            {t("pages.termsConditions.referralAffiliateProgram.subtitle17")}
-          </strong>{" "}
-          {t("pages.termsConditions.referralAffiliateProgram.subtitle18")}
-        </div>
-        <div>
-          <strong>
-            {t("pages.termsConditions.referralAffiliateProgram.subtitle19")}
-          </strong>
-        </div>
-        <div>
-          {t("pages.termsConditions.referralAffiliateProgram.subtitle20")}
-        </div>
-        <div>
-          <strong>
-            {t("pages.termsConditions.referralAffiliateProgram.subtitle21")}
-          </strong>
-        </div>
-        <div>
-          {t("pages.termsConditions.referralAffiliateProgram.subtitle22")}
-        </div>
-      </div>
-    );
-  };
-
   const renderMiscellaneous = () => {
     return (
       <div className="flex flex-col gap-4 text-justify lg:text-left">
@@ -568,10 +488,6 @@ const TermsConditionsPage = () => {
         <div>{t("pages.termsConditions.miscellaneous.subtitle4")}</div>
         <div>{t("pages.termsConditions.miscellaneous.subtitle5")}</div>
         <div>{t("pages.termsConditions.miscellaneous.subtitle6")}</div>
-        <div className="text-lg font-semibold">
-          {t("pages.termsConditions.miscellaneous.subtitle7")}
-        </div>
-        <div>{t("pages.termsConditions.miscellaneous.subtitle8")}</div>
       </div>
     );
   };
@@ -585,6 +501,8 @@ const TermsConditionsPage = () => {
         <div>{t("pages.termsConditions.contactUs.subtitle1")}</div>
         <div>{t("pages.termsConditions.contactUs.subtitle2")}</div>
         <div>{t("pages.termsConditions.contactUs.subtitle3")}</div>
+        <div>{t("pages.termsConditions.contactUs.subtitle4")}</div>
+        <div>{t("pages.termsConditions.contactUs.subtitle5")}</div>
       </div>
     );
   };
@@ -623,10 +541,9 @@ const TermsConditionsPage = () => {
       {renderDisputeResolution()}
       {renderDisclaimer()}
       {renderLimitationsOfLiability()}
-      {renderIndemification()}
+      {renderIndemnification()}
       {renderUserData()}
       {renderElectronicCommunicationsTransactionsAndSignatures()}
-      {renderReferralAffiliateProgram()}
       {renderMiscellaneous()}
       {renderContactUs()}
     </div>
