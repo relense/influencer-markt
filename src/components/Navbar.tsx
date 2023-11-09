@@ -2,7 +2,7 @@
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { useTranslation } from "next-i18next";
-import { signOut } from "next-auth/react";
+import { signOut, useSession } from "next-auth/react";
 import { type Session } from "next-auth";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -48,10 +48,12 @@ export const Navbar = (params: {
   openLoginModal: () => void;
   setIsSignUp: (isSignUp: boolean) => void;
   loggedInProfileId: string;
+  userIsLoading: boolean;
 }) => {
   const { t } = useTranslation();
   const router = useRouter();
   const width = useWindowWidth();
+  const { status } = useSession();
 
   const dropdownWrapperRef = useRef(null);
   const drawerRef = useRef<HTMLDivElement>(null);
@@ -644,23 +646,29 @@ export const Navbar = (params: {
     }
   };
 
-  return (
-    <nav className="flex w-full select-none items-center justify-between px-4 py-2 lg:h-16 lg:gap-4 lg:p-12">
-      {openExploreDropdown && (
-        <div
-          className="absolute left-0 top-0 z-40 h-screen w-screen"
-          onClick={() => setOpenExploreDropdown(!openExploreDropdown)}
-        />
-      )}
-      {openSavedDropdown && (
-        <div
-          className="absolute left-0 top-0 z-40 h-screen w-screen"
-          onClick={() => setOpenSavedDropdown(!openSavedDropdown)}
-        />
-      )}
-      {renderLogoTitle()}
-      {leftNavBar()}
-      {rightNavbar()}
-    </nav>
-  );
+  if (status === "loading" || params.userIsLoading) {
+    return (
+      <nav className="flex w-full select-none items-center justify-between px-4 py-2 lg:h-16 lg:gap-4 lg:p-12"></nav>
+    );
+  } else {
+    return (
+      <nav className="flex w-full select-none items-center justify-between px-4 py-2 lg:h-16 lg:gap-4 lg:p-12">
+        {openExploreDropdown && (
+          <div
+            className="absolute left-0 top-0 z-40 h-screen w-screen"
+            onClick={() => setOpenExploreDropdown(!openExploreDropdown)}
+          />
+        )}
+        {openSavedDropdown && (
+          <div
+            className="absolute left-0 top-0 z-40 h-screen w-screen"
+            onClick={() => setOpenSavedDropdown(!openSavedDropdown)}
+          />
+        )}
+        {renderLogoTitle()}
+        {leftNavBar()}
+        {rightNavbar()}
+      </nav>
+    );
+  }
 };

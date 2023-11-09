@@ -27,6 +27,7 @@ const BottomBar = (params: {
   username: string;
   status: "authenticated" | "loading" | "unauthenticated";
   loggedInProfileId: string;
+  userIsLoading: boolean;
 }) => {
   const router = useRouter();
   const width = useWindowWidth();
@@ -80,54 +81,60 @@ const BottomBar = (params: {
     },
   ];
 
-  return (
-    <>
-      <div className="fixed bottom-0 z-40 flex w-full justify-between border-t-[1px] border-gray3 bg-white pb-2 sm:hidden">
-        {navigationLinks.map((navigationItem) => {
-          const iconClass =
-            router.pathname === navigationItem.pageUrl ||
-            (router.pathname === "/[username]" &&
-              navigationItem.pageUrl === `/${params.username}`)
-              ? "fa-lg"
-              : "fa-lg text-gray1";
+  if (params.status === "loading" || params.userIsLoading) {
+    return (
+      <div className="fixed bottom-0 z-40 flex w-full justify-between border-t-[1px] border-gray3 bg-white pb-2 sm:hidden"></div>
+    );
+  } else {
+    return (
+      <>
+        <div className="fixed bottom-0 z-40 flex w-full justify-between border-t-[1px] border-gray3 bg-white pb-2 sm:hidden">
+          {navigationLinks.map((navigationItem) => {
+            const iconClass =
+              router.pathname === navigationItem.pageUrl ||
+              (router.pathname === "/[username]" &&
+                navigationItem.pageUrl === `/${params.username}`)
+                ? "fa-lg"
+                : "fa-lg text-gray1";
 
-          if (
-            !navigationItem.loggedIn ||
-            (params.status === "authenticated" &&
-              navigationItem.loggedIn &&
-              navigationItem.profileSetup === true &&
-              params.loggedInProfileId !== "")
-          ) {
-            return (
-              <Link
-                key={navigationItem.pageUrl}
-                href={navigationItem.pageUrl}
-                className="flex flex-1 cursor-pointer items-center justify-center  p-4 text-center"
-              >
-                <FontAwesomeIcon
-                  icon={navigationItem.icon}
-                  className={iconClass}
-                />
-              </Link>
-            );
-          }
-        })}
-        {params.status === "unauthenticated" && (
-          <div
-            className="flex flex-1 cursor-pointer items-center justify-center  p-4 text-center"
-            onClick={() => setOPenHelpCenter(true)}
-          >
-            <FontAwesomeIcon icon={faLifeRing} className="fa-lg text-gray1" />
+            if (
+              !navigationItem.loggedIn ||
+              (params.status === "authenticated" &&
+                navigationItem.loggedIn &&
+                navigationItem.profileSetup === true &&
+                params.loggedInProfileId !== "")
+            ) {
+              return (
+                <Link
+                  key={navigationItem.pageUrl}
+                  href={navigationItem.pageUrl}
+                  className="flex flex-1 cursor-pointer items-center justify-center  p-4 text-center"
+                >
+                  <FontAwesomeIcon
+                    icon={navigationItem.icon}
+                    className={iconClass}
+                  />
+                </Link>
+              );
+            }
+          })}
+          {params.status === "unauthenticated" && (
+            <div
+              className="flex flex-1 cursor-pointer items-center justify-center  p-4 text-center"
+              onClick={() => setOPenHelpCenter(true)}
+            >
+              <FontAwesomeIcon icon={faLifeRing} className="fa-lg text-gray1" />
+            </div>
+          )}
+        </div>
+        {openHelpCenter && (
+          <div className="absolute top-0 z-50 h-full w-full overflow-hidden bg-white">
+            <HelpCenter close={() => setOPenHelpCenter(false)} />
           </div>
         )}
-      </div>
-      {openHelpCenter && (
-        <div className="absolute top-0 z-50 h-full w-full overflow-hidden bg-white">
-          <HelpCenter close={() => setOPenHelpCenter(false)} />
-        </div>
-      )}
-    </>
-  );
+      </>
+    );
+  }
 };
 
 export { BottomBar };

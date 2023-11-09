@@ -5,7 +5,6 @@ import { api } from "~/utils/api";
 import { useSession } from "next-auth/react";
 import { BottomBar } from "./BottomBar";
 import { Footer } from "./Footer";
-import { LoadingSpinner } from "./LoadingSpinner";
 import { LoginModal } from "./LoginModal";
 import { Navbar } from "./Navbar";
 import { CookiePolicy } from "./CookiePolicy";
@@ -67,9 +66,6 @@ export const Layout = (props: {
     }
   };
 
-  // if (status === "loading" || (userIsLoading && status === "authenticated")) {
-  //   return <LoadingSpinner />;
-  // } else {
   return (
     <main className="lg:flex lg:h-screen lg:w-full lg:flex-1 lg:flex-col">
       <Navbar
@@ -79,6 +75,7 @@ export const Layout = (props: {
         openLoginModal={() => setIsModalOpen(true)}
         setIsSignUp={setIsSignUp}
         loggedInProfileId={user?.profile?.id ? user.profile.id : ""}
+        userIsLoading={userIsLoading}
       />
       <div className="mb-12 flex w-full flex-1 flex-col overflow-y-auto sm:mb-0">
         <div className="flex flex-1 flex-col pb-16">
@@ -97,6 +94,7 @@ export const Layout = (props: {
         status={status}
         username={user?.username || ""}
         loggedInProfileId={user?.profile?.id ? user.profile.id : ""}
+        userIsLoading={userIsLoading}
       />
       <div className="flex justify-center">
         {isModalOpen && (
