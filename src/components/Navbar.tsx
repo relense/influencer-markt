@@ -646,7 +646,10 @@ export const Navbar = (params: {
     }
   };
 
-  if (status === "loading" || params.userIsLoading) {
+  if (
+    status === "loading" ||
+    (params.userIsLoading && status === "authenticated")
+  ) {
     return (
       <nav className="flex w-full select-none items-center justify-between px-4 py-2 lg:h-16 lg:gap-4 lg:p-12"></nav>
     );

@@ -81,7 +81,10 @@ const BottomBar = (params: {
     },
   ];
 
-  if (params.status === "loading" || params.userIsLoading) {
+  if (
+    params.status === "loading" ||
+    (params.userIsLoading && status === "authenticated")
+  ) {
     return (
       <div className="fixed bottom-0 z-40 flex w-full justify-between border-t-[1px] border-gray3 bg-white pb-2 sm:hidden"></div>
     );
