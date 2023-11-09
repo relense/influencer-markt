@@ -11,6 +11,7 @@ import { useRouter } from "next/router";
 import { helper } from "../../utils/helper";
 import { Button } from "../../components/Button";
 import Link from "next/link";
+import { LoadingSpinner } from "../../components/LoadingSpinner";
 
 const WithdrawPage = () => {
   const { t } = useTranslation();
@@ -33,8 +34,11 @@ const WithdrawPage = () => {
       },
     });
 
-  const { data: availablePayoutsSum } =
+  const { data: availablePayoutsSum, isLoading: isLoadingAvailablePayoutSum } =
     api.payouts.availablePayoutsSum.useQuery();
+
+  const { data: billingInfo, isLoading: isLoadingBillingInfo } =
+    api.billings.getBillingInfo.useQuery();
 
   const onChangeUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files?.[0]?.type === "application/pdf") {
@@ -198,27 +202,36 @@ const WithdrawPage = () => {
     );
   };
 
-  return (
-    <div className="flex w-full cursor-default flex-col gap-6 self-center px-4 pb-10 sm:px-12 lg:w-full xl:w-10/12 2xl:w-3/4 3xl:w-3/4 4xl:w-7/12 5xl:w-2/4">
-      {renderIntoInfo()}
-      {renderUploadInfo()}
-      <div className="flex justify-center p-4">
-        <Button
-          title={t("pages.withdraw.withdraw")}
-          level="terciary"
-          form="form-withdraw"
-          onClick={() => handleFileUpload()}
-          isLoading={isLoadingUploadInvoice}
-          disabled={
-            isLoadingUploadInvoice ||
-            !influencerInvoice ||
-            availablePayoutsSum === 0 ||
-            isentOfTax === ""
-          }
-        />
+  if (isLoadingBillingInfo || isLoadingAvailablePayoutSum) {
+    return (
+      <div className="flex justify-center">
+        <LoadingSpinner />
       </div>
-    </div>
-  );
+    );
+  } else {
+    return (
+      <div className="flex w-full cursor-default flex-col gap-6 self-center px-4 pb-10 sm:px-12 lg:w-full xl:w-10/12 2xl:w-3/4 3xl:w-3/4 4xl:w-7/12 5xl:w-2/4">
+        {renderIntoInfo()}
+        {renderUploadInfo()}
+        <div className="flex justify-center p-4">
+          <Button
+            title={t("pages.withdraw.withdraw")}
+            level="terciary"
+            form="form-withdraw"
+            onClick={() => handleFileUpload()}
+            isLoading={isLoadingUploadInvoice}
+            disabled={
+              isLoadingUploadInvoice ||
+              !influencerInvoice ||
+              availablePayoutsSum === 0 ||
+              isentOfTax === "" ||
+              !billingInfo?.payoutEnabled
+            }
+          />
+        </div>
+      </div>
+    );
+  }
 };
 
 export { WithdrawPage };

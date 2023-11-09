@@ -1,6 +1,7 @@
 import { api } from "~/utils/api";
 import type { GetServerSideProps, NextPage } from "next";
 import { useState } from "react";
+import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 
 import { helper } from "../../utils/helper";
 import { ProcessingPaymentPage } from "../../pageComponents/ProcessingPaymentPage/ProcessingPaymentPage";
@@ -56,15 +57,16 @@ const OrderPayCallback: NextPage<OrderPayCallbackProps> = ({ orderId }) => {
   );
 };
 
-export const getServerSideProps: GetServerSideProps<OrderPayCallbackProps> = (
-  context
-) => {
+export const getServerSideProps: GetServerSideProps<
+  OrderPayCallbackProps
+> = async (context) => {
   const query = context.query?.orderId;
   const orderId = query ? String(query) : "";
 
   return Promise.resolve({
     props: {
       orderId,
+      ...(await serverSideTranslations(context.locale as string, ["common"])),
     },
   });
 };

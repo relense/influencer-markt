@@ -40,27 +40,38 @@ export const StripesRouter = createTRPCRouter({
       return paymentIntent;
     }),
 
-  createAccountLink: protectedProcedure.mutation(async ({ ctx }) => {
-    const accountId = await ctx.prisma.user.findFirst({
-      where: {
-        id: ctx.session.user.id,
-      },
-      select: {
-        stripeAccountId: true,
-      },
-    });
-
-    if (accountId && accountId.stripeAccountId !== null) {
-      const accountLink = await stripe.accountLinks.create({
-        account: accountId.stripeAccountId,
-        refresh_url: `${env.NEXT_PUBLIC_BASE_URL}/stripe-onboarding`,
-        return_url: `${env.NEXT_PUBLIC_BASE_URL}/billing`,
-        type: "account_onboarding",
+  createAccountLink: protectedProcedure
+    .input(
+      z.object({
+        locale: z.string(),
+      })
+    )
+    .mutation(async ({ ctx, input }) => {
+      const accountId = await ctx.prisma.user.findFirst({
+        where: {
+          id: ctx.session.user.id,
+        },
+        select: {
+          stripeAccountId: true,
+        },
       });
 
-      return accountLink;
-    }
-  }),
+      let returnUrl = `${env.NEXT_PUBLIC_BASE_URL}/billing`;
+      if (!input.locale.includes("en")) {
+        returnUrl = `${env.NEXT_PUBLIC_BASE_URL}/${input.locale}/billing`;
+      }
+
+      if (accountId && accountId.stripeAccountId !== null) {
+        const accountLink = await stripe.accountLinks.create({
+          account: accountId.stripeAccountId,
+          refresh_url: `${env.NEXT_PUBLIC_BASE_URL}/stripe-onboarding`,
+          return_url: returnUrl,
+          type: "account_onboarding",
+        });
+
+        return accountLink;
+      }
+    }),
 
   verifyAccountInfo: protectedProcedure.mutation(async ({ ctx }) => {
     const accountId = await ctx.prisma.user.findFirst({

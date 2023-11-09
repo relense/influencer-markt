@@ -23,7 +23,7 @@ export default function CheckoutForm(params: {
 }) {
   const stripe = useStripe();
   const elements = useElements();
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
 
   const [email, setEmail] = useState<string>(params.email);
   const [message, setMessage] = useState<string>("");
@@ -61,10 +61,16 @@ export default function CheckoutForm(params: {
     });
 
     if (process.env.NEXT_PUBLIC_BASE_URL) {
+      let returnUrl = `${process.env.NEXT_PUBLIC_BASE_URL}/order-pay-callback?orderId=${params.orderId}`;
+
+      if (!i18n.language.includes("en")) {
+        returnUrl = `${process.env.NEXT_PUBLIC_BASE_URL}/${i18n.language}/order-pay-callback?orderId=${params.orderId}`;
+      }
+
       const { error } = await stripe.confirmPayment({
         elements,
         confirmParams: {
-          return_url: `${process.env.NEXT_PUBLIC_BASE_URL}/order-pay-callback?orderId=${params.orderId}`,
+          return_url: returnUrl,
         },
       });
 

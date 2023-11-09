@@ -4,6 +4,7 @@ import { api } from "~/utils/api";
 import { faCheck } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useTranslation } from "next-i18next";
+
 const ProcessingPaymentPage = (params: {
   orderId: string;
   hasProcessedAcceptOrder: boolean;
@@ -23,9 +24,8 @@ const ProcessingPaymentPage = (params: {
       (order.orderStatusId === 4 || order.orderStatusId === 3) &&
       isLoadingOrder === false
     ) {
-      debugger;
       setTimeout(() => {
-        void router.push(`/orders/${order?.id || -1}`);
+        void router.push(`/orders/${order?.id || ""}`);
       }, 1500);
     }
   }, [params.hasProcessedAcceptOrder, isLoadingOrder, order, router]);

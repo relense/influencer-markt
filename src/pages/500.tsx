@@ -1,5 +1,5 @@
 import { useTranslation } from "next-i18next";
-import type { GetServerSideProps, GetStaticProps } from "next";
+import type { GetStaticProps } from "next";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 
 import { Layout } from "../components/Layout";
