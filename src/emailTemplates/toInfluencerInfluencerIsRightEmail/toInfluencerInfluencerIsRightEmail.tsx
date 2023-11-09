@@ -1,4 +1,5 @@
 import sgMail from "@sendgrid/mail";
+import { env } from "../../env.mjs";
 
 function toInfluencerInfluencerIsRightEmail(params: {
   from: string;
@@ -13,12 +14,14 @@ function toInfluencerInfluencerIsRightEmail(params: {
   let buttonTitle = "View Order";
   let subject = `Resolution for the dispute for the order with ref: #${orderId}`;
   let description = `We at Influencer Markt have investigated what happened and reached the conclusion that you meet the requirements ${buyerName} asked. An invoice was emitted to you and your balance was updated.`;
+  let url = `${env.NEXT_PUBLIC_BASE_URL}/sales/${orderId}`;
 
   if (language === "pt") {
     title = `O Pedido com ref: #${orderId} resolução da disputa`;
     buttonTitle = "Ver Pedido";
     subject = `Resolução da disputa para o pedido com a ref: #${orderId}`;
     description = `Nós, na Influencer Markt, investigámos o que aconteceu e chegámos à conclusão de cumpriste os requisitos que ${buyerName} pediu. Uma fatura foi emitida para ti e o teu saldo foi actualizado.`;
+    url = `${env.NEXT_PUBLIC_BASE_URL}/pt/sales/${orderId}`;
   }
 
   sgMail.setApiKey(process.env.EMAIL_SMTP_KEY || "");
@@ -31,7 +34,7 @@ function toInfluencerInfluencerIsRightEmail(params: {
       text: text({ title }),
       html: html({
         title,
-        orderId: orderId.toString(),
+        url,
         buttonTitle,
         description,
       }),
@@ -56,11 +59,11 @@ function toInfluencerInfluencerIsRightEmail(params: {
  */
 function html(params: {
   title: string;
-  orderId: string;
+  url: string;
   buttonTitle: string;
   description: string;
 }) {
-  const { title, orderId, buttonTitle, description } = params;
+  const { title, url, buttonTitle, description } = params;
 
   return `<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
   <html xmlns="http://www.w3.org/1999/xhtml">
@@ -163,7 +166,7 @@ function html(params: {
                     <p class="description">${description}</p>
   
                     <a
-                      href="https://influencermarkt.com/sales/${orderId}"
+                      href="${url}"
                       class="button"
                       ><span style="color: #fff">${buttonTitle}</span></a
                     >

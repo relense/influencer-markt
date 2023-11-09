@@ -1,4 +1,5 @@
 import sgMail from "@sendgrid/mail";
+import { env } from "../../env.mjs";
 
 function payoutRejectedEmail(params: {
   from: string;
@@ -10,11 +11,13 @@ function payoutRejectedEmail(params: {
   let title = "The invoice was rejected";
   let buttonTitle = "Go To Billing";
   let subject = "The invoice was rejected";
+  let url = `${env.NEXT_PUBLIC_BASE_URL}/billing`;
 
   if (language === "pt") {
     title = "A fatura foi rejeitada";
     buttonTitle = "Ir Para Faturação";
     subject = "A Fatura foi rejeitada";
+    url = `${env.NEXT_PUBLIC_BASE_URL}/pt/billing`;
   }
 
   sgMail.setApiKey(process.env.EMAIL_SMTP_KEY || "");
@@ -28,6 +31,7 @@ function payoutRejectedEmail(params: {
       html: html({
         title,
         buttonTitle,
+        url,
       }),
     })
     .then(
@@ -48,8 +52,8 @@ function payoutRejectedEmail(params: {
  *
  * @note We don't add the email address to avoid needing to escape it, if you do, remember to sanitize it!
  */
-function html(params: { title: string; buttonTitle: string }) {
-  const { title, buttonTitle } = params;
+function html(params: { title: string; buttonTitle: string; url: string }) {
+  const { title, buttonTitle, url } = params;
 
   return `<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -147,7 +151,7 @@ function html(params: { title: string; buttonTitle: string }) {
                   <h3 class="title">${title}</h3>
 
                   <a
-                    href="https://influencermarkt.com/billing"
+                    href="${url}"
                     class="button"
                     ><span style="color: #fff">${buttonTitle}</span></a
                   >

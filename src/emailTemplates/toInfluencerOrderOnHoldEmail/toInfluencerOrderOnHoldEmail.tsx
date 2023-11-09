@@ -1,4 +1,5 @@
 import sgMail from "@sendgrid/mail";
+import { env } from "../../env.mjs";
 
 function toInfluencerOrderOnHoldEmail(params: {
   from: string;
@@ -13,12 +14,14 @@ function toInfluencerOrderOnHoldEmail(params: {
   let buttonTitle = "View Order";
   let subject = `The order with ref: #${orderId} is on hold`;
   let description = `Unfortunately, the delivery deadline for ${buyerName} has not been met. The order is currently on hold, awaiting the buyer's decision.`;
+  let url = `${env.NEXT_PUBLIC_BASE_URL}/sales/${orderId}`;
 
   if (language === "pt") {
     title = `O Pedido com ref: #${orderId} está suspenso`;
     buttonTitle = "Ver Pedido";
     subject = `O pedido com a ref: #${orderId} está suspenso`;
     description = `Lamentávelmente, o prazo de entrega para ${buyerName} não foi cumprido. O pedido encontra-se atualmente suspenso, aguardando a decisão do comprador.`;
+    url = `${env.NEXT_PUBLIC_BASE_URL}/pt/sales/${orderId}`;
   }
 
   sgMail.setApiKey(process.env.EMAIL_SMTP_KEY || "");
@@ -31,7 +34,7 @@ function toInfluencerOrderOnHoldEmail(params: {
       text: text({ title }),
       html: html({
         title,
-        orderId: orderId.toString(),
+        url,
         buttonTitle,
         description,
       }),
@@ -56,11 +59,11 @@ function toInfluencerOrderOnHoldEmail(params: {
  */
 function html(params: {
   title: string;
-  orderId: string;
+  url: string;
   buttonTitle: string;
   description: string;
 }) {
-  const { title, orderId, buttonTitle, description } = params;
+  const { title, url, buttonTitle, description } = params;
 
   return `<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
   <html xmlns="http://www.w3.org/1999/xhtml">
@@ -163,7 +166,7 @@ function html(params: {
                     <p class="description">${description}</p>
   
                     <a
-                      href="https://influencermarkt.com/sales/${orderId}"
+                      href="${url}"
                       class="button"
                       ><span style="color: #fff">${buttonTitle}</span></a
                     >

@@ -1,4 +1,5 @@
 import sgMail from "@sendgrid/mail";
+import { env } from "../../env.mjs";
 
 function toBuyerDeliveryIsTomorrowEmail(params: {
   from: string;
@@ -13,12 +14,14 @@ function toBuyerDeliveryIsTomorrowEmail(params: {
   let buttonTitle = "View Order";
   let subject = `Delivery for the order with ref: #${orderId} is tomorrow`;
   let description = `Tomorrow is the day of delivery for your order. Please make sure to contact ${influencerName} and ensure that everything is as you requested.`;
+  let url = `${env.NEXT_PUBLIC_BASE_URL}/orders/${orderId}`;
 
   if (language === "pt") {
     title = `O Pedido com ref: #${orderId} vai ser entregue amanhã`;
     buttonTitle = "Ver Pedido";
     subject = `Entrega do pedido com ref: #${orderId} é amanhã`;
     description = `Amanhã é o dia de entrega do teu pedido. Certifica-te de entrar em contato com ${influencerName} e garantir que tudo esteja conforme o solicitado.`;
+    url = `${env.NEXT_PUBLIC_BASE_URL}/pt/orders/${orderId}`;
   }
 
   sgMail.setApiKey(process.env.EMAIL_SMTP_KEY || "");
@@ -31,7 +34,7 @@ function toBuyerDeliveryIsTomorrowEmail(params: {
       text: text({ title }),
       html: html({
         title,
-        orderId: orderId.toString(),
+        url,
         buttonTitle,
         description,
       }),
@@ -56,11 +59,11 @@ function toBuyerDeliveryIsTomorrowEmail(params: {
  */
 function html(params: {
   title: string;
-  orderId: string;
+  url: string;
   buttonTitle: string;
   description: string;
 }) {
-  const { title, orderId, buttonTitle, description } = params;
+  const { title, url, buttonTitle, description } = params;
 
   return `<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
   <html xmlns="http://www.w3.org/1999/xhtml">
@@ -163,7 +166,7 @@ function html(params: {
                     <p class="description">${description}</p>
   
                     <a
-                      href="https://influencermarkt.com/orders/${orderId}"
+                      href="${url}"
                       class="button"
                       ><span style="color: #fff">${buttonTitle}</span></a
                     >

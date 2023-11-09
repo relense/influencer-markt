@@ -1,4 +1,5 @@
 import sgMail from "@sendgrid/mail";
+import { env } from "../../env.mjs";
 
 function toInfluencerDeliveryIsTomorrowEmail(params: {
   from: string;
@@ -13,12 +14,14 @@ function toInfluencerDeliveryIsTomorrowEmail(params: {
   let buttonTitle = "View Order";
   let subject = `Delivery for the order with ref: #${orderId} is scheduled for tomorrow`;
   let description = `Tomorrow is the day of delivery for the ${buyerName} order. Please ensure that everything is as per ${buyerName}'s requirements. If you require more time, kindly get in touch with ${buyerName} so that they can update the delivery date to a later time.`;
+  let url = `${env.NEXT_PUBLIC_BASE_URL}/orders/${orderId}`;
 
   if (language === "pt") {
     title = `O pedido com a ref: #${orderId} está agendado para ser entregue amanhã`;
     buttonTitle = "Ver Pedido";
     subject = `Entrega do pedido com ref: #${orderId} está agendado para amanhã`;
     description = `Amanhã é o dia de entrega do pedido de ${buyerName}. Certifica-te de que tudo está de acordo com as necessidades do ${buyerName}. Se precisares de mais tempo, entra em contato com ${buyerName} para que possam atualizar a data de entrega para um momento posterior.`;
+    url = `${env.NEXT_PUBLIC_BASE_URL}/pt/orders/${orderId}`;
   }
 
   sgMail.setApiKey(process.env.EMAIL_SMTP_KEY || "");
@@ -31,7 +34,7 @@ function toInfluencerDeliveryIsTomorrowEmail(params: {
       text: text({ title }),
       html: html({
         title,
-        orderId: orderId.toString(),
+        url,
         buttonTitle,
         description,
       }),
@@ -56,11 +59,11 @@ function toInfluencerDeliveryIsTomorrowEmail(params: {
  */
 function html(params: {
   title: string;
-  orderId: string;
+  url: string;
   buttonTitle: string;
   description: string;
 }) {
-  const { title, orderId, buttonTitle, description } = params;
+  const { title, url, buttonTitle, description } = params;
 
   return `<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
   <html xmlns="http://www.w3.org/1999/xhtml">
@@ -163,7 +166,7 @@ function html(params: {
                     <p class="description">${description}</p>
   
                     <a
-                      href="https://influencermarkt.com/orders/${orderId}"
+                      href="${url}"
                       class="button"
                       ><span style="color: #fff">${buttonTitle}</span></a
                     >

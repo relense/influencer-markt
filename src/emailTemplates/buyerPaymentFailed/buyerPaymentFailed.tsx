@@ -1,4 +1,5 @@
 import sgMail from "@sendgrid/mail";
+import { env } from "../../env.mjs";
 
 function buyerPaymentFailed(params: {
   from: string;
@@ -12,12 +13,14 @@ function buyerPaymentFailed(params: {
   let buttonTitle = "View Order";
   let subject = `The pament for the order with ref: #${orderId} failed`;
   let description = `Something went wrong with the payment and it failed. Please try again if you wish to continue with your order.`;
+  let url = `${env.NEXT_PUBLIC_BASE_URL}/orders/${orderId}`;
 
   if (language === "pt") {
     title = `O pagamento para o pedido com ref: #${orderId} falhou`;
     buttonTitle = "Ver Pedido";
     subject = `O pagamento para o pedido com ref: #${orderId} falhou`;
     description = `Alguma coisa de errado aconteceu com o teu pagamento e por isso falhou. Por favor tenta outra vez se desejas continuar com o teu pedido.`;
+    url = `${env.NEXT_PUBLIC_BASE_URL}/pt/orders/${orderId}`;
   }
 
   sgMail.setApiKey(process.env.EMAIL_SMTP_KEY || "");
@@ -30,7 +33,7 @@ function buyerPaymentFailed(params: {
       text: text({ title }),
       html: html({
         title,
-        orderId: orderId.toString(),
+        url,
         buttonTitle,
         description,
       }),
@@ -55,11 +58,11 @@ function buyerPaymentFailed(params: {
  */
 function html(params: {
   title: string;
-  orderId: string;
+  url: string;
   buttonTitle: string;
   description: string;
 }) {
-  const { title, orderId, buttonTitle, description } = params;
+  const { title, url, buttonTitle, description } = params;
 
   return `<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
   <html xmlns="http://www.w3.org/1999/xhtml">
@@ -162,7 +165,7 @@ function html(params: {
                     <p class="description">${description}</p>
   
                     <a
-                      href="https://influencermarkt.com/orders/${orderId}"
+                      href="${url}"
                       class="button"
                       ><span style="color: #fff">${buttonTitle}</span></a
                     >

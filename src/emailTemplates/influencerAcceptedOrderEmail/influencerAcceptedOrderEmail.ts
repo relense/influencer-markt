@@ -1,4 +1,5 @@
 import sgMail from "@sendgrid/mail";
+import { env } from "../../env.mjs";
 
 function influencerAcceptedOrderEmail(params: {
   from: string;
@@ -12,11 +13,13 @@ function influencerAcceptedOrderEmail(params: {
   let title = `${influencerName} Accepted Your Order`;
   let buttonTitle = "View Order";
   let subject = `${influencerName} accepted your order`;
+  let url = `${env.NEXT_PUBLIC_BASE_URL}/orders/${orderId}`;
 
   if (language === "pt") {
     title = `${influencerName} Aceitou o Pedido`;
     buttonTitle = "Ver Pedido";
     subject = `${influencerName} aceitou o teu pedido`;
+    url = `${env.NEXT_PUBLIC_BASE_URL}/pt/orders/${orderId}`;
   }
 
   sgMail.setApiKey(process.env.EMAIL_SMTP_KEY || "");
@@ -27,7 +30,7 @@ function influencerAcceptedOrderEmail(params: {
       to,
       subject,
       text: text({ title }),
-      html: html({ title, orderId: orderId.toString(), buttonTitle }),
+      html: html({ title, url, buttonTitle }),
     })
     .then(
       () => {
@@ -47,8 +50,8 @@ function influencerAcceptedOrderEmail(params: {
  *
  * @note We don't add the email address to avoid needing to escape it, if you do, remember to sanitize it!
  */
-function html(params: { title: string; orderId: string; buttonTitle: string }) {
-  const { title, orderId, buttonTitle } = params;
+function html(params: { title: string; url: string; buttonTitle: string }) {
+  const { title, url, buttonTitle } = params;
 
   return `<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
  <html xmlns="http://www.w3.org/1999/xhtml">
@@ -146,7 +149,7 @@ function html(params: { title: string; orderId: string; buttonTitle: string }) {
                    <h3 class="title">${title}</h3>
  
                    <a
-                     href="https://influencermarkt.com/orders/${orderId}"
+                     href="${url}"
                      class="button"
                      ><span style="color: #fff">${buttonTitle}</span></a
                    >
