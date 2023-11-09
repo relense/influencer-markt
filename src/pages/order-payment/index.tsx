@@ -1,7 +1,9 @@
 import { type GetServerSideProps, type NextPage } from "next";
-import { Layout } from "../../components/Layout";
+import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import { useEffect } from "react";
 import { useRouter } from "next/router";
+
+import { Layout } from "../../components/Layout";
 import { OrderPaymentPage } from "../../pageComponents/OrderPaymentPage/OrderPaymentPage";
 
 type OrderPaymentProps = {
@@ -25,7 +27,7 @@ const OrderPayment: NextPage<OrderPaymentProps> = ({ orderId, amount }) => {
   );
 };
 
-export const getServerSideProps: GetServerSideProps<OrderPaymentProps> = (
+export const getServerSideProps: GetServerSideProps<OrderPaymentProps> = async (
   context
 ) => {
   const query = context.query;
@@ -36,6 +38,7 @@ export const getServerSideProps: GetServerSideProps<OrderPaymentProps> = (
     props: {
       orderId,
       amount,
+      ...(await serverSideTranslations(context.locale as string, ["common"])),
     },
   });
 };

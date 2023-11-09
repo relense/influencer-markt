@@ -18,7 +18,7 @@ import { api } from "~/utils/api";
 
 import { helper } from "../../utils/helper";
 import { faGlobe } from "@fortawesome/free-solid-svg-icons";
-import { useTranslation } from "react-i18next";
+import { useTranslation } from "next-i18next";
 import { Button } from "../../components/Button";
 import { useState } from "react";
 import { Modal } from "../../components/Modal";

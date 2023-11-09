@@ -7,7 +7,7 @@ import {
 } from "@fortawesome/free-regular-svg-icons";
 import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
 import Link from "next/link";
-import { useTranslation } from "react-i18next";
+import { useTranslation } from "next-i18next";
 
 const HelpCenter = (params: { close: () => void }) => {
   const { t } = useTranslation();

@@ -2,7 +2,7 @@ import Image from "next/image";
 import { api } from "~/utils/api";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faReceipt, faXmark } from "@fortawesome/free-solid-svg-icons";
-import { useTranslation } from "react-i18next";
+import { useTranslation } from "next-i18next";
 import Link from "next/link";
 
 import { helper } from "../../utils/helper";

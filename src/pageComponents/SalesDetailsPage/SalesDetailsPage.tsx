@@ -1,4 +1,4 @@
-import { useTranslation } from "react-i18next";
+import { useTranslation } from "next-i18next";
 import Link from "next/link";
 import Image from "next/image";
 import toast from "react-hot-toast";

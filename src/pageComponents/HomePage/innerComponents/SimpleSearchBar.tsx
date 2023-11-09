@@ -2,7 +2,7 @@ import { api } from "~/utils/api";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSearch } from "@fortawesome/free-solid-svg-icons";
-import { useTranslation } from "react-i18next";
+import { useTranslation } from "next-i18next";
 import { Controller, useForm } from "react-hook-form";
 import { CustomMultiSelect } from "../../../components/CustomMultiSelect";
 import { Button } from "../../../components/Button";

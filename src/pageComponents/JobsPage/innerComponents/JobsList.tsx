@@ -2,8 +2,7 @@ import { useRef } from "react";
 import Image from "next/image";
 import type { Role, Prisma } from "@prisma/client";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { useTranslation } from "react-i18next";
-
+import { useTranslation } from "next-i18next";
 import { LoadingSpinner } from "../../../components/LoadingSpinner";
 import { type JobIncludes } from "../../../utils/globalTypes";
 import { Button } from "../../../components/Button";

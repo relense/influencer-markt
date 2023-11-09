@@ -6,7 +6,7 @@ import { LoadingSpinner } from "../../components/LoadingSpinner";
 import { ProfileCard } from "../../components/ProfileCard";
 import { type UserProfiles } from "../../utils/globalTypes";
 import { faBookmark } from "@fortawesome/free-solid-svg-icons";
-import { useTranslation } from "react-i18next";
+import { useTranslation } from "next-i18next";
 import Link from "next/link";
 import { Button } from "../../components/Button";
 

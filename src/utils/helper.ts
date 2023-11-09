@@ -37,7 +37,7 @@ export const usePrevious = <T>(value: T): T | undefined => {
 export const useWindowWidth = () => {
   const [width, setWidth] = useState<number>(0);
 
-  useLayoutEffect(() => {
+  useEffect(() => {
     function updateSize() {
       setWidth(window.innerWidth);
     }

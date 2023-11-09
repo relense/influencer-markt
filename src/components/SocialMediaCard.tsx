@@ -1,7 +1,6 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPencil, faXmark } from "@fortawesome/free-solid-svg-icons";
-import { useTranslation } from "react-i18next";
-
+import { useTranslation } from "next-i18next";
 import type { SocialMediaDetails } from "../utils/globalTypes";
 import { helper } from "../utils/helper";
 import { Modal } from "./Modal";

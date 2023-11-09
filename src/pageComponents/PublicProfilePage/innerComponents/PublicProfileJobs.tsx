@@ -1,8 +1,7 @@
 import { useEffect, useState } from "react";
 import { api } from "~/utils/api";
 import Link from "next/link";
-import { useTranslation } from "react-i18next";
-
+import { useTranslation } from "next-i18next";
 import { LoadingSpinner } from "../../../components/LoadingSpinner";
 import { type ProfileJobs } from "../../../utils/globalTypes";
 import { Button } from "../../../components/Button";

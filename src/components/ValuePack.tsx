@@ -3,8 +3,7 @@ import { faArrowRightRotate, faXmark } from "@fortawesome/free-solid-svg-icons";
 import { faCalendar } from "@fortawesome/free-regular-svg-icons";
 
 import { type SocialMedia } from "@prisma/client";
-import { useTranslation } from "react-i18next";
-
+import { useTranslation } from "next-i18next";
 const ValuePack = (params: {
   title: string;
   selected?: boolean;

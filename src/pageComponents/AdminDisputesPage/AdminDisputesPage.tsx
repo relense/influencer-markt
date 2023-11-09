@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { useTranslation } from "react-i18next";
+import { useTranslation } from "next-i18next";
 import Link from "next/link";
 import { faClose } from "@fortawesome/free-solid-svg-icons";
 

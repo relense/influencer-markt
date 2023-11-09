@@ -4,7 +4,7 @@ import Image from "next/image";
 import { LoadingSpinner } from "../../../components/LoadingSpinner";
 import { type JobIncludes } from "../../../utils/globalTypes";
 import { Button } from "../../../components/Button";
-import { useTranslation } from "react-i18next";
+import { useTranslation } from "next-i18next";
 import { helper } from "../../../utils/helper";
 
 const MyApplicationsList = (params: {

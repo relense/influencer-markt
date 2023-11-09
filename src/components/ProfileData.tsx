@@ -1,7 +1,7 @@
 import { type Prisma } from "@prisma/client";
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import { useTranslation } from "react-i18next";
+import { useTranslation } from "next-i18next";
 import { api } from "~/utils/api";
 import toast from "react-hot-toast";
 

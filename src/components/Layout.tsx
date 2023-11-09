@@ -67,44 +67,43 @@ export const Layout = (props: {
     }
   };
 
-  if (status === "loading" || (userIsLoading && status === "authenticated")) {
-    return <LoadingSpinner />;
-  } else {
-    return (
-      <main className="lg:flex lg:h-screen lg:w-full lg:flex-1 lg:flex-col">
-        <Navbar
-          username={user?.username || ""}
-          role={user?.role || { id: -1, name: "" }}
-          sessionData={sessionData}
-          openLoginModal={() => setIsModalOpen(true)}
-          setIsSignUp={setIsSignUp}
-          loggedInProfileId={user?.profile?.id ? user.profile.id : ""}
-        />
-        <div className="mb-12 flex w-full flex-1 flex-col overflow-y-auto sm:mb-0">
-          <div className="flex flex-1 flex-col pb-16">
-            {props.children({
-              openLoginModal: () => setIsModalOpen(true),
-              scrollLayoutToPreviousPosition: () =>
-                scrollLayoutToPreviousPosition(),
-              saveScrollPosition: () => saveScrollPosition(),
-              loggedInProfileId: user?.profile?.id ? user.profile.id : "",
-              isBrand: user?.role?.id === 1 ? true : false,
-            })}
-          </div>
-          <Footer />
+  // if (status === "loading" || (userIsLoading && status === "authenticated")) {
+  //   return <LoadingSpinner />;
+  // } else {
+  return (
+    <main className="lg:flex lg:h-screen lg:w-full lg:flex-1 lg:flex-col">
+      <Navbar
+        username={user?.username || ""}
+        role={user?.role || { id: -1, name: "" }}
+        sessionData={sessionData}
+        openLoginModal={() => setIsModalOpen(true)}
+        setIsSignUp={setIsSignUp}
+        loggedInProfileId={user?.profile?.id ? user.profile.id : ""}
+      />
+      <div className="mb-12 flex w-full flex-1 flex-col overflow-y-auto sm:mb-0">
+        <div className="flex flex-1 flex-col pb-16">
+          {props.children({
+            openLoginModal: () => setIsModalOpen(true),
+            scrollLayoutToPreviousPosition: () =>
+              scrollLayoutToPreviousPosition(),
+            saveScrollPosition: () => saveScrollPosition(),
+            loggedInProfileId: user?.profile?.id ? user.profile.id : "",
+            isBrand: user?.role?.id === 1 ? true : false,
+          })}
         </div>
-        <BottomBar
-          status={status}
-          username={user?.username || ""}
-          loggedInProfileId={user?.profile?.id ? user.profile.id : ""}
-        />
-        <div className="flex justify-center">
-          {isModalOpen && (
-            <LoginModal onClose={() => onCloseModal()} isSignUp={isSignUp} />
-          )}
-        </div>
-        <CookiePolicy />
-      </main>
-    );
-  }
+        <Footer />
+      </div>
+      <BottomBar
+        status={status}
+        username={user?.username || ""}
+        loggedInProfileId={user?.profile?.id ? user.profile.id : ""}
+      />
+      <div className="flex justify-center">
+        {isModalOpen && (
+          <LoginModal onClose={() => onCloseModal()} isSignUp={isSignUp} />
+        )}
+      </div>
+      <CookiePolicy />
+    </main>
+  );
 };

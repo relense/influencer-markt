@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { api } from "~/utils/api";
-import { useTranslation } from "react-i18next";
+import { useTranslation } from "next-i18next";
 import { useForm } from "react-hook-form";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus, faSubtract } from "@fortawesome/free-solid-svg-icons";

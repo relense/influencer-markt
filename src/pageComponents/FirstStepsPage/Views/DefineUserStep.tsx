@@ -13,7 +13,7 @@ import { api } from "~/utils/api";
 
 import { CustomSelect } from "../../../components/CustomSelect";
 import { ToolTip } from "../../../components/ToolTip";
-import { useTranslation } from "react-i18next";
+import { useTranslation } from "next-i18next";
 import { type UserIdentityData } from "../../../utils/globalTypes";
 
 export enum RoleEnum {

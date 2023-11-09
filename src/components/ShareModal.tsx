@@ -4,8 +4,7 @@ import Image from "next/image";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCopy } from "@fortawesome/free-solid-svg-icons";
 import { toast } from "react-hot-toast";
-import { useTranslation } from "react-i18next";
-
+import { useTranslation } from "next-i18next";
 const ShareModal = (params: {
   onClose: () => void;
   url: string;

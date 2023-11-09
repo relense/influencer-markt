@@ -1,8 +1,7 @@
 import { useState } from "react";
 import { type TicketType } from "../utils/globalTypes";
 import { helper } from "../utils/helper";
-import { useTranslation } from "react-i18next";
-
+import { useTranslation } from "next-i18next";
 const Ticket = (params: { ticket: TicketType }) => {
   const { i18n } = useTranslation();
   const [isOpen, setIsOpen] = useState<boolean>(false);

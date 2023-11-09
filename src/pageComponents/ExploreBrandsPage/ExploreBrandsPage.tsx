@@ -7,7 +7,7 @@ import { Button } from "../../components/Button";
 
 import { ComplexSearchBar } from "../../components/ComplexSearchBar";
 import { BrandsFilterModal } from "./innerComponents/BrandsFilterModal";
-import { useTranslation } from "react-i18next";
+import { useTranslation } from "next-i18next";
 import { LoadingSpinner } from "../../components/LoadingSpinner";
 import type { Option, UserProfiles } from "../../utils/globalTypes";
 

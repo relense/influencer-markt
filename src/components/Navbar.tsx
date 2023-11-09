@@ -1,7 +1,7 @@
 "use client";
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
-import { useTranslation } from "react-i18next";
+import { useTranslation } from "next-i18next";
 import { signOut } from "next-auth/react";
 import { type Session } from "next-auth";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";

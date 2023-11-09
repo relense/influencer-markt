@@ -7,7 +7,7 @@ import {
 import { type StripeLinkAuthenticationElementChangeEvent } from "@stripe/stripe-js";
 import { useState } from "react";
 import { api } from "~/utils/api";
-import { useTranslation } from "react-i18next";
+import { useTranslation } from "next-i18next";
 import toast from "react-hot-toast";
 
 import { Button } from "../../../components/Button";

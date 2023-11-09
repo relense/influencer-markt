@@ -8,7 +8,7 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 
 import type { JobWithAllData } from "../utils/globalTypes";
-import { useTranslation } from "react-i18next";
+import { useTranslation } from "next-i18next";
 
 const MyJobDropdown = (params: {
   job: JobWithAllData;

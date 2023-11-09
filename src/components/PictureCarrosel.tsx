@@ -13,7 +13,7 @@ import {
 } from "@fortawesome/free-regular-svg-icons";
 import imageCompression from "browser-image-compression";
 import Image from "next/image";
-import { useTranslation } from "react-i18next";
+import { useTranslation } from "next-i18next";
 import { toast } from "react-hot-toast";
 
 import { type PreloadedImage, usePrevious } from "../utils/helper";

@@ -2,8 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { api } from "~/utils/api";
 import { signOut } from "next-auth/react";
 import toast from "react-hot-toast";
-import { useTranslation } from "react-i18next";
-
+import { useTranslation } from "next-i18next";
 import { Button } from "../../components/Button";
 import { LoadingSpinner } from "../../components/LoadingSpinner";
 import { Modal } from "../../components/Modal";

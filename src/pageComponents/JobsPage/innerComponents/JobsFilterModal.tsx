@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useForm, Controller } from "react-hook-form";
-import { useTranslation } from "react-i18next";
+import { useTranslation } from "next-i18next";
 import { api } from "~/utils/api";
 
 import { Modal } from "../../../components/Modal";

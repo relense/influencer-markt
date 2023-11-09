@@ -1,4 +1,4 @@
-import { useTranslation } from "react-i18next";
+import { useTranslation } from "next-i18next";
 import { api } from "~/utils/api";
 import { useEffect } from "react";
 import toast from "react-hot-toast";

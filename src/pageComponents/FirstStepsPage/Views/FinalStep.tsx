@@ -1,6 +1,5 @@
 import { Button } from "../../../components/Button";
-import { useTranslation } from "react-i18next";
-
+import { useTranslation } from "next-i18next";
 export const FinalStep = (params: {
   changeStep: (value: "next" | "previous") => void;
   saveAllData: () => void;

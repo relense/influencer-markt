@@ -2,8 +2,7 @@ import { useEffect, useState } from "react";
 import { api } from "~/utils/api";
 import { useSession } from "next-auth/react";
 import { toast } from "react-hot-toast";
-import { useTranslation } from "react-i18next";
-
+import { useTranslation } from "next-i18next";
 import { PictureCarrosel } from "../../components/PictureCarrosel";
 import { type PreloadedImage, helper } from "../../utils/helper";
 import { Modal } from "../../components/Modal";

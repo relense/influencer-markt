@@ -7,6 +7,7 @@ import { useRouter } from "next/router";
 import { useEffect } from "react";
 import { LoadingSpinner } from "../../../components/LoadingSpinner";
 import { ManageJobDetailsPage } from "../../../pageComponents/ManageJobDetailsPage/ManageJobDetailsPage";
+import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 
 interface JobDetailsProps {
   id: string;
@@ -49,12 +50,13 @@ const JobDetails: NextPage<JobDetailsProps> = ({ id }) => {
   }
 };
 
-export const getStaticProps: GetStaticProps = (context) => {
+export const getStaticProps: GetStaticProps = async (context) => {
   const id = context.params?.id;
 
   return {
     props: {
       id,
+      ...(await serverSideTranslations(context.locale as string, ["common"])),
     },
   };
 };

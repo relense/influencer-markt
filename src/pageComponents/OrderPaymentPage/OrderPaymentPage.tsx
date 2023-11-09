@@ -3,8 +3,7 @@ import { Elements } from "@stripe/react-stripe-js";
 import { api } from "~/utils/api";
 import { useState } from "react";
 import toast from "react-hot-toast";
-import { useTranslation } from "react-i18next";
-
+import { useTranslation } from "next-i18next";
 import { helper } from "../../utils/helper";
 import CheckoutForm from "./innerComponent/CheckoutForm";
 

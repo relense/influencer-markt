@@ -2,6 +2,7 @@ import { useEffect } from "react";
 import type { GetStaticProps, NextPage } from "next";
 import { useRouter } from "next/router";
 import Head from "next/head";
+import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 
 import { PublicProfilePage } from "../../pageComponents/PublicProfilePage/PublicProfilePage";
 import { api } from "~/utils/api";
@@ -89,7 +90,7 @@ const PublicProfile: NextPage<PublicProfileProps> = ({ username }) => {
 
 export default PublicProfile;
 
-export const getStaticProps: GetStaticProps = (context) => {
+export const getStaticProps: GetStaticProps = async (context) => {
   const username = context.params?.username;
 
   if (typeof username !== "string") throw new Error("Invalid username");
@@ -97,6 +98,7 @@ export const getStaticProps: GetStaticProps = (context) => {
   return {
     props: {
       username,
+      ...(await serverSideTranslations(context.locale as string, ["common"])),
     },
   };
 };

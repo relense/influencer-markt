@@ -1,10 +1,11 @@
 import type { GetStaticProps, NextPage } from "next";
+import { useEffect } from "react";
+import { useRouter } from "next/router";
+import { serverSideTranslations } from "next-i18next/serverSideTranslations";
+import { api } from "~/utils/api";
 
 import { Layout } from "../../../components/Layout";
 import { JobDetailsPage } from "../../../pageComponents/JobDetailsPage/JobDetailsPage";
-import { api } from "~/utils/api";
-import { useEffect } from "react";
-import { useRouter } from "next/router";
 
 interface JobDetailsProps {
   id: string;
@@ -34,12 +35,13 @@ const JobsDetails: NextPage<JobDetailsProps> = ({ id }) => {
   }
 };
 
-export const getStaticProps: GetStaticProps = (context) => {
+export const getStaticProps: GetStaticProps = async (context) => {
   const id = context.params?.id;
 
   return {
     props: {
       id,
+      ...(await serverSideTranslations(context.locale as string, ["common"])),
     },
   };
 };

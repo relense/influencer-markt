@@ -2,8 +2,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Link from "next/link";
 import { useSession } from "next-auth/react";
 import { faStar } from "@fortawesome/free-solid-svg-icons";
-import { useTranslation } from "react-i18next";
-
+import { useTranslation } from "next-i18next";
 import type {
   Option,
   SocialMediaDetails,

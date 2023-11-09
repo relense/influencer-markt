@@ -1,7 +1,6 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faStar } from "@fortawesome/free-solid-svg-icons";
-import { useTranslation } from "react-i18next";
-
+import { useTranslation } from "next-i18next";
 import { api } from "~/utils/api";
 import { Review } from "../../../components/Review";
 import { Button } from "../../../components/Button";

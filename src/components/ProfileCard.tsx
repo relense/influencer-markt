@@ -12,7 +12,7 @@ import {
 
 import { helper } from "../utils/helper";
 import type { UserSocialMedia } from "../utils/globalTypes";
-import { useTranslation } from "react-i18next";
+import { useTranslation } from "next-i18next";
 import { toast } from "react-hot-toast";
 import {
   faFacebook,

@@ -1,6 +1,5 @@
 import { useState } from "react";
-import { useTranslation } from "react-i18next";
-
+import { useTranslation } from "next-i18next";
 import { Question } from "./innerComponents/Questions";
 import Link from "next/link";
 import { Button } from "../../components/Button";

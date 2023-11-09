@@ -3,6 +3,7 @@ import type { GetServerSideProps, NextPage } from "next";
 import { ProtectedWrapper } from "../../../components/ProtectedWrapper";
 import { Layout } from "../../../components/Layout";
 import { CreateJobPage } from "../../../pageComponents/CreateJobPage/CreateJobPage";
+import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 
 type CreateJobProps = {
   edit: string;
@@ -19,7 +20,7 @@ const CreateJob: NextPage<CreateJobProps> = ({ edit, jobId }) => {
   );
 };
 
-export const getServerSideProps: GetServerSideProps<CreateJobProps> = (
+export const getServerSideProps: GetServerSideProps<CreateJobProps> = async (
   context
 ) => {
   const query = context.query;
@@ -31,6 +32,7 @@ export const getServerSideProps: GetServerSideProps<CreateJobProps> = (
     props: {
       edit,
       jobId,
+      ...(await serverSideTranslations(context.locale as string, ["common"])),
     },
   });
 };

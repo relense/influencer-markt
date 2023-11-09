@@ -9,7 +9,7 @@ import {
   faHandHoldingDollar,
   faLock,
 } from "@fortawesome/free-solid-svg-icons";
-import { useTranslation } from "react-i18next";
+import { useTranslation } from "next-i18next";
 import Link from "next/link";
 import { useSession } from "next-auth/react";
 

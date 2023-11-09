@@ -2,6 +2,7 @@ import { type GetServerSideProps, type NextPage } from "next";
 import { Layout } from "../../../components/Layout";
 import { ExploreInfluencersPage } from "../../../pageComponents/ExploreInfluencersPage/ExploreInfluencersPage";
 import { type Option } from "../../../utils/globalTypes";
+import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 
 type ExploreInfluencersProps = {
   categories: string;
@@ -28,15 +29,16 @@ const ExploreInfluencers: NextPage<ExploreInfluencersProps> = ({
   );
 };
 
-export const getServerSideProps: GetServerSideProps<ExploreInfluencersProps> = (
-  context
-) => {
+export const getServerSideProps: GetServerSideProps<
+  ExploreInfluencersProps
+> = async (context) => {
   const query = context.query?.categories;
   const categories = query ? String(query) : "";
 
   return Promise.resolve({
     props: {
       categories,
+      ...(await serverSideTranslations(context.locale as string, ["common"])),
     },
   });
 };

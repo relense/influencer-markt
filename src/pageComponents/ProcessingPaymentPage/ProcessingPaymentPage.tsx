@@ -3,8 +3,7 @@ import { useEffect } from "react";
 import { api } from "~/utils/api";
 import { faCheck } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { useTranslation } from "react-i18next";
-
+import { useTranslation } from "next-i18next";
 const ProcessingPaymentPage = (params: {
   orderId: string;
   hasProcessedAcceptOrder: boolean;

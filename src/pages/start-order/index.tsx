@@ -1,11 +1,12 @@
 import type { GetServerSideProps, NextPage } from "next";
+import { useEffect } from "react";
+import { useRouter } from "next/router";
+import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 
 import { ProtectedWrapper } from "../../components/ProtectedWrapper";
 import { Layout } from "../../components/Layout";
 import { StartOrderPage } from "../../pageComponents/StartOrderPage/StartOrderPage";
 import type { ValuePack } from "../../utils/globalTypes";
-import { useEffect } from "react";
-import { useRouter } from "next/router";
 
 type StartOrderProps = {
   valuePacks: string;
@@ -43,7 +44,7 @@ const StartOrder: NextPage<StartOrderProps> = ({ valuePacks, profileId }) => {
   );
 };
 
-export const getServerSideProps: GetServerSideProps<StartOrderProps> = (
+export const getServerSideProps: GetServerSideProps<StartOrderProps> = async (
   context
 ) => {
   const valuePacksQuery = context.query?.valuePacks;
@@ -56,6 +57,7 @@ export const getServerSideProps: GetServerSideProps<StartOrderProps> = (
     props: {
       valuePacks,
       profileId,
+      ...(await serverSideTranslations(context.locale as string, ["common"])),
     },
   });
 };

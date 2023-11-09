@@ -1,7 +1,6 @@
 import { api } from "~/utils/api";
 import { useForm, Controller } from "react-hook-form";
-import { useTranslation } from "react-i18next";
-
+import { useTranslation } from "next-i18next";
 import { Modal } from "../../../components/Modal";
 import { Button } from "../../../components/Button";
 import { CustomSelect } from "../../../components/CustomSelect";

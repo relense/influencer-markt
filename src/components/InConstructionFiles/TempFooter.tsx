@@ -5,8 +5,7 @@ import {
   faTiktok,
   type IconDefinition,
 } from "@fortawesome/free-brands-svg-icons";
-import { useTranslation } from "react-i18next";
-
+import { useTranslation } from "next-i18next";
 type NavigationItems = {
   name: string;
   link: string;
