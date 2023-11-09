@@ -38,27 +38,11 @@ export const api = createTRPCNext<AppRouter>({
           queries: {
             refetchOnWindowFocus: false,
             retry: () => {
-              // if (error instanceof TRPCClientError) {
-              //   if (error) {
-              //     toast.error(`Something went wrong`, {
-              //       position: "bottom-left",
-              //     });
-              //   }
-              // }
-
               return false;
             },
           },
           mutations: {
-            retry: (failureCount, error) => {
-              // if (error instanceof TRPCClientError) {
-              //   if (error.data) {
-              //     toast.error(JSON.stringify(error), {
-              //       position: "bottom-left",
-              //     });
-              //   }
-              // }
-
+            retry: () => {
               return false;
             },
           },
