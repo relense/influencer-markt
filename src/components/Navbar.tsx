@@ -669,8 +669,14 @@ export const Navbar = (params: {
           />
         )}
         {renderLogoTitle()}
-        {leftNavBar()}
-        {rightNavbar()}
+        {params.userIsLoading && status === "authenticated" ? (
+          <></>
+        ) : (
+          <>
+            {leftNavBar()}
+            {rightNavbar()}
+          </>
+        )}
       </nav>
     );
   }
