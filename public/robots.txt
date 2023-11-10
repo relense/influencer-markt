@@ -1,18 +1,35 @@
-# Block all crawlers for /accounts
-User-agent: *
-Disallow: /admin
-
 # Block all crawlers for /billing
 User-agent: *
 Disallow: /billing
+
+# Block all crawlers for /pt//billing
+User-agent: *
+Disallow: /pt/billing
+
 
 # Block all crawlers for /orders
 User-agent: *
 Disallow: /orders
 
-# Block all crawlers for /orders
+# Block all crawlers for /pt/orders
+User-agent: *
+Disallow: /pt/orders
+
+# Block all crawlers for /sales
 User-agent: *
 Disallow: /salles
+
+# Block all crawlers for /pt/sales
+User-agent: *
+Disallow: /pt/salles
+
+# Block all crawlers for /settings
+User-agent: *
+Disallow: /settings
+
+# Block all crawlers for /pt/settings
+User-agent: *
+Disallow: /pt/settings
 
 # Allow all crawlers
 User-agent: *
