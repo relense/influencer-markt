@@ -1,4 +1,5 @@
-import { type NextPage } from "next";
+import type { GetServerSideProps, NextPage } from "next";
+import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 
 import { AdminDashboardPage } from "../../pageComponents/AdminDashboardPage/AdminDashboardPage";
 import { AdminLayout } from "../../components/AdminLayout";
@@ -13,5 +14,11 @@ const Admin: NextPage = () => {
     </AdminProtectedWrapper>
   );
 };
+
+export const getServerSideProps: GetServerSideProps = async (ctx) => ({
+  props: {
+    ...(await serverSideTranslations(ctx.locale as string, ["common"])),
+  },
+});
 
 export default Admin;

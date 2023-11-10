@@ -1,4 +1,6 @@
 import type { GetStaticProps, NextPage } from "next";
+import { serverSideTranslations } from "next-i18next/serverSideTranslations";
+
 import { AdminProtectedWrapper } from "../../../../components/AdminProtectedWrapper";
 import { AdminLayout } from "../../../../components/AdminLayout";
 import { AdminPayoutManagesPage } from "../../../../pageComponents/AdminPayoutManagesPage/AdminPayoutManagesPage";
@@ -17,12 +19,13 @@ const AdminPayoutManage: NextPage<AdminPayoutManageProps> = ({ id }) => {
   );
 };
 
-export const getStaticProps: GetStaticProps = (context) => {
+export const getStaticProps: GetStaticProps = async (context) => {
   const id = context.params?.id;
 
   return {
     props: {
       id,
+      ...(await serverSideTranslations(context.locale as string, ["common"])),
     },
   };
 };

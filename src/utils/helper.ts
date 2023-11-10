@@ -3,7 +3,7 @@ import relativeTime from "dayjs/plugin/relativeTime";
 import "dayjs/locale/pt";
 import "dayjs/locale/en";
 
-import { useEffect, useLayoutEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 export const useOutsideClick = (
   callback: (T?: unknown) => void,
@@ -75,9 +75,14 @@ const formatDate = (date: Date | number, locale: string): string => {
   dayjs.extend(relativeTime);
 
   if (dayjs(date).isSame(new Date(), "day")) {
-    return dayjs(date).locale(locale).fromNow();
+    return dayjs(date)
+      .locale(locale || "en")
+      .fromNow();
   } else {
-    return dayjs(date).locale(locale).format("DD MMMM YYYY");
+    debugger;
+    return dayjs(date)
+      .locale(locale || "end")
+      .format("DD MMMM YYYY");
   }
 };
 
@@ -85,15 +90,21 @@ const formatFullDateWithTime = (
   date: Date | number,
   locale: string
 ): string => {
-  return dayjs(date).locale(locale).format("DD MMMM YYYY - HH:mm ");
+  return dayjs(date)
+    .locale(locale || "en")
+    .format("DD MMMM YYYY - HH:mm ");
 };
 
 const formatOnlyDate = (date: Date | number, locale: string): string => {
-  return dayjs(date).locale(locale).format("DD/MM/YYYY");
+  return dayjs(date)
+    .locale(locale || "en")
+    .format("DD/MM/YYYY");
 };
 
 const formatShowtime = (date: Date | number, locale: string): string => {
-  return dayjs(date).locale(locale).format("HH:mm ");
+  return dayjs(date)
+    .locale(locale || "en")
+    .format("HH:mm ");
 };
 
 const formatNumberWithKorM = (number: number) => {
