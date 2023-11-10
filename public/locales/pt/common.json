@@ -1090,6 +1090,13 @@
         "subtitle5": "É fundamental compreender e distinguir entre estes três tipos de saldos para uma gestão financeira eficiente na plataforma Influencer Markt. Se tiver mais dúvidas ou questões, não hesite em entrar em contato com o nosso suporte, estamos sempre disponíveis para ajudar a esclarecer quaisquer questões que possam surgir.",
         "closeButton": "Fechar"
       },
+      "infoStripe": {
+        "title": "Por que usamos o Stripe?",
+        "subtitle1": "Na Influencer Markt, consideramos a segurança e a facilidade de pagamento como pilares fundamentais do nosso serviço. É por isso que confiamos no Stripe como o nosso processador de pagamentos.",
+        "subtitle2": "O Stripe é sinónimo de segurança, sendo confiado por milhões de empresas e clientes por todo o mundo. Com uma criptografia avançada e práticas de segurança de classe mundial, cada transação é protegida ao mais alto nível. Isso significa que pode ficar completamente descansado, sabendo que todas as informações estão seguras e são confidenciais.",
+        "subtitle3": "Inserir as tuas informações para pagamentos é rápido, seguro e simples. Com este processo simplificado e acessível, estará pronto para receber os pagamentos rapidamente.",
+        "subtitle4": "Aqui podes aceder ao Painel do Stripe, onde poderás ver mais informações sobre os teus pagamentos para além das que disponibilizamos na plataforma."
+      },
       "companyIncorrect": "O nome da empresa Influencer Markt LDA está incorreto.",
       "countryIncorrect": "O país onde a Influencer Markt opera está incorreto",
       "taxIncorrect": "O valor do IVA está incorreto",

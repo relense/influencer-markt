@@ -20,30 +20,16 @@ const InfoStripeModal = (params: { onClose: () => void }) => {
         }
       >
         <div className="flex flex-col justify-center gap-8 p-6">
-          <div className="flex flex-col gap-4">
+          <div className="flex flex-col items-center gap-4 text-justify">
             <div className="flex text-center text-lg font-semibold">
-              {t("pages.billing.infoBalance.title1")}
+              {t("pages.billing.infoStripe.title")}
             </div>
-            <div>{t("pages.billing.infoBalance.subtitle1")}</div>
-          </div>
-          <div className="flex flex-col gap-4">
-            <div className="flex text-lg font-semibold text-influencer">
-              {t("pages.billing.infoBalance.title2")}
+            <div>{t("pages.billing.infoStripe.subtitle1")}</div>
+            <div>{t("pages.billing.infoStripe.subtitle2")}</div>
+            <div>{t("pages.billing.infoStripe.subtitle3")}</div>
+            <div className="font-semibold">
+              {t("pages.billing.infoStripe.subtitle4")}
             </div>
-            <div>{t("pages.billing.infoBalance.subtitle2")}</div>
-          </div>
-          <div className="flex flex-col gap-4">
-            <div className="flex text-lg font-semibold text-influencer">
-              {t("pages.billing.infoBalance.title3")}
-            </div>
-            <div>{t("pages.billing.infoBalance.subtitle3")}</div>
-          </div>
-          <div className="flex flex-col gap-4">
-            <div className="flex text-lg font-semibold text-influencer">
-              {t("pages.billing.infoBalance.title4")}
-            </div>
-            <div>{t("pages.billing.infoBalance.subtitle4")}</div>
-            <div>{t("pages.billing.infoBalance.subtitle5")}</div>
           </div>
         </div>
       </Modal>

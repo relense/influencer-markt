@@ -1092,6 +1092,13 @@
         "subtitle5": "It is essential to understand and distinguish between these three types of balances for efficient financial management on the Influencer Markt platform. If you have any further questions or queries, please do not hesitate to contact our support team, we are always happy to help with any questions you may have.",
         "closeButton": "Close"
       },
+      "infoStripe": {
+        "title": "Why do we use Stripe",
+        "subtitle1": "In the Influencer Markt, we consider security and ease of payment as fundamental pillars of our service. That's why we trust Stripe as our payment processor.",
+        "subtitle2": "Stripe is synonymous with security, trusted by millions of businesses and customers worldwide. With advanced encryption and world-class security practices, every transaction is protected at the highest level. This means you can rest assured that all information is secure and confidential.",
+        "subtitle3": "Entering your payment information is quick, secure, and simple. With this streamlined and accessible process, you'll be ready to receive payments quickly.",
+        "subtitle4": "Here you can access the Stripe Dashboard, where you can see more information about your payments beyond what we provide on the platform."
+      },
       "companyIncorrect": "Influencer Markt LDA, company name is incorrect",
       "countryIncorrect": "The country where Influencer Markt operates is incorrect",
       "taxIncorrect": "The tax value is incorrect",
