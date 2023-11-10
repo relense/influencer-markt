@@ -13,7 +13,7 @@ const Home: NextPage = () => {
     return (
       <>
         <Head>
-          <title>Influencer Market</title>
+          <title>Influencer Markt</title>
           <meta
             name="description"
             content="A Market to find your favorite influencers"
@@ -30,7 +30,7 @@ const Home: NextPage = () => {
     return (
       <>
         <Head>
-          <title>Influencer Market</title>
+          <title>Influencer Markt</title>
           <meta
             name="description"
             content="A Market to find your favorite influencers"

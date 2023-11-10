@@ -45,7 +45,7 @@ const PublicProfile: NextPage<PublicProfileProps> = ({ username }) => {
   return (
     <>
       <Head>
-        <title>Influencers Market | {profile?.name} </title>
+        <title>Influencers Markt | {profile?.name} </title>
         <meta
           property="og:site_name"
           content={`${process.env.NEXT_PUBLIC_BASE_URL || ""}/${
@@ -62,7 +62,7 @@ const PublicProfile: NextPage<PublicProfileProps> = ({ username }) => {
         <meta property="og:type" content="website" />
         <meta
           property="og:title"
-          content={`Influencer Market: ${profile?.name || ""} Profile Page `}
+          content={`Influencer Markt: ${profile?.name || ""} Profile Page `}
         />
         <meta name="twitter:card" content="summary" />
         <meta
