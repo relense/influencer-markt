@@ -5,31 +5,31 @@ const generateSiteMap = (usernames: string[]) => {
   return `<?xml version="1.0" encoding="UTF-8"?>
    <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
      <url>
-       <loc>https://influencermarkt.com</loc>
+       <loc>https://www.influencermarkt.com</loc>
      </url>
      <url>
-       <loc>https://influencermarkt.com/faq</loc>
+       <loc>https://www.influencermarkt.com/faq</loc>
      </url>
      <url>
-        <loc>https://influencermarkt.com/privacy-policy</loc>
+        <loc>https://www.influencermarkt.com/privacy-policy</loc>
      </url>
      <url>
-        <loc>https://influencermarkt.com/about</loc>
+        <loc>https://www.influencermarkt.com/about</loc>
      </url>
      <url>
-        <loc>https://influencermarkt.com/contact-us</loc>
+        <loc>https://www.influencermarkt.com/contact-us</loc>
      </url>
      <url>
-        <loc>https://influencermarkt.com/terms-conditions</loc>
+        <loc>https://www.influencermarkt.com/terms-conditions</loc>
      </url>
      <url>
-        <loc>https://influencermarkt.com/explore/influencers</loc>
+        <loc>https://www.influencermarkt.com/explore/influencers</loc>
      </url>
      ${usernames
        .map((username) => {
          return `
        <url>
-           <loc>${`https://influencermarkt.com/${username}`}</loc>
+           <loc>${`https://www.influencermarkt.com/${username}`}</loc>
        </url>
      `;
        })
