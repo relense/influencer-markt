@@ -1,0 +1,25 @@
+# Block all crawlers for /accounts
+User-agent: *
+Disallow: /admin
+
+# Block all crawlers for /billing
+User-agent: *
+Disallow: /billing
+
+# Block all crawlers for /orders
+User-agent: *
+Disallow: /orders
+
+# Block all crawlers for /orders
+User-agent: *
+Disallow: /salles
+
+# Allow all crawlers
+User-agent: *
+Allow: /
+
+# Host
+Host: https://www.influencermarkt.com
+
+# Sitemaps
+Sitemap: https://www.influencermarkt.com/sitemap.xml
