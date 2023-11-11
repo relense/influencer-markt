@@ -105,7 +105,7 @@ const PublicProfileSocialMediaEdit = (params: {
           </div>
         )}
       </div>
-      <div className="flex flex-col gap-4 lg:flex-row lg:flex-wrap">
+      <div className="flex flex-col gap-4">
         {isLoadingProfileSocialMedia && (
           <div className="relative w-full">
             <LoadingSpinner />

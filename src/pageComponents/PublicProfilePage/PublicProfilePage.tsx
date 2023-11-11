@@ -326,7 +326,9 @@ const PublicProfilePage = (params: {
           </div>
           <div className="flex flex-1 flex-col gap-6">
             {renderAboutSection()}
-            {renderValuePackOrJobsSection()}
+            {session.data?.user.id !== profile?.userId
+              ? renderValuePackOrJobsSection()
+              : renderSocialMediaEdit()}
           </div>
         </div>
         {renderCategories()}
@@ -504,7 +506,6 @@ const PublicProfilePage = (params: {
             {renderFinishProfileDisclaimer()}
             {renderProfileHeader()}
             {renderMiddleContent()}
-            {renderSocialMediaEdit()}
             {renderReviews()}
           </div>
           {renderReviewModal()}
