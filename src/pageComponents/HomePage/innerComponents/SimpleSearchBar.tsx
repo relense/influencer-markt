@@ -10,7 +10,7 @@ import { useRouter } from "next/router";
 import { type Option } from "../../../utils/globalTypes";
 
 export const SimpleSearchBar = () => {
-  const { t } = useTranslation();
+  const { t } = useTranslation(["components", "general"]);
   const router = useRouter();
 
   const { data: categories } = api.allRoutes.getAllCategories.useQuery();
@@ -59,7 +59,7 @@ export const SimpleSearchBar = () => {
               options={categories?.map((category) => {
                 return {
                   id: category.id,
-                  name: t(`general.categories.${category.name}`),
+                  name: t(`general:general.categories.${category.name}`),
                 };
               })}
               handleOptionSelect={onChange}

@@ -1,0 +1,50 @@
+{
+  "home": {
+    "section1.title": "Find The Right Influencer For You",
+    "section1.subtitle": "Everyone can choose how to influence",
+    "section2.title": "Don't know where to choose from?",
+    "section2.subTitle": "Tell us what you need and let influencers come to you instead",
+    "section2.buttonTitle": "Create Offer",
+    "section3.title": "Everything You Need Made Simple",
+    "section3.buttonTitle": "Get Started",
+
+    "offers": {
+      "offer1.title1": "Maximize your return",
+      "offer1.subTitle1": "Adapt campaigns to your budget and target audience",
+      "offer1.title2": "Partnership Oportunity",
+      "offer1.subTitle2": "Find the right job for you",
+
+      "offer2.title1": "Messaging System",
+      "offer2.subTitle1": "Communication is the key to success, chat is always available",
+      "offer2.title2": "Favorites List",
+      "offer2.subTitle2": "Create a list of your most important contacts",
+
+      "offer3.title1": "Secure Transactions",
+      "offer3.subTitle1": "Complete payment protection until the campaign is concluded",
+      "offer3.title2": "Diverse Network of Influencers",
+      "offer3.subTitle2": "Content creators specialized in various areas and niches. Expand your reach easily, quickly, and safely."
+    },
+
+    "positivesBoards": {
+      "brands.title": "For Brands",
+      "brands.positive1": "Unlimited searches for the best content creators for your target",
+      "brands.positive2": "Ability to create customized offers to your needs",
+      "brands.positive3": "Save influencers for future campaigns",
+      "brands.positive4": "Run unlimited campaigns at any time",
+      "brands.positive5": "Receive applications for your offers and choose the ones that best fit your goals",
+      "brands.positive6": "Evaluate Influencers",
+      "brands.positive7": "Talk to content creators to improve the campaign together",
+      "brands.positive8": "Careful selection of content creators that meet your requirements",
+
+      "influencers.title": "For Influencers",
+      "influencers.positive1": "Be part of a relevant and constantly growing community",
+      "influencers.positive2": "Follow other influencers and exchange ideas",
+      "influencers.positive3": "Exclusive professional page to interact with brands",
+      "influencers.positive4": "Access offers created specifically for content creators",
+      "influencers.positive5": "Expand your profile internationally",
+      "influencers.positive6": "Choose offers that fit your profile",
+      "influencers.positive7": "Private channel to communicate with brands and other content creators",
+      "influencers.positive8": "Find the brand that resonates with you the most and submit your application"
+    }
+  }
+}

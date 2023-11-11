@@ -55,7 +55,11 @@ const Home: NextPage = () => {
 
 export const getServerSideProps: GetServerSideProps = async (ctx) => ({
   props: {
-    ...(await serverSideTranslations(ctx.locale as string, ["common"])),
+    ...(await serverSideTranslations(ctx.locale as string, [
+      "components",
+      "home",
+      "general",
+    ])),
   },
 });
 

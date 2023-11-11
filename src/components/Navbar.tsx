@@ -50,7 +50,7 @@ export const Navbar = (params: {
   loggedInProfileId: string;
   userIsLoading: boolean;
 }) => {
-  const { t } = useTranslation();
+  const { t } = useTranslation("components");
   const router = useRouter();
   const width = useWindowWidth();
   const { status } = useSession();

@@ -14,7 +14,7 @@ type NavigationItems = {
 };
 
 export const Footer = () => {
-  const { t } = useTranslation();
+  const { t } = useTranslation("components");
 
   const navigationItems: NavigationItems[] = [
     { name: t("components.footer.aboutUs"), link: "/about" },

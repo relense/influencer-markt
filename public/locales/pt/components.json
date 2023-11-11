@@ -1,0 +1,305 @@
+{
+  "components": {
+    "navbar": {
+      "home": "Início",
+      "explore": "Explora",
+      "saved": "Favoritos",
+      "signIn": "Entrar",
+      "joinMarketPlace": "Registar",
+      "myPage": "A Minha Página",
+      "editMyPage": "Editar A Minha Página",
+      "signOut": "Sair",
+      "influencers": "Influencers",
+      "brands": "Marcas",
+      "campaigns": "Campanhas",
+      "myJobs": "Gerir Vagas",
+      "jobs": "Vagas",
+      "aboutUs": "Sobre Nós",
+      "contactUs": "Contacta-nos",
+      "faq": "Perguntas Frequentes",
+      "sitemap": "Mapa do Site",
+      "terms": "Termos e Condições",
+      "privacy": "Política de Privacidade",
+      "applications": "Candidaturas",
+      "exploreBrands": "Explora Marcas",
+      "savedBrands": "Marcas Favoritas",
+      "helpCenter": "Centro de Ajuda",
+      "settings": "Definições",
+      "completeProfile": "Completa o teu Perfil",
+      "completeMessage": "Completa o teu perfil para desbloqueares todas as funcionalidades",
+      "orders": "Pedidos",
+      "sales": "Vendas",
+      "billing": "Facturação",
+      "imc": "CIM"
+    },
+
+    "adminNavbar": {
+      "influencers": "Influencers",
+      "brands": "Marcas",
+      "messages": "Mensagens",
+      "disputes": "Disputas"
+    },
+
+    "footer": {
+      "aboutUs": "Sobre Nós",
+      "contactUs": "Contacta-nos",
+      "faq": "Perguntas Frequentes",
+      "sitemap": "Mapa do Site",
+      "terms": "Termos e Condições",
+      "privacy": "Política de Privacidade"
+    },
+
+    "simpleSearchBar": {
+      "categories": "categorias",
+      "search": "Pesquisar"
+    },
+
+    "complexSearchBar": {
+      "categoriesPlaceholder": "Escolhe categorias",
+      "platformPlaceHolder": "Escolhe redes sociais"
+    },
+
+    "loginModal": {
+      "signUpAgreement": "Ao te inscreveres, concordas com os nossos",
+      "and": "e",
+      "termsLink": "Termos do Serviço",
+      "privacyLink": "Política de Privacidade",
+      "orSingUp": "ou registar com email",
+      "orLogin": "ou iniciar sessão com email",
+      "signinButton": "Receber Ligação de Email Segura",
+      "signupButton": "Registar Com Email",
+      "signInWith": "Iniciar Sessão Com",
+      "signUpWith": "Registar Com",
+      "signUp": "Registar",
+      "dontHaveAccount": "Não tens uma conta?"
+    },
+
+    "stepsReminder": {
+      "reminder": "Actualize e modifique esta informação a qualquer momento no teu",
+      "dashboard": "Painel"
+    },
+
+    "profileForm": {
+      "Male": "Masculino",
+      "Female": "Feminino",
+      "Other": "Outro",
+      "characterWarning": "Máximo de {{count}} caracteres",
+      "invalidPictureAlert": "Images têm de ser jpeg, jpg ou png e não podem exceder 4mbs",
+      "addProfilePicture": "Adiciona a tua imagem de perfil",
+      "displayNamePlaceholder": "Adiciona o teu nome: Como gostarias de ser reconhecido?",
+      "genderPlaceholder": "Escolhe o teu género: Masculino, Feminino, Outro",
+      "categoriesPlaceholder": "Escolhe as tuas categorias: E.g. Fashion, Travel, Fitness",
+      "countryPlaceholder": "País",
+      "cityPlaceholder": "Cidade",
+      "aboutPlaceholder": "Apresenta-te: Partilha uma breve descrição ou bio",
+      "websitePlaceholder": "Website URL: fornece o endereço do teu website",
+      "emptyMessageNoCountry": "Pesquisa a cidade onde vives",
+      "emptyMessageWithCountry": "Escolhe um país antes de escolheres a cidade",
+      "optional": "Opcional"
+    },
+
+    "addValuePackModal": {
+      "characterWarning": "Máximo de {{count}} caracteres",
+      "modalTitle": "Construtor de pack de valor",
+      "titlePlaceholder": "Título do pack de valor: Fornece um título cativante e descritivo para a tua oferta",
+      "platformPlaceholder": "Seleciona a rede social para o teu pack de valor",
+      "descriptionPlaceholder": "Descrição do pack de valor: Conta-nos sobre a tua oferta unica",
+      "deliveryPlaceholder": "Tempo de entrega E.g 4 dias",
+      "revisionsPlaceholder": "Número de revisões E.g 1",
+      "valuePricePlaceholder": "Preço do pack de valor",
+      "button": "Add Pack de Valor"
+    },
+
+    "pictureCarrosel": {
+      "invalidPictureWarning": "Images têm de ser jpeg, jpg ou png e não podem exceder 4mbs",
+      "addPicture": "Adiciona a tua imagem de perfil",
+      "deleteButton": "Apagar Foto",
+      "areYouSure": "Tens a certeza?",
+      "deleteWarning": "Tens a certeza que queres apagar esta foto? Esta acção é permanente.",
+      "lastPictureWarning": "Se apagares esta foto não vais ter portfolio. Sem fotos não apareces nos resultados das pesquisas.",
+      "addPictureBestResults": "Para os melhores resultados adiciona uma foto com 1080 * 1920"
+    },
+
+    "valuePack": {
+      "daysDelivery_one": "{{count}} Dia de Entrega",
+      "daysDelivery_other": "{{count}} Dias de Entrega",
+      "revision_one": "{{count}} Revisão",
+      "revision_other": "{{count}} Revisõess"
+    },
+
+    "review": {
+      "readMore": "Lê Mais"
+    },
+
+    "requestValuePack": {
+      "modalTitle": "Pede um pack personalizado",
+      "errorWarning": "Máximo de {{count}} caracteres",
+      "platformsLabel": "Plataformas",
+      "platformPlaceHolder": "Escolhe a tua rede social: e.g., Instagram, TikTok",
+      "summaryTitle": "Sumário do Pedido",
+      "requestPlaceholder": "E.g 1 Reel do Instagram",
+      "detailsTitle": "Detalhes do Pedido",
+      "detailsPlaceholder": "Especifique os seus requisitos para o influencer escolhido. Partilhe o número desejado de publicações ou fotografias e os resultados específicos que espera. Por exemplo, se precisar de um vídeo TikTok a promover o seu produto, forneça as orientações necessárias. Instruções claras ajudam o influencer a compreender as suas expectativas e a envolver eficazmente o seu público-alvo.",
+      "priceTitle": "Preço",
+      "pricePlaceholder": "Preço do pack de valor",
+      "deliveryTitle": "Data de Entrega",
+      "deliveryPlaceholder": "Escolhe uma data de entrega",
+      "youSocialTitle": "A Tua Rede Social",
+      "yourSocialSubTitle": "Deixa o influencer conhecer-te melhor",
+      "websitePlaceholder": "O teu website",
+      "socialPlaceholder": "Link para a conta principal da rede social E.g. https://www.instagram.com/account",
+      "modalButton": "Add Pack de Valor"
+    },
+
+    "socialMediaCard": {
+      "daysDelivery_one": "{{count}} Dia de Entrega",
+      "daysDelivery_other": "{{count}} Dias de Entrega",
+      "revision_one": "{{count}} Revisão",
+      "revision_other": "{{count}} Revisões",
+      "handler": "Nome de Utilizador",
+      "followers": "Seguidores",
+      "deleteButton": "Apagar Rede Social",
+      "areYouSure": "Tens a certeza?",
+      "deleteWarning": "Tens a certeza que queres apagar esta rede social? Esta acção é permanente."
+    },
+
+    "profileCard": {
+      "numberOfFollowers": "{{count, number}}",
+      "readMore": "Lê Mais",
+      "removedProfile": "Perfil Removido Com Sucesso",
+      "savedProfile": "Perfil Guardado Com Sucesso",
+      "toastWarning": "Completa o teu perfil para poderes guardar",
+      "jobs_one": "{{count}} Vaga",
+      "jobs_other": "{{count}} Vagas"
+    },
+
+    "myJobDropDown": {
+      "publish": "Publicar",
+      "archive": "Concluir",
+      "duplicate": "Duplicar",
+      "delete": "Apagar",
+      "update": "Actualizar",
+      "jobCreated": "Vaga criada com sucesso",
+      "jobPublished": "Vaga publicada com sucesso",
+      "jobArchived": "Vaga concluída com sucesso",
+      "jobDuplicated": "Vaga duplicada com sucesso",
+      "jobDeleted": "Vaga apagada com sucesso",
+      "jobUpdated": "Vaga actualizada com sucesso"
+    },
+
+    "shareModal": {
+      "copySuccessfull": "Ligação foi copiada para o clipboard",
+      "copy": "Copiar"
+    },
+
+    "filter": {
+      "filters": "Filtros",
+      "followersInputLabel": "Seguidores",
+      "followersInputPlaceholder": "Followers",
+      "genderInputLabel": "Género",
+      "genderInputPlaceholder": "Escolhe um género",
+      "contentTypeInputLabel": "Tipo de Conteúdo",
+      "priceInputLabel": "Preço",
+      "clearAllButton": "Limpar filtros",
+      "showInfluencersButton": "Mostrar Influencers",
+      "minimum": "Mínimo",
+      "minimumPlaceholder": "Seguidores Min",
+      "Maximum": "Máximo",
+      "MaximumPlaceholder": "Seguidores Max",
+      "any": "Todos",
+      "Male": "Masculino",
+      "Female": "Feminino",
+      "Other": "Outro",
+      "location": "Local",
+      "countryPlaceholder": "País",
+      "cityPlaceHolder": "Cidade",
+      "emptyMessageNoCountry": "Pesquisa a cidade com as primeiras 3 letras",
+      "emptyMessageWithCountry": "Escolhe um país antes de escolheres a cidade",
+      "minPricePlaceholder": "Preço Min",
+      "maxPricePlaceholder": "Preço Max",
+      "showBrandsButton": "Mostrar Marcas",
+      "showJobs": "Mostrar Vagas"
+    },
+
+    "notification": {
+      "notifications": "Notificações",
+      "noNotifications": "Não há notificações"
+    },
+
+    "credits": {
+      "creditsTitle": "Créditos Influencer Markt:",
+      "noCredits": "Não há Créditos Influencer Markt",
+      "imc": "CMI",
+      "youHaveSpent": "Tu gastaste:",
+      "youHaveReceived": "Tu recebeste:"
+    },
+
+    "whathappensNext": {
+      "buyerOrderStatusStart": "O que acontece depois de enviar o pedido?",
+      "buyerOrderStatusInProgress": "Qual é o progresso do meu pedido?",
+      "orderSent": "Pedido Enviado",
+      "ordersAccepted": "Pedido Aceite",
+      "paymentDetails": "Detalhes de Pagamento",
+      "inProgress": "Em Progresso",
+      "delivered": "Entregue",
+      "confirmed": "Confirmado",
+      "reviewed": "Avaliado",
+      "buyerOrderSent": "O influencer tem que dar uma resposta ao teu pedido. Podem conversar através do campo de mensagens.",
+      "buyerOrderAccepted": "O influencer aceitou o teu pedido. Podes adicionar os teus detalhes de pagamento.",
+      "buyerPaymentDetails": "A encomenda está agora em progresso e, quando o influencer cumprir os requisitos, será entregue.",
+      "buyerInProgress": "O pedido foi entregue pelo influencer.",
+      "buyerConfirmed": "Confirma o pedido, verifica se tudo está como esperado e dá uma avaliação.",
+      "influencerOrderSent": "O comprador fez um pedido. Tens que aceitar ou rejeitá-lo.",
+      "influencerOrderAccepted": "Depois disso, podes trabalhar no pedido. Informaremos quando podes começar.",
+      "influencerPaymentDetails": "O pedido está agora em progresso e é a tua vez de brilhar. Faz o que for necessário para cumprir os requisitos do pedido.",
+      "influencerInProgress": "O pedido foi entregue.",
+      "influencerConfirmed": "O comprador vai confirmar se tudo está como esperado.",
+      "buyerRate": "Para finalizar falta availar o pedido.",
+      "influencerRate": "O comprador vai dar uma avaliação."
+    },
+
+    "messageBoard": {
+      "sendMessageHere": "Envia mensagens aqui",
+      "messages": "Mensages",
+      "noMessages": "Não há mensagens",
+      "noMessagesSubtitle": "Sê o primeiro a enviar uma mensagem",
+      "inputDisabled": "Indisponível"
+    },
+
+    "finishProfileDisclaimer": {
+      "disclaimer1": "Assegura a tua presença no menu 'Explorar' ao adicionar imagens ao teu portfólio e ao ligares as tuas redes sociais",
+      "disclaimer2": "Assegura a tua presença no menu 'Explorar' ao ligares as tuas redes sociais",
+      "disclaimer3": "Assegura a tua presença no menu 'Explorar' ao adicionar imagens ao teu portfólio"
+    },
+
+    "cookiePolicy": {
+      "modal": {
+        "title1": "O que são cookies?",
+        "subtitle1": "Os cookies servem para ajudar a determinar a utilizada, interesse e o número de utilizações dos website, permitindo uma navegação mais rápida e eficiente, eliminando a necessidade de introduzir repetidamente as mesmas informações.",
+        "title2": "Que tipo de cookies existem?",
+        "subtitle2": "Existem dois grupos de cookies que podem ser utilizados.",
+        "title3": "Cookies permantes",
+        "subtitle3": "Este cookies ficam armazenados ao nível do browser nos equipamentos de accesso(PC, mobile e tablet) e que são utilizados sempre que faz uam nova visita a uma dos websites do Influencer Markt. São utilizados, geralmente, para direcionar a navegaçãos aos interesses do utilizador, permitindo prestar um serviço mais personalizado.",
+        "title4": "Cookies de sessão",
+        "subtitle4": "São cookies temporários que permanecem no arquivo de cookies do browser até sair do website. A informação obitda por estes cookies serve para analisar pradrões de tráfego na web, permitindo identificar problemas a fornecer uma melhor experiência de navegação.",
+        "title5": "Para que fins utilizamos cookies?",
+        "title6": "Cookies estritamente necessários",
+        "subtitle6": "Permitem a navegação no website e utilização das aplicações, bem como aceder a áreas seguras do website. Sem estes cookies, os serviços requeridos não podem ser prestados.",
+        "title7": "Cookies analíticos",
+        "subtitle7": "São utilizados anonimamente para efeitos de criação de análise de estatísticas, no sentido de melhorar o funcionamento do website.",
+        "title8": "Cookies de funcionalidade",
+        "subtitle8": "Guardam as preferências do utilizador relativamente à utilização do site, para que não seja necessário voltar a configurar o site cada vez que o visita.",
+        "title9": "Cookies de terceiros",
+        "subtitle9": "Medem o sucesso de aplicações e eficácia da pubilicdade de terceiros. Podem também ser utilizados no sentido de personalizar um widget com dados do utilizador.",
+        "title10": "Como pode gerir os cookies?",
+        "subtitle10": "Todos os browsers permitem ao utilizador aceitar, recusar ou apagar cookies, e ainda informar o utilizador sempre que um cookie é recebido, nomeadamente através da selecção das definições apropriadas no respetivo navegador. O utilizador pode configurar os cookies no menu ''Opções'' ou ''preferências'' do seu browser.",
+        "subtitle11": "Note-se, no entanto que, ao desactivar cookies, pode impedir que alguns serviços da web funcionem correctamente, afetando, parcial ou totalmente, a navegação no website."
+      },
+      "row": {
+        "description": "Este site utiliza cookies que permitem melhorar o desempenho e a experiência do utilizador na sua utilização.",
+        "cookiePolicy": "Política de Cookies",
+        "button": "Concordo"
+      }
+    }
+  }
+}
