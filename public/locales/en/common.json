@@ -1044,7 +1044,7 @@
       "billingModalTitle": "Billing",
       "billingName": "Name",
       "billingEmail": "Email",
-      "billingTaxNumber": "National Insurance Number",
+      "billingTaxNumber": "Tax Identification Number",
       "billingInformation": "Billing Information",
       "balanceInformation": "Balance Information",
       "payoutPartner": "Stripe Dashboard",
@@ -1055,7 +1055,7 @@
       "noInformation": "No information",
       "salesInvoices": "Sales Invoices",
       "purchasesInvoices": "Purchases Invoices",
-      "invalidTin": "The TIN is invalid",
+      "invalidTin": "The Tax Identification Number is invalid",
       "availableBalance": "Available Balance",
       "pendingBalance": "Pending Balance",
       "orderRef": "Order Ref",
@@ -1171,11 +1171,11 @@
       "contactInfo": "Contact Info",
       "name": "Name",
       "billingInfo": "Billing Info",
-      "tin": "TIN",
+      "tin": "Tax Identification Number",
       "paymentInfo": "Payment Info",
       "pay": "Pay {{money}}",
       "unexpectedError": "An unexpected error occurred",
-      "invalidTin": "Your TIN is invalid"
+      "invalidTin": "Your Tax Identification Number is invalid"
     },
 
     "privacyPolicy": {

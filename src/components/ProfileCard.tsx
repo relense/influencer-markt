@@ -155,6 +155,40 @@ const ProfileCard = (params: {
     }
   };
 
+  const showMoneyRange = () => {
+    if (
+      params.type === "Influencer" &&
+      usefullSocialMedia.valuePacks &&
+      usefullSocialMedia.valuePacks[0]
+    ) {
+      let smallerValue = 0;
+      let hightestValue = 0;
+
+      usefullSocialMedia.valuePacks.forEach((valuePack, index) => {
+        if (index === 0) {
+          smallerValue = valuePack.valuePackPrice;
+        } else if (index !== 0 && valuePack.valuePackPrice < smallerValue) {
+          smallerValue = valuePack.valuePackPrice;
+        }
+
+        if (valuePack.valuePackPrice > hightestValue) {
+          hightestValue = valuePack.valuePackPrice;
+        }
+      });
+
+      return (
+        <div className="flex gap-1 text-sm font-semibold lg:text-lg">
+          {usefullSocialMedia.valuePacks.length > 0 &&
+            smallerValue !== hightestValue &&
+            `${helper.calculerMonetaryValue(smallerValue)}€`}
+          {usefullSocialMedia.valuePacks.length > 0 &&
+            smallerValue !== hightestValue && <span>-</span>}
+          {helper.calculerMonetaryValue(hightestValue)}€
+        </div>
+      );
+    }
+  };
+
   return (
     <div className="flex w-full  flex-col gap-2 lg:w-80">
       <div className="relative h-80 w-full self-center overflow-hidden rounded-xl shadow-xl lg:w-80">
@@ -213,33 +247,18 @@ const ProfileCard = (params: {
         )}
       </div>
       <div>
-        <div className="flex justify-between">
+        <div className="flex items-center justify-between">
           <div className="flex flex-wrap gap-2">
-            {params.socialMedia.map((socialMedia, index) => {
-              if (index > 1) return;
-              return (
-                <Link
-                  href={socialMedia.url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  key={socialMedia.id}
-                  className="font-bold text-influencer"
-                >
-                  {socialMedia.socialMediaName}
-                </Link>
-              );
-            })}
+            <Link
+              href={usefullSocialMedia.url}
+              target="_blank"
+              rel="noopener noreferrer"
+              key={usefullSocialMedia.id}
+              className="font-bold text-influencer"
+            >
+              {usefullSocialMedia.socialMediaName}
+            </Link>
           </div>
-          {params.type === "Influencer" &&
-            usefullSocialMedia.valuePacks &&
-            usefullSocialMedia.valuePacks[0] && (
-              <div className="text-lg font-semibold">
-                {helper.calculerMonetaryValue(
-                  usefullSocialMedia.valuePacks[0]?.valuePackPrice
-                )}
-                €
-              </div>
-            )}
           {params.type === "Brand" &&
             params.activeJobs !== undefined &&
             params.activeJobs > 0 && (
@@ -249,6 +268,7 @@ const ProfileCard = (params: {
                 })}
               </div>
             )}
+          {showMoneyRange()}
         </div>
       </div>
       <div className="flex flex-col">
