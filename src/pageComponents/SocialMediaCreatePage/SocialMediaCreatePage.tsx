@@ -319,7 +319,15 @@ const SocialMediaCreatePage = (params: {
               placeholder={t("pages.socialMediaCreate.platformPlaceholder")}
               options={availablePlatforms}
               value={value}
-              handleOptionSelect={onChange}
+              handleOptionSelect={(value) => {
+                onChange(value);
+                setContentTypesList([
+                  {
+                    contentType: { id: -1, name: "" },
+                    price: 0,
+                  },
+                ]);
+              }}
             />
           );
         }}
@@ -400,6 +408,9 @@ const SocialMediaCreatePage = (params: {
       {renderAddPlatformHandlerInput()}
       {renderSocialMediaFollowersInput()}
       {!params.isBrand && renderContentTypeInput()}
+
+      <div className="w-full border-[1px]" />
+
       <Button
         title={t("pages.socialMediaCreate.button")}
         level="primary"
