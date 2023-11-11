@@ -41,7 +41,7 @@ const CreateJobPage = (params: { edit: boolean; jobId: string }) => {
   const [contentTypesList, setContentTypesList] = useState<
     ContentTypeWithQuantity[]
   >([{ contentType: { id: -1, name: "" }, amount: 0 }]);
-  const [isPublished, setIsPublished] = useState<boolean>(false);
+  const [isPublished, setIsPublished] = useState<boolean>(true);
 
   const {
     data: job,
@@ -343,7 +343,7 @@ const CreateJobPage = (params: { edit: boolean; jobId: string }) => {
                   </div>
                   <input
                     className="h-14 w-full rounded-lg border-[1px] border-gray3 bg-white1 p-4 placeholder-gray2 focus:border-black focus:outline-none"
-                    placeholder={t("pages.manageJobs.price")}
+                    placeholder={t("pages.manageJobs.howMany")}
                     disabled={true}
                   />
                 </div>

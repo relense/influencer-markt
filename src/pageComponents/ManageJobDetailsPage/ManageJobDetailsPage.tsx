@@ -858,19 +858,18 @@ const ManageJobDetailsPage = (params: {
               </div>
             </div>
           )}
-          {acceptedApplicants.length === job.numberOfInfluencers &&
-            job.jobStatus.id === 1 && (
-              <Button
-                title={t("pages.manageJobs.initiateJob")}
-                level="terciary"
-                isLoading={isLoadingStartJob || isRefetchingJob}
-                onClick={() =>
-                  startJob({
-                    jobId: job.id,
-                  })
-                }
-              />
-            )}
+          {acceptedApplicants.length > 0 && job.jobStatus.id === 1 && (
+            <Button
+              title={t("pages.manageJobs.initiateJob")}
+              level="terciary"
+              isLoading={isLoadingStartJob || isRefetchingJob}
+              onClick={() =>
+                startJob({
+                  jobId: job.id,
+                })
+              }
+            />
+          )}
           {job.jobStatus.id === 2 && (
             <Button
               title={t("pages.manageJobs.archiveJob")}
