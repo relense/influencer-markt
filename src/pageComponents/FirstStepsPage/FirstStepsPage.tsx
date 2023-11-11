@@ -102,10 +102,10 @@ const FirstStepsPage = () => {
 
   const { mutateAsync: profileMutation } =
     api.profiles.createProfile.useMutation({
-      onSuccess: async () => {
-        await ctx.users.getUser.invalidate();
-
-        setIsSaving(false);
+      onSuccess: () => {
+        void addPicture({
+          picture: watch("profilePicture"),
+        });
       },
       onError: () => {
         toast.error(t("general.error.generalErrorMessage"), {
@@ -128,6 +128,14 @@ const FirstStepsPage = () => {
         });
       },
     });
+
+  const { mutate: addPicture } = api.portfolios.createPicture.useMutation({
+    onSuccess: async () => {
+      await ctx.users.getUser.invalidate();
+
+      setIsSaving(false);
+    },
+  });
 
   useEffect(() => {
     if (user?.role) {

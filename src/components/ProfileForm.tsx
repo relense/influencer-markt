@@ -64,14 +64,12 @@ const ProfileForm = (params: {
         file.type === "image/jpg") &&
       file.size <= 8000000
     ) {
-      const options = {
-        maxSizeMB: 3,
-        maxWidthOrHeight: 400,
-        useWebWorker: true,
-      };
-
       try {
-        const compressedFile = await imageCompression(file, options);
+        const compressedProfilePicture = await imageCompression(file, {
+          maxSizeMB: 3,
+          maxWidthOrHeight: 1920,
+          useWebWorker: true,
+        });
 
         const reader = new FileReader();
 
@@ -84,7 +82,7 @@ const ProfileForm = (params: {
           }
         };
 
-        reader.readAsDataURL(compressedFile);
+        reader.readAsDataURL(compressedProfilePicture);
       } catch (error) {
         console.log(error);
       }
