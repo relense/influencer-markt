@@ -486,8 +486,11 @@ const CreateJobPage = (params: { edit: boolean; jobId: string }) => {
     return (
       <>
         <div className="flex flex-col gap-4">
-          <div className="text-xl font-medium">
-            {t("pages.manageJobs.jobPriceTitle")}
+          <div className="flex items-center gap-2">
+            <div className="text-xl font-medium">
+              {t("pages.manageJobs.jobPriceTitle")}
+            </div>
+            <ToolTip content={t("pages.manageJobs.baseValueDisclaimer")} />
           </div>
           <input
             {...register("jobPrice", { valueAsNumber: true })}
