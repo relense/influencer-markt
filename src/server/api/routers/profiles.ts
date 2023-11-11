@@ -638,6 +638,17 @@ export const profilesRouter = createTRPCRouter({
       });
     }),
 
+  getProfilePicture: protectedProcedure.query(async ({ ctx }) => {
+    return await ctx.prisma.profile.findFirst({
+      where: {
+        userId: ctx.session.user.id,
+      },
+      select: {
+        profilePicture: true,
+      },
+    });
+  }),
+
   getProfile: protectedProcedure.query(async ({ ctx }) => {
     return await ctx.prisma.profile.findUnique({
       where: { userId: ctx.session.user.id },

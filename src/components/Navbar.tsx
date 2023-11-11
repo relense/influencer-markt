@@ -35,11 +35,12 @@ import Draggable, {
 
 import { Button } from "./Button";
 import type { Option } from "../utils/globalTypes";
-import { helper, useOutsideClick, useWindowWidth } from "../utils/helper";
+import { useOutsideClick, useWindowWidth } from "../utils/helper";
 import { Notifications } from "./Notifications";
 import { Credits } from "./Credits";
 import { HelpCenter } from "./HelpCenter";
 import toast from "react-hot-toast";
+import Image from "next/image";
 
 export const Navbar = (params: {
   username: string;
@@ -86,6 +87,9 @@ export const Navbar = (params: {
         });
       },
     });
+
+  const { data: profilePictureData } =
+    api.profiles.getProfilePicture.useQuery();
 
   const {
     data: totalCredit,
@@ -290,10 +294,7 @@ export const Navbar = (params: {
                 className="font-medium hover:cursor-pointer lg:hover:underline"
                 onClick={() => setCreditsMenuOpen(!creditsMenuOpen)}
               >
-                <span className="hidden pt-1 lg:flex">
-                  {helper.calculerMonetaryValue(credits)}€
-                </span>
-                <div className="flex lg:hidden ">
+                <div className="flex h-10 w-10 items-center justify-center rounded-full pt-1 hover:bg-white1">
                   <FontAwesomeIcon icon={faCoins} className="text-xl" />
                 </div>
               </div>
@@ -348,13 +349,16 @@ export const Navbar = (params: {
           className="fa-xl flex cursor-pointer lg:hidden"
           onClick={() => setToggleOptions(!toggleOptions)}
         />
-        <div className="hidden h-10 w-10 items-center justify-center rounded-full hover:bg-white1 lg:flex">
-          <FontAwesomeIcon
-            icon={!toggleOptions ? faChevronDown : faChevronUp}
-            className="fa-xl hidden cursor-pointer lg:flex"
+        {profilePictureData?.profilePicture && (
+          <Image
+            src={profilePictureData?.profilePicture}
+            alt="Profile Picture"
+            width={400}
+            height={400}
+            className="hidden h-10 w-10 cursor-pointer items-center justify-center rounded-full object-cover hover:bg-white1 lg:flex"
             onClick={() => setToggleOptions(!toggleOptions)}
           />
-        </div>
+        )}
         {toggleOptions &&
           params.loggedInProfileId !== "" &&
           optionsDropdownAuthenticated()}
