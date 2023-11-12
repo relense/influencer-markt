@@ -375,7 +375,9 @@ export const Navbar = (params: {
                     {profileData?.name || ""}
                   </div>
                   <div className="line-clamp-1 w-36 text-sm text-gray4 ">
-                    {params?.role?.name === "Brand" ? "Brand" : "Influencer"}
+                    {params?.role?.name === "Brand"
+                      ? t("components.navbar.brand")
+                      : "Influencer"}
                   </div>
                   <div className="line-clamp-1 w-36 text-sm text-gray4 ">
                     {params.username

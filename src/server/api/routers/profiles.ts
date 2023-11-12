@@ -308,22 +308,29 @@ export const profilesRouter = createTRPCRouter({
                 },
               },
             },
-            userSocialMedia: {
-              some: {
-                socialMediaId: {
-                  in:
-                    input.socialMedia.length > 0
-                      ? input.socialMedia
-                      : undefined,
-                },
-                followers: {
-                  gte:
-                    input.minFollowers !== -1 ? input.minFollowers : undefined,
-                  lte:
-                    input.maxFollowers !== -1 ? input.maxFollowers : undefined,
-                },
-              },
-            },
+            userSocialMedia:
+              input.socialMedia.length > 0
+                ? {
+                    some: {
+                      socialMediaId: {
+                        in:
+                          input.socialMedia.length > 0
+                            ? input.socialMedia
+                            : undefined,
+                      },
+                      followers: {
+                        gte:
+                          input.minFollowers !== -1
+                            ? input.minFollowers
+                            : undefined,
+                        lte:
+                          input.maxFollowers !== -1
+                            ? input.maxFollowers
+                            : undefined,
+                      },
+                    },
+                  }
+                : undefined,
             countryId: input.country !== -1 ? input.country : undefined,
             cityId: input.city !== -1 ? input.city : undefined,
           },
@@ -343,22 +350,29 @@ export const profilesRouter = createTRPCRouter({
                 },
               },
             },
-            userSocialMedia: {
-              some: {
-                socialMediaId: {
-                  in:
-                    input.socialMedia.length > 0
-                      ? input.socialMedia
-                      : undefined,
-                },
-                followers: {
-                  gte:
-                    input.minFollowers !== -1 ? input.minFollowers : undefined,
-                  lte:
-                    input.maxFollowers !== -1 ? input.maxFollowers : undefined,
-                },
-              },
-            },
+            userSocialMedia:
+              input.socialMedia.length > 0
+                ? {
+                    some: {
+                      socialMediaId: {
+                        in:
+                          input.socialMedia.length > 0
+                            ? input.socialMedia
+                            : undefined,
+                      },
+                      followers: {
+                        gte:
+                          input.minFollowers !== -1
+                            ? input.minFollowers
+                            : undefined,
+                        lte:
+                          input.maxFollowers !== -1
+                            ? input.maxFollowers
+                            : undefined,
+                      },
+                    },
+                  }
+                : undefined,
             countryId: input.country !== -1 ? input.country : undefined,
             cityId: input.city !== -1 ? input.city : undefined,
           },
@@ -435,18 +449,29 @@ export const profilesRouter = createTRPCRouter({
               },
             },
           },
-          userSocialMedia: {
-            some: {
-              socialMediaId: {
-                in:
-                  input.socialMedia.length > 0 ? input.socialMedia : undefined,
-              },
-              followers: {
-                gte: input.minFollowers !== -1 ? input.minFollowers : undefined,
-                lte: input.maxFollowers !== -1 ? input.maxFollowers : undefined,
-              },
-            },
-          },
+          userSocialMedia:
+            input.socialMedia.length > 0
+              ? {
+                  some: {
+                    socialMediaId: {
+                      in:
+                        input.socialMedia.length > 0
+                          ? input.socialMedia
+                          : undefined,
+                    },
+                    followers: {
+                      gte:
+                        input.minFollowers !== -1
+                          ? input.minFollowers
+                          : undefined,
+                      lte:
+                        input.maxFollowers !== -1
+                          ? input.maxFollowers
+                          : undefined,
+                    },
+                  },
+                }
+              : undefined,
           countryId: input.country !== -1 ? input.country : undefined,
           cityId: input.city !== -1 ? input.city : undefined,
         },

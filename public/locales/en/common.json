@@ -213,7 +213,8 @@
       "orders": "Orders",
       "sales": "Sales",
       "billing": "Billing",
-      "imc": "IMC"
+      "imc": "IMC",
+      "brand": "Brand"
     },
 
     "adminNavbar": {

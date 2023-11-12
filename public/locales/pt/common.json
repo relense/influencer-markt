@@ -212,7 +212,8 @@
       "orders": "Pedidos",
       "sales": "Vendas",
       "billing": "Facturação",
-      "imc": "CIM"
+      "imc": "CIM",
+      "brand": "Marca"
     },
 
     "adminNavbar": {

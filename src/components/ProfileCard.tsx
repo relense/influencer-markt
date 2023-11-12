@@ -212,20 +212,22 @@ const ProfileCard = (params: {
           </div>
         )}
 
-        <Link
-          href={usefullSocialMedia.url}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="absolute left-2 top-2 flex cursor-pointer gap-1 rounded-3xl border-[1px] border-transparent bg-black-transparent px-2 text-white"
-        >
-          <div className="flex items-center gap-2">
-            <FontAwesomeIcon
-              icon={socialMediaIcon(usefullSocialMedia.socialMediaName)}
-              className="fa-base text-white hover:text-white1 "
-            />
-            {helper.formatNumberWithKorM(usefullSocialMedia.followers)}
-          </div>
-        </Link>
+        {usefullSocialMedia.followers !== -1 && (
+          <Link
+            href={usefullSocialMedia.url}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="absolute left-2 top-2 flex cursor-pointer gap-1 rounded-3xl border-[1px] border-transparent bg-black-transparent px-2 text-white"
+          >
+            <div className="flex items-center gap-2">
+              <FontAwesomeIcon
+                icon={socialMediaIcon(usefullSocialMedia.socialMediaName)}
+                className="fa-base text-white hover:text-white1 "
+              />
+              {helper.formatNumberWithKorM(usefullSocialMedia.followers)}
+            </div>
+          </Link>
+        )}
 
         {params.bookmarked !== undefined && (
           <div
