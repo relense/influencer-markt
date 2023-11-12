@@ -353,9 +353,6 @@ const PublicProfilePage = (params: {
             profileUserId: profile?.userId,
             profileName: profile.name,
             profileAbout: profile.about,
-            profileCategories: profile.categories.map((category) => {
-              return { id: category.id, name: category.name };
-            }),
             profileVerificationStatusId: profile?.verifiedStatusId || -1,
             profilePicture: profile.profilePicture,
             profileWebsite: profile.website,
