@@ -172,11 +172,11 @@ const PublicProfileHeader = (params: {
     if (params.profileHeader.profileVerificationStatusId !== -1) {
       let tooltip = t("pages.publicProfilePage.verified");
       let iconClass =
-        "flex h-7 w-7 items-center justify-center rounded-full bg-influencer-green-dark p-2 text-white";
+        "flex h-6 w-6 items-center justify-center rounded-full bg-influencer-green-dark p-2 text-white";
       if (params.profileHeader.profileVerificationStatusId === 3) {
         tooltip = t("pages.publicProfilePage.needsVerification");
         iconClass =
-          "flex h-7 w-7 items-center justify-center rounded-full bg-yellow-400 p-2 text-white";
+          "flex h-6 w-6 items-center justify-center rounded-full bg-yellow-400 p-2 text-white";
       }
 
       if (
@@ -291,11 +291,22 @@ const PublicProfileHeader = (params: {
                 }
               )}
             </div>
-            <div className="flex flex-col-reverse items-center justify-center gap-2 sm:flex-row lg:justify-start">
-              <div className="flex items-center gap-2">
-                <div className="text-3xl font-bold lg:text-4xl">
-                  {params.profileHeader.profileName}
-                </div>
+            <div className="flex flex-col items-center justify-center gap-3 sm:flex-row lg:justify-start">
+              <div className="text-3xl font-bold lg:text-4xl">
+                {params.profileHeader.profileName}
+              </div>
+              <div className="flex items-center gap-3">
+                {params.profileHeader.profileWebsite && (
+                  <Link
+                    href={params.profileHeader.profileWebsite}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="cursor-pointer pt-1"
+                  >
+                    <FontAwesomeIcon icon={faGlobe} className="fa-lg" />
+                  </Link>
+                )}
+                {renderCheckMark()}
                 {session.data?.user.id ===
                   params.profileHeader.profileUserId && (
                   <FontAwesomeIcon
@@ -305,17 +316,6 @@ const PublicProfileHeader = (params: {
                   />
                 )}
               </div>
-              {params.profileHeader.profileWebsite && (
-                <Link
-                  href={params.profileHeader.profileWebsite}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="cursor-pointer pt-1"
-                >
-                  <FontAwesomeIcon icon={faGlobe} className="fa-lg" />
-                </Link>
-              )}
-              {renderCheckMark()}
             </div>
             <div className="text-lg text-gray2">
               {params.profileHeader.profileCountry?.name},{" "}
