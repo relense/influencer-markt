@@ -903,6 +903,33 @@ export const profilesRouter = createTRPCRouter({
       }
     }),
 
+  updateCategories: protectedProcedure
+    .input(
+      z.object({
+        categories: z.array(
+          z.object({
+            id: z.number(),
+            name: z.string(),
+          })
+        ),
+      })
+    )
+    .mutation(async ({ ctx, input }) => {
+      await ctx.prisma.profile.update({
+        where: {
+          userId: ctx.session.user.id,
+        },
+        data: {
+          categories: {
+            set: [],
+            connect: input.categories.map((category) => ({
+              id: category.id,
+            })),
+          },
+        },
+      });
+    }),
+
   getFavorites: protectedProcedure
     .input(
       z.object({

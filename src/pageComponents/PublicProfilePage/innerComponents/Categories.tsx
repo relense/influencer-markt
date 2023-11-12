@@ -77,12 +77,18 @@ const Categories = (params: {
     setAvailableCategories(newAvailableCategories);
   };
 
+  const onHandleSetEditCategories = () => {
+    if (session.data?.user.id === params.profileUserId) {
+      setEditCategories(true);
+    }
+  };
+
   const renderCategories = () => {
     return (
       <div className="flex flex-col gap-4">
         <div
           className="flex items-center gap-2"
-          onClick={() => setEditCategories(true)}
+          onClick={() => onHandleSetEditCategories()}
         >
           <div className="text-2xl font-semibold">
             {t("pages.publicProfilePage.categories")}
@@ -91,7 +97,6 @@ const Categories = (params: {
             <FontAwesomeIcon
               icon={faPencil}
               className="fa-xl cursor-pointer text-influencer"
-              onClick={() => console.log("")}
             />
           )}
         </div>
