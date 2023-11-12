@@ -816,12 +816,6 @@ export const profilesRouter = createTRPCRouter({
           id: z.number(),
           name: z.string(),
         }),
-        categories: z.array(
-          z.object({
-            id: z.number(),
-            name: z.string(),
-          })
-        ),
         city: z.object({
           id: z.number(),
           name: z.string(),
@@ -879,12 +873,6 @@ export const profilesRouter = createTRPCRouter({
               },
               data: {
                 about: input.about,
-                categories: {
-                  set: [],
-                  connect: input.categories.map((category) => ({
-                    id: category.id,
-                  })),
-                },
                 cityId: input.city.id === -1 ? undefined : input.city.id,
                 countryId:
                   input.country.id === -1 ? undefined : input.country.id,
@@ -905,12 +893,6 @@ export const profilesRouter = createTRPCRouter({
             },
             data: {
               about: input.about,
-              categories: {
-                set: [],
-                connect: input.categories.map((category) => ({
-                  id: category.id,
-                })),
-              },
               cityId: input.city.id === -1 ? undefined : input.city.id,
               countryId: input.country.id === -1 ? undefined : input.country.id,
               name: input.name,

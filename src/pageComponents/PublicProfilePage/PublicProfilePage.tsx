@@ -17,6 +17,7 @@ import { PublicProfileHeader } from "./innerComponents/PublicProfileHeader";
 import { PublicProfileJobs } from "./innerComponents/PublicProfileJobs";
 import { PublicProfileSocialMediaEdit } from "./innerComponents/PublicProfileSocialMediaEdit";
 import { Button } from "../../components/Button";
+import { Categories } from "./innerComponents/Categories";
 
 const PublicProfilePage = (params: {
   username: string;
@@ -221,28 +222,6 @@ const PublicProfilePage = (params: {
     }
   };
 
-  const renderCategories = () => {
-    return (
-      <div className="flex flex-col gap-4">
-        <div className="text-2xl font-semibold">
-          {t("pages.publicProfilePage.categories")}
-        </div>
-        <div className="flex flex-wrap gap-4">
-          {profile?.categories.map((category) => {
-            return (
-              <div
-                key={category.id}
-                className="rounded-2xl border-[1px] border-gray2 px-4 py-1"
-              >
-                {t(`general.categories.${category.name}`)}
-              </div>
-            );
-          })}
-        </div>
-      </div>
-    );
-  };
-
   const renderAboutSection = () => {
     return (
       <div className="flex flex-col gap-2">
@@ -331,7 +310,17 @@ const PublicProfilePage = (params: {
               : renderSocialMediaEdit()}
           </div>
         </div>
-        {renderCategories()}
+        {profile?.categories && (
+          <Categories
+            categories={profile?.categories.map((category) => {
+              return {
+                id: category.id,
+                name: category.name,
+              };
+            })}
+            profileUserId={profile?.userId}
+          />
+        )}
       </div>
     );
   };
@@ -486,7 +475,7 @@ const PublicProfilePage = (params: {
     }
   };
 
-  if (isLoadingProfile) {
+  if (isLoadingProfile || isLoading) {
     return (
       <div className="flex flex-1 items-center">
         <LoadingSpinner />

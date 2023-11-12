@@ -44,7 +44,6 @@ type ProfileHeader = {
   profileCountry: Option;
   profileCity: Option;
   isProfileBookmarked: boolean;
-  profileCategories: Option[];
   userSocialMedia: {
     id: number;
     url: string;
@@ -101,7 +100,6 @@ const PublicProfileHeader = (params: {
     defaultValues: {
       nationOfBirth: { id: -1, name: "" },
       placeThatLives: { id: -1, name: "" },
-      categories: [],
       profilePicture: "",
       website: "",
     },
@@ -109,15 +107,6 @@ const PublicProfileHeader = (params: {
 
   useEffect(() => {
     profileSetValue("about", params.profileHeader.profileAbout || "");
-    profileSetValue(
-      "categories",
-      params.profileHeader.profileCategories.map((category) => {
-        return {
-          id: category.id,
-          name: t(`general.categories.${category.name}`),
-        };
-      }) || []
-    );
     profileSetValue(
       "placeThatLives",
       params.profileHeader.profileCity || { id: -1, name: "" }
@@ -134,7 +123,6 @@ const PublicProfileHeader = (params: {
     );
   }, [
     params.profileHeader.profileAbout,
-    params.profileHeader.profileCategories,
     params.profileHeader.profileCity,
     params.profileHeader.profileCountry,
     params.profileHeader.profileName,
@@ -149,7 +137,6 @@ const PublicProfileHeader = (params: {
       setDisableUpdateProfileButton(true);
       updateProfile({
         about: data.about,
-        categories: data.categories,
         city: data.placeThatLives,
         country: data.nationOfBirth,
         name: data.displayName,

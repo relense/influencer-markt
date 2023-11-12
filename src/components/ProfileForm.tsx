@@ -187,30 +187,34 @@ const ProfileForm = (params: {
             }}
           />
         )}
-        <Controller
-          name="categories"
-          control={params.control}
-          rules={{ required: true }}
-          render={({ field: { value, onChange } }) => {
-            return (
-              <CustomMultiSelect
-                name="categories"
-                placeholder={t("components.profileForm.categoriesPlaceholder")}
-                options={categories?.map((category) => {
-                  return {
-                    id: category.id,
-                    name: t(`general.categories.${category.name}`),
-                  };
-                })}
-                handleOptionSelect={onChange}
-                selectedOptions={value}
-                clearSelection={() => params.setValue("categories", [])}
-                borderType="normal"
-                required={true}
-              />
-            );
-          }}
-        />
+        {!params.isProfileUpdate && (
+          <Controller
+            name="categories"
+            control={params.control}
+            rules={{ required: true }}
+            render={({ field: { value, onChange } }) => {
+              return (
+                <CustomMultiSelect
+                  name="categories"
+                  placeholder={t(
+                    "components.profileForm.categoriesPlaceholder"
+                  )}
+                  options={categories?.map((category) => {
+                    return {
+                      id: category.id,
+                      name: t(`general.categories.${category.name}`),
+                    };
+                  })}
+                  handleOptionSelect={onChange}
+                  selectedOptions={value}
+                  clearSelection={() => params.setValue("categories", [])}
+                  borderType="normal"
+                  required={true}
+                />
+              );
+            }}
+          />
+        )}
         <div className="flex flex-col gap-6 lg:flex-row lg:gap-6">
           <Controller
             name="nationOfBirth"
