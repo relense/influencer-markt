@@ -22,6 +22,7 @@ const PublicProfilePage = (params: {
   username: string;
   openLoginModal: () => void;
   loggedInProfileId: string;
+  isBrand: boolean;
 }) => {
   const ctx = api.useUtils();
   const { t } = useTranslation();
@@ -259,7 +260,7 @@ const PublicProfilePage = (params: {
   const renderValuePackOrJobsSection = () => {
     return (
       <div className="flex w-full flex-col gap-6">
-        {profile?.user?.role?.name === "Influencer" && (
+        {!params.isBrand && profile && (
           <div className="flex flex-col gap-4">
             <ValuePackChooser
               availableUserSocialMedia={profile?.userSocialMedia.map(
@@ -300,7 +301,7 @@ const PublicProfilePage = (params: {
           </div>
         )}
 
-        {profile?.user?.role?.name === "Brand" && (
+        {params.isBrand && profile && (
           <div className="flex w-full">
             <PublicProfileJobs profileId={profile.id} />
           </div>
@@ -341,7 +342,8 @@ const PublicProfilePage = (params: {
       session.data?.user.id === profile?.userId &&
       profile &&
       profile.userSocialMedia &&
-      profile.portfolio
+      profile.portfolio &&
+      !params.isBrand
     ) {
       return (
         <FinishProfileDisclaimer

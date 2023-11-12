@@ -177,7 +177,7 @@ const ProfileCard = (params: {
       });
 
       return (
-        <div className="flex gap-1 text-sm font-semibold lg:text-lg">
+        <div className="text-md flex gap-1 font-semibold lg:text-lg">
           {usefullSocialMedia.valuePacks.length > 0 &&
             smallerValue !== hightestValue &&
             `${helper.calculerMonetaryValue(smallerValue)}€`}
@@ -254,7 +254,7 @@ const ProfileCard = (params: {
               target="_blank"
               rel="noopener noreferrer"
               key={usefullSocialMedia.id}
-              className="font-bold text-influencer"
+              className="text-md font-bold text-influencer lg:text-lg"
             >
               {usefullSocialMedia.socialMediaName}
             </Link>
@@ -262,7 +262,7 @@ const ProfileCard = (params: {
           {params.type === "Brand" &&
             params.activeJobs !== undefined &&
             params.activeJobs > 0 && (
-              <div className="text-lg font-semibold">
+              <div className="text-md font-semibold lg:text-lg">
                 {t("components.profileCard.jobs", {
                   count: params.activeJobs,
                 })}

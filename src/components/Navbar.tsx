@@ -27,11 +27,6 @@ import {
   faCoins,
 } from "@fortawesome/free-solid-svg-icons";
 import { api } from "~/utils/api";
-import { useRouter } from "next/router";
-import Draggable, {
-  type DraggableData,
-  type DraggableEvent,
-} from "react-draggable";
 
 import { Button } from "./Button";
 import type { Option } from "../utils/globalTypes";
@@ -52,7 +47,6 @@ export const Navbar = (params: {
   userIsLoading: boolean;
 }) => {
   const { t } = useTranslation();
-  const router = useRouter();
   const width = useWindowWidth();
   const { status } = useSession();
 
@@ -61,8 +55,6 @@ export const Navbar = (params: {
 
   const [toggleOptions, setToggleOptions] = useState<boolean>(false);
   const [openHelpCenter, setOPenHelpCenter] = useState<boolean>(false);
-  const [dropdownHeight, setDropdownHeight] = useState<number>(0);
-  const [draggablePositionY, setDraggablePositionY] = useState<number>(0);
   const [notificationsOpen, setNotificationsOpen] = useState<boolean>(false);
   const [notificationsCount, setNotificationsCount] = useState<number>(0);
   const [openExploreDropdown, setOpenExploreDropdown] =
@@ -88,8 +80,7 @@ export const Navbar = (params: {
       },
     });
 
-  const { data: profilePictureData } =
-    api.profiles.getProfilePicture.useQuery();
+  const { data: profileData } = api.profiles.getProfileMinimumInfo.useQuery();
 
   const {
     data: totalCredit,
@@ -114,11 +105,6 @@ export const Navbar = (params: {
   }, dropdownWrapperRef);
 
   useEffect(() => {
-    if (!drawerRef.current) return;
-    setDropdownHeight(drawerRef.current.clientHeight);
-  }, [toggleOptions]);
-
-  useEffect(() => {
     if (notificationsToBeReadCount && notificationsToBeReadCount > 0) {
       setNotificationsCount(notificationsToBeReadCount);
     }
@@ -136,26 +122,11 @@ export const Navbar = (params: {
     if (isLoadingTotalCredits === false) {
       setCredits(totalCredit || 0);
     }
-  }, [totalCredit]);
+  }, [isLoadingTotalCredits, totalCredit]);
 
   const handlSignup = () => {
     params.setIsSignUp(true);
     params.openLoginModal();
-  };
-
-  const handleStop = (e: DraggableEvent, data: DraggableData) => {
-    if (data.y > dropdownHeight / 2) {
-      setToggleOptions(false);
-    } else {
-      setDraggablePositionY(0);
-      setToggleOptions(true);
-    }
-  };
-
-  const handleDrag = (e: DraggableEvent, data: DraggableData) => {
-    if (data.y < 0) {
-      setDraggablePositionY(0);
-    }
   };
 
   const handleOpenNotificationsMenu = () => {
@@ -349,22 +320,27 @@ export const Navbar = (params: {
           className="fa-xl flex cursor-pointer lg:hidden"
           onClick={() => setToggleOptions(!toggleOptions)}
         />
-        {profilePictureData?.profilePicture && (
+        {profileData?.profilePicture ? (
           <Image
-            src={profilePictureData?.profilePicture}
+            src={profileData?.profilePicture}
             alt="Profile Picture"
             width={400}
             height={400}
             className="hidden h-10 w-10 cursor-pointer items-center justify-center rounded-full object-cover hover:bg-white1 lg:flex"
             onClick={() => setToggleOptions(!toggleOptions)}
           />
+        ) : (
+          <div className="hidden h-10 w-10 items-center justify-center rounded-full hover:bg-white1 lg:flex">
+            <FontAwesomeIcon
+              icon={faUserCircle}
+              className="fa-xl hidden cursor-pointer lg:flex"
+              onClick={() => setToggleOptions(!toggleOptions)}
+            />
+          </div>
         )}
         {toggleOptions &&
           params.loggedInProfileId !== "" &&
           optionsDropdownAuthenticated()}
-        {toggleOptions &&
-          params.loggedInProfileId === "" &&
-          optionsDropdownAuthenticatedWithoutProfile()}
         {openHelpCenter && (
           <HelpCenter close={() => setOPenHelpCenter(false)} />
         )}
@@ -380,243 +356,163 @@ export const Navbar = (params: {
             className="absolute left-0 top-0 z-40 h-screen w-screen bg-black-transparent sm:bg-transparent"
             onClick={() => setToggleOptions(!toggleOptions)}
           />
-          <Draggable
-            axis="y"
-            handle=".handle"
-            onStop={handleStop}
-            onDrag={handleDrag}
-            defaultPosition={{
-              x: 0,
-              y: 0,
-            }}
-            cancel={".need-interaction"}
-            bounds={{ top: 0, right: 0, left: 0 }}
-            position={{ x: draggablePositionY, y: draggablePositionY }}
-            nodeRef={drawerRef}
+
+          <div
+            className="absolute bottom-0 left-0 right-0 z-50 flex w-screen cursor-grab flex-col gap-2 rounded-t-lg border-white1 bg-white pb-4 text-sm shadow-lg sm:bottom-auto sm:left-auto sm:right-5 sm:top-20 sm:w-auto sm:cursor-pointer sm:rounded-2xl sm:border-[1px] sm:pt-2 sm:text-base"
+            ref={drawerRef}
           >
-            <div
-              className="absolute bottom-0 left-0 right-0 z-50 flex w-screen cursor-grab flex-col gap-2 rounded-t-lg border-white1 bg-white pb-4 text-sm shadow-lg sm:bottom-auto sm:left-auto sm:right-5 sm:top-20 sm:w-auto sm:cursor-pointer sm:rounded-2xl sm:border-[1px] sm:pt-2 sm:text-base"
-              ref={drawerRef}
-            >
-              <div className="flex h-1 w-full flex-1 cursor-pointer justify-center sm:hidden">
-                <div className="h-[2px] w-10" />
-              </div>
-              <div className="px-8">
-                <Link
-                  href={params.username ? `/${params.username}` : "/"}
-                  className="group hidden cursor-pointer items-center gap-4  py-2 sm:flex"
-                >
-                  <FontAwesomeIcon icon={faUserCircle} className="fa-xl" />
-                  <div className="w-4/5 break-words group-hover:underline">
+            <div className="flex h-1 w-full flex-1 cursor-pointer justify-center sm:hidden">
+              <div className="h-[2px] w-10" />
+            </div>
+            <div className="px-8">
+              <Link
+                href={params.username ? `/${params.username}` : "/"}
+                className="group hidden cursor-pointer items-center gap-4  py-2 sm:flex"
+              >
+                <FontAwesomeIcon icon={faUserCircle} className="fa-xl" />
+                <div className="flex w-auto flex-col">
+                  <div className="line-clamp-1 w-36 group-hover:underline">
+                    {profileData?.name || ""}
+                  </div>
+                  <div className="line-clamp-1 w-36 text-sm text-gray4 ">
+                    {params?.role?.name === "Brand" ? "Brand" : "Influencer"}
+                  </div>
+                  <div className="line-clamp-1 w-36 text-sm text-gray4 ">
                     {params.username
                       ? params.username
                       : params.sessionData?.user.email}
                   </div>
-                </Link>
-              </div>
+                </div>
+              </Link>
+            </div>
 
-              <div className="hidden cursor-pointer border-[1px] border-white1 sm:flex" />
-              <div className="px-8">
-                <Link
-                  href="/explore/brands"
-                  className=" group flex cursor-pointer items-center gap-4 py-2 lg:hidden"
-                >
-                  <FontAwesomeIcon icon={faSearch} className="fa-lg" />
-
-                  <div className="need-interaction group-hover:underline">
-                    {t("components.navbar.exploreBrands")}
-                  </div>
-                </Link>
-
-                <Link
-                  href="/saved/brands"
-                  className="group flex cursor-pointer items-center gap-4 py-2 lg:hidden"
-                >
-                  <FontAwesomeIcon icon={faBookmark} className="fa-lg pl-1" />
-
-                  <div className="need-interaction group-hover:underline ">
-                    {t("components.navbar.savedBrands")}
-                  </div>
-                </Link>
-              </div>
-              <div className="cursor-pointer border-[1px] border-white1 lg:hidden" />
-              <div className="px-8">
-                <Link
-                  href="/manage-jobs"
-                  className=" group flex cursor-pointer items-center gap-4 py-2"
-                >
-                  <FontAwesomeIcon icon={faBriefcase} className="fa-lg" />
-
-                  <div className="need-interaction group-hover:underline">
-                    {t("components.navbar.myJobs")}
-                  </div>
-                </Link>
-
-                {params.role && params.role.id !== 1 && (
-                  <Link
-                    href="/my-applications"
-                    className="group flex cursor-pointer items-center gap-4 py-2"
-                  >
-                    <FontAwesomeIcon icon={faFolderOpen} className="fa-lg" />
-
-                    <div className="need-interaction group-hover:underline">
-                      {t("components.navbar.applications")}
-                    </div>
-                  </Link>
-                )}
-
-                <Link
-                  href="/orders"
-                  className="group flex cursor-pointer items-center gap-4 py-2"
-                >
-                  <FontAwesomeIcon icon={faBagShopping} className="fa-lg" />
-
-                  <div className="need-interaction group-hover:underline">
-                    {t("components.navbar.orders")}
-                  </div>
-                </Link>
-
-                {params.role && params.role.id !== 1 && (
-                  <Link
-                    href="/sales"
-                    className="group flex cursor-pointer items-center gap-4 py-2"
-                  >
-                    <FontAwesomeIcon icon={faReceipt} className="fa-lg" />
-
-                    <div className="need-interaction group-hover:underline">
-                      {t("components.navbar.sales")}
-                    </div>
-                  </Link>
-                )}
-
-                <Link
-                  href="/billing"
-                  className="group flex cursor-pointer items-center gap-4 py-2"
-                >
-                  <FontAwesomeIcon icon={faFileInvoice} className="fa-lg" />
-
-                  <div className="need-interaction group-hover:underline">
-                    {t("components.navbar.billing")}
-                  </div>
-                </Link>
-              </div>
-              <div className="cursor-pointer border-[1px] border-white1" />
-
-              <div
-                className="group flex cursor-pointer items-center gap-4 px-8 py-2"
-                onClick={() => void signOut()}
+            <div className="hidden cursor-pointer border-[1px] border-white1 sm:flex" />
+            <div className="px-8">
+              <Link
+                href="/explore/brands"
+                className=" group flex cursor-pointer items-center gap-4 py-2 lg:hidden"
               >
-                <FontAwesomeIcon
-                  icon={faArrowRightFromBracket}
-                  className="fa-lg"
-                />
-                <span
-                  className="need-interaction group-hover:underline"
-                  onClick={() => void signOut()}
-                >
-                  {t("components.navbar.signOut")}
-                </span>
-              </div>
-
-              <div className="flex cursor-pointer border-[1px] border-white1" />
-              <div className="px-8">
-                <Link
-                  href="/settings"
-                  className=" group flex cursor-pointer items-center gap-4 py-2"
-                >
-                  <FontAwesomeIcon icon={faGear} className="fa-lg" />
-
-                  <div className="need-interaction group-hover:underline">
-                    {t("components.navbar.settings")}
-                  </div>
-                </Link>
-              </div>
-              <div
-                className="group flex cursor-pointer items-center gap-4 p-8 py-2 sm:hidden"
-                onClick={() => setOPenHelpCenter(true)}
-              >
-                <FontAwesomeIcon icon={faLifeRing} className="fa-lg" />
+                <FontAwesomeIcon icon={faSearch} className="fa-lg" />
 
                 <div className="need-interaction group-hover:underline">
-                  {t("components.navbar.helpCenter")}
+                  {t("components.navbar.exploreBrands")}
                 </div>
-              </div>
+              </Link>
+
+              <Link
+                href="/saved/brands"
+                className="group flex cursor-pointer items-center gap-4 py-2 lg:hidden"
+              >
+                <FontAwesomeIcon icon={faBookmark} className="fa-lg pl-1" />
+
+                <div className="need-interaction group-hover:underline ">
+                  {t("components.navbar.savedBrands")}
+                </div>
+              </Link>
             </div>
-          </Draggable>
-        </>
-      );
-    }
-  };
+            <div className="cursor-pointer border-[1px] border-white1 lg:hidden" />
+            <div className="px-8">
+              <Link
+                href="/manage-jobs"
+                className=" group flex cursor-pointer items-center gap-4 py-2"
+              >
+                <FontAwesomeIcon icon={faBriefcase} className="fa-lg" />
 
-  const optionsDropdownAuthenticatedWithoutProfile = () => {
-    if (params.sessionData) {
-      return (
-        <>
-          <div
-            className="absolute left-0 top-0 z-40 h-screen w-screen bg-black-transparent sm:bg-transparent"
-            onClick={() => setToggleOptions(!toggleOptions)}
-          />
-          <Draggable
-            axis="y"
-            handle=".handle"
-            onStop={handleStop}
-            onDrag={handleDrag}
-            defaultPosition={{
-              x: 0,
-              y: 0,
-            }}
-            cancel={".need-interaction"}
-            bounds={{ top: 0, right: 0, left: 0 }}
-            position={{ x: draggablePositionY, y: draggablePositionY }}
-            nodeRef={drawerRef}
-          >
-            <div
-              className="handle absolute bottom-0 left-0 right-0 z-50 flex w-screen cursor-grab flex-col gap-2 rounded-t-lg border-white1 bg-white px-8 pb-4 text-sm shadow-lg sm:bottom-auto sm:left-auto sm:right-5 sm:top-20 sm:w-auto sm:cursor-pointer sm:rounded-2xl sm:border-[1px] sm:p-8 sm:pt-2 sm:text-base"
-              ref={drawerRef}
-            >
-              <div className="flex h-1 w-full flex-1 cursor-pointer justify-center pt-2 sm:hidden">
-                <div className="h-[2px] w-10" />
-              </div>
+                <div className="need-interaction group-hover:underline">
+                  {t("components.navbar.myJobs")}
+                </div>
+              </Link>
 
-              <div className="flex cursor-pointer items-center gap-6">
-                <Button
-                  title={t("components.navbar.completeProfile")}
-                  level="primary"
-                  onClick={() => void router.push("/first-steps")}
-                />
-              </div>
+              {params.role && params.role.id !== 1 && (
+                <Link
+                  href="/my-applications"
+                  className="group flex cursor-pointer items-center gap-4 py-2"
+                >
+                  <FontAwesomeIcon icon={faFolderOpen} className="fa-lg" />
 
-              <div className="flex cursor-pointer border-[1px] border-white1" />
+                  <div className="need-interaction group-hover:underline">
+                    {t("components.navbar.applications")}
+                  </div>
+                </Link>
+              )}
 
-              <div
+              <Link
+                href="/orders"
                 className="group flex cursor-pointer items-center gap-4 py-2"
-                onClick={() => void signOut()}
               >
-                <FontAwesomeIcon
-                  icon={faArrowRightFromBracket}
-                  className="fa-lg"
-                />
-                <span
-                  className="need-interaction group-hover:underline"
-                  onClick={() => void signOut()}
-                >
-                  {t("components.navbar.signOut")}
-                </span>
-              </div>
-
-              <div className="flex cursor-pointer border-[1px] border-white1 sm:hidden" />
-              <div
-                className="group flex cursor-pointer items-center gap-4 py-2 sm:hidden"
-                onClick={() => setOPenHelpCenter(true)}
-              >
-                <FontAwesomeIcon icon={faLifeRing} className="fa-lg" />
+                <FontAwesomeIcon icon={faBagShopping} className="fa-lg" />
 
                 <div className="need-interaction group-hover:underline">
-                  {t("components.navbar.helpCenter")}
+                  {t("components.navbar.orders")}
                 </div>
+              </Link>
+
+              {params.role && params.role.id !== 1 && (
+                <Link
+                  href="/sales"
+                  className="group flex cursor-pointer items-center gap-4 py-2"
+                >
+                  <FontAwesomeIcon icon={faReceipt} className="fa-lg" />
+
+                  <div className="need-interaction group-hover:underline">
+                    {t("components.navbar.sales")}
+                  </div>
+                </Link>
+              )}
+
+              <Link
+                href="/billing"
+                className="group flex cursor-pointer items-center gap-4 py-2"
+              >
+                <FontAwesomeIcon icon={faFileInvoice} className="fa-lg" />
+
+                <div className="need-interaction group-hover:underline">
+                  {t("components.navbar.billing")}
+                </div>
+              </Link>
+            </div>
+            <div className="cursor-pointer border-[1px] border-white1" />
+
+            <div
+              className="group flex cursor-pointer items-center gap-4 px-8 py-2"
+              onClick={() => void signOut()}
+            >
+              <FontAwesomeIcon
+                icon={faArrowRightFromBracket}
+                className="fa-lg"
+              />
+              <span
+                className="need-interaction group-hover:underline"
+                onClick={() => void signOut()}
+              >
+                {t("components.navbar.signOut")}
+              </span>
+            </div>
+
+            <div className="flex cursor-pointer border-[1px] border-white1" />
+            <div className="px-8">
+              <Link
+                href="/settings"
+                className=" group flex cursor-pointer items-center gap-4 py-2"
+              >
+                <FontAwesomeIcon icon={faGear} className="fa-lg" />
+
+                <div className="need-interaction group-hover:underline">
+                  {t("components.navbar.settings")}
+                </div>
+              </Link>
+            </div>
+            <div
+              className="group flex cursor-pointer items-center gap-4 p-8 py-2 sm:hidden"
+              onClick={() => setOPenHelpCenter(true)}
+            >
+              <FontAwesomeIcon icon={faLifeRing} className="fa-lg" />
+
+              <div className="need-interaction group-hover:underline">
+                {t("components.navbar.helpCenter")}
               </div>
             </div>
-          </Draggable>
+          </div>
         </>
       );
     }

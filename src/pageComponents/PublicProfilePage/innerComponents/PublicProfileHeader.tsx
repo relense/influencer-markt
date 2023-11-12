@@ -78,6 +78,7 @@ const PublicProfileHeader = (params: {
             position: "bottom-left",
           });
         });
+        void ctx.profiles.getProfileMinimumInfo.invalidate();
       },
       onError: () => {
         setIsProfileModalOpen(false);

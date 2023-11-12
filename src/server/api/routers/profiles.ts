@@ -638,17 +638,6 @@ export const profilesRouter = createTRPCRouter({
       });
     }),
 
-  getProfilePicture: protectedProcedure.query(async ({ ctx }) => {
-    return await ctx.prisma.profile.findFirst({
-      where: {
-        userId: ctx.session.user.id,
-      },
-      select: {
-        profilePicture: true,
-      },
-    });
-  }),
-
   getProfile: protectedProcedure.query(async ({ ctx }) => {
     return await ctx.prisma.profile.findUnique({
       where: { userId: ctx.session.user.id },
@@ -678,7 +667,30 @@ export const profilesRouter = createTRPCRouter({
     });
   }),
 
-  getProfileMinimumInfo: publicProcedure
+  getProfileMinimumInfo: publicProcedure.query(async ({ ctx }) => {
+    return await ctx.prisma.profile.findUnique({
+      where: { userId: ctx.session?.user.id },
+      select: {
+        userSocialMedia: false,
+        gender: false,
+        categories: false,
+        user: false,
+        website: false,
+        about: true,
+        city: false,
+        country: false,
+        name: true,
+        id: false,
+        profilePicture: true,
+        rating: false,
+        portfolio: false,
+        userId: false,
+        genderId: false,
+      },
+    });
+  }),
+
+  getProfileMinimumInfoByUsername: publicProcedure
     .input(
       z.object({
         username: z.string(),

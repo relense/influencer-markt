@@ -27,7 +27,7 @@ const PublicProfile: NextPage<PublicProfileProps> = ({ username }) => {
     );
 
   const { data: profile, isLoading: isLoadingProfile } =
-    api.profiles.getProfileMinimumInfo.useQuery({
+    api.profiles.getProfileMinimumInfoByUsername.useQuery({
       username,
     });
 
@@ -80,6 +80,7 @@ const PublicProfile: NextPage<PublicProfileProps> = ({ username }) => {
               username={username}
               openLoginModal={params.openLoginModal}
               loggedInProfileId={params.loggedInProfileId}
+              isBrand={params.isBrand}
             />
           )}
         </Layout>
