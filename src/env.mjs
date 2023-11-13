@@ -41,6 +41,9 @@ export const env = createEnv({
     STRIPE_WEBHOOK_SECRET: z.string(),
 
     NEXT_PUBLIC_CURRENT_ENV: z.string(),
+
+    MOLONI_DEVELOPER_ID: z.string(),
+    MOLONI_CLIENT_SECRET: z.string(),
   },
 
   /**
@@ -83,6 +86,9 @@ export const env = createEnv({
     STRIPE_WEBHOOK_SECRET: process.env.STRIPE_WEBHOOK_SECRET,
 
     NEXT_PUBLIC_CURRENT_ENV: process.env.NEXT_PUBLIC_BASE_URL,
+
+    MOLONI_DEVELOPER_ID: process.env.MOLONI_DEVELOPER_ID,
+    MOLONI_CLIENT_SECRET: process.env.MOLONI_CLIENT_SECRET,
   },
   /**
    * Run `build` or `dev` with `SKIP_ENV_VALIDATION` to skip env validation.
