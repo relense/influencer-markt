@@ -19,7 +19,7 @@ const StripeOnboarding: NextPage = () => {
 
   useEffect(() => {
     createAccountLink({
-      locale: i18n.language,
+      locale: i18n.language || "en",
     });
   }, [createAccountLink, i18n.language]);
 

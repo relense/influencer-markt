@@ -485,7 +485,7 @@ const AdminPayoutManagesPage = (params: { payoutInvoiceId: string }) => {
         <div className="flex text-2xl font-semibold">Useful information</div>
         <div className="flex flex-1 flex-col gap-1">
           <div className="font-semibold text-influencer">Our company name</div>
-          <div>Influencer Markt, LDA</div>
+          <div>Influencer Markt, Lda</div>
         </div>
         <div className="flex flex-1 flex-col gap-1">
           <div className="font-semibold text-influencer">Tax percentage</div>
@@ -493,7 +493,7 @@ const AdminPayoutManagesPage = (params: { payoutInvoiceId: string }) => {
         </div>
         <div className="flex flex-1 flex-col gap-1">
           <div className="font-semibold text-influencer">Our company TIN</div>
-          <div>214341</div>
+          <div>517818353</div>
         </div>
         <div className="flex flex-1 flex-col gap-1">
           <div className="font-semibold text-influencer">

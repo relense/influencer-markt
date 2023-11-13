@@ -1495,7 +1495,7 @@
       "step7": "7. Automatic Data Entry",
       "step7Info": "Your data and information about the chosen activity during the activity opening are automatically filled in. In the case of multiple economic activities, select the one corresponding to the service provided on each receipt.",
       "step8": "8. Customer Details",
-      "step8Info": "Enter the NIF (XXXXXXX) and address (XXXXXX) of the customer Influencer Markt, Lda for whom the receipt is being issued.",
+      "step8Info": "Enter the TIN ''517818353'' and address ''Rua Doutor António Manuel Gamito, no 23, 2900-056 Setúbal'' of the customer Influencer Markt, Lda for whom the receipt is being issued.",
       "step9": "9. Nature of Receipt",
       "step9Info": "Specify whether the amount received is for goods, services, or an advance. Provide a brief description of the service provided.",
       "step10": "10. VAT Regime",

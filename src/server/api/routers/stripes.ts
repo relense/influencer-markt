@@ -56,9 +56,9 @@ export const StripesRouter = createTRPCRouter({
         },
       });
 
-      let returnUrl = `${env.NEXT_PUBLIC_BASE_URL}/billing`;
+      let returnUrl = `${env.NEXT_PUBLIC_BASE_URL}/stripe-onboarding-callback`;
       if (!input.locale.includes("en")) {
-        returnUrl = `${env.NEXT_PUBLIC_BASE_URL}/${input.locale}/billing`;
+        returnUrl = `${env.NEXT_PUBLIC_BASE_URL}/${input.locale}/stripe-onboarding-callback`;
       }
 
       if (accountId && accountId.stripeAccountId !== null) {
@@ -94,11 +94,7 @@ export const StripesRouter = createTRPCRouter({
 
       const account = await stripe.accounts.retrieve(stripeAccountId);
 
-      if (
-        account.individual?.verification?.status === "verified" &&
-        account.payouts_enabled &&
-        account.details_submitted
-      ) {
+      if (account.payouts_enabled && account.details_submitted) {
         await ctx.prisma.billing.update({
           where: {
             profileId: profile.id,
