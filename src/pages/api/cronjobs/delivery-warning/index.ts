@@ -19,7 +19,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         where: {
           orderStatusId: 4,
           dateOfDelivery: {
-            gte: new Date(tomorrowFormatted), // Greater than or equal to tomorrow's date
+            equals: new Date(tomorrowFormatted), // equal to tomorrow's date
           },
         },
         select: {
