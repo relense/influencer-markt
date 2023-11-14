@@ -68,7 +68,7 @@ export const Footer = () => {
       </div>
       <div className="flex flex-col items-center border-t-[1px] p-5">
         <span className="pointer-events-none text-center">
-          © Influencer Markt inc. 2023
+          © Influencer Markt, Lda. 2023
         </span>
       </div>
     </div>

@@ -16,7 +16,7 @@ const Home: NextPage = () => {
           <title>Influencer Markt | The Creators Market Tailored For You</title>
           <meta
             name="description"
-            content="A Market to find your favorite influencers"
+            content="At Influencer Markt we specialize in connecting creators with brands for impactful campaigns. Unlock the potential of influencer marketing with our Marketplace"
           />
           <meta
             name="viewport"
@@ -33,7 +33,7 @@ const Home: NextPage = () => {
           <title>Influencer Markt | The Creators Market Tailored For You</title>
           <meta
             name="description"
-            content="A Market to find your favorite influencers"
+            content="At Influencer Markt we specialize in connecting creators with brands for impactful campaigns. Unlock the potential of influencer marketing with our Marketplace"
           />
           <meta
             name="viewport"

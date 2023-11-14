@@ -80,7 +80,7 @@ const AdminPayoutManagesPage = (params: { payoutInvoiceId: string }) => {
       },
     });
 
-  const { mutate: acceptInvoice } =
+  const { mutate: acceptInvoice, isLoading: isLoadingAcceptInvoice } =
     api.payoutInvoices.acceptInvoice.useMutation({
       onSuccess: () => {
         void router.push("/admin/payouts");
@@ -145,7 +145,8 @@ const AdminPayoutManagesPage = (params: { payoutInvoiceId: string }) => {
         watch("isCompanyCorrect") &&
         watch("isTinCorrect") &&
         watch("isCompanyCountryCorrect") &&
-        watch("isTotalValueCorrect")
+        watch("isTotalValueCorrect") &&
+        watch("isTypeOfPaymentCorrect")
       ) {
         return true;
       } else {
@@ -157,7 +158,8 @@ const AdminPayoutManagesPage = (params: { payoutInvoiceId: string }) => {
         watch("isTinCorrect") &&
         watch("isCompanyCountryCorrect") &&
         watch("isTaxCorrect") &&
-        watch("isTotalValueCorrect")
+        watch("isTotalValueCorrect") &&
+        watch("isTypeOfPaymentCorrect")
       ) {
         return true;
       } else {
@@ -173,6 +175,7 @@ const AdminPayoutManagesPage = (params: { payoutInvoiceId: string }) => {
         !watch("isTinCorrect") ||
         !watch("isCompanyCountryCorrect") ||
         !watch("isTotalValueCorrect") ||
+        !watch("isTypeOfPaymentCorrect") ||
         sessionData?.user.id !== payoutInvoice?.payoutSolver?.id
       ) {
         return true;
@@ -186,6 +189,7 @@ const AdminPayoutManagesPage = (params: { payoutInvoiceId: string }) => {
         !watch("isCompanyCountryCorrect") ||
         !watch("isTaxCorrect") ||
         !watch("isTotalValueCorrect") ||
+        !watch("isTypeOfPaymentCorrect") ||
         sessionData?.user.id !== payoutInvoice?.payoutSolver?.id
       ) {
         return true;
@@ -470,6 +474,7 @@ const AdminPayoutManagesPage = (params: { payoutInvoiceId: string }) => {
             <Button
               title="Accept Payout"
               level="terciary"
+              isLoading={isLoadingAcceptInvoice}
               disabled={acceptButtonDisable()}
               form="objectives-form"
             />

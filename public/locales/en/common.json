@@ -1176,7 +1176,10 @@
       "paymentInfo": "Payment Info",
       "pay": "Pay {{money}}",
       "unexpectedError": "An unexpected error occurred",
-      "invalidTin": "Your Tax Identification Number is invalid"
+      "invalidTin": "Your Tax Identification Number is invalid",
+      "invalidTermsAcceptance": "You must accept terms & conditions",
+      "iAgreeWith": "I agree with",
+      "influencerTerms": "Influencer Markt terms & conditions."
     },
 
     "privacyPolicy": {
@@ -1310,7 +1313,17 @@
         "title": "Refund Policy",
         "subtitle1": "All sales are final, and refunds will only be issued if both parties involved in the transaction agree to cancel an order, or if the Influencer Markt dispute resolution team determines that a refund is warranted.",
         "subtitle2": "In the event that an order is placed with a content creator, but the buyer fails to follow through with the order or requests cancellation due to reasons beyond Influencer Markt's control, such as inadequate planning or organization, the buyer may be subject to a fee upon refund.",
-        "subtitle3": "Refunds are provided in the form of a platform credit, which is added to the user's ''Influencer Markt Available Credit.'' Users can exchange these credits for other orders or products within the Influencer Markt platform"
+        "subtitle3": "Refunds are provided in the form of a platform credit, which is added to the user's ''Influencer Markt Available Credit.'' Users can exchange these credits for other orders or products within the Influencer Markt platform."
+      },
+      "chargebacks": {
+        "title": "Chargeback",
+        "subtitle1": "The customer agrees to contact Influencer Markt directly in the event of any issues or concerns regarding a transaction before initiating a chargeback. Influencer Markt is committed to resolving disputes promptly and efficiently.",
+        "subtitle2": "The customer acknowledges that chargebacks may incur fees imposed by payment processors or banks. The customer is responsible for any fees associated with chargebacks.",
+        "subtitle3": "Influencer Markt maintains comprehensive records of all transactions, including order details, shipment information, and communication records. The customer agrees to provide accurate information and acknowledges that Influencer Markt may use these records to respond to chargebacks.",
+        "subtitle4": "Influencer Markt implements reasonable fraud prevention measures to protect both parties. The customer acknowledges that these measures may include verification checks and monitoring for suspicious activity.",
+        "subtitle5": "In the event of unauthorized transactions, Influencer Markt reserves the right to investigate and, if appropriate, contest chargebacks. The customer agrees that refunds will only be issued for transactions proven to be unauthorized, and Influencer Markt will cooperate with the necessary authorities in cases of fraud.",
+        "subtitle6": "The customer is responsible for keeping their account information secure. Any unauthorized use of the customer's account is the customer's responsibility to report promptly to Influencer Markt.",
+        "subtitle7": "In the event of a chargeback, Influencer Markt will engage in the dispute resolution process in accordance with applicable laws and payment network regulations. The customer agrees to cooperate in the investigation and provide any necessary information."
       },
       "prohibitedActivies": {
         "title": "Prohibited Activities",

@@ -13,6 +13,7 @@ import toast from "react-hot-toast";
 import { Button } from "../../../components/Button";
 import { helper } from "../../../utils/helper";
 import { nifValidator } from "../../../utils/nifValidators";
+import Link from "next/link";
 
 export default function CheckoutForm(params: {
   orderId: string;
@@ -31,6 +32,8 @@ export default function CheckoutForm(params: {
   const [name, setName] = useState<string>(params.name);
   const [tin, setTin] = useState<string>(params.tin);
   const [nifError, setNifError] = useState<string>("");
+  const [agreeTerms, setAgreeTerms] = useState<boolean>(false);
+  const [agreeTermsError, setAgreeTermsError] = useState<string>("");
 
   const { mutate: updateBillingInfo } =
     api.billings.updateBillingInfo.useMutation({
@@ -49,6 +52,11 @@ export default function CheckoutForm(params: {
     }
 
     if (nifError) {
+      return;
+    }
+
+    if (!agreeTerms) {
+      setAgreeTermsError(t("pages.orderPayment.invalidTermsAcceptance"));
       return;
     }
 
@@ -173,6 +181,44 @@ export default function CheckoutForm(params: {
     );
   };
 
+  const renderAcceptTermsCheckbox = () => {
+    return (
+      <div>
+        <div
+          className="flex cursor-pointer items-center"
+          onClick={() => {
+            if (!agreeTerms === true) {
+              setAgreeTermsError("");
+            }
+            setAgreeTerms(!agreeTerms);
+          }}
+        >
+          <input
+            type="checkbox"
+            checked={agreeTerms}
+            className="h-4 w-4 cursor-pointer accent-influencer"
+          />
+          <span className="ml-2 text-sm font-medium text-gray-900">
+            {t("pages.orderPayment.iAgreeWith")}{" "}
+            <Link
+              href="/terms-conditions"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="underline"
+            >
+              {t("pages.orderPayment.influencerTerms")}
+            </Link>
+          </span>
+        </div>
+        {agreeTermsError && (
+          <div className="flex flex-1 text-sm font-thin text-[#df1b41]">
+            {agreeTermsError}
+          </div>
+        )}
+      </div>
+    );
+  };
+
   return (
     <form
       onSubmit={handleSubmit}
@@ -185,7 +231,7 @@ export default function CheckoutForm(params: {
         </div>
         <div className="flex w-full flex-1">{paymentInfo()}</div>
       </div>
-
+      {renderAcceptTermsCheckbox()}
       <div className="flex justify-center">
         <Button
           title={`${t("pages.orderPayment.pay", {

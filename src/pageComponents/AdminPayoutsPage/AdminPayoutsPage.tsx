@@ -30,6 +30,7 @@ type PayoutsInvoice = {
   influencerUsername: string;
   influencerId: string;
   status: string;
+  isentOfTaxes: boolean;
 };
 
 const AdminPayoutsPage = () => {
@@ -104,6 +105,7 @@ const AdminPayoutsPage = () => {
           return {
             id: invoice.id,
             payoutValue: invoice.invoiceValue,
+            isentOfTaxes: invoice.isentOfTaxes,
             invoiceUploadedAt: helper.formatFullDateWithTime(
               invoice.createdAt,
               i18n.language
@@ -133,6 +135,7 @@ const AdminPayoutsPage = () => {
         newPayouts.push({
           id: invoice.id,
           payoutValue: invoice.invoiceValue,
+          isentOfTaxes: invoice.isentOfTaxes,
           invoiceUploadedAt: helper.formatFullDateWithTime(
             invoice.createdAt,
             i18n.language
@@ -222,7 +225,14 @@ const AdminPayoutsPage = () => {
                       Invoice Value
                     </div>
                     <div>
-                      {helper.calculerMonetaryValue(invoice.payoutValue)}€
+                      {invoice.isentOfTaxes
+                        ? helper.calculerMonetaryValue(invoice.payoutValue)
+                        : helper.calculerMonetaryValue(
+                            invoice.payoutValue +
+                              invoice.payoutValue *
+                                helper.calculateSalesTaxPortugal()
+                          )}
+                      €
                     </div>
                   </div>
                   <div

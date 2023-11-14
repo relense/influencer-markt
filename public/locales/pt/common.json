@@ -1173,7 +1173,10 @@
       "paymentInfo": "Informação de Pagamento",
       "pay": "Pagar {{money}}",
       "unexpectedError": "Ocorreu um erro inesperado",
-      "invalidTin": "O teu NIF é inválido"
+      "invalidTin": "O teu NIF é inválido",
+      "invalidTermsAcceptance": "Tens que aceitar os termos & condições",
+      "iAgreeWith": "Eu concordo com os",
+      "influencerTerms": "termos & condições da Influencer Markt"
     },
 
     "privacyPolicy": {
@@ -1253,43 +1256,6 @@
       }
     },
 
-    "stepbyStepInvoice": {
-      "title": "Guia de emissão de fatura",
-      "subtitle": "Este guia detalhado torna o processo de emissão de recibos verdes mais acessível, assegurando conformidade com as normas fiscais e evitando complicações desnecessárias com o Fisco.",
-      "quickLinks": "Ligações Rápidas",
-      "step1": "1. Acesso ao Portal das Finanças",
-      "step1Info": "Acesse ao Portal das Finanças",
-      "step1Info2": "aqui.",
-      "step2": "2. Navegação até os Serviços Tributários",
-      "step2Info": "Clique em ''Aceder aos Serviços Tributários''.",
-      "step3": "3. Seleção de Faturas e Recibos Verdes",
-      "step3Info": "No rodapé da página, escolha ''Faturas e Recibos Verdes''.",
-      "step4": "4. Login e Identificação",
-      "step4Info": "Insira o número de contribuinte e a senha correspondente.",
-      "step5": "5. Início do Processo de Emissão",
-      "step5Info": "Após o login, selecione ''Emitir''.",
-      "step6": "6. Escolha do Tipo de Documento",
-      "step6Info": "Opte por ''Fatura'' ou ''Fatura-Recibo'' com base na situação do recebimento em relação à prestação do serviço.",
-      "step7": "7. Preenchimento Automático dos Dados",
-      "step7Info": "Seus dados e informações da atividade escolhida durante a abertura de atividade são preenchidos automaticamente. No caso de múltiplas atividades econômicas, selecione em cada recibo a correspondente ao serviço prestado.",
-      "step8": "8. Detalhes do Cliente",
-      "step8Info": "Insira o NIF ''517818353'' e a morada ''Rua Doutor António Manuel Gamito, no 23, 2900-056 Setúbal'' do cliente Influencer Markt, Lda para quem está a emitir o recibo.",
-      "step9": "9. Natureza do Recebimento",
-      "step9Info": "Especifique se o valor recebido é por bens, serviços ou adiantamento. Forneça uma breve descrição do serviço prestado.",
-      "step10": "10. Regime de IVA",
-      "step10Info": "Se isento de IVA por não ter rendimentos da categoria B acima de 13.500 euros anuais, selecione ''IVA - Regime de Isenção [artigo 53º]''. Para isenções por outras razões profissionais, escolha ''Isento - art.º 9.º''. Caso não esteja isento, selecione a percentagem de IVA devida (a taxa normal em Portugal continental é de 23%)",
-      "step11": "11. Base de Incidência em IRS",
-      "step11Info": "Se isento por não ter ultrapassado o montante anual acumulado de 12.500 euros, escolha ''Dispensa de Retenção - art. 101º-B, nº1, al. a) e b), do CIRS''. Se não isento, escolha a base de incidência a 100%. Situações especiais têm bases distintas, como categorias profissionais diferentes (50%) ou incapacidade superior a 60% (25%).",
-      "step12": "12. Taxa de Retenção na Fonte de IRS",
-      "step12Info": "Caso tenha escolhido ''Dispensa de Retenção'' anteriormente, o campo correspondente ficará bloqueado. Caso contrário, escolha a taxa de retenção aplicável.",
-      "step13": "13. Inserção do Valor Base do Serviço Prestado",
-      "step13Info": "Insira o valor base do serviço. O campo ''Imposto do Selo'' é geralmente deixado em branco, exceto para atos notariais.",
-      "step14": "14. Emissão do Recibo Verde",
-      "step14Info": "Após preencher todos os campos necessários, clique em ''Emitir'' no canto superior direito da página.",
-      "step15": "15. Após a Emissão",
-      "step15Info": "O recibo pode ser impresso, salvo em formato digital e submeter na área de faturação da Influencer Markt."
-    },
-
     "termsConditions": {
       "title": "Termos e Condições",
       "date": "Última Atualização: 13 de novembro de 2023",
@@ -1345,6 +1311,16 @@
         "subtitle1": "Todas as vendas são finais, e os reembolsos apenas serão emitidos se ambas as partes envolvidas na transação concordarem em cancelar uma encomenda, ou se a equipa de resolução de disputas da Influencer Markt determinar que o reembolso é justificado.",
         "subtitle2": "No caso de ser efetuada uma encomenda com um criador de conteúdo, mas o comprador não a concretizar ou solicitar o cancelamento devido a razões além do controlo da Influencer Markt, como planeamento ou organização inadequados, o comprador poderá estar sujeito a uma taxa no caso de reembolso.",
         "subtitle3": "Os reembolsos são fornecidos na forma de um crédito na plataforma, que é adicionado ao ''Crédito Disponível da Influencer Markt'' do utilizador. Os utilizadores podem trocar esses créditos por outras encomendas ou produtos dentro da plataforma Influencer Markt."
+      },
+      "chargebacks": {
+        "title": "Estorno",
+        "subtitle1": "O cliente concorda em contactar diretamente a Influencer Markt no caso de qualquer problema ou preocupação relacionada com uma transação antes de iniciar um processo de estorno. A Influencer Markt compromete-se a resolver disputas de forma rápida e eficiente.",
+        "subtitle2": "O cliente reconhece que os estornos podem implicar taxas impostas por processadores de pagamento ou bancos. O cliente é responsável por quaisquer taxas associadas a processos de estorno.",
+        "subtitle3": "A Influencer Markt mantém registos abrangentes de todas as transações, incluindo detalhes do pedido, informações de envio e registos de comunicação. O cliente concorda em fornecer informações precisas e reconhece que a Influencer Markt pode usar estes registos para responder a processos de estorno.",
+        "subtitle4": "A Influencer Markt implementa medidas razoáveis de prevenção de fraude para proteger ambas as partes. O cliente reconhece que essas medidas podem incluir verificações de autenticidade e monitorização de atividade suspeita.",
+        "subtitle5": "No caso de transações não autorizadas, a Influencer Markt reserva-se ao direito de investigar e, se apropriado, contestar estornos. O cliente concorda que os reembolsos só serão emitidos para transações comprovadamente não autorizadas, e a Influencer Markt cooperará com as autoridades necessárias em casos de fraude.",
+        "subtitle6": "O cliente é responsável por manter segura a informação da sua conta. É da responsabilidade deste comunicar prontamente à Influencer Markt qualquer uso não autorizado da sua conta de cliente.",
+        "subtitle7": "No caso de reembolso, a Influencer Markt participará no processo de resolução de disputas de acordo com as leis aplicáveis e as regulamentações das redes de pagamento. O cliente concorda em cooperar na investigação e fornecer qualquer informação necessária."
       },
       "prohibitedActivies": {
         "title": "Atividades Proibidas",
@@ -1505,6 +1481,43 @@
         "subtitle4": "Morada: Rua Doutor António Manuel Gamito, nº 23",
         "subtitle5": "Código Postal: 2900-056, Setúbal"
       }
+    },
+
+    "stepbyStepInvoice": {
+      "title": "Guia de emissão de fatura",
+      "subtitle": "Este guia detalhado torna o processo de emissão de recibos verdes mais acessível, assegurando conformidade com as normas fiscais e evitando complicações desnecessárias com o Fisco.",
+      "quickLinks": "Ligações Rápidas",
+      "step1": "1. Acesso ao Portal das Finanças",
+      "step1Info": "Acesse ao Portal das Finanças",
+      "step1Info2": "aqui.",
+      "step2": "2. Navegação até os Serviços Tributários",
+      "step2Info": "Clique em ''Aceder aos Serviços Tributários''.",
+      "step3": "3. Seleção de Faturas e Recibos Verdes",
+      "step3Info": "No rodapé da página, escolha ''Faturas e Recibos Verdes''.",
+      "step4": "4. Login e Identificação",
+      "step4Info": "Insira o número de contribuinte e a senha correspondente.",
+      "step5": "5. Início do Processo de Emissão",
+      "step5Info": "Após o login, selecione ''Emitir''.",
+      "step6": "6. Escolha do Tipo de Documento",
+      "step6Info": "Opte por ''Fatura'' ou ''Fatura-Recibo'' com base na situação do recebimento em relação à prestação do serviço.",
+      "step7": "7. Preenchimento Automático dos Dados",
+      "step7Info": "Seus dados e informações da atividade escolhida durante a abertura de atividade são preenchidos automaticamente. No caso de múltiplas atividades econômicas, selecione em cada recibo a correspondente ao serviço prestado.",
+      "step8": "8. Detalhes do Cliente",
+      "step8Info": "Insira o NIF ''517818353'' e a morada ''Rua Doutor António Manuel Gamito, no 23, 2900-056 Setúbal'' do cliente Influencer Markt, Lda para quem está a emitir o recibo.",
+      "step9": "9. Natureza do Recebimento",
+      "step9Info": "Especifique se o valor recebido é por bens, serviços ou adiantamento. Forneça uma breve descrição do serviço prestado.",
+      "step10": "10. Regime de IVA",
+      "step10Info": "Se isento de IVA por não ter rendimentos da categoria B acima de 13.500 euros anuais, selecione ''IVA - Regime de Isenção [artigo 53º]''. Para isenções por outras razões profissionais, escolha ''Isento - art.º 9.º''. Caso não esteja isento, selecione a percentagem de IVA devida (a taxa normal em Portugal continental é de 23%)",
+      "step11": "11. Base de Incidência em IRS",
+      "step11Info": "Se isento por não ter ultrapassado o montante anual acumulado de 12.500 euros, escolha ''Dispensa de Retenção - art. 101º-B, nº1, al. a) e b), do CIRS''. Se não isento, escolha a base de incidência a 100%. Situações especiais têm bases distintas, como categorias profissionais diferentes (50%) ou incapacidade superior a 60% (25%).",
+      "step12": "12. Taxa de Retenção na Fonte de IRS",
+      "step12Info": "Caso tenha escolhido ''Dispensa de Retenção'' anteriormente, o campo correspondente ficará bloqueado. Caso contrário, escolha a taxa de retenção aplicável.",
+      "step13": "13. Inserção do Valor Base do Serviço Prestado",
+      "step13Info": "Insira o valor base do serviço. O campo ''Imposto do Selo'' é geralmente deixado em branco, exceto para atos notariais.",
+      "step14": "14. Emissão do Recibo Verde",
+      "step14Info": "Após preencher todos os campos necessários, clique em ''Emitir'' no canto superior direito da página.",
+      "step15": "15. Após a Emissão",
+      "step15Info": "O recibo pode ser impresso, salvo em formato digital e submeter na área de faturação da Influencer Markt."
     },
 
     "processingPage": {

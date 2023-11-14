@@ -32,6 +32,7 @@
     "@trpc/next": "^10.32.0",
     "@trpc/react-query": "^10.26.0",
     "@trpc/server": "^10.26.0",
+    "axios": "^1.6.1",
     "browser-image-compression": "^2.0.2",
     "dayjs": "^1.11.9",
     "i18next": "^23.2.8",

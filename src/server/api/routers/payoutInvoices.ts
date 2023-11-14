@@ -91,6 +91,7 @@ export const PayoutInvoicesRouter = createTRPCRouter({
           select: {
             id: true,
             createdAt: true,
+            isentOfTaxes: true,
             payoutInvoiceStatus: {
               select: {
                 name: true,
@@ -154,6 +155,7 @@ export const PayoutInvoicesRouter = createTRPCRouter({
         select: {
           id: true,
           createdAt: true,
+          isentOfTaxes: true,
           payoutInvoiceStatus: {
             select: {
               name: true,

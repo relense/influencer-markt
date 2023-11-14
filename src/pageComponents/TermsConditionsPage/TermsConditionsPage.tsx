@@ -116,6 +116,23 @@ const TermsConditionsPage = () => {
     );
   };
 
+  const renderChargeBacks = () => {
+    return (
+      <div className="flex flex-col gap-4 text-justify lg:text-left">
+        <div className="text-center text-2xl font-semibold lg:text-left">
+          {t("pages.termsConditions.chargebacks.title")}
+        </div>
+        <div>{t("pages.termsConditions.chargebacks.subtitle1")}</div>
+        <div>{t("pages.termsConditions.chargebacks.subtitle2")}</div>
+        <div>{t("pages.termsConditions.chargebacks.subtitle3")}</div>
+        <div>{t("pages.termsConditions.chargebacks.subtitle4")}</div>
+        <div>{t("pages.termsConditions.chargebacks.subtitle5")}</div>
+        <div>{t("pages.termsConditions.chargebacks.subtitle6")}</div>
+        <div>{t("pages.termsConditions.chargebacks.subtitle7")}</div>
+      </div>
+    );
+  };
+
   const renderProhibitedActivities = () => {
     return (
       <div className="flex flex-col gap-4 text-justify lg:text-left">
@@ -522,6 +539,7 @@ const TermsConditionsPage = () => {
       {renderPurchasesAndPayments()}
       {renderPurchasesAndPayments2()}
       {renderRefundPolicy()}
+      {renderChargeBacks()}
       {renderProhibitedActivities()}
       {renderUserGeneratedContributions()}
       {renderContributionLicense()}
