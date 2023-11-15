@@ -12,10 +12,18 @@ const StripeOnboarding: NextPage = () => {
   const { mutate: verifyStripeAccount, isLoading } =
     api.stripes.verifyAccountInfo.useMutation({
       onSuccess: () => {
-        void router.push("/billing");
+        if (i18n.language !== "en") {
+          void router.push(`/${i18n.language}/billing`);
+        } else {
+          void router.push("/billing");
+        }
       },
       onError: () => {
-        void router.push("/billing");
+        if (i18n.language !== "en") {
+          void router.push(`/${i18n.language}/billing`);
+        } else {
+          void router.push("/billing");
+        }
       },
     });
 
