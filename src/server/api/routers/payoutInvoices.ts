@@ -488,15 +488,20 @@ export const PayoutInvoicesRouter = createTRPCRouter({
 
     const payoutInvoice = await ctx.prisma.payoutInvoice.findMany({
       where: {
-        createdAt: {
+        updatedAt: {
           gte: startOfMonth,
           lte: endOfMonth,
         },
+        payoutInvoiceStatusId: 4,
+      },
+      include: {
+        influencer: true,
       },
     });
 
-    const urls = payoutInvoice.map((invoice) => invoice.influencerInvoice);
-    const pdfContents = await Promise.all(urls.map((url) => downloadPDF(url)));
+    const pdfContents = await Promise.all(
+      payoutInvoice.map((invoice) => downloadPDF(invoice.influencerInvoice))
+    );
 
     const zipContent = await createZip(pdfContents);
 
@@ -520,6 +525,31 @@ export const PayoutInvoicesRouter = createTRPCRouter({
       throw new Error("Error uploading file");
     }
   }),
+
+  deleteZipFileFromAzure: protectedProcedure
+    .input(
+      z.object({
+        blobName: z.string(),
+      })
+    )
+    .mutation(async ({ input }) => {
+      if (input.blobName) {
+        try {
+          const containerClient = bloblService.getContainerClient(
+            process.env.AZURE_IFLUENCER_INVOICES_CONTAINER_NAME || ""
+          );
+
+          const blockBlobClient = containerClient.getBlockBlobClient(
+            input.blobName
+          );
+
+          await blockBlobClient.deleteIfExists({ deleteSnapshots: "include" });
+        } catch (error) {
+          console.error("Error deleting file:", error);
+          throw new Error("Error deleting file");
+        }
+      }
+    }),
 });
 
 async function downloadPDF(url: string) {

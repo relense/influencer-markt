@@ -33,6 +33,11 @@ type PayoutsInvoice = {
   isentOfTaxes: boolean;
 };
 
+type DownloadLink = {
+  url: string;
+  blobName: string;
+};
+
 const AdminPayoutsPage = () => {
   const { t, i18n } = useTranslation();
   const ctx = api.useUtils();
@@ -44,7 +49,9 @@ const AdminPayoutsPage = () => {
   const [payoutsInvoiceCount, setPayoutsInvoiceCount] = useState<number>(0);
   const [payoutsInvoiceCursor, setPayoutsInvoiceCursor] = useState<string>("");
   const [profileId, setProfileId] = useState<string>("");
-  const [downloadZipLink, setDownloadZipLink] = useState<string | null>(null);
+  const [downloadZipLink, setDownloadZipLink] = useState<DownloadLink | null>(
+    null
+  );
 
   const { register, watch, handleSubmit, control, setValue, resetField } =
     useForm<PayoutsInvoiceSearch>({
@@ -103,10 +110,14 @@ const AdminPayoutsPage = () => {
   } = api.payoutInvoices.getZipWithMontInvoices.useMutation({
     onSuccess: (response) => {
       if (response) {
-        setDownloadZipLink(response.url);
+        setDownloadZipLink(response);
+        void deleteZipFileFromAzure({ blobName: response.blobName });
       }
     },
   });
+
+  const { mutate: deleteZipFileFromAzure } =
+    api.payoutInvoices.deleteZipFileFromAzure.useMutation();
 
   useEffect(() => {
     if (payoutsInvoiceData) {
@@ -431,12 +442,12 @@ const AdminPayoutsPage = () => {
         />
         {downloadZipLink && (
           <a
-            href={downloadZipLink}
+            href={downloadZipLink.url}
             download="monthInvoices.zip"
             style={{ display: "none" }}
             ref={(el) => {
               el && el.click();
-              setDownloadZipLink("");
+              setDownloadZipLink(null);
             }}
           />
         )}
