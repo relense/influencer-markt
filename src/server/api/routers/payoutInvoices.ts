@@ -1,9 +1,12 @@
 import { z } from "zod";
+import axios from "axios";
+import archiver from "archiver";
 
 import { createTRPCRouter, protectedProcedure } from "../trpc";
 import { createNotification } from "./notifications";
 import { sendEmail } from "../../../services/email.service";
 import { stripe } from "../../stripe";
+import bloblService from "../../../services/azureBlob.service";
 
 export const PayoutInvoicesRouter = createTRPCRouter({
   getPayoutInvoice: protectedProcedure
@@ -469,4 +472,80 @@ export const PayoutInvoicesRouter = createTRPCRouter({
         return payoutInvoice;
       }
     }),
+
+  getZipWithMontInvoices: protectedProcedure.mutation(async ({ ctx }) => {
+    const currentDate = new Date();
+    const startOfMonth = new Date(
+      currentDate.getFullYear(),
+      currentDate.getMonth() - 1,
+      1
+    );
+    const endOfMonth = new Date(
+      currentDate.getFullYear(),
+      currentDate.getMonth(),
+      1
+    );
+
+    const payoutInvoice = await ctx.prisma.payoutInvoice.findMany({
+      where: {
+        createdAt: {
+          gte: startOfMonth,
+          lte: endOfMonth,
+        },
+      },
+    });
+
+    const urls = payoutInvoice.map((invoice) => invoice.influencerInvoice);
+    const pdfContents = await Promise.all(urls.map((url) => downloadPDF(url)));
+
+    const zipContent = await createZip(pdfContents);
+
+    try {
+      const containerClient = bloblService.getContainerClient(
+        process.env.AZURE_IFLUENCER_INVOICES_CONTAINER_NAME || ""
+      );
+
+      const blobName = `${Date.now()}-invoices.zip`;
+      const blockBlobClient = containerClient.getBlockBlobClient(blobName);
+
+      await blockBlobClient.uploadStream(zipContent, undefined, undefined, {
+        blobHTTPHeaders: {
+          blobContentType: "application/zip",
+        },
+      });
+
+      return { url: blockBlobClient.url, blobName };
+    } catch (error) {
+      console.error("Error uploading file:", error);
+      throw new Error("Error uploading file");
+    }
+  }),
 });
+
+async function downloadPDF(url: string) {
+  const response = await axios.get(url, { responseType: "arraybuffer" });
+  return Buffer.from(response.data as Uint8Array);
+}
+
+async function createZip(pdfContents: Uint8Array[]) {
+  const archive = archiver("zip");
+  const buffers: Buffer[] = [];
+
+  for (let index = 0; index < pdfContents.length; index++) {
+    const pdfContent = pdfContents[index];
+
+    if (pdfContent) {
+      const pdfPath = `document_${index + 1}.pdf`;
+
+      const buffer = Buffer.from(pdfContent);
+
+      archive.append(buffer, { name: pdfPath });
+
+      buffers.push(buffer);
+    }
+  }
+
+  await archive.finalize();
+
+  return archive;
+}

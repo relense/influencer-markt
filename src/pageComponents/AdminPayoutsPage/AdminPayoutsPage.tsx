@@ -8,14 +8,14 @@ import { useEffect, useState } from "react";
 import { useTranslation } from "next-i18next";
 import { api } from "~/utils/api";
 import { Controller, useForm } from "react-hook-form";
+import { useRouter } from "next/router";
+import toast from "react-hot-toast";
 
 import { Button } from "../../components/Button";
 import { helper } from "../../utils/helper";
 import { LoadingSpinner } from "../../components/LoadingSpinner";
 import { CustomSelect } from "../../components/CustomSelect";
 import { type Option } from "../../utils/globalTypes";
-import { useRouter } from "next/router";
-import toast from "react-hot-toast";
 
 type PayoutsInvoiceSearch = {
   searchProfileId: string;
@@ -44,6 +44,7 @@ const AdminPayoutsPage = () => {
   const [payoutsInvoiceCount, setPayoutsInvoiceCount] = useState<number>(0);
   const [payoutsInvoiceCursor, setPayoutsInvoiceCursor] = useState<string>("");
   const [profileId, setProfileId] = useState<string>("");
+  const [downloadZipLink, setDownloadZipLink] = useState<string | null>(null);
 
   const { register, watch, handleSubmit, control, setValue, resetField } =
     useForm<PayoutsInvoiceSearch>({
@@ -95,6 +96,17 @@ const AdminPayoutsPage = () => {
       enabled: false,
     }
   );
+
+  const {
+    mutate: getZipWithMonthInvoices,
+    isLoading: isLoadindGetZipWithMonthInvoices,
+  } = api.payoutInvoices.getZipWithMontInvoices.useMutation({
+    onSuccess: (response) => {
+      if (response) {
+        setDownloadZipLink(response.url);
+      }
+    },
+  });
 
   useEffect(() => {
     if (payoutsInvoiceData) {
@@ -408,6 +420,27 @@ const AdminPayoutsPage = () => {
   return (
     <div className="flex w-full flex-col gap-4 self-center p-4 md:w-10/12">
       {renderSearchInputs()}
+      <div className="flex">
+        <Button
+          title="Download Past Month Invoices"
+          onClick={() => void getZipWithMonthInvoices()}
+          level="primary"
+          size="regular"
+          isLoading={isLoadindGetZipWithMonthInvoices}
+          disabled={isLoadindGetZipWithMonthInvoices}
+        />
+        {downloadZipLink && (
+          <a
+            href={downloadZipLink}
+            download="monthInvoices.zip"
+            style={{ display: "none" }}
+            ref={(el) => {
+              el && el.click();
+              setDownloadZipLink("");
+            }}
+          />
+        )}
+      </div>
       {renderFiltersRow()}
       {renderCustomSelect()}
       <div>
