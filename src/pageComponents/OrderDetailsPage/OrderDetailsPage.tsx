@@ -40,7 +40,9 @@ const OrderDetailsPage = (params: {
 
   const [openReviewModal, setOpenReviewModal] = useState<boolean>(false);
   const [starReviewsCount, setStarReviewsCount] = useState<number>(5);
-  const [dateOfDelivery, setDateOfDelivery] = useState<string>();
+  const [dateOfDelivery, setDateOfDelivery] = useState<string>("");
+  const [postPoneDateOfDelivery, setPostPoneDateOfDelivery] =
+    useState<string>("");
   const [showEditDateOfDelivery, setShowEditDateOfDelivery] =
     useState<boolean>(false);
   const [openDisputeModal, setOpenDisputeModal] = useState<boolean>(false);
@@ -288,6 +290,7 @@ const OrderDetailsPage = (params: {
   useEffect(() => {
     if (order) {
       setDateOfDelivery(order.dateOfDelivery.toString());
+      setPostPoneDateOfDelivery(order.dateOfDelivery.toString());
     }
   }, [order]);
 
@@ -342,7 +345,7 @@ const OrderDetailsPage = (params: {
   const handleUpdateDateOfDeliveryFromOnHold = () => {
     updateDateOfDeliveryFromOnHold({
       orderId: params.orderId,
-      dateOfDelivery: dayjs(dateOfDelivery).toDate(),
+      dateOfDelivery: dayjs(postPoneDateOfDelivery).toDate(),
     });
   };
 
@@ -988,7 +991,12 @@ const OrderDetailsPage = (params: {
                   level="terciary"
                   title={t("pages.orders.update")}
                   isLoading={isLoading || isLoadingUpdateDeliveryFromOnHold}
-                  disabled={isLoading || isLoadingUpdateDeliveryFromOnHold}
+                  disabled={
+                    isLoading ||
+                    isLoadingUpdateDeliveryFromOnHold ||
+                    dayjs(postPoneDateOfDelivery).isBefore(dayjs(Date.now())) ||
+                    postPoneDateOfDelivery === ""
+                  }
                   onClick={(e) => {
                     e.preventDefault();
                     handleUpdateDateOfDeliveryFromOnHold();
@@ -1009,9 +1017,9 @@ const OrderDetailsPage = (params: {
                 type="date"
                 required
                 className="w-9/12 rounded-xl border-[1px] p-2 focus:border-[1px] focus:border-black focus:outline-none"
-                min={dayjs(dateOfDelivery).add(1, "day").format("YYYY-MM-DD")}
-                value={dayjs(dateOfDelivery).format("YYYY-MM-DD")}
-                onChange={(e) => setDateOfDelivery(e.target.value)}
+                min={dayjs(Date.now()).add(1, "day").format("YYYY-MM-DD")}
+                value={dayjs(postPoneDateOfDelivery).format("YYYY-MM-DD")}
+                onChange={(e) => setPostPoneDateOfDelivery(e.target.value)}
               />
             </form>
           </Modal>

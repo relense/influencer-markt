@@ -12,6 +12,8 @@ import { api } from "~/utils/api";
 import { CustomSelect } from "../../../components/CustomSelect";
 import { helper } from "../../../utils/helper";
 import { Button } from "../../../components/Button";
+import { useState } from "react";
+import { ToolTipWithoutIcon } from "../../../components/ToolTipWithoutIcon";
 
 const ValuePackChooser = (params: {
   availableUserSocialMedia: SocialMediaDetails[];
@@ -26,6 +28,9 @@ const ValuePackChooser = (params: {
 }) => {
   const { status } = useSession();
   const { t } = useTranslation();
+
+  const [openServiceFeeTooltip, setOpenServiceFeeTooltip] =
+    useState<boolean>(false);
 
   const selectedUserSocialMedia: SocialMediaDetails | undefined =
     params.availableUserSocialMedia.find((userSocialMedia) => {
@@ -211,7 +216,19 @@ const ValuePackChooser = (params: {
             )}
           </div>
           <div className="flex flex-1 justify-between">
-            <div>{t("pages.publicProfilePage.serviceFee")}</div>
+            <div
+              className="cursor-pointer underline"
+              onClick={() => setOpenServiceFeeTooltip(!openServiceFeeTooltip)}
+            >
+              {openServiceFeeTooltip && (
+                <ToolTipWithoutIcon
+                  content={t("pages.publicProfilePage.serviceFeeToolTip")}
+                  onClose={() => setOpenServiceFeeTooltip(false)}
+                />
+              )}
+              {t("pages.publicProfilePage.serviceFee")}
+            </div>
+
             {params.selectedValuePacks.length > 0 &&
             params.profileCountryTax ? (
               <div>{serviceTaxTotal}€</div>

@@ -625,6 +625,7 @@
       "noValuePacks": "No value packs have been added",
       "profileModalTitle": "Profile Update",
       "profileModalButton": "Update Profile",
+      "serviceFeeToolTip": "This helps us run our platform and offer services like support.",
       "welcomeModal": {
         "buttoncContinue": "Continue",
         "title": "Welcome to Influencer Markt",

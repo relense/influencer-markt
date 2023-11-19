@@ -95,11 +95,13 @@ export const OrdersRouter = createTRPCRouter({
           }),
         });
 
-        await spendCredits({
-          credits: input.discountValue,
-          orderId: order.id,
-          userId: ctx.session.user.id,
-        });
+        if (input.discountValue > 0) {
+          await spendCredits({
+            credits: input.discountValue,
+            orderId: order.id,
+            userId: ctx.session.user.id,
+          });
+        }
 
         //Email influencer to let him know he has an order
         if (process.env.NEXT_PUBLIC_EMAIL_FROM) {
