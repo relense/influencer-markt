@@ -343,7 +343,8 @@
       "followers": "Seguidores",
       "deleteButton": "Apagar Rede Social",
       "areYouSure": "Tens a certeza?",
-      "deleteWarning": "Tens a certeza que queres apagar esta rede social? Esta acção é permanente."
+      "deleteWarning": "Tens a certeza que queres apagar esta rede social? Esta acção é permanente.",
+      "mainSocial": "Rede Social Principal"
     },
 
     "profileCard": {

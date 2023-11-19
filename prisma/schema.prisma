@@ -201,13 +201,14 @@ model Portfolio {
 }
 
 model UserSocialMedia {
-  id          Int          @id @default(autoincrement())
-  socialMedia SocialMedia? @relation(fields: [socialMediaId], references: [id])
-  handler     String
-  followers   Int
-  url         String
-  profile     Profile?     @relation(fields: [profileId], references: [id])
-  valuePacks  ValuePack[]
+  id              Int          @id @default(autoincrement())
+  socialMedia     SocialMedia? @relation(fields: [socialMediaId], references: [id])
+  handler         String
+  followers       Int
+  url             String
+  profile         Profile?     @relation(fields: [profileId], references: [id])
+  valuePacks      ValuePack[]
+  mainSocialMedia Boolean      @default(false)
 
   socialMediaId Int
   profileId     String?

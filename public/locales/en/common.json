@@ -345,7 +345,8 @@
       "followers": "Followers",
       "deleteButton": "Delete Social Media",
       "areYouSure": "Are You Sure?",
-      "deleteWarning": "Are you sure you want to delete this social media? This action is permanent."
+      "deleteWarning": "Are you sure you want to delete this social media? This action is permanent.",
+      "mainSocial": "Main Social Media"
     },
 
     "profileCard": {

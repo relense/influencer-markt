@@ -10,7 +10,8 @@ import { useState } from "react";
 const SocialMediaCard = (params: {
   socialMedia: SocialMediaDetails;
   onDelete: () => void;
-  onClick: () => void;
+  onHandleEditSocialMedia: () => void;
+  handleChangeMainSocialMedia: () => void;
   showDeleteModal: boolean;
 }) => {
   const { t } = useTranslation();
@@ -23,12 +24,27 @@ const SocialMediaCard = (params: {
 
   return (
     <>
-      <div className="relative w-full cursor-pointer px-4 sm:px-0 lg:flex-[0_1_47%]">
+      <div className={"relative w-full px-4 sm:px-0 lg:flex-[0_1_47%]"}>
         <div
-          className="flex h-full w-auto flex-col gap-4 rounded-lg border-[1px] border-gray3 p-4"
-          onClick={params.onClick}
+          className={`flex h-full w-auto cursor-pointer flex-col gap-4 rounded-lg border-[1px] p-4 ${
+            params.socialMedia.mainSocialMedia
+              ? "border-[2px] border-influencer-dark"
+              : "border-gray3"
+          }`}
+          onClick={() => params.handleChangeMainSocialMedia()}
         >
-          <div className="flex items-center gap-1 font-semibold text-influencer">
+          {params.socialMedia.mainSocialMedia && (
+            <div className="text-sm text-gray4">
+              {t("components.socialMediaCard.mainSocial")}
+            </div>
+          )}
+          <div
+            className="flex w-10 cursor-pointer items-center gap-1 font-semibold text-influencer hover:underline"
+            onClick={(e) => {
+              params.onHandleEditSocialMedia();
+              e.stopPropagation();
+            }}
+          >
             {params.socialMedia.platform.name}
             <FontAwesomeIcon
               icon={faPencil}
@@ -88,7 +104,7 @@ const SocialMediaCard = (params: {
           )}
         </div>
         <div
-          className="absolute right-2 top-[-8px] flex h-8 w-8 cursor-pointer items-center justify-center  rounded-full bg-influencer-green sm:right-[-5px] sm:top-[-5px]"
+          className="absolute right-2 top-[-8px] flex h-8 w-8 cursor-pointer items-center justify-center  rounded-full bg-influencer-green sm:right-[-10px] sm:top-[-10px]"
           onClick={() => setOpenDeleteModal(true)}
         >
           <FontAwesomeIcon icon={faXmark} className="fa-lg text-white" />

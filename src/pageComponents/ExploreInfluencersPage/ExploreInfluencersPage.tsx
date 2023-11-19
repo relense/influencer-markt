@@ -137,6 +137,7 @@ const ExploreInfluencersPage = (params: {
                 url: socialMedia.url,
                 socialMediaId: socialMedia.socialMedia?.id || -1,
                 socialMediaName: socialMedia.socialMedia?.name || "",
+                mainSocialMedia: socialMedia.mainSocialMedia,
                 valuePacks: socialMedia.valuePacks.map((valuePack) => {
                   return {
                     id: valuePack.id,
@@ -195,6 +196,7 @@ const ExploreInfluencersPage = (params: {
               socialMediaId: socialMedia.socialMediaId || -1,
               socialMediaName: socialMedia.socialMedia?.name || "",
               valuePacks: [],
+              mainSocialMedia: socialMedia.mainSocialMedia,
             };
           }),
           username: profile.user.username || "",

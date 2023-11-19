@@ -52,6 +52,7 @@ const ProfileRow = (params: {
       socialMediaId: -1,
       url: "",
       valuePacks: [],
+      mainSocialMedia: false,
     }
   );
 
@@ -84,11 +85,19 @@ const ProfileRow = (params: {
 
   useEffect(() => {
     const socialMediaWithMostFollowers = () => {
-      params.socialMedia.forEach((socialMedia) => {
-        if (socialMedia.followers > usefullSocialMedia.followers) {
-          setUsefullSocialMedia(socialMedia);
-        }
-      });
+      const mainSocialMedia = params.socialMedia.find(
+        (socialMedia) => socialMedia.mainSocialMedia
+      );
+
+      if (mainSocialMedia) {
+        setUsefullSocialMedia(mainSocialMedia);
+      } else {
+        params.socialMedia.forEach((socialMedia) => {
+          if (socialMedia.followers > usefullSocialMedia.followers) {
+            setUsefullSocialMedia(socialMedia);
+          }
+        });
+      }
     };
 
     const selectSocialMediaById = () => {

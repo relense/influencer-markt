@@ -29,6 +29,7 @@ export type UserSocialMedia = {
   socialMediaName: string;
   socialMediaId: number;
   valuePacks?: ValuePack[];
+  mainSocialMedia: boolean;
 };
 
 export type Review = {
@@ -61,6 +62,7 @@ export type SocialMediaDetails = {
   socialMediaHandler: string;
   socialMediaFollowers: number;
   valuePacks: ValuePack[];
+  mainSocialMedia: boolean;
 };
 
 export type ProfileData = {

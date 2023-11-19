@@ -37,6 +37,15 @@ const PublicProfileSocialMediaEdit = (params: {
       },
     });
 
+  const { mutate: chooseMainUserSocialMedia } =
+    api.userSocialMedias.chooseMainUserSocialMedia.useMutation({
+      onError: () => {
+        toast.error(t("general.error.generalErrorMessage"), {
+          position: "bottom-left",
+        });
+      },
+    });
+
   useEffect(() => {
     if (profileSocialMedia) {
       setUserSocialMediaList(
@@ -63,11 +72,31 @@ const PublicProfileSocialMediaEdit = (params: {
                 },
               };
             }),
+            mainSocialMedia: item.mainSocialMedia,
           };
         })
       );
     }
   }, [profileSocialMedia]);
+
+  const handleChangeMainSocialMedia = (socialMedia: SocialMediaDetails) => {
+    if (socialMedia.mainSocialMedia) return;
+
+    if (socialMedia && socialMedia.id) {
+      const newUserSocialMediaList = [...userSocialMediaList];
+
+      newUserSocialMediaList.forEach((social) => {
+        if (socialMedia.id === social.id) {
+          social.mainSocialMedia = true;
+        } else {
+          social.mainSocialMedia = false;
+        }
+      });
+
+      setUserSocialMediaList(newUserSocialMediaList);
+      chooseMainUserSocialMedia({ userSocialMediaId: socialMedia.id });
+    }
+  };
 
   const onDeleteSocialMedia = (socialMedia: SocialMediaDetails) => {
     if (socialMedia && socialMedia.id) {
@@ -78,13 +107,27 @@ const PublicProfileSocialMediaEdit = (params: {
       );
 
       newUserSocialMediaList.splice(index, 1);
+
+      if (
+        newUserSocialMediaList &&
+        newUserSocialMediaList.length > 0 &&
+        newUserSocialMediaList[0] &&
+        newUserSocialMediaList[0].id
+      ) {
+        newUserSocialMediaList[0].mainSocialMedia = true;
+
+        chooseMainUserSocialMedia({
+          userSocialMediaId: newUserSocialMediaList[0].id,
+        });
+      }
+
       setUserSocialMediaList(newUserSocialMediaList);
 
       deleteUserSocialMedia({ id: socialMedia.id });
     }
   };
 
-  const handleOnclickSocialMediaCard = (socialMedia: SocialMediaDetails) => {
+  const handleOnEditSocialMedia = (socialMedia: SocialMediaDetails) => {
     if (socialMedia.id) {
       void router.push(`/social-media/edit/${socialMedia.id}`);
     }
@@ -133,17 +176,21 @@ const PublicProfileSocialMediaEdit = (params: {
                   },
                 };
               }),
+              mainSocialMedia: socialMedia.mainSocialMedia,
             };
 
             return (
               <SocialMediaCard
                 key={`${socialMedia.id || -1}  ${index}`}
-                onClick={() => {
-                  handleOnclickSocialMediaCard(parsedSocialMedia);
+                onHandleEditSocialMedia={() => {
+                  handleOnEditSocialMedia(parsedSocialMedia);
                 }}
                 onDelete={() => {
                   onDeleteSocialMedia(parsedSocialMedia);
                 }}
+                handleChangeMainSocialMedia={() =>
+                  handleChangeMainSocialMedia(parsedSocialMedia)
+                }
                 socialMedia={parsedSocialMedia}
                 showDeleteModal={true}
               />

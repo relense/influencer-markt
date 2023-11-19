@@ -114,6 +114,7 @@ const ExploreBrandsPage = (params: { loggedInProfileId: string }) => {
                 socialMediaId: socialMedia.socialMedia?.id || -1,
                 socialMediaName: socialMedia.socialMedia?.name || "",
                 valuePacks: [],
+                mainSocialMedia: socialMedia.mainSocialMedia,
               };
             }),
             username: profile.user.username || "",
@@ -159,6 +160,7 @@ const ExploreBrandsPage = (params: { loggedInProfileId: string }) => {
               socialMediaId: socialMedia.socialMediaId || -1,
               socialMediaName: socialMedia.socialMedia?.name || "",
               valuePacks: [],
+              mainSocialMedia: socialMedia.mainSocialMedia,
             };
           }),
           username: profile.user.username || "",

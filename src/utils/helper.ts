@@ -79,7 +79,6 @@ const formatDate = (date: Date | number, locale: string): string => {
       .locale(locale || "en")
       .fromNow();
   } else {
-    debugger;
     return dayjs(date)
       .locale(locale || "end")
       .format("DD MMMM YYYY");

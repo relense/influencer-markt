@@ -264,6 +264,7 @@ const PublicProfilePage = (params: {
                       id: userSocialMedia.socialMedia?.id || -1,
                       name: userSocialMedia.socialMedia?.name || "",
                     },
+                    mainSocialMedia: userSocialMedia.mainSocialMedia,
                   };
                 }
               )}

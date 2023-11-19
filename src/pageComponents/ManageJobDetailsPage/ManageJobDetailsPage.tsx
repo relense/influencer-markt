@@ -293,6 +293,7 @@ const ManageJobDetailsPage = (params: {
               url: userSocialMedia.url,
               socialMediaName: userSocialMedia.socialMedia?.name || "",
               socialMediaId: userSocialMedia.socialMedia?.id || -1,
+              mainSocialMedia: userSocialMedia.mainSocialMedia,
             };
           }),
           name: applicant.name,
@@ -341,6 +342,7 @@ const ManageJobDetailsPage = (params: {
                 url: userSocialMedia.url,
                 socialMediaName: userSocialMedia.socialMedia?.name || "",
                 socialMediaId: userSocialMedia.socialMedia?.id || -1,
+                mainSocialMedia: userSocialMedia.mainSocialMedia,
               };
             }),
             name: applicant.name,
@@ -390,6 +392,7 @@ const ManageJobDetailsPage = (params: {
                 url: userSocialMedia.url,
                 socialMediaName: userSocialMedia.socialMedia?.name || "",
                 socialMediaId: userSocialMedia.socialMedia?.id || -1,
+                mainSocialMedia: userSocialMedia.mainSocialMedia,
               };
             }),
             name: applicant.name,
@@ -439,6 +442,7 @@ const ManageJobDetailsPage = (params: {
                 url: userSocialMedia.url,
                 socialMediaName: userSocialMedia.socialMedia?.name || "",
                 socialMediaId: userSocialMedia.socialMedia?.id || -1,
+                mainSocialMedia: userSocialMedia.mainSocialMedia,
               };
             }),
             name: applicant.name,
@@ -942,6 +946,7 @@ const ManageJobDetailsPage = (params: {
                 socialMediaName: socialMedia.socialMediaName,
                 url: socialMedia.url,
                 valuePacks: [],
+                mainSocialMedia: socialMedia.mainSocialMedia,
               };
             })}
             name={applicant.name}
@@ -1003,6 +1008,7 @@ const ManageJobDetailsPage = (params: {
                 socialMediaName: socialMedia.socialMediaName,
                 url: socialMedia.url,
                 valuePacks: [],
+                mainSocialMedia: socialMedia.mainSocialMedia,
               };
             })}
             name={applicant.name}
@@ -1114,6 +1120,7 @@ const ManageJobDetailsPage = (params: {
                 socialMediaName: socialMedia.socialMediaName,
                 url: socialMedia.url,
                 valuePacks: [],
+                mainSocialMedia: socialMedia.mainSocialMedia,
               };
             })}
             name={applicant.name}
@@ -1163,6 +1170,7 @@ const ManageJobDetailsPage = (params: {
                 socialMediaName: socialMedia.socialMediaName,
                 url: socialMedia.url,
                 valuePacks: [],
+                mainSocialMedia: socialMedia.mainSocialMedia,
               };
             })}
             name={applicant.name}
@@ -1257,6 +1265,7 @@ const ManageJobDetailsPage = (params: {
                 socialMediaName: socialMedia.socialMediaName,
                 url: socialMedia.url,
                 valuePacks: [],
+                mainSocialMedia: socialMedia.mainSocialMedia,
               };
             })}
             name={applicant.name}
@@ -1297,6 +1306,7 @@ const ManageJobDetailsPage = (params: {
                 socialMediaName: socialMedia.socialMediaName,
                 url: socialMedia.url,
                 valuePacks: [],
+                mainSocialMedia: socialMedia.mainSocialMedia,
               };
             })}
             name={applicant.name}
@@ -1405,6 +1415,7 @@ const ManageJobDetailsPage = (params: {
                 socialMediaName: socialMedia.socialMediaName,
                 url: socialMedia.url,
                 valuePacks: [],
+                mainSocialMedia: socialMedia.mainSocialMedia,
               };
             })}
             name={applicant.name}
@@ -1448,6 +1459,7 @@ const ManageJobDetailsPage = (params: {
                 socialMediaName: socialMedia.socialMediaName,
                 url: socialMedia.url,
                 valuePacks: [],
+                mainSocialMedia: socialMedia.mainSocialMedia,
               };
             })}
             name={applicant.name}

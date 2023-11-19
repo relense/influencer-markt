@@ -46,6 +46,8 @@ export const userSocialMediasRouter = createTRPCRouter({
             profileId: profile.id,
             socialMediaId: input.socialMedia.id,
             url: createSocialMediaUrl(input.socialMedia.id, input.handler),
+            mainSocialMedia:
+              profile.userSocialMedia.length === 0 ? true : false,
           },
         });
 
@@ -74,95 +76,6 @@ export const userSocialMediasRouter = createTRPCRouter({
       }
 
       return profile;
-    }),
-
-  createUserSocialMedias: protectedProcedure
-    .input(
-      z.array(
-        z.object({
-          socialMedia: z.object({
-            id: z.number(),
-            name: z.string(),
-          }),
-          handler: z.string(),
-          followers: z.number(),
-          valuePacks: z.array(
-            z.object({
-              platformId: z.number(),
-              contentTypeId: z.number(),
-              valuePackPrice: z.number(),
-            })
-          ),
-        })
-      )
-    )
-    .mutation(async ({ ctx, input }) => {
-      const profile = await ctx.prisma.profile.findUnique({
-        where: { userId: ctx.session.user.id },
-        include: {
-          userSocialMedia: {
-            include: {
-              valuePacks: true,
-            },
-          },
-        },
-      });
-
-      // Delete the associated UserSocialMedia records
-
-      if (profile && input) {
-        profile.userSocialMedia.map(async (usm) => {
-          if (usm.valuePacks) {
-            await ctx.prisma.valuePack.deleteMany({
-              where: {
-                id: { in: usm.valuePacks.map((valuePack) => valuePack.id) },
-              },
-            });
-          }
-        });
-
-        // Update the UserSocialMedia relationship of the Profile
-        await ctx.prisma.profile.update({
-          where: { userId: ctx.session.user.id },
-          data: {
-            userSocialMedia: {
-              set: [],
-            },
-          },
-        });
-
-        // Delete the associated UserSocialMedia records
-        await ctx.prisma.userSocialMedia.deleteMany({
-          where: {
-            id: { in: profile.userSocialMedia.map((usm) => usm.id) },
-          },
-        });
-
-        input.map(async (socialMedia) => {
-          const userSocialMedia = await ctx.prisma.userSocialMedia.create({
-            data: {
-              socialMediaId: socialMedia.socialMedia.id,
-              handler: socialMedia.handler,
-              followers: socialMedia.followers,
-              url: createSocialMediaUrl(
-                socialMedia.socialMedia.id,
-                socialMedia.handler
-              ),
-              profileId: profile.id,
-            },
-          });
-
-          await ctx.prisma.valuePack.createMany({
-            data: socialMedia.valuePacks.map((valuePack) => {
-              return {
-                valuePackPrice: valuePack.valuePackPrice,
-                contentTypeId: valuePack.contentTypeId,
-                userSocialMediaId: userSocialMedia.id,
-              };
-            }),
-          });
-        });
-      }
     }),
 
   updateUserSocialMedia: protectedProcedure
@@ -277,6 +190,7 @@ export const userSocialMediasRouter = createTRPCRouter({
               contentType: true,
             },
           },
+          mainSocialMedia: true,
         },
       });
     }),
@@ -355,14 +269,48 @@ export const userSocialMediasRouter = createTRPCRouter({
           where: {
             userSocialMedia: {
               id: input.id,
-              profileId: profile.id,
             },
           },
         });
 
         return await ctx.prisma.userSocialMedia.delete({
-          where: { id: input.id, profileId: profile.id },
-          include: { profile: true },
+          where: { id: input.id },
+        });
+      }
+    }),
+
+  chooseMainUserSocialMedia: protectedProcedure
+    .input(
+      z.object({
+        userSocialMediaId: z.number(),
+      })
+    )
+    .mutation(async ({ ctx, input }) => {
+      const profile = await ctx.prisma.profile.findFirst({
+        where: {
+          userId: ctx.session.user.id,
+        },
+      });
+
+      if (profile) {
+        await ctx.prisma.userSocialMedia.updateMany({
+          where: {
+            profileId: profile.id,
+            mainSocialMedia: true,
+          },
+          data: {
+            mainSocialMedia: false,
+          },
+        });
+
+        return await ctx.prisma.userSocialMedia.update({
+          where: {
+            id: input.userSocialMediaId,
+            profileId: profile.id,
+          },
+          data: {
+            mainSocialMedia: true,
+          },
         });
       }
     }),
