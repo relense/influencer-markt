@@ -41,6 +41,9 @@ export const env = createEnv({
     STRIPE_WEBHOOK_SECRET: z.string(),
 
     NEXT_PUBLIC_CURRENT_ENV: z.string(),
+
+    BILLING_PLATFORM_TOKEN: z.string(),
+    BILLING_PLATFORM_URL: z.string(),
   },
 
   /**
@@ -83,6 +86,8 @@ export const env = createEnv({
     STRIPE_WEBHOOK_SECRET: process.env.STRIPE_WEBHOOK_SECRET,
 
     NEXT_PUBLIC_CURRENT_ENV: process.env.NEXT_PUBLIC_BASE_URL,
+    BILLING_PLATFORM_TOKEN: process.env.BILLING_PLATFORM_TOKEN,
+    BILLING_PLATFORM_URL: process.env.BILLING_PLATFORM_URL,
   },
   /**
    * Run `build` or `dev` with `SKIP_ENV_VALIDATION` to skip env validation.

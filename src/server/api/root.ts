@@ -18,6 +18,7 @@ import { RefundsRouter } from "./routers/refunds";
 import { CreditsRouter } from "./routers/credits";
 import { PayoutsRouter } from "./routers/payouts";
 import { PayoutInvoicesRouter } from "./routers/payoutInvoices";
+import { BillingPlatforms } from "./routers/billingPlatforms";
 
 /**
  * This is the primary router for your server.
@@ -44,6 +45,7 @@ export const appRouter = createTRPCRouter({
   credits: CreditsRouter,
   payouts: PayoutsRouter,
   payoutInvoices: PayoutInvoicesRouter,
+  billingPlatforms: BillingPlatforms,
 });
 
 // export type definition of API

@@ -93,6 +93,7 @@ model Profile {
   disableEmailNotifications Boolean    @default(false)
   disableAppNotifications   Boolean    @default(false)
   showWelcomeModal          Boolean    @default(true)
+  billingPlatformClientId   String?
 
   userSocialMedia UserSocialMedia[]
   profileReviews  Review[]          @relation("profileReviewd")
