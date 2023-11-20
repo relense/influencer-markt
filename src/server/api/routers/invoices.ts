@@ -461,16 +461,6 @@ export const InvoicesRouter = createTRPCRouter({
         });
       }
     }),
-
-  createBillingPlatformInvoice: protectedProcedure
-    .input(
-      z.object({
-        orderId: z.string(),
-      })
-    )
-    .mutation(async ({ input }) => {
-      await createBillingPlatformInvoice({ orderId: input.orderId });
-    }),
 });
 
 export { createInvoiceCall };
