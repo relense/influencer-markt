@@ -50,13 +50,10 @@ export const OrdersRouter = createTRPCRouter({
       });
 
       if (profile) {
-        const ourCutValue = Math.floor(
-          input.orderPrice * helper.calculateServiceFee()
-        );
+        const ourCutValue = input.orderPrice * helper.calculateServiceFee();
 
-        const taxValue = Math.floor(
-          (input.orderPrice + ourCutValue) * helper.calculateSalesTaxPortugal()
-        );
+        const taxValue =
+          (input.orderPrice + ourCutValue) * helper.calculateSalesTaxPortugal();
 
         const saleValue = input.orderPrice + ourCutValue + taxValue;
 
@@ -65,8 +62,8 @@ export const OrdersRouter = createTRPCRouter({
             buyerId: profile.id,
             influencerId: input.influencerId,
             orderDetails: input.orderDetails,
-            orderBasePrice: input.orderPrice,
-            orderTotalPrice: saleValue,
+            orderBasePrice: Math.round(input.orderPrice),
+            orderTotalPrice: Math.round(saleValue),
             orderTaxPercentage: helper.calculateSalesTaxPortugal() * 100,
             countryId: influencerProfile?.countryId,
             orderStatusId: 1,
@@ -166,8 +163,8 @@ export const OrdersRouter = createTRPCRouter({
             buyerId: profile.id,
             influencerId: input.influencerId,
             orderDetails: input.orderDetails,
-            orderBasePrice: input.orderPrice,
-            orderTotalPrice: saleValue,
+            orderBasePrice: Math.round(input.orderPrice),
+            orderTotalPrice: Math.round(saleValue),
             orderTaxPercentage: helper.calculateSalesTaxPortugal() * 100,
             countryId: influencerProfile?.countryId,
             orderStatusId: 1,

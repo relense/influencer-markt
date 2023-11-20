@@ -108,9 +108,7 @@ const StartOrderPage = (params: {
     });
 
     const serviceFee = basePrice * helper.calculateServiceFee();
-    const tax = Math.floor(
-      (basePrice + serviceFee) * helper.calculateSalesTaxPortugal()
-    );
+    const tax = (basePrice + serviceFee) * helper.calculateSalesTaxPortugal();
 
     const total = basePrice + tax + serviceFee;
 

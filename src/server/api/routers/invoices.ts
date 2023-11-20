@@ -1,10 +1,12 @@
 import { z } from "zod";
-import { env } from "../../../env.mjs";
-import { createTRPCRouter, protectedProcedure } from "../trpc";
-import { prisma } from "../../db";
-import { helper } from "../../../utils/helper";
 import axios from "axios";
 import dayjs from "dayjs";
+import { v4 as uuidv4 } from "uuid";
+import { env } from "../../../env.mjs";
+import { createTRPCRouter, protectedProcedure } from "../trpc";
+import bloblService from "../../../services/azureBlob.service";
+import { prisma } from "../../db";
+import { helper } from "../../../utils/helper";
 
 type Client = {
   data: {
@@ -50,6 +52,192 @@ type Invoice = {
       permanentUrl: string;
     };
   };
+};
+
+const createBillingPlatformInvoice = async (params: { orderId: string }) => {
+  const order = await prisma.order.findFirst({
+    where: {
+      id: params.orderId,
+    },
+    include: {
+      orderInfluencerCountry: true,
+      buyer: {
+        include: {
+          billing: true,
+          country: true,
+          user: {
+            select: { email: true },
+          },
+        },
+      },
+      influencer: {
+        include: {
+          billing: true,
+        },
+      },
+      discount: true,
+      orderValuePacks: {
+        select: {
+          amount: true,
+          contentType: {
+            select: {
+              name: true,
+            },
+          },
+        },
+      },
+      invoice: true,
+    },
+  });
+
+  const headers = {
+    "Content-Type": "application/json",
+    "x-auth-token": env.BILLING_PLATFORM_TOKEN,
+    "api-version": "1.0.0",
+  };
+
+  if (order && order.buyer && order.invoice) {
+    const orderPrice = helper.calculerMonetaryValue(
+      order?.orderBasePrice +
+        order?.orderBasePrice * helper.calculateServiceFee()
+    );
+
+    let clientId = order.buyer?.billingPlatformClientId;
+
+    try {
+      if (!clientId) {
+        const client: Client = await axios.post(
+          `${env.BILLING_PLATFORM_URL}/clients`,
+          {
+            client: {
+              name: order.buyer.name,
+              tin: order.buyer.billing?.tin,
+              address: "desconhecido",
+              zip: "0000-000",
+              city: "desconhecido",
+              ric: true,
+              retention: false,
+              country: order.buyer.country?.languageCode,
+              email: order.buyer.user.email,
+              finalConsumer: false,
+            },
+          },
+          { headers }
+        );
+
+        if (client) {
+          await prisma.profile.update({
+            where: {
+              id: order.buyer.id,
+            },
+            data: {
+              billingPlatformClientId:
+                client.data.AppResponse.data.id.toString(),
+            },
+          });
+
+          clientId = client.data.AppResponse.data.id.toString();
+        }
+      }
+
+      const product: Product = await axios.post(
+        `${env.BILLING_PLATFORM_URL}/products`,
+        {
+          product: {
+            description: order.orderValuePacks
+              .map(
+                (valuePack) =>
+                  `${valuePack.amount}x ${valuePack.contentType.name}`
+              )
+              .join(", "),
+            price: orderPrice,
+            reference: `${Date.now()}${
+              (order.buyerId &&
+                order?.buyerId.substring(order?.buyerId.length - 2)) ||
+              ""
+            }`,
+            retention: false,
+            type: "service",
+            unitId: 1,
+            allowSerialNumber: false,
+          },
+        },
+        { headers }
+      );
+
+      const date = dayjs(Date.now())
+        .locale(order.buyer?.country?.languageCode || "en")
+        .format("YYYY-MM-DD");
+
+      const response: Invoice = await axios.post(
+        `${env.BILLING_PLATFORM_URL}/documents/invoicereceipt`,
+        {
+          client: {
+            id: clientId,
+          },
+          document: {
+            date: date,
+            paymentType: 2,
+            duePayment: date,
+          },
+          items: [
+            {
+              id: product.data.AppResponse.data.id.toString(),
+            },
+          ],
+        },
+        {
+          headers,
+        }
+      );
+
+      const documentDownload = await axios.get(
+        `${env.BILLING_PLATFORM_URL}/documents/${response.data.AppResponse.data.id}/download`,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            "x-auth-token": env.BILLING_PLATFORM_TOKEN,
+            "api-version": "1.0.0",
+          },
+          responseType: "arraybuffer",
+        }
+      );
+
+      try {
+        const containerClient = bloblService.getContainerClient(
+          process.env.AZURE_BUYER_INVOICES_CONTAINER_NAME || ""
+        );
+
+        const blobName = `${Date.now()}-${uuidv4()}-profile:${order.buyer.id}`;
+        const blockBlobClient = containerClient.getBlockBlobClient(blobName);
+
+        await blockBlobClient.uploadData(documentDownload.data as Buffer, {
+          blobHTTPHeaders: {
+            blobContentType: "application/pdf",
+          },
+        });
+
+        const invoiceBlobData = await prisma.invoiceBlobData.create({
+          data: {
+            influencerInvoice: blockBlobClient.url,
+            influencerInvoiceBlobName: blobName,
+            Invoice: {
+              connect: {
+                id: order.invoice.id,
+              },
+            },
+          },
+        });
+
+        return invoiceBlobData;
+      } catch (error) {
+        console.error("Error uploading file:", error);
+        throw new Error("Error uploading file");
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  }
 };
 
 const createInvoiceCall = async (params: { orderId: string }) => {
@@ -104,7 +292,7 @@ const createInvoiceCall = async (params: { orderId: string }) => {
       totalValue = order.orderTotalPriceWithDiscount || 0;
     }
 
-    const invoice = await prisma.invoice.create({
+    await prisma.invoice.create({
       data: {
         order: {
           connect: {
@@ -129,125 +317,7 @@ const createInvoiceCall = async (params: { orderId: string }) => {
       },
     });
 
-    const headers = {
-      "Content-Type": "application/json",
-      "x-auth-token": env.BILLING_PLATFORM_TOKEN,
-      "api-version": "1.0.0",
-    };
-
-    if (order.buyer && order) {
-      const orderPrice = helper.calculerMonetaryValue(
-        order?.orderBasePrice +
-          order?.orderBasePrice * helper.calculateServiceFee()
-      );
-
-      let clientId = order.buyer?.billingPlatformClientId;
-
-      try {
-        if (!clientId) {
-          const client: Client = await axios.post(
-            `${env.BILLING_PLATFORM_URL}/clients`,
-            {
-              client: {
-                name: order.buyer.name,
-                tin: order.buyer.billing?.tin,
-                address: "desconhecido",
-                zip: "0000-000",
-                city: "desconhecido",
-                ric: true,
-                retention: false,
-                country: order.buyer.country?.languageCode,
-                email: order.buyer.user.email,
-                finalConsumer: false,
-              },
-            },
-            { headers }
-          );
-
-          if (client) {
-            await prisma.profile.update({
-              where: {
-                id: order.buyer.id,
-              },
-              data: {
-                billingPlatformClientId:
-                  client.data.AppResponse.data.id.toString(),
-              },
-            });
-
-            clientId = client.data.AppResponse.data.id.toString();
-          }
-        }
-
-        const product: Product = await axios.post(
-          `${env.BILLING_PLATFORM_URL}/products`,
-          {
-            product: {
-              description: order.orderValuePacks
-                .map(
-                  (valuePack) =>
-                    `${valuePack.amount}x ${valuePack.contentType.name}`
-                )
-                .join(", "),
-              price: orderPrice,
-              reference: `${Date.now()}${
-                (order.buyerId &&
-                  order?.buyerId.substring(order?.buyerId.length - 2)) ||
-                ""
-              }`,
-              retention: false,
-              type: "service",
-              unitId: 1,
-              allowSerialNumber: false,
-            },
-          },
-          { headers }
-        );
-
-        const date = dayjs(Date.now())
-          .locale(order.buyer?.country?.languageCode || "en")
-          .format("YYYY-MM-DD");
-
-        const response: Invoice = await axios.post(
-          `${env.BILLING_PLATFORM_URL}/documents/invoicereceipt`,
-          {
-            client: {
-              id: clientId,
-            },
-            document: {
-              date: date,
-              paymentType: 2,
-              duePayment: date,
-            },
-            items: [
-              {
-                id: product.data.AppResponse.data.id.toString(),
-              },
-            ],
-          },
-          {
-            headers,
-          }
-        );
-
-        const invoiceBlobData = await prisma.invoiceBlobData.create({
-          data: {
-            influencerInvoice: response.data.AppResponse.permanentUrl,
-            influencerInvoiceBlobName: response.data.AppResponse.data.id,
-            Invoice: {
-              connect: {
-                id: invoice.id,
-              },
-            },
-          },
-        });
-
-        console.log(invoiceBlobData);
-        return invoiceBlobData;
-      } catch (err) {
-        console.log(err);
-      }
-    }
+    await createBillingPlatformInvoice({ orderId });
   }
 };
 
@@ -385,6 +455,16 @@ export const InvoicesRouter = createTRPCRouter({
           },
         });
       }
+    }),
+
+  createBillingPlatformInvoice: protectedProcedure
+    .input(
+      z.object({
+        orderId: z.string(),
+      })
+    )
+    .mutation(async ({ input }) => {
+      await createBillingPlatformInvoice({ orderId: input.orderId });
     }),
 });
 

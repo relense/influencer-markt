@@ -35,6 +35,7 @@ export const env = createEnv({
     AZURE_CLIENT_ID: z.string(),
     AZURE_TENANT_ID: z.string(),
     AZURE_CLIENT_SECRET: z.string(),
+    AZURE_BUYER_INVOICES_CONTAINER_NAME: z.string(),
 
     STRIPE_SECRET_KEY: z.string(),
     NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY: z.string(),
@@ -79,6 +80,8 @@ export const env = createEnv({
     AZURE_CLIENT_ID: process.env.AZURE_CLIENT_ID,
     AZURE_TENANT_ID: process.env.AZURE_TENANT_ID,
     AZURE_CLIENT_SECRET: process.env.AZURE_CLIENT_SECRET,
+    AZURE_BUYER_INVOICES_CONTAINER_NAME:
+      process.env.AZURE_BUYER_INVOICES_CONTAINER_NAME,
 
     STRIPE_SECRET_KEY: process.env.STRIPE_SECRET_KEY,
     NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY:
