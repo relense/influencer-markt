@@ -102,9 +102,9 @@ const webhookHandler = async (req: NextApiRequest, res: NextApiResponse) => {
           });
 
           if (order) {
-            await createInvoiceCall({
-              orderId: order.id,
-            });
+            // await createInvoiceCall({
+            //   orderId: order.id,
+            // });
 
             await createNotification({
               entityId: order.id,
