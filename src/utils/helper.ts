@@ -154,7 +154,19 @@ const preloadImages = async (
 const calculerMonetaryValue = (value: number) => {
   const result = Number(
     (Math.round((value / 100.0) * 100) / 100).toFixed(2)
-  ).toLocaleString(undefined, { minimumFractionDigits: 2 });
+  ).toLocaleString(undefined, {
+    minimumFractionDigits: 2,
+    style: "currency",
+    currency: "EUR",
+  });
+  return result;
+};
+
+const calculerMonetaryValueWithoutToLocaleString = (value: number) => {
+  const result = Number(
+    (Math.round((value / 100.0) * 100) / 100).toFixed(2)
+  ).toString();
+
   return result;
 };
 
@@ -197,6 +209,7 @@ export const helper = {
   preloadImages,
   calculateServiceFee,
   calculerMonetaryValue,
+  calculerMonetaryValueWithoutToLocaleString,
   calculateMonetaryValueInCents,
   useEffectOnlyOnce,
   calculateSalesTaxPortugal,
