@@ -2,7 +2,6 @@ import { z } from "zod";
 
 import { createTRPCRouter, protectedProcedure, publicProcedure } from "../trpc";
 import { helper } from "../../../utils/helper";
-import { createInvoiceCall } from "./invoices";
 import { spendCredits } from "./credits";
 import { sendEmail } from "../../../services/email.service";
 
@@ -686,12 +685,6 @@ export const OrdersRouter = createTRPCRouter({
           buyerLanguage: order.buyer?.country?.languageCode || "en",
           orderId: order.id,
           receiverProfileId: order.buyerId || "",
-        });
-      }
-
-      if (order.orderStatusId === 4) {
-        await createInvoiceCall({
-          orderId: order.id,
         });
       }
     }),
