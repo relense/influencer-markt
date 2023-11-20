@@ -99,9 +99,11 @@ const createBillingPlatformInvoice = async (params: {
   };
 
   if (order && order.buyer) {
-    const orderPrice = helper.calculerMonetaryValue(
-      order?.orderBasePrice +
-        order?.orderBasePrice * helper.calculateServiceFee()
+    const orderPrice = Number(
+      helper.calculerMonetaryValue(
+        order?.orderBasePrice +
+          order?.orderBasePrice * helper.calculateServiceFee()
+      )
     );
 
     let clientId = order.buyer?.billingPlatformClientId;
@@ -161,7 +163,6 @@ const createBillingPlatformInvoice = async (params: {
             retention: false,
             type: "service",
             unitId: 1,
-            allowSerialNumber: false,
           },
         },
         { headers }
