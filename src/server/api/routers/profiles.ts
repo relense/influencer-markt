@@ -248,6 +248,7 @@ export const profilesRouter = createTRPCRouter({
             include: {
               socialMedia: {
                 select: {
+                  id: true,
                   name: true,
                 },
               },

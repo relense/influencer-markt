@@ -195,7 +195,20 @@ const ExploreInfluencersPage = (params: {
               url: socialMedia.url,
               socialMediaId: socialMedia.socialMediaId || -1,
               socialMediaName: socialMedia.socialMedia?.name || "",
-              valuePacks: [],
+              valuePacks: socialMedia.valuePacks.map((valuePack) => {
+                return {
+                  id: valuePack.id,
+                  platform: {
+                    id: socialMedia.socialMedia?.id || -1,
+                    name: socialMedia.socialMedia?.name || "",
+                  },
+                  contentType: {
+                    id: valuePack.contentType?.id || -1,
+                    name: valuePack.contentType?.name || "",
+                  },
+                  valuePackPrice: valuePack.valuePackPrice,
+                };
+              }),
               mainSocialMedia: socialMedia.mainSocialMedia,
             };
           }),
