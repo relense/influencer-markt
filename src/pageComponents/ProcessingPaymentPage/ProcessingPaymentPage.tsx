@@ -28,7 +28,13 @@ const ProcessingPaymentPage = (params: {
         void router.push(`/orders/${order?.id || ""}`);
       }, 1500);
     }
-  }, [params.hasProcessedAcceptOrder, isLoadingOrder, order, router]);
+  }, [
+    params.hasProcessedAcceptOrder,
+    isLoadingOrder,
+    order,
+    router,
+    params.orderId,
+  ]);
 
   const renderSpinner = () => {
     return (
