@@ -1529,6 +1529,13 @@
 
     "processingPage": {
       "description": "Please hold while we are processing your payment"
+    },
+
+    "deleteAccountInfoPage": {
+      "title": "How to delete your account?",
+      "subtitle1": "Go to the settings menu",
+      "subtitle2": "Go to the Account Management Section",
+      "subtitle3": "Press the button named Delete Account"
     }
   },
 

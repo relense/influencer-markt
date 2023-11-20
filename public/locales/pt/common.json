@@ -1524,6 +1524,13 @@
 
     "processingPage": {
       "description": "Por favor espera enquanto estamos a processar o teu pedido"
+    },
+
+    "deleteAccountInfoPage": {
+      "title": "Como apagar a sua conta?",
+      "subtitle1": "Vá para o menu de configurações",
+      "subtitle2": "Vá para a secção de Gestão de Conta",
+      "subtitle3": "Pressione o botão com o nome Apagar Conta"
     }
   },
 
