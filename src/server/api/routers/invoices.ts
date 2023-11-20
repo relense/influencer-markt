@@ -317,7 +317,7 @@ const createInvoiceCall = async (params: { orderId: string }) => {
       },
     });
 
-    await createBillingPlatformInvoice({ orderId });
+    return await createBillingPlatformInvoice({ orderId });
   }
 };
 
