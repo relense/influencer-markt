@@ -70,6 +70,9 @@ const OrderPaymentPage = (params: { orderId: string; amount: number }) => {
             name={billingDetails?.name || ""}
             tin={billingDetails?.tin || ""}
             email={billingDetails?.email || ""}
+            address={billingDetails?.address || ""}
+            city={billingDetails?.city || ""}
+            zip={billingDetails?.zip || ""}
           />
         </Elements>
       )}

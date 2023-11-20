@@ -51,7 +51,7 @@ const Invoice = (params: { invoice: InvoiceType }) => {
   const { t } = useTranslation();
 
   const [showOrderDetails, setShowOrderDetails] = useState<boolean>(true);
-  const [showBillingDetails, setShowBillingDetails] = useState<boolean>(false);
+  const [showBillingDetails, setShowBillingDetails] = useState<boolean>(true);
 
   const renderInvoiceDetails = (invoice: InvoiceType) => {
     return (

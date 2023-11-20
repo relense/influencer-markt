@@ -541,6 +541,9 @@ model Billing {
   name          String?
   email         String?
   tin           String?
+  city          String?
+  address       String?
+  zip           String?
   payoutEnabled Boolean @default(false)
   profile       Profile @relation(fields: [profileId], references: [id])
 

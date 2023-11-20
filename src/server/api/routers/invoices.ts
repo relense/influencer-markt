@@ -99,6 +99,12 @@ const createBillingPlatformInvoice = async (params: {
   };
 
   if (order && order.buyer) {
+    const billingInfo = await prisma.billing.findFirst({
+      where: {
+        profileId: order?.buyer.id,
+      },
+    });
+
     const orderPrice = Number(
       helper.calculerMonetaryValue(
         order?.orderBasePrice +
@@ -116,9 +122,9 @@ const createBillingPlatformInvoice = async (params: {
             client: {
               name: order.buyer.name,
               tin: order.buyer.billing?.tin,
-              address: "desconhecido",
-              zip: "0000-000",
-              city: "desconhecido",
+              address: billingInfo?.address || "-",
+              zip: billingInfo?.zip || "0000-000",
+              city: billingInfo?.city || "-",
               ric: true,
               retention: false,
               country: order.buyer.country?.languageCode,

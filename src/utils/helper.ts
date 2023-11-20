@@ -180,6 +180,12 @@ const useEffectOnlyOnce = (fn: () => any) => {
   }, [fn]);
 };
 
+const portugueseZipValidator = (zipCode: string) => {
+  const zipCodePattern = /^\d{4}-\d{3}$/;
+
+  return zipCodePattern.test(zipCode);
+};
+
 export const helper = {
   formatNumber,
   formatNumberWithDecimalValue,
@@ -194,4 +200,5 @@ export const helper = {
   calculateMonetaryValueInCents,
   useEffectOnlyOnce,
   calculateSalesTaxPortugal,
+  portugueseZipValidator,
 };

@@ -13,6 +13,9 @@ export const BillingsRouter = createTRPCRouter({
         tin: true,
         name: true,
         email: true,
+        city: true,
+        address: true,
+        zip: true,
         payoutEnabled: true,
       },
     });
@@ -24,6 +27,9 @@ export const BillingsRouter = createTRPCRouter({
         email: z.string(),
         name: z.string(),
         tin: z.string(),
+        city: z.string(),
+        address: z.string(),
+        zip: z.string(),
       })
     )
     .mutation(async ({ ctx, input }) => {
@@ -42,6 +48,9 @@ export const BillingsRouter = createTRPCRouter({
             email: input.email,
             name: input.name,
             tin: input.tin,
+            city: input.city,
+            address: input.address,
+            zip: input.zip,
           },
         });
       }

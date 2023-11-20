@@ -444,7 +444,7 @@
 
     "messageBoard": {
       "sendMessageHere": "Envia mensagens aqui",
-      "messages": "Mensages",
+      "messages": "Mensagens",
       "noMessages": "Não há mensagens",
       "noMessagesSubtitle": "Sê o primeiro a enviar uma mensagem",
       "inputDisabled": "Indisponível"
@@ -1044,6 +1044,9 @@
       "billingModalTitle": "Facturação",
       "billingName": "Nome",
       "billingEmail": "Email",
+      "billingCity": "Cidade",
+      "billingAddress": "Morada",
+      "billingZip": "Código Postal",
       "billingTaxNumber": "Número de Identificação Fiscal",
       "billingInformation": "Informação de Facturação",
       "balanceInformation": "Informação de Saldo",
@@ -1056,6 +1059,7 @@
       "salesInvoices": "Faturas de Vendas",
       "purchasesInvoices": "Faturas de Compras",
       "invalidTin": "O NIF é inválido",
+      "invalidZip": "O formato do código postal é inválido",
       "availableBalance": "Saldo Disponível",
       "pendingBalance": "Saldo Pendente",
       "orderRef": "Pedido Ref",
@@ -1176,6 +1180,7 @@
       "pay": "Pagar {{money}}",
       "unexpectedError": "Ocorreu um erro inesperado",
       "invalidTin": "O teu NIF é inválido",
+      "invalidZip": "O formato do código postal é inválido",
       "invalidTermsAcceptance": "Tens que aceitar os termos & condições",
       "iAgreeWith": "Eu concordo com os",
       "influencerTerms": "termos & condições da Influencer Markt"

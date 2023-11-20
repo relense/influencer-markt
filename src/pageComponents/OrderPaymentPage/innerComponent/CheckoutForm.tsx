@@ -21,6 +21,9 @@ export default function CheckoutForm(params: {
   name: string;
   tin: string;
   email: string;
+  address: string;
+  zip: string;
+  city: string;
 }) {
   const stripe = useStripe();
   const elements = useElements();
@@ -32,6 +35,10 @@ export default function CheckoutForm(params: {
   const [name, setName] = useState<string>(params.name);
   const [tin, setTin] = useState<string>(params.tin);
   const [nifError, setNifError] = useState<string>("");
+  const [city, setCity] = useState<string>(params.city);
+  const [address, setAddress] = useState<string>(params.address);
+  const [zip, setZip] = useState<string>(params.zip);
+  const [zipError, setZipError] = useState<string>("");
   const [agreeTerms, setAgreeTerms] = useState<boolean>(false);
   const [agreeTermsError, setAgreeTermsError] = useState<string>("");
 
@@ -55,6 +62,10 @@ export default function CheckoutForm(params: {
       return;
     }
 
+    if (zipError) {
+      return;
+    }
+
     if (!agreeTerms) {
       setAgreeTermsError(t("pages.orderPayment.invalidTermsAcceptance"));
       return;
@@ -66,6 +77,9 @@ export default function CheckoutForm(params: {
       email,
       name,
       tin,
+      address,
+      zip,
+      city,
     });
 
     if (process.env.NEXT_PUBLIC_BASE_URL) {
@@ -94,8 +108,8 @@ export default function CheckoutForm(params: {
 
   const contactInfo = () => {
     return (
-      <div className="flex flex-col gap-4">
-        <div className="text-xl">{t("pages.orderPayment.contactInfo")}</div>
+      <div className="flex flex-col gap-2">
+        <div>{t("pages.orderPayment.contactInfo")}</div>
         <div className="flex flex-1 flex-col gap-6 rounded-xl border-[1px] p-4">
           <div className="flex select-none flex-col">
             <label className="font-base text-sm font-light">
@@ -123,8 +137,8 @@ export default function CheckoutForm(params: {
 
   const billingInfo = () => {
     return (
-      <div className="flex flex-col gap-4">
-        <div className="text-xl">{t("pages.orderPayment.billingInfo")}</div>
+      <div className="flex flex-col gap-2">
+        <div>{t("pages.orderPayment.billingInfo")}</div>
         <div className="flex flex-1 flex-col gap-6 rounded-xl border-[1px] p-4">
           <div className="flex select-none flex-col ">
             <label className="font-base text-sm font-light">
@@ -158,6 +172,66 @@ export default function CheckoutForm(params: {
               </div>
             )}
           </div>
+          <div className="flex select-none flex-col ">
+            <label className="font-base text-sm font-light">
+              {t("pages.billing.billingAddress")}
+            </label>
+            <div className="flex w-full flex-col">
+              <input
+                type="text"
+                className="rounded-[4px] border-[1px] p-3 font-light text-[#30313d] shadow-sm placeholder:font-normal placeholder:text-[#77787e]"
+                autoComplete="off"
+                onChange={(e) => setAddress(e.target.value)}
+                value={address}
+              />
+            </div>
+          </div>
+          <div className="flex select-none flex-col ">
+            <label className="font-base text-sm font-light">
+              {t("pages.billing.billingZip")}
+            </label>
+            <div className="flex w-full flex-col">
+              <input
+                type="text"
+                className={`rounded-[4px] border-[1px] p-3 font-light text-[#30313d] shadow-sm placeholder:font-normal placeholder:text-[#77787e] ${
+                  zipError ? "border-[2px] border-[#df1b41] text-[#df1b41]" : ""
+                }`}
+                autoComplete="off"
+                onChange={(e) => {
+                  setZip(e.target.value);
+                  setZipError("");
+                }}
+                onBlur={(e) => {
+                  if (
+                    e.target.value.length > 0 &&
+                    !helper.portugueseZipValidator(e.target.value)
+                  ) {
+                    setZipError(t("pages.orderPayment.invalidZip"));
+                  }
+                }}
+                value={zip}
+              />
+              {zipError && (
+                <div className="flex flex-1 text-sm font-thin text-[#df1b41]">
+                  {zipError}
+                </div>
+              )}
+            </div>
+          </div>
+          <div className="flex select-none flex-col ">
+            <label className="font-base text-sm font-light">
+              {t("pages.billing.billingCity")}
+            </label>
+            <div className="flex w-full flex-col">
+              <input
+                type="text"
+                className="rounded-[4px] border-[1px] p-3 font-light text-[#30313d] shadow-sm placeholder:font-normal placeholder:text-[#77787e]"
+                autoComplete="off"
+                onChange={(e) => setCity(e.target.value)}
+                value={city}
+              />
+            </div>
+          </div>
         </div>
       </div>
     );
@@ -165,8 +239,8 @@ export default function CheckoutForm(params: {
 
   const paymentInfo = () => {
     return (
-      <div className="flex flex-1 flex-col gap-4">
-        <div className="text-xl">{t("pages.orderPayment.paymentInfo")}</div>
+      <div className="flex flex-1 flex-col gap-2">
+        <div>{t("pages.orderPayment.paymentInfo")}</div>
         <div className="flex flex-col gap-4 rounded-xl border-[1px] p-4">
           <div className="flex flex-1 flex-col gap-4">
             <PaymentElement
@@ -185,7 +259,7 @@ export default function CheckoutForm(params: {
     return (
       <div>
         <div
-          className="flex cursor-pointer items-center"
+          className="flex cursor-pointer items-center pl-4"
           onClick={() => {
             if (!agreeTerms === true) {
               setAgreeTermsError("");
@@ -222,32 +296,34 @@ export default function CheckoutForm(params: {
   return (
     <form
       onSubmit={handleSubmit}
-      className="flex flex-col justify-center gap-8 p-8 text-sm font-medium"
+      className="flex flex-col justify-center gap-4 p-8 text-sm font-medium"
     >
       <div className="flex w-full flex-1 flex-col items-center justify-center gap-6 lg:flex-row">
-        <div className="flex w-full flex-1 flex-col gap-4">
+        <div className="flex w-full flex-1 flex-col gap-2">
           {contactInfo()}
           {billingInfo()}
         </div>
-        <div className="flex w-full flex-1">{paymentInfo()}</div>
-      </div>
-      {renderAcceptTermsCheckbox()}
-      <div className="flex justify-center">
-        <Button
-          title={`${t("pages.orderPayment.pay", {
-            money: helper.calculerMonetaryValue(params.orderAmount),
-          })}€`}
-          isLoading={isLoading}
-          disabled={isLoading || !stripe || !elements}
-          id="submit"
-          level="terciary"
-        />
-      </div>
-      {message && (
-        <div className={`flex flex-1 justify-center text-red-500`}>
-          {message}
+        <div className="flex w-full flex-1 flex-col gap-4">
+          {paymentInfo()}
+          {renderAcceptTermsCheckbox()}
+          <div className="flex justify-center">
+            <Button
+              title={`${t("pages.orderPayment.pay", {
+                money: helper.calculerMonetaryValue(params.orderAmount),
+              })}€`}
+              isLoading={isLoading}
+              disabled={isLoading || !stripe || !elements}
+              id="submit"
+              level="terciary"
+            />
+          </div>
+          {message && (
+            <div className={`flex flex-1 justify-center text-red-500`}>
+              {message}
+            </div>
+          )}
         </div>
-      )}
+      </div>
     </form>
   );
 }

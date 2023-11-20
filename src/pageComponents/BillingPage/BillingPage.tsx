@@ -98,6 +98,29 @@ const BillingPage = (params: { isBrand: boolean }) => {
                 </div>
                 <div>{billingInfo.tin || t("pages.billing.noInformation")}</div>
               </div>
+
+              <div className="flex flex-col gap-2">
+                <div className="text-lg font-medium">
+                  {t("pages.billing.billingAddress")}
+                </div>
+                <div>
+                  {billingInfo.address || t("pages.billing.noInformation")}
+                </div>
+              </div>
+              <div className="flex flex-col gap-2">
+                <div className="text-lg font-medium">
+                  {t("pages.billing.billingZip")}
+                </div>
+                <div>{billingInfo.zip || t("pages.billing.noInformation")}</div>
+              </div>
+              <div className="flex flex-col gap-2">
+                <div className="text-lg font-medium">
+                  {t("pages.billing.billingCity")}
+                </div>
+                <div>
+                  {billingInfo.city || t("pages.billing.noInformation")}
+                </div>
+              </div>
             </div>
             <div className="flex justify-center">
               <Button
@@ -276,6 +299,9 @@ const BillingPage = (params: { isBrand: boolean }) => {
               name={billingInfo?.name || ""}
               email={billingInfo?.email || ""}
               tin={billingInfo?.tin || ""}
+              city={billingInfo?.city || ""}
+              address={billingInfo?.address || ""}
+              zip={billingInfo?.zip || ""}
               onClose={() => setOpenBillingDetailsModal(false)}
             />
           ) : (
@@ -283,6 +309,9 @@ const BillingPage = (params: { isBrand: boolean }) => {
               name={billingInfo?.name || ""}
               email={billingInfo?.email || ""}
               tin={billingInfo?.tin || ""}
+              city={billingInfo?.city || ""}
+              address={billingInfo?.address || ""}
+              zip={billingInfo?.zip || ""}
               onClose={() => setOpenBillingDetailsModal(false)}
             />
           ))}
