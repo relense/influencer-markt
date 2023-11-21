@@ -1180,6 +1180,7 @@
       "pay": "Pagar {{money}}",
       "unexpectedError": "Ocorreu um erro inesperado",
       "invalidTin": "O teu NIF é inválido",
+      "tinIsNotUnique": "Este NIF já está registado",
       "invalidZip": "O formato do código postal é inválido",
       "invalidTermsAcceptance": "Tens que aceitar os termos & condições",
       "iAgreeWith": "Eu concordo com os",

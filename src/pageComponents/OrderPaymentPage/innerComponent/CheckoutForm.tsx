@@ -51,6 +51,16 @@ export default function CheckoutForm(params: {
       },
     });
 
+  const { data: doesTinExist, refetch: refetchDoesTinExist } =
+    api.billings.doesTinExist.useQuery(
+      {
+        tin,
+      },
+      {
+        enabled: true,
+      }
+    );
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
@@ -59,6 +69,11 @@ export default function CheckoutForm(params: {
     }
 
     if (nifError) {
+      return;
+    }
+
+    if (params.tin.length === 0 && doesTinExist) {
+      setNifError(t("pages.orderPayment.invalidTin"));
       return;
     }
 
@@ -149,11 +164,16 @@ export default function CheckoutForm(params: {
               placeholder={t("pages.orderPayment.tin")}
               type="number"
               required
-              className={`rounded-[4px] border-[1px] p-3 font-light text-[#30313d] shadow-sm placeholder:font-normal placeholder:text-[#77787e] ${
+              className={`font-light placeholder:font-normal placeholder:text-[#77787e] ${
+                params.tin.length > 0
+                  ? "focus:outline-none"
+                  : "rounded-[4px] border-[1px] p-3 text-[#30313d] shadow-sm"
+              } ${
                 nifError ? "border-[2px] border-[#df1b41] text-[#df1b41]" : ""
               }`}
               onChange={(e) => {
                 setTin(e.target.value);
+                void refetchDoesTinExist();
                 setNifError("");
               }}
               onBlur={(e) => {
@@ -162,9 +182,16 @@ export default function CheckoutForm(params: {
                   !nifValidator.validatePortugueseNIF(e.target.value)
                 ) {
                   setNifError(t("pages.orderPayment.invalidTin"));
+                } else if (
+                  e.target.value.length > 0 &&
+                  params.tin.length === 0 &&
+                  doesTinExist
+                ) {
+                  setNifError("O Nif já está registado");
                 }
               }}
               value={tin}
+              readOnly={params.tin.length > 0}
             />
             {nifError && (
               <div className="flex flex-1 text-sm font-thin text-[#df1b41]">

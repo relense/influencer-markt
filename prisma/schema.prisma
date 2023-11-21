@@ -540,7 +540,7 @@ model Billing {
   id            String  @id @default(cuid())
   name          String?
   email         String?
-  tin           String?
+  tin           String? @unique
   city          String?
   address       String?
   zip           String?

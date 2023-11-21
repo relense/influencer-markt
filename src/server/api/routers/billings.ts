@@ -39,20 +39,54 @@ export const BillingsRouter = createTRPCRouter({
         },
       });
 
-      if (profile) {
-        return await ctx.prisma.billing.update({
+      try {
+        if (profile) {
+          return await ctx.prisma.billing.update({
+            where: {
+              profileId: profile.id,
+            },
+            data: {
+              email: input.email,
+              name: input.name,
+              tin: input.tin,
+              city: input.city,
+              address: input.address,
+              zip: input.zip,
+            },
+          });
+        }
+      } catch (err) {
+        const exists = await ctx.prisma.billing.findFirst({
           where: {
-            profileId: profile.id,
-          },
-          data: {
-            email: input.email,
-            name: input.name,
             tin: input.tin,
-            city: input.city,
-            address: input.address,
-            zip: input.zip,
           },
         });
+
+        if (exists) {
+          throw new Error("tinExists");
+        } else {
+          throw new Error("other");
+        }
+      }
+    }),
+
+  doesTinExist: protectedProcedure
+    .input(
+      z.object({
+        tin: z.string(),
+      })
+    )
+    .query(async ({ ctx, input }) => {
+      const exists = await ctx.prisma.billing.findFirst({
+        where: {
+          tin: input.tin,
+        },
+      });
+
+      if (exists) {
+        return true;
+      } else {
+        return false;
       }
     }),
 });

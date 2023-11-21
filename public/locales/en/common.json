@@ -1184,6 +1184,7 @@
       "pay": "Pay {{money}}",
       "unexpectedError": "An unexpected error occurred",
       "invalidTin": "Your Tax Identification Number is invalid",
+      "tinIsNotUnique": "This Tax Identification  is already registered",
       "invalidZip": "The zip code format is wrong",
       "invalidTermsAcceptance": "You must accept terms & conditions",
       "iAgreeWith": "I agree with",

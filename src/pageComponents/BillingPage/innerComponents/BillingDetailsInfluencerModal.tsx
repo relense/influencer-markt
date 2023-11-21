@@ -44,10 +44,16 @@ const BillingDetailsInfluencerModal = (params: {
         void ctx.billings.getBillingInfo.invalidate();
         params.onClose();
       },
-      onError: () => {
-        toast.error(t("general.error.generalErrorMessage"), {
-          position: "bottom-left",
-        });
+      onError: (err) => {
+        if (err.message === "other") {
+          toast.error(t("general.error.generalErrorMessage"), {
+            position: "bottom-left",
+          });
+        } else {
+          toast.error(t("pages.billing.invalidTin"), {
+            position: "bottom-left",
+          });
+        }
       },
     });
 
@@ -136,7 +142,11 @@ const BillingDetailsInfluencerModal = (params: {
                 {...registerBillingForm("email", { maxLength: 200 })}
                 required
                 type="text"
-                className="flex h-14 flex-1 cursor-pointer rounded-lg border-[1px] border-gray3 bg-transparent p-4 placeholder-gray2 placeholder:w-11/12 focus:border-[1px] focus:border-black focus:outline-none"
+                className={`flex h-14 flex-1 bg-transparent placeholder-gray2 placeholder:w-11/12  ${
+                  params.tin.length > 0
+                    ? "cursor-default focus:outline-none"
+                    : "cursor-pointer rounded-lg border-[1px] border-gray3 p-4 focus:border-[1px] focus:border-black focus:outline-none"
+                }`}
                 autoComplete="off"
               />
             </div>
@@ -154,7 +164,12 @@ const BillingDetailsInfluencerModal = (params: {
                 })}
                 required
                 type="text"
-                className="flex h-14 flex-1 cursor-pointer rounded-lg border-[1px] border-gray3 bg-transparent p-4 placeholder-gray2 placeholder:w-11/12 focus:border-[1px] focus:border-black focus:outline-none"
+                readOnly={params.tin.length > 0}
+                className={`flex h-14 flex-1 bg-transparent placeholder-gray2 placeholder:w-11/12  ${
+                  params.tin.length > 0
+                    ? "cursor-default focus:outline-none"
+                    : "cursor-pointer rounded-lg border-[1px] border-gray3 p-4 focus:border-[1px] focus:border-black focus:outline-none"
+                }`}
                 autoComplete="off"
               />
               {errors.tin && errors.tin.type === "validate" && (

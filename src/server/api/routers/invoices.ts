@@ -23,37 +23,6 @@ type Client = {
   };
 };
 
-type Product = {
-  data: {
-    HttpStatusCode: number;
-    AppStatusCode: number;
-    AppStatusMsg: string;
-    AppResponse: {
-      data: {
-        id: string;
-      };
-      message: string;
-      link: string;
-    };
-  };
-};
-
-type Invoice = {
-  data: {
-    HttpStatusCode: number;
-    AppStatusCode: number;
-    AppStatusMsg: string;
-    AppResponse: {
-      data: {
-        id: string;
-      };
-      message: string;
-      link: string;
-      permanentUrl: string;
-    };
-  };
-};
-
 const createBillingPlatformInvoice = async (params: {
   orderId: string;
   invoiceId: string;
@@ -99,12 +68,6 @@ const createBillingPlatformInvoice = async (params: {
   };
 
   if (order && order.buyer) {
-    const billingInfo = await prisma.billing.findFirst({
-      where: {
-        profileId: order?.buyer.id,
-      },
-    });
-
     const orderPrice = helper.calculerMonetaryValueWithoutToLocaleString(
       order?.orderBasePrice +
         order?.orderBasePrice * helper.calculateServiceFee()
@@ -120,9 +83,9 @@ const createBillingPlatformInvoice = async (params: {
             client: {
               name: order.buyer.name,
               tin: order.buyer.billing?.tin,
-              address: billingInfo?.address || "-",
-              zip: billingInfo?.zip || "0000-000",
-              city: billingInfo?.city || "-",
+              address: order.buyer.billing?.address || "-",
+              zip: order.buyer.billing?.zip || "0000-000",
+              city: order.buyer.billing?.city || "-",
               ric: true,
               retention: false,
               country: order.buyer.country?.languageCode,
@@ -152,45 +115,20 @@ const createBillingPlatformInvoice = async (params: {
           {
             client: {
               name: order.buyer.name,
-              tin: order.buyer.billing?.tin,
-              address: billingInfo?.address || "-",
-              zip: billingInfo?.zip || "0000-000",
-              city: billingInfo?.city || "-",
+              address: order.buyer.billing?.address || "-",
+              zip: order.buyer.billing?.zip || "0000-000",
+              city: order.buyer.billing?.city || "-",
             },
           },
           { headers }
         );
       }
 
-      const product: Product = await axios.post(
-        `${env.BILLING_PLATFORM_URL}/products`,
-        {
-          product: {
-            description: order.orderValuePacks
-              .map(
-                (valuePack) =>
-                  `${valuePack.amount}x ${valuePack.contentType.name}`
-              )
-              .join(", "),
-            price: orderPrice,
-            reference: `${Date.now()}${
-              (order.buyerId &&
-                order?.buyerId.substring(order?.buyerId.length - 2)) ||
-              ""
-            }`,
-            retention: false,
-            type: "service",
-            unitId: 1,
-          },
-        },
-        { headers }
-      );
-
       const date = dayjs(Date.now())
         .locale(order.buyer?.country?.languageCode || "en")
         .format("YYYY-MM-DD");
 
-      const response: Invoice = await axios.post(
+      const documentDownload = await axios.post(
         `${env.BILLING_PLATFORM_URL}/documents/invoicereceipt`,
         {
           client: {
@@ -200,20 +138,28 @@ const createBillingPlatformInvoice = async (params: {
             date: date,
             paymentType: 2,
             duePayment: date,
+            download: true,
           },
           items: [
             {
-              id: product.data.AppResponse.data.id.toString(),
+              description: order.orderValuePacks
+                .map(
+                  (valuePack) =>
+                    `${valuePack.amount}x ${valuePack.contentType.name}`
+                )
+                .join(", "),
+              price: orderPrice,
+              reference: `${Date.now()}${
+                (order.buyerId &&
+                  order?.buyerId.substring(order?.buyerId.length - 2)) ||
+                ""
+              }`,
+              retention: false,
+              type: "service",
+              unitId: 1,
             },
           ],
         },
-        {
-          headers,
-        }
-      );
-
-      const documentDownload = await axios.get(
-        `${env.BILLING_PLATFORM_URL}/documents/${response.data.AppResponse.data.id}/download`,
         {
           headers: {
             "Content-Type": "application/json",
