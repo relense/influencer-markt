@@ -38,21 +38,21 @@ type Product = {
   };
 };
 
-// type Invoice = {
-//   data: {
-//     HttpStatusCode: number;
-//     AppStatusCode: number;
-//     AppStatusMsg: string;
-//     AppResponse: {
-//       data: {
-//         id: string;
-//       };
-//       message: string;
-//       link: string;
-//       permanentUrl: string;
-//     };
-//   };
-// };
+type Invoice = {
+  data: {
+    HttpStatusCode: number;
+    AppStatusCode: number;
+    AppStatusMsg: string;
+    AppResponse: {
+      data: {
+        id: string;
+      };
+      message: string;
+      link: string;
+      permanentUrl: string;
+    };
+  };
+};
 
 const createBillingPlatformInvoice = async (params: {
   orderId: string;
@@ -195,7 +195,7 @@ const createBillingPlatformInvoice = async (params: {
         .locale(order.buyer?.country?.languageCode || "en")
         .format("YYYY-MM-DD");
 
-      const documentDownload = await axios.post(
+      const response: Invoice = await axios.post(
         `${env.BILLING_PLATFORM_URL}/documents/invoicereceipt`,
         {
           client: {
@@ -205,7 +205,6 @@ const createBillingPlatformInvoice = async (params: {
             date: date,
             paymentType: 2,
             duePayment: date,
-            download: true,
           },
           items: [
             {
@@ -218,17 +217,17 @@ const createBillingPlatformInvoice = async (params: {
         }
       );
 
-      // const documentDownload = await axios.get(
-      //   `${env.BILLING_PLATFORM_URL}/documents/${response.data.AppResponse.data.id}/download`,
-      //   {
-      //     headers: {
-      //       "Content-Type": "application/json",
-      //       "x-auth-token": env.BILLING_PLATFORM_TOKEN,
-      //       "api-version": "1.0.0",
-      //     },
-      //     responseType: "arraybuffer",
-      //   }
-      // );
+      const documentDownload = await axios.get(
+        `${env.BILLING_PLATFORM_URL}/documents/${response.data.AppResponse.data.id}/download`,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            "x-auth-token": env.BILLING_PLATFORM_TOKEN,
+            "api-version": "1.0.0",
+          },
+          responseType: "arraybuffer",
+        }
+      );
 
       try {
         const containerClient = bloblService.getContainerClient(
