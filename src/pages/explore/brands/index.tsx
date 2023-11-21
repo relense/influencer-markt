@@ -13,8 +13,11 @@ const ExploreBrands: NextPage<ExploreBrandsProps> = () => {
   return (
     <ProtectedWrapper>
       <Layout>
-        {({ loggedInProfileId }) => (
-          <ExploreBrandsPage loggedInProfileId={loggedInProfileId} />
+        {({ loggedInProfileId, isBrand }) => (
+          <ExploreBrandsPage
+            loggedInProfileId={loggedInProfileId}
+            isBrand={isBrand}
+          />
         )}
       </Layout>
     </ProtectedWrapper>

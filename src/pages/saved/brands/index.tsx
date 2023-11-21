@@ -9,8 +9,12 @@ const SavedBrands: NextPage = () => {
   return (
     <ProtectedWrapper>
       <Layout>
-        {({ loggedInProfileId }) => (
-          <SavedPage roleId={1} loggedInProfileId={loggedInProfileId} />
+        {({ loggedInProfileId, isBrand }) => (
+          <SavedPage
+            roleId={1}
+            loggedInProfileId={loggedInProfileId}
+            isloggedInProfileBrand={isBrand}
+          />
         )}
       </Layout>
     </ProtectedWrapper>

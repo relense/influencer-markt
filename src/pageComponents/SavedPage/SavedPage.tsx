@@ -10,7 +10,11 @@ import { useTranslation } from "next-i18next";
 import Link from "next/link";
 import { Button } from "../../components/Button";
 
-const SavedPage = (params: { roleId: number; loggedInProfileId: string }) => {
+const SavedPage = (params: {
+  roleId: number;
+  loggedInProfileId: string;
+  isloggedInProfileBrand: boolean;
+}) => {
   const { t } = useTranslation();
   const [userProfiles, setUserProfiles] = useState<UserProfiles[]>([]);
 
@@ -104,6 +108,7 @@ const SavedPage = (params: { roleId: number; loggedInProfileId: string }) => {
                   onHandleBookmark={() => onHandleBookmark(profile.id)}
                   loggedInProfileId={params.loggedInProfileId}
                   activeJobs={profile.activeJobs}
+                  isLoggedInProfileBrand={params.isloggedInProfileBrand}
                 />
               );
             })}

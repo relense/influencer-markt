@@ -38,10 +38,11 @@ const JobDetails: NextPage<JobDetailsProps> = ({ id }) => {
     return (
       <ProtectedWrapper>
         <Layout>
-          {({ loggedInProfileId }) => (
+          {({ loggedInProfileId, isBrand }) => (
             <ManageJobDetailsPage
               jobId={id}
               loggedInProfileId={loggedInProfileId}
+              isBrand={isBrand}
             />
           )}
         </Layout>

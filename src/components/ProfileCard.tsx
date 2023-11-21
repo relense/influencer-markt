@@ -41,6 +41,7 @@ const ProfileCard = (params: {
   onHandleBookmark?: () => void;
   openLoginModal?: () => void;
   loggedInProfileId: string;
+  isLoggedInProfileBrand: boolean;
   activeJobs?: number;
 }) => {
   const { t } = useTranslation();
@@ -168,7 +169,8 @@ const ProfileCard = (params: {
     if (
       params.type === "Influencer" &&
       usefullSocialMedia.valuePacks &&
-      usefullSocialMedia.valuePacks[0]
+      usefullSocialMedia.valuePacks[0] &&
+      params.isLoggedInProfileBrand
     ) {
       let smallerValue = 0;
       let hightestValue = 0;

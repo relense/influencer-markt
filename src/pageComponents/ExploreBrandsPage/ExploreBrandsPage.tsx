@@ -20,7 +20,10 @@ export type BrandsFilterState = {
   maxFollowers: number;
 };
 
-const ExploreBrandsPage = (params: { loggedInProfileId: string }) => {
+const ExploreBrandsPage = (params: {
+  loggedInProfileId: string;
+  isBrand: boolean;
+}) => {
   const { t } = useTranslation();
   const ctx = api.useUtils();
 
@@ -329,6 +332,7 @@ const ExploreBrandsPage = (params: { loggedInProfileId: string }) => {
                   bookmarked={profile.bookmarked || false}
                   loggedInProfileId={params.loggedInProfileId}
                   activeJobs={profile.activeJobs}
+                  isLoggedInProfileBrand={params.isBrand}
                 />
               );
             })}

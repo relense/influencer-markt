@@ -80,6 +80,7 @@ const PublicProfile: NextPage<PublicProfileProps> = ({ username }) => {
               username={username}
               openLoginModal={params.openLoginModal}
               loggedInProfileId={params.loggedInProfileId}
+              loggedInProfileIsBrand={params.isBrand}
             />
           )}
         </Layout>

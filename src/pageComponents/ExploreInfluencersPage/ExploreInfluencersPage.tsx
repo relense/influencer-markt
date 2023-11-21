@@ -27,6 +27,7 @@ const ExploreInfluencersPage = (params: {
   choosenCategories: Option[];
   openLoginModal: () => void;
   loggedInProfileId: string;
+  isBrand: boolean;
 }) => {
   const { t } = useTranslation();
   const ctx = api.useUtils();
@@ -404,6 +405,7 @@ const ExploreInfluencersPage = (params: {
                   bookmarked={profile.bookmarked || false}
                   openLoginModal={params.openLoginModal}
                   loggedInProfileId={params.loggedInProfileId}
+                  isLoggedInProfileBrand={params.isBrand}
                 />
               );
             })}

@@ -627,6 +627,7 @@
       "profileModalTitle": "Profile Update",
       "profileModalButton": "Update Profile",
       "serviceFeeToolTip": "This helps us run our platform and offer services like support.",
+      "onlyBrandsCanBuy": "Only brands can use influencers' services",
       "welcomeModal": {
         "buttoncContinue": "Continue",
         "title": "Welcome to Influencer Markt",

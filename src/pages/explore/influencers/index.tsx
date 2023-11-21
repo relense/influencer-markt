@@ -18,11 +18,12 @@ const ExploreInfluencers: NextPage<ExploreInfluencersProps> = ({
 
   return (
     <Layout>
-      {({ openLoginModal, loggedInProfileId }) => (
+      {({ openLoginModal, loggedInProfileId, isBrand }) => (
         <ExploreInfluencersPage
           choosenCategories={parsedCategories}
           openLoginModal={openLoginModal}
           loggedInProfileId={loggedInProfileId}
+          isBrand={isBrand}
         />
       )}
     </Layout>

@@ -9,8 +9,12 @@ const SavedInfluencers: NextPage = () => {
   return (
     <ProtectedWrapper>
       <Layout>
-        {({ loggedInProfileId }) => (
-          <SavedPage roleId={2} loggedInProfileId={loggedInProfileId} />
+        {({ loggedInProfileId, isBrand }) => (
+          <SavedPage
+            roleId={2}
+            loggedInProfileId={loggedInProfileId}
+            isloggedInProfileBrand={isBrand}
+          />
         )}
       </Layout>
     </ProtectedWrapper>

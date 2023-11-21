@@ -23,6 +23,7 @@ const ValuePackChooser = (params: {
   onSelecteValuePack: (valuePack: ValuePack) => void;
   profileId: string;
   loggedInProfileId: string;
+  loggedInProfileIsBrand: boolean;
   openLoginModal: () => void;
   profileCountryTax: number;
 }) => {
@@ -272,6 +273,11 @@ const ValuePackChooser = (params: {
       <div className="flex flex-col gap-4 rounded-2xl border-[1px] border-white1 p-4 shadow-xl">
         <div className="flex flex-1 justify-between">
           <div className="flex items-center gap-1">
+            {!params.loggedInProfileIsBrand && (
+              <div className="text-sm text-gray4">
+                {t("pages.publicProfilePage.onlyBrandsCanBuy")}
+              </div>
+            )}
             {params.selectedValuePacks.length > 0 && (
               <div className="text-xl font-medium">
                 {helper.calculerMonetaryValue(sumValuePacks())}€
@@ -281,7 +287,7 @@ const ValuePackChooser = (params: {
           {renderAverageRating()}
         </div>
 
-        {renderPlatformChooser()}
+        {params.loggedInProfileIsBrand && renderPlatformChooser()}
         {renderInitiateRequestButton()}
         {renderDisclaimer()}
         {renderTotalsSection()}

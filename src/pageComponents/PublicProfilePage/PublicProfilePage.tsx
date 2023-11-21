@@ -23,6 +23,7 @@ const PublicProfilePage = (params: {
   username: string;
   openLoginModal: () => void;
   loggedInProfileId: string;
+  loggedInProfileIsBrand: boolean;
 }) => {
   const ctx = api.useUtils();
   const { t } = useTranslation();
@@ -269,6 +270,7 @@ const PublicProfilePage = (params: {
                 }
               )}
               loggedInProfileId={params.loggedInProfileId}
+              loggedInProfileIsBrand={params.loggedInProfileIsBrand}
               onChangePlatform={onChangePlatform}
               onSelecteValuePack={onSelecteValuePack}
               openLoginModal={params.openLoginModal}

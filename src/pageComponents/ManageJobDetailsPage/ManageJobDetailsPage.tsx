@@ -49,6 +49,7 @@ type ApplicantsProfile = {
 const ManageJobDetailsPage = (params: {
   jobId: string;
   loggedInProfileId: string;
+  isBrand: boolean;
 }) => {
   const { t, i18n } = useTranslation();
   const dropdownRef = useRef(null);
@@ -958,6 +959,7 @@ const ManageJobDetailsPage = (params: {
             bookmarked={applicant?.bookmarked || false}
             highlightSocialMediaId={job.socialMediaId}
             loggedInProfileId={params.loggedInProfileId}
+            isLoggedInProfileBrand={params.isBrand}
           />
 
           {job.jobStatus.id === 1 && (
@@ -1132,6 +1134,7 @@ const ManageJobDetailsPage = (params: {
             bookmarked={applicant?.bookmarked || false}
             highlightSocialMediaId={job.socialMediaId}
             loggedInProfileId={params.loggedInProfileId}
+            isLoggedInProfileBrand={params.isBrand}
           />
           {acceptedApplicants.length < job.numberOfInfluencers && (
             <div className="flex justify-around gap-4">
@@ -1277,6 +1280,7 @@ const ManageJobDetailsPage = (params: {
             bookmarked={applicant?.bookmarked || false}
             highlightSocialMediaId={job.socialMediaId}
             loggedInProfileId={params.loggedInProfileId}
+            isLoggedInProfileBrand={params.isBrand}
           />
 
           <Button
@@ -1427,6 +1431,7 @@ const ManageJobDetailsPage = (params: {
             bookmarked={applicant?.bookmarked || false}
             highlightSocialMediaId={job.socialMediaId}
             loggedInProfileId={params.loggedInProfileId}
+            isLoggedInProfileBrand={params.isBrand}
           />
           <div className="flex justify-around gap-4 lg:flex-col lg:justify-center">
             <Button
