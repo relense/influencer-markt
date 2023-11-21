@@ -156,11 +156,6 @@ const createBillingPlatformInvoice = async (params: {
               address: billingInfo?.address || "-",
               zip: billingInfo?.zip || "0000-000",
               city: billingInfo?.city || "-",
-              ric: true,
-              retention: false,
-              country: order.buyer.country?.languageCode,
-              email: order.buyer.user.email,
-              finalConsumer: false,
             },
           },
           { headers }
