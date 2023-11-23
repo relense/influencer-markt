@@ -57,17 +57,20 @@ const InfluencersFilterModal = (params: {
 
   const submit = handleSubmit((data) => {
     params.handleFilterSubmit({
-      gender: data.gender,
-      userSocialMediaFollowers: data.userSocialMediaFollowers,
+      gender: data.gender || { id: -1, name: "" },
+      userSocialMediaFollowers: data.userSocialMediaFollowers || {
+        id: -1,
+        name: "",
+      },
       minPrice: data.minPrice,
       maxPrice: data.maxPrice,
-      country: data.country,
+      country: data.country || { id: -1, name: "" },
       city: data.city,
       contentType: data.contentType,
     });
   });
 
-  const clearFilters = handleSubmit(() => {
+  const clearFilters = () => {
     filterSetValue("gender", { id: -1, name: "" });
     filterSetValue("contentType", { id: -1, name: "" });
     filterSetValue("country", { id: -1, name: "" });
@@ -77,7 +80,7 @@ const InfluencersFilterModal = (params: {
     filterSetValue("userSocialMediaFollowers", { id: -1, name: "" });
 
     params.handleClearFilter();
-  });
+  };
 
   const renderFollowersInput = () => {
     return (

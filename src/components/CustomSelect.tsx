@@ -25,7 +25,6 @@ export const CustomSelect = (params: {
 
   useOutsideClick(() => {
     if (selectStatus === false) return;
-
     setSelectStatus(!selectStatus);
   }, customSelectWrapperRef);
 

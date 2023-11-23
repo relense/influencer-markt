@@ -47,19 +47,22 @@ const BrandsFilterModal = (params: {
 
   const submit = handleSubmit((data) => {
     params.handleFilterSubmit({
-      userSocialMediaFollowers: data.userSocialMediaFollowers,
-      country: data.country,
-      city: data.city,
+      userSocialMediaFollowers: data.userSocialMediaFollowers || {
+        id: -1,
+        name: "",
+      },
+      country: data.country || { id: -1, name: "" },
+      city: data.city || { id: -1, name: "" },
     });
   });
 
-  const clearFilters = handleSubmit(() => {
+  const clearFilters = () => {
     filterSetValue("userSocialMediaFollowers", { id: -1, name: "" });
     filterSetValue("city", { id: -1, name: "" });
     filterSetValue("country", { id: -1, name: "" });
 
     params.handleClearFilter();
-  });
+  };
 
   const renderFollowersInput = () => {
     return (

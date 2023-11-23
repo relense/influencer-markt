@@ -56,11 +56,14 @@ const JobsFilterModal = (params: {
 
   const submit = handleSubmit((data) => {
     params.handleFilterSubmit({
-      gender: data.gender,
-      userSocialMediaFollowers: data.userSocialMediaFollowers,
+      gender: data.gender || { id: -1, name: "" },
+      userSocialMediaFollowers: data.userSocialMediaFollowers || {
+        id: -1,
+        name: "",
+      },
       minPrice: data.minPrice,
       maxPrice: data.maxPrice,
-      country: data.country,
+      country: data.country || { id: -1, name: "" },
       city: data.city,
     });
   });
