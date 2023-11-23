@@ -12,14 +12,14 @@ import { useState } from "react";
 const BrandsFilterModal = (params: {
   onClose: () => void;
   handleFilterSubmit: (params: {
-    minFollowers: number;
-    maxFollowers: number;
+    userSocialMediaFollowers: Option;
     country: Option;
     city: Option;
   }) => void;
   handleClearFilter: () => void;
   countries: Option[];
   filterState: BrandsFilterState;
+  userSocialMediaFollowers: Option[];
 }) => {
   const { t } = useTranslation();
   const [searchKeys, setSearchKeys] = useState<string>(
@@ -34,8 +34,7 @@ const BrandsFilterModal = (params: {
     watch: filterWatch,
   } = useForm<BrandsFilterState>({
     defaultValues: {
-      minFollowers: params.filterState.minFollowers,
-      maxFollowers: params.filterState.maxFollowers,
+      userSocialMediaFollowers: params.filterState.userSocialMediaFollowers,
       country: params.filterState.country,
       city: params.filterState.city,
     },
@@ -48,16 +47,14 @@ const BrandsFilterModal = (params: {
 
   const submit = handleSubmit((data) => {
     params.handleFilterSubmit({
-      minFollowers: data.minFollowers,
-      maxFollowers: data.maxFollowers,
+      userSocialMediaFollowers: data.userSocialMediaFollowers,
       country: data.country,
       city: data.city,
     });
   });
 
   const clearFilters = handleSubmit(() => {
-    filterSetValue("minFollowers", 0);
-    filterSetValue("maxFollowers", 1000000000);
+    filterSetValue("userSocialMediaFollowers", { id: -1, name: "" });
     filterSetValue("city", { id: -1, name: "" });
     filterSetValue("country", { id: -1, name: "" });
 
@@ -70,37 +67,23 @@ const BrandsFilterModal = (params: {
         <div className="text-xl font-medium">
           {t("components.filter.followersInputLabel")}
         </div>
-        <div className="flex flex-col gap-6 lg:flex-row lg:items-center lg:gap-11">
-          <div className="flex flex-1 flex-col gap-1">
-            <label className="text-gray2">
-              {t("components.filter.minimum")}
-            </label>
-            <input
-              {...filterRegister("minFollowers", { valueAsNumber: true })}
-              type="number"
-              className="h-14 w-full rounded-lg border-[1px] border-gray3 p-4 placeholder-gray2 focus:border-black focus:outline-none"
-              placeholder={t("components.filter.minimumPlaceholder")}
-              autoComplete="off"
-              max="1000000000"
-              min="0"
-            />
-          </div>
-
-          <div className="flex flex-1 flex-col gap-1">
-            <label className="text-gray2">
-              {t("components.filter.Maximum")}
-            </label>
-            <input
-              {...filterRegister("maxFollowers", { valueAsNumber: true })}
-              type="number"
-              className="h-14 w-full rounded-lg border-[1px] border-gray3 p-4 placeholder-gray2 focus:border-black focus:outline-none"
-              placeholder={t("components.filter.MaximumPlaceholder")}
-              autoComplete="off"
-              max="1000000000"
-              min="0"
-            />
-          </div>
-        </div>
+        <Controller
+          name="userSocialMediaFollowers"
+          control={filterControl}
+          render={({ field: { value, onChange } }) => {
+            return (
+              <CustomSelect
+                register={filterRegister}
+                name="userSocialMediaFollowers"
+                placeholder={t("components.filter.followersInputLabel")}
+                options={params.userSocialMediaFollowers}
+                value={value}
+                handleOptionSelect={onChange}
+                required={false}
+              />
+            );
+          }}
+        />
       </div>
     );
   };
@@ -185,9 +168,9 @@ const BrandsFilterModal = (params: {
         className="flex h-full w-full flex-col gap-4 p-4 sm:w-full sm:px-8"
         onSubmit={submit}
       >
-        {renderLocationInputs()}
-        <div className="w-full border-[1px] border-white1" />
         {renderFollowersInput()}
+        <div className="w-full border-[1px] border-white1" />
+        {renderLocationInputs()}
       </form>
     </Modal>
   );

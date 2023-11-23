@@ -14,7 +14,7 @@ type ProfileIncludes = Prisma.ProfileGetPayload<{
     categories: true;
     userSocialMedia: {
       select: {
-        followers: true;
+        socialMediaFollowers: true;
         handler: true;
         id: true;
         socialMedia: true;
@@ -48,7 +48,9 @@ const JobsList = (params: {
 
     let hasFollowers = false;
     if (hasSocialMedia) {
-      hasFollowers = hasSocialMedia.followers >= job.minFollowers;
+      hasFollowers =
+        hasSocialMedia.socialMediaFollowers?.id ===
+        job.userSocialMediaFollowersId;
     }
 
     const hasJobGender =

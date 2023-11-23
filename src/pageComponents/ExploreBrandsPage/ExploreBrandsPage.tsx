@@ -16,8 +16,7 @@ export type BrandsFilterState = {
   categories: Option[];
   country: Option;
   city: Option;
-  minFollowers: number;
-  maxFollowers: number;
+  userSocialMediaFollowers: Option;
 };
 
 const ExploreBrandsPage = (params: {
@@ -39,8 +38,7 @@ const ExploreBrandsPage = (params: {
     categories: [],
     country: { id: -1, name: "" },
     city: { id: -1, name: "" },
-    minFollowers: 0,
-    maxFollowers: 1000000000,
+    userSocialMediaFollowers: { id: -1, name: "" },
   });
 
   const {
@@ -55,8 +53,7 @@ const ExploreBrandsPage = (params: {
       categories: filterState.categories.map((category) => {
         return category.id;
       }),
-      minFollowers: filterState.minFollowers || -1,
-      maxFollowers: filterState.maxFollowers || -1,
+      userSocialMediaFollowersId: filterState.userSocialMediaFollowers.id,
 
       country: filterState.country.id,
       city: filterState.city.id,
@@ -77,8 +74,7 @@ const ExploreBrandsPage = (params: {
       categories: filterState.categories.map((category) => {
         return category.id;
       }),
-      minFollowers: filterState.minFollowers || -1,
-      maxFollowers: filterState.maxFollowers || -1,
+      userSocialMediaFollowersId: filterState.userSocialMediaFollowers.id,
       country: filterState.country.id,
       city: filterState.city.id,
     },
@@ -86,6 +82,8 @@ const ExploreBrandsPage = (params: {
   );
 
   const { data: countries } = api.allRoutes.getAllCountries.useQuery();
+  const { data: userSocialMediaFollowers } =
+    api.allRoutes.getAllUserSocialMediaFollowers.useQuery();
   const { data: loggedInProfileId } =
     api.profiles.getLoggedInProfile.useQuery();
 
@@ -112,7 +110,10 @@ const ExploreBrandsPage = (params: {
               return {
                 id: socialMedia.id,
                 handler: socialMedia.handler,
-                followers: socialMedia.followers,
+                userSocialMediaFollowers: socialMedia.socialMediaFollowers || {
+                  id: -1,
+                  name: "",
+                },
                 url: socialMedia.url,
                 socialMediaId: socialMedia.socialMedia?.id || -1,
                 socialMediaName: socialMedia.socialMedia?.name || "",
@@ -158,7 +159,10 @@ const ExploreBrandsPage = (params: {
             return {
               id: socialMedia.id,
               handler: socialMedia.handler,
-              followers: socialMedia.followers,
+              userSocialMediaFollowers: socialMedia.socialMediaFollowers || {
+                id: -1,
+                name: "",
+              },
               url: socialMedia.url,
               socialMediaId: socialMedia.socialMediaId || -1,
               socialMediaName: socialMedia.socialMedia?.name || "",
@@ -220,8 +224,7 @@ const ExploreBrandsPage = (params: {
   };
 
   const onFilterSubmit = (params: {
-    minFollowers: number;
-    maxFollowers: number;
+    userSocialMediaFollowers: Option;
     country: Option;
     city: Option;
   }) => {
@@ -232,8 +235,7 @@ const ExploreBrandsPage = (params: {
       ...filterState,
       categories: filterCategories,
       platforms: filterPlatforms,
-      minFollowers: params.minFollowers,
-      maxFollowers: params.maxFollowers,
+      userSocialMediaFollowers: params.userSocialMediaFollowers,
       country: params.country,
       city: params.city,
     });
@@ -246,22 +248,19 @@ const ExploreBrandsPage = (params: {
   };
 
   const countActiveFilters = (params: {
-    minFollowers: number;
-    maxFollowers: number;
+    userSocialMediaFollowers: Option;
     country: Option;
     city: Option;
   }) => {
     let count = 0;
 
-    if (params.minFollowers !== 0) {
-      count++;
-    }
-    if (params.maxFollowers !== 1000000000) {
+    if (params.userSocialMediaFollowers.id > -1) {
       count++;
     }
     if (params.country.id > -1) {
       count++;
     }
+
     if (params.city.id > -1) {
       count++;
     }
@@ -276,8 +275,7 @@ const ExploreBrandsPage = (params: {
       ...filterState,
       categories: [],
       platforms: [],
-      minFollowers: 0,
-      maxFollowers: 1000000000,
+      userSocialMediaFollowers: { id: -1, name: "" },
       country: { id: -1, name: "" },
       city: { id: -1, name: "" },
     });
@@ -401,7 +399,7 @@ const ExploreBrandsPage = (params: {
           />
         </div>
       )}
-      {isFilterModalOpen && countries && (
+      {isFilterModalOpen && countries && userSocialMediaFollowers && (
         <div className="flex flex-1 justify-center">
           <BrandsFilterModal
             filterState={filterState}
@@ -414,6 +412,14 @@ const ExploreBrandsPage = (params: {
                 name: country.name,
               };
             })}
+            userSocialMediaFollowers={userSocialMediaFollowers?.map(
+              (socialMedia) => {
+                return {
+                  id: socialMedia.id,
+                  name: socialMedia.name,
+                };
+              }
+            )}
           />
         </div>
       )}

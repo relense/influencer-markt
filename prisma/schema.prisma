@@ -201,23 +201,33 @@ model Portfolio {
 }
 
 model UserSocialMedia {
-  id              Int          @id @default(autoincrement())
-  socialMedia     SocialMedia? @relation(fields: [socialMediaId], references: [id])
-  handler         String
-  followers       Int
-  url             String
-  profile         Profile?     @relation(fields: [profileId], references: [id])
-  valuePacks      ValuePack[]
-  mainSocialMedia Boolean      @default(false)
+  id                     Int                       @id @default(autoincrement())
+  socialMediaAccessToken String?                   @db.Text
+  socialMedia            SocialMedia?              @relation(fields: [socialMediaId], references: [id])
+  handler                String
+  socialMediaFollowers   UserSocialMediaFollowers? @relation(fields: [userSocialMediaFollowersId], references: [id])
+  url                    String
+  profile                Profile?                  @relation(fields: [profileId], references: [id])
+  valuePacks             ValuePack[]
+  mainSocialMedia        Boolean                   @default(false)
 
-  socialMediaId Int
-  profileId     String?
+  socialMediaId              Int
+  profileId                  String?
+  userSocialMediaFollowersId Int
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
   @@index([socialMediaId])
   @@index([profileId])
+  @@index([userSocialMediaFollowersId])
+}
+
+model UserSocialMediaFollowers {
+  id              Int               @id @default(autoincrement())
+  name            String
+  userSocialMedia UserSocialMedia[]
+  job             Job[]
 }
 
 model Review {
@@ -326,8 +336,7 @@ model Job {
   numberOfInfluencers     Int
   country                 Country                   @relation(fields: [countryId], references: [id])
   state                   State?                    @relation(fields: [stateId], references: [id])
-  minFollowers            Int
-  maxFollowers            Int?
+userSocialMediaFollowers  UserSocialMediaFollowers?  @relation(fields: [userSocialMediaFollowersId], references: [id])
   gender                  Gender?                   @relation(fields: [genderId], references: [id])
   jobStatus               JobStatus                 @relation(fields: [jobStatusId], references: [id])
   jobCreator              Profile                   @relation("jobCreator", fields: [profileId], references: [id])
@@ -348,6 +357,7 @@ model Job {
   stateId       Int?
   profileId     String
   jobStatusId   Int    @default(1)
+  userSocialMediaFollowersId Int
 
   @@index([socialMediaId])
   @@index([countryId])
@@ -355,6 +365,7 @@ model Job {
   @@index([stateId])
   @@index([profileId])
   @@index([jobStatusId])
+  @@index([userSocialMediaFollowersId])
 }
 
 model ContentTypeWithQuantity {

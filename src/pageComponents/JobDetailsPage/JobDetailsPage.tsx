@@ -103,7 +103,9 @@ const JobDetailsPage = (params: {
 
         let hasFollowers = false;
         if (hasSocialMedia) {
-          hasFollowers = hasSocialMedia.followers >= job.minFollowers;
+          hasFollowers =
+            hasSocialMedia.socialMediaFollowers?.id ===
+            job.userSocialMediaFollowersId;
         }
 
         const hasJobGender =
@@ -265,7 +267,7 @@ const JobDetailsPage = (params: {
         <div className="font-semibold text-influencer">
           {t("pages.jobs.followers")}
         </div>
-        <div>{helper.formatNumberWithKorM(job?.minFollowers || 0)} </div>
+        <div>{job?.userSocialMediaFollowers?.name || ""} </div>
       </div>
     );
   };

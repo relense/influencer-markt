@@ -48,7 +48,7 @@ type ProfileHeader = {
     id: number;
     url: string;
     socialMediaName: string;
-    socialMediaFollowers: number;
+    socialMediaFollowers: Option;
   }[];
 };
 
@@ -274,11 +274,7 @@ const PublicProfileHeader = (params: {
                           {socialMedia.socialMediaName}
                         </div>
                       </Link>
-                      <div>
-                        {helper.formatNumberWithKorM(
-                          socialMedia.socialMediaFollowers
-                        )}
-                      </div>
+                      <div>{socialMedia.socialMediaFollowers.name || ""}</div>
                       {params.profileHeader.userSocialMedia.length - 1 !==
                         index && (
                         <div

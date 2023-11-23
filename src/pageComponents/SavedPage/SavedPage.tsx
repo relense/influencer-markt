@@ -38,7 +38,10 @@ const SavedPage = (params: {
               return {
                 id: socialMedia.id,
                 handler: socialMedia.handler,
-                followers: socialMedia.followers,
+                userSocialMediaFollowers: socialMedia.socialMediaFollowers || {
+                  id: -1,
+                  name: "",
+                },
                 url: socialMedia.url,
                 socialMediaName: socialMedia.socialMedia?.name || "",
                 socialMediaId: socialMedia.socialMedia?.id || -1,

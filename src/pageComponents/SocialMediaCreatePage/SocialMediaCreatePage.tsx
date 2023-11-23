@@ -63,6 +63,7 @@ const SocialMediaCreatePage = (params: {
     formState: { errors },
   } = useForm<SocialMediaDetails>({
     defaultValues: {
+      socialMediaFollowers: { id: -1, name: "" },
       platform: { id: -1, name: "" },
       valuePacks: [],
     },
@@ -96,7 +97,7 @@ const SocialMediaCreatePage = (params: {
     });
 
     createUserSocialMedia({
-      followers: data.socialMediaFollowers,
+      followers: data.socialMediaFollowers.id,
       handler: data.socialMediaHandler,
       socialMedia: data.platform,
       valuePacks: newArrayList.map((valuePack) => {

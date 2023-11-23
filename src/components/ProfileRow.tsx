@@ -45,7 +45,7 @@ const ProfileRow = (params: {
   );
   const [usefullSocialMedia, setUsefullSocialMedia] = useState<UserSocialMedia>(
     {
-      followers: -1,
+      userSocialMediaFollowers: { id: -1, name: "" },
       handler: "",
       id: -1,
       socialMediaName: "",
@@ -91,12 +91,6 @@ const ProfileRow = (params: {
 
       if (mainSocialMedia) {
         setUsefullSocialMedia(mainSocialMedia);
-      } else {
-        params.socialMedia.forEach((socialMedia) => {
-          if (socialMedia.followers > usefullSocialMedia.followers) {
-            setUsefullSocialMedia(socialMedia);
-          }
-        });
       }
     };
 
@@ -121,7 +115,6 @@ const ProfileRow = (params: {
   }, [
     params.highlightSocialMediaId,
     params.socialMedia,
-    usefullSocialMedia.followers,
     usefullSocialMedia.id,
   ]);
 
@@ -174,7 +167,7 @@ const ProfileRow = (params: {
                 icon={socialMediaIcon(usefullSocialMedia.socialMediaName)}
                 className="fa-base text-white hover:text-white1 "
               />
-              {helper.formatNumberWithKorM(usefullSocialMedia.followers)}
+              {usefullSocialMedia.userSocialMediaFollowers.name}
             </div>
           </Link>
 

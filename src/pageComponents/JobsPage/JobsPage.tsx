@@ -19,7 +19,7 @@ export type JobsFilterState = {
   gender: Option;
   country: Option;
   city: Option;
-  minFollowers: number;
+  userSocialMediaFollowers: Option;
   minPrice: number;
   maxPrice: number;
 };
@@ -48,7 +48,7 @@ const JobsPage = (params: {
     gender: { id: -1, name: "" },
     country: { id: -1, name: "" },
     city: { id: -1, name: "" },
-    minFollowers: 0,
+    userSocialMediaFollowers: { id: -1, name: "" },
     minPrice: 0,
     maxPrice: 1000000000,
   });
@@ -67,7 +67,7 @@ const JobsPage = (params: {
       return category.id;
     }),
     gender: filterState.gender.id,
-    minFollowers: filterState.minFollowers || -1,
+    userSocialMediaFollowersId: filterState.userSocialMediaFollowers.id || -1,
     minPrice: filterState.minPrice || -1,
     maxPrice: filterState.maxPrice || -1,
     country: filterState.country.id,
@@ -87,7 +87,7 @@ const JobsPage = (params: {
         return category.id;
       }),
       gender: filterState.gender.id,
-      minFollowers: filterState.minFollowers || -1,
+      userSocialMediaFollowersId: filterState.userSocialMediaFollowers.id || -1,
       minPrice: filterState.minPrice || -1,
       maxPrice: filterState.maxPrice || -1,
       country: filterState.country.id,
@@ -96,6 +96,8 @@ const JobsPage = (params: {
   );
 
   const { data: countries } = api.allRoutes.getAllCountries.useQuery();
+  const { data: userSocialMediaFollowers } =
+    api.allRoutes.getAllUserSocialMediaFollowers.useQuery();
   const { data: genders } = api.allRoutes.getAllGenders.useQuery();
   const { data: userRole } = api.users.getUserRole.useQuery(undefined, {
     enabled: session.status === "authenticated",
@@ -153,7 +155,7 @@ const JobsPage = (params: {
 
   const countActiveFilters = (params: {
     gender: Option;
-    minFollowers: number;
+    userSocialMediaFollowers: Option;
     minPrice: number;
     maxPrice: number;
     country: Option;
@@ -161,7 +163,7 @@ const JobsPage = (params: {
   }) => {
     let count = 0;
 
-    if (params.minFollowers !== 0) {
+    if (params.userSocialMediaFollowers.id !== -1) {
       count++;
     }
     if (params.gender.id > -1) {
@@ -185,7 +187,7 @@ const JobsPage = (params: {
 
   const onFilterSubmit = (params: {
     gender: Option;
-    minFollowers: number;
+    userSocialMediaFollowers: Option;
     minPrice: number;
     maxPrice: number;
     country: Option;
@@ -205,7 +207,7 @@ const JobsPage = (params: {
       categories: filterCategories,
       platforms: filterPlatforms,
       gender: params.gender,
-      minFollowers: params.minFollowers,
+      userSocialMediaFollowers: params.userSocialMediaFollowers,
       minPrice: params.minPrice,
       maxPrice: params.maxPrice,
       country: params.country,
@@ -226,7 +228,7 @@ const JobsPage = (params: {
       gender: { id: -1, name: "" },
       country: { id: -1, name: "" },
       city: { id: -1, name: "" },
-      minFollowers: 0,
+      userSocialMediaFollowers: { id: -1, name: "" },
       minPrice: 0,
       maxPrice: 1000000000,
     });
@@ -417,28 +419,39 @@ const JobsPage = (params: {
           />
         )}
       </div>
-      {isFilterModalOpen && genders && countries && (
-        <div className="flex flex-1 justify-center">
-          <JobsFilterModal
-            genders={genders?.map((gender) => {
-              return {
-                id: gender.id,
-                name: gender.name,
-              };
-            })}
-            filterState={filterState}
-            onClose={() => setIsFilterModalOpen(false)}
-            handleFilterSubmit={onFilterSubmit}
-            handleClearFilter={onClearFilter}
-            countries={countries?.map((country) => {
-              return {
-                id: country.id,
-                name: country.name,
-              };
-            })}
-          />
-        </div>
-      )}
+      {isFilterModalOpen &&
+        genders &&
+        countries &&
+        userSocialMediaFollowers && (
+          <div className="flex flex-1 justify-center">
+            <JobsFilterModal
+              genders={genders?.map((gender) => {
+                return {
+                  id: gender.id,
+                  name: gender.name,
+                };
+              })}
+              filterState={filterState}
+              onClose={() => setIsFilterModalOpen(false)}
+              handleFilterSubmit={onFilterSubmit}
+              handleClearFilter={onClearFilter}
+              countries={countries?.map((country) => {
+                return {
+                  id: country.id,
+                  name: country.name,
+                };
+              })}
+              userSocialMediaFollowers={userSocialMediaFollowers?.map(
+                (socialMedia) => {
+                  return {
+                    id: socialMedia.id,
+                    name: socialMedia.name,
+                  };
+                }
+              )}
+            />
+          </div>
+        )}
     </>
   );
 };

@@ -1,6 +1,4 @@
 import { useEffect, useState } from "react";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPlus } from "@fortawesome/free-solid-svg-icons";
 import { useRouter } from "next/router";
 import { useTranslation } from "next-i18next";
 import { api } from "~/utils/api";
@@ -9,6 +7,7 @@ import toast from "react-hot-toast";
 import { LoadingSpinner } from "../../../components/LoadingSpinner";
 import { SocialMediaCard } from "../../../components/SocialMediaCard";
 import { type SocialMediaDetails } from "../../../utils/globalTypes";
+import { Button } from "../../../components/Button";
 
 const PublicProfileSocialMediaEdit = (params: {
   username: string;
@@ -25,8 +24,6 @@ const PublicProfileSocialMediaEdit = (params: {
     api.userSocialMedias.getUserSocialMediaByProfileId.useQuery({
       profileId: params.profileId,
     });
-
-  const { data: platforms } = api.allRoutes.getAllSocialMedia.useQuery();
 
   const { mutate: deleteUserSocialMedia } =
     api.userSocialMedias.deleteUserSocialMedia.useMutation({
@@ -56,7 +53,10 @@ const PublicProfileSocialMediaEdit = (params: {
               id: item.socialMediaId,
               name: item.socialMedia?.name || "",
             },
-            socialMediaFollowers: item.followers,
+            socialMediaFollowers: item.socialMediaFollowers || {
+              id: -1,
+              name: "",
+            },
             socialMediaHandler: item.handler,
             valuePacks: item.valuePacks.map((valuePack) => {
               return {
@@ -133,21 +133,55 @@ const PublicProfileSocialMediaEdit = (params: {
     }
   };
 
+  const renderCreateSocialMediaConnectButtons = () => {
+    const connectButtons = [];
+
+    //INSTAGRAM
+    if (
+      process.env.NEXT_PUBLIC_INSTAGRAM_CLIENT_ID &&
+      process.env.NEXT_PUBLIC_INSTAGRAM_REDIRECT_URI &&
+      !userSocialMediaList.some(
+        (socialMedia) => socialMedia.platform.name === "Instagram"
+      )
+    ) {
+      connectButtons.push(
+        <a
+          href={`https://api.instagram.com/oauth/authorize?client_id=${process.env.NEXT_PUBLIC_INSTAGRAM_CLIENT_ID}&redirect_uri=${process.env.NEXT_PUBLIC_INSTAGRAM_REDIRECT_URI}&scope=user_profile,user_media&response_type=code`}
+        >
+          <Button title="Connect Instagram" />
+        </a>
+      );
+    }
+
+    //FACEBOOK
+    // if (
+    //   process.env.NEXT_PUBLIC_FACEBOOK_CLIENT_ID &&
+    //   process.env.NEXT_PUBLIC_FACEBOOK_REDIRECT_URI &&
+    //   !userSocialMediaList.some(
+    //     (socialMedia) => socialMedia.platform.name === "Facebook"
+    //   )
+    // ) {
+    //   connectButtons.push(
+    //     <a
+    //       href={`https://www.facebook.com/v18.0/dialog/oauth?client_id=${process.env.NEXT_PUBLIC_FACEBOOK_CLIENT_ID}&redirect_uri=${process.env.NEXT_PUBLIC_FACEBOOK_REDIRECT_URI}&scope=instagram_basic&state=ole&response_type=code`}
+    //     >
+    //       <Button title="Connect Facebook" />
+    //     </a>
+    //   );
+    // }
+
+    return connectButtons;
+  };
+
   return (
     <div className="flex flex-1 flex-col gap-4">
       <div className="flex items-center gap-2">
         <div className="text-2xl font-semibold">
           {t("pages.publicProfilePage.socialMedia")}
         </div>
-        {platforms?.length !== userSocialMediaList?.length && (
-          <div
-            className="flex h-6 w-6 items-center justify-center rounded-full bg-influencer text-white"
-            onClick={() => void router.push("/social-media/create")}
-          >
-            <FontAwesomeIcon icon={faPlus} className="fa-sm cursor-pointer" />
-          </div>
-        )}
       </div>
+      {renderCreateSocialMediaConnectButtons()}
+
       <div className="flex flex-col gap-4">
         {isLoadingProfileSocialMedia && (
           <div className="relative w-full">

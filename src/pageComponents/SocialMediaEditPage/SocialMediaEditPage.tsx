@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { api } from "~/utils/api";
 import { useTranslation } from "next-i18next";
-import { useForm } from "react-hook-form";
+import { Controller, useForm } from "react-hook-form";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus, faSubtract } from "@fortawesome/free-solid-svg-icons";
 import toast from "react-hot-toast";
@@ -35,6 +35,8 @@ const SocialMediaEditPage = (params: {
   >([{ contentType: { id: -1, name: "" }, price: 0 }]);
 
   const { data: platforms } = api.allRoutes.getAllSocialMedia.useQuery();
+  const { data: userSocialMediaFollowers } =
+    api.allRoutes.getAllUserSocialMediaFollowers.useQuery();
   const { data: userSocialMedia, isLoading: isLoadingUserSocialMedia } =
     api.userSocialMedias.getUserSocialMediaById.useQuery({
       userSocialMediaId: params.userSocialMediaId,
@@ -60,10 +62,12 @@ const SocialMediaEditPage = (params: {
     register,
     handleSubmit,
     watch,
+    control,
     setValue,
     formState: { errors },
   } = useForm<SocialMediaDetails>({
     defaultValues: {
+      socialMediaFollowers: { id: -1, name: "" },
       platform: { id: -1, name: "" },
       valuePacks: [],
     },
@@ -92,7 +96,10 @@ const SocialMediaEditPage = (params: {
         id: userSocialMedia.socialMedia?.id || -1,
         name: userSocialMedia.socialMedia?.name || "",
       });
-      setValue("socialMediaFollowers", userSocialMedia.followers);
+      setValue("socialMediaFollowers", {
+        id: userSocialMedia.socialMediaFollowers?.id || -1,
+        name: userSocialMedia.socialMediaFollowers?.name || "",
+      });
       setValue("socialMediaHandler", userSocialMedia.handler);
       setValue(
         "valuePacks",
@@ -127,7 +134,7 @@ const SocialMediaEditPage = (params: {
 
     updateUserSocialMedia({
       id: data.id || -1,
-      followers: data.socialMediaFollowers,
+      followers: data.socialMediaFollowers.id,
       handler: data.socialMediaHandler,
       socialMedia: data.platform,
       valuePacks: newArrayList.map((valuePack) => {
@@ -323,25 +330,39 @@ const SocialMediaEditPage = (params: {
 
   const buildSocialMediaLink = (socialMedia: string) => {
     const linkMappings: Record<string, string> = {
-      Instagram: "instagram.com/",
-      YouTube: "youtube.com/@",
-      Facebook: "facebook.com/",
-      TikTok: "tiktok.com/@",
-      Linkedin: "linkedin.com/in/",
-      Twitch: "twitch.tv/",
-      Twitter: "twitter.com/",
+      Instagram: "https://www.instagram.com/",
+      YouTube: "https://www.youtube.com/@",
+      Facebook: "https://www.facebook.com/",
+      TikTok: "https://www.tiktok.com/@",
+      Linkedin: "https://www.linkedin.com/in/",
+      Twitch: "https://www.twitch.tv/",
+      Twitter: "https://www.twitter.com/",
+      Pinterest: "https://www.pinterest.com/",
       Podcast: "",
-      Pinterest: "pinterest.com/",
     };
 
     return linkMappings[socialMedia] || "";
   };
 
-  const renderChoosePlatformInput = () => {
+  const renderPlatform = () => {
     return (
       <div className="flex justify-center text-2xl font-semibold">
         {watch("platform") && watch("platform").name}
       </div>
+    );
+  };
+
+  const renderUrlHandler = () => {
+    return (
+      <a
+        href={`${buildSocialMediaLink(watch("platform").name)}${watch(
+          "socialMediaHandler"
+        )}`}
+        className="flex cursor-pointer justify-center text-2xl font-semibold hover:underline"
+      >
+        {buildSocialMediaLink(watch("platform").name)}
+        {watch("socialMediaHandler")}
+      </a>
     );
   };
 
@@ -392,18 +413,32 @@ const SocialMediaEditPage = (params: {
 
   const renderSocialMediaFollowersInput = () => {
     return (
-      <input
-        {...register("socialMediaFollowers", {
-          valueAsNumber: true,
-        })}
-        required
-        type="number"
-        onWheel={(e) => e.currentTarget.blur()}
-        className="h-14 w-full rounded-lg border-[1px] border-gray3 p-4 placeholder-gray2 focus:border-black focus:outline-none"
-        placeholder={t("pages.socialMediaCreate.followersPlaceholder")}
-        autoComplete="one-time-code"
-        min="0"
-        max="1000000000"
+      <Controller
+        name="socialMediaFollowers"
+        control={control}
+        rules={{ required: true }}
+        render={({ field: { value, onChange } }) => {
+          return (
+            <CustomSelect
+              register={register}
+              name="socialMediaFollowers"
+              placeholder={t("pages.socialMediaCreate.followersPlaceholder")}
+              options={
+                userSocialMediaFollowers && userSocialMediaFollowers.length > 0
+                  ? userSocialMediaFollowers?.map((socialMedia) => {
+                      return {
+                        id: socialMedia.id,
+                        name: socialMedia.name,
+                      };
+                    })
+                  : []
+              }
+              value={value}
+              handleOptionSelect={onChange}
+              required={true}
+            />
+          );
+        }}
       />
     );
   };
@@ -421,8 +456,8 @@ const SocialMediaEditPage = (params: {
         className="flex w-full cursor-default flex-col gap-6 self-center px-4 pb-10 sm:px-12 lg:w-full xl:w-10/12 2xl:w-3/4 3xl:w-3/4 4xl:w-7/12 5xl:w-2/4"
         onSubmit={updateSocialMedia}
       >
-        {renderChoosePlatformInput()}
-        {renderAddPlatformHandlerInput()}
+        {renderPlatform()}
+        {renderUrlHandler()}
         {renderSocialMediaFollowersInput()}
         {!params.isBrand && renderContentTypeInput()}
         <Button

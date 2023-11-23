@@ -13,8 +13,7 @@ const InfluencersFilterModal = (params: {
   onClose: () => void;
   handleFilterSubmit: (params: {
     gender: Option;
-    minFollowers: number;
-    maxFollowers: number;
+    userSocialMediaFollowers: Option;
     minPrice: number;
     maxPrice: number;
     country: Option;
@@ -25,6 +24,7 @@ const InfluencersFilterModal = (params: {
   genders: Option[];
   contentTypes: Option[];
   countries: Option[];
+  userSocialMediaFollowers: Option[];
   filterState: InfluencersFilterState;
 }) => {
   const { t } = useTranslation();
@@ -42,8 +42,7 @@ const InfluencersFilterModal = (params: {
     defaultValues: {
       gender: params.filterState.gender,
       contentType: params.filterState.contentType,
-      minFollowers: params.filterState.minFollowers,
-      maxFollowers: params.filterState.maxFollowers,
+      userSocialMediaFollowers: params.filterState.userSocialMediaFollowers,
       minPrice: params.filterState.minPrice,
       maxPrice: params.filterState.maxPrice,
       country: params.filterState.country,
@@ -59,8 +58,7 @@ const InfluencersFilterModal = (params: {
   const submit = handleSubmit((data) => {
     params.handleFilterSubmit({
       gender: data.gender,
-      minFollowers: data.minFollowers,
-      maxFollowers: data.maxFollowers,
+      userSocialMediaFollowers: data.userSocialMediaFollowers,
       minPrice: data.minPrice,
       maxPrice: data.maxPrice,
       country: data.country,
@@ -76,8 +74,7 @@ const InfluencersFilterModal = (params: {
     filterSetValue("city", { id: -1, name: "" });
     filterSetValue("minPrice", 0);
     filterSetValue("maxPrice", 1000000000);
-    filterSetValue("minFollowers", 0);
-    filterSetValue("maxFollowers", 1000000000);
+    filterSetValue("userSocialMediaFollowers", { id: -1, name: "" });
 
     params.handleClearFilter();
   });
@@ -89,37 +86,23 @@ const InfluencersFilterModal = (params: {
           <div className="text-xl font-medium">
             {t("components.filter.followersInputLabel")}
           </div>
-          <div className="flex flex-col gap-6 lg:flex-row lg:items-center lg:gap-11">
-            <div className="flex flex-1 flex-col gap-1">
-              <label className="text-gray2">
-                {t("components.filter.minimum")}
-              </label>
-              <input
-                {...filterRegister("minFollowers", { valueAsNumber: true })}
-                type="number"
-                className="h-14 w-full rounded-lg border-[1px] border-gray3 p-4 placeholder-gray2 focus:border-black focus:outline-none"
-                placeholder={t("components.filter.minimumPlaceholder")}
-                autoComplete="off"
-                max="1000000000"
-                min="0"
-              />
-            </div>
-
-            <div className="flex flex-1 flex-col gap-1">
-              <label className="text-gray2">
-                {t("components.filter.Maximum")}
-              </label>
-              <input
-                {...filterRegister("maxFollowers", { valueAsNumber: true })}
-                type="number"
-                className="h-14 w-full rounded-lg border-[1px] border-gray3 p-4 placeholder-gray2 focus:border-black focus:outline-none"
-                placeholder={t("components.filter.MaximumPlaceholder")}
-                autoComplete="off"
-                max="1000000000"
-                min="0"
-              />
-            </div>
-          </div>
+          <Controller
+            name="userSocialMediaFollowers"
+            control={filterControl}
+            render={({ field: { value, onChange } }) => {
+              return (
+                <CustomSelect
+                  register={filterRegister}
+                  name="userSocialMediaFollowers"
+                  placeholder={t("components.filter.followersInputLabel")}
+                  options={params.userSocialMediaFollowers}
+                  value={value}
+                  handleOptionSelect={onChange}
+                  required={false}
+                />
+              );
+            }}
+          />
         </div>
         <div className="w-full border-[1px] border-white1" />
       </>

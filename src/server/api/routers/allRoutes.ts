@@ -14,6 +14,10 @@ export const allRouter = createTRPCRouter({
     return await ctx.prisma.role.findMany();
   }),
 
+  getAllUserSocialMediaFollowers: publicProcedure.query(async ({ ctx }) => {
+    return await ctx.prisma.userSocialMediaFollowers.findMany();
+  }),
+
   getAllSocialMedia: publicProcedure.query(async ({ ctx }) => {
     return await ctx.prisma.socialMedia.findMany({
       include: {
@@ -249,7 +253,7 @@ export const allRouter = createTRPCRouter({
               return {
                 socialMediaName: socialMedia.socialMedia?.name || "",
                 handler: socialMedia.handler || "",
-                followers: socialMedia.followers || 0,
+                followers: socialMedia.userSocialMediaFollowersId || 0,
                 url: socialMedia.url || "",
                 valuePacks: socialMedia.valuePacks.map((valuePacks) => {
                   return {
@@ -314,7 +318,6 @@ export const allRouter = createTRPCRouter({
                 price: job.price || 0,
                 influencers: job.numberOfInfluencers || 0,
                 country: job.country.name || "",
-                followers: job.minFollowers || 0,
                 gender: job?.gender?.name || "",
               };
             }),

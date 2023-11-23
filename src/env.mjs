@@ -45,6 +45,10 @@ export const env = createEnv({
 
     BILLING_PLATFORM_TOKEN: z.string(),
     BILLING_PLATFORM_URL: z.string(),
+
+    NEXT_PUBLIC_INSTAGRAM_CLIENT_ID: z.string(),
+    INSTAGRAM_CLIENT_SECRET: z.string(),
+    NEXT_PUBLIC_INSTAGRAM_REDIRECT_URI: z.string(),
   },
 
   /**
@@ -91,6 +95,12 @@ export const env = createEnv({
     NEXT_PUBLIC_CURRENT_ENV: process.env.NEXT_PUBLIC_BASE_URL,
     BILLING_PLATFORM_TOKEN: process.env.BILLING_PLATFORM_TOKEN,
     BILLING_PLATFORM_URL: process.env.BILLING_PLATFORM_URL,
+
+    NEXT_PUBLIC_INSTAGRAM_CLIENT_ID:
+      process.env.NEXT_PUBLIC_INSTAGRAM_CLIENT_ID,
+    INSTAGRAM_CLIENT_SECRET: process.env.INSTAGRAM_CLIENT_SECRET,
+    NEXT_PUBLIC_INSTAGRAM_REDIRECT_URI:
+      process.env.NEXT_PUBLIC_INSTAGRAM_REDIRECT_URI,
   },
   /**
    * Run `build` or `dev` with `SKIP_ENV_VALIDATION` to skip env validation.

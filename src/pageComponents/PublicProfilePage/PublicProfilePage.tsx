@@ -245,7 +245,11 @@ const PublicProfilePage = (params: {
               availableUserSocialMedia={profile?.userSocialMedia.map(
                 (userSocialMedia) => {
                   return {
-                    socialMediaFollowers: userSocialMedia.followers,
+                    socialMediaFollowers:
+                      userSocialMedia.socialMediaFollowers || {
+                        id: -1,
+                        name: "",
+                      },
                     socialMediaHandler: userSocialMedia.handler,
                     valuePacks: userSocialMedia.valuePacks.map((valuePack) => {
                       return {
@@ -372,7 +376,10 @@ const PublicProfilePage = (params: {
               return {
                 id: socialMedia.id,
                 url: socialMedia.url,
-                socialMediaFollowers: socialMedia.followers,
+                socialMediaFollowers: socialMedia.socialMediaFollowers || {
+                  id: -1,
+                  name: "",
+                },
                 socialMediaName: socialMedia.socialMedia?.name || "",
               };
             }),

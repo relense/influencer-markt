@@ -23,7 +23,7 @@ type JobData = {
   jobPrice: number;
   numberOfInfluencers: number;
   country: Option;
-  minFollowers: number;
+  userSocialMediaFollowers: Option;
   gender: Option;
   published: boolean;
 };
@@ -41,7 +41,9 @@ const CreateJobPage = (params: { edit: boolean; jobId: string }) => {
   const [contentTypesList, setContentTypesList] = useState<
     ContentTypeWithQuantity[]
   >([{ contentType: { id: -1, name: "" }, amount: 0 }]);
-  const [isPublished, setIsPublished] = useState<boolean>(true);
+  const [isPublished, setIsPublished] = useState<boolean>(
+    params.edit ? false : true
+  );
 
   const {
     data: job,
@@ -70,6 +72,7 @@ const CreateJobPage = (params: { edit: boolean; jobId: string }) => {
     formState: { errors, isDirty },
   } = useForm<JobData>({
     defaultValues: {
+      userSocialMediaFollowers: { id: -1, name: "" },
       categories: [],
       platform: { id: -1, name: "" },
       country: { id: -1, name: "" },
@@ -88,13 +91,17 @@ const CreateJobPage = (params: { edit: boolean; jobId: string }) => {
       setValue("country", job.country);
       setValue("categories", job.categories);
       setValue("gender", job.gender || { id: -1, name: "" });
-      setValue("minFollowers", job.minFollowers);
+      setValue(
+        "userSocialMediaFollowers",
+        job.userSocialMediaFollowers || { id: -1, name: "" }
+      );
       setValue("numberOfInfluencers", job.numberOfInfluencers);
       setValue("jobDetails", job.JobDetails);
       setValue("jobSummary", job.jobSummary);
       setValue("jobPrice", job.price / 100);
       setValue("platform", job.socialMedia);
-      setIsPublished(job.published);
+      setValue("published", false);
+      setIsPublished(false);
       setContentTypesList(job.contentTypeWithQuantity);
     }
   }, [job, setValue]);
@@ -103,6 +110,8 @@ const CreateJobPage = (params: { edit: boolean; jobId: string }) => {
   const { data: categories } = api.allRoutes.getAllCategories.useQuery();
   const { data: genders } = api.allRoutes.getAllGenders.useQuery();
   const { data: countries } = api.allRoutes.getAllCountries.useQuery();
+  const { data: userSocialMediaFollowers } =
+    api.allRoutes.getAllUserSocialMediaFollowers.useQuery();
 
   const { mutate: jobCreation, isLoading: isLoadingCreate } =
     api.jobs.createJob.useMutation({
@@ -163,7 +172,7 @@ const CreateJobPage = (params: { edit: boolean; jobId: string }) => {
         price: data.jobPrice,
         numberOfInfluencers: data.numberOfInfluencers,
         countryId: data.country.id,
-        minFollowers: data.minFollowers,
+        userSocialMediaFollowersId: data.userSocialMediaFollowers.id,
         genderId: data.gender.id,
         published: isPublished,
       };
@@ -582,30 +591,35 @@ const CreateJobPage = (params: { edit: boolean; jobId: string }) => {
           <div className="text-xl font-medium">
             {t("pages.manageJobs.influencerFollowers")}
           </div>
-          <div className="flex flex-col gap-6 lg:flex-row lg:gap-11">
-            <div className="flex flex-1 flex-col gap-1">
-              <label className="text-gray2">
-                {t("pages.manageJobs.minimum")}
-              </label>
-              <input
-                {...register("minFollowers", { valueAsNumber: true })}
-                type="number"
-                required
-                className="h-14 w-full rounded-lg border-[1px] border-gray3 p-4 placeholder-gray2 focus:border-black focus:outline-none"
-                placeholder={t("pages.manageJobs.minFollowers")}
-                autoComplete="off"
-                max="1000000000"
-                min="0"
-                onWheel={(e) => e.currentTarget.blur()}
-              />
-              {errors.minFollowers ? (
-                <div className="text-sm text-influencer">
-                  {errors.minFollowers.message}
-                </div>
-              ) : (
-                <div></div>
-              )}
-            </div>
+          <div className="flex flex-col gap-6 lg:flex-row lg:gap-6">
+            <Controller
+              name="userSocialMediaFollowers"
+              control={control}
+              rules={{ required: true }}
+              render={({ field: { value, onChange } }) => {
+                return (
+                  <CustomSelect
+                    register={register}
+                    name="userSocialMediaFollowers"
+                    placeholder={t("pages.manageJobs.influencerFollowers")}
+                    options={
+                      userSocialMediaFollowers &&
+                      userSocialMediaFollowers.length > 0
+                        ? userSocialMediaFollowers?.map((followers) => {
+                            return {
+                              id: followers.id,
+                              name: followers.name,
+                            };
+                          })
+                        : []
+                    }
+                    value={value}
+                    handleOptionSelect={onChange}
+                    required={true}
+                  />
+                );
+              }}
+            />
           </div>
         </div>
         <div className="w-full border-[1px] border-white1" />

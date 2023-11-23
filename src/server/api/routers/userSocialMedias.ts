@@ -1,6 +1,22 @@
 import { z } from "zod";
 import { createTRPCRouter, protectedProcedure, publicProcedure } from "../trpc";
 import { helper } from "../../../utils/helper";
+import axios from "axios";
+import { env } from "../../../env.mjs";
+
+type INSTAGRAM_RESPONSE = {
+  data: {
+    access_token: string;
+    user_id: number;
+  };
+};
+
+type INSTAGRAM_BASIC_PROFILE = {
+  data: {
+    id: string;
+    username: string;
+  };
+};
 
 export const userSocialMediasRouter = createTRPCRouter({
   createUserSocialMedia: protectedProcedure
@@ -42,7 +58,7 @@ export const userSocialMediasRouter = createTRPCRouter({
         const userSocialMedia = await ctx.prisma.userSocialMedia.create({
           data: {
             handler: input.handler,
-            followers: input.followers,
+            userSocialMediaFollowersId: input.followers,
             profileId: profile.id,
             socialMediaId: input.socialMedia.id,
             url: createSocialMediaUrl(input.socialMedia.id, input.handler),
@@ -124,7 +140,7 @@ export const userSocialMediasRouter = createTRPCRouter({
           id: input.id,
         },
         data: {
-          followers: input.followers,
+          userSocialMediaFollowersId: input.followers,
           handler: input.handler,
           url: createSocialMediaUrl(input.socialMedia.id, input.handler),
         },
@@ -154,7 +170,7 @@ export const userSocialMediasRouter = createTRPCRouter({
         profile &&
         profile.verifiedStatusId === 2 &&
         (currentSocialMedia?.handler !== input.handler ||
-          currentSocialMedia?.followers !== input.followers)
+          currentSocialMedia?.userSocialMediaFollowersId !== input.followers)
       ) {
         await ctx.prisma.profile.update({
           where: { id: profile.id },
@@ -179,7 +195,7 @@ export const userSocialMediasRouter = createTRPCRouter({
         select: {
           socialMedia: true,
           profile: false,
-          followers: true,
+          socialMediaFollowers: true,
           handler: true,
           socialMediaId: true,
           url: true,
@@ -207,7 +223,7 @@ export const userSocialMediasRouter = createTRPCRouter({
         select: {
           socialMedia: true,
           profile: false,
-          followers: true,
+          socialMediaFollowers: true,
           handler: true,
           socialMediaId: true,
           url: true,
@@ -312,6 +328,161 @@ export const userSocialMediasRouter = createTRPCRouter({
             mainSocialMedia: true,
           },
         });
+      }
+    }),
+
+  authenticateInstagram: protectedProcedure
+    .input(
+      z.object({
+        code: z.string(),
+      })
+    )
+    .mutation(async ({ ctx, input }) => {
+      try {
+        const formData = new URLSearchParams();
+        formData.append("client_id", env.NEXT_PUBLIC_INSTAGRAM_CLIENT_ID);
+        formData.append("client_secret", env.INSTAGRAM_CLIENT_SECRET);
+        formData.append("grant_type", "authorization_code");
+        formData.append("redirect_uri", env.NEXT_PUBLIC_INSTAGRAM_REDIRECT_URI);
+        formData.append("code", input.code);
+
+        const response: INSTAGRAM_RESPONSE = await axios.post(
+          "https://api.instagram.com/oauth/access_token",
+          formData.toString(),
+          {
+            headers: {
+              "Content-Type": "application/x-www-form-urlencoded",
+            },
+          }
+        );
+
+        const socialMedia = await ctx.prisma.socialMedia.findFirst({
+          where: {
+            name: {
+              equals: "Instagram",
+            },
+          },
+        });
+
+        const profile = await ctx.prisma.profile.findUnique({
+          where: { userId: ctx.session.user.id },
+          include: {
+            user: {
+              select: {
+                username: true,
+              },
+            },
+            userSocialMedia: {
+              include: {
+                valuePacks: true,
+              },
+            },
+          },
+        });
+
+        if (profile && socialMedia) {
+          const basicProfile: INSTAGRAM_BASIC_PROFILE = await axios.get(
+            `https://graph.instagram.com/me?fields=username&access_token=${response.data.access_token}`
+          );
+
+          const newUserSocialMedia = await ctx.prisma.userSocialMedia.create({
+            data: {
+              handler: basicProfile.data.username,
+              userSocialMediaFollowersId: 1,
+              profileId: profile.id,
+              socialMediaAccessToken: response.data.access_token,
+              socialMediaId: socialMedia.id,
+              url: createSocialMediaUrl(
+                socialMedia.id,
+                basicProfile.data.username
+              ),
+              mainSocialMedia:
+                profile.userSocialMedia.length === 0 ? true : false,
+            },
+          });
+
+          return newUserSocialMedia;
+        }
+      } catch (err) {
+        console.log(err);
+      }
+    }),
+
+  authenticateFacebook: protectedProcedure
+    .input(
+      z.object({
+        code: z.string(),
+      })
+    )
+    .mutation(async ({ ctx, input }) => {
+      try {
+        const formData = new URLSearchParams();
+        formData.append("client_id", env.NEXT_PUBLIC_INSTAGRAM_CLIENT_ID);
+        formData.append("client_secret", env.INSTAGRAM_CLIENT_SECRET);
+        formData.append("grant_type", "authorization_code");
+        formData.append("redirect_uri", env.NEXT_PUBLIC_INSTAGRAM_REDIRECT_URI);
+        formData.append("code", input.code);
+
+        const response: INSTAGRAM_RESPONSE = await axios.post(
+          "https://api.instagram.com/oauth/access_token",
+          formData.toString(),
+          {
+            headers: {
+              "Content-Type": "application/x-www-form-urlencoded",
+            },
+          }
+        );
+
+        const socialMedia = await ctx.prisma.socialMedia.findFirst({
+          where: {
+            name: {
+              equals: "Facebook",
+            },
+          },
+        });
+
+        const profile = await ctx.prisma.profile.findUnique({
+          where: { userId: ctx.session.user.id },
+          include: {
+            user: {
+              select: {
+                username: true,
+              },
+            },
+            userSocialMedia: {
+              include: {
+                valuePacks: true,
+              },
+            },
+          },
+        });
+
+        if (profile && socialMedia) {
+          const basicProfile: INSTAGRAM_BASIC_PROFILE = await axios.get(
+            `https://graph.instagram.com/me?fields=id,username,follower_count&access_token=${response.data.access_token}`
+          );
+
+          console.log(basicProfile);
+          await ctx.prisma.userSocialMedia.create({
+            data: {
+              handler: basicProfile.data.username,
+              userSocialMediaFollowersId: 1,
+              profileId: profile.id,
+              socialMediaAccessToken: response.data.access_token,
+              socialMediaId: socialMedia.id,
+              url: createSocialMediaUrl(
+                socialMedia.id,
+                basicProfile.data.username
+              ),
+              mainSocialMedia:
+                profile.userSocialMedia.length === 0 ? true : false,
+            },
+          });
+        }
+
+        return profile?.user.username;
+      } catch (err) {
+        console.log(err);
       }
     }),
 });

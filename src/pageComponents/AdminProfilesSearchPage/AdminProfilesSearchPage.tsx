@@ -72,6 +72,7 @@ type ProfilesAdmin = Prisma.ProfileGetPayload<{
     user: true;
     userSocialMedia: {
       include: {
+        socialMediaFollowers: true;
         socialMedia: true;
       };
     };

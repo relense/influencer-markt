@@ -290,7 +290,8 @@ const ManageJobDetailsPage = (params: {
             return {
               id: userSocialMedia.id,
               handler: userSocialMedia.handler,
-              followers: userSocialMedia.followers,
+              userSocialMediaFollowers:
+                userSocialMedia.socialMediaFollowers || { id: -1, name: "" },
               url: userSocialMedia.url,
               socialMediaName: userSocialMedia.socialMedia?.name || "",
               socialMediaId: userSocialMedia.socialMedia?.id || -1,
@@ -339,7 +340,8 @@ const ManageJobDetailsPage = (params: {
               return {
                 id: userSocialMedia.id,
                 handler: userSocialMedia.handler,
-                followers: userSocialMedia.followers,
+                userSocialMediaFollowers:
+                  userSocialMedia.socialMediaFollowers || { id: -1, name: "" },
                 url: userSocialMedia.url,
                 socialMediaName: userSocialMedia.socialMedia?.name || "",
                 socialMediaId: userSocialMedia.socialMedia?.id || -1,
@@ -389,7 +391,8 @@ const ManageJobDetailsPage = (params: {
               return {
                 id: userSocialMedia.id,
                 handler: userSocialMedia.handler,
-                followers: userSocialMedia.followers,
+                userSocialMediaFollowers:
+                  userSocialMedia.socialMediaFollowers || { id: -1, name: "" },
                 url: userSocialMedia.url,
                 socialMediaName: userSocialMedia.socialMedia?.name || "",
                 socialMediaId: userSocialMedia.socialMedia?.id || -1,
@@ -439,7 +442,8 @@ const ManageJobDetailsPage = (params: {
               return {
                 id: userSocialMedia.id,
                 handler: userSocialMedia.handler,
-                followers: userSocialMedia.followers,
+                userSocialMediaFollowers:
+                  userSocialMedia.socialMediaFollowers || { id: -1, name: "" },
                 url: userSocialMedia.url,
                 socialMediaName: userSocialMedia.socialMedia?.name || "",
                 socialMediaId: userSocialMedia.socialMedia?.id || -1,
@@ -664,7 +668,7 @@ const ManageJobDetailsPage = (params: {
                     void router.push({
                       pathname: "/manage-jobs/create-job",
                       query: {
-                        jobId: JSON.stringify(job.id),
+                        jobId: job.id,
                         edit: true,
                       },
                     })
@@ -684,7 +688,7 @@ const ManageJobDetailsPage = (params: {
                   void router.push({
                     pathname: "/manage-jobs/create-job",
                     query: {
-                      jobId: JSON.stringify(job.id),
+                      jobId: job.id,
                       edit: true,
                     },
                   })
@@ -779,7 +783,7 @@ const ManageJobDetailsPage = (params: {
             <div className="font-semibold text-influencer">
               {t("pages.manageJobs.followers")}
             </div>
-            <div>{helper.formatNumberWithKorM(job.minFollowers)} </div>
+            <div>{job.userSocialMediaFollowers?.name} </div>
           </div>
           <div className="hidden h-1 w-1 rounded-full bg-black sm:flex"></div>
           <div className="flex items-center gap-2">
@@ -940,7 +944,7 @@ const ManageJobDetailsPage = (params: {
             profilePicture={applicant.profilePicture}
             socialMedia={applicant.socialMedia.map((socialMedia) => {
               return {
-                followers: socialMedia.followers,
+                userSocialMediaFollowers: socialMedia.userSocialMediaFollowers,
                 handler: socialMedia.handler,
                 id: socialMedia.id,
                 socialMediaId: socialMedia.socialMediaId,
@@ -1003,7 +1007,7 @@ const ManageJobDetailsPage = (params: {
             profilePicture={applicant.profilePicture}
             socialMedia={applicant.socialMedia.map((socialMedia) => {
               return {
-                followers: socialMedia.followers,
+                userSocialMediaFollowers: socialMedia.userSocialMediaFollowers,
                 handler: socialMedia.handler,
                 id: socialMedia.id,
                 socialMediaId: socialMedia.socialMediaId,
@@ -1115,7 +1119,7 @@ const ManageJobDetailsPage = (params: {
             profilePicture={applicant.profilePicture}
             socialMedia={applicant.socialMedia.map((socialMedia) => {
               return {
-                followers: socialMedia.followers,
+                userSocialMediaFollowers: socialMedia.userSocialMediaFollowers,
                 handler: socialMedia.handler,
                 id: socialMedia.id,
                 socialMediaId: socialMedia.socialMediaId,
@@ -1166,7 +1170,7 @@ const ManageJobDetailsPage = (params: {
             profilePicture={applicant.profilePicture}
             socialMedia={applicant.socialMedia.map((socialMedia) => {
               return {
-                followers: socialMedia.followers,
+                userSocialMediaFollowers: socialMedia.userSocialMediaFollowers,
                 handler: socialMedia.handler,
                 id: socialMedia.id,
                 socialMediaId: socialMedia.socialMediaId,
@@ -1261,7 +1265,7 @@ const ManageJobDetailsPage = (params: {
             profilePicture={applicant.profilePicture}
             socialMedia={applicant.socialMedia.map((socialMedia) => {
               return {
-                followers: socialMedia.followers,
+                userSocialMediaFollowers: socialMedia.userSocialMediaFollowers,
                 handler: socialMedia.handler,
                 id: socialMedia.id,
                 socialMediaId: socialMedia.socialMediaId,
@@ -1303,7 +1307,7 @@ const ManageJobDetailsPage = (params: {
             profilePicture={applicant.profilePicture}
             socialMedia={applicant.socialMedia.map((socialMedia) => {
               return {
-                followers: socialMedia.followers,
+                userSocialMediaFollowers: socialMedia.userSocialMediaFollowers,
                 handler: socialMedia.handler,
                 id: socialMedia.id,
                 socialMediaId: socialMedia.socialMediaId,
@@ -1412,7 +1416,7 @@ const ManageJobDetailsPage = (params: {
             profilePicture={applicant.profilePicture}
             socialMedia={applicant.socialMedia.map((socialMedia) => {
               return {
-                followers: socialMedia.followers,
+                userSocialMediaFollowers: socialMedia.userSocialMediaFollowers,
                 handler: socialMedia.handler,
                 id: socialMedia.id,
                 socialMediaId: socialMedia.socialMediaId,
@@ -1457,7 +1461,7 @@ const ManageJobDetailsPage = (params: {
             profilePicture={applicant.profilePicture}
             socialMedia={applicant.socialMedia.map((socialMedia) => {
               return {
-                followers: socialMedia.followers,
+                userSocialMediaFollowers: socialMedia.userSocialMediaFollowers,
                 handler: socialMedia.handler,
                 id: socialMedia.id,
                 socialMediaId: socialMedia.socialMediaId,

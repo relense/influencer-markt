@@ -17,8 +17,7 @@ export type InfluencersFilterState = {
   contentType: Option;
   country: Option;
   city: Option;
-  minFollowers: number;
-  maxFollowers: number;
+  userSocialMediaFollowers: Option;
   minPrice: number;
   maxPrice: number;
 };
@@ -49,8 +48,7 @@ const ExploreInfluencersPage = (params: {
     contentType: { id: -1, name: "" },
     country: { id: -1, name: "" },
     city: { id: -1, name: "" },
-    minFollowers: 0,
-    maxFollowers: 1000000000,
+    userSocialMediaFollowers: { id: -1, name: "" },
     minPrice: 0,
     maxPrice: 1000000000,
   });
@@ -68,8 +66,7 @@ const ExploreInfluencersPage = (params: {
         return category.id;
       }),
       gender: filterState.gender.id,
-      minFollowers: filterState.minFollowers || -1,
-      maxFollowers: filterState.maxFollowers || -1,
+      userSocialMediaFollowersId: filterState.userSocialMediaFollowers.id,
       minPrice: filterState.minPrice || -1,
       maxPrice: filterState.maxPrice || -1,
       country: filterState.country.id,
@@ -95,8 +92,7 @@ const ExploreInfluencersPage = (params: {
         return category.id;
       }),
       gender: filterState.gender.id,
-      minFollowers: filterState.minFollowers || -1,
-      maxFollowers: filterState.maxFollowers || -1,
+      userSocialMediaFollowersId: filterState.userSocialMediaFollowers.id,
       minPrice: filterState.minPrice || -1,
       maxPrice: filterState.maxPrice || -1,
       country: filterState.country.id,
@@ -109,6 +105,8 @@ const ExploreInfluencersPage = (params: {
   const { data: genders } = api.allRoutes.getAllGenders.useQuery();
   const { data: contentTypes } = api.allRoutes.getAllContentTypes.useQuery();
   const { data: countries } = api.allRoutes.getAllCountries.useQuery();
+  const { data: userSocialMediaFollowers } =
+    api.allRoutes.getAllUserSocialMediaFollowers.useQuery();
   const { data: loggedInProfileId } =
     api.profiles.getLoggedInProfile.useQuery();
 
@@ -134,7 +132,10 @@ const ExploreInfluencersPage = (params: {
               return {
                 id: socialMedia.id,
                 handler: socialMedia.handler,
-                followers: socialMedia.followers,
+                userSocialMediaFollowers: socialMedia.socialMediaFollowers || {
+                  id: -1,
+                  name: "",
+                },
                 url: socialMedia.url,
                 socialMediaId: socialMedia.socialMedia?.id || -1,
                 socialMediaName: socialMedia.socialMedia?.name || "",
@@ -192,7 +193,10 @@ const ExploreInfluencersPage = (params: {
             return {
               id: socialMedia.id,
               handler: socialMedia.handler,
-              followers: socialMedia.followers,
+              userSocialMediaFollowers: socialMedia.socialMediaFollowers || {
+                id: -1,
+                name: "",
+              },
               url: socialMedia.url,
               socialMediaId: socialMedia.socialMediaId || -1,
               socialMediaName: socialMedia.socialMedia?.name || "",
@@ -265,8 +269,7 @@ const ExploreInfluencersPage = (params: {
 
   const onFilterSubmit = (params: {
     gender: Option;
-    minFollowers: number;
-    maxFollowers: number;
+    userSocialMediaFollowers: Option;
     minPrice: number;
     maxPrice: number;
     country: Option;
@@ -285,8 +288,7 @@ const ExploreInfluencersPage = (params: {
       categories: filterCategories,
       platforms: filterPlatforms,
       gender: params.gender,
-      minFollowers: params.minFollowers,
-      maxFollowers: params.maxFollowers,
+      userSocialMediaFollowers: params.userSocialMediaFollowers,
       minPrice: params.minPrice,
       maxPrice: params.maxPrice,
       country: params.country,
@@ -299,8 +301,7 @@ const ExploreInfluencersPage = (params: {
 
   const countActiveFilters = (params: {
     gender: Option;
-    minFollowers: number;
-    maxFollowers: number;
+    userSocialMediaFollowers: Option;
     minPrice: number;
     maxPrice: number;
     country: Option;
@@ -309,10 +310,7 @@ const ExploreInfluencersPage = (params: {
   }) => {
     let count = 0;
 
-    if (params.minFollowers !== 0) {
-      count++;
-    }
-    if (params.maxFollowers !== 1000000000) {
+    if (params.userSocialMediaFollowers.id > -1) {
       count++;
     }
     if (params.gender.id > -1) {
@@ -349,8 +347,7 @@ const ExploreInfluencersPage = (params: {
       contentType: { id: -1, name: "" },
       country: { id: -1, name: "" },
       city: { id: -1, name: "" },
-      minFollowers: 0,
-      maxFollowers: 1000000000,
+      userSocialMediaFollowers: { id: -1, name: "" },
       minPrice: 0,
       maxPrice: 1000000000,
     });
@@ -508,29 +505,41 @@ const ExploreInfluencersPage = (params: {
           />
         </div>
       )}
-      {isFilterModalOpen && genders && contentTypes && countries && (
-        <div className="flex flex-1 justify-center">
-          <InfluencersFilterModal
-            filterState={filterState}
-            onClose={() => setIsFilterModalOpen(false)}
-            handleFilterSubmit={onFilterSubmit}
-            handleClearFilter={onClearFilter}
-            genders={genders?.map((gender) => {
-              return {
-                id: gender.id,
-                name: gender.name,
-              };
-            })}
-            countries={countries?.map((country) => {
-              return {
-                id: country.id,
-                name: country.name,
-              };
-            })}
-            contentTypes={calculateContentTypes()}
-          />
-        </div>
-      )}
+      {isFilterModalOpen &&
+        genders &&
+        contentTypes &&
+        countries &&
+        userSocialMediaFollowers && (
+          <div className="flex flex-1 justify-center">
+            <InfluencersFilterModal
+              filterState={filterState}
+              onClose={() => setIsFilterModalOpen(false)}
+              handleFilterSubmit={onFilterSubmit}
+              handleClearFilter={onClearFilter}
+              genders={genders?.map((gender) => {
+                return {
+                  id: gender.id,
+                  name: gender.name,
+                };
+              })}
+              countries={countries?.map((country) => {
+                return {
+                  id: country.id,
+                  name: country.name,
+                };
+              })}
+              contentTypes={calculateContentTypes()}
+              userSocialMediaFollowers={userSocialMediaFollowers.map(
+                (socialMedia) => {
+                  return {
+                    id: socialMedia.id,
+                    name: socialMedia.name,
+                  };
+                }
+              )}
+            />
+          </div>
+        )}
     </div>
   );
 };

@@ -20,7 +20,7 @@ export const JobsRouter = createTRPCRouter({
         numberOfInfluencers: z.number(),
         countryId: z.number(),
         stateId: z.number().optional(),
-        minFollowers: z.number(),
+        userSocialMediaFollowersId: z.number(),
         genderId: z.number(),
         published: z.boolean(),
       })
@@ -45,7 +45,9 @@ export const JobsRouter = createTRPCRouter({
           price: helper.calculateMonetaryValueInCents(input.price),
           numberOfInfluencers: input.numberOfInfluencers,
           country: { connect: { id: input.countryId } },
-          minFollowers: input.minFollowers,
+          userSocialMediaFollowers: {
+            connect: { id: input.userSocialMediaFollowersId },
+          },
           jobCreator: { connect: { id: profile.id } },
           gender:
             input.genderId !== -1 ? { connect: { id: input.genderId } } : {},
@@ -84,7 +86,7 @@ export const JobsRouter = createTRPCRouter({
         numberOfInfluencers: z.number(),
         countryId: z.number(),
         stateId: z.number().optional(),
-        minFollowers: z.number(),
+        userSocialMediaFollowersId: z.number(),
         genderId: z.number(),
         published: z.boolean(),
       })
@@ -105,7 +107,9 @@ export const JobsRouter = createTRPCRouter({
           price: helper.calculateMonetaryValueInCents(input.price),
           numberOfInfluencers: input.numberOfInfluencers,
           country: { connect: { id: input.countryId } },
-          minFollowers: input.minFollowers,
+          userSocialMediaFollowers: {
+            connect: { id: input.userSocialMediaFollowersId },
+          },
           gender:
             input.genderId !== -1
               ? { connect: { id: input.genderId } }
@@ -166,6 +170,7 @@ export const JobsRouter = createTRPCRouter({
                   profilePicture: true,
                   userSocialMedia: {
                     include: {
+                      socialMediaFollowers: true,
                       socialMedia: true,
                     },
                   },
@@ -182,6 +187,7 @@ export const JobsRouter = createTRPCRouter({
                   profilePicture: true,
                   userSocialMedia: {
                     include: {
+                      socialMediaFollowers: true,
                       socialMedia: true,
                     },
                   },
@@ -192,6 +198,7 @@ export const JobsRouter = createTRPCRouter({
                   user: { select: { username: true } },
                 },
               },
+              userSocialMediaFollowers: true,
               jobStatus: true,
               categories: true,
               applicants: { select: { id: true } },
@@ -246,6 +253,7 @@ export const JobsRouter = createTRPCRouter({
                 profilePicture: true,
                 userSocialMedia: {
                   include: {
+                    socialMediaFollowers: true,
                     socialMedia: true,
                   },
                 },
@@ -262,6 +270,7 @@ export const JobsRouter = createTRPCRouter({
                 profilePicture: true,
                 userSocialMedia: {
                   include: {
+                    socialMediaFollowers: true,
                     socialMedia: true,
                   },
                 },
@@ -272,6 +281,7 @@ export const JobsRouter = createTRPCRouter({
                 user: { select: { username: true } },
               },
             },
+            userSocialMediaFollowers: true,
             jobStatus: true,
             categories: true,
             applicants: { select: { id: true } },
@@ -369,8 +379,9 @@ export const JobsRouter = createTRPCRouter({
             price: job.price,
             numberOfInfluencers: job.numberOfInfluencers,
             country: { connect: { id: job.countryId } },
-            minFollowers: job.minFollowers,
-            maxFollowers: job.maxFollowers,
+            userSocialMediaFollowers: {
+              connect: { id: job.userSocialMediaFollowersId },
+            },
             jobCreator: { connect: { id: job.profileId } },
             gender: job.genderId ? { connect: { id: job.genderId } } : {},
           },
@@ -434,6 +445,7 @@ export const JobsRouter = createTRPCRouter({
               id: true,
             },
           },
+          userSocialMediaFollowers: true,
           jobCreator: true,
           country: true,
           gender: true,
@@ -459,6 +471,7 @@ export const JobsRouter = createTRPCRouter({
               profilePicture: true,
               userSocialMedia: {
                 include: {
+                  socialMediaFollowers: true,
                   socialMedia: true,
                 },
               },
@@ -495,6 +508,7 @@ export const JobsRouter = createTRPCRouter({
               profilePicture: true,
               userSocialMedia: {
                 include: {
+                  socialMediaFollowers: true,
                   socialMedia: true,
                 },
               },
@@ -526,6 +540,7 @@ export const JobsRouter = createTRPCRouter({
               profilePicture: true,
               userSocialMedia: {
                 include: {
+                  socialMediaFollowers: true,
                   socialMedia: true,
                 },
               },
@@ -558,6 +573,7 @@ export const JobsRouter = createTRPCRouter({
               profilePicture: true,
               userSocialMedia: {
                 include: {
+                  socialMediaFollowers: true,
                   socialMedia: true,
                 },
               },
@@ -605,6 +621,7 @@ export const JobsRouter = createTRPCRouter({
               name: "asc",
             },
           },
+          userSocialMediaFollowers: true,
           applicants: true,
           acceptedApplicants: true,
           rejectedApplicants: true,
@@ -619,7 +636,7 @@ export const JobsRouter = createTRPCRouter({
         socialMedia: z.array(z.number()),
         country: z.number(),
         gender: z.number(),
-        minFollowers: z.number(),
+        userSocialMediaFollowersId: z.number(),
         minPrice: z.number(),
         maxPrice: z.number(),
       })
@@ -644,9 +661,10 @@ export const JobsRouter = createTRPCRouter({
                   input.socialMedia.length > 0 ? input.socialMedia : undefined,
               },
             },
-            minFollowers: {
-              gte: input.minFollowers !== -1 ? input.minFollowers : undefined,
-            },
+            userSocialMediaFollowersId:
+              input.userSocialMediaFollowersId !== -1
+                ? input.userSocialMediaFollowersId
+                : undefined,
             price: {
               gte:
                 input.minPrice !== -1
@@ -689,9 +707,10 @@ export const JobsRouter = createTRPCRouter({
                   input.socialMedia.length > 0 ? input.socialMedia : undefined,
               },
             },
-            minFollowers: {
-              gte: input.minFollowers !== -1 ? input.minFollowers : undefined,
-            },
+            userSocialMediaFollowersId:
+              input.userSocialMediaFollowersId !== -1
+                ? input.userSocialMediaFollowersId
+                : undefined,
             price: {
               gte:
                 input.minPrice !== -1
@@ -724,6 +743,7 @@ export const JobsRouter = createTRPCRouter({
                 id: true,
               },
             },
+            userSocialMediaFollowers: true,
             jobStatus: true,
             country: true,
             state: true,
@@ -758,7 +778,7 @@ export const JobsRouter = createTRPCRouter({
         socialMedia: z.array(z.number()),
         country: z.number(),
         gender: z.number(),
-        minFollowers: z.number(),
+        userSocialMediaFollowersId: z.number(),
         minPrice: z.number(),
         maxPrice: z.number(),
       })
@@ -780,9 +800,10 @@ export const JobsRouter = createTRPCRouter({
               in: input.socialMedia.length > 0 ? input.socialMedia : undefined,
             },
           },
-          minFollowers: {
-            gte: input.minFollowers !== -1 ? input.minFollowers : undefined,
-          },
+          userSocialMediaFollowersId:
+            input.userSocialMediaFollowersId !== -1
+              ? input.userSocialMediaFollowersId
+              : undefined,
           price: {
             gte:
               input.minPrice !== -1
@@ -829,6 +850,7 @@ export const JobsRouter = createTRPCRouter({
               user: true,
             },
           },
+          userSocialMediaFollowers: true,
           categories: {
             orderBy: {
               name: "asc",
@@ -1150,6 +1172,7 @@ export const JobsRouter = createTRPCRouter({
                 id: true,
               },
             },
+            userSocialMediaFollowers: true,
             jobStatus: true,
             country: true,
             state: true,
@@ -1248,6 +1271,7 @@ export const JobsRouter = createTRPCRouter({
                 name: "asc",
               },
             },
+            userSocialMediaFollowers: true,
             applicants: true,
             acceptedApplicants: true,
             rejectedApplicants: true,

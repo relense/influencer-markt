@@ -232,7 +232,7 @@ const JobsManagementPage = () => {
                       void router.push({
                         pathname: "/manage-jobs/create-job",
                         query: {
-                          jobId: JSON.stringify(job.id),
+                          jobId: job.id,
                           edit: true,
                         },
                       })

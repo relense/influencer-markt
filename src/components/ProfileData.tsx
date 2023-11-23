@@ -62,6 +62,7 @@ export type ProfileAdminIncludes = Prisma.ProfileGetPayload<{
     user: true;
     userSocialMedia: {
       include: {
+        socialMediaFollowers: true;
         socialMedia: true;
       };
     };
@@ -210,7 +211,7 @@ const ProfileData = (params: { profile: ProfileAdminIncludes }) => {
                     className="flex items-center gap-2 hover:underline"
                   >
                     <div>{socialMedia.socialMedia?.name}</div>
-                    <div>{helper.formatNumber(socialMedia.followers)}</div>
+                    <div>{socialMedia.socialMediaFollowers?.name}</div>
                     {index !== profile.userSocialMedia.length - 1 && (
                       <div className="h-1 w-1 rounded-full bg-black" />
                     )}

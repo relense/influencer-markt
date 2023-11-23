@@ -205,10 +205,7 @@ const MyApplicationsDetails = (params: {
         <div className="font-semibold text-influencer">
           {t("pages.applications.followers")}
         </div>
-        <div>
-          {helper.formatNumberWithKorM(job?.minFollowers || 0)} -{" "}
-          {helper.formatNumberWithKorM(job?.maxFollowers || 0)}
-        </div>
+        <div>{job?.userSocialMediaFollowers?.name || ""}</div>
       </div>
     );
   };

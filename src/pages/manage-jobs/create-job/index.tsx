@@ -26,7 +26,7 @@ export const getServerSideProps: GetServerSideProps<CreateJobProps> = async (
   const query = context.query;
 
   const edit = query?.edit ? String(query?.edit) : "";
-  const jobId = query?.jobId ? String(query?.jobId) : "";
+  const jobId = query?.jobId ? (query?.jobId as string) : "";
 
   return Promise.resolve({
     props: {

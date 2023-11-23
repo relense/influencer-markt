@@ -24,7 +24,7 @@ export type Picture = {
 export type UserSocialMedia = {
   id: number;
   handler: string;
-  followers: number;
+  userSocialMediaFollowers: Option;
   url: string;
   socialMediaName: string;
   socialMediaId: number;
@@ -60,7 +60,7 @@ export type SocialMediaDetails = {
   id?: number;
   platform: SocialMedia;
   socialMediaHandler: string;
-  socialMediaFollowers: number;
+  socialMediaFollowers: Option;
   valuePacks: ValuePack[];
   mainSocialMedia: boolean;
 };
@@ -121,6 +121,7 @@ export type JobWithAllData = Prisma.JobGetPayload<{
         id: true;
       };
     };
+    userSocialMediaFollowers: true;
     jobCreator: true;
     country: true;
     gender: true;
@@ -148,6 +149,7 @@ export type JobIncludes = Prisma.JobGetPayload<{
         user: true;
       };
     };
+    userSocialMediaFollowers: true;
     categories: true;
     applicants: true;
     acceptedApplicants: true;

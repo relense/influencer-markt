@@ -13,8 +13,7 @@ export type JobsFilterState = {
   gender: Option;
   country: Option;
   city: Option;
-  minFollowers: number;
-  maxFollowers: number;
+  userSocialMediaFollowers: Option;
   minPrice: number;
   maxPrice: number;
 };

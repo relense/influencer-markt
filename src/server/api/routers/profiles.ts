@@ -15,8 +15,7 @@ export const profilesRouter = createTRPCRouter({
         country: z.number(),
         city: z.number(),
         gender: z.number(),
-        minFollowers: z.number(),
-        maxFollowers: z.number(),
+        userSocialMediaFollowersId: z.number(),
         minPrice: z.number(),
         maxPrice: z.number(),
         contentTypeId: z.number(),
@@ -47,12 +46,6 @@ export const profilesRouter = createTRPCRouter({
                       ? input.socialMedia
                       : undefined,
                 },
-                followers: {
-                  gte:
-                    input.minFollowers !== -1 ? input.minFollowers : undefined,
-                  lte:
-                    input.maxFollowers !== -1 ? input.maxFollowers : undefined,
-                },
                 valuePacks: {
                   some: {
                     contentTypeId:
@@ -71,6 +64,10 @@ export const profilesRouter = createTRPCRouter({
                     },
                   },
                 },
+                userSocialMediaFollowersId:
+                  input.userSocialMediaFollowersId !== -1
+                    ? input.userSocialMediaFollowersId
+                    : undefined,
               },
             },
             genderId: input.gender !== -1 ? input.gender : undefined,
@@ -101,12 +98,6 @@ export const profilesRouter = createTRPCRouter({
                       ? input.socialMedia
                       : undefined,
                 },
-                followers: {
-                  gte:
-                    input.minFollowers !== -1 ? input.minFollowers : undefined,
-                  lte:
-                    input.maxFollowers !== -1 ? input.maxFollowers : undefined,
-                },
                 valuePacks: {
                   some: {
                     contentTypeId:
@@ -125,6 +116,10 @@ export const profilesRouter = createTRPCRouter({
                     },
                   },
                 },
+                userSocialMediaFollowersId:
+                  input.userSocialMediaFollowersId !== -1
+                    ? input.userSocialMediaFollowersId
+                    : undefined,
               },
             },
             genderId: input.gender !== -1 ? input.gender : undefined,
@@ -136,6 +131,7 @@ export const profilesRouter = createTRPCRouter({
             id: true,
             userSocialMedia: {
               include: {
+                socialMediaFollowers: true,
                 socialMedia: {
                   select: {
                     id: true,
@@ -181,8 +177,7 @@ export const profilesRouter = createTRPCRouter({
         country: z.number(),
         city: z.number(),
         gender: z.number(),
-        minFollowers: z.number(),
-        maxFollowers: z.number(),
+        userSocialMediaFollowersId: z.number(),
         minPrice: z.number(),
         maxPrice: z.number(),
         contentTypeId: z.number(),
@@ -214,10 +209,6 @@ export const profilesRouter = createTRPCRouter({
                 in:
                   input.socialMedia.length > 0 ? input.socialMedia : undefined,
               },
-              followers: {
-                gte: input.minFollowers !== -1 ? input.minFollowers : undefined,
-                lte: input.maxFollowers !== -1 ? input.maxFollowers : undefined,
-              },
               valuePacks: {
                 some: {
                   contentTypeId:
@@ -236,6 +227,10 @@ export const profilesRouter = createTRPCRouter({
                   },
                 },
               },
+              userSocialMediaFollowersId:
+                input.userSocialMediaFollowersId !== -1
+                  ? input.userSocialMediaFollowersId
+                  : undefined,
             },
           },
           genderId: input.gender !== -1 ? input.gender : undefined,
@@ -246,6 +241,7 @@ export const profilesRouter = createTRPCRouter({
           id: true,
           userSocialMedia: {
             include: {
+              socialMediaFollowers: true,
               socialMedia: {
                 select: {
                   id: true,
@@ -288,8 +284,7 @@ export const profilesRouter = createTRPCRouter({
         socialMedia: z.array(z.number()),
         country: z.number(),
         city: z.number(),
-        minFollowers: z.number(),
-        maxFollowers: z.number(),
+        userSocialMediaFollowersId: z.number(),
       })
     )
     .query(async ({ ctx, input }) => {
@@ -319,16 +314,10 @@ export const profilesRouter = createTRPCRouter({
                             ? input.socialMedia
                             : undefined,
                       },
-                      followers: {
-                        gte:
-                          input.minFollowers !== -1
-                            ? input.minFollowers
-                            : undefined,
-                        lte:
-                          input.maxFollowers !== -1
-                            ? input.maxFollowers
-                            : undefined,
-                      },
+                      userSocialMediaFollowersId:
+                        input.userSocialMediaFollowersId !== -1
+                          ? input.userSocialMediaFollowersId
+                          : undefined,
                     },
                   }
                 : undefined,
@@ -361,16 +350,10 @@ export const profilesRouter = createTRPCRouter({
                             ? input.socialMedia
                             : undefined,
                       },
-                      followers: {
-                        gte:
-                          input.minFollowers !== -1
-                            ? input.minFollowers
-                            : undefined,
-                        lte:
-                          input.maxFollowers !== -1
-                            ? input.maxFollowers
-                            : undefined,
-                      },
+                      userSocialMediaFollowersId:
+                        input.userSocialMediaFollowersId !== -1
+                          ? input.userSocialMediaFollowersId
+                          : undefined,
                     },
                   }
                 : undefined,
@@ -382,6 +365,7 @@ export const profilesRouter = createTRPCRouter({
             id: true,
             userSocialMedia: {
               include: {
+                socialMediaFollowers: true,
                 socialMedia: {
                   select: {
                     id: true,
@@ -426,8 +410,7 @@ export const profilesRouter = createTRPCRouter({
         socialMedia: z.array(z.number()),
         country: z.number(),
         city: z.number(),
-        minFollowers: z.number(),
-        maxFollowers: z.number(),
+        userSocialMediaFollowersId: z.number(),
       })
     )
     .query(async ({ ctx, input }) => {
@@ -460,16 +443,10 @@ export const profilesRouter = createTRPCRouter({
                           ? input.socialMedia
                           : undefined,
                     },
-                    followers: {
-                      gte:
-                        input.minFollowers !== -1
-                          ? input.minFollowers
-                          : undefined,
-                      lte:
-                        input.maxFollowers !== -1
-                          ? input.maxFollowers
-                          : undefined,
-                    },
+                    userSocialMediaFollowersId:
+                      input.userSocialMediaFollowersId !== -1
+                        ? input.userSocialMediaFollowersId
+                        : undefined,
                   },
                 }
               : undefined,
@@ -480,6 +457,7 @@ export const profilesRouter = createTRPCRouter({
           id: true,
           userSocialMedia: {
             include: {
+              socialMediaFollowers: true,
               socialMedia: {
                 select: {
                   name: true,
@@ -671,7 +649,7 @@ export const profilesRouter = createTRPCRouter({
         categories: true,
         userSocialMedia: {
           select: {
-            followers: true,
+            socialMediaFollowers: true,
             handler: true,
             id: true,
             socialMedia: true,
@@ -765,6 +743,7 @@ export const profilesRouter = createTRPCRouter({
         select: {
           userSocialMedia: {
             include: {
+              socialMediaFollowers: true,
               socialMedia: true,
               valuePacks: {
                 include: {
@@ -954,6 +933,7 @@ export const profilesRouter = createTRPCRouter({
               country: true,
               userSocialMedia: {
                 include: {
+                  socialMediaFollowers: true,
                   socialMedia: true,
                   valuePacks: {
                     include: {
@@ -1151,6 +1131,7 @@ export const profilesRouter = createTRPCRouter({
             user: true,
             userSocialMedia: {
               include: {
+                socialMediaFollowers: true,
                 socialMedia: true,
               },
             },
@@ -1256,6 +1237,7 @@ export const profilesRouter = createTRPCRouter({
           user: true,
           userSocialMedia: {
             include: {
+              socialMediaFollowers: true,
               socialMedia: true,
             },
           },
@@ -1327,6 +1309,7 @@ export const profilesRouter = createTRPCRouter({
           user: true,
           userSocialMedia: {
             include: {
+              socialMediaFollowers: true,
               socialMedia: true,
             },
           },
