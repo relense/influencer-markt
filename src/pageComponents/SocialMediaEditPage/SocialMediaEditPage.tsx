@@ -413,33 +413,41 @@ const SocialMediaEditPage = (params: {
 
   const renderSocialMediaFollowersInput = () => {
     return (
-      <Controller
-        name="socialMediaFollowers"
-        control={control}
-        rules={{ required: true }}
-        render={({ field: { value, onChange } }) => {
-          return (
-            <CustomSelect
-              register={register}
-              name="socialMediaFollowers"
-              placeholder={t("pages.socialMediaCreate.followersPlaceholder")}
-              options={
-                userSocialMediaFollowers && userSocialMediaFollowers.length > 0
-                  ? userSocialMediaFollowers?.map((socialMedia) => {
-                      return {
-                        id: socialMedia.id,
-                        name: socialMedia.name,
-                      };
-                    })
-                  : []
-              }
-              value={value}
-              handleOptionSelect={onChange}
-              required={true}
-            />
-          );
-        }}
-      />
+      <div>
+        <div className="flex items-center gap-2">
+          <div className="text-xl font-medium">
+            {t("pages.socialMediaCreate.followersPlaceholder")}
+          </div>
+        </div>
+        <Controller
+          name="socialMediaFollowers"
+          control={control}
+          rules={{ required: true }}
+          render={({ field: { value, onChange } }) => {
+            return (
+              <CustomSelect
+                register={register}
+                name="socialMediaFollowers"
+                placeholder={t("pages.socialMediaCreate.followersPlaceholder")}
+                options={
+                  userSocialMediaFollowers &&
+                  userSocialMediaFollowers.length > 0
+                    ? userSocialMediaFollowers?.map((socialMedia) => {
+                        return {
+                          id: socialMedia.id,
+                          name: socialMedia.name,
+                        };
+                      })
+                    : []
+                }
+                value={value}
+                handleOptionSelect={onChange}
+                required={true}
+              />
+            );
+          }}
+        />
+      </div>
     );
   };
 
