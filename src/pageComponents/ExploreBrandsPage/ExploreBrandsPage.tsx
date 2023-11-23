@@ -2,7 +2,6 @@ import { api } from "~/utils/api";
 import { useEffect, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faFilter, faSearch } from "@fortawesome/free-solid-svg-icons";
-import { ProfileCard } from "../../components/ProfileCard";
 import { Button } from "../../components/Button";
 
 import { ComplexSearchBar } from "../../components/ComplexSearchBar";
@@ -10,6 +9,7 @@ import { BrandsFilterModal } from "./innerComponents/BrandsFilterModal";
 import { useTranslation } from "next-i18next";
 import { LoadingSpinner } from "../../components/LoadingSpinner";
 import type { Option, UserProfiles } from "../../utils/globalTypes";
+import { BrandProfileCard } from "../../components/BrandProfileCard";
 
 export type BrandsFilterState = {
   platforms: Option[];
@@ -297,7 +297,7 @@ const ExploreBrandsPage = (params: {
           <div className="flex flex-1 flex-wrap justify-center gap-12">
             {userProfiles.map((profile) => {
               return (
-                <ProfileCard
+                <BrandProfileCard
                   id={profile.id}
                   key={profile.id}
                   about={profile.about}
@@ -305,9 +305,7 @@ const ExploreBrandsPage = (params: {
                   country={profile.country.name}
                   name={profile.name}
                   profilePicture={profile.profilePicture}
-                  socialMedia={profile.socialMedia}
                   username={profile.username}
-                  type="Brand"
                   bookmarked={profile.bookmarked || false}
                   loggedInProfileId={params.loggedInProfileId}
                   activeJobs={profile.activeJobs}
@@ -339,6 +337,7 @@ const ExploreBrandsPage = (params: {
           clearSearchBar={clearSearchBar}
           updateCategories={setFilterCategories}
           updatePlatforms={setFilterPlatforms}
+          hidePlatformSearch={true}
         />
         {activeFiltersCount > 0 && (
           <div

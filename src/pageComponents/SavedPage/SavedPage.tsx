@@ -9,6 +9,7 @@ import { faBookmark } from "@fortawesome/free-solid-svg-icons";
 import { useTranslation } from "next-i18next";
 import Link from "next/link";
 import { Button } from "../../components/Button";
+import { BrandProfileCard } from "../../components/BrandProfileCard";
 
 const SavedPage = (params: {
   roleId: number;
@@ -95,25 +96,44 @@ const SavedPage = (params: {
         <div className="flex flex-1 flex-col justify-start gap-12 p-2 lg:w-full lg:gap-6 lg:p-12 xl:self-center xl:p-4 2xl:w-3/4">
           <div className="flex flex-1 flex-wrap justify-center gap-12">
             {userProfiles?.map((profile) => {
-              return (
-                <ProfileCard
-                  id={profile.id}
-                  key={profile.id}
-                  about={profile.about}
-                  city={profile.city.name}
-                  country={profile.country.name}
-                  name={profile.name}
-                  profilePicture={profile.profilePicture}
-                  socialMedia={profile.socialMedia}
-                  username={profile.username}
-                  type={params.roleId === 2 ? "Influencer" : "Brand"}
-                  bookmarked={true}
-                  onHandleBookmark={() => onHandleBookmark(profile.id)}
-                  loggedInProfileId={params.loggedInProfileId}
-                  activeJobs={profile.activeJobs}
-                  isLoggedInProfileBrand={params.isloggedInProfileBrand}
-                />
-              );
+              if (params.roleId === 2) {
+                return (
+                  <ProfileCard
+                    id={profile.id}
+                    key={profile.id}
+                    about={profile.about}
+                    city={profile.city.name}
+                    country={profile.country.name}
+                    name={profile.name}
+                    profilePicture={profile.profilePicture}
+                    socialMedia={profile.socialMedia}
+                    username={profile.username}
+                    bookmarked={true}
+                    onHandleBookmark={() => onHandleBookmark(profile.id)}
+                    loggedInProfileId={params.loggedInProfileId}
+                    activeJobs={profile.activeJobs}
+                    isLoggedInProfileBrand={params.isloggedInProfileBrand}
+                  />
+                );
+              } else {
+                return (
+                  <BrandProfileCard
+                    id={profile.id}
+                    key={profile.id}
+                    about={profile.about}
+                    city={profile.city.name}
+                    country={profile.country.name}
+                    name={profile.name}
+                    profilePicture={profile.profilePicture}
+                    username={profile.username}
+                    bookmarked={true}
+                    onHandleBookmark={() => onHandleBookmark(profile.id)}
+                    loggedInProfileId={params.loggedInProfileId}
+                    activeJobs={profile.activeJobs}
+                    isLoggedInProfileBrand={params.isloggedInProfileBrand}
+                  />
+                );
+              }
             })}
           </div>
         </div>

@@ -21,6 +21,7 @@ export const ComplexSearchBar = (params: {
   clearSearchBar: (type: "categories" | "platforms") => void;
   updatePlatforms: (options: Option[]) => void;
   updateCategories: (options: Option[]) => void;
+  hidePlatformSearch?: boolean;
 }) => {
   const {
     handleSubmit,
@@ -97,40 +98,44 @@ export const ComplexSearchBar = (params: {
             }}
           />
         </div>
-        <div className="hidden h-10 w-[1px] border-[1px] border-white1 lg:block" />
-        <div className="flex h-14 w-full flex-1 rounded-b-2xl border-[1px] lg:border-none">
-          <Controller
-            name="platforms"
-            control={searchBarControl}
-            render={({ field: { value, onChange } }) => {
-              return (
-                <CustomMultiSelect
-                  name="platforms"
-                  placeholder={t(
-                    "components.complexSearchBar.platformPlaceHolder"
-                  )}
-                  options={platforms?.map((platform) => {
-                    return {
-                      id: platform.id,
-                      name: platform.name,
-                    };
-                  })}
-                  handleOptionSelect={(value) => {
-                    onChange(value);
-                    params.updatePlatforms(value);
-                  }}
-                  selectedOptions={value}
-                  hideArrow={true}
-                  hideBorder={true}
-                  borderType="mega-rounded"
-                  hoverEffect={true}
-                  clearSelection={() => clearFilterCategories("platforms")}
-                  required={false}
-                />
-              );
-            }}
-          />
-        </div>
+        {!params.hidePlatformSearch && (
+          <>
+            <div className="hidden h-10 w-[1px] border-[1px] border-white1 lg:block" />
+            <div className="flex h-14 w-full flex-1 rounded-b-2xl border-[1px] lg:border-none">
+              <Controller
+                name="platforms"
+                control={searchBarControl}
+                render={({ field: { value, onChange } }) => {
+                  return (
+                    <CustomMultiSelect
+                      name="platforms"
+                      placeholder={t(
+                        "components.complexSearchBar.platformPlaceHolder"
+                      )}
+                      options={platforms?.map((platform) => {
+                        return {
+                          id: platform.id,
+                          name: platform.name,
+                        };
+                      })}
+                      handleOptionSelect={(value) => {
+                        onChange(value);
+                        params.updatePlatforms(value);
+                      }}
+                      selectedOptions={value}
+                      hideArrow={true}
+                      hideBorder={true}
+                      borderType="mega-rounded"
+                      hoverEffect={true}
+                      clearSelection={() => clearFilterCategories("platforms")}
+                      required={false}
+                    />
+                  );
+                }}
+              />
+            </div>
+          </>
+        )}
       </div>
 
       <button

@@ -144,11 +144,12 @@ async function main() {
 
   await prisma.userSocialMediaFollowers.createMany({
     data: [
-      { name: "0 - 10k" },
+      { name: "< 10k" },
       { name: "10k - 25k" },
       { name: "25k - 50k" },
       { name: "50k - 75k" },
       { name: "75k - 100k" },
+      { name: "> 100k" },
     ],
   });
 

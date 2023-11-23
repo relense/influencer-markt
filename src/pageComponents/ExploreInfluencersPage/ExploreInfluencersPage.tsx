@@ -398,7 +398,6 @@ const ExploreInfluencersPage = (params: {
                   profilePicture={profile.profilePicture}
                   socialMedia={profile.socialMedia}
                   username={profile.username}
-                  type="Influencer"
                   bookmarked={profile.bookmarked || false}
                   openLoginModal={params.openLoginModal}
                   loggedInProfileId={params.loggedInProfileId}

@@ -35,7 +35,6 @@ const ProfileCard = (params: {
   city: string;
   country: string;
   username: string;
-  type: "Brand" | "Influencer";
   bookmarked: boolean;
   highlightSocialMediaId?: number;
   onHandleBookmark?: () => void;
@@ -163,7 +162,6 @@ const ProfileCard = (params: {
 
   const showMoneyRange = () => {
     if (
-      params.type === "Influencer" &&
       usefullSocialMedia.valuePacks &&
       usefullSocialMedia.valuePacks[0] &&
       params.isLoggedInProfileBrand
@@ -268,15 +266,6 @@ const ProfileCard = (params: {
               {usefullSocialMedia.socialMediaName}
             </Link>
           </div>
-          {params.type === "Brand" &&
-            params.activeJobs !== undefined &&
-            params.activeJobs > 0 && (
-              <div className="text-md font-semibold lg:text-lg">
-                {t("components.profileCard.jobs", {
-                  count: params.activeJobs,
-                })}
-              </div>
-            )}
           {showMoneyRange()}
         </div>
       </div>
