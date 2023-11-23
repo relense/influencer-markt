@@ -198,7 +198,8 @@ const PublicProfileSocialMediaEdit = (params: {
           {t("pages.publicProfilePage.socialMedia")}
         </div>
       </div>
-      {renderCreateSocialMediaConnectButtons()}
+      {isLoadingProfileSocialMedia === false &&
+        renderCreateSocialMediaConnectButtons()}
 
       <div className="flex flex-col gap-4">
         {isLoadingProfileSocialMedia && (
