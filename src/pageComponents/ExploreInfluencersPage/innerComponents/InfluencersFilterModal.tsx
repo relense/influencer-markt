@@ -26,6 +26,7 @@ const InfluencersFilterModal = (params: {
   countries: Option[];
   userSocialMediaFollowers: Option[];
   filterState: InfluencersFilterState;
+  isLoggedInProfileBrand: boolean;
 }) => {
   const { t } = useTranslation();
   const [searchKeys, setSearchKeys] = useState<string>(
@@ -248,7 +249,9 @@ const InfluencersFilterModal = (params: {
             />
           </div>
         </div>
-        <div className="w-full border-[1px] border-white1" />
+        {params.isLoggedInProfileBrand && (
+          <div className="w-full border-[1px] border-white1" />
+        )}
       </>
     );
   };
@@ -327,7 +330,7 @@ const InfluencersFilterModal = (params: {
         {renderGenderInput()}
         {renderContentType()}
         {renderLocationInputs()}
-        {renderPriceInput()}
+        {params.isLoggedInProfileBrand && renderPriceInput()}
       </form>
     </Modal>
   );

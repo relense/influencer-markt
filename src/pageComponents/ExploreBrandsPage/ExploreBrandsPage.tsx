@@ -16,7 +16,6 @@ export type BrandsFilterState = {
   categories: Option[];
   country: Option;
   city: Option;
-  userSocialMediaFollowers: Option;
 };
 
 const ExploreBrandsPage = (params: {
@@ -38,7 +37,6 @@ const ExploreBrandsPage = (params: {
     categories: [],
     country: { id: -1, name: "" },
     city: { id: -1, name: "" },
-    userSocialMediaFollowers: { id: -1, name: "" },
   });
 
   const {
@@ -53,7 +51,6 @@ const ExploreBrandsPage = (params: {
       categories: filterState.categories.map((category) => {
         return category.id;
       }),
-      userSocialMediaFollowersId: filterState.userSocialMediaFollowers.id,
 
       country: filterState.country.id,
       city: filterState.city.id,
@@ -74,7 +71,6 @@ const ExploreBrandsPage = (params: {
       categories: filterState.categories.map((category) => {
         return category.id;
       }),
-      userSocialMediaFollowersId: filterState.userSocialMediaFollowers.id,
       country: filterState.country.id,
       city: filterState.city.id,
     },
@@ -82,8 +78,6 @@ const ExploreBrandsPage = (params: {
   );
 
   const { data: countries } = api.allRoutes.getAllCountries.useQuery();
-  const { data: userSocialMediaFollowers } =
-    api.allRoutes.getAllUserSocialMediaFollowers.useQuery();
   const { data: loggedInProfileId } =
     api.profiles.getLoggedInProfile.useQuery();
 
@@ -223,11 +217,7 @@ const ExploreBrandsPage = (params: {
     void profileRefetch();
   };
 
-  const onFilterSubmit = (params: {
-    userSocialMediaFollowers: Option;
-    country: Option;
-    city: Option;
-  }) => {
+  const onFilterSubmit = (params: { country: Option; city: Option }) => {
     setIsFilterModalOpen(false);
     countActiveFilters(params);
 
@@ -235,7 +225,6 @@ const ExploreBrandsPage = (params: {
       ...filterState,
       categories: filterCategories,
       platforms: filterPlatforms,
-      userSocialMediaFollowers: params.userSocialMediaFollowers,
       country: params.country,
       city: params.city,
     });
@@ -247,16 +236,9 @@ const ExploreBrandsPage = (params: {
     void profileRefetch();
   };
 
-  const countActiveFilters = (params: {
-    userSocialMediaFollowers: Option;
-    country: Option;
-    city: Option;
-  }) => {
+  const countActiveFilters = (params: { country: Option; city: Option }) => {
     let count = 0;
 
-    if (params.userSocialMediaFollowers.id > -1) {
-      count++;
-    }
     if (params.country.id > -1) {
       count++;
     }
@@ -275,7 +257,6 @@ const ExploreBrandsPage = (params: {
       ...filterState,
       categories: [],
       platforms: [],
-      userSocialMediaFollowers: { id: -1, name: "" },
       country: { id: -1, name: "" },
       city: { id: -1, name: "" },
     });
@@ -399,7 +380,7 @@ const ExploreBrandsPage = (params: {
           />
         </div>
       )}
-      {isFilterModalOpen && countries && userSocialMediaFollowers && (
+      {isFilterModalOpen && countries && (
         <div className="flex flex-1 justify-center">
           <BrandsFilterModal
             filterState={filterState}
@@ -412,14 +393,6 @@ const ExploreBrandsPage = (params: {
                 name: country.name,
               };
             })}
-            userSocialMediaFollowers={userSocialMediaFollowers?.map(
-              (socialMedia) => {
-                return {
-                  id: socialMedia.id,
-                  name: socialMedia.name,
-                };
-              }
-            )}
           />
         </div>
       )}

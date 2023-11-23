@@ -11,15 +11,10 @@ import { useState } from "react";
 
 const BrandsFilterModal = (params: {
   onClose: () => void;
-  handleFilterSubmit: (params: {
-    userSocialMediaFollowers: Option;
-    country: Option;
-    city: Option;
-  }) => void;
+  handleFilterSubmit: (params: { country: Option; city: Option }) => void;
   handleClearFilter: () => void;
   countries: Option[];
   filterState: BrandsFilterState;
-  userSocialMediaFollowers: Option[];
 }) => {
   const { t } = useTranslation();
   const [searchKeys, setSearchKeys] = useState<string>(
@@ -34,7 +29,6 @@ const BrandsFilterModal = (params: {
     watch: filterWatch,
   } = useForm<BrandsFilterState>({
     defaultValues: {
-      userSocialMediaFollowers: params.filterState.userSocialMediaFollowers,
       country: params.filterState.country,
       city: params.filterState.city,
     },
@@ -47,48 +41,16 @@ const BrandsFilterModal = (params: {
 
   const submit = handleSubmit((data) => {
     params.handleFilterSubmit({
-      userSocialMediaFollowers: data.userSocialMediaFollowers || {
-        id: -1,
-        name: "",
-      },
       country: data.country || { id: -1, name: "" },
       city: data.city || { id: -1, name: "" },
     });
   });
 
   const clearFilters = () => {
-    filterSetValue("userSocialMediaFollowers", { id: -1, name: "" });
     filterSetValue("city", { id: -1, name: "" });
     filterSetValue("country", { id: -1, name: "" });
 
     params.handleClearFilter();
-  };
-
-  const renderFollowersInput = () => {
-    return (
-      <div className="flex flex-col gap-4">
-        <div className="text-xl font-medium">
-          {t("components.filter.followersInputLabel")}
-        </div>
-        <Controller
-          name="userSocialMediaFollowers"
-          control={filterControl}
-          render={({ field: { value, onChange } }) => {
-            return (
-              <CustomSelect
-                register={filterRegister}
-                name="userSocialMediaFollowers"
-                placeholder={t("components.filter.followersInputLabel")}
-                options={params.userSocialMediaFollowers}
-                value={value}
-                handleOptionSelect={onChange}
-                required={false}
-              />
-            );
-          }}
-        />
-      </div>
-    );
   };
 
   const renderLocationInputs = () => {
@@ -171,8 +133,6 @@ const BrandsFilterModal = (params: {
         className="flex h-full w-full flex-col gap-4 p-4 sm:w-full sm:px-8"
         onSubmit={submit}
       >
-        {renderFollowersInput()}
-        <div className="w-full border-[1px] border-white1" />
         {renderLocationInputs()}
       </form>
     </Modal>

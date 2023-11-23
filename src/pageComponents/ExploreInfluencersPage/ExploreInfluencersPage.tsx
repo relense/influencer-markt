@@ -516,6 +516,7 @@ const ExploreInfluencersPage = (params: {
               onClose={() => setIsFilterModalOpen(false)}
               handleFilterSubmit={onFilterSubmit}
               handleClearFilter={onClearFilter}
+              isLoggedInProfileBrand={params.isBrand}
               genders={genders?.map((gender) => {
                 return {
                   id: gender.id,
