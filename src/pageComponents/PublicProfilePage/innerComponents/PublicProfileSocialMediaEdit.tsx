@@ -3,11 +3,11 @@ import { useRouter } from "next/router";
 import { useTranslation } from "next-i18next";
 import { api } from "~/utils/api";
 import toast from "react-hot-toast";
+import Image from "next/image";
 
 import { LoadingSpinner } from "../../../components/LoadingSpinner";
 import { SocialMediaCard } from "../../../components/SocialMediaCard";
 import { type SocialMediaDetails } from "../../../utils/globalTypes";
-import { Button } from "../../../components/Button";
 
 const PublicProfileSocialMediaEdit = (params: {
   username: string;
@@ -148,7 +148,25 @@ const PublicProfileSocialMediaEdit = (params: {
         <a
           href={`https://api.instagram.com/oauth/authorize?client_id=${process.env.NEXT_PUBLIC_INSTAGRAM_CLIENT_ID}&redirect_uri=${process.env.NEXT_PUBLIC_INSTAGRAM_REDIRECT_URI}&scope=user_profile,user_media&response_type=code`}
         >
-          <Button title="Connect Instagram" />
+          <button
+            {...params}
+            className="m-2 cursor-pointer rounded-lg border-[1px] px-4 py-2 text-center text-sm font-semibold shadow-md shadow-boxShadow hover:shadow-none lg:rounded-2xl lg:px-8 lg:py-4 lg:text-base"
+          >
+            <div className="flex items-center justify-center gap-4">
+              <div className="flex justify-center">
+                {t("pages.publicProfilePage.connectToInstagram")}
+              </div>
+
+              <Image
+                src={`/images/instagram.png`}
+                height={1000}
+                width={1000}
+                style={{ width: "32px", height: "32px" }}
+                alt="Instagram Logo"
+                className="object-contain"
+              />
+            </div>
+          </button>
         </a>
       );
     }
@@ -230,9 +248,6 @@ const PublicProfileSocialMediaEdit = (params: {
               />
             );
           })}
-        {!isLoadingProfileSocialMedia && userSocialMediaList.length === 0 && (
-          <div>{t("pages.publicProfilePage.noSocialMedia")}</div>
-        )}
       </div>
     </div>
   );
