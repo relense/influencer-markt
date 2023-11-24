@@ -43,7 +43,11 @@ const LoginModal = ({
 
             void signIn("email", {
               email: `${userEmail}`,
-              callbackUrl: `/login-callback?returnTo=${window.location.pathname}&userLanguage=${i18n.language}`,
+              callbackUrl: `${
+                process.env.NEXT_PUBLIC_BASE_URL || ""
+              }/login-callback?returnTo=${
+                window.location.pathname
+              }&userLanguage=${i18n.language}`,
             });
           }}
         />
@@ -59,7 +63,7 @@ const LoginModal = ({
           onClick={() =>
             signIn("google", {
               callbackUrl: `${
-                process.env.NEXTAUTH_URL || ""
+                process.env.NEXT_PUBLIC_BASE_URL || ""
               }/login-callback?returnTo=${
                 window.location.pathname
               }&userLanguage=${i18n.language}`,
