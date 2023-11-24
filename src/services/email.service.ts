@@ -282,268 +282,268 @@ const checkIfIsDisabled = async (profileId: string) => {
 };
 
 export const sendEmail = async (emailAction: EmailActions) => {
-  // if (emailAction.action === "buyerAddDetailsEmail") {
-  //   const isDisabled = await checkIfIsDisabled(emailAction.receiverProfileId);
-  //   if (isDisabled) return;
-  //   buyerAddDetailsEmail({
-  //     buyerName: emailAction.buyerName,
-  //     from: emailAction.fromUs,
-  //     to: emailAction.toInfluencerEmail,
-  //     language: emailAction.influencerLanguage,
-  //     orderId: emailAction.orderId,
-  //   });
-  // } else if (emailAction.action === "buyerConfirmedEmail") {
-  //   const isDisabled = await checkIfIsDisabled(emailAction.receiverProfileId);
-  //   if (isDisabled) return;
-  //   buyerConfirmedEmail({
-  //     buyerName: emailAction.buyerName,
-  //     from: emailAction.fromUs,
-  //     to: emailAction.toInfluencerEmail,
-  //     language: emailAction.influencerLanguage,
-  //     orderId: emailAction.orderId,
-  //   });
-  // } else if (emailAction.action === "buyerOpensDisputeToInfluencerEmail") {
-  //   const isDisabled = await checkIfIsDisabled(emailAction.receiverProfileId);
-  //   if (isDisabled) return;
-  //   buyerOpensDisputeToInfluencerEmail({
-  //     buyerName: emailAction.buyerName,
-  //     from: emailAction.fromUs,
-  //     to: emailAction.toInfluencerEmail,
-  //     language: emailAction.influencerLanguage,
-  //     orderId: emailAction.orderId,
-  //   });
-  // } else if (emailAction.action === "buyerOpenedDisputeToOurInboxEmail") {
-  //   buyerOpenedDisputeToOurInboxEmail({
-  //     buyerName: emailAction.buyerName,
-  //     buyerEmail: emailAction.buyerEmail,
-  //     from: emailAction.influencerMarktEmail,
-  //     to: emailAction.influencerMarktEmail,
-  //     issueMessage: emailAction.issueMessage,
-  //     orderId: emailAction.orderId.toString(),
-  //   });
-  // } else if (emailAction.action === "buyerOrderWasRectified") {
-  //   const isDisabled = await checkIfIsDisabled(emailAction.receiverProfileId);
-  //   if (isDisabled) return;
-  //   buyerOrderWasRectified({
-  //     influencerName: emailAction.influencerName,
-  //     from: emailAction.fromUs,
-  //     to: emailAction.toBuyer,
-  //     language: emailAction.buyerLanguage,
-  //     orderId: emailAction.orderId,
-  //   });
-  // } else if (emailAction.action === "buyerReviewedOrderEmail") {
-  //   const isDisabled = await checkIfIsDisabled(emailAction.receiverProfileId);
-  //   if (isDisabled) return;
-  //   buyerReviewedOrderEmail({
-  //     buyerName: emailAction.buyerName,
-  //     from: emailAction.fromUs,
-  //     to: emailAction.toInfluencerEmail,
-  //     language: emailAction.influencerLanguage,
-  //     orderId: emailAction.orderId,
-  //   });
-  // } else if (emailAction.action === "contactUsEmail") {
-  //   contactUsEmail({
-  //     from: emailAction.influencerMarktEmail,
-  //     to: emailAction.influencerMarktEmail,
-  //     email: emailAction.email,
-  //     message: emailAction.message,
-  //     messageId: emailAction.messageId,
-  //     name: emailAction.name,
-  //     reason: emailAction.reasonText,
-  //   });
-  // } else if (emailAction.action === "influencerAcceptedOrderEmail") {
-  //   const isDisabled = await checkIfIsDisabled(emailAction.receiverProfileId);
-  //   if (isDisabled) return;
-  //   influencerAcceptedOrderEmail({
-  //     influencerName: emailAction.influencerName,
-  //     from: emailAction.fromUs,
-  //     to: emailAction.toBuyer,
-  //     language: emailAction.buyerLanguage,
-  //     orderId: emailAction.orderId,
-  //   });
-  // } else if (emailAction.action === "influencerDeliveredOrderEmail") {
-  //   const isDisabled = await checkIfIsDisabled(emailAction.receiverProfileId);
-  //   if (isDisabled) return;
-  //   influencerDeliveredOrderEmail({
-  //     influencerName: emailAction.influencerName,
-  //     from: emailAction.fromUs,
-  //     to: emailAction.toBuyer,
-  //     language: emailAction.buyerLanguage,
-  //     orderId: emailAction.orderId,
-  //   });
-  // } else if (emailAction.action === "influencerMarktConfirmEmail") {
-  //   const isDisabled = await checkIfIsDisabled(emailAction.receiverProfileId);
-  //   if (isDisabled) return;
-  //   influencerMarktConfirmEmail({
-  //     from: emailAction.fromUs,
-  //     to: emailAction.to,
-  //     language: emailAction.language,
-  //     orderId: emailAction.orderId,
-  //   });
-  // } else if (emailAction.action === "influencerOrderWasRectified") {
-  //   const isDisabled = await checkIfIsDisabled(emailAction.receiverProfileId);
-  //   if (isDisabled) return;
-  //   influencerOrderWasRectified({
-  //     from: emailAction.fromUs,
-  //     to: emailAction.toInfluencer,
-  //     language: emailAction.influencerLanguage,
-  //     orderId: emailAction.orderId,
-  //   });
-  // } else if (emailAction.action === "newMessageOrderEmail") {
-  //   const isDisabled = await checkIfIsDisabled(emailAction.receiverProfileId);
-  //   if (isDisabled) return;
-  //   newMessageOrderEmail({
-  //     senderName: emailAction.senderName,
-  //     from: emailAction.fromUs,
-  //     to: emailAction.to,
-  //     orderId: emailAction.orderId,
-  //     orderType: emailAction.orderType,
-  //     language: emailAction.language,
-  //   });
-  // } else if (emailAction.action === "newOrderEmail") {
-  //   const isDisabled = await checkIfIsDisabled(emailAction.receiverProfileId);
-  //   if (isDisabled) return;
-  //   newOrderEmail({
-  //     buyer: emailAction.buyerName,
-  //     from: emailAction.fromUs,
-  //     to: emailAction.toInfluencer,
-  //     language: emailAction.influencerLanguage,
-  //     orderId: emailAction.orderId,
-  //   });
-  // } else if (emailAction.action === "toBuyerDeliveryIsTomorrowEmail") {
-  //   const isDisabled = await checkIfIsDisabled(emailAction.receiverProfileId);
-  //   if (isDisabled) return;
-  //   toBuyerDeliveryIsTomorrowEmail({
-  //     influencerName: emailAction.influencerName,
-  //     from: emailAction.fromUs,
-  //     to: emailAction.toBuyer,
-  //     language: emailAction.buyerLanguage,
-  //     orderId: emailAction.orderId,
-  //   });
-  // } else if (emailAction.action === "toBuyerInfluencerIsRightEmail") {
-  //   const isDisabled = await checkIfIsDisabled(emailAction.receiverProfileId);
-  //   if (isDisabled) return;
-  //   toBuyerInfluencerIsRightEmail({
-  //     influencerName: emailAction.influencerName,
-  //     from: emailAction.fromUs,
-  //     to: emailAction.toBuyer,
-  //     language: emailAction.buyerLanguage,
-  //     orderId: emailAction.orderId,
-  //   });
-  // } else if (emailAction.action === "toBuyerInfluencerIsWrongEmail") {
-  //   const isDisabled = await checkIfIsDisabled(emailAction.receiverProfileId);
-  //   if (isDisabled) return;
-  //   toBuyerInfluencerIsWrongEmail({
-  //     influencerName: emailAction.influencerName,
-  //     from: emailAction.fromUs,
-  //     to: emailAction.toBuyer,
-  //     language: emailAction.buyerLanguage,
-  //     orderId: emailAction.orderId,
-  //   });
-  // } else if (emailAction.action === "toBuyerOrderOnHoldEmail") {
-  //   const isDisabled = await checkIfIsDisabled(emailAction.receiverProfileId);
-  //   if (isDisabled) return;
-  //   toBuyerOrderOnHoldEmail({
-  //     influencerName: emailAction.influencerName,
-  //     from: emailAction.fromUs,
-  //     to: emailAction.toBuyer,
-  //     language: emailAction.buyerLanguage,
-  //     orderId: emailAction.orderId,
-  //   });
-  // } else if (emailAction.action === "toInfluencerDeliveryIsTomorrowEmail") {
-  //   const isDisabled = await checkIfIsDisabled(emailAction.receiverProfileId);
-  //   if (isDisabled) return;
-  //   toInfluencerDeliveryIsTomorrowEmail({
-  //     buyerName: emailAction.buyerName,
-  //     from: emailAction.fromUs,
-  //     to: emailAction.toInfluencerEmail,
-  //     language: emailAction.influencerLanguage,
-  //     orderId: emailAction.orderId,
-  //   });
-  // } else if (emailAction.action === "toInfluencerInfluencerIsRightEmail") {
-  //   const isDisabled = await checkIfIsDisabled(emailAction.receiverProfileId);
-  //   if (isDisabled) return;
-  //   toInfluencerInfluencerIsRightEmail({
-  //     buyerName: emailAction.buyerName,
-  //     from: emailAction.fromUs,
-  //     to: emailAction.toInfluencerEmail,
-  //     language: emailAction.influencerLanguage,
-  //     orderId: emailAction.orderId,
-  //   });
-  // } else if (emailAction.action === "toInfluencerInfluencerIsWrongEmail") {
-  //   const isDisabled = await checkIfIsDisabled(emailAction.receiverProfileId);
-  //   if (isDisabled) return;
-  //   toInfluencerInfluencerIsWrongEmail({
-  //     buyerName: emailAction.buyerName,
-  //     from: emailAction.fromUs,
-  //     to: emailAction.toInfluencerEmail,
-  //     language: emailAction.influencerLanguage,
-  //     orderId: emailAction.orderId,
-  //   });
-  // } else if (emailAction.action === "toInfluencerOnHoldtoPostponed") {
-  //   const isDisabled = await checkIfIsDisabled(emailAction.receiverProfileId);
-  //   if (isDisabled) return;
-  //   toInfluencerOnHoldtoPostponed({
-  //     buyerName: emailAction.buyerName,
-  //     from: emailAction.fromUs,
-  //     to: emailAction.toInfluencerEmail,
-  //     language: emailAction.influencerLanguage,
-  //     orderId: emailAction.orderId,
-  //   });
-  // } else if (emailAction.action === "toInfluencerOrderOnHoldEmail") {
-  //   const isDisabled = await checkIfIsDisabled(emailAction.receiverProfileId);
-  //   if (isDisabled) return;
-  //   toInfluencerOrderOnHoldEmail({
-  //     buyerName: emailAction.buyerName,
-  //     from: emailAction.fromUs,
-  //     to: emailAction.toInfluencerEmail,
-  //     language: emailAction.influencerLanguage,
-  //     orderId: emailAction.orderId,
-  //   });
-  // } else if (emailAction.action === "toInfluencerOrderOnHoldToRefund") {
-  //   const isDisabled = await checkIfIsDisabled(emailAction.receiverProfileId);
-  //   if (isDisabled) return;
-  //   toInfluencerOrderOnHoldToRefund({
-  //     buyerName: emailAction.buyerName,
-  //     from: emailAction.fromUs,
-  //     to: emailAction.toInfluencerEmail,
-  //     language: emailAction.influencerLanguage,
-  //     orderId: emailAction.orderId,
-  //   });
-  // } else if (emailAction.action === "weReceivedContactEmail") {
-  //   weReceivedContactEmail({
-  //     from: emailAction.fromUs,
-  //     to: emailAction.email,
-  //     email: emailAction.email,
-  //     message: emailAction.message,
-  //     name: emailAction.name,
-  //     reason: emailAction.reasonText,
-  //     language: emailAction.language,
-  //   });
-  // } else if (emailAction.action === "buyerPaymentFailed") {
-  //   const isDisabled = await checkIfIsDisabled(emailAction.receiverProfileId);
-  //   if (isDisabled) return;
-  //   buyerPaymentFailed({
-  //     from: emailAction.fromUs,
-  //     to: emailAction.toBuyer,
-  //     language: emailAction.buyerLanguage,
-  //     orderId: emailAction.orderId,
-  //   });
-  // } else if (emailAction.action === "payoutAccepted") {
-  //   const isDisabled = await checkIfIsDisabled(emailAction.receiverProfileId);
-  //   if (isDisabled) return;
-  //   payoutAcceptedEmail({
-  //     from: emailAction.fromUs,
-  //     to: emailAction.to,
-  //     language: emailAction.language,
-  //   });
-  // } else if (emailAction.action === "payoutRejected") {
-  //   const isDisabled = await checkIfIsDisabled(emailAction.receiverProfileId);
-  //   if (isDisabled) return;
-  //   payoutRejectedEmail({
-  //     from: emailAction.fromUs,
-  //     to: emailAction.to,
-  //     language: emailAction.language,
-  //   });
-  // }
+  if (emailAction.action === "buyerAddDetailsEmail") {
+    const isDisabled = await checkIfIsDisabled(emailAction.receiverProfileId);
+    if (isDisabled) return;
+    buyerAddDetailsEmail({
+      buyerName: emailAction.buyerName,
+      from: emailAction.fromUs,
+      to: emailAction.toInfluencerEmail,
+      language: emailAction.influencerLanguage,
+      orderId: emailAction.orderId,
+    });
+  } else if (emailAction.action === "buyerConfirmedEmail") {
+    const isDisabled = await checkIfIsDisabled(emailAction.receiverProfileId);
+    if (isDisabled) return;
+    buyerConfirmedEmail({
+      buyerName: emailAction.buyerName,
+      from: emailAction.fromUs,
+      to: emailAction.toInfluencerEmail,
+      language: emailAction.influencerLanguage,
+      orderId: emailAction.orderId,
+    });
+  } else if (emailAction.action === "buyerOpensDisputeToInfluencerEmail") {
+    const isDisabled = await checkIfIsDisabled(emailAction.receiverProfileId);
+    if (isDisabled) return;
+    buyerOpensDisputeToInfluencerEmail({
+      buyerName: emailAction.buyerName,
+      from: emailAction.fromUs,
+      to: emailAction.toInfluencerEmail,
+      language: emailAction.influencerLanguage,
+      orderId: emailAction.orderId,
+    });
+  } else if (emailAction.action === "buyerOpenedDisputeToOurInboxEmail") {
+    buyerOpenedDisputeToOurInboxEmail({
+      buyerName: emailAction.buyerName,
+      buyerEmail: emailAction.buyerEmail,
+      from: emailAction.influencerMarktEmail,
+      to: emailAction.influencerMarktEmail,
+      issueMessage: emailAction.issueMessage,
+      orderId: emailAction.orderId.toString(),
+    });
+  } else if (emailAction.action === "buyerOrderWasRectified") {
+    const isDisabled = await checkIfIsDisabled(emailAction.receiverProfileId);
+    if (isDisabled) return;
+    buyerOrderWasRectified({
+      influencerName: emailAction.influencerName,
+      from: emailAction.fromUs,
+      to: emailAction.toBuyer,
+      language: emailAction.buyerLanguage,
+      orderId: emailAction.orderId,
+    });
+  } else if (emailAction.action === "buyerReviewedOrderEmail") {
+    const isDisabled = await checkIfIsDisabled(emailAction.receiverProfileId);
+    if (isDisabled) return;
+    buyerReviewedOrderEmail({
+      buyerName: emailAction.buyerName,
+      from: emailAction.fromUs,
+      to: emailAction.toInfluencerEmail,
+      language: emailAction.influencerLanguage,
+      orderId: emailAction.orderId,
+    });
+  } else if (emailAction.action === "contactUsEmail") {
+    contactUsEmail({
+      from: emailAction.influencerMarktEmail,
+      to: emailAction.influencerMarktEmail,
+      email: emailAction.email,
+      message: emailAction.message,
+      messageId: emailAction.messageId,
+      name: emailAction.name,
+      reason: emailAction.reasonText,
+    });
+  } else if (emailAction.action === "influencerAcceptedOrderEmail") {
+    const isDisabled = await checkIfIsDisabled(emailAction.receiverProfileId);
+    if (isDisabled) return;
+    influencerAcceptedOrderEmail({
+      influencerName: emailAction.influencerName,
+      from: emailAction.fromUs,
+      to: emailAction.toBuyer,
+      language: emailAction.buyerLanguage,
+      orderId: emailAction.orderId,
+    });
+  } else if (emailAction.action === "influencerDeliveredOrderEmail") {
+    const isDisabled = await checkIfIsDisabled(emailAction.receiverProfileId);
+    if (isDisabled) return;
+    influencerDeliveredOrderEmail({
+      influencerName: emailAction.influencerName,
+      from: emailAction.fromUs,
+      to: emailAction.toBuyer,
+      language: emailAction.buyerLanguage,
+      orderId: emailAction.orderId,
+    });
+  } else if (emailAction.action === "influencerMarktConfirmEmail") {
+    const isDisabled = await checkIfIsDisabled(emailAction.receiverProfileId);
+    if (isDisabled) return;
+    influencerMarktConfirmEmail({
+      from: emailAction.fromUs,
+      to: emailAction.to,
+      language: emailAction.language,
+      orderId: emailAction.orderId,
+    });
+  } else if (emailAction.action === "influencerOrderWasRectified") {
+    const isDisabled = await checkIfIsDisabled(emailAction.receiverProfileId);
+    if (isDisabled) return;
+    influencerOrderWasRectified({
+      from: emailAction.fromUs,
+      to: emailAction.toInfluencer,
+      language: emailAction.influencerLanguage,
+      orderId: emailAction.orderId,
+    });
+  } else if (emailAction.action === "newMessageOrderEmail") {
+    const isDisabled = await checkIfIsDisabled(emailAction.receiverProfileId);
+    if (isDisabled) return;
+    newMessageOrderEmail({
+      senderName: emailAction.senderName,
+      from: emailAction.fromUs,
+      to: emailAction.to,
+      orderId: emailAction.orderId,
+      orderType: emailAction.orderType,
+      language: emailAction.language,
+    });
+  } else if (emailAction.action === "newOrderEmail") {
+    const isDisabled = await checkIfIsDisabled(emailAction.receiverProfileId);
+    if (isDisabled) return;
+    newOrderEmail({
+      buyer: emailAction.buyerName,
+      from: emailAction.fromUs,
+      to: emailAction.toInfluencer,
+      language: emailAction.influencerLanguage,
+      orderId: emailAction.orderId,
+    });
+  } else if (emailAction.action === "toBuyerDeliveryIsTomorrowEmail") {
+    const isDisabled = await checkIfIsDisabled(emailAction.receiverProfileId);
+    if (isDisabled) return;
+    toBuyerDeliveryIsTomorrowEmail({
+      influencerName: emailAction.influencerName,
+      from: emailAction.fromUs,
+      to: emailAction.toBuyer,
+      language: emailAction.buyerLanguage,
+      orderId: emailAction.orderId,
+    });
+  } else if (emailAction.action === "toBuyerInfluencerIsRightEmail") {
+    const isDisabled = await checkIfIsDisabled(emailAction.receiverProfileId);
+    if (isDisabled) return;
+    toBuyerInfluencerIsRightEmail({
+      influencerName: emailAction.influencerName,
+      from: emailAction.fromUs,
+      to: emailAction.toBuyer,
+      language: emailAction.buyerLanguage,
+      orderId: emailAction.orderId,
+    });
+  } else if (emailAction.action === "toBuyerInfluencerIsWrongEmail") {
+    const isDisabled = await checkIfIsDisabled(emailAction.receiverProfileId);
+    if (isDisabled) return;
+    toBuyerInfluencerIsWrongEmail({
+      influencerName: emailAction.influencerName,
+      from: emailAction.fromUs,
+      to: emailAction.toBuyer,
+      language: emailAction.buyerLanguage,
+      orderId: emailAction.orderId,
+    });
+  } else if (emailAction.action === "toBuyerOrderOnHoldEmail") {
+    const isDisabled = await checkIfIsDisabled(emailAction.receiverProfileId);
+    if (isDisabled) return;
+    toBuyerOrderOnHoldEmail({
+      influencerName: emailAction.influencerName,
+      from: emailAction.fromUs,
+      to: emailAction.toBuyer,
+      language: emailAction.buyerLanguage,
+      orderId: emailAction.orderId,
+    });
+  } else if (emailAction.action === "toInfluencerDeliveryIsTomorrowEmail") {
+    const isDisabled = await checkIfIsDisabled(emailAction.receiverProfileId);
+    if (isDisabled) return;
+    toInfluencerDeliveryIsTomorrowEmail({
+      buyerName: emailAction.buyerName,
+      from: emailAction.fromUs,
+      to: emailAction.toInfluencerEmail,
+      language: emailAction.influencerLanguage,
+      orderId: emailAction.orderId,
+    });
+  } else if (emailAction.action === "toInfluencerInfluencerIsRightEmail") {
+    const isDisabled = await checkIfIsDisabled(emailAction.receiverProfileId);
+    if (isDisabled) return;
+    toInfluencerInfluencerIsRightEmail({
+      buyerName: emailAction.buyerName,
+      from: emailAction.fromUs,
+      to: emailAction.toInfluencerEmail,
+      language: emailAction.influencerLanguage,
+      orderId: emailAction.orderId,
+    });
+  } else if (emailAction.action === "toInfluencerInfluencerIsWrongEmail") {
+    const isDisabled = await checkIfIsDisabled(emailAction.receiverProfileId);
+    if (isDisabled) return;
+    toInfluencerInfluencerIsWrongEmail({
+      buyerName: emailAction.buyerName,
+      from: emailAction.fromUs,
+      to: emailAction.toInfluencerEmail,
+      language: emailAction.influencerLanguage,
+      orderId: emailAction.orderId,
+    });
+  } else if (emailAction.action === "toInfluencerOnHoldtoPostponed") {
+    const isDisabled = await checkIfIsDisabled(emailAction.receiverProfileId);
+    if (isDisabled) return;
+    toInfluencerOnHoldtoPostponed({
+      buyerName: emailAction.buyerName,
+      from: emailAction.fromUs,
+      to: emailAction.toInfluencerEmail,
+      language: emailAction.influencerLanguage,
+      orderId: emailAction.orderId,
+    });
+  } else if (emailAction.action === "toInfluencerOrderOnHoldEmail") {
+    const isDisabled = await checkIfIsDisabled(emailAction.receiverProfileId);
+    if (isDisabled) return;
+    toInfluencerOrderOnHoldEmail({
+      buyerName: emailAction.buyerName,
+      from: emailAction.fromUs,
+      to: emailAction.toInfluencerEmail,
+      language: emailAction.influencerLanguage,
+      orderId: emailAction.orderId,
+    });
+  } else if (emailAction.action === "toInfluencerOrderOnHoldToRefund") {
+    const isDisabled = await checkIfIsDisabled(emailAction.receiverProfileId);
+    if (isDisabled) return;
+    toInfluencerOrderOnHoldToRefund({
+      buyerName: emailAction.buyerName,
+      from: emailAction.fromUs,
+      to: emailAction.toInfluencerEmail,
+      language: emailAction.influencerLanguage,
+      orderId: emailAction.orderId,
+    });
+  } else if (emailAction.action === "weReceivedContactEmail") {
+    weReceivedContactEmail({
+      from: emailAction.fromUs,
+      to: emailAction.email,
+      email: emailAction.email,
+      message: emailAction.message,
+      name: emailAction.name,
+      reason: emailAction.reasonText,
+      language: emailAction.language,
+    });
+  } else if (emailAction.action === "buyerPaymentFailed") {
+    const isDisabled = await checkIfIsDisabled(emailAction.receiverProfileId);
+    if (isDisabled) return;
+    buyerPaymentFailed({
+      from: emailAction.fromUs,
+      to: emailAction.toBuyer,
+      language: emailAction.buyerLanguage,
+      orderId: emailAction.orderId,
+    });
+  } else if (emailAction.action === "payoutAccepted") {
+    const isDisabled = await checkIfIsDisabled(emailAction.receiverProfileId);
+    if (isDisabled) return;
+    payoutAcceptedEmail({
+      from: emailAction.fromUs,
+      to: emailAction.to,
+      language: emailAction.language,
+    });
+  } else if (emailAction.action === "payoutRejected") {
+    const isDisabled = await checkIfIsDisabled(emailAction.receiverProfileId);
+    if (isDisabled) return;
+    payoutRejectedEmail({
+      from: emailAction.fromUs,
+      to: emailAction.to,
+      language: emailAction.language,
+    });
+  }
 };

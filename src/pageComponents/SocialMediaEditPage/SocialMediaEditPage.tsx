@@ -331,7 +331,7 @@ const SocialMediaEditPage = (params: {
   const buildSocialMediaLink = (socialMedia: string) => {
     const linkMappings: Record<string, string> = {
       Instagram: "https://www.instagram.com/",
-      YouTube: "https://www.youtube.com/@",
+      YouTube: "https://www.youtube.com/",
       Facebook: "https://www.facebook.com/",
       TikTok: "https://www.tiktok.com/@",
       Linkedin: "https://www.linkedin.com/in/",

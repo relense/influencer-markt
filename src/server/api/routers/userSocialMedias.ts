@@ -18,6 +18,33 @@ type INSTAGRAM_BASIC_PROFILE = {
   };
 };
 
+type YOUTUBE_RESPONSE = {
+  data: {
+    access_token: string;
+    expires_in: number;
+    scope: string;
+    token_type: string;
+  };
+};
+
+type YOUTUBE_BASIC_PROFILE = {
+  data: {
+    kind: string;
+    etag: string;
+    pageInfo: { totalResults: number; resultsPerPage: number };
+    items: [
+      {
+        snippet: {
+          title: string;
+          description: string;
+          customUrl: string;
+          publishedAt: string;
+        };
+      }
+    ];
+  };
+};
+
 export const userSocialMediasRouter = createTRPCRouter({
   createUserSocialMedia: protectedProcedure
     .input(
@@ -408,6 +435,94 @@ export const userSocialMediasRouter = createTRPCRouter({
       }
     }),
 
+  authenticateYoutube: protectedProcedure
+    .input(
+      z.object({
+        code: z.string(),
+      })
+    )
+    .mutation(async ({ ctx, input }) => {
+      try {
+        const formData = new URLSearchParams();
+        formData.append("client_id", env.NEXT_PUBLIC_GOOGLE_CLIENT_ID);
+        formData.append("client_secret", env.GOOGLE_CLIENT_SECRET);
+        formData.append("grant_type", "authorization_code");
+        formData.append("redirect_uri", env.NEXT_PUBLIC_GOOGLE_REDIRECT_URI);
+        formData.append("code", input.code);
+
+        const response: YOUTUBE_RESPONSE = await axios.post(
+          "https://oauth2.googleapis.com/token",
+          formData.toString(),
+          {
+            headers: {
+              "Content-Type": "application/x-www-form-urlencoded",
+            },
+          }
+        );
+
+        console.log(response);
+
+        const socialMedia = await ctx.prisma.socialMedia.findFirst({
+          where: {
+            name: {
+              equals: "YouTube",
+            },
+          },
+        });
+
+        const profile = await ctx.prisma.profile.findUnique({
+          where: { userId: ctx.session.user.id },
+          include: {
+            user: {
+              select: {
+                username: true,
+              },
+            },
+            userSocialMedia: {
+              include: {
+                valuePacks: true,
+              },
+            },
+          },
+        });
+
+        if (profile && socialMedia) {
+          const basicProfile: YOUTUBE_BASIC_PROFILE = await axios.get(
+            "https://www.googleapis.com/youtube/v3/channels",
+            {
+              params: {
+                part: "snippet",
+                mine: true,
+              },
+              headers: {
+                Authorization: `Bearer ${response.data.access_token}`,
+              },
+            }
+          );
+
+          const newUserSocialMedia = await ctx.prisma.userSocialMedia.create({
+            data: {
+              handler: basicProfile.data.items[0].snippet.customUrl,
+              userSocialMediaFollowersId: 1,
+              profileId: profile.id,
+              socialMediaAccessToken: response.data.access_token,
+              socialMediaId: socialMedia.id,
+              url: createSocialMediaUrl(
+                socialMedia.id,
+                basicProfile.data.items[0].snippet.customUrl
+              ),
+              mainSocialMedia:
+                profile.userSocialMedia.length === 0 ? true : false,
+            },
+          });
+
+          return newUserSocialMedia;
+        }
+      } catch (err) {
+        console.log(err);
+      }
+    }),
+
   authenticateFacebook: protectedProcedure
     .input(
       z.object({
@@ -462,7 +577,6 @@ export const userSocialMediasRouter = createTRPCRouter({
             `https://graph.instagram.com/me?fields=id,username,follower_count&access_token=${response.data.access_token}`
           );
 
-          console.log(basicProfile);
           await ctx.prisma.userSocialMedia.create({
             data: {
               handler: basicProfile.data.username,

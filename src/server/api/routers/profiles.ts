@@ -25,7 +25,12 @@ export const profilesRouter = createTRPCRouter({
       return await ctx.prisma.$transaction([
         ctx.prisma.profile.count({
           where: {
-            user: { roleId: 2 },
+            user: {
+              roleId: 2,
+              email: {
+                not: "testinfluencermarkt@gmail.com",
+              },
+            },
             profilePicture: {
               not: "",
             },
@@ -77,7 +82,12 @@ export const profilesRouter = createTRPCRouter({
         }),
         ctx.prisma.profile.findMany({
           where: {
-            user: { roleId: 2 },
+            user: {
+              roleId: 2,
+              email: {
+                not: "testinfluencermarkt@gmail.com",
+              },
+            },
             profilePicture: {
               not: "",
             },

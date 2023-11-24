@@ -133,10 +133,7 @@ const PublicProfileSocialMediaEdit = (params: {
     }
   };
 
-  const renderCreateSocialMediaConnectButtons = () => {
-    const connectButtons = [];
-
-    //INSTAGRAM
+  const instagramButton = () => {
     if (
       process.env.NEXT_PUBLIC_INSTAGRAM_CLIENT_ID &&
       process.env.NEXT_PUBLIC_INSTAGRAM_REDIRECT_URI &&
@@ -144,7 +141,7 @@ const PublicProfileSocialMediaEdit = (params: {
         (socialMedia) => socialMedia.platform.name === "Instagram"
       )
     ) {
-      connectButtons.push(
+      return (
         <a
           href={`https://api.instagram.com/oauth/authorize?client_id=${process.env.NEXT_PUBLIC_INSTAGRAM_CLIENT_ID}&redirect_uri=${process.env.NEXT_PUBLIC_INSTAGRAM_REDIRECT_URI}&scope=user_profile,user_media&response_type=code`}
         >
@@ -170,6 +167,49 @@ const PublicProfileSocialMediaEdit = (params: {
         </a>
       );
     }
+  };
+
+  const youtubeButton = () => {
+    if (
+      process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID &&
+      process.env.NEXT_PUBLIC_GOOGLE_REDIRECT_URI &&
+      !userSocialMediaList.some(
+        (socialMedia) => socialMedia.platform.name === "Youtube"
+      )
+    ) {
+      return (
+        <a
+          href={`https://accounts.google.com/o/oauth2/auth?client_id=${process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID}&redirect_uri=${process.env.NEXT_PUBLIC_GOOGLE_REDIRECT_URI}&response_type=code&scope=https://www.googleapis.com/auth/youtube.readonly`}
+        >
+          <button
+            {...params}
+            className="m-2 cursor-pointer rounded-lg border-[1px] px-4 py-2 text-center text-sm font-semibold shadow-md shadow-boxShadow hover:shadow-none lg:rounded-2xl lg:px-8 lg:py-4 lg:text-base"
+          >
+            <div className="flex items-center justify-center gap-4">
+              <div className="flex justify-center">
+                {t("pages.publicProfilePage.connectToYoutube")}
+              </div>
+
+              <Image
+                src={`/images/youtube.png`}
+                height={1000}
+                width={1000}
+                style={{ width: "32px", height: "32px" }}
+                alt="Instagram Logo"
+                className="object-contain"
+              />
+            </div>
+          </button>
+        </a>
+      );
+    }
+  };
+
+  const renderCreateSocialMediaConnectButtons = () => {
+    const connectButtons = [];
+
+    connectButtons.push(instagramButton());
+    connectButtons.push(youtubeButton());
 
     //FACEBOOK
     // if (
