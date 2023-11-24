@@ -326,22 +326,22 @@ model City {
 }
 
 model Job {
-  id                      String                    @id @default(cuid())
-  jobSummary              String
-  JobDetails              String                    @db.Text
-  socialMedia             SocialMedia               @relation(fields: [socialMediaId], references: [id])
-  contentTypeWithQuantity ContentTypeWithQuantity[]
-  categories              Category[]
-  price                   Int
-  numberOfInfluencers     Int
-  country                 Country                   @relation(fields: [countryId], references: [id])
-  state                   State?                    @relation(fields: [stateId], references: [id])
-userSocialMediaFollowers  UserSocialMediaFollowers?  @relation(fields: [userSocialMediaFollowersId], references: [id])
-  gender                  Gender?                   @relation(fields: [genderId], references: [id])
-  jobStatus               JobStatus                 @relation(fields: [jobStatusId], references: [id])
-  jobCreator              Profile                   @relation("jobCreator", fields: [profileId], references: [id])
-  published               Boolean                   @default(false)
-  order                   Order[]
+  id                       String                    @id @default(cuid())
+  jobSummary               String
+  JobDetails               String                    @db.Text
+  socialMedia              SocialMedia               @relation(fields: [socialMediaId], references: [id])
+  contentTypeWithQuantity  ContentTypeWithQuantity[]
+  categories               Category[]
+  price                    Int
+  numberOfInfluencers      Int
+  country                  Country                   @relation(fields: [countryId], references: [id])
+  state                    State?                    @relation(fields: [stateId], references: [id])
+  userSocialMediaFollowers UserSocialMediaFollowers? @relation(fields: [userSocialMediaFollowersId], references: [id])
+  gender                   Gender?                   @relation(fields: [genderId], references: [id])
+  jobStatus                JobStatus                 @relation(fields: [jobStatusId], references: [id])
+  jobCreator               Profile                   @relation("jobCreator", fields: [profileId], references: [id])
+  published                Boolean                   @default(false)
+  order                    Order[]
 
   applicants         Profile[] @relation("jobApplicants")
   acceptedApplicants Profile[] @relation("jobAcceptedApplicants")
@@ -351,12 +351,12 @@ userSocialMediaFollowers  UserSocialMediaFollowers?  @relation(fields: [userSoci
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  socialMediaId Int
-  countryId     Int
-  genderId      Int?
-  stateId       Int?
-  profileId     String
-  jobStatusId   Int    @default(1)
+  socialMediaId              Int
+  countryId                  Int
+  genderId                   Int?
+  stateId                    Int?
+  profileId                  String
+  jobStatusId                Int    @default(1)
   userSocialMediaFollowersId Int
 
   @@index([socialMediaId])
