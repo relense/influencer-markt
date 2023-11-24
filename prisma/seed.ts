@@ -72,7 +72,7 @@ async function main() {
   });
 
   await prisma.gender.createMany({
-    data: [{ name: "Male" }, { name: "Female" }, { name: "Other" }],
+    data: [{ name: "Male" }, { name: "Female" }, { name: "Non-binary" }],
   });
 
   await prisma.jobStatus.createMany({

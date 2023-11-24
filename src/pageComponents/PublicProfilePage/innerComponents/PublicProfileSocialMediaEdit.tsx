@@ -209,7 +209,7 @@ const PublicProfileSocialMediaEdit = (params: {
     const connectButtons = [];
 
     connectButtons.push(instagramButton());
-    connectButtons.push(youtubeButton());
+    // connectButtons.push(youtubeButton());
 
     //FACEBOOK
     // if (
