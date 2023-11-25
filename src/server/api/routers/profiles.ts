@@ -28,7 +28,7 @@ export const profilesRouter = createTRPCRouter({
             user: {
               roleId: 2,
               email: {
-                not: "testinfluencermarkt@gmail.com",
+                not: "testinfluencermarkt@protonmail.com",
               },
             },
             profilePicture: {
@@ -85,7 +85,7 @@ export const profilesRouter = createTRPCRouter({
             user: {
               roleId: 2,
               email: {
-                not: "testinfluencermarkt@gmail.com",
+                not: "testinfluencermarkt@protonmail.com",
               },
             },
             profilePicture: {
@@ -201,7 +201,12 @@ export const profilesRouter = createTRPCRouter({
           id: input.cursor,
         },
         where: {
-          user: { roleId: 2 },
+          user: {
+            roleId: 2,
+            email: {
+              not: "testinfluencermarkt@protonmail.com",
+            },
+          },
           profilePicture: {
             not: "",
           },

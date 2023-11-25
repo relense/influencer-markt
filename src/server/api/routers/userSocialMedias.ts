@@ -409,7 +409,7 @@ export const userSocialMediasRouter = createTRPCRouter({
 
         if (profile && socialMedia) {
           const basicProfile: INSTAGRAM_BASIC_PROFILE = await axios.get(
-            `https://graph.instagram.com/me?fields=username&access_token=${response.data.access_token}`
+            `https://graph.instagram.com/v18.0/${response.data.user_id}?fields=id,username&access_token=${response.data.access_token}`
           );
 
           const newUserSocialMedia = await ctx.prisma.userSocialMedia.create({
