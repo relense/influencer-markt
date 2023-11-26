@@ -4,6 +4,7 @@ import { prisma } from "../../db";
 
 import { createTRPCRouter, protectedProcedure } from "../trpc";
 import bloblService from "../../../services/azureBlob.service";
+import axios, { type AxiosResponse } from "axios";
 
 const deletePicture = async (params: { userId: string; pictureId: number }) => {
   const picture = await prisma.portfolio.findFirst({
@@ -39,6 +40,47 @@ const deletePicture = async (params: { userId: string; pictureId: number }) => {
       console.error("Error deleting file:", error);
       throw new Error("Error deleting file");
     }
+  }
+};
+
+const downloadAndUploadPicture = async (params: {
+  pictureUrl: string;
+  profileId: string;
+}) => {
+  try {
+    // Download the picture from the provided URL
+    const response: AxiosResponse<Buffer> = await axios.get(params.pictureUrl, {
+      responseType: "arraybuffer",
+    });
+
+    // Upload the downloaded picture to Azure Blob Storage
+    const containerClient = bloblService.getContainerClient(
+      process.env.AZURE_CONTAINER_NAME || ""
+    );
+    const blobName = `${Date.now()}-${uuidv4()}-profile:portfolio-picture`;
+    const blockBlobClient = containerClient.getBlockBlobClient(blobName);
+
+    await blockBlobClient.uploadData(response.data, {
+      blobHTTPHeaders: {
+        blobContentType: response.headers["content-type"] as string,
+      },
+    });
+
+    // Create a portfolio entry for the uploaded picture
+    await prisma.portfolio.create({
+      data: {
+        url: blockBlobClient.url,
+        blobName: blobName,
+        profile: {
+          connect: { id: params.profileId },
+        },
+      },
+    });
+
+    return { message: "Picture uploaded successfully" };
+  } catch (error) {
+    console.error("Error uploading picture:", error);
+    throw new Error("Error uploading picture");
   }
 };
 
@@ -116,4 +158,4 @@ export const portfoliosRouter = createTRPCRouter({
     }),
 });
 
-export { deletePicture };
+export { deletePicture, downloadAndUploadPicture };

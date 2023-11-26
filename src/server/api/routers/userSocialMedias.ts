@@ -3,6 +3,7 @@ import { createTRPCRouter, protectedProcedure, publicProcedure } from "../trpc";
 import { helper } from "../../../utils/helper";
 import axios from "axios";
 import { env } from "../../../env.mjs";
+import { downloadAndUploadPicture } from "./portfolios";
 
 type INSTAGRAM_RESPONSE = {
   data: {
@@ -11,10 +12,27 @@ type INSTAGRAM_RESPONSE = {
   };
 };
 
+type INSTAGRAM_MEDIA = {
+  data: {
+    id: string;
+    media_type: string;
+    media_url: string;
+  };
+};
+
 type INSTAGRAM_BASIC_PROFILE = {
   data: {
     id: string;
     username: string;
+    media_count: number;
+    media: {
+      data: {
+        id: string;
+      }[];
+      paging: {
+        cursors: { before: string; after: string };
+      };
+    };
   };
 };
 
@@ -409,7 +427,7 @@ export const userSocialMediasRouter = createTRPCRouter({
 
         if (profile && socialMedia) {
           const basicProfile: INSTAGRAM_BASIC_PROFILE = await axios.get(
-            `https://graph.instagram.com/v18.0/${response.data.user_id}?fields=id,username&access_token=${response.data.access_token}`
+            `https://graph.instagram.com/v18.0/${response.data.user_id}?fields=id,username,media,media_count&access_token=${response.data.access_token}`
           );
 
           const newUserSocialMedia = await ctx.prisma.userSocialMedia.create({
@@ -427,6 +445,28 @@ export const userSocialMediasRouter = createTRPCRouter({
                 profile.userSocialMedia.length === 0 ? true : false,
             },
           });
+
+          if (
+            basicProfile.data.media &&
+            basicProfile.data.media.data.length > 0
+          ) {
+            for (let i = 0; i < basicProfile.data.media.data.length; i++) {
+              const media = basicProfile.data.media.data[i];
+              if (media) {
+                const instagramMedia: INSTAGRAM_MEDIA = await axios.get(
+                  `https://graph.instagram.com/v18.0/${media.id}?fields=media_url,media_type&access_token=${response.data.access_token}`
+                );
+
+                if (instagramMedia.data.media_type === "IMAGE") {
+                  await downloadAndUploadPicture({
+                    pictureUrl: instagramMedia.data.media_url,
+                    profileId: profile.id,
+                  });
+                  break;
+                }
+              }
+            }
+          }
 
           return newUserSocialMedia;
         }
