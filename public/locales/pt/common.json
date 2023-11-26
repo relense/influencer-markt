@@ -265,7 +265,7 @@
     "profileForm": {
       "Male": "Masculino",
       "Female": "Feminino",
-      "Other": "Outro",
+      "Non-binary": "Não-binário",
       "characterWarning": "Máximo de {{count}} caracteres",
       "invalidPictureAlert": "Images têm de ser jpeg, jpg ou png e não podem exceder 4mbs",
       "addProfilePicture": "Adiciona a tua imagem de perfil",
