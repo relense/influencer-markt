@@ -135,19 +135,25 @@ const PublicProfileSocialMediaEdit = (params: {
 
   const instagramButton = () => {
     if (
-      process.env.NEXT_PUBLIC_INSTAGRAM_CLIENT_ID &&
-      process.env.NEXT_PUBLIC_INSTAGRAM_REDIRECT_URI &&
       !userSocialMediaList.some(
         (socialMedia) => socialMedia.platform.name === "Instagram"
       )
     ) {
       return (
-        <a
-          href={`https://api.instagram.com/oauth/authorize?client_id=${process.env.NEXT_PUBLIC_INSTAGRAM_CLIENT_ID}&redirect_uri=${process.env.NEXT_PUBLIC_INSTAGRAM_REDIRECT_URI}&scope=user_profile,user_media&response_type=code`}
-        >
+        <div key="instagramSocialMedia">
           <button
-            {...params}
             className="m-2 cursor-pointer rounded-lg border-[1px] px-4 py-2 text-center text-sm font-semibold shadow-md shadow-boxShadow hover:shadow-none lg:rounded-2xl lg:px-8 lg:py-4 lg:text-base"
+            onClick={() => {
+              if (
+                process.env.NEXT_PUBLIC_INSTAGRAM_CLIENT_ID &&
+                process.env.NEXT_PUBLIC_INSTAGRAM_REDIRECT_URI
+              ) {
+                window.open(
+                  `https://api.instagram.com/oauth/authorize?client_id=${process.env.NEXT_PUBLIC_INSTAGRAM_CLIENT_ID}&redirect_uri=${process.env.NEXT_PUBLIC_INSTAGRAM_REDIRECT_URI}&scope=user_profile,user_media&response_type=code`,
+                  "_self"
+                );
+              }
+            }}
           >
             <div className="flex items-center justify-center gap-4">
               <div className="flex justify-center">
@@ -164,7 +170,7 @@ const PublicProfileSocialMediaEdit = (params: {
               />
             </div>
           </button>
-        </a>
+        </div>
       );
     }
   };
@@ -210,23 +216,6 @@ const PublicProfileSocialMediaEdit = (params: {
 
     connectButtons.push(instagramButton());
     // connectButtons.push(youtubeButton());
-
-    //FACEBOOK
-    // if (
-    //   process.env.NEXT_PUBLIC_FACEBOOK_CLIENT_ID &&
-    //   process.env.NEXT_PUBLIC_FACEBOOK_REDIRECT_URI &&
-    //   !userSocialMediaList.some(
-    //     (socialMedia) => socialMedia.platform.name === "Facebook"
-    //   )
-    // ) {
-    //   connectButtons.push(
-    //     <a
-    //       href={`https://www.facebook.com/v18.0/dialog/oauth?client_id=${process.env.NEXT_PUBLIC_FACEBOOK_CLIENT_ID}&redirect_uri=${process.env.NEXT_PUBLIC_FACEBOOK_REDIRECT_URI}&scope=instagram_basic&state=ole&response_type=code`}
-    //     >
-    //       <Button title="Connect Facebook" />
-    //     </a>
-    //   );
-    // }
 
     return connectButtons;
   };

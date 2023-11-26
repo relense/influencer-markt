@@ -12,21 +12,38 @@ const InstagramAuth: NextPage = () => {
     api.userSocialMedias.authenticateInstagram.useMutation({
       onSuccess: (socialMedia) => {
         if (socialMedia) {
-          void push(
-            `/${navigator.language}/social-media/edit/${socialMedia.id}`
-          );
+          if (navigator.language === "pt") {
+            void push(
+              `/${navigator.language}/social-media/edit/${socialMedia.id}`
+            );
+          } else {
+            void push(`/social-media/edit/${socialMedia.id}`);
+          }
         }
       },
     });
 
+  const { data, isLoading: isLoadingData } = api.users.getUserInfo.useQuery();
+
   useEffect(() => {
-    if (isReady) {
+    if (isReady && isLoadingData === false) {
       const code = query.code as string;
-      void authenticateInstagram({
-        code: code || "",
-      });
+      if (code) {
+        void authenticateInstagram({
+          code: code || "",
+        });
+      } else {
+        void push(`/${data?.username || ""}`);
+      }
     }
-  }, [authenticateInstagram, isReady, query.code]);
+  }, [
+    authenticateInstagram,
+    data?.username,
+    isLoadingData,
+    isReady,
+    push,
+    query.code,
+  ]);
 
   return (
     <div className="flex justify-center">
