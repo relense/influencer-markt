@@ -43,6 +43,12 @@ const PublicProfileSocialMediaEdit = (params: {
       },
     });
 
+  const { mutate: loginTiktok } = api.userSocialMedias.loginTiktok.useMutation({
+    onSuccess: (response) => {
+      window.open(response, "_self");
+    },
+  });
+
   useEffect(() => {
     if (profileSocialMedia) {
       setUserSocialMediaList(
@@ -142,24 +148,20 @@ const PublicProfileSocialMediaEdit = (params: {
       return (
         <div key="instagramSocialMedia">
           <button
-            className="m-2 cursor-pointer rounded-lg border-[1px] px-4 py-2 text-center text-sm font-semibold shadow-md shadow-boxShadow hover:shadow-none lg:rounded-2xl lg:px-8 lg:py-4 lg:text-base"
+            className="m-2 w-3/6 cursor-pointer rounded-lg border-[1px] px-4 py-2 text-center text-sm font-semibold shadow-md shadow-boxShadow hover:shadow-none lg:rounded-2xl lg:px-8 lg:py-4 lg:text-base"
             onClick={() => {
               if (
                 process.env.NEXT_PUBLIC_INSTAGRAM_CLIENT_ID &&
-                process.env.NEXT_PUBLIC_INSTAGRAM_REDIRECT_URI
+                process.env.NEXT_PUBLIC_BASE_URL
               ) {
                 window.open(
-                  `https://api.instagram.com/oauth/authorize?client_id=${process.env.NEXT_PUBLIC_INSTAGRAM_CLIENT_ID}&redirect_uri=${process.env.NEXT_PUBLIC_INSTAGRAM_REDIRECT_URI}&scope=user_profile,user_media&response_type=code`,
+                  `https://api.instagram.com/oauth/authorize?client_id=${process.env.NEXT_PUBLIC_INSTAGRAM_CLIENT_ID}&redirect_uri=${process.env.NEXT_PUBLIC_BASE_URL}/instagram-auth&scope=user_profile,user_media&response_type=code`,
                   "_self"
                 );
               }
             }}
           >
             <div className="flex items-center justify-center gap-4">
-              <div className="flex justify-center">
-                {t("pages.publicProfilePage.connectToInstagram")}
-              </div>
-
               <Image
                 src={`/images/instagram.png`}
                 height={1000}
@@ -168,6 +170,40 @@ const PublicProfileSocialMediaEdit = (params: {
                 alt="Instagram Logo"
                 className="object-contain"
               />
+              <div className="flex justify-center">
+                {t("pages.publicProfilePage.connectToInstagram")}
+              </div>
+            </div>
+          </button>
+        </div>
+      );
+    }
+  };
+
+  const tiktokButton = () => {
+    if (
+      !userSocialMediaList.some(
+        (socialMedia) => socialMedia.platform.name === "TikTok"
+      )
+    ) {
+      return (
+        <div key="tiktokSocialMedia">
+          <button
+            className="m-2 w-3/6 cursor-pointer rounded-lg border-[1px] px-4 py-2 text-center text-sm font-semibold shadow-md shadow-boxShadow hover:shadow-none lg:rounded-2xl lg:px-8 lg:py-4 lg:text-base"
+            onClick={() => loginTiktok()}
+          >
+            <div className="flex items-center justify-center gap-4">
+              <Image
+                src={`/images/tiktok.png`}
+                height={1000}
+                width={1000}
+                style={{ width: "32px", height: "32px" }}
+                alt="TikTok Logo"
+                className="object-contain"
+              />
+              <div className="flex justify-center">
+                {t("pages.publicProfilePage.connectToTiktok")}
+              </div>
             </div>
           </button>
         </div>
@@ -215,6 +251,7 @@ const PublicProfileSocialMediaEdit = (params: {
     const connectButtons = [];
 
     connectButtons.push(instagramButton());
+    connectButtons.push(tiktokButton());
     // connectButtons.push(youtubeButton());
 
     return connectButtons;

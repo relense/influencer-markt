@@ -9,6 +9,7 @@
 
 import { initTRPC, TRPCError } from "@trpc/server";
 import { type CreateNextContextOptions } from "@trpc/server/adapters/next";
+import type { NextApiRequest, NextApiResponse } from "next";
 import { type Session } from "next-auth";
 import superjson from "superjson";
 import { ZodError } from "zod";
@@ -25,6 +26,8 @@ import { prisma } from "~/server/db";
 
 type CreateContextOptions = {
   session: Session | null;
+  req: NextApiRequest;
+  res: NextApiResponse;
 };
 
 /**
@@ -39,6 +42,8 @@ type CreateContextOptions = {
  */
 const createInnerTRPCContext = (opts: CreateContextOptions) => {
   return {
+    req: opts.req,
+    res: opts.res,
     session: opts.session,
     prisma,
   };
@@ -50,13 +55,15 @@ const createInnerTRPCContext = (opts: CreateContextOptions) => {
  *
  * @see https://trpc.io/docs/context
  */
-export const createTRPCContext = async (opts: CreateNextContextOptions) => {
-  const { req, res } = opts;
+export const createTRPCContext = async (_opts: CreateNextContextOptions) => {
+  const { req, res } = _opts;
 
   // Get the session from the server using the getServerSession wrapper function
   const session = await getServerAuthSession({ req, res });
 
   return createInnerTRPCContext({
+    req,
+    res,
     session,
   });
 };

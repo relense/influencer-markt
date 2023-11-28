@@ -63,6 +63,37 @@ type YOUTUBE_BASIC_PROFILE = {
   };
 };
 
+type TIKTOK_RESPONSE = {
+  data: {
+    access_token: string;
+    expires_in: number;
+    open_id: string;
+    refresh_expires_in: number;
+    refresh_token: string;
+    scope: string;
+    token_type: string;
+  };
+};
+
+type TIKTOK_BASIC_PROFILE = {
+  data: {
+    data: {
+      user: {
+        avatar_url: string;
+        open_id: string;
+        union_id: string;
+        display_name: string;
+        profile_deep_link: string;
+      };
+    };
+    error: {
+      code: string;
+      message: string;
+      log_id: string;
+    };
+  };
+};
+
 export const userSocialMediasRouter = createTRPCRouter({
   createUserSocialMedia: protectedProcedure
     .input(
@@ -388,7 +419,10 @@ export const userSocialMediasRouter = createTRPCRouter({
         formData.append("client_id", env.NEXT_PUBLIC_INSTAGRAM_CLIENT_ID);
         formData.append("client_secret", env.INSTAGRAM_CLIENT_SECRET);
         formData.append("grant_type", "authorization_code");
-        formData.append("redirect_uri", env.NEXT_PUBLIC_INSTAGRAM_REDIRECT_URI);
+        formData.append(
+          "redirect_uri",
+          `${env.NEXT_PUBLIC_BASE_URL}/instagram-auth`
+        );
         formData.append("code", input.code);
 
         const response: INSTAGRAM_RESPONSE = await axios.post(
@@ -563,23 +597,58 @@ export const userSocialMediasRouter = createTRPCRouter({
       }
     }),
 
-  authenticateFacebook: protectedProcedure
+  loginTiktok: protectedProcedure.mutation(({ ctx }) => {
+    try {
+      const csrfState = Math.random().toString(36).substring(2);
+
+      if (ctx.res) {
+        ctx.res.setHeader(
+          "Set-Cookie",
+          `csrfState=${csrfState}; Max-Age=60000;`
+        );
+      }
+
+      let url = "https://www.tiktok.com/v2/auth/authorize/";
+
+      // the following params need to be in `application/x-www-form-urlencoded` format.
+      url += `?client_key=${env.TIKTOK_CLIENT_KEY}`;
+      url += `&scope=user.info.basic`;
+      url += `&response_type=code`;
+      url += `&redirect_uri=${env.NEXT_PUBLIC_BASE_URL}/tiktok-auth`;
+      url += `&state=${csrfState}`;
+
+      return url;
+    } catch (err) {
+      console.log(err);
+    }
+  }),
+
+  authenticateTiktok: protectedProcedure
     .input(
       z.object({
         code: z.string(),
+        stateQuery: z.string(),
       })
     )
     .mutation(async ({ ctx, input }) => {
       try {
+        const storedCsrfState = ctx.res.getHeader("csrfState");
+        if (storedCsrfState !== input.stateQuery) {
+          throw Error("CsrfState doesnt match");
+        }
+
         const formData = new URLSearchParams();
-        formData.append("client_id", env.NEXT_PUBLIC_INSTAGRAM_CLIENT_ID);
-        formData.append("client_secret", env.INSTAGRAM_CLIENT_SECRET);
+        formData.append("client_key", env.TIKTOK_CLIENT_KEY);
+        formData.append("client_secret", env.TIKTOK_CLIENT_SECRET);
         formData.append("grant_type", "authorization_code");
-        formData.append("redirect_uri", env.NEXT_PUBLIC_INSTAGRAM_REDIRECT_URI);
+        formData.append(
+          "redirect_uri",
+          `${env.NEXT_PUBLIC_BASE_URL}/tiktok-auth`
+        );
         formData.append("code", input.code);
 
-        const response: INSTAGRAM_RESPONSE = await axios.post(
-          "https://api.instagram.com/oauth/access_token",
+        const response: TIKTOK_RESPONSE = await axios.post(
+          "https://open.tiktokapis.com/v2/oauth/token",
           formData.toString(),
           {
             headers: {
@@ -591,7 +660,7 @@ export const userSocialMediasRouter = createTRPCRouter({
         const socialMedia = await ctx.prisma.socialMedia.findFirst({
           where: {
             name: {
-              equals: "Facebook",
+              equals: "TikTok",
             },
           },
         });
@@ -613,28 +682,30 @@ export const userSocialMediasRouter = createTRPCRouter({
         });
 
         if (profile && socialMedia) {
-          const basicProfile: INSTAGRAM_BASIC_PROFILE = await axios.get(
-            `https://graph.instagram.com/me?fields=id,username,follower_count&access_token=${response.data.access_token}`
+          const basicProfile: TIKTOK_BASIC_PROFILE = await axios.get(
+            "https://open.tiktokapis.com/v2/user/info/?fields=profile_deep_link,display_name",
+            {
+              headers: {
+                Authorization: `Bearer ${response.data.access_token}`,
+              },
+            }
           );
 
-          await ctx.prisma.userSocialMedia.create({
+          const newUserSocialMedia = await ctx.prisma.userSocialMedia.create({
             data: {
-              handler: basicProfile.data.username,
+              handler: basicProfile.data.data.user.display_name,
               userSocialMediaFollowersId: 1,
               profileId: profile.id,
               socialMediaAccessToken: response.data.access_token,
               socialMediaId: socialMedia.id,
-              url: createSocialMediaUrl(
-                socialMedia.id,
-                basicProfile.data.username
-              ),
+              url: basicProfile.data.data.user.profile_deep_link,
               mainSocialMedia:
                 profile.userSocialMedia.length === 0 ? true : false,
             },
           });
-        }
 
-        return profile?.user.username;
+          return newUserSocialMedia;
+        }
       } catch (err) {
         console.log(err);
       }

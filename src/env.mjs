@@ -49,7 +49,9 @@ export const env = createEnv({
 
     NEXT_PUBLIC_INSTAGRAM_CLIENT_ID: z.string(),
     INSTAGRAM_CLIENT_SECRET: z.string(),
-    NEXT_PUBLIC_INSTAGRAM_REDIRECT_URI: z.string(),
+
+    TIKTOK_CLIENT_KEY: z.string(),
+    TIKTOK_CLIENT_SECRET: z.string(),
   },
 
   /**
@@ -103,8 +105,9 @@ export const env = createEnv({
     NEXT_PUBLIC_INSTAGRAM_CLIENT_ID:
       process.env.NEXT_PUBLIC_INSTAGRAM_CLIENT_ID,
     INSTAGRAM_CLIENT_SECRET: process.env.INSTAGRAM_CLIENT_SECRET,
-    NEXT_PUBLIC_INSTAGRAM_REDIRECT_URI:
-      process.env.NEXT_PUBLIC_INSTAGRAM_REDIRECT_URI,
+
+    TIKTOK_CLIENT_KEY: process.env.TIKTOK_CLIENT_KEY,
+    TIKTOK_CLIENT_SECRET: process.env.TIKTOK_CLIENT_SECRET,
   },
   /**
    * Run `build` or `dev` with `SKIP_ENV_VALIDATION` to skip env validation.
