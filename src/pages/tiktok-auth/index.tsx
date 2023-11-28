@@ -21,6 +21,9 @@ const TiktokAuth: NextPage = () => {
           }
         }
       },
+      onError: () => {
+        void push(`/${data?.username || ""}`);
+      },
     });
 
   const { data, isLoading: isLoadingData } = api.users.getUserInfo.useQuery();

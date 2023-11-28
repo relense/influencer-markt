@@ -632,8 +632,8 @@ export const userSocialMediasRouter = createTRPCRouter({
     )
     .mutation(async ({ ctx, input }) => {
       try {
-        if (ctx.res) {
-          const storedCsrfState = ctx.res.getHeader("csrfState");
+        if (ctx.req) {
+          const storedCsrfState = ctx.req.cookies.csrfState;
           if (storedCsrfState !== input.stateQuery) {
             throw Error("CsrfState doesnt match");
           }
