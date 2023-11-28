@@ -650,7 +650,7 @@ export const userSocialMediasRouter = createTRPCRouter({
         formData.append("code", input.code);
 
         const response: TIKTOK_RESPONSE = await axios.post(
-          "https://open.tiktokapis.com/v2/oauth/token",
+          "https://open.tiktokapis.com/v2/oauth/token/",
           formData.toString(),
           {
             headers: {
