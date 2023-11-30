@@ -74,6 +74,7 @@ export type ProfileData = {
   placeThatLives: Option;
   about: string;
   website: string;
+  tin: string;
 };
 
 export type UserProfiles = {

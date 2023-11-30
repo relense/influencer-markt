@@ -265,15 +265,10 @@
     },
 
     "profileForm": {
-      "Male": "Male",
-      "Female": "Female",
-      "Non-binary": "Non-binary",
       "characterWarning": "Max is {{count}} characters",
       "invalidPictureAlert": "Pictures must be jpeg, jpg or png and can't exceed 4mbs",
       "addProfilePicture": "Add your Profile Image",
       "displayNamePlaceholder": "Choose Your Display Name: How Would You Like to be Recognized?",
-      "genderPlaceholder": "Select your gender: Male, Female, Other",
-      "categoriesPlaceholder": "Choose Your Categories: e.g., Fashion, Travel, Fitness",
       "countryPlaceholder": "Country",
       "cityPlaceholder": "City",
       "aboutPlaceholder": "Introduce Yourself: Share a Brief Description or Bio",
@@ -581,6 +576,27 @@
         "mainTitle": "Congratulations! You're All Set to Unleash Your Influence",
         "mainSubTitle": "Welcome to the World of Endless Possibilities and Impactful Connections",
         "button": "Get Started"
+      },
+
+      "profileForm": {
+        "Male": "Male",
+        "Female": "Female",
+        "Non-binary": "Non-binary",
+        "characterWarning": "Max is {{count}} characters",
+        "invalidPictureAlert": "Pictures must be jpeg, jpg or png and can't exceed 4mbs",
+        "addProfilePicture": "Add your Profile Image",
+        "displayNamePlaceholder": "Choose Your Display Name: How Would You Like to be Recognized?",
+        "genderPlaceholder": "Select your gender: Male, Female, Other",
+        "categoriesPlaceholder": "Choose Your Categories: e.g., Fashion, Travel, Fitness",
+        "countryPlaceholder": "Country",
+        "cityPlaceholder": "City",
+        "aboutPlaceholder": "Introduce Yourself: Share a Brief Description or Bio",
+        "websitePlaceholder": "Website URL: Provide Your Website Address",
+        "emptyMessageNoCountry": "Search the city where you live",
+        "emptyMessageWithCountry": "Choose a country before choosing a city",
+        "optional": "Optional",
+        "tinPlaceholder": "Tax Identification Number",
+        "invalidTin": "The Tax Identification Number is invalid"
       }
     },
 
@@ -909,6 +925,9 @@
       "influencerDetails": "Influencer Details",
       "name": "Name",
       "gender": "Gender",
+      "Male": "Male",
+      "Female": "Female",
+      "Non-binary": "Non-binary",
       "location": "Location",
       "detailsPlaceholder": "Specify your requirements for the chosen influencer. Share the specific deliverables you expect and provide the necessary guidelines for each value pack. Clear instructions help the influencer understand your expectations and engage your target audience effectively.",
       "errorWarning": "Max is {{count}} characters",

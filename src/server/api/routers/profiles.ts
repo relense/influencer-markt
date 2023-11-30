@@ -518,6 +518,7 @@ export const profilesRouter = createTRPCRouter({
           name: z.string(),
         }),
         website: z.string(),
+        tin: z.string().optional(),
       })
     )
     .mutation(async ({ ctx, input }) => {
@@ -616,6 +617,7 @@ export const profilesRouter = createTRPCRouter({
           },
           name: profile.name,
           email: user.email,
+          tin: input.tin || "",
         },
       });
 

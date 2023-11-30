@@ -263,15 +263,10 @@
     },
 
     "profileForm": {
-      "Male": "Masculino",
-      "Female": "Feminino",
-      "Non-binary": "Não-binário",
       "characterWarning": "Máximo de {{count}} caracteres",
       "invalidPictureAlert": "Images têm de ser jpeg, jpg ou png e não podem exceder 4mbs",
       "addProfilePicture": "Adiciona a tua imagem de perfil",
       "displayNamePlaceholder": "Adiciona o teu nome: Como gostarias de ser reconhecido?",
-      "genderPlaceholder": "Escolhe o teu género: Masculino, Feminino, Outro",
-      "categoriesPlaceholder": "Escolhe as tuas categorias: E.g. Fashion, Travel, Fitness",
       "countryPlaceholder": "País",
       "cityPlaceholder": "Cidade",
       "aboutPlaceholder": "Apresenta-te: Partilha uma breve descrição ou bio",
@@ -579,6 +574,27 @@
         "mainTitle": "Parabéns! Estás tudo pronto para libertar o teu poder de influência",
         "mainSubTitle": "Bem-vindo ao mundo das infinitas possibilidades e das conexões impactantes",
         "button": "Começar"
+      },
+
+      "profileForm": {
+        "Male": "Masculino",
+        "Female": "Feminino",
+        "Non-binary": "Não-binário",
+        "characterWarning": "Máximo de {{count}} caracteres",
+        "invalidPictureAlert": "Images têm de ser jpeg, jpg ou png e não podem exceder 4mbs",
+        "addProfilePicture": "Adiciona a tua imagem de perfil",
+        "displayNamePlaceholder": "Adiciona o teu nome: Como gostarias de ser reconhecido?",
+        "genderPlaceholder": "Escolhe o teu género: Masculino, Feminino, Outro",
+        "categoriesPlaceholder": "Escolhe as tuas categorias: E.g. Fashion, Travel, Fitness",
+        "countryPlaceholder": "País",
+        "cityPlaceholder": "Cidade",
+        "aboutPlaceholder": "Apresenta-te: Partilha uma breve descrição ou bio",
+        "websitePlaceholder": "Website URL: fornece o endereço do teu website",
+        "emptyMessageNoCountry": "Pesquisa a cidade onde vives",
+        "emptyMessageWithCountry": "Escolhe um país antes de escolheres a cidade",
+        "optional": "Opcional",
+        "tinPlaceholder": "Número de Identificação Fiscal",
+        "invalidTin": "O NIF é inválido"
       }
     },
 
@@ -906,6 +922,9 @@
       "influencerDetails": "Detalhes do Influencer",
       "name": "Nome",
       "gender": "Género",
+      "Male": "Masculino",
+      "Female": "Feminino",
+      "Non-binary": "Não-binário",
       "location": "Localização",
       "detailsPlaceholder": "Especifique os seus requisitos para o influencer escolhido. Partilhe os resultados específicos que espera e forneça as orientações necessárias. Instruções claras ajudam o influencer a compreender as suas expectativas e a envolver eficazmente o seu público-alvo.",
       "errorWarning": "Máximo de {{count}} caracteres",

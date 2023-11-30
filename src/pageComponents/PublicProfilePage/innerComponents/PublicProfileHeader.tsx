@@ -28,7 +28,6 @@ import { useForm } from "react-hook-form";
 import { useTranslation } from "next-i18next";
 import toast from "react-hot-toast";
 
-import { helper } from "../../../utils/helper";
 import type { ProfileData, Option } from "../../../utils/globalTypes";
 import { Modal } from "../../../components/Modal";
 import { Button } from "../../../components/Button";
@@ -221,7 +220,6 @@ const PublicProfileHeader = (params: {
               control={profileControl}
               register={profileRegister}
               submit={onUpdateProfile}
-              isProfileUpdate={true}
               errors={profileErrors}
               setValue={profileSetValue}
               watch={profileWatch}

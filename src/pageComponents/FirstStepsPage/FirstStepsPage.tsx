@@ -14,8 +14,6 @@ import toast from "react-hot-toast";
 
 enum StepsEnum {
   OnlinePresence,
-  SocialMedia,
-  VisualPortfolio,
   Final,
 }
 
@@ -99,6 +97,21 @@ const FirstStepsPage = () => {
   } = api.users.usernameExists.useQuery({
     username: userIdentityWatch("username") || "",
   });
+
+  const {
+    data: verifyVatNumber,
+    refetch: refetchVerifyVatNumber,
+    isRefetching: isRefetchingVatNumber,
+    isFetching: isFetchingVatNumber,
+  } = api.billings.checkVATWithVies.useQuery(
+    {
+      countryId: watch("nationOfBirth").id,
+      vatNumber: watch("tin"),
+    },
+    {
+      enabled: false,
+    }
+  );
 
   const { mutateAsync: profileMutation } =
     api.profiles.createProfile.useMutation({
@@ -208,9 +221,12 @@ const FirstStepsPage = () => {
           name: profileData.placeThatLives.name,
         },
         website: profileData.website,
+        tin: profileData.tin,
       });
 
-      void router.push(`/${userIdentityWatch("username")}`);
+      void router.push(
+        `/${userIdentityWatch("username") || user?.username || ""}`
+      );
     }
   };
 
@@ -275,33 +291,23 @@ const FirstStepsPage = () => {
     );
   };
 
-  const renderStepperButtons = () => {
-    return (
-      <div className="flex-2 flex w-full flex-col justify-between gap-4 p-4 sm:flex-row sm:items-end sm:gap-0">
-        <div className="flex justify-center">
-          {stepsCount > 0 && (
-            <Button
-              title={t("pages.firstSteps.previousStep")}
-              level="secondary"
-              onClick={() => changeStep("previous")}
-            />
-          )}
-        </div>
-        <div className="flex items-center justify-center gap-4 lg:flex-row">
-          {stepsCount < steps.length - 1 &&
-            currentStep?.id !== StepsEnum.VisualPortfolio && (
-              <Button
-                title={t("pages.firstSteps.nextStep")}
-                level="primary"
-                form="form-hook"
-              />
-            )}
-        </div>
-      </div>
-    );
-  };
+  const renderProfileForm = () => {
+    let isDisabled = true;
 
-  const renderFirstSteps = () => {
+    if (
+      watch("displayName") !== "" &&
+      watch("categories").length > 0 &&
+      watch("about") !== "" &&
+      watch("nationOfBirth")?.id !== -1 &&
+      watch("placeThatLives")?.id !== -1
+    ) {
+      if (user?.roleId === 1 && verifyVatNumber) {
+        isDisabled = false;
+      } else if (user?.roleId === 2) {
+        isDisabled = false;
+      }
+    }
+
     return (
       <main className="h-full w-full bg-shadow-gray p-6 lg:p-8">
         <div className="flex h-full w-full flex-col rounded-2xl bg-white lg:flex-row lg:overscroll-none">
@@ -311,28 +317,60 @@ const FirstStepsPage = () => {
             ref={mainContentRef}
             className="flex h-full w-full flex-col overflow-y-auto sm:px-8 lg:overscroll-none"
           >
-            {currentStep?.id !== StepsEnum.Final && renderStepMainTitle()}
-            {currentStep?.id === StepsEnum.OnlinePresence && (
-              <SetupProfileStep
-                control={control}
-                register={register}
-                setValue={setValue}
-                submit={submitStep1}
-                errors={errors}
-                watch={watch}
+            {renderStepMainTitle()}
+            <SetupProfileStep
+              control={control}
+              register={register}
+              setValue={setValue}
+              submit={submitStep1}
+              errors={errors}
+              watch={watch}
+              refetchVerifyVatNumber={refetchVerifyVatNumber}
+              verifyVatNumber={verifyVatNumber}
+              isRefetchingVatNumber={
+                isRefetchingVatNumber || isFetchingVatNumber
+              }
+            />
+            <div className="flex-2 flex w-full flex-col justify-end gap-4 p-4 sm:flex-row sm:items-end sm:gap-0">
+              <Button
+                title={t("pages.firstSteps.nextStep")}
+                level="primary"
+                form="form-hook"
+                disabled={isDisabled}
               />
-            )}
-            {currentStep?.id === StepsEnum.Final && (
-              <div className="mt-6 flex h-full w-full flex-1 flex-col justify-center gap-8 p-4 sm:mt-0">
-                {renderStepMainTitle()}
-                <FinalStep
-                  changeStep={changeStep}
-                  saveAllData={saveAllData}
-                  isLoadingSavingData={isSavingData}
-                />
-              </div>
-            )}
-            {renderStepperButtons()}
+            </div>
+          </div>
+        </div>
+      </main>
+    );
+  };
+
+  const renderFinalStep = () => {
+    return (
+      <main className="h-full w-full bg-shadow-gray p-6 lg:p-8">
+        <div className="flex h-full w-full flex-col rounded-2xl bg-white lg:flex-row lg:overscroll-none">
+          {renderSteps()}
+
+          <div
+            ref={mainContentRef}
+            className="flex h-full w-full flex-col overflow-y-auto sm:px-8 lg:overscroll-none"
+          >
+            <div className="mt-6 flex h-full w-full flex-1 flex-col justify-center gap-8 p-4 sm:mt-0">
+              {renderStepMainTitle()}
+              <FinalStep
+                changeStep={changeStep}
+                saveAllData={saveAllData}
+                isLoadingSavingData={isSavingData}
+              />
+            </div>
+
+            <div className="flex-2 flex w-full flex-col justify-start gap-4 p-4 sm:flex-row sm:items-end sm:gap-0">
+              <Button
+                title={t("pages.firstSteps.previousStep")}
+                level="secondary"
+                onClick={() => changeStep("previous")}
+              />
+            </div>
           </div>
         </div>
       </main>
@@ -391,7 +429,16 @@ const FirstStepsPage = () => {
     );
   };
 
-  return isUserTypeFormComplete ? renderFirstSteps() : renderUserTypeForm();
+  if (!isUserTypeFormComplete) {
+    return renderUserTypeForm();
+  } else if (
+    isUserTypeFormComplete &&
+    currentStep?.id === StepsEnum.OnlinePresence
+  ) {
+    return renderProfileForm();
+  } else if (isUserTypeFormComplete && currentStep?.id === StepsEnum.Final) {
+    return renderFinalStep();
+  }
 };
 
 export { FirstStepsPage };

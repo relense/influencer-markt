@@ -235,7 +235,7 @@ const StartOrderPage = (params: {
                 {t("pages.startOrder.gender")}
               </div>
               <div>
-                {t(`components.profileForm.${profile?.gender?.name || ""}`)}
+                {t(`components.startOrder.${profile?.gender?.name || ""}`)}
               </div>
             </div>
             <div className="flex flex-col gap-2">

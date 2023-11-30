@@ -19,17 +19,15 @@ import toast from "react-hot-toast";
 import { api } from "~/utils/api";
 
 import { CustomSelect } from "./CustomSelect";
-import { CustomMultiSelect } from "./CustomMultiSelect";
 import type { ProfileData } from "../utils/globalTypes";
 import { CustomSelectWithInput } from "./CustomSelectWithInput";
 
 const ProfileForm = (params: {
   submit: () => void;
-  control: Control<ProfileData, any>;
+  control: Control<ProfileData, unknown>;
   register: UseFormRegister<ProfileData>;
   setValue: UseFormSetValue<ProfileData>;
   watch: UseFormWatch<ProfileData>;
-  isProfileUpdate: boolean;
   errors: FieldErrors<ProfileData>;
 }) => {
   const { t } = useTranslation();
@@ -39,9 +37,6 @@ const ProfileForm = (params: {
 
   const [profilePicture, setProfilePicture] = useState<string>();
 
-  const { data: user } = api.users.getUser.useQuery();
-  const { data: categories } = api.allRoutes.getAllCategories.useQuery();
-  const { data: genders } = api.allRoutes.getAllGenders.useQuery();
   const { data: countries } = api.allRoutes.getAllCountries.useQuery();
   const { data: cities } = api.allRoutes.getAllCitiesByCountry.useQuery({
     countryId: params.watch("nationOfBirth")?.id || -1,
@@ -98,7 +93,6 @@ const ProfileForm = (params: {
     return (
       <div className="relative flex flex-col items-center gap-3">
         <input
-          required={params.isProfileUpdate ? false : true}
           type="file"
           onChange={handleFileUpload}
           title=""
@@ -162,59 +156,6 @@ const ProfileForm = (params: {
               </div>
             )}
         </div>
-        {!params.isProfileUpdate && user?.role?.name !== "Brand" && (
-          <Controller
-            name="gender"
-            control={params.control}
-            rules={{ required: true }}
-            render={({ field: { value, onChange } }) => {
-              return (
-                <CustomSelect
-                  register={params.register}
-                  name="gender"
-                  required={true}
-                  placeholder={t("components.profileForm.genderPlaceholder")}
-                  options={genders?.map((gender) => {
-                    return {
-                      id: gender.id,
-                      name: t(`components.profileForm.${gender.name}`),
-                    };
-                  })}
-                  value={value}
-                  handleOptionSelect={onChange}
-                />
-              );
-            }}
-          />
-        )}
-        {!params.isProfileUpdate && (
-          <Controller
-            name="categories"
-            control={params.control}
-            rules={{ required: true }}
-            render={({ field: { value, onChange } }) => {
-              return (
-                <CustomMultiSelect
-                  name="categories"
-                  placeholder={t(
-                    "components.profileForm.categoriesPlaceholder"
-                  )}
-                  options={categories?.map((category) => {
-                    return {
-                      id: category.id,
-                      name: t(`general.categories.${category.name}`),
-                    };
-                  })}
-                  handleOptionSelect={onChange}
-                  selectedOptions={value}
-                  clearSelection={() => params.setValue("categories", [])}
-                  borderType="normal"
-                  required={true}
-                />
-              );
-            }}
-          />
-        )}
         <div className="flex flex-col gap-6 lg:flex-row lg:gap-6">
           <Controller
             name="nationOfBirth"

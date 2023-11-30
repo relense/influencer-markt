@@ -6,7 +6,6 @@ import { useForm } from "react-hook-form";
 
 import { Button } from "../../../components/Button";
 import { Modal } from "../../../components/Modal";
-import { nifValidator } from "../../../utils/nifValidators";
 import { helper } from "../../../utils/helper";
 
 type BillingForm = {
@@ -145,11 +144,7 @@ const BillingDetailsBrandModal = (params: {
             </div>
             <div className="flex w-full flex-col">
               <input
-                {...registerBillingForm("tin", {
-                  maxLength: 9,
-                  validate: (value) =>
-                    nifValidator.validatePortugueseNIF(value),
-                })}
+                {...registerBillingForm("tin")}
                 required
                 type="text"
                 readOnly={params.tin.length > 0}
