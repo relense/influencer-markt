@@ -49,10 +49,10 @@ export const BillingsRouter = createTRPCRouter({
       z.object({
         email: z.string(),
         name: z.string(),
-        tin: z.string(),
-        city: z.string(),
-        address: z.string(),
-        zip: z.string(),
+        tin: z.string().optional(),
+        city: z.string().optional(),
+        address: z.string().optional(),
+        zip: z.string().optional(),
       })
     )
     .mutation(async ({ ctx, input }) => {

@@ -185,10 +185,10 @@ const ProfileCard = (params: {
         <div className="text-md flex gap-1 font-semibold lg:text-lg">
           {usefullSocialMedia.valuePacks.length > 0 &&
             smallerValue !== hightestValue &&
-            `${helper.calculerMonetaryValue(smallerValue)}€`}
+            `${helper.calculerMonetaryValue(smallerValue)}`}
           {usefullSocialMedia.valuePacks.length > 0 &&
             smallerValue !== hightestValue && <span>-</span>}
-          {helper.calculerMonetaryValue(hightestValue)}€
+          {helper.calculerMonetaryValue(hightestValue)}
         </div>
       );
     }
