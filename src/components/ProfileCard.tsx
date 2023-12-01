@@ -97,8 +97,33 @@ const ProfileCard = (params: {
         (socialMedia) => socialMedia.mainSocialMedia
       );
 
-      if (mainSocialMedia) {
+      if (
+        mainSocialMedia &&
+        mainSocialMedia.valuePacks &&
+        mainSocialMedia.valuePacks.length > 0
+      ) {
         setUsefullSocialMedia(mainSocialMedia);
+      } else {
+        const newMainSocialMedia = params.socialMedia.find(
+          (socialMedia) =>
+            socialMedia.valuePacks && socialMedia.valuePacks.length > 0
+        );
+
+        setUsefullSocialMedia(
+          newMainSocialMedia || {
+            userSocialMediaFollowers: {
+              id: -1,
+              name: "",
+            },
+            handler: "",
+            id: -1,
+            socialMediaName: "",
+            socialMediaId: -1,
+            url: "",
+            valuePacks: [],
+            mainSocialMedia: false,
+          }
+        );
       }
     };
 
