@@ -4,6 +4,7 @@ import { api } from "../../utils/api";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
 import { LoadingSpinner } from "../../components/LoadingSpinner";
+import { helper } from "../../utils/helper";
 
 const InstagramAuth: NextPage = () => {
   const { query, isReady, push } = useRouter();
@@ -12,7 +13,7 @@ const InstagramAuth: NextPage = () => {
     api.userSocialMedias.authenticateInstagram.useMutation({
       onSuccess: (socialMedia) => {
         if (socialMedia) {
-          if (navigator.language === "pt") {
+          if (helper.acceptedLanguageCodes(navigator.language)) {
             void push(
               `/${navigator.language}/social-media/edit/${socialMedia.id}`
             );

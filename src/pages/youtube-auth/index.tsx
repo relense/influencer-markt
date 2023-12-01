@@ -4,6 +4,7 @@ import { api } from "../../utils/api";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
 import { LoadingSpinner } from "../../components/LoadingSpinner";
+import { helper } from "../../utils/helper";
 
 const YoutubeAuth: NextPage = () => {
   const { query, isReady, push } = useRouter();
@@ -12,9 +13,13 @@ const YoutubeAuth: NextPage = () => {
     api.userSocialMedias.authenticateYoutube.useMutation({
       onSuccess: (socialMedia) => {
         if (socialMedia) {
-          void push(
-            `/${navigator.language}/social-media/edit/${socialMedia.id}`
-          );
+          if (helper.acceptedLanguageCodes(navigator.language)) {
+            void push(
+              `/${navigator.language}/social-media/edit/${socialMedia.id}`
+            );
+          } else {
+            void push(`/social-media/edit/${socialMedia.id}`);
+          }
         }
       },
     });

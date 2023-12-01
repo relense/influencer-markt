@@ -198,6 +198,20 @@ const portugueseZipValidator = (zipCode: string) => {
   return zipCodePattern.test(zipCode);
 };
 
+const acceptedLanguageCodes = (language: string) => {
+  const availableLanguageCodes = ["pt"];
+
+  const exists = availableLanguageCodes.find(
+    (languageCode) => languageCode === language
+  );
+
+  if (exists) {
+    return true;
+  } else {
+    return false;
+  }
+};
+
 export const helper = {
   formatNumber,
   formatNumberWithDecimalValue,
@@ -214,4 +228,5 @@ export const helper = {
   useEffectOnlyOnce,
   calculateSalesTaxPortugal,
   portugueseZipValidator,
+  acceptedLanguageCodes,
 };
