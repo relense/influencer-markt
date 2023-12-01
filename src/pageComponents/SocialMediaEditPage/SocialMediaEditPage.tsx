@@ -74,20 +74,24 @@ const SocialMediaEditPage = (params: {
   });
 
   useEffect(() => {
-    if (watch("valuePacks")) {
-      setContentTypesList(
-        watch("valuePacks").map((valuePacks) => {
-          return {
-            contentType: {
-              id: valuePacks.contentType.id || -1,
-              name: valuePacks.contentType.name || "",
-            },
-            price: valuePacks.valuePackPrice,
-          };
-        })
-      );
+    if (watch("valuePacks") && isLoadingUserSocialMedia === false) {
+      if (watch("valuePacks").length === 0) {
+        setContentTypesList([{ contentType: { id: -1, name: "" }, price: 0 }]);
+      } else {
+        setContentTypesList(
+          watch("valuePacks").map((valuePacks) => {
+            return {
+              contentType: {
+                id: valuePacks.contentType.id || -1,
+                name: valuePacks.contentType.name || "",
+              },
+              price: valuePacks.valuePackPrice,
+            };
+          })
+        );
+      }
     }
-  }, [params, watch]);
+  }, [isLoadingUserSocialMedia, params, watch]);
 
   useEffect(() => {
     if (userSocialMedia) {
