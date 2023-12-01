@@ -125,8 +125,8 @@ const InfluencersFilterModal = (params: {
               key={-1}
               className={
                 filterWatch("gender").id === -1
-                  ? "w-18 flex cursor-pointer justify-center rounded-2xl border-[1px] border-gray3 bg-influencer-green p-2 text-center text-white sm:w-24"
-                  : "w-18 flex cursor-pointer justify-center rounded-2xl border-[1px] border-gray3 p-2 text-center sm:w-24"
+                  ? "flex cursor-pointer justify-center rounded-2xl border-[1px] border-gray3 bg-influencer-green p-2 px-10 text-center text-white"
+                  : "flex cursor-pointer justify-center rounded-2xl border-[1px] border-gray3 p-2 px-10 text-center"
               }
               onClick={() => filterSetValue("gender", { id: -1, name: "" })}
             >
@@ -138,8 +138,8 @@ const InfluencersFilterModal = (params: {
                   key={gender.id}
                   className={
                     filterWatch("gender").id === gender.id
-                      ? "w-18 flex cursor-pointer justify-center rounded-2xl border-[1px] border-gray3 bg-influencer-green p-2 text-center text-white sm:w-24"
-                      : "w-18 flex cursor-pointer justify-center rounded-2xl border-[1px] border-gray3 p-2 text-center sm:w-24"
+                      ? "flex cursor-pointer justify-center rounded-2xl border-[1px] border-gray3 bg-influencer-green p-2 px-10 text-center text-white"
+                      : "flex cursor-pointer justify-center rounded-2xl border-[1px] border-gray3 p-2 px-10 text-center"
                   }
                   onClick={() => filterSetValue("gender", gender)}
                 >
@@ -166,8 +166,8 @@ const InfluencersFilterModal = (params: {
               key={-1}
               className={
                 filterWatch("contentType").id === -1
-                  ? "flex w-fit min-w-[96px] cursor-pointer justify-center rounded-2xl border-[1px] border-gray3 bg-influencer-green p-2  text-center text-white"
-                  : "flex w-fit min-w-[96px] cursor-pointer justify-center rounded-2xl border-[1px] border-gray3 p-2 text-center"
+                  ? "flex w-fit min-w-[96px] cursor-pointer justify-center rounded-2xl border-[1px] border-gray3 bg-influencer-green p-2 px-10 text-center text-white"
+                  : "flex w-fit min-w-[96px] cursor-pointer justify-center rounded-2xl border-[1px] border-gray3 p-2 px-10 text-center"
               }
               onClick={() =>
                 filterSetValue("contentType", { id: -1, name: "" })
@@ -181,8 +181,8 @@ const InfluencersFilterModal = (params: {
                   key={contentType.id}
                   className={
                     filterWatch("contentType").id === contentType.id
-                      ? "flex w-fit min-w-[96px] cursor-pointer justify-center rounded-2xl border-[1px] border-gray3 bg-influencer-green p-2 text-center text-white"
-                      : "flex w-fit min-w-[96px] cursor-pointer justify-center rounded-2xl border-[1px] border-gray3 p-2 text-center"
+                      ? "flex w-fit min-w-[96px] cursor-pointer justify-center rounded-2xl border-[1px] border-gray3 bg-influencer-green p-2 px-10 text-center text-white"
+                      : "flex w-fit min-w-[96px] cursor-pointer justify-center rounded-2xl border-[1px] border-gray3 p-2 px-10 text-center"
                   }
                   onClick={() => filterSetValue("contentType", contentType)}
                 >
