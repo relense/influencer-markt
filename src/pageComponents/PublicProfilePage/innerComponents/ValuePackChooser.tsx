@@ -86,12 +86,18 @@ const ValuePackChooser = (params: {
             name={`platform`}
             noBorder
             placeholder={t("pages.publicProfilePage.platformPlaceholder")}
-            options={params.availableUserSocialMedia.map((userSocialMedia) => {
-              return {
-                id: userSocialMedia.platform.id,
-                name: userSocialMedia.platform.name,
-              };
-            })}
+            options={params.availableUserSocialMedia.reduce(
+              (result: Option[], userSocialMedia) => {
+                if (userSocialMedia.valuePacks.length > 0) {
+                  result.push({
+                    id: userSocialMedia.platform.id,
+                    name: userSocialMedia.platform.name,
+                  });
+                }
+                return result;
+              },
+              []
+            )}
             handleOptionSelect={params.onChangePlatform}
             value={params.platform}
           />
