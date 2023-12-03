@@ -49,6 +49,12 @@ const PublicProfileSocialMediaEdit = (params: {
     },
   });
 
+  const { mutate: loginTwitch } = api.userSocialMedias.loginTwitch.useMutation({
+    onSuccess: (response) => {
+      window.open(response, "_self");
+    },
+  });
+
   useEffect(() => {
     if (profileSocialMedia) {
       setUserSocialMediaList(
@@ -247,11 +253,43 @@ const PublicProfileSocialMediaEdit = (params: {
     }
   };
 
+  const twitchButton = () => {
+    if (
+      !userSocialMediaList.some(
+        (socialMedia) => socialMedia.platform.name === "Twitch"
+      )
+    ) {
+      return (
+        <div key="twitchSocialMedia">
+          <button
+            className="m-2 w-3/6 cursor-pointer rounded-lg border-[1px] px-4 py-2 text-center text-sm font-semibold shadow-md shadow-boxShadow hover:shadow-none lg:rounded-2xl lg:px-8 lg:py-4 lg:text-base"
+            onClick={() => loginTwitch()}
+          >
+            <div className="flex items-center justify-center gap-4">
+              <Image
+                src={`/images/twitch.png`}
+                height={1000}
+                width={1000}
+                style={{ width: "32px", height: "32px" }}
+                alt="Twitch Logo"
+                className="object-contain"
+              />
+              <div className="flex justify-center">
+                {t("pages.publicProfilePage.connectToTwitch")}
+              </div>
+            </div>
+          </button>
+        </div>
+      );
+    }
+  };
+
   const renderCreateSocialMediaConnectButtons = () => {
     const connectButtons = [];
 
     connectButtons.push(instagramButton());
     connectButtons.push(tiktokButton());
+    connectButtons.push(twitchButton());
     // connectButtons.push(youtubeButton());
 
     return connectButtons;

@@ -94,6 +94,30 @@ type TIKTOK_BASIC_PROFILE = {
   };
 };
 
+type TWITCH_RESPONSE = {
+  data: {
+    access_token: string;
+    expires_in: number;
+    refresh_token: string;
+    scope: string[];
+    token_type: string;
+  };
+};
+
+type TWITCH_BASIC_PROFILE = {
+  data: {
+    data: {
+      broadcaster_type: string;
+      created_at: string;
+      description: string;
+      display_name: string;
+      email: string;
+      id: string;
+      login: string;
+    }[];
+  };
+};
+
 export const userSocialMediasRouter = createTRPCRouter({
   createUserSocialMedia: protectedProcedure
     .input(
@@ -505,7 +529,11 @@ export const userSocialMediasRouter = createTRPCRouter({
           return newUserSocialMedia;
         }
       } catch (err) {
-        console.log(err);
+        if (err instanceof Error) {
+          throw new Error(err.message);
+        } else {
+          throw new Error("An unknown error occurred");
+        }
       }
     }),
 
@@ -593,7 +621,11 @@ export const userSocialMediasRouter = createTRPCRouter({
           return newUserSocialMedia;
         }
       } catch (err) {
-        console.log(err);
+        if (err instanceof Error) {
+          throw new Error(err.message);
+        } else {
+          throw new Error("An unknown error occurred");
+        }
       }
     }),
 
@@ -619,7 +651,11 @@ export const userSocialMediasRouter = createTRPCRouter({
 
       return url;
     } catch (err) {
-      console.log(err);
+      if (err instanceof Error) {
+        throw new Error(err.message);
+      } else {
+        throw new Error("An unknown error occurred");
+      }
     }
   }),
 
@@ -709,7 +745,154 @@ export const userSocialMediasRouter = createTRPCRouter({
           return newUserSocialMedia;
         }
       } catch (err) {
-        console.log(err);
+        if (err instanceof Error) {
+          throw new Error(err.message);
+        } else {
+          throw new Error("An unknown error occurred");
+        }
+      }
+    }),
+
+  loginTwitch: protectedProcedure.mutation(({ ctx }) => {
+    try {
+      const csrfState = Math.random().toString(36).substring(2);
+
+      if (ctx.res) {
+        ctx.res.setHeader(
+          "Set-Cookie",
+          `csrfState=${csrfState}; Max-Age=60000;`
+        );
+      }
+
+      let url = "https://id.twitch.tv/oauth2/authorize";
+
+      // the following params need to be in `application/x-www-form-urlencoded` format.
+      url += `?client_id=${env.TWITCH_CLIENT_ID}`;
+      url += `&force_verify=true`;
+      url += `&response_type=code`;
+      url += `&redirect_uri=${env.NEXT_PUBLIC_BASE_URL}/twitch-auth`;
+      url += `&scope=user%3Aread%3Aemail`;
+      url += `&state=${csrfState}`;
+
+      return url;
+    } catch (err) {
+      if (err instanceof Error) {
+        throw new Error(err.message);
+      } else {
+        throw new Error("An unknown error occurred");
+      }
+    }
+  }),
+
+  authenticateTwitch: protectedProcedure
+    .input(
+      z.object({
+        code: z.string(),
+        stateQuery: z.string(),
+      })
+    )
+    .mutation(async ({ ctx, input }) => {
+      try {
+        if (ctx.req) {
+          const storedCsrfState = ctx.req.cookies.csrfState;
+          if (storedCsrfState !== input.stateQuery) {
+            throw Error("CsrfState doesnt match");
+          }
+        }
+        if (process.env.NEXT_PUBLIC_BASE_URL) {
+          const formData = new URLSearchParams();
+          formData.append("client_id", env.TWITCH_CLIENT_ID);
+          formData.append("client_secret", env.TWITCH_CLIENT_SECRET);
+          formData.append("grant_type", "authorization_code");
+          formData.append(
+            "redirect_uri",
+            `${process.env.NEXT_PUBLIC_BASE_URL}/twitch-auth`
+          );
+          formData.append("code", input.code);
+
+          console.log(input.code);
+
+          const response: TWITCH_RESPONSE = await axios.post(
+            "https://id.twitch.tv/oauth2/token",
+            formData.toString(),
+            {
+              headers: {
+                "Content-Type": "application/x-www-form-urlencoded",
+              },
+            }
+          );
+
+          const socialMedia = await ctx.prisma.socialMedia.findFirst({
+            where: {
+              name: {
+                equals: "Twitch",
+              },
+            },
+          });
+
+          const profile = await ctx.prisma.profile.findUnique({
+            where: { userId: ctx.session.user.id },
+            include: {
+              user: {
+                select: {
+                  username: true,
+                },
+              },
+              userSocialMedia: {
+                include: {
+                  valuePacks: true,
+                },
+              },
+            },
+          });
+
+          if (profile && socialMedia) {
+            const basicProfile: TWITCH_BASIC_PROFILE = await axios.get(
+              "https://api.twitch.tv/helix/users",
+              {
+                headers: {
+                  Authorization: `Bearer ${response.data.access_token}`,
+                  "Client-Id": env.TWITCH_CLIENT_ID,
+                },
+              }
+            );
+
+            console.log(basicProfile);
+
+            if (
+              basicProfile.data &&
+              basicProfile.data.data &&
+              basicProfile.data.data[0]
+            ) {
+              const newUserSocialMedia =
+                await ctx.prisma.userSocialMedia.create({
+                  data: {
+                    handler: basicProfile.data.data[0].display_name,
+                    userSocialMediaFollowersId: 1,
+                    profileId: profile.id,
+                    socialMediaAccessToken: response.data.access_token,
+                    socialMediaId: socialMedia.id,
+                    url: createSocialMediaUrl(
+                      socialMedia.id,
+                      basicProfile.data.data[0].display_name
+                    ),
+                    mainSocialMedia:
+                      profile.userSocialMedia.length === 0 ? true : false,
+                  },
+                });
+
+              return newUserSocialMedia;
+            } else {
+              throw new Error("no user");
+            }
+          }
+        }
+      } catch (err) {
+        if (err instanceof Error) {
+          throw new Error(err.message);
+        } else {
+          throw new Error("An unknown error occurred");
+        }
       }
     }),
 });

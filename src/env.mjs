@@ -52,6 +52,9 @@ export const env = createEnv({
 
     TIKTOK_CLIENT_KEY: z.string(),
     TIKTOK_CLIENT_SECRET: z.string(),
+
+    TWITCH_CLIENT_ID: z.string(),
+    TWITCH_CLIENT_SECRET: z.string(),
   },
 
   /**
@@ -108,6 +111,9 @@ export const env = createEnv({
 
     TIKTOK_CLIENT_KEY: process.env.TIKTOK_CLIENT_KEY,
     TIKTOK_CLIENT_SECRET: process.env.TIKTOK_CLIENT_SECRET,
+
+    TWITCH_CLIENT_ID: process.env.TWITCH_CLIENT_ID,
+    TWITCH_CLIENT_SECRET: process.env.TWITCH_CLIENT_SECRET,
   },
   /**
    * Run `build` or `dev` with `SKIP_ENV_VALIDATION` to skip env validation.
