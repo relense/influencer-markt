@@ -239,10 +239,6 @@ const PublicProfileSocialMediaEdit = (params: {
           }}
         >
           <div className="flex items-center justify-center gap-4">
-            <div className="flex justify-center">
-              {t("pages.publicProfilePage.connectToYoutube")}
-            </div>
-
             <Image
               src={`/images/youtube.png`}
               height={1000}
@@ -251,6 +247,9 @@ const PublicProfileSocialMediaEdit = (params: {
               alt="Instagram Logo"
               className="object-contain"
             />
+            <div className="flex justify-center">
+              {t("pages.publicProfilePage.connectToYoutube")}
+            </div>
           </div>
         </button>
       );
