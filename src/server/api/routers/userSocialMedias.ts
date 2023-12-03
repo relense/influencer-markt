@@ -562,8 +562,6 @@ export const userSocialMediasRouter = createTRPCRouter({
           }
         );
 
-        console.log(response);
-
         const socialMedia = await ctx.prisma.socialMedia.findFirst({
           where: {
             name: {
@@ -901,7 +899,7 @@ const createSocialMediaUrl = (socialMediaId: number, handler: string) => {
   if (socialMediaId === 1) {
     return `https://www.instagram.com/${handler}/`;
   } else if (socialMediaId === 2) {
-    return `https://www.youtube.com/@${handler}/`;
+    return `https://www.youtube.com/${handler}/`;
   } else if (socialMediaId === 3) {
     return `https://www.facebook.com/${handler}/`;
   } else if (socialMediaId === 4) {
