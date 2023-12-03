@@ -1,11 +1,26 @@
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPencil, faXmark } from "@fortawesome/free-solid-svg-icons";
+import { useState } from "react";
 import { useTranslation } from "next-i18next";
+import {
+  type IconDefinition,
+  faGlobe,
+  faPencil,
+  faXmark,
+} from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faFacebook,
+  faInstagram,
+  faLinkedin,
+  faPinterest,
+  faTiktok,
+  faTwitch,
+  faXTwitter,
+  faYoutube,
+} from "@fortawesome/free-brands-svg-icons";
 import type { SocialMediaDetails } from "../utils/globalTypes";
 import { helper } from "../utils/helper";
 import { Modal } from "./Modal";
 import { Button } from "./Button";
-import { useState } from "react";
 
 const SocialMediaCard = (params: {
   socialMedia: SocialMediaDetails;
@@ -20,6 +35,28 @@ const SocialMediaCard = (params: {
   const handleSubmit = () => {
     setOpenDeleteModal(false);
     params.onDelete();
+  };
+
+  const socialMediaIcon = (socialMediaName: string): IconDefinition => {
+    if (socialMediaName === "Instagram") {
+      return faInstagram;
+    } else if (socialMediaName === "X") {
+      return faXTwitter;
+    } else if (socialMediaName === "TikTok") {
+      return faTiktok;
+    } else if (socialMediaName === "YouTube") {
+      return faYoutube;
+    } else if (socialMediaName === "Facebook") {
+      return faFacebook;
+    } else if (socialMediaName === "Linkedin") {
+      return faLinkedin;
+    } else if (socialMediaName === "Pinterest") {
+      return faPinterest;
+    } else if (socialMediaName === "Twitch") {
+      return faTwitch;
+    } else {
+      return faGlobe;
+    }
   };
 
   return (
@@ -39,13 +76,17 @@ const SocialMediaCard = (params: {
             </div>
           )}
           <div
-            className="flex w-10 cursor-pointer items-center gap-1 font-semibold text-influencer hover:underline"
+            className="flex w-10 cursor-pointer items-center gap-2 font-semibold text-influencer hover:underline "
             onClick={(e) => {
               params.onHandleEditSocialMedia();
               e.stopPropagation();
             }}
           >
-            {params.socialMedia.platform.name}
+            <FontAwesomeIcon
+              icon={socialMediaIcon(params.socialMedia.platform.name)}
+              className="text-md cursor-pointer text-influencer"
+            />
+            <span>{params.socialMedia.platform.name}</span>
             <FontAwesomeIcon
               icon={faPencil}
               className="fa-base cursor-pointer pb-1 text-influencer"

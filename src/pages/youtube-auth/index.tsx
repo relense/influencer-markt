@@ -22,16 +22,32 @@ const YoutubeAuth: NextPage = () => {
           }
         }
       },
+      onError: () => {
+        void push(`/${data?.username || ""}`);
+      },
     });
 
+  const { data, isLoading: isLoadingData } = api.users.getUserInfo.useQuery();
+
   useEffect(() => {
-    if (isReady) {
+    if (isReady && isLoadingData === false) {
       const code = query.code as string;
-      void authenticateYoutube({
-        code: code || "",
-      });
+      if (code) {
+        void authenticateYoutube({
+          code: code || "",
+        });
+      } else {
+        void push(`/${data?.username || ""}`);
+      }
     }
-  }, [authenticateYoutube, isReady, query.code]);
+  }, [
+    authenticateYoutube,
+    data?.username,
+    isLoadingData,
+    isReady,
+    push,
+    query.code,
+  ]);
 
   return (
     <div className="flex justify-center">

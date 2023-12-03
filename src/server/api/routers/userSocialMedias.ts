@@ -545,78 +545,87 @@ export const userSocialMediasRouter = createTRPCRouter({
     )
     .mutation(async ({ ctx, input }) => {
       try {
-        const formData = new URLSearchParams();
-        formData.append("client_id", env.NEXT_PUBLIC_GOOGLE_CLIENT_ID);
-        formData.append("client_secret", env.GOOGLE_CLIENT_SECRET);
-        formData.append("grant_type", "authorization_code");
-        formData.append("redirect_uri", env.NEXT_PUBLIC_GOOGLE_REDIRECT_URI);
-        formData.append("code", input.code);
+        if (process.env.NEXT_PUBLIC_BASE_URL) {
+          const formData = new URLSearchParams();
+          formData.append("client_id", env.NEXT_PUBLIC_GOOGLE_CLIENT_ID);
+          formData.append("client_secret", env.GOOGLE_CLIENT_SECRET);
+          formData.append("grant_type", "authorization_code");
+          formData.append(
+            "redirect_uri",
+            `${process.env.NEXT_PUBLIC_BASE_URL}/youtube-auth`
+          );
+          formData.append("code", input.code);
 
-        const response: YOUTUBE_RESPONSE = await axios.post(
-          "https://oauth2.googleapis.com/token",
-          formData.toString(),
-          {
-            headers: {
-              "Content-Type": "application/x-www-form-urlencoded",
-            },
-          }
-        );
-
-        const socialMedia = await ctx.prisma.socialMedia.findFirst({
-          where: {
-            name: {
-              equals: "YouTube",
-            },
-          },
-        });
-
-        const profile = await ctx.prisma.profile.findUnique({
-          where: { userId: ctx.session.user.id },
-          include: {
-            user: {
-              select: {
-                username: true,
-              },
-            },
-            userSocialMedia: {
-              include: {
-                valuePacks: true,
-              },
-            },
-          },
-        });
-
-        if (profile && socialMedia) {
-          const basicProfile: YOUTUBE_BASIC_PROFILE = await axios.get(
-            "https://www.googleapis.com/youtube/v3/channels",
+          const response: YOUTUBE_RESPONSE = await axios.post(
+            "https://oauth2.googleapis.com/token",
+            formData.toString(),
             {
-              params: {
-                part: "snippet",
-                mine: true,
-              },
               headers: {
-                Authorization: `Bearer ${response.data.access_token}`,
+                "Content-Type": "application/x-www-form-urlencoded",
               },
             }
           );
 
-          const newUserSocialMedia = await ctx.prisma.userSocialMedia.create({
-            data: {
-              handler: basicProfile.data.items[0].snippet.customUrl,
-              userSocialMediaFollowersId: 1,
-              profileId: profile.id,
-              socialMediaAccessToken: response.data.access_token,
-              socialMediaId: socialMedia.id,
-              url: createSocialMediaUrl(
-                socialMedia.id,
-                basicProfile.data.items[0].snippet.customUrl
-              ),
-              mainSocialMedia:
-                profile.userSocialMedia.length === 0 ? true : false,
+          const socialMedia = await ctx.prisma.socialMedia.findFirst({
+            where: {
+              name: {
+                equals: "YouTube",
+              },
             },
           });
 
-          return newUserSocialMedia;
+          const profile = await ctx.prisma.profile.findUnique({
+            where: { userId: ctx.session.user.id },
+            include: {
+              user: {
+                select: {
+                  username: true,
+                },
+              },
+              userSocialMedia: {
+                include: {
+                  valuePacks: true,
+                },
+              },
+            },
+          });
+
+          if (profile && socialMedia) {
+            const basicProfile: YOUTUBE_BASIC_PROFILE = await axios.get(
+              "https://www.googleapis.com/youtube/v3/channels",
+              {
+                params: {
+                  part: "snippet",
+                  mine: true,
+                },
+                headers: {
+                  Authorization: `Bearer ${response.data.access_token}`,
+                },
+              }
+            );
+
+            if (basicProfile.data.pageInfo.totalResults === 0) {
+              throw new Error("No youtube accounts");
+            }
+
+            const newUserSocialMedia = await ctx.prisma.userSocialMedia.create({
+              data: {
+                handler: basicProfile.data.items[0].snippet.customUrl,
+                userSocialMediaFollowersId: 1,
+                profileId: profile.id,
+                socialMediaAccessToken: response.data.access_token,
+                socialMediaId: socialMedia.id,
+                url: createSocialMediaUrl(
+                  socialMedia.id,
+                  basicProfile.data.items[0].snippet.customUrl
+                ),
+                mainSocialMedia:
+                  profile.userSocialMedia.length === 0 ? true : false,
+              },
+            });
+
+            return newUserSocialMedia;
+          }
         }
       } catch (err) {
         if (err instanceof Error) {
