@@ -1234,6 +1234,12 @@
         "subtitle5": "Tomada de decisões automatizada e definição de perfis: Não utilizamos os seus dados pessoais para fins de tomada de decisões automatizadas, exceto quando exigido por lei. Se esse processamento for necessário, notificá-lo-emos e dar-lhe-emos a oportunidade de se opor.",
         "subtitle6": "Perfis de utilizador e envios: Determinadas informações do perfil do utilizador, incluindo o seu nome, localização e quaisquer vídeos ou imagens carregados, podem ser visíveis para outros utilizadores para facilitar a interação nos serviços ou responder aos seus pedidos de serviço. Tenha em atenção que o conteúdo que carregar para o seu perfil de utilizador público, juntamente com qualquer informação pessoal ou conteúdo divulgado publicamente (por exemplo, fóruns de discussão, mensagens, áreas de conversação), fica disponível publicamente e pode ser recolhido e utilizado por qualquer pessoa. O seu nome de utilizador também pode ser apresentado a outros utilizadores quando envia mensagens, comentários ou carrega conteúdos. Se iniciar sessão através de um site de rede social de terceiros, a sua lista de amigos desse site pode ser importada para os nossos serviços e os seus amigos que também são utilizadores registados podem aceder a determinadas informações não públicas do seu perfil. Não controlamos as políticas e práticas de websites ou serviços de terceiros."
       },
+      "youtubeComplianceLimitedUsePolicy": {
+        "title": "Conformidade com a Política de Utilização Limitada do Google",
+        "subtitle1": "A utilização e transferência, por parte da Influencer Markt, de informações recebidas das APIs do Google seguirá",
+        "subtitle2": "a Política de Dados do Utilizador dos Serviços da API do Google",
+        "subtitle3": ", incluindo os requisitos de Utilização Limitada."
+      },
       "cookies": {
         "title1": "Cookies",
         "title2": "O que são Cookies?",

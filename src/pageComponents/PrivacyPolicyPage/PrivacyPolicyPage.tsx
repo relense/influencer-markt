@@ -59,6 +59,28 @@ const PrivacyPolicyPage = () => {
     );
   };
 
+  const renderYoutubeCompliance = () => {
+    return (
+      <div className="flex flex-col gap-4 text-justify lg:text-left">
+        <div className="text-center text-2xl font-semibold lg:text-left">
+          {t("pages.privacyPolicy.youtubeComplianceLimitedUsePolicy.title")}
+        </div>
+        <div>
+          {t("pages.privacyPolicy.youtubeComplianceLimitedUsePolicy.subtitle1")}{" "}
+          <a
+            href="https://developers.google.com/terms/api-services-user-data-policy#additional_requirements_for_specific_api_scopes"
+            className="text-blue-500 underline"
+          >
+            {t(
+              "pages.privacyPolicy.youtubeComplianceLimitedUsePolicy.subtitle2"
+            )}
+          </a>
+          {t("pages.privacyPolicy.youtubeComplianceLimitedUsePolicy.subtitle3")}
+        </div>
+      </div>
+    );
+  };
+
   const renderCookies = () => {
     return (
       <div className="flex flex-col gap-4 text-justify lg:text-left">
@@ -187,6 +209,7 @@ const PrivacyPolicyPage = () => {
       {renderIntroduction()}
       {renderPurposesOfProcessing()}
       {renderCollectionYourPersonalData()}
+      {renderYoutubeCompliance()}
       {renderCookies()}
       {renderManagingCookies()}
       {renderSecurityMeasures()}

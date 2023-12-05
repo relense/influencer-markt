@@ -1238,6 +1238,12 @@
         "subtitle5": "Automated Decision Making and Profiling: We do not use your personal data for automated decision-making purposes, except when required by law. If such processing is necessary, we will notify you and provide an opportunity to object.",
         "subtitle6": "User Profiles and Submissions: Certain user profile information, including your name, location, and any uploaded videos or images, may be visible to other users to facilitate interaction within the services or address your service requests. Please be aware that content you upload to your public user profile, along with any personal information or content disclosed publicly (e.g., discussion boards, messages, chat areas), becomes publicly available and can be collected and used by anyone. Your username may also be displayed to other users when you send messages, comments, or upload content. If you sign in through a third-party social networking site, your list of friends from that site may be imported to our services, and your friends who are also registered users may access certain non-public information from your profile. We do not control the policies and practices of third-party sites or services."
       },
+      "youtubeComplianceLimitedUsePolicy": {
+        "title": "Google Limited Use Policy Compliance",
+        "subtitle1": "Influencer Markt use and transfer to any other app of information received from Google APIs will adhere to",
+        "subtitle2": "Google API Services User Data Policy",
+        "subtitle3": ", including the Limited Use requirements."
+      },
       "cookies": {
         "title1": "Cookies",
         "title2": "What are cookies?",
