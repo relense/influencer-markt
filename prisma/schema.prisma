@@ -551,7 +551,7 @@ model Billing {
   id            String  @id @default(cuid())
   name          String?
   email         String?
-  tin           String? @unique
+  tin           String?
   city          String?
   address       String?
   zip           String?
