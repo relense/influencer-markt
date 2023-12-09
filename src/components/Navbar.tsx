@@ -262,7 +262,7 @@ export const Navbar = (params: {
         )}
         {params.sessionData && (
           <div className="flex flex-row items-center justify-end gap-2">
-            {credits !== -1 && (
+            {credits !== -1 && params.role?.id === 1 && (
               <div
                 className="font-medium hover:cursor-pointer lg:hover:underline"
                 onClick={() => setCreditsMenuOpen(!creditsMenuOpen)}

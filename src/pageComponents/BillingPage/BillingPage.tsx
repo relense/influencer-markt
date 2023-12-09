@@ -44,8 +44,6 @@ const BillingPage = (params: { isBrand: boolean }) => {
 
   const { data: pendingPayoutsSum } = api.payouts.pendingPayoutsSum.useQuery();
 
-  const { data: totalCredit } = api.credits.calculateUserCredits.useQuery();
-
   const { data: getStripeLoginLink, refetch: refetchGetStripeLoginLink } =
     api.stripes.getAccountLoginLink.useQuery(undefined, {
       enabled: false,
@@ -180,14 +178,6 @@ const BillingPage = (params: { isBrand: boolean }) => {
               </div>
               <div className="text-2xl">
                 {helper.calculerMonetaryValue(pendingPayoutsSum || 0)}
-              </div>
-            </div>
-            <div className="flex flex-col gap-2">
-              <div className="text-2xl font-medium">
-                {t("pages.billing.availableCredits")}
-              </div>
-              <div className="text-2xl">
-                {helper.calculerMonetaryValue(totalCredit || 0)}
               </div>
             </div>
           </div>
