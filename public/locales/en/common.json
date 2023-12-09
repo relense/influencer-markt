@@ -586,7 +586,7 @@
         "invalidPictureAlert": "Pictures must be jpeg, jpg or png and can't exceed 4mbs",
         "addProfilePicture": "Add your Profile Image",
         "displayNamePlaceholder": "Choose Your Display Name: How Would You Like to be Recognized?",
-        "genderPlaceholder": "Select your gender: Male, Female, Other",
+        "genderPlaceholder": "Select your gender: Male, Female, Non-binary",
         "categoriesPlaceholder": "Choose Your Categories: e.g., Fashion, Travel, Fitness",
         "countryPlaceholder": "Country",
         "cityPlaceholder": "City",
