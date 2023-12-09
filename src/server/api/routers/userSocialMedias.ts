@@ -504,27 +504,27 @@ export const userSocialMediasRouter = createTRPCRouter({
             },
           });
 
-          if (
-            basicProfile.data.media &&
-            basicProfile.data.media.data.length > 0
-          ) {
-            for (let i = 0; i < basicProfile.data.media.data.length; i++) {
-              const media = basicProfile.data.media.data[i];
-              if (media) {
-                const instagramMedia: INSTAGRAM_MEDIA = await axios.get(
-                  `https://graph.instagram.com/v18.0/${media.id}?fields=media_url,media_type&access_token=${response.data.access_token}`
-                );
+          // if (
+          //   basicProfile.data.media &&
+          //   basicProfile.data.media.data.length > 0
+          // ) {
+          //   for (let i = 0; i < basicProfile.data.media.data.length; i++) {
+          //     const media = basicProfile.data.media.data[i];
+          //     if (media) {
+          //       const instagramMedia: INSTAGRAM_MEDIA = await axios.get(
+          //         `https://graph.instagram.com/v18.0/${media.id}?fields=media_url,media_type&access_token=${response.data.access_token}`
+          //       );
 
-                if (instagramMedia.data.media_type === "IMAGE") {
-                  await downloadAndUploadPicture({
-                    pictureUrl: instagramMedia.data.media_url,
-                    profileId: profile.id,
-                  });
-                  break;
-                }
-              }
-            }
-          }
+          //       if (instagramMedia.data.media_type === "IMAGE") {
+          //         await downloadAndUploadPicture({
+          //           pictureUrl: instagramMedia.data.media_url,
+          //           profileId: profile.id,
+          //         });
+          //         break;
+          //       }
+          //     }
+          //   }
+          // }
 
           return newUserSocialMedia;
         }

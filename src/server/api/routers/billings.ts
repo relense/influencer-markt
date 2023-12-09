@@ -116,8 +116,8 @@ export const BillingsRouter = createTRPCRouter({
         },
       });
 
-      if (nifExists) {
-        return false;
+      if (nifExists?.tin === input.vatNumber) {
+        return { valid: false, messageCode: "notUnique" };
       }
 
       if (country) {
@@ -128,9 +128,13 @@ export const BillingsRouter = createTRPCRouter({
             vatNumber: input.vatNumber,
           }
         );
-        return viesResponse.data.valid;
+        if (viesResponse.data.valid === false) {
+          return { valid: viesResponse.data.valid, messageCode: "invalidTin" };
+        } else {
+          return { valid: viesResponse.data.valid, messageCode: "valid" };
+        }
       } else {
-        return false;
+        return { valid: false, messageCode: "invalidTin" };
       }
     }),
 

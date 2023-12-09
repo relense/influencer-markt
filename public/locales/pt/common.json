@@ -594,7 +594,9 @@
         "emptyMessageWithCountry": "Escolhe um país antes de escolheres a cidade",
         "optional": "Opcional",
         "tinPlaceholder": "Número de Identificação Fiscal",
-        "invalidTin": "O NIF é inválido"
+        "invalidTin": "O NIF é inválido",
+        "notUnique": "O NIF já está registado",
+        "contactUs": "Entra em contacto se precisares de ajuda."
       }
     },
 

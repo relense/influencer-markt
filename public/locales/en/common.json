@@ -596,7 +596,9 @@
         "emptyMessageWithCountry": "Choose a country before choosing a city",
         "optional": "Optional",
         "tinPlaceholder": "Tax Identification Number",
-        "invalidTin": "The Tax Identification Number is invalid"
+        "invalidTin": "The Tax Identification Number is invalid",
+        "notUnique": "The Tax Identification Number is already registered.",
+        "contactUs": "Contact us if you need help."
       }
     },
 

@@ -29,6 +29,7 @@ import {
   faCircleXmark,
 } from "@fortawesome/free-regular-svg-icons";
 import { Spinner } from "../../../components/Spinner";
+import Link from "next/link";
 
 export const SetupProfileStep = (params: {
   control: Control<ProfileData, unknown>;
@@ -38,7 +39,7 @@ export const SetupProfileStep = (params: {
   submit: () => void;
   errors: FieldErrors<ProfileData>;
   refetchVerifyVatNumber: () => void;
-  verifyVatNumber: boolean | undefined;
+  verifyVatNumber: { valid: boolean; messageCode: string } | undefined;
   isRefetchingVatNumber: boolean;
 }) => {
   const { t } = useTranslation();
@@ -147,35 +148,58 @@ export const SetupProfileStep = (params: {
       params.watch("nationOfBirth").id !== -1
     ) {
       return (
-        <div className="flex w-full flex-row items-center gap-2">
-          <input
-            {...params.register("tin")}
-            placeholder={t("pages.firstSteps.profileForm.tinPlaceholder")}
-            required
-            type="text"
-            className={
-              "flex h-14 flex-1 cursor-pointer rounded-lg border-[1px] border-gray3 bg-transparent p-4 placeholder-gray2 placeholder:w-11/12 focus:border-[1px] focus:border-black focus:outline-none"
-            }
-            autoComplete="off"
-            onBlur={() => {
-              if (params.watch("tin") && params.watch("tin").length > 7)
-                params.refetchVerifyVatNumber();
-            }}
-          />
-          {params.verifyVatNumber === false &&
-            params.isRefetchingVatNumber === false && (
-              <FontAwesomeIcon
-                icon={faCircleXmark}
-                className="text-xl text-influencer"
-              />
-            )}
-          {params.isRefetchingVatNumber && <Spinner />}
-          {params.verifyVatNumber && params.isRefetchingVatNumber === false && (
-            <FontAwesomeIcon
-              icon={faCircleCheck}
-              className="text-xl text-influencer-green"
+        <div className="flex flex-col gap-1">
+          <div className="flex w-full flex-row items-center gap-2">
+            <input
+              {...params.register("tin")}
+              placeholder={t("pages.firstSteps.profileForm.tinPlaceholder")}
+              required
+              type="text"
+              className={
+                "flex h-14 flex-1 cursor-pointer rounded-lg border-[1px] border-gray3 bg-transparent p-4 placeholder-gray2 placeholder:w-11/12 focus:border-[1px] focus:border-black focus:outline-none"
+              }
+              autoComplete="off"
+              onBlur={() => {
+                if (params.watch("tin") && params.watch("tin").length > 7)
+                  params.refetchVerifyVatNumber();
+              }}
             />
-          )}
+            {params.verifyVatNumber?.valid === false &&
+              params.isRefetchingVatNumber === false && (
+                <FontAwesomeIcon
+                  icon={faCircleXmark}
+                  className="text-xl text-influencer"
+                />
+              )}
+            {params.isRefetchingVatNumber && <Spinner />}
+            {params.verifyVatNumber?.valid &&
+              params.isRefetchingVatNumber === false && (
+                <FontAwesomeIcon
+                  icon={faCircleCheck}
+                  className="text-xl text-influencer-green"
+                />
+              )}
+          </div>
+          <div className="pl-2">
+            {params.verifyVatNumber?.valid === false &&
+              params.isRefetchingVatNumber === false && (
+                <span className="text-red-500">
+                  {t(
+                    `pages.firstSteps.profileForm.${params.verifyVatNumber.messageCode}`
+                  )}{" "}
+                  {params.verifyVatNumber.messageCode === "notUnique" && (
+                    <Link
+                      href={"/contact-us"}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="cursor-pointer text-blue-500 underline hover:text-blue-700"
+                    >
+                      {t("pages.firstSteps.profileForm.contactUs")}
+                    </Link>
+                  )}
+                </span>
+              )}
+          </div>
         </div>
       );
     }
