@@ -68,14 +68,19 @@ const createBillingPlatformInvoice = async (params: {
   };
 
   if (order && order.buyer) {
-    const basePrice =
-      order?.orderTotalPriceWithDiscount !== null
-        ? order?.orderTotalPriceWithDiscount
-        : order?.orderBasePrice;
+    let orderPrice = "";
 
-    const orderPrice = helper.calculerMonetaryValueWithoutToLocaleString(
-      basePrice + basePrice * helper.calculateServiceFee()
-    );
+    if (order?.orderTotalPriceWithDiscount !== null) {
+      orderPrice = helper.calculerMonetaryValueWithoutToLocaleString(
+        order?.orderTotalPriceWithDiscount /
+          (order.orderTaxPercentage / 100 + 1)
+      );
+    } else {
+      orderPrice = helper.calculerMonetaryValueWithoutToLocaleString(
+        order?.orderBasePrice +
+          order?.orderBasePrice * helper.calculateServiceFee()
+      );
+    }
 
     let clientId = order.buyer?.billingPlatformClientId;
 
