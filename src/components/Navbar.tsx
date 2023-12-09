@@ -443,16 +443,18 @@ export const Navbar = (params: {
                 </Link>
               )}
 
-              <Link
-                href="/orders"
-                className="group flex cursor-pointer items-center gap-4 py-2"
-              >
-                <FontAwesomeIcon icon={faBagShopping} className="fa-lg" />
+              {params.role && params.role.id !== 2 && (
+                <Link
+                  href="/orders"
+                  className="group flex cursor-pointer items-center gap-4 py-2"
+                >
+                  <FontAwesomeIcon icon={faBagShopping} className="fa-lg" />
 
-                <div className="need-interaction group-hover:underline">
-                  {t("components.navbar.orders")}
-                </div>
-              </Link>
+                  <div className="need-interaction group-hover:underline">
+                    {t("components.navbar.orders")}
+                  </div>
+                </Link>
+              )}
 
               {params.role && params.role.id !== 1 && (
                 <Link

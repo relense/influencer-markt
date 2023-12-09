@@ -130,7 +130,7 @@
     },
 
     "notificationsMessages": {
-      "awaitingOrderReply": "{{actor}} fez um pedido que precisa da tua revisão",
+      "awaitingOrderReply": "{{actor}} submeteu um novo pedido",
       "orderRejected": "{{actor}} rejeitou a tua oferta",
       "orderAccepted": "{{actor}} aceitou a tua oferta",
       "orderDelivered": "{{actor}} entregou o pedido",
@@ -145,7 +145,7 @@
       "orderRectifiedInfluencer": "Depois de ponderar, estamos a dar-te a oportunidade de corrigir o pedido e entregar daqui a 2 dias",
       "orderBuyerLostDispute": "Chegámos à conclusão de que o {{actor}} entregou o que lhe foi pedido",
       "orderInfluencerLostDispute": "Chegámos à conclusão de que {{actor}} não recebeu o que pediu. O pedido está suspenso até {{actor}} decidir como proceder.",
-      "orderInfluencerWonDispute": "Chegámos à conclusão de que entregas-te o que foi pedido a {{actor}}",
+      "orderInfluencerWonDispute": "Chegámos à conclusão de que entregaste o que foi pedido a {{actor}}",
       "orderBuyerWonDispute": "Chegámos à conclusão de que {{actor}} não entregou o que foi pedido. Podes decidir como pretendes proceder",
       "toBuyerConfirmByInfluencerMakrt": "O período de 96 horas para confirmação da encomenda expirou. Confirmámos a encomenda e emitimos o pagamento",
       "toInfluencerConfirmByInfluencerMakrt": "O período de 96 horas para confirmação da encomenda expirou. Confirmámos a encomenda e emitimos a fatura relevante",
@@ -837,7 +837,8 @@
       "maxFollowersError": "Máximo de seguidores deve ser maior que o mínimo de seguidores",
       "sendOrderRequest": "Enviar Pedido",
       "archiveJob": "Concluir Vaga",
-      "viewOrder": "Ver Pedido"
+      "viewOrder": "Ver Pedido",
+      "Non-binary": "Não-binário"
     },
 
     "jobs": {

@@ -168,7 +168,7 @@ const BillingPage = (params: { isBrand: boolean }) => {
                 </div>
               </div>
               <div className="text-2xl">
-                {helper.calculerMonetaryValue(availablePayoutsSum || 0)}€
+                {helper.calculerMonetaryValue(availablePayoutsSum || 0)}
               </div>
             </div>
             <div
@@ -179,7 +179,7 @@ const BillingPage = (params: { isBrand: boolean }) => {
                 {t("pages.billing.pendingBalance")}
               </div>
               <div className="text-2xl">
-                {helper.calculerMonetaryValue(pendingPayoutsSum || 0)}€
+                {helper.calculerMonetaryValue(pendingPayoutsSum || 0)}
               </div>
             </div>
             <div className="flex flex-col gap-2">
@@ -187,7 +187,7 @@ const BillingPage = (params: { isBrand: boolean }) => {
                 {t("pages.billing.availableCredits")}
               </div>
               <div className="text-2xl">
-                {helper.calculerMonetaryValue(totalCredit || 0)}€
+                {helper.calculerMonetaryValue(totalCredit || 0)}
               </div>
             </div>
           </div>

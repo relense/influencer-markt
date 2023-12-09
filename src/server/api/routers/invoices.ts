@@ -68,9 +68,13 @@ const createBillingPlatformInvoice = async (params: {
   };
 
   if (order && order.buyer) {
+    const basePrice =
+      order?.orderTotalPriceWithDiscount !== null
+        ? order?.orderTotalPriceWithDiscount
+        : order?.orderBasePrice;
+
     const orderPrice = helper.calculerMonetaryValueWithoutToLocaleString(
-      order?.orderBasePrice +
-        order?.orderBasePrice * helper.calculateServiceFee()
+      basePrice + basePrice * helper.calculateServiceFee()
     );
 
     let clientId = order.buyer?.billingPlatformClientId;

@@ -135,7 +135,7 @@ const WithdrawPage = () => {
             {t("pages.withdraw.withdawModalAvailablePayout")}
           </div>
           <div className="font-semibold text-influencer">
-            {helper.calculerMonetaryValue(availablePayoutsSum || 0)}€
+            {helper.calculerMonetaryValue(availablePayoutsSum || 0)}
           </div>
         </div>
         {isentOfTax === "false" && (
@@ -145,7 +145,6 @@ const WithdrawPage = () => {
               {helper.calculerMonetaryValue(
                 (availablePayoutsSum || 0) * helper.calculateSalesTaxPortugal()
               )}
-              €
             </div>
           </div>
         )}
@@ -158,7 +157,6 @@ const WithdrawPage = () => {
                   (availablePayoutsSum || 0) *
                     helper.calculateSalesTaxPortugal()
               )}
-              €
             </div>
           </div>
         )}

@@ -100,7 +100,7 @@ export default function CheckoutForm(params: {
     if (process.env.NEXT_PUBLIC_BASE_URL) {
       let returnUrl = `${process.env.NEXT_PUBLIC_BASE_URL}/order-pay-callback?orderId=${params.orderId}`;
 
-      if (!i18n.language.includes("en")) {
+      if (helper.acceptedLanguageCodes(i18n.language)) {
         returnUrl = `${process.env.NEXT_PUBLIC_BASE_URL}/${i18n.language}/order-pay-callback?orderId=${params.orderId}`;
       }
 

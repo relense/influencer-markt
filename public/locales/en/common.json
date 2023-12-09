@@ -130,7 +130,7 @@
     },
 
     "notificationsMessages": {
-      "awaitingOrderReply": "{{actor}} made a new order that needs your review",
+      "awaitingOrderReply": "{{actor}} submitted a new order",
       "orderRejected": "{{actor}} rejected your order",
       "orderAccepted": "{{actor}} accepted your order",
       "orderDelivered": "{{actor }} delivered your order",
@@ -840,7 +840,8 @@
       "maxFollowersError": "Maximum followers should be greater than minimum followers",
       "sendOrderRequest": "Send Order",
       "archiveJob": "Conclude Job",
-      "viewOrder": "View Order"
+      "viewOrder": "View Order",
+      "Non-binary": "Non-binary"
     },
 
     "jobs": {

@@ -234,9 +234,7 @@ const StartOrderPage = (params: {
               <div className="font-semibold text-influencer">
                 {t("pages.startOrder.gender")}
               </div>
-              <div>
-                {t(`components.startOrder.${profile?.gender?.name || ""}`)}
-              </div>
+              <div>{t(`pages.startOrder.${profile?.gender?.name || ""}`)}</div>
             </div>
             <div className="flex flex-col gap-2">
               <div className="font-semibold text-influencer">
