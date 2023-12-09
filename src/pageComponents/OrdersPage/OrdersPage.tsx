@@ -248,7 +248,6 @@ const OrdersPage = () => {
                 {helper.calculerMonetaryValue(
                   order.orderPrice - order.discountPrice
                 ) || 0}
-                €
               </div>
             </div>
           </div>

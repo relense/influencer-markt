@@ -287,13 +287,13 @@ const AdminPayoutManagesPage = (params: { payoutInvoiceId: string }) => {
           </div>
           <div className="line-clamp-1 flex flex-col gap-2 border-b-[1px] p-2">
             <div className="font-semibold text-influencer">Invoice Value</div>
-            <div>{helper.calculerMonetaryValue(totalPayoutsValue)}€</div>
+            <div>{helper.calculerMonetaryValue(totalPayoutsValue)}</div>
           </div>
           <div className="line-clamp-1 flex flex-col gap-2 border-b-[1px] p-2">
             <div className="font-semibold text-influencer">
               Invoice Value With Tax
             </div>
-            <div>{helper.calculerMonetaryValue(totalPayoutsValueWithTax)}€</div>
+            <div>{helper.calculerMonetaryValue(totalPayoutsValueWithTax)}</div>
           </div>
           <div className="line-clamp-1 flex flex-col gap-2 border-b-[1px] p-2">
             <div className="font-semibold text-influencer">

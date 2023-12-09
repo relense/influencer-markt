@@ -157,7 +157,7 @@ const JobsList = (params: {
                         {t("pages.jobs.jobPay")}
                       </div>
                       <div className="font-semibold text-black">
-                        {helper.calculerMonetaryValue(job?.price || 0)}€
+                        {helper.calculerMonetaryValue(job?.price || 0)}
                       </div>
                     </div>
                     {params.profile &&

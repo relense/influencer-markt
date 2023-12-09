@@ -255,7 +255,6 @@ const AdminPayoutsPage = () => {
                               invoice.payoutValue *
                                 helper.calculateSalesTaxPortugal()
                           )}
-                      €
                     </div>
                   </div>
                   <div

@@ -94,14 +94,14 @@ const Invoice = (params: { invoice: InvoiceType }) => {
         <div className="flex flex-col">
           <div className="font-medium">{t("pages.billing.orderTotal")}</div>
           <div className="text-base font-semibold text-influencer">
-            {helper.calculerMonetaryValue(invoice.invoiceSaleTotal)}€
+            {helper.calculerMonetaryValue(invoice.invoiceSaleTotal)}
           </div>
         </div>
         {!!invoice.orderCredits && (
           <div className="flex flex-col">
             <div className="font-medium">{t("pages.billing.creditsUsed")}</div>
             <div className="text-base font-semibold text-influencer">
-              {helper.calculerMonetaryValue(invoice.orderCredits || 0)}€
+              {helper.calculerMonetaryValue(invoice.orderCredits || 0)}
             </div>
           </div>
         )}
@@ -109,7 +109,7 @@ const Invoice = (params: { invoice: InvoiceType }) => {
           <div className="flex flex-col">
             <div className="font-medium">{t("pages.billing.refunded")}</div>
             <div className="text-base font-semibold text-influencer">
-              {helper.calculerMonetaryValue(invoice.orderRefundAmount || 0)}€
+              {helper.calculerMonetaryValue(invoice.orderRefundAmount || 0)}
             </div>
           </div>
         )}

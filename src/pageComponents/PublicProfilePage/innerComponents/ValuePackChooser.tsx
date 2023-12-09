@@ -137,7 +137,6 @@ const ValuePackChooser = (params: {
                           {helper.calculerMonetaryValue(
                             valuePack.valuePackPrice
                           )}
-                          €
                         </div>
                       </div>
                     </div>
@@ -216,11 +215,7 @@ const ValuePackChooser = (params: {
         <div className="flex flex-col gap-2">
           <div className="flex flex-1 justify-between">
             <div>{t("pages.publicProfilePage.subtotal")}</div>
-            {params.selectedValuePacks.length > 0 ? (
-              <div>{sumTotal}€</div>
-            ) : (
-              "-"
-            )}
+            {params.selectedValuePacks.length > 0 ? <div>{sumTotal}</div> : "-"}
           </div>
           <div className="flex flex-1 justify-between">
             <div
@@ -238,7 +233,7 @@ const ValuePackChooser = (params: {
 
             {params.selectedValuePacks.length > 0 &&
             params.profileCountryTax ? (
-              <div>{serviceTaxTotal}€</div>
+              <div>{serviceTaxTotal}</div>
             ) : (
               "-"
             )}
@@ -247,7 +242,7 @@ const ValuePackChooser = (params: {
             <div>{t("pages.publicProfilePage.fee")}</div>
             {params.selectedValuePacks.length > 0 &&
             params.profileCountryTax ? (
-              <div>{calculateTaxesTotal}€</div>
+              <div>{calculateTaxesTotal}</div>
             ) : (
               "-"
             )}
@@ -257,7 +252,7 @@ const ValuePackChooser = (params: {
         <div className="flex flex-1 justify-between font-semibold">
           <div>{t("pages.publicProfilePage.total")}</div>
           {params.selectedValuePacks.length > 0 && valuePacksTotalInCents ? (
-            <div>{calculateOrderTotal}€</div>
+            <div>{calculateOrderTotal}</div>
           ) : (
             "-"
           )}

@@ -307,7 +307,7 @@ const AvailableBalanceModal = (params: { onClose: () => void }) => {
                             {t("pages.billing.sale")}
                           </div>
                           <div>
-                            {helper.calculerMonetaryValue(payout.payoutValue)}€
+                            {helper.calculerMonetaryValue(payout.payoutValue)}
                           </div>
                         </div>
                         {payout.influencerInvoice && (

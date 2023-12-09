@@ -141,7 +141,7 @@ const PendingBalanceModal = (params: { onClose: () => void }) => {
                         <div>{payout.payoutCreated}</div>
                         <div>
                           {t("pages.billing.sale")}{" "}
-                          {helper.calculerMonetaryValue(payout.payoutValue)}€
+                          {helper.calculerMonetaryValue(payout.payoutValue)}
                         </div>
                       </div>
                     </div>

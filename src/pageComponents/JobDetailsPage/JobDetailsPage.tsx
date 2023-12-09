@@ -314,7 +314,7 @@ const JobDetailsPage = (params: {
         <div className="font-semibold text-influencer">
           {t("pages.jobs.jobPay")}
         </div>
-        <div>{helper.calculerMonetaryValue(job?.price || 0)}€</div>
+        <div>{helper.calculerMonetaryValue(job?.price || 0)}</div>
       </div>
     );
   };

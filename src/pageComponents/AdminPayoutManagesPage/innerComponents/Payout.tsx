@@ -33,9 +33,7 @@ const Payout = (params: { payout: Payout }) => {
         <div>
           <div className="line-clamp-1 flex flex-col gap-2 p-2">
             <div className="font-semibold text-influencer">Payout Value</div>
-            <div>
-              {helper.calculerMonetaryValue(params.payout.payoutValue)}€
-            </div>
+            <div>{helper.calculerMonetaryValue(params.payout.payoutValue)}</div>
           </div>
           <div className="line-clamp-1 flex flex-col gap-2 p-2">
             <div className="font-semibold text-influencer">Payout Order Id</div>

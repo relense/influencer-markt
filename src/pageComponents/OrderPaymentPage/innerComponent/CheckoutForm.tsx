@@ -337,7 +337,7 @@ export default function CheckoutForm(params: {
             <Button
               title={`${t("pages.orderPayment.pay", {
                 money: helper.calculerMonetaryValue(params.orderAmount),
-              })}€`}
+              })}`}
               isLoading={isLoading}
               disabled={isLoading || !stripe || !elements}
               id="submit"
