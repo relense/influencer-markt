@@ -27,11 +27,13 @@ const generateSiteMap = (usernames: string[]) => {
      </url>
      ${usernames
        .map((username) => {
-         return `
-       <url>
-           <loc>${`https://www.influencermarkt.com/${username}`}</loc>
-       </url>
-     `;
+         if (!username.includes("delete") || !username.includes("test")) {
+           return `
+        <url>
+            <loc>${`https://www.influencermarkt.com/${username}`}</loc>
+        </url>
+      `;
+         }
        })
        .join("")}
    </urlset>
