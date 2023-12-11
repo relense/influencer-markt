@@ -34,7 +34,6 @@ export const profilesRouter = createTRPCRouter({
             profilePicture: {
               not: "",
             },
-            portfolio: { some: {} },
             categories: {
               some: {
                 id: {
@@ -91,7 +90,6 @@ export const profilesRouter = createTRPCRouter({
             profilePicture: {
               not: "",
             },
-            portfolio: { some: {} },
             categories: {
               some: {
                 id: {
@@ -210,7 +208,6 @@ export const profilesRouter = createTRPCRouter({
           profilePicture: {
             not: "",
           },
-          portfolio: { some: {} },
           categories: {
             some: {
               id: {
