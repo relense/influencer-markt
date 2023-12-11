@@ -24,6 +24,7 @@ export const env = createEnv({
     // Add `.min(1) on ID and SECRET if you want to make sure they're not empty
     NEXT_PUBLIC_GOOGLE_CLIENT_ID: z.string(),
     GOOGLE_CLIENT_SECRET: z.string(),
+    NEXT_PUBLIC_GOOGLE_ANALYTICS: z.string(),
 
     EMAIL_SERVER: z.string(),
     EMAIL_SMTP_KEY: z.string(),
@@ -78,6 +79,7 @@ export const env = createEnv({
 
     NEXT_PUBLIC_GOOGLE_CLIENT_ID: process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID,
     GOOGLE_CLIENT_SECRET: process.env.GOOGLE_CLIENT_SECRET,
+    NEXT_PUBLIC_GOOGLE_ANALYTICS: process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS,
 
     EMAIL_SERVER: process.env.EMAIL_SERVER,
     EMAIL_SMTP_KEY: process.env.EMAIL_SMTP_KEY,

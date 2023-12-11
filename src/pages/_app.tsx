@@ -9,6 +9,7 @@ import { appWithTranslation } from "next-i18next";
 
 import { api } from "~/utils/api";
 import "~/styles/globals.css";
+import Script from "next/script";
 
 config.autoAddCss = false;
 
@@ -27,6 +28,25 @@ const MyApp: AppType<{ session: Session | null }> = ({
 }) => {
   return (
     <>
+      <Script
+        strategy="lazyOnload"
+        src={`https://www.googletagmanager.com/gtag/js?id=${
+          process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS || ""
+        }`}
+      />
+
+      <Script strategy="lazyOnload" id="g-analytics">
+        {`
+                    window.dataLayer = window.dataLayer || [];
+                    function gtag(){dataLayer.push(arguments);}
+                    gtag('js', new Date());
+                    gtag('config', '${
+                      process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS || ""
+                    }', {
+                    page_path: window.location.pathname,
+                    });
+                `}
+      </Script>
       <Head>
         <title>Influencer Markt | The Creators Market Tailored For You</title>
         <meta

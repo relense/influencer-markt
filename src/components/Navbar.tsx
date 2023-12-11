@@ -82,7 +82,10 @@ export const Navbar = (params: {
       },
     });
 
-  const { data: profileData } = api.profiles.getProfileMinimumInfo.useQuery();
+  const { data: profileData, refetch: refetchProfileData } =
+    api.profiles.getProfileMinimumInfo.useQuery(undefined, {
+      enabled: false,
+    });
 
   const {
     data: totalCredit,
@@ -97,8 +100,14 @@ export const Navbar = (params: {
     if (params.sessionData) {
       void refetchNotficationsRead();
       void refetchTotalCredit();
+      void refetchProfileData();
     }
-  }, [params.sessionData, refetchNotficationsRead, refetchTotalCredit]);
+  }, [
+    params.sessionData,
+    refetchNotficationsRead,
+    refetchProfileData,
+    refetchTotalCredit,
+  ]);
 
   useOutsideClick(() => {
     if (toggleOptions === false) return;
