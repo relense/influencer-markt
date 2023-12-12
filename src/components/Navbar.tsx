@@ -428,16 +428,18 @@ export const Navbar = (params: {
             </div>
             <div className="cursor-pointer border-[1px] border-white1 lg:hidden" />
             <div className="px-8">
-              <Link
-                href="/manage-jobs"
-                className=" group flex cursor-pointer items-center gap-4 py-2"
-              >
-                <FontAwesomeIcon icon={faBriefcase} className="fa-lg" />
+              {params.role && params.role.id !== 2 && (
+                <Link
+                  href="/manage-jobs"
+                  className=" group flex cursor-pointer items-center gap-4 py-2"
+                >
+                  <FontAwesomeIcon icon={faBriefcase} className="fa-lg" />
 
-                <div className="need-interaction group-hover:underline">
-                  {t("components.navbar.myJobs")}
-                </div>
-              </Link>
+                  <div className="need-interaction group-hover:underline">
+                    {t("components.navbar.myJobs")}
+                  </div>
+                </Link>
+              )}
 
               {params.role && params.role.id !== 1 && (
                 <Link
