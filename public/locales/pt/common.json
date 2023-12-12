@@ -290,11 +290,11 @@
 
     "pictureCarrosel": {
       "invalidPictureWarning": "Images têm de ser jpeg, jpg ou png e não podem exceder 4mbs",
-      "addPicture": "Adiciona a tua imagem de perfil",
+      "addPicture": "Adiciona uma imagem ao portfólio",
       "deleteButton": "Apagar Foto",
       "areYouSure": "Tens a certeza?",
       "deleteWarning": "Tens a certeza que queres apagar esta foto? Esta acção é permanente.",
-      "lastPictureWarning": "Se apagares esta foto não vais ter portfolio. Sem fotos não apareces nos resultados das pesquisas.",
+      "lastPictureWarning": "Se apagares esta foto não vais ter portfólio. Sem fotos não apareces nos resultados das pesquisas.",
       "addPictureBestResults": "Para os melhores resultados adiciona uma foto com 1080 * 1920"
     },
 
@@ -348,6 +348,7 @@
       "removedProfile": "Perfil Removido Com Sucesso",
       "savedProfile": "Perfil Guardado Com Sucesso",
       "toastWarning": "Completa o teu perfil para poderes guardar",
+      "socialMediaWarning": "Completa o teu perfil para poderes aceder às redes sociais do influencer",
       "jobs_one": "{{count}} Vaga",
       "jobs_other": "{{count}} Vagas"
     },
@@ -648,6 +649,7 @@
       "connectToYoutube": "Liga-te ao YouTube",
       "connectToTiktok": "Liga-te ao TikTok",
       "connectToTwitch": "Liga-te à Twitch",
+      "socialMediaWarning": "Completa o teu perfil para poderes aceder às redes sociais do influencer",
       "welcomeModal": {
         "buttoncContinue": "Continuar",
         "title": "Bem-vindo ao Influencer Markt",

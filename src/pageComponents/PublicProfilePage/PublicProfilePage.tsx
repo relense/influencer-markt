@@ -355,6 +355,8 @@ const PublicProfilePage = (params: {
         <PublicProfileHeader
           handleBookmark={() => handleBookmark(profile.id)}
           openShareModal={() => setIsShareModalOpen(true)}
+          openLoginModal={() => params.openLoginModal()}
+          loggedInProfileId={params.loggedInProfileId}
           username={params.username}
           profileHeader={{
             profileUserId: profile?.userId,

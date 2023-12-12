@@ -54,6 +54,8 @@ type ProfileHeader = {
 const PublicProfileHeader = (params: {
   openShareModal: () => void;
   handleBookmark: () => void;
+  openLoginModal: () => void;
+  loggedInProfileId: string;
   username: string;
   profileHeader: ProfileHeader;
 }) => {
@@ -230,6 +232,108 @@ const PublicProfileHeader = (params: {
     }
   };
 
+  const renderSocialMedias = () => {
+    return (
+      <div className="flex flex-col items-center justify-center gap-2 xs:flex-row xs:flex-wrap lg:justify-start">
+        {params.profileHeader.userSocialMedia?.map((socialMedia, index) => {
+          if (
+            session.status === "authenticated" &&
+            params.loggedInProfileId !== ""
+          ) {
+            return (
+              <div
+                className="flex items-start gap-2 lg:items-center"
+                key={socialMedia.id}
+              >
+                <Link
+                  href={socialMedia.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex cursor-pointer items-center gap-2 font-semibold text-influencer"
+                >
+                  <FontAwesomeIcon
+                    icon={socialMediaIcon(socialMedia.socialMediaName)}
+                    className="fa-lg"
+                  />
+
+                  <div className="hidden lg:flex">
+                    {socialMedia.socialMediaName}
+                  </div>
+                </Link>
+                <div>{socialMedia.socialMediaFollowers.name || ""}</div>
+                {params.profileHeader.userSocialMedia.length - 1 !== index && (
+                  <div
+                    key={`${socialMedia.id} + dot`}
+                    className="hidden h-1 w-1 rounded-full bg-black lg:block"
+                  />
+                )}
+              </div>
+            );
+          } else if (
+            session.status === "authenticated" &&
+            params.loggedInProfileId === ""
+          ) {
+            return (
+              <div
+                className="flex items-start gap-2 lg:items-center"
+                key={socialMedia.id}
+                onClick={() =>
+                  toast.error(t("pages.publicProfilePage.socialMediaWarning"), {
+                    position: "bottom-left",
+                  })
+                }
+              >
+                <div className="flex cursor-pointer items-center gap-2 font-semibold text-influencer">
+                  <FontAwesomeIcon
+                    icon={socialMediaIcon(socialMedia.socialMediaName)}
+                    className="fa-lg"
+                  />
+
+                  <div className="hidden lg:flex">
+                    {socialMedia.socialMediaName}
+                  </div>
+                </div>
+                <div>{socialMedia.socialMediaFollowers.name || ""}</div>
+                {params.profileHeader.userSocialMedia.length - 1 !== index && (
+                  <div
+                    key={`${socialMedia.id} + dot`}
+                    className="hidden h-1 w-1 rounded-full bg-black lg:block"
+                  />
+                )}
+              </div>
+            );
+          } else if (session.status === "unauthenticated") {
+            return (
+              <div
+                className="flex items-start gap-2 lg:items-center"
+                key={socialMedia.id}
+                onClick={() => params.openLoginModal()}
+              >
+                <div className="flex cursor-pointer items-center gap-2 font-semibold text-influencer">
+                  <FontAwesomeIcon
+                    icon={socialMediaIcon(socialMedia.socialMediaName)}
+                    className="fa-lg"
+                  />
+
+                  <div className="hidden lg:flex">
+                    {socialMedia.socialMediaName}
+                  </div>
+                </div>
+                <div>{socialMedia.socialMediaFollowers.name || ""}</div>
+                {params.profileHeader.userSocialMedia.length - 1 !== index && (
+                  <div
+                    key={`${socialMedia.id} + dot`}
+                    className="hidden h-1 w-1 rounded-full bg-black lg:block"
+                  />
+                )}
+              </div>
+            );
+          }
+        })}
+      </div>
+    );
+  };
+
   return (
     <>
       <div className="flex flex-1 cursor-default flex-col-reverse gap-4 lg:flex-row">
@@ -249,42 +353,7 @@ const PublicProfileHeader = (params: {
             </div>
           )}
           <div className="flex flex-1 flex-col gap-2 text-center lg:text-left">
-            <div className="flex flex-col items-center justify-center gap-2 xs:flex-row xs:flex-wrap lg:justify-start">
-              {params.profileHeader.userSocialMedia?.map(
-                (socialMedia, index) => {
-                  return (
-                    <div
-                      className="flex items-start gap-2 lg:items-center"
-                      key={socialMedia.id}
-                    >
-                      <Link
-                        href={socialMedia.url}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="flex cursor-pointer items-center gap-2 font-semibold text-influencer"
-                      >
-                        <FontAwesomeIcon
-                          icon={socialMediaIcon(socialMedia.socialMediaName)}
-                          className="fa-lg"
-                        />
-
-                        <div className="hidden lg:flex">
-                          {socialMedia.socialMediaName}
-                        </div>
-                      </Link>
-                      <div>{socialMedia.socialMediaFollowers.name || ""}</div>
-                      {params.profileHeader.userSocialMedia.length - 1 !==
-                        index && (
-                        <div
-                          key={`${socialMedia.id} + dot`}
-                          className="hidden h-1 w-1 rounded-full bg-black lg:block"
-                        />
-                      )}
-                    </div>
-                  );
-                }
-              )}
-            </div>
+            {renderSocialMedias()}
             <div className="flex flex-col items-center justify-center gap-3 sm:flex-row lg:justify-start">
               <div className="text-3xl font-bold lg:text-4xl">
                 {params.profileHeader.profileName}

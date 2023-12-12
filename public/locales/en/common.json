@@ -292,7 +292,7 @@
 
     "pictureCarrosel": {
       "invalidPictureWarning": "Picture must be jpeg, jpg or png and can't exceed 4mbs",
-      "addPicture": "Add your Profile Image",
+      "addPicture": "Add your portfolio image",
       "deleteButton": "Delete Picture",
       "areYouSure": "Are You Sure?",
       "deleteWarning": "Are you sure you want to delete this picture? This action is permanent.",
@@ -350,6 +350,7 @@
       "removedProfile": "Removed Profile Successfully",
       "savedProfile": "Saved Profile Successfully",
       "toastWarning": "Complete your profile to be able to save",
+      "socialMediaWarning": "Complete your profile to be able to access the influencer social media",
       "jobs_one": "{{count}} Job",
       "jobs_other": "{{count}} Jobs"
     },
@@ -650,6 +651,7 @@
       "connectToYoutube": "Connect YouTube",
       "connectToTiktok": "Connect TikTok",
       "connectToTwitch": "Connect Twitch",
+      "socialMediaWarning": "Complete your profile to be able to access the influencer social media",
       "welcomeModal": {
         "buttoncContinue": "Continue",
         "title": "Welcome to Influencer Markt",

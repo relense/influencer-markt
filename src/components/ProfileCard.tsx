@@ -185,6 +185,66 @@ const ProfileCard = (params: {
     }
   };
 
+  const renderSocialMediaCornerButton = () => {
+    if (usefullSocialMedia.userSocialMediaFollowers.id !== -1) {
+      if (status === "authenticated" && params.loggedInProfileId !== "") {
+        return (
+          <Link
+            href={usefullSocialMedia.url}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="absolute left-2 top-2 flex cursor-pointer gap-1 rounded-3xl border-[1px] border-transparent bg-black-transparent px-2 text-white"
+          >
+            <div className="flex items-center gap-2">
+              <FontAwesomeIcon
+                icon={socialMediaIcon(usefullSocialMedia.socialMediaName)}
+                className="fa-base text-white hover:text-white1 "
+              />
+              {usefullSocialMedia.userSocialMediaFollowers.name}
+            </div>
+          </Link>
+        );
+      } else if (
+        status === "authenticated" &&
+        params.loggedInProfileId === ""
+      ) {
+        return (
+          <div
+            className="absolute left-2 top-2 flex cursor-pointer gap-1 rounded-3xl border-[1px] border-transparent bg-black-transparent px-2 text-white"
+            onClick={() =>
+              toast.error(t("components.profileCard.socialMediaWarning"), {
+                position: "bottom-left",
+              })
+            }
+          >
+            <div className="flex items-center gap-2">
+              <FontAwesomeIcon
+                icon={socialMediaIcon(usefullSocialMedia.socialMediaName)}
+                className="fa-base text-white hover:text-white1 "
+              />
+              {usefullSocialMedia.userSocialMediaFollowers.name}
+            </div>
+          </div>
+        );
+      } else if (status === "unauthenticated" && params.openLoginModal) {
+        return (
+          <div
+            className="absolute left-2 top-2 flex cursor-pointer gap-1 rounded-3xl border-[1px] border-transparent bg-black-transparent px-2 text-white"
+            onClick={() => params.openLoginModal && params.openLoginModal()}
+          >
+            <div className="flex items-center gap-2">
+              <FontAwesomeIcon
+                icon={socialMediaIcon(usefullSocialMedia.socialMediaName)}
+                className="fa-base text-white hover:text-white1 "
+              />
+              {usefullSocialMedia.userSocialMediaFollowers.name}
+            </div>
+          </div>
+        );
+      }
+    }
+  };
+
   const showMoneyRange = () => {
     if (
       usefullSocialMedia.valuePacks &&
@@ -219,6 +279,51 @@ const ProfileCard = (params: {
     }
   };
 
+  const renderSocialMedia = () => {
+    if (usefullSocialMedia.userSocialMediaFollowers.id !== -1) {
+      if (status === "authenticated" && params.loggedInProfileId !== "") {
+        return (
+          <Link
+            href={usefullSocialMedia.url}
+            target="_blank"
+            rel="noopener noreferrer"
+            key={usefullSocialMedia.id}
+            className="text-md cursor-pointer font-bold text-influencer lg:text-lg"
+          >
+            {usefullSocialMedia.socialMediaName}
+          </Link>
+        );
+      } else if (
+        status === "authenticated" &&
+        params.loggedInProfileId === ""
+      ) {
+        return (
+          <div
+            key={usefullSocialMedia.id}
+            className="text-md cursor-pointer font-bold text-influencer lg:text-lg"
+            onClick={() =>
+              toast.error(t("components.profileCard.socialMediaWarning"), {
+                position: "bottom-left",
+              })
+            }
+          >
+            {usefullSocialMedia.socialMediaName}
+          </div>
+        );
+      } else if (status === "unauthenticated" && params.openLoginModal) {
+        return (
+          <div
+            key={usefullSocialMedia.id}
+            className="text-md cursor-pointer font-bold text-influencer lg:text-lg"
+            onClick={() => params.openLoginModal && params.openLoginModal()}
+          >
+            {usefullSocialMedia.socialMediaName}
+          </div>
+        );
+      }
+    }
+  };
+
   return (
     <div className="flex w-full  flex-col gap-2 lg:w-80">
       <div className="relative h-80 w-full self-center overflow-hidden rounded-xl shadow-xl lg:w-80">
@@ -235,30 +340,12 @@ const ProfileCard = (params: {
             />
           </Link>
         )}
-
         {!params.profilePicture && (
           <div className="flex h-full flex-1 items-center justify-center self-center">
             <FontAwesomeIcon icon={faUser} className="flex text-8xl" />
           </div>
         )}
-
-        {usefullSocialMedia.userSocialMediaFollowers.id !== -1 && (
-          <Link
-            href={usefullSocialMedia.url}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="absolute left-2 top-2 flex cursor-pointer gap-1 rounded-3xl border-[1px] border-transparent bg-black-transparent px-2 text-white"
-          >
-            <div className="flex items-center gap-2">
-              <FontAwesomeIcon
-                icon={socialMediaIcon(usefullSocialMedia.socialMediaName)}
-                className="fa-base text-white hover:text-white1 "
-              />
-              {usefullSocialMedia.userSocialMediaFollowers.name}
-            </div>
-          </Link>
-        )}
-
+        {renderSocialMediaCornerButton()}
         {params.bookmarked !== undefined && (
           <div
             className="absolute right-2 top-2 cursor-pointer"
@@ -280,17 +367,7 @@ const ProfileCard = (params: {
       </div>
       <div>
         <div className="flex items-center justify-between">
-          <div className="flex flex-wrap gap-2">
-            <Link
-              href={usefullSocialMedia.url}
-              target="_blank"
-              rel="noopener noreferrer"
-              key={usefullSocialMedia.id}
-              className="text-md font-bold text-influencer lg:text-lg"
-            >
-              {usefullSocialMedia.socialMediaName}
-            </Link>
-          </div>
+          <div className="flex flex-wrap gap-2">{renderSocialMedia()}</div>
           {showMoneyRange()}
         </div>
       </div>
