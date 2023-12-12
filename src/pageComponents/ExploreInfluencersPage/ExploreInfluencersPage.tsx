@@ -9,6 +9,7 @@ import { ComplexSearchBar } from "../../components/ComplexSearchBar";
 import { InfluencersFilterModal } from "./innerComponents/InfluencersFilterModal";
 import { LoadingSpinner } from "../../components/LoadingSpinner";
 import type { Option, UserProfiles } from "../../utils/globalTypes";
+import { watch } from "fs";
 
 export type InfluencersFilterState = {
   platforms: Option[];
@@ -369,6 +370,9 @@ const ExploreInfluencersPage = (params: {
         <div className="flex flex-1 justify-start text-xl font-medium lg:pl-6">
           {profiles &&
             profiles?.[0] > 0 &&
+            (activeFiltersCount > 0 ||
+              filterState.categories.length > 0 ||
+              filterState.platforms.length > 0) &&
             t("pages.explore.countInfluencers", {
               count: profiles?.[0],
             })}

@@ -278,6 +278,9 @@ const ExploreBrandsPage = (params: {
         <div className="flex flex-1 justify-start text-xl font-medium lg:pl-6">
           {profiles &&
             profiles?.[0] > 0 &&
+            (activeFiltersCount > 0 ||
+              filterState.categories.length > 0 ||
+              filterState.platforms.length > 0) &&
             t("pages.explore.countBrands", {
               count: profiles?.[0],
             })}
