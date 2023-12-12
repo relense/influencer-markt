@@ -75,7 +75,7 @@ export const DefineUserStep = (params: {
                 content={t("pages.firstSteps.defineUserStep.tooltip")}
               />
               <div className="flex h-16 w-full items-center rounded-lg border-[1px] border-gray3 p-4 placeholder-gray2 ">
-                <div className="hidden h-16 items-center xs:flex">
+                <div className="hidden h-16 items-center sm:flex">
                   influencermarkt.com/
                 </div>
                 <input
