@@ -1064,7 +1064,7 @@ const OrderDetailsPage = (params: {
       <div className="flex w-full cursor-default flex-col gap-6 self-center px-4 pb-10 sm:px-12 lg:w-full 2xl:w-10/12 3xl:w-3/4 4xl:w-8/12">
         {params.isRedirected && renderNewOrderDisclaimer()}
 
-        <div className="text-2xl font-semibold">
+        <div className="font-semibold md:text-2xl">
           {t("pages.orders.order")}
           {order?.id && `: #${order?.id}`}
         </div>

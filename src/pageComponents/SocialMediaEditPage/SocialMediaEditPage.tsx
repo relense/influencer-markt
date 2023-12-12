@@ -29,7 +29,6 @@ const SocialMediaEditPage = (params: {
   const { t } = useTranslation();
   const router = useRouter();
 
-  const [isMyInputFocused, setIsMyInputFocused] = useState(false);
   const [contentTypesList, setContentTypesList] = useState<
     ContentTypeWithPrice[]
   >([{ contentType: { id: -1, name: "" }, price: 0 }]);
@@ -58,20 +57,14 @@ const SocialMediaEditPage = (params: {
     },
   });
 
-  const {
-    register,
-    handleSubmit,
-    watch,
-    control,
-    setValue,
-    formState: { errors },
-  } = useForm<SocialMediaDetails>({
-    defaultValues: {
-      socialMediaFollowers: { id: -1, name: "" },
-      platform: { id: -1, name: "" },
-      valuePacks: [],
-    },
-  });
+  const { register, handleSubmit, watch, control, setValue } =
+    useForm<SocialMediaDetails>({
+      defaultValues: {
+        socialMediaFollowers: { id: -1, name: "" },
+        platform: { id: -1, name: "" },
+        valuePacks: [],
+      },
+    });
 
   useEffect(() => {
     if (watch("valuePacks") && isLoadingUserSocialMedia === false) {
@@ -362,56 +355,13 @@ const SocialMediaEditPage = (params: {
         href={`${buildSocialMediaLink(watch("platform").name)}${watch(
           "socialMediaHandler"
         )}`}
-        className="flex cursor-pointer justify-center text-2xl font-semibold hover:underline"
+        className="flex cursor-pointer justify-center text-2xl font-semibold text-blue-500 hover:underline"
       >
-        {buildSocialMediaLink(watch("platform").name)}
+        <span className="hidden lg:flex">
+          {buildSocialMediaLink(watch("platform").name)}
+        </span>
         {watch("socialMediaHandler")}
       </a>
-    );
-  };
-
-  const renderAddPlatformHandlerInput = () => {
-    let handleInputContainerClasses =
-      "flex h-16 w-full items-center rounded-lg border-[1px] border-gray3 p-4 placeholder-gray2";
-
-    if (isMyInputFocused) {
-      handleInputContainerClasses =
-        "flex h-16 w-full items-center rounded-lg border-[1px] border-black p-4 placeholder-gray2";
-    }
-
-    return (
-      <div className="flex w-full flex-col">
-        <div className={handleInputContainerClasses}>
-          {watch("platform") && watch("platform").id !== -1 && (
-            <div className="hidden h-16 items-center xs:flex">
-              {buildSocialMediaLink(watch("platform").name)}
-            </div>
-          )}
-          <input
-            {...register("socialMediaHandler", { maxLength: 44 })}
-            id="socialMediaHandler"
-            required
-            onBlur={() => setIsMyInputFocused(false)}
-            onFocus={() => setIsMyInputFocused(true)}
-            type="text"
-            className="flex w-full flex-1 rounded-lg placeholder-gray2 focus:border-black focus:outline-none"
-            placeholder={
-              watch("platform").name !== "Podcast"
-                ? t("pages.socialMediaCreate.handlerPlaceholder")
-                : t("pages.socialMediaCreate.podcastPlaceholder")
-            }
-            autoComplete="one-time-code"
-          />
-          {errors.socialMediaHandler &&
-            errors.socialMediaHandler.type === "maxLength" && (
-              <div className="px-4 py-1 text-red-600">
-                {t("pages.socialMediaCreate.characterWarning", {
-                  count: 44,
-                })}
-              </div>
-            )}
-        </div>
-      </div>
     );
   };
 

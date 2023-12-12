@@ -225,6 +225,7 @@ const PublicProfileSocialMediaEdit = (params: {
     ) {
       return (
         <button
+          key="youtubeSocialMedia"
           className="w-full cursor-pointer rounded-lg border-[1px] px-4 py-2 text-center text-sm font-semibold shadow-md shadow-boxShadow hover:shadow-none lg:w-3/6 lg:rounded-2xl lg:px-8 lg:py-4 lg:text-base"
           onClick={() => {
             if (

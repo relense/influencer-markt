@@ -402,7 +402,7 @@ const JobsPage = (params: {
             <div className="flex flex-col justify-center gap-4 text-gray2">
               <FontAwesomeIcon icon={faSearch} className="fa-2xl" />
 
-              <div className="flex justify-center">
+              <div className="flex justify-center text-center">
                 {t("pages.jobs.noJobs")}
               </div>
             </div>
