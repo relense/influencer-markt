@@ -154,7 +154,7 @@ const PublicProfileSocialMediaEdit = (params: {
       return (
         <div key="instagramSocialMedia">
           <button
-            className="m-2 w-3/6 cursor-pointer rounded-lg border-[1px] px-4 py-2 text-center text-sm font-semibold shadow-md shadow-boxShadow hover:shadow-none lg:rounded-2xl lg:px-8 lg:py-4 lg:text-base"
+            className="w-full cursor-pointer rounded-lg border-[1px] px-4 py-2 text-center text-sm font-semibold shadow-md shadow-boxShadow hover:shadow-none lg:w-3/6 lg:rounded-2xl lg:px-8 lg:py-4 lg:text-base"
             onClick={() => {
               if (
                 process.env.NEXT_PUBLIC_INSTAGRAM_CLIENT_ID &&
@@ -195,7 +195,7 @@ const PublicProfileSocialMediaEdit = (params: {
       return (
         <div key="tiktokSocialMedia">
           <button
-            className="m-2 w-3/6 cursor-pointer rounded-lg border-[1px] px-4 py-2 text-center text-sm font-semibold shadow-md shadow-boxShadow hover:shadow-none lg:rounded-2xl lg:px-8 lg:py-4 lg:text-base"
+            className="w-full cursor-pointer rounded-lg border-[1px] px-4 py-2 text-center text-sm font-semibold shadow-md shadow-boxShadow hover:shadow-none lg:w-3/6 lg:rounded-2xl lg:px-8 lg:py-4 lg:text-base"
             onClick={() => loginTiktok()}
           >
             <div className="flex items-center justify-center gap-4">
@@ -225,7 +225,7 @@ const PublicProfileSocialMediaEdit = (params: {
     ) {
       return (
         <button
-          className="m-2 w-3/6 cursor-pointer rounded-lg border-[1px] px-4 py-2 text-center text-sm font-semibold shadow-md shadow-boxShadow hover:shadow-none lg:rounded-2xl lg:px-8 lg:py-4 lg:text-base"
+          className="w-full cursor-pointer rounded-lg border-[1px] px-4 py-2 text-center text-sm font-semibold shadow-md shadow-boxShadow hover:shadow-none lg:w-3/6 lg:rounded-2xl lg:px-8 lg:py-4 lg:text-base"
           onClick={() => {
             if (
               process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID &&
@@ -265,7 +265,7 @@ const PublicProfileSocialMediaEdit = (params: {
       return (
         <div key="twitchSocialMedia">
           <button
-            className="m-2 w-3/6 cursor-pointer rounded-lg border-[1px] px-4 py-2 text-center text-sm font-semibold shadow-md shadow-boxShadow hover:shadow-none lg:rounded-2xl lg:px-8 lg:py-4 lg:text-base"
+            className="w-full cursor-pointer rounded-lg border-[1px] px-4 py-2 text-center text-sm font-semibold shadow-md shadow-boxShadow hover:shadow-none lg:w-3/6 lg:rounded-2xl lg:px-8 lg:py-4 lg:text-base"
             onClick={() => loginTwitch()}
           >
             <div className="flex items-center justify-center gap-4">

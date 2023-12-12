@@ -61,7 +61,7 @@ const SocialMediaCard = (params: {
 
   return (
     <>
-      <div className={"relative w-full px-4 sm:px-0 lg:flex-[0_1_47%]"}>
+      <div className={"relative w-full sm:px-0 lg:flex-[0_1_47%]"}>
         <div
           className={`flex h-full w-auto cursor-pointer flex-col gap-4 rounded-lg border-[1px] p-4 ${
             params.socialMedia.mainSocialMedia
@@ -144,7 +144,7 @@ const SocialMediaCard = (params: {
           )}
         </div>
         <div
-          className="absolute right-2 top-[-8px] flex h-8 w-8 cursor-pointer items-center justify-center  rounded-full bg-influencer-green sm:right-[-10px] sm:top-[-10px]"
+          className="absolute right-[-10px] top-[-8px] flex h-8 w-8 cursor-pointer items-center justify-center rounded-full bg-influencer-green sm:top-[-10px]"
           onClick={() => setOpenDeleteModal(true)}
         >
           <FontAwesomeIcon icon={faXmark} className="fa-lg text-white" />
