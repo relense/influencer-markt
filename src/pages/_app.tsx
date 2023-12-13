@@ -31,7 +31,9 @@ const MyApp: AppType<{ session: Session | null }> = ({
       <Script
         strategy="lazyOnload"
         src={`https://www.googletagmanager.com/gtag/js?id=${
-          process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS || ""
+          process.env.NEXT_PUBLIC_CURRENT_ENV === "PROD"
+            ? process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS || ""
+            : ""
         }`}
       />
 
@@ -41,7 +43,9 @@ const MyApp: AppType<{ session: Session | null }> = ({
                     function gtag(){dataLayer.push(arguments);}
                     gtag('js', new Date());
                     gtag('config', '${
-                      process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS || ""
+                      process.env.NEXT_PUBLIC_CURRENT_ENV === "PROD"
+                        ? process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS || ""
+                        : ""
                     }', {
                     page_path: window.location.pathname,
                     });
