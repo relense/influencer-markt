@@ -65,10 +65,12 @@ const PublicProfile: NextPage<PublicProfileProps> = ({ username }) => {
           content={`Influencer Markt: ${profile?.name || ""} Profile Page `}
         />
         <meta name="twitter:card" content="summary" />
+        <meta property="og:image" content={profile?.profilePicture} />
+        <meta property="og:image:width" content="1200" />
+        <meta property="og:image:height" content="630" />
         <meta
-          property="og:image:secure_url"
-          itemProp="image"
-          content={profile?.profilePicture}
+          property="og:image:alt"
+          content="Influencer Markt User Profile Picture"
         />
       </Head>
       {isLoadingProfile || isLoadingUserExists ? (
