@@ -57,6 +57,26 @@ const MyApp: AppType<{ session: Session | null }> = ({
           name="viewport"
           content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
         />
+        <meta charSet="UTF-8" />
+        <meta property="og:title" content="Influencer Markt" />
+        <meta
+          property="og:description"
+          content="At Influencer Markt we specialize in connecting creators with brands for impactful campaigns. Unlock the potential of influencer marketing with our Marketplace"
+        />
+        <meta property="og:url" content="https://influencermarkt.com" />
+        <meta
+          property="og:image"
+          content="https://prodinfmarkt.blob.core.windows.net/inf-markt-assets/logoSEOog.png"
+        />
+        <meta property="og:image:width" content="1200" />
+        <meta property="og:image:height" content="630" />
+        <meta property="og:image:alt" content="Influencer Markt Logo" />
+        <meta property="og:type" content="website" />
+
+        <meta property="og:site_name" content="Influencer Markt" />
+        <meta property="og:locale" content="en" />
+        {/* <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:site" content="@YourTwitterHandle" /> */}
       </Head>
       <SessionProvider session={session}>
         <Toaster />
