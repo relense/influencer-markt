@@ -241,8 +241,6 @@ export const userSocialMediasRouter = createTRPCRouter({
         },
         data: {
           userSocialMediaFollowersId: input.followers,
-          handler: input.handler,
-          url: createSocialMediaUrl(input.socialMedia.id, input.handler),
         },
       });
 
