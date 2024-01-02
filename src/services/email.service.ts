@@ -26,6 +26,7 @@ import { toInfluencerOrderOnHoldToRefund } from "../emailTemplates/toInfluencerO
 import { weReceivedContactEmail } from "../emailTemplates/weReceivedContactEmail/weReceivedContactEmail";
 import { payoutAcceptedEmail } from "../emailTemplates/payoutAcceptedEmail/payoutAcceptedEmail";
 import { payoutRejectedEmail } from "../emailTemplates/payoutRejectedEmail/payoutRejectedEmail";
+import { influencerAddSocialMedia } from "../emailTemplates/InfluencersAddSocialMedia/InfluencersAddSocialMedia";
 
 type EmailActions =
   | {
@@ -263,6 +264,14 @@ type EmailActions =
       fromUs: string;
       to: string;
       language: string;
+      receiverProfileId: string;
+    }
+  | {
+      action: "influencerAddSocialMedia";
+      fromUs: string;
+      to: string;
+      language: string;
+      influencerUsername: string;
       receiverProfileId: string;
     };
 
@@ -544,6 +553,15 @@ export const sendEmail = async (emailAction: EmailActions) => {
       from: emailAction.fromUs,
       to: emailAction.to,
       language: emailAction.language,
+    });
+  } else if (emailAction.action === "influencerAddSocialMedia") {
+    const isDisabled = await checkIfIsDisabled(emailAction.receiverProfileId);
+    if (isDisabled) return;
+    influencerAddSocialMedia({
+      from: emailAction.fromUs,
+      to: emailAction.to,
+      language: emailAction.language,
+      influencerUsername: emailAction.influencerUsername,
     });
   }
 };
