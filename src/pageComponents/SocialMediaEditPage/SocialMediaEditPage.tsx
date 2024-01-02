@@ -325,22 +325,6 @@ const SocialMediaEditPage = (params: {
     );
   };
 
-  const buildSocialMediaLink = (socialMedia: string) => {
-    const linkMappings: Record<string, string> = {
-      Instagram: "https://www.instagram.com/",
-      YouTube: "https://www.youtube.com/",
-      Facebook: "https://www.facebook.com/",
-      TikTok: "https://www.tiktok.com/@",
-      Linkedin: "https://www.linkedin.com/in/",
-      Twitch: "https://www.twitch.tv/",
-      Twitter: "https://www.twitter.com/",
-      Pinterest: "https://www.pinterest.com/",
-      Podcast: "",
-    };
-
-    return linkMappings[socialMedia] || "";
-  };
-
   const renderPlatform = () => {
     return (
       <div className="flex justify-center text-2xl font-semibold">
@@ -352,14 +336,11 @@ const SocialMediaEditPage = (params: {
   const renderUrlHandler = () => {
     return (
       <a
-        href={`${buildSocialMediaLink(watch("platform").name)}${watch(
-          "socialMediaHandler"
-        )}`}
+        target="_blank"
+        rel="noopener noreferrer"
+        href={userSocialMedia?.url || ""}
         className="flex cursor-pointer justify-center text-2xl font-semibold text-blue-500 hover:underline"
       >
-        <span className="hidden lg:flex">
-          {buildSocialMediaLink(watch("platform").name)}
-        </span>
         {watch("socialMediaHandler")}
       </a>
     );
