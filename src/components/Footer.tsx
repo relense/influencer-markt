@@ -26,7 +26,7 @@ export const Footer = () => {
 
   const renderNavigation = () => {
     return (
-      <div className="flex flex-col text-center lg:flex-row">
+      <div className="hidden flex-col text-center lg:flex lg:flex-row">
         {navigationItems.map((item) => {
           return (
             <Link
@@ -43,25 +43,38 @@ export const Footer = () => {
   };
 
   const renderSocialMedia = () => {
-    const socialMedia: IconDefinition[] = [faInstagram, faTwitter, faTiktok];
-
     return (
-      <div className="flex w-full justify-around py-11 sm:justify-center">
-        {socialMedia.map((item, index) => {
-          return (
-            <FontAwesomeIcon
-              key={index}
-              icon={item}
-              className="fa-2xl cursor-pointer sm:px-10"
-            />
-          );
-        })}
+      <div className="flex w-full justify-center gap-24 py-4 lg:gap-0 lg:py-11">
+        <a
+          href="https://www.instagram.com/theinfluencermarkt/"
+          className="cursor-pointer"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          <FontAwesomeIcon
+            key="instagramIcon"
+            icon={faInstagram}
+            className="fa-2xl cursor-pointer sm:px-10"
+          />
+        </a>
+        <a
+          href="https://www.tiktok.com/@theinfluencermarkt"
+          className="cursor-pointer"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          <FontAwesomeIcon
+            key="tiktokIcon"
+            icon={faTiktok}
+            className="fa-2xl cursor-pointer sm:px-10"
+          />
+        </a>
       </div>
     );
   };
 
   return (
-    <div className="border-slate-5 hidden border-t-[1px] sm:block">
+    <div className="border-slate-5 border-t-[1px] sm:block">
       <div className="flex flex-col items-center py-5">
         {renderSocialMedia()}
         {renderNavigation()}
