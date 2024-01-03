@@ -134,7 +134,7 @@ export const profilesRouter = createTRPCRouter({
             countryId: input.country !== -1 ? input.country : undefined,
             cityId: input.city !== -1 ? input.city : undefined,
           },
-          take: 10,
+          take: 50,
           select: {
             id: true,
             userSocialMedia: {
@@ -193,7 +193,7 @@ export const profilesRouter = createTRPCRouter({
     )
     .query(async ({ ctx, input }) => {
       return await ctx.prisma.profile.findMany({
-        take: 10,
+        take: 50,
         skip: 1,
         cursor: {
           id: input.cursor,
@@ -363,7 +363,7 @@ export const profilesRouter = createTRPCRouter({
             countryId: input.country !== -1 ? input.country : undefined,
             cityId: input.city !== -1 ? input.city : undefined,
           },
-          take: 10,
+          take: 50,
           select: {
             id: true,
             userSocialMedia: {
@@ -417,7 +417,7 @@ export const profilesRouter = createTRPCRouter({
     )
     .query(async ({ ctx, input }) => {
       return await ctx.prisma.profile.findMany({
-        take: 10,
+        take: 50,
         skip: 1,
         cursor: {
           id: input.cursor,
