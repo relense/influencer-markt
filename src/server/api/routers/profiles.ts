@@ -1033,7 +1033,6 @@ export const profilesRouter = createTRPCRouter({
     .input(
       z.object({
         roleId: z.number(),
-        searchId: z.string(),
         searchUsername: z.string(),
         searchEmail: z.string(),
         toVerify: z.boolean(),
@@ -1058,7 +1057,6 @@ export const profilesRouter = createTRPCRouter({
       return await ctx.prisma.$transaction([
         ctx.prisma.profile.count({
           where: {
-            id: input.searchId ? input.searchId : undefined,
             OR: verifyId,
             user: {
               roleId: input.roleId,
@@ -1069,7 +1067,6 @@ export const profilesRouter = createTRPCRouter({
         }),
         ctx.prisma.profile.findMany({
           where: {
-            id: input.searchId ? input.searchId : undefined,
             OR: verifyId,
             user: {
               roleId: input.roleId,
@@ -1137,7 +1134,7 @@ export const profilesRouter = createTRPCRouter({
             },
             verifiedStatus: true,
           },
-          orderBy: [{ verifiedStatusId: "asc" }],
+          orderBy: [{ createdAt: "desc" }],
         }),
       ]);
     }),
@@ -1147,7 +1144,6 @@ export const profilesRouter = createTRPCRouter({
       z.object({
         cursor: z.string(),
         roleId: z.number(),
-        searchId: z.string(),
         searchUsername: z.string(),
         searchEmail: z.string(),
         toVerify: z.boolean(),
@@ -1171,7 +1167,6 @@ export const profilesRouter = createTRPCRouter({
 
       return await ctx.prisma.profile.findMany({
         where: {
-          id: input.searchId ? input.searchId : undefined,
           OR: verifyId,
           user: {
             roleId: input.roleId,
@@ -1243,7 +1238,7 @@ export const profilesRouter = createTRPCRouter({
           },
           verifiedStatus: true,
         },
-        orderBy: [{ verifiedStatusId: "asc" }],
+        orderBy: [{ createdAt: "desc" }],
       });
     }),
 

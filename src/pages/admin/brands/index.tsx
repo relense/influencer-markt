@@ -3,13 +3,13 @@ import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 
 import { AdminLayout } from "../../../components/AdminLayout";
 import { AdminProtectedWrapper } from "../../../components/AdminProtectedWrapper";
-import { AdminProfilesSearchPage } from "../../../pageComponents/AdminProfilesSearchPage/AdminProfilesSearchPage";
+import { AdminBrandManagesPage } from "../../../pageComponents/AdminBrandManagesPage/AdminBrandManagesPage";
 
 const AdminBrands: NextPage = () => {
   return (
     <AdminProtectedWrapper>
       <AdminLayout>
-        <AdminProfilesSearchPage roleId={1} key="adminBrands" />
+        <AdminBrandManagesPage roleId={1} key="adminBrands" />
       </AdminLayout>
     </AdminProtectedWrapper>
   );

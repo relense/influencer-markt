@@ -1,17 +1,16 @@
+import { type Prisma } from "@prisma/client";
 import { useEffect, useState } from "react";
-import { useForm } from "react-hook-form";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faClose, faFileArrowDown } from "@fortawesome/free-solid-svg-icons";
 
 import { api } from "~/utils/api";
-
-import { ProfileData } from "../../components/ProfileData";
-import { LoadingSpinner } from "../../components/LoadingSpinner";
 import { Button } from "../../components/Button";
-import { faClose } from "@fortawesome/free-solid-svg-icons";
-import { type Prisma } from "@prisma/client";
+import { useForm } from "react-hook-form";
+import { LoadingSpinner } from "../../components/LoadingSpinner";
+import { ProfileRow } from "./innerComponents/ProfileRow";
+
 type ProfilesSearch = {
   roleId: number;
-  searchId: string;
   searchUsername: string;
   searchEmail: string;
   toVerify: boolean;
@@ -80,10 +79,9 @@ type ProfilesAdmin = Prisma.ProfileGetPayload<{
   };
 }>;
 
-const AdminProfilesSearchPage = (params: { roleId: number }) => {
+const AdminBrandManagesPage = (params: { roleId: number }) => {
   const [profiles, setProfiles] = useState<ProfilesAdmin[]>([]);
   const [profilesCount, setProfilesCount] = useState<number>(0);
-  const [idSearch, setIdSearch] = useState<string>("");
   const [usernameSearch, setUsernameSearch] = useState<string>("");
   const [emailSearch, setEmailSearch] = useState<string>("");
   const [verifiedProfileCheck, setVerifiedProfileCheck] =
@@ -92,23 +90,20 @@ const AdminProfilesSearchPage = (params: { roleId: number }) => {
     useState<boolean>(false);
   const [profilesCursor, setProfilesCursor] = useState<string>("");
 
-  const { register, handleSubmit, reset, setValue, watch } =
-    useForm<ProfilesSearch>({
-      defaultValues: {
-        roleId: params.roleId,
-        searchId: "",
-        searchUsername: "",
-        searchEmail: "",
-        toVerify: false,
-        toReverify: false,
-      },
-    });
+  const { register, handleSubmit, reset } = useForm<ProfilesSearch>({
+    defaultValues: {
+      roleId: params.roleId,
+      searchUsername: "",
+      searchEmail: "",
+      toVerify: false,
+      toReverify: false,
+    },
+  });
 
   const { data: profilesData, isLoading: isLoadingProfiles } =
     api.profiles.getAllProfileForAdminDashboard.useQuery(
       {
         roleId: params.roleId,
-        searchId: idSearch,
         searchUsername: usernameSearch,
         searchEmail: emailSearch,
         toVerify: verifiedProfileCheck,
@@ -128,7 +123,6 @@ const AdminProfilesSearchPage = (params: { roleId: number }) => {
     {
       cursor: profilesCursor,
       roleId: params.roleId,
-      searchId: idSearch,
       searchUsername: usernameSearch,
       searchEmail: emailSearch,
       toVerify: verifiedProfileCheck,
@@ -173,7 +167,6 @@ const AdminProfilesSearchPage = (params: { roleId: number }) => {
   }, [profiles, profilesCursorData]);
 
   const submit = handleSubmit((data) => {
-    setIdSearch(data.searchId);
     setUsernameSearch(data.searchUsername);
     setEmailSearch(data.searchEmail);
     setVerifiedProfileCheck(data.toVerify);
@@ -181,7 +174,6 @@ const AdminProfilesSearchPage = (params: { roleId: number }) => {
   });
 
   const clearFilters = () => {
-    setIdSearch("");
     setUsernameSearch("");
     setEmailSearch("");
     setVerifiedProfileCheck(false);
@@ -194,14 +186,6 @@ const AdminProfilesSearchPage = (params: { roleId: number }) => {
     return (
       <div className="flex flex-col gap-2 lg:flex-row">
         <div className="flex flex-1 flex-col gap-4 lg:flex-row">
-          <div className="flex flex-1 flex-col">
-            <span className="font-semibold">ID Search</span>
-            <input
-              {...register("searchId")}
-              type="text"
-              className="h-full w-full rounded-lg border-[1px] p-4"
-            />
-          </div>
           <div className="flex flex-1 flex-col">
             <span className="font-semibold">Username Search</span>
             <input
@@ -228,32 +212,7 @@ const AdminProfilesSearchPage = (params: { roleId: number }) => {
 
   const renderFiltersRow = () => {
     return (
-      <div className="flex flex-col justify-between gap-4 lg:flex-row">
-        <div className="flex gap-8">
-          <div
-            className="flex cursor-pointer select-none items-center gap-2 font-semibold"
-            onClick={() => setValue("toVerify", !watch("toVerify"))}
-          >
-            <input
-              {...register("toVerify")}
-              type="checkbox"
-              className="h-5 w-5 bg-influencer text-influencer accent-influencer"
-            />
-            <span>To Verify Profiles</span>
-          </div>
-
-          <div
-            className="flex cursor-pointer select-none items-center gap-2 font-semibold"
-            onClick={() => setValue("toReverify", !watch("toReverify"))}
-          >
-            <input
-              {...register("toReverify")}
-              type="checkbox"
-              className="h-5 w-5 bg-influencer text-influencer accent-influencer"
-            />
-            <span>To Reverify Profiles</span>
-          </div>
-        </div>
+      <div className="flex flex-col justify-end gap-4 lg:flex-row">
         <div
           className="flex cursor-pointer items-center justify-end gap-2"
           onClick={() => clearFilters()}
@@ -266,19 +225,46 @@ const AdminProfilesSearchPage = (params: { roleId: number }) => {
   };
 
   const renderProfiles = () => {
-    return (
-      <div className="flex flex-col gap-4">
-        {profiles &&
-          profiles.map((profile) => {
-            return <ProfileData key={profile.id} profile={profile} />;
-          })}
-      </div>
-    );
+    if (profiles.length === 0) {
+      return (
+        <div className="mt-10 flex flex-col items-center justify-center gap-4">
+          <FontAwesomeIcon
+            icon={faFileArrowDown}
+            className="text-5xl text-gray3"
+          />
+          <div className="text-2xl">There are no influencers </div>
+        </div>
+      );
+    } else {
+      return (
+        <div className="flex w-full flex-col gap-4 md:gap-0 [&>*:nth-child(odd)]:bg-influencer-green-super-light ">
+          {profiles &&
+            profiles.map((profile, index) => {
+              return (
+                <div
+                  key={profile.id}
+                  className={`flex w-full flex-1 flex-col items-center gap-2 rounded-xl border-[1px] p-4 text-sm md:flex-row ${
+                    index === 0
+                      ? `md:rounded-b-none md:rounded-t-xl`
+                      : "md:rounded-b-none md:rounded-t-none"
+                  } ${
+                    profiles.length - 1 === index
+                      ? "md:rounded-b-xl md:rounded-t-none"
+                      : ""
+                  }`}
+                >
+                  <ProfileRow profile={profile} />
+                </div>
+              );
+            })}
+        </div>
+      );
+    }
   };
 
   return (
-    <div className="flex w-full cursor-default flex-col gap-6 self-center px-4 pb-10 sm:px-12 xl:w-3/4 2xl:w-3/4 3xl:w-2/4">
-      <div className="flex flex-col gap-16">
+    <div className="flex w-full flex-col gap-4 self-center p-4 md:w-10/12">
+      <div className="flex flex-col gap-6">
         <form onSubmit={submit} className="flex flex-col gap-4">
           {renderInputs()}
           {renderFiltersRow()}
@@ -304,4 +290,5 @@ const AdminProfilesSearchPage = (params: { roleId: number }) => {
     </div>
   );
 };
-export { AdminProfilesSearchPage };
+
+export { AdminBrandManagesPage };
