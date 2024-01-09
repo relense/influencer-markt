@@ -152,16 +152,14 @@ const SavedPage = (params: {
                 : t("pages.saved.noInfluencers")}
             </div>
             <div>
-              {params.roleId === 1
-                ? t("pages.saved.noBrandsSubtitle")
-                : t("pages.saved.noInfluencersSubtitle")}
+              {params.roleId === 2 && t("pages.saved.noInfluencersSubtitle")}
             </div>
           </div>
-          <Link
-            href={`/explore/${params.roleId === 1 ? "brands" : "influencers"}`}
-          >
-            <Button level="primary" title={t("pages.saved.explore")} />
-          </Link>
+          {params.roleId === 2 && (
+            <Link href="/explore/influencers">
+              <Button level="primary" title={t("pages.saved.explore")} />
+            </Link>
+          )}
         </div>
       );
     }

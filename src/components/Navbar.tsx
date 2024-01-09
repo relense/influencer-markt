@@ -156,52 +156,14 @@ export const Navbar = (params: {
         </Link>
 
         <div className="group relative flex px-2">
-          {params.loggedInProfileId === "" && (
-            <div className="flex items-center gap-2">
-              <Link
-                href="/explore/influencers"
-                className="cursor-pointer text-lg"
-              >
-                {t("components.navbar.explore")}
-              </Link>
-            </div>
-          )}
-          {params.sessionData && params.loggedInProfileId !== "" && (
-            <div
-              className="flex items-center gap-2"
-              onClick={() => setOpenExploreDropdown(!openExploreDropdown)}
+          <div className="flex items-center gap-2">
+            <Link
+              href="/explore/influencers"
+              className="cursor-pointer text-lg"
             >
-              <div className="cursor-pointer text-lg">
-                {t("components.navbar.explore")}
-              </div>
-
-              <FontAwesomeIcon
-                icon={openExploreDropdown ? faChevronUp : faChevronDown}
-                className="fa-sm flex cursor-pointer"
-              />
-            </div>
-          )}
-          {params.sessionData &&
-            params.loggedInProfileId !== "" &&
-            openExploreDropdown && (
-              <div className="absolute left-[-13px] top-7 z-50 flex flex-col justify-center rounded-lg bg-white shadow-md">
-                <Link
-                  href="/explore/influencers"
-                  className="cursor-pointer text-lg"
-                >
-                  <div className="cursor-pointer rounded-t-lg px-8 py-4 hover:bg-influencer-green hover:text-white">
-                    {t("components.navbar.influencers")}
-                  </div>
-                </Link>
-
-                <Link
-                  href="/explore/brands"
-                  className="hover: cursor-pointer rounded-b-lg px-8 py-4 text-lg hover:bg-influencer-green hover:text-white"
-                >
-                  {t("components.navbar.brands")}
-                </Link>
-              </div>
-            )}
+              {t("components.navbar.explore")}
+            </Link>
+          </div>
         </div>
         {params.sessionData && params.loggedInProfileId !== "" && (
           <>
@@ -404,17 +366,6 @@ export const Navbar = (params: {
 
             <div className="hidden cursor-pointer border-[1px] border-white1 sm:flex" />
             <div className="px-8">
-              <Link
-                href="/explore/brands"
-                className=" group flex cursor-pointer items-center gap-4 py-2 lg:hidden"
-              >
-                <FontAwesomeIcon icon={faSearch} className="fa-lg" />
-
-                <div className="need-interaction group-hover:underline">
-                  {t("components.navbar.exploreBrands")}
-                </div>
-              </Link>
-
               <Link
                 href="/saved/brands"
                 className="group flex cursor-pointer items-center gap-4 py-2 lg:hidden"
