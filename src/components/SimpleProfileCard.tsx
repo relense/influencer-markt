@@ -279,6 +279,51 @@ const SimpleProfileCard = (params: {
     }
   };
 
+  const renderSocialMedia = () => {
+    if (usefullSocialMedia.userSocialMediaFollowers.id !== -1) {
+      if (status === "authenticated" && params.loggedInProfileId !== "") {
+        return (
+          <Link
+            href={usefullSocialMedia.url}
+            target="_blank"
+            rel="noopener noreferrer"
+            key={usefullSocialMedia.id}
+            className="text-md cursor-pointer font-bold text-influencer lg:text-lg"
+          >
+            {usefullSocialMedia.socialMediaName}
+          </Link>
+        );
+      } else if (
+        status === "authenticated" &&
+        params.loggedInProfileId === ""
+      ) {
+        return (
+          <div
+            key={usefullSocialMedia.id}
+            className="text-md cursor-pointer font-bold text-influencer lg:text-lg"
+            onClick={() =>
+              toast.error(t("components.profileCard.socialMediaWarning"), {
+                position: "bottom-left",
+              })
+            }
+          >
+            {usefullSocialMedia.socialMediaName}
+          </div>
+        );
+      } else if (status === "unauthenticated" && params.openLoginModal) {
+        return (
+          <div
+            key={usefullSocialMedia.id}
+            className="text-md cursor-pointer font-bold text-influencer lg:text-lg"
+            onClick={() => params.openLoginModal && params.openLoginModal()}
+          >
+            {usefullSocialMedia.socialMediaName}
+          </div>
+        );
+      }
+    }
+  };
+
   return (
     <div className="flex w-80 flex-col gap-2">
       <div className="relative h-80 w-full self-center overflow-hidden rounded-xl shadow-xl lg:w-80">
@@ -320,13 +365,16 @@ const SimpleProfileCard = (params: {
           </div>
         )}
       </div>
-      <div className="flex flex-col">
+      <div>
         <div className="flex items-center justify-between">
-          <Link href={`/${params.username}`} className="text-xl font-bold">
-            {params.name}
-          </Link>
+          <div className="flex flex-wrap gap-2">{renderSocialMedia()}</div>
           {showMoneyRange()}
         </div>
+      </div>
+      <div className="flex flex-col">
+        <Link href={`/${params.username}`} className="text-xl font-bold">
+          {params.name}
+        </Link>
         <div className="text-sm text-gray2">
           {params.country}, {params.city}
         </div>
