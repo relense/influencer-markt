@@ -289,206 +289,77 @@ export const profilesRouter = createTRPCRouter({
       });
     }),
 
-  getAllBrandsProfiles: publicProcedure
-    .input(
-      z.object({
-        categories: z.array(z.number()),
-        socialMedia: z.array(z.number()),
-        country: z.number(),
-        city: z.number(),
-      })
-    )
-    .query(async ({ ctx, input }) => {
-      return await ctx.prisma.$transaction([
-        ctx.prisma.profile.count({
-          where: {
-            user: { roleId: 1 },
-            profilePicture: {
-              not: "",
-            },
-            portfolio: { some: {} },
-            categories: {
-              some: {
-                id: {
-                  in:
-                    input.categories.length > 0 ? input.categories : undefined,
-                },
+  getTopProfiles: publicProcedure.query(async ({ ctx }) => {
+    return await ctx.prisma.profile.findMany({
+      where: {
+        user: {
+          roleId: 2,
+          email: {
+            not: "testinfluencermarkt@protonmail.com",
+          },
+        },
+        profilePicture: {
+          not: "",
+        },
+        userSocialMedia: {
+          some: {
+            NOT: {
+              socialMedia: {
+                is: undefined,
               },
             },
-            userSocialMedia:
-              input.socialMedia.length > 0
-                ? {
-                    some: {
-                      socialMediaId: {
-                        in:
-                          input.socialMedia.length > 0
-                            ? input.socialMedia
-                            : undefined,
-                      },
-                    },
-                  }
-                : undefined,
-            countryId: input.country !== -1 ? input.country : undefined,
-            cityId: input.city !== -1 ? input.city : undefined,
-          },
-        }),
-        ctx.prisma.profile.findMany({
-          where: {
-            user: { roleId: 1 },
-            profilePicture: {
-              not: "",
-            },
-            portfolio: { some: {} },
-            categories: {
+            valuePacks: {
               some: {
-                id: {
-                  in:
-                    input.categories.length > 0 ? input.categories : undefined,
-                },
-              },
-            },
-            userSocialMedia:
-              input.socialMedia.length > 0
-                ? {
-                    some: {
-                      socialMediaId: {
-                        in:
-                          input.socialMedia.length > 0
-                            ? input.socialMedia
-                            : undefined,
-                      },
-                    },
-                  }
-                : undefined,
-            countryId: input.country !== -1 ? input.country : undefined,
-            cityId: input.city !== -1 ? input.city : undefined,
-          },
-          take: 50,
-          select: {
-            id: true,
-            userSocialMedia: {
-              include: {
-                socialMediaFollowers: true,
-                socialMedia: {
-                  select: {
-                    id: true,
-                    name: true,
+                NOT: {
+                  contentTypeId: {
+                    not: undefined,
                   },
                 },
               },
             },
-            name: true,
-            city: true,
-            country: true,
-            about: true,
-            user: {
-              select: {
-                username: true,
-              },
-            },
-            profilePicture: true,
-            favoriteBy: {
+          },
+        },
+      },
+      take: 6,
+      select: {
+        id: true,
+        userSocialMedia: {
+          include: {
+            socialMediaFollowers: true,
+            socialMedia: {
               select: {
                 id: true,
+                name: true,
               },
             },
-            createdJobs: {
-              where: {
-                jobStatusId: 1,
-              },
-            },
-          },
-          orderBy: {
-            name: "desc",
-          },
-        }),
-      ]);
-    }),
-
-  getAllBrandsProfilesCursor: publicProcedure
-    .input(
-      z.object({
-        cursor: z.string(),
-        categories: z.array(z.number()),
-        socialMedia: z.array(z.number()),
-        country: z.number(),
-        city: z.number(),
-      })
-    )
-    .query(async ({ ctx, input }) => {
-      return await ctx.prisma.profile.findMany({
-        take: 50,
-        skip: 1,
-        cursor: {
-          id: input.cursor,
-        },
-        where: {
-          user: { roleId: 1 },
-          profilePicture: {
-            not: "",
-          },
-          portfolio: { some: {} },
-          categories: {
-            some: {
-              id: {
-                in: input.categories.length > 0 ? input.categories : undefined,
+            valuePacks: {
+              include: {
+                contentType: true,
               },
             },
           },
-          userSocialMedia:
-            input.socialMedia.length > 0
-              ? {
-                  some: {
-                    socialMediaId: {
-                      in:
-                        input.socialMedia.length > 0
-                          ? input.socialMedia
-                          : undefined,
-                    },
-                  },
-                }
-              : undefined,
-          countryId: input.country !== -1 ? input.country : undefined,
-          cityId: input.city !== -1 ? input.city : undefined,
         },
-        select: {
-          id: true,
-          userSocialMedia: {
-            include: {
-              socialMediaFollowers: true,
-              socialMedia: {
-                select: {
-                  name: true,
-                },
-              },
-            },
-          },
-          name: true,
-          city: true,
-          country: true,
-          about: true,
-          user: {
-            select: {
-              username: true,
-            },
-          },
-          profilePicture: true,
-          favoriteBy: {
-            select: {
-              id: true,
-            },
-          },
-          createdJobs: {
-            where: {
-              jobStatusId: 1,
-            },
+        name: true,
+        city: true,
+        country: true,
+        about: true,
+        user: {
+          select: {
+            username: true,
           },
         },
-        orderBy: {
-          name: "desc",
+        profilePicture: true,
+        favoriteBy: {
+          select: {
+            id: true,
+          },
         },
-      });
-    }),
+      },
+      orderBy: {
+        createdAt: "desc",
+      },
+    });
+  }),
 
   createProfile: protectedProcedure
     .input(

@@ -530,6 +530,11 @@
         "influencers.positive6": "Escolhe as ofertas que me se adequam ao teu perfil",
         "influencers.positive7": "Canal privado para falar com marcas e outros criadores de conteúdo",
         "influencers.positive8": "Encontra a marca com que mais te identificas e apresenta a tua candidatura"
+      },
+
+      "influencerRow": {
+        "ourContent": "Explorar",
+        "seeAll": "Ver todos"
       }
     },
 

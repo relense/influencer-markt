@@ -9,7 +9,6 @@ import { ComplexSearchBar } from "../../components/ComplexSearchBar";
 import { InfluencersFilterModal } from "./innerComponents/InfluencersFilterModal";
 import { LoadingSpinner } from "../../components/LoadingSpinner";
 import type { Option, UserProfiles } from "../../utils/globalTypes";
-import { watch } from "fs";
 
 export type InfluencersFilterState = {
   platforms: Option[];

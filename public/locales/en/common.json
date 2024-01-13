@@ -532,6 +532,11 @@
         "influencers.positive6": "Choose offers that fit your profile",
         "influencers.positive7": "Private channel to communicate with brands and other content creators",
         "influencers.positive8": "Find the brand that resonates with you the most and submit your application"
+      },
+
+      "influencerRow": {
+        "ourContent": "Explore",
+        "seeAll": "See all"
       }
     },
 

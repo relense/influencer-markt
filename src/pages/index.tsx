@@ -21,10 +21,11 @@ const Home: NextPage = () => {
         />
       </Head>
       <Layout>
-        {({ openLoginModal, loggedInProfileId }) => (
+        {({ openLoginModal, loggedInProfileId, isBrand }) => (
           <HomePage
             openLoginModal={openLoginModal}
             profileId={loggedInProfileId}
+            isBrand={isBrand}
           />
         )}
       </Layout>

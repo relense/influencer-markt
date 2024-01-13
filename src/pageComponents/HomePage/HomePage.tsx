@@ -12,9 +12,14 @@ import {
 import { useTranslation } from "next-i18next";
 import Link from "next/link";
 import { useSession } from "next-auth/react";
+import { api } from "~/utils/api";
+import { useEffect, useState } from "react";
 
 import { SimpleSearchBar } from "./innerComponents/SimpleSearchBar";
 import { Button } from "../../components/Button";
+import { type UserProfiles } from "../../utils/globalTypes";
+import { SimpleProfileCard } from "../../components/SimpleProfileCard";
+import { LoadingSpinner } from "../../components/LoadingSpinner";
 
 type Offer = {
   icon: IconDefinition;
@@ -37,9 +42,69 @@ const brands = [
 const HomePage = (params: {
   openLoginModal: () => void;
   profileId: string;
+  isBrand: boolean;
 }) => {
   const { t } = useTranslation();
   const session = useSession();
+
+  const [profiles, setProfiles] = useState<UserProfiles[]>([]);
+  const { data: topProfiles, isLoading } =
+    api.profiles.getTopProfiles.useQuery();
+
+  useEffect(() => {
+    if (topProfiles) {
+      setProfiles(
+        topProfiles.map((profile) => {
+          let isFavorited = false;
+          if (params.profileId) {
+            isFavorited = !!profile?.favoriteBy.find(
+              (profile) => params.profileId === profile.id
+            );
+          }
+
+          return {
+            id: profile.id,
+            about: profile.about || "",
+            city: profile.city || { id: -1, name: "" },
+            country: profile.country || { id: -1, name: "" },
+            name: profile.name || "",
+            profilePicture: profile.profilePicture || "",
+            socialMedia: profile.userSocialMedia.map((socialMedia) => {
+              return {
+                id: socialMedia.id,
+                handler: socialMedia.handler,
+                userSocialMediaFollowers: socialMedia.socialMediaFollowers || {
+                  id: -1,
+                  name: "",
+                },
+                url: socialMedia.url,
+                socialMediaId: socialMedia.socialMedia?.id || -1,
+                socialMediaName: socialMedia.socialMedia?.name || "",
+                mainSocialMedia: socialMedia.mainSocialMedia,
+                valuePacks:
+                  socialMedia.valuePacks.map((valuePack) => {
+                    return {
+                      id: valuePack.id,
+                      platform: {
+                        id: socialMedia.socialMedia?.id || -1,
+                        name: socialMedia.socialMedia?.name || "",
+                      },
+                      contentType: {
+                        id: valuePack.contentType?.id || -1,
+                        name: valuePack.contentType?.name || "",
+                      },
+                      valuePackPrice: valuePack.valuePackPrice,
+                    };
+                  }) || [],
+              };
+            }),
+            username: profile.user.username || "",
+            bookmarked: isFavorited,
+          };
+        })
+      );
+    }
+  }, [params.profileId, topProfiles]);
 
   const offers: Offer[] = [
     {
@@ -165,30 +230,45 @@ const HomePage = (params: {
     );
   };
 
-  const renderSectionTwo = () => {
+  const renderSectonTwo = () => {
     return (
-      <div className="bg-influencer-green px-4 sm:px-5 lg:px-0">
-        <div className="flex flex-col items-center justify-center py-10 text-center">
-          <h1 className="pointer-events-none font-playfair text-2xl lg:text-5xl">
-            {t("pages.home.section2.title")}
-          </h1>
-          <h2 className="pointer-events-none p-7 font-playfair text-xl text-white lg:text-3xl">
-            {t("pages.home.section2.subTitle")}
-          </h2>
-          {session.status === "authenticated" ? (
-            <Link href="/manage-jobs">
-              <Button
-                title={t("pages.home.section2.buttonTitle")}
-                level="primary"
-              />
+      <div className="flex justify-start 2xl:justify-center">
+        <div className="no-scrollbar flex flex-col overflow-x-auto">
+          <div className="flex flex-row items-center justify-between p-4">
+            <div className="cursor-default text-xl font-semibold">
+              {t("pages.home.influencerRow.ourContent")}
+            </div>
+            <Link
+              href="/explore/influencers"
+              className="cursor-pointer font-medium hover:underline"
+            >
+              {t("pages.home.influencerRow.seeAll")}
             </Link>
-          ) : (
-            <Button
-              title={t("pages.home.section2.buttonTitle")}
-              level="primary"
-              onClick={() => params.openLoginModal()}
-            />
-          )}
+          </div>
+          <div className="no-scrollbar flex overflow-x-auto">
+            {profiles &&
+              profiles.map((profile) => {
+                return (
+                  <div key={profile.id} className="h-full px-4">
+                    <SimpleProfileCard
+                      id={profile.id}
+                      key={profile.id}
+                      about={profile.about}
+                      city={profile.city.name}
+                      country={profile.country.name}
+                      name={profile.name}
+                      profilePicture={profile.profilePicture}
+                      socialMedia={profile.socialMedia}
+                      username={profile.username}
+                      bookmarked={profile.bookmarked || false}
+                      openLoginModal={params.openLoginModal}
+                      loggedInProfileId={params.profileId}
+                      isLoggedInProfileBrand={params.isBrand}
+                    />
+                  </div>
+                );
+              })}
+          </div>
         </div>
       </div>
     );
@@ -253,13 +333,17 @@ const HomePage = (params: {
     );
   };
 
-  return (
-    <>
-      {renderSectionOne()}
-      {renderSectionTwo()}
-      {renderSectionThree()}
-    </>
-  );
+  if (isLoading) {
+    return <LoadingSpinner />;
+  } else {
+    return (
+      <>
+        {renderSectionOne()}
+        {renderSectonTwo()}
+        {renderSectionThree()}
+      </>
+    );
+  }
 };
 
 export { HomePage };
