@@ -232,7 +232,7 @@ const HomePage = (params: {
 
   const renderSectonTwo = () => {
     return (
-      <div className="flex justify-start 2xl:justify-center">
+      <div className="flex justify-start lg:px-16 2xl:justify-center">
         <div className="no-scrollbar flex flex-col overflow-x-auto">
           <div className="flex flex-row items-center justify-between p-4">
             <div className="cursor-default text-xl font-semibold">
