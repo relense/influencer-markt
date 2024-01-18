@@ -14,11 +14,11 @@ const Home: NextPage = () => {
         <meta
           name="description"
           content="At Influencer Markt we specialize in connecting creators with brands for impactful campaigns. Unlock the potential of influencer marketing with our Marketplace"
-        />
+        ></meta>
         <meta
           name="viewport"
           content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
-        />
+        ></meta>
       </Head>
       <Layout>
         {({ openLoginModal, loggedInProfileId, isBrand }) => (
