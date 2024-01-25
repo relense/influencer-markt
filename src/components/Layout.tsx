@@ -8,6 +8,7 @@ import { Footer } from "./Footer";
 import { LoginModal } from "./LoginModal";
 import { Navbar } from "./Navbar";
 import { CookiePolicy } from "./CookiePolicy";
+import { LoadingSpinner } from "./LoadingSpinner";
 
 export const Layout = (props: {
   children: (params: {
@@ -27,9 +28,7 @@ export const Layout = (props: {
     data: user,
     refetch: refetechUser,
     isLoading: userIsLoading,
-  } = api.users.getUser.useQuery(undefined, {
-    enabled: false,
-  });
+  } = api.users.getUser.useQuery();
 
   const onCloseModal = () => {
     setIsModalOpen(false);
@@ -78,16 +77,22 @@ export const Layout = (props: {
         userIsLoading={userIsLoading}
       />
       <div className="mb-12 flex w-full flex-1 flex-col overflow-y-auto sm:mb-0">
-        <div className="flex flex-1 flex-col pb-16">
-          {props.children({
-            openLoginModal: () => setIsModalOpen(true),
-            scrollLayoutToPreviousPosition: () =>
-              scrollLayoutToPreviousPosition(),
-            saveScrollPosition: () => saveScrollPosition(),
-            loggedInProfileId: user?.profile?.id ? user.profile.id : "",
-            isBrand: user?.role?.id === 1 ? true : false,
-          })}
-        </div>
+        {userIsLoading === false ? (
+          <div className="flex flex-1 flex-col pb-16">
+            {props.children({
+              openLoginModal: () => setIsModalOpen(true),
+              scrollLayoutToPreviousPosition: () =>
+                scrollLayoutToPreviousPosition(),
+              saveScrollPosition: () => saveScrollPosition(),
+              loggedInProfileId: user?.profile?.id ? user.profile.id : "",
+              isBrand: user?.role?.id === 1 ? true : false,
+            })}
+          </div>
+        ) : (
+          <div className="flex flex-1 flex-col pb-16">
+            <LoadingSpinner />
+          </div>
+        )}
         <Footer />
       </div>
       <BottomBar

@@ -538,6 +538,42 @@
       }
     },
 
+    "landingHomePage": {
+      "section1": {
+        "title": "Eleve o seu marketing para o próximo nível com o marketing de influência",
+        "subtitle": "Impulsione a sua marca e atinja novas metas com a magia dos influencers",
+        "button": "Junte-se ao Influencer Markt"
+      },
+      "section2": {
+        "title": "Encontre o criador de conteúdo certo para as suas necessidades",
+        "check1": "Ao seu alcance: Filtragem fácil de criadores de conteúdo por país, cidade, seguidores e mais para colaborações direcionadas",
+        "check2": "Refine a sua pesquisa com categorias como 'Moda' e 'Estilo de Vida' para a combinação perfeita com o criador de conteúdo",
+        "check3": "Pesquisas ilimitadas sem custos adicionais",
+        "button": "Comece a Explorar"
+      },
+      "section3": {
+        "title": "Conheça o criador e a sua história antes de colaborar",
+        "check1": "Descubra a narrativa do criador de conteúdo e veja como se alinha perfeitamente com a sua marca",
+        "check2": "Explore o trabalho deles através de um portfólio selecionado, apresentando as suas melhores imagens",
+        "check3": "Descubra as redes sociais do criador de conteúdo verificado no perfil e mantenha-se atualizado com as últimas publicações",
+        "button": "Comece a Colaborar"
+      },
+      "section4": {
+        "title": "Publique oportunidades e deixe os criadores de conteúdo descobrirem a sua marca",
+        "check1": "Crie oportunidades de trabalho personalizadas que estejam alinhadas com a visão da sua marca",
+        "check2": "Abra as portas para aplicações ilimitadas de criadores de conteúdo, capacitando-o a selecionar a melhor combinação para a sua oferta",
+        "check3": "Crie tantas ofertas quanto desejar, com a flexibilidade de controlar e supervisioná-las à sua conveniência",
+        "button": "Comece a Criar"
+      },
+      "section5": {
+        "title": "Confie-nos a gestão dos seus pagamentos de forma eficiente",
+        "check1": "Os criadores de conteúdo são compensados apenas após a entrega bem-sucedida do conteúdo encomendado",
+        "check2": "Não se preocupe com os pagamentos. O Influencer Markt pode cuidar da compensação dos seus criadores de conteúdo por si",
+        "check3": "Permita-nos facilitar a comunicação com os criadores de conteúdo e garantir que obtenha o máximo valor pelo seu investimento",
+        "button": "Comece Hoje"
+      }
+    },
+
     "firstSteps": {
       "next": "Próximo",
       "previousStep": "Passo Anterior",

@@ -540,6 +540,42 @@
       }
     },
 
+    "landingHomePage": {
+      "section1": {
+        "title": "Elevate your marketing to the next level with influencer markteting",
+        "subtitle": "Boost your brand and reach new heights with influencer magic",
+        "button": "Join Influencer Markt"
+      },
+      "section2": {
+        "title": "Find the right content creator for your needs",
+        "check1": "At your fingertips: Easily filter creators by country, city, followers, and more for targeted collaborations",
+        "check2": "Refine your search with categories like 'Fashion' and 'Lifestyle' for the perfect content creator match",
+        "check3": "Unlimited searches with no additional costs",
+        "button": "Start Exploring"
+      },
+      "section3": {
+        "title": "Know the content creator and their story before collaborating",
+        "check1": "Uncover the content creator's narrative and reveal how seamlessly they align with your brand",
+        "check2": "Explore their work through a curated portfolio featuring their finest selected images",
+        "check3": "Discover the vetted content creator's social media within their profile and stay updated with their latest posts",
+        "button": "Start Collaborating"
+      },
+      "section4": {
+        "title": "Post opportunities and let content creators discover your brand",
+        "check1": "Craft personalized job opportunities that align with your brand's vision",
+        "check2": "Open the doors to limitless content creator applications, empowering you to select the best fit for your offer",
+        "check3": "Create as many offers as you like, with the flexibility to control and oversee them at your convenience",
+        "button": "Start Creating"
+      },
+      "section5": {
+        "title": "Entrust us with managing your payments seamlessly",
+        "check1": "Content creators are compensated only upon successful delivery of the ordered content",
+        "check2": "Don't worry about payments. Influencer Markt can take care of compensating your content creators for you",
+        "check3": "Allow us to facilitate communication with content creators and ensure you get the most value for your investment",
+        "button": "Start Today"
+      }
+    },
+
     "firstSteps": {
       "next": "Next",
       "previousStep": "Previous Step",

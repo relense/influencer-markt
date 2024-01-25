@@ -1,10 +1,11 @@
 import type { GetServerSideProps, NextPage } from "next";
 
-import { HomePage } from "../pageComponents/HomePage/HomePage";
 import { Layout } from "../components/Layout";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 
 import Head from "next/head";
+import { LandingHomePage } from "../pageComponents/LandingHomePage/LandingHomePage";
+import { HomePage } from "../pageComponents/HomePage/HomePage";
 
 const Home: NextPage = () => {
   return (
@@ -21,13 +22,19 @@ const Home: NextPage = () => {
         ></meta>
       </Head>
       <Layout>
-        {({ openLoginModal, loggedInProfileId, isBrand }) => (
-          <HomePage
-            openLoginModal={openLoginModal}
-            profileId={loggedInProfileId}
-            isBrand={isBrand}
-          />
-        )}
+        {({ openLoginModal, loggedInProfileId, isBrand }) => {
+          if (loggedInProfileId) {
+            return (
+              <HomePage
+                openLoginModal={openLoginModal}
+                isBrand={isBrand}
+                profileId={loggedInProfileId}
+              />
+            );
+          } else {
+            return <LandingHomePage openLoginModal={openLoginModal} />;
+          }
+        }}
       </Layout>
     </>
   );
