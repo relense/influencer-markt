@@ -35,7 +35,6 @@ const LandingHomePage = (params: { openLoginModal: () => void }) => {
             <Image
               src={`/images/landingPageElement1.png`}
               alt="Influencer Markt Landing Page Image 1"
-              loading="lazy"
               width={2000}
               height={2000}
               className="h-full w-full object-cover"
@@ -54,7 +53,6 @@ const LandingHomePage = (params: { openLoginModal: () => void }) => {
             <Image
               src={`/images/landingPageElement2.png`}
               alt="Influencer Markt Landing Page Image 1"
-              loading="lazy"
               width={2000}
               height={2000}
               className="h-full w-full object-cover"
@@ -152,7 +150,6 @@ const LandingHomePage = (params: { openLoginModal: () => void }) => {
             <Image
               src={`/images/landingPageElement3.png`}
               alt="Influencer Markt Landing Page Image 1"
-              loading="lazy"
               width={2000}
               height={2000}
               className="h-full w-full object-cover"
@@ -171,7 +168,6 @@ const LandingHomePage = (params: { openLoginModal: () => void }) => {
             <Image
               src={`/images/landingPageElement4.png`}
               alt="Influencer Markt Landing Page Image 1"
-              loading="lazy"
               width={2000}
               height={2000}
               className="h-full w-full object-cover"
@@ -270,7 +266,6 @@ const LandingHomePage = (params: { openLoginModal: () => void }) => {
             <Image
               src={`/images/landingPageElement5.png`}
               alt="Influencer Markt Landing Page Image 1"
-              loading="lazy"
               width={2000}
               height={2000}
               className="h-full w-full object-cover"
