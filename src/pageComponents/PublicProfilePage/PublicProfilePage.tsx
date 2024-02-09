@@ -212,7 +212,7 @@ const PublicProfilePage = (params: {
 
   const handleBookmark = (profileId: string) => {
     if (status === "unauthenticated") {
-      params.openLoginModal();
+      console.log("");
     } else if (status === "authenticated" && params.loggedInProfileId === "") {
       toast.error(t("pages.publicProfilePage.bookmarkWarning"), {
         position: "bottom-left",
@@ -355,7 +355,7 @@ const PublicProfilePage = (params: {
         <PublicProfileHeader
           handleBookmark={() => handleBookmark(profile.id)}
           openShareModal={() => setIsShareModalOpen(true)}
-          openLoginModal={() => params.openLoginModal()}
+          openLoginModal={() => console.log("")}
           loggedInProfileId={params.loggedInProfileId}
           username={params.username}
           profileHeader={{

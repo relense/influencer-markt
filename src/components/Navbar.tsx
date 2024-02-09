@@ -20,7 +20,6 @@ import {
   faChevronDown,
   faChevronUp,
   faGear,
-  faSearch,
   faBell as faBellSolid,
   faReceipt,
   faFileInvoice,
@@ -137,7 +136,7 @@ export const Navbar = (params: {
 
   const handlSignup = () => {
     params.setIsSignUp(true);
-    params.openLoginModal();
+    console.log("");
   };
 
   const handleOpenNotificationsMenu = () => {
@@ -218,7 +217,7 @@ export const Navbar = (params: {
           <div className="flex flex-row items-center justify-end gap-2">
             <span
               className="flex cursor-pointer text-lg"
-              onClick={() => params.openLoginModal()}
+              onClick={() => console.log("")}
             >
               {t("components.navbar.signIn")}
             </span>

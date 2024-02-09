@@ -26,7 +26,7 @@ const LandingHomePage = (params: { openLoginModal: () => void }) => {
                 title={t("pages.landingHomePage.section1.button")}
                 size="large"
                 level="primary"
-                onClick={() => params.openLoginModal()}
+                onClick={() => console.log("")}
               />
             </div>
           </div>
@@ -142,7 +142,7 @@ const LandingHomePage = (params: { openLoginModal: () => void }) => {
                 title={t("pages.landingHomePage.section3.button")}
                 size="large"
                 level="primary"
-                onClick={() => params.openLoginModal()}
+                onClick={() => console.log("")}
               />
             </div>
           </div>
@@ -209,7 +209,7 @@ const LandingHomePage = (params: { openLoginModal: () => void }) => {
                 title={t("pages.landingHomePage.section4.button")}
                 size="large"
                 level="primary"
-                onClick={() => params.openLoginModal()}
+                onClick={() => console.log("")}
               />
             </div>
           </div>
@@ -258,7 +258,7 @@ const LandingHomePage = (params: { openLoginModal: () => void }) => {
                 title={t("pages.landingHomePage.section5.button")}
                 size="large"
                 level="primary"
-                onClick={() => params.openLoginModal()}
+                onClick={() => console.log("")}
               />
             </div>
           </div>
@@ -313,16 +313,15 @@ const LandingHomePage = (params: { openLoginModal: () => void }) => {
         <div className="flex w-full flex-col gap-12 lg:w-9/12 2xl:w-6/12">
           <div className="text-4xl font-semibold">{t("pages.faq.title")}</div>
           <div className="flex flex-1 flex-col gap-6">
-            {questions.map((question, index) => {
+            {questions.map((question) => {
               return (
                 <div key={question.question} className="flex flex-col gap-12">
                   <Question
                     question={question.question}
                     answer={question.answer}
                   />
-                  {questions.length - 1 !== index && (
-                    <div className="w-full border-[1px] border-white1" />
-                  )}
+
+                  <div className="w-full border-[1px] border-white1" />
                 </div>
               );
             })}

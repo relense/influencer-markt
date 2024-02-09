@@ -189,7 +189,7 @@ const JobDetails = (params: {
         position: "bottom-left",
       });
     } else {
-      params.openLoginModal();
+      console.log("");
     }
   };
 

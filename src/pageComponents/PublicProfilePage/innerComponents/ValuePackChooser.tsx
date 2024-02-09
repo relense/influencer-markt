@@ -182,7 +182,7 @@ const ValuePackChooser = (params: {
           disabled={
             params.platform.id === -1 || params.selectedValuePacks.length === 0
           }
-          onClick={() => params.openLoginModal()}
+          onClick={() => console.log("")}
         />
       );
     }

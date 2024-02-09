@@ -175,7 +175,7 @@ const ProfileCard = (params: {
 
   const handleClickBookmark = () => {
     if (status === "unauthenticated" && params.openLoginModal) {
-      params.openLoginModal();
+      console.log("");
     } else if (status === "authenticated" && params.loggedInProfileId === "") {
       toast.error(t("components.profileCard.toastWarning"), {
         position: "bottom-left",
@@ -230,7 +230,7 @@ const ProfileCard = (params: {
         return (
           <div
             className="absolute left-2 top-2 flex cursor-pointer gap-1 rounded-3xl border-[1px] border-transparent bg-black-transparent px-2 text-white"
-            onClick={() => params.openLoginModal && params.openLoginModal()}
+            onClick={() => console.log("")}
           >
             <div className="flex items-center gap-2">
               <FontAwesomeIcon
@@ -315,7 +315,7 @@ const ProfileCard = (params: {
           <div
             key={usefullSocialMedia.id}
             className="text-md cursor-pointer font-bold text-influencer lg:text-lg"
-            onClick={() => params.openLoginModal && params.openLoginModal()}
+            onClick={() => console.log("")}
           >
             {usefullSocialMedia.socialMediaName}
           </div>

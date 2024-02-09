@@ -61,7 +61,7 @@ const BrandProfileCard = (params: {
 
   const handleClickBookmark = () => {
     if (status === "unauthenticated" && params.openLoginModal) {
-      params.openLoginModal();
+      console.log("");
     } else if (status === "authenticated" && params.loggedInProfileId === "") {
       toast.error(t("components.profileCard.toastWarning"), {
         position: "bottom-left",

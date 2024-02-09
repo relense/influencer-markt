@@ -156,7 +156,7 @@ const JobDetailsPage = (params: {
         position: "bottom-left",
       });
     } else {
-      params.openLoginModal();
+      console.log("");
     }
   };
 

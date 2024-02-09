@@ -325,7 +325,7 @@ const HomePage = (params: {
             <Button
               title={t("pages.home.section3.buttonTitle")}
               level="primary"
-              onClick={() => params.openLoginModal()}
+              onClick={() => console.log("")}
             />
           )}
         </div>

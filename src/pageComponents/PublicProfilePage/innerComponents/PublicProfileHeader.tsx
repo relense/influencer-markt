@@ -307,7 +307,7 @@ const PublicProfileHeader = (params: {
               <div
                 className="flex items-start gap-2 lg:items-center"
                 key={socialMedia.id}
-                onClick={() => params.openLoginModal()}
+                onClick={() => console.log("")}
               >
                 <div className="flex cursor-pointer items-center gap-2 font-semibold text-influencer">
                   <FontAwesomeIcon
